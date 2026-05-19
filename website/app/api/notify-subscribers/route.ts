@@ -42,14 +42,23 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Post not found or not published." }, { status: 404 });
   }
 
-  const isAuthor = post.author_id === auth.user.id;
-  const { data: adminRow } = await supabase
-    .from("admin_users")
-    .select("user_id")
-    .eq("user_id", auth.user.id)
-    .maybeSingle();
-  const isAdmin = !!adminRow;
-  if (!isAuthor && !isAdmin) {
+  const adminEmails = (process.env.ADMIN_EMAILS ?? "")
+    .split(",")
+    .map((s) => s.trim().toLowerCase())
+    .filter(Boolean);
+  const isAdminEmail =
+    !!auth.user.email && adminEmails.includes(auth.user.email.toLowerCase());
+  const isAuthor = !!post.author_id && post.author_id === auth.user.id;
+  let isAdminRow = false;
+  if (!isAdminEmail && !isAuthor) {
+    const { data: adminRow } = await supabase
+      .from("admin_users")
+      .select("user_id")
+      .eq("user_id", auth.user.id)
+      .maybeSingle();
+    isAdminRow = !!adminRow;
+  }
+  if (!isAdminEmail && !isAuthor && !isAdminRow) {
     return NextResponse.json({ error: "Forbidden." }, { status: 403 });
   }
 

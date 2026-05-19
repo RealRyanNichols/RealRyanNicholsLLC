@@ -62,7 +62,13 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
 
   let canNotify = false;
   if (data.user) {
-    if (post.author_id && post.author_id === data.user.id) {
+    const adminEmails = (process.env.ADMIN_EMAILS ?? "")
+      .split(",")
+      .map((s) => s.trim().toLowerCase())
+      .filter(Boolean);
+    if (data.user.email && adminEmails.includes(data.user.email.toLowerCase())) {
+      canNotify = true;
+    } else if (post.author_id && post.author_id === data.user.id) {
       canNotify = true;
     } else {
       const { data: adminRow } = await supabase
