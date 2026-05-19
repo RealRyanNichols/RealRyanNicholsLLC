@@ -1,13 +1,30 @@
 export type PostStatus = "draft" | "published" | "hidden";
 export type CommentStatus = "pending" | "approved" | "hidden" | "deleted";
 export type ReactionKind = "amen" | "pray" | "support";
+export type PostType = "text" | "note" | "photo" | "video";
+export type MuxStatus = "uploading" | "processing" | "ready" | "errored";
+
+export type MediaItem = {
+  url: string;
+  width?: number;
+  height?: number;
+  alt?: string;
+};
 
 export type Post = {
   id: string;
   slug: string;
-  title: string;
+  type: PostType;
+  title: string | null;
   body: string;
   image_urls: string[] | null;
+  media: MediaItem[] | null;
+  mux_asset_id: string | null;
+  mux_upload_id: string | null;
+  mux_playback_id: string | null;
+  mux_status: MuxStatus | null;
+  duration_seconds: number | null;
+  thumbnail_url: string | null;
   pinned: boolean;
   status: PostStatus;
   author_id: string | null;

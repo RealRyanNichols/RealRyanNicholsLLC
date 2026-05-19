@@ -21,9 +21,12 @@ export async function GET() {
         ? new Date(p.published_at).toUTCString()
         : new Date().toUTCString();
       const excerpt = p.body.slice(0, 400).replace(/\s+/g, " ").trim();
+      const title =
+        p.title ??
+        (p.body ? p.body.slice(0, 80).replace(/\s+/g, " ").trim() : `${p.type} post`);
       return `
     <item>
-      <title>${escapeXml(p.title)}</title>
+      <title>${escapeXml(title)}</title>
       <link>${link}</link>
       <guid>${link}</guid>
       <pubDate>${pubDate}</pubDate>

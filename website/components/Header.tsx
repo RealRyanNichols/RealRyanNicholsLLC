@@ -7,6 +7,11 @@ export async function Header() {
   const supabase = await getSupabaseServerClient();
   const { data } = await supabase.auth.getUser();
   const user = data.user;
+  let isAdmin = false;
+  if (user) {
+    const { data: adminCheck } = await supabase.rpc("is_admin", { uid: user.id });
+    isAdmin = adminCheck === true;
+  }
 
   return (
     <header className="border-b border-[var(--color-line)] bg-[var(--color-paper)]/90 backdrop-blur sticky top-0 z-30">
@@ -39,10 +44,19 @@ export async function Header() {
           <NavLink href="/jan-6">Jan 6</NavLink>
           <NavLink href="/about">About</NavLink>
           <NavLink href="/support">Support</NavLink>
+          {isAdmin ? (
+            <Link
+              href="/admin/new"
+              className="ml-2 inline-flex items-center rounded-full bg-[var(--color-accent)] px-3 py-1.5 text-white text-xs font-medium hover:opacity-90 transition"
+              aria-label="New post"
+            >
+              + New
+            </Link>
+          ) : null}
           {user ? (
             <Link
               href="/account"
-              className="ml-2 inline-flex items-center rounded-full bg-[var(--color-ink)] px-3 py-1.5 text-white text-xs font-medium hover:bg-[var(--color-accent)] transition"
+              className="ml-1 inline-flex items-center rounded-full bg-[var(--color-ink)] px-3 py-1.5 text-white text-xs font-medium hover:bg-[var(--color-accent)] transition"
             >
               Account
             </Link>

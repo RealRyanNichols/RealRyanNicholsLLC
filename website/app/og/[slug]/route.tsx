@@ -11,7 +11,11 @@ export async function GET(
 ) {
   const { slug } = await ctx.params;
   const post = await getPostBySlug(slug);
-  const title = post?.title ?? SITE.name;
+  const title =
+    post?.title ??
+    (post?.body
+      ? post.body.slice(0, 100).replace(/\s+/g, " ").trim()
+      : SITE.name);
   const tagline = post ? SITE.author : SITE.tagline;
 
   return new ImageResponse(

@@ -10,6 +10,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@mux/mux-node": "^14.1.0",
+    "@mux/mux-player-react": "^3.13.0",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.46.1",
     "date-fns": "^4.1.0",
