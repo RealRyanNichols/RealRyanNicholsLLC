@@ -12,4 +12,7 @@ export const SITE = {
   },
   footerLine: "Posted from my own front porch.",
   year: new Date().getFullYear(),
+  // CAN-SPAM requires a physical postal address in every commercial email.
+  // Set SITE_MAILING_ADDRESS in your environment (a PO box is fine).
+  mailingAddress: process.env.SITE_MAILING_ADDRESS ?? "",
 };

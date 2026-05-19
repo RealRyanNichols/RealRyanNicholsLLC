@@ -28,7 +28,8 @@ export function SignupForm() {
       }
       setState({
         kind: "success",
-        message: "You're on the list. I'll only send updates worth reading.",
+        message:
+          json.message ?? "Check your email to confirm your subscription.",
       });
       setEmail("");
     } catch {
