@@ -1,15 +1,27 @@
 import Link from "next/link";
+import Image from "next/image";
 import { SITE } from "@/lib/site";
 
 export function ProfileHero() {
   return (
     <section className="rounded-2xl border border-[var(--color-line)] bg-white p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center gap-5">
-      <div
-        className="h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-[var(--color-accent)] text-white flex items-center justify-center text-xl font-semibold flex-shrink-0"
-        aria-hidden
-      >
-        RN
-      </div>
+      {SITE.avatarPath ? (
+        <Image
+          src={SITE.avatarPath}
+          alt={SITE.name}
+          width={80}
+          height={80}
+          className="h-16 w-16 sm:h-20 sm:w-20 rounded-full object-cover flex-shrink-0"
+          priority
+        />
+      ) : (
+        <div
+          className="h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-[var(--color-accent)] text-white flex items-center justify-center text-xl font-semibold flex-shrink-0"
+          aria-hidden
+        >
+          RN
+        </div>
+      )}
       <div className="flex-1">
         <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight">
           {SITE.name}

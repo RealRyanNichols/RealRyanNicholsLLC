@@ -1,5 +1,7 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { SITE } from "@/lib/site";
 
 export async function Header() {
   const supabase = await getSupabaseServerClient();
@@ -10,12 +12,24 @@ export async function Header() {
     <header className="border-b border-[var(--color-line)] bg-[var(--color-paper)]/90 backdrop-blur sticky top-0 z-30">
       <div className="mx-auto max-w-5xl px-4 h-14 flex items-center justify-between gap-4">
         <Link href="/" className="flex items-center gap-2.5 group" aria-label="Ryan Nichols — Home">
-          <span
-            className="inline-flex h-8 w-8 rounded-full bg-[var(--color-accent)] text-white items-center justify-center text-sm font-semibold"
-            aria-hidden
-          >
-            RN
-          </span>
+          {SITE.avatarPath ? (
+            <Image
+              src={SITE.avatarPath}
+              alt=""
+              aria-hidden
+              width={32}
+              height={32}
+              className="h-8 w-8 rounded-full object-cover"
+              priority
+            />
+          ) : (
+            <span
+              className="inline-flex h-8 w-8 rounded-full bg-[var(--color-accent)] text-white items-center justify-center text-sm font-semibold"
+              aria-hidden
+            >
+              RN
+            </span>
+          )}
           <span className="font-semibold text-[var(--color-ink)] group-hover:underline underline-offset-4">
             Ryan Nichols
           </span>

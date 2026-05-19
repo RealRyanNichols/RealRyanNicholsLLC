@@ -10,6 +10,7 @@ import { CommentForm } from "@/components/CommentForm";
 import { VerseSidebar } from "@/components/VerseSidebar";
 import { SignupForm } from "@/components/SignupForm";
 import { ReadNext } from "@/components/ReadNext";
+import { NotifySubscribersButton } from "@/components/NotifySubscribersButton";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { SITE } from "@/lib/site";
 
@@ -45,9 +46,6 @@ export async function generateMetadata(props: {
       title: post.title,
       description: excerpt,
       images: [ogPath],
-      ...(SITE.socials.twitter
-        ? { site: SITE.socials.twitter, creator: SITE.socials.twitter }
-        : {}),
     },
     alternates: { canonical: `/posts/${post.slug}` },
   };
@@ -61,6 +59,20 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
   const supabase = await getSupabaseServerClient();
   const { data } = await supabase.auth.getUser();
   const signedIn = !!data.user;
+
+  let canNotify = false;
+  if (data.user) {
+    if (post.author_id && post.author_id === data.user.id) {
+      canNotify = true;
+    } else {
+      const { data: adminRow } = await supabase
+        .from("admin_users")
+        .select("user_id")
+        .eq("user_id", data.user.id)
+        .maybeSingle();
+      canNotify = !!adminRow;
+    }
+  }
 
   const allPosts = await getPublishedPosts();
   const readNext = allPosts.filter((p) => p.id !== post.id).slice(0, 4);
@@ -112,6 +124,11 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
           <p className="mt-2 text-sm text-[var(--color-muted)]">By {SITE.author}</p>
         </header>
         <PostBody body={post.body} />
+        {canNotify && (
+          <div className="mt-8">
+            <NotifySubscribersButton postId={post.id} />
+          </div>
+        )}
         <div className="mt-8 border-t border-[var(--color-line)] pt-6">
           <ShareRow url={`${SITE.url}/posts/${post.slug}`} title={post.title} />
         </div>
