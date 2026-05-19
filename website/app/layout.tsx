@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: `${SITE.name} — ${SITE.tagline}`,
     description: SITE.description,
+    ...(SITE.socials.twitter
+      ? { site: SITE.socials.twitter, creator: SITE.socials.twitter }
+      : {}),
   },
   alternates: {
     types: { "application/rss+xml": "/rss.xml" },

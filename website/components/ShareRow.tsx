@@ -1,3 +1,5 @@
+import { SITE } from "@/lib/site";
+
 export function ShareRow({
   url,
   title,
@@ -9,8 +11,10 @@ export function ShareRow({
 }) {
   const text = encodeURIComponent(title);
   const u = encodeURIComponent(url);
+  const xHandle = SITE.socials.twitter.replace(/^@/, "");
+  const via = xHandle ? `&via=${xHandle}` : "";
   const items = [
-    { name: "X", href: `https://twitter.com/intent/tweet?text=${text}&url=${u}` },
+    { name: "X", href: `https://twitter.com/intent/tweet?text=${text}&url=${u}${via}` },
     { name: "Facebook", href: `https://www.facebook.com/sharer/sharer.php?u=${u}` },
     { name: "Truth", href: `https://truthsocial.com/share?url=${u}` },
   ];
