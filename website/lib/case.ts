@@ -35,7 +35,7 @@ export type CaseEvent = {
   slug: string;
   title: string;
   description: string | null;
-  event_date: string;
+  event_date: string | null;
   location: string | null;
   views_count: number;
   shares_count: number;
@@ -145,7 +145,7 @@ export async function getEvents(): Promise<CaseEvent[]> {
     .from("case_events")
     .select(EVENT_COLS)
     .eq("visibility", "public")
-    .order("event_date", { ascending: true });
+    .order("event_date", { ascending: true, nullsFirst: true });
   return (data ?? []) as CaseEvent[];
 }
 

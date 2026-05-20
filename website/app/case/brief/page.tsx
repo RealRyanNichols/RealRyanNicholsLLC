@@ -48,10 +48,13 @@ export default async function BriefPage() {
   const topGrievances = ranked.filter((g) => g.severity >= 4);
   const otherGrievances = ranked.filter((g) => g.severity < 4);
 
-  // Sort events chronologically
-  const timeline = [...events].sort(
-    (a, b) => new Date(a.event_date).getTime() - new Date(b.event_date).getTime()
-  );
+  // Sort events chronologically — events without a confirmed date sort to the top
+  const timeline = [...events].sort((a, b) => {
+    if (!a.event_date && !b.event_date) return a.title.localeCompare(b.title);
+    if (!a.event_date) return -1;
+    if (!b.event_date) return 1;
+    return new Date(a.event_date).getTime() - new Date(b.event_date).getTime();
+  });
 
   // Sort documents by date desc
   const docs = [...documents].sort((a, b) => {
@@ -257,7 +260,7 @@ export default async function BriefPage() {
               className="border-l-2 border-[var(--color-accent)] pl-4 print:border-black print:break-inside-avoid"
             >
               <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold print:text-black">
-                {format(new Date(e.event_date), "MMMM d, yyyy")}
+                {e.event_date ? format(new Date(e.event_date), "MMMM d, yyyy") : "Date pending verification"}
               </p>
               <p className="font-bold mt-1">{e.title}</p>
               {e.description ? (
