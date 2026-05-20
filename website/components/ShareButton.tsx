@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
 
 type Platform = {
   name: string;
@@ -25,12 +26,20 @@ function buildPlatforms(url: string, title: string): Platform[] {
 export function ShareButton({
   url,
   title,
+  slug,
   compact = false,
 }: {
   url: string;
   title: string;
+  slug?: string;
   compact?: boolean;
 }) {
+  function recordShare() {
+    if (!slug) return;
+    // Fire-and-forget; the click should not wait for the count update.
+    const supabase = getSupabaseBrowserClient();
+    void supabase.rpc("increment_post_shares", { post_slug: slug });
+  }
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [supportsNative, setSupportsNative] = useState(false);
@@ -64,15 +73,17 @@ export function ShareButton({
     if (typeof navigator === "undefined" || typeof navigator.share !== "function") return;
     try {
       await navigator.share({ title, text: title, url });
+      recordShare();
       setOpen(false);
     } catch {
-      // user cancelled or share failed — keep menu open
+      // user cancelled or share failed — keep menu open, don't count
     }
   }
 
   async function copy() {
     try {
       await navigator.clipboard.writeText(url);
+      recordShare();
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {
@@ -131,7 +142,10 @@ export function ShareButton({
               target="_blank"
               rel="noopener noreferrer"
               role="menuitem"
-              onClick={() => setOpen(false)}
+              onClick={() => {
+                recordShare();
+                setOpen(false);
+              }}
               className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-accent)] transition"
             >
               <span className="w-4 text-center text-xs font-bold uppercase">

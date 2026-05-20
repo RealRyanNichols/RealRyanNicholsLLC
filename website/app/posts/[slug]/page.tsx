@@ -177,9 +177,10 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
               <PostStats
                 views={post.views_count ?? 0}
                 comments={commentCount}
+                shares={post.shares_count ?? 0}
                 size="sm"
               />
-              <ShareButton url={postUrl} title={displayTitle} compact />
+              <ShareButton url={postUrl} title={displayTitle} slug={post.slug} compact />
             </div>
           </div>
         </header>
@@ -196,7 +197,7 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
           <p className="text-sm text-[var(--color-ink-soft)] font-medium">
             Share this post — get it back in front of people
           </p>
-          <ShareButton url={postUrl} title={displayTitle} />
+          <ShareButton url={postUrl} title={displayTitle} slug={post.slug} />
         </div>
         <div className="mt-8">
           <SignupForm disabled={!SITE.mailingAddress} />
