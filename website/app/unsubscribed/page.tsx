@@ -43,7 +43,7 @@ export default async function UnsubscribedPage({
       <p className="mt-8">
         <Link
           href="/"
-          className="inline-block rounded-lg bg-[var(--color-ink)] px-5 py-2.5 text-white text-sm font-medium hover:bg-[var(--color-accent)] transition"
+          className="btn-accent inline-block rounded-lg px-5 py-2.5 text-sm"
         >
           Back to the site
         </Link>

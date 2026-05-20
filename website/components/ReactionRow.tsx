@@ -4,12 +4,27 @@ import { useState, useTransition, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
 
-type Kind = "amen" | "pray" | "support";
+type Kind =
+  | "amen"
+  | "pray"
+  | "support"
+  | "fire"
+  | "flag"
+  | "salute"
+  | "laugh"
+  | "sad"
+  | "mad";
 
 const KINDS: { kind: Kind; label: string; icon: string }[] = [
   { kind: "amen", label: "Amen", icon: "🙏" },
   { kind: "pray", label: "Pray", icon: "🕊️" },
   { kind: "support", label: "Support", icon: "🤝" },
+  { kind: "fire", label: "Fire", icon: "🔥" },
+  { kind: "flag", label: "USA", icon: "🇺🇸" },
+  { kind: "salute", label: "Salute", icon: "🫡" },
+  { kind: "laugh", label: "Laugh", icon: "😂" },
+  { kind: "sad", label: "Sad", icon: "😢" },
+  { kind: "mad", label: "Mad", icon: "😡" },
 ];
 
 export function ReactionRow({
@@ -41,7 +56,6 @@ export function ReactionRow({
       return;
     }
     const isOn = mine.has(kind);
-    // Optimistic UI
     setMine((prev) => {
       const next = new Set(prev);
       if (isOn) next.delete(kind);
@@ -75,11 +89,11 @@ export function ReactionRow({
 
   const btnBase =
     size === "sm"
-      ? "inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-semibold transition"
-      : "inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-sm font-semibold transition";
+      ? "inline-flex items-center gap-1 rounded-full border px-2 py-1 text-xs font-semibold transition"
+      : "inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-sm font-semibold transition";
 
   return (
-    <div className={size === "sm" ? "flex gap-1.5 flex-wrap" : "flex gap-2 flex-wrap"}>
+    <div className={size === "sm" ? "flex gap-1 flex-wrap" : "flex gap-1.5 flex-wrap"}>
       {KINDS.map(({ kind, label, icon }) => {
         const isOn = mine.has(kind);
         return (
@@ -89,6 +103,7 @@ export function ReactionRow({
             onClick={() => toggle(kind)}
             disabled={busy}
             aria-pressed={isOn}
+            title={label}
             className={[
               btnBase,
               isOn
@@ -96,10 +111,9 @@ export function ReactionRow({
                 : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]",
             ].join(" ")}
           >
-            <span aria-hidden>{icon}</span>
-            <span>{label}</span>
+            <span aria-hidden className="text-base leading-none">{icon}</span>
             {counts[kind] > 0 && (
-              <span className="ml-1 tabular-nums text-xs">
+              <span className="tabular-nums text-xs">
                 {counts[kind]}
               </span>
             )}

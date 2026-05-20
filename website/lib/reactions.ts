@@ -1,9 +1,41 @@
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 
-export type ReactionKind = "amen" | "pray" | "support";
+export type ReactionKind =
+  | "amen"
+  | "pray"
+  | "support"
+  | "fire"
+  | "flag"
+  | "salute"
+  | "laugh"
+  | "sad"
+  | "mad";
+
+export const REACTION_KINDS: ReactionKind[] = [
+  "amen",
+  "pray",
+  "support",
+  "fire",
+  "flag",
+  "salute",
+  "laugh",
+  "sad",
+  "mad",
+];
+
 export type ReactionCounts = Record<ReactionKind, number>;
 
-export const EMPTY_COUNTS: ReactionCounts = { amen: 0, pray: 0, support: 0 };
+export const EMPTY_COUNTS: ReactionCounts = {
+  amen: 0,
+  pray: 0,
+  support: 0,
+  fire: 0,
+  flag: 0,
+  salute: 0,
+  laugh: 0,
+  sad: 0,
+  mad: 0,
+};
 
 export async function getReactionsForPost(
   postId: string
