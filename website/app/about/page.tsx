@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "About Ryan Nichols — husband, father, builder, and the long work of healing in public.",
+    "About Ryan Nichols — father, builder, J6 survivor, and the long work of healing in public.",
 };
 
 export default function AboutPage() {
@@ -13,7 +13,7 @@ export default function AboutPage() {
       <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight">About</h1>
       <div className="prose-body mt-6">
         <p>
-          I&apos;m Ryan Nichols. Husband, father, builder. I&apos;ve spent a lot of years on
+          I&apos;m Ryan Nichols. Father, builder, J6 survivor. I&apos;ve spent a lot of years on
           platforms I don&apos;t own — getting boosted, getting throttled, getting suspended,
           getting reinstated, watching the whole thing reset every few months.
         </p>

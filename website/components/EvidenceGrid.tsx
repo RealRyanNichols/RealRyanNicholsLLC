@@ -32,7 +32,7 @@ const SECTION_LEAD: Record<CaseAuthorRole, string> = {
   attorney: "Defense counsel correspondence (Joseph McBride, Jonathan Gross).",
   court: "Court orders, rulings, transcripts, and docket entries.",
   government: "Responses from DC DOC, the U.S. Marshals, and federal agencies.",
-  family: "Letters to Ryan from his wife Bonnie and family.",
+  family: "Letters and correspondence with Ryan's family.",
   media: "Press coverage.",
   evidence: "Photographs and exhibits.",
   other: "Other documents on file.",
