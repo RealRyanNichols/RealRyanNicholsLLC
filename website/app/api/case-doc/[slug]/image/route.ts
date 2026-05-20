@@ -13,6 +13,18 @@ function extractDriveId(url: string | null): string | null {
 }
 
 async function fetchSourceImage(doc: { file_url: string | null; external_url: string | null }) {
+  if (doc.file_url && /^https?:\/\//i.test(doc.file_url)) {
+    const res = await fetch(doc.file_url, { redirect: "follow" });
+    if (res.ok) {
+      const ct = res.headers.get("content-type") ?? "image/jpeg";
+      if (ct.startsWith("image/")) {
+        return {
+          bytes: Buffer.from(await res.arrayBuffer()),
+          contentType: ct,
+        };
+      }
+    }
+  }
   const driveId = extractDriveId(doc.external_url) ?? extractDriveId(doc.file_url);
   if (driveId) {
     const candidates = [
@@ -35,18 +47,6 @@ async function fetchSourceImage(doc: { file_url: string | null; external_url: st
       }
     }
   }
-  if (doc.file_url) {
-    const res = await fetch(doc.file_url, { redirect: "follow" });
-    if (res.ok) {
-      const ct = res.headers.get("content-type") ?? "";
-      if (ct.startsWith("image/")) {
-        return {
-          bytes: Buffer.from(await res.arrayBuffer()),
-          contentType: ct,
-        };
-      }
-    }
-  }
   return null;
 }
 
@@ -60,10 +60,15 @@ export async function GET(
     return NextResponse.json({ error: "Document not found" }, { status: 404 });
   }
 
+  // Fast path: if we already have a hosted file_url, just redirect to it.
+  if (doc.file_url && /^https?:\/\//i.test(doc.file_url) && doc.file_url.includes("/storage/v1/object/public/")) {
+    return NextResponse.redirect(doc.file_url, 302);
+  }
+
   const source = await fetchSourceImage(doc);
   if (!source) {
     return NextResponse.json(
-      { error: "Source image unavailable. The underlying file must be shared publicly." },
+      { error: "Source image unavailable. Mirroring is in progress." },
       { status: 502 },
     );
   }
