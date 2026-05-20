@@ -28,6 +28,9 @@ function LoginPageInner() {
   const [state, setState] = useState<State>({ kind: "idle" });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [username, setUsername] = useState("");
 
   useEffect(() => {
     setState({ kind: "idle" });
@@ -54,16 +57,31 @@ function LoginPageInner() {
         return;
       }
       if (mode === "signup") {
+        if (!fullName.trim() || !displayName.trim() || !username.trim()) {
+          throw new Error("Full name, display name, and username are required.");
+        }
+        if (!/^[a-zA-Z0-9][a-zA-Z0-9_-]{2,29}$/.test(username)) {
+          throw new Error(
+            "Username must be 3–30 characters, letters/numbers/underscore/dash, not starting with a dash."
+          );
+        }
         const { error } = await supabase.auth.signUp({
           email,
           password,
-          options: { emailRedirectTo: redirect },
+          options: {
+            emailRedirectTo: redirect,
+            data: {
+              full_name: fullName.trim(),
+              display_name: displayName.trim(),
+              username: username.trim().toLowerCase(),
+            },
+          },
         });
         if (error) throw error;
         setState({
           kind: "sent",
           message:
-            "Account created. Check your inbox for the confirmation link.",
+            "Account created. Check your inbox for the confirmation link. Your profile starts in pending review — comments unlock once an admin verifies your real name.",
         });
         return;
       }
@@ -112,9 +130,63 @@ function LoginPageInner() {
         onSubmit={onSubmit}
         className="mt-5 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
       >
+        {mode === "signup" ? (
+          <>
+            <label htmlFor="login-fullname" className="text-xs uppercase tracking-wider text-[var(--color-muted)] block mb-2">
+              Full legal name
+            </label>
+            <input
+              id="login-fullname"
+              type="text"
+              required
+              autoComplete="name"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              placeholder="First Middle Last"
+              className="w-full rounded-lg border border-[var(--color-line)] px-3 py-2 text-sm"
+            />
+            <p className="mt-1.5 text-xs text-[var(--color-muted)]">
+              Required. Only admins see this — used to verify you&apos;re a real person, not a sockpuppet.
+            </p>
+
+            <label htmlFor="login-displayname" className="mt-4 text-xs uppercase tracking-wider text-[var(--color-muted)] block mb-2">
+              Display name
+            </label>
+            <input
+              id="login-displayname"
+              type="text"
+              required
+              maxLength={60}
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
+              placeholder="How you want to appear publicly"
+              className="w-full rounded-lg border border-[var(--color-line)] px-3 py-2 text-sm"
+            />
+
+            <label htmlFor="login-username" className="mt-4 text-xs uppercase tracking-wider text-[var(--color-muted)] block mb-2">
+              Username
+            </label>
+            <input
+              id="login-username"
+              type="text"
+              required
+              minLength={3}
+              maxLength={30}
+              autoComplete="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value.replace(/[^a-zA-Z0-9_-]/g, ""))}
+              placeholder="e.g. johnsmith"
+              className="w-full rounded-lg border border-[var(--color-line)] px-3 py-2 text-sm"
+            />
+            <p className="mt-1.5 text-xs text-[var(--color-muted)]">
+              Lowercase letters, numbers, dash, underscore. Becomes your URL: /u/{username || "yourname"}
+            </p>
+          </>
+        ) : null}
+
         <label
           htmlFor="login-email"
-          className="text-xs uppercase tracking-wider text-[var(--color-muted)] block mb-2"
+          className={`${mode === "signup" ? "mt-4 " : ""}text-xs uppercase tracking-wider text-[var(--color-muted)] block mb-2`}
         >
           Email
         </label>
