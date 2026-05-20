@@ -316,6 +316,7 @@ export async function getPeopleForGrievance(grievanceId: string): Promise<CasePe
 
 export async function getCaseTotals(): Promise<{
   grievances: number;
+  ryanFiledGrievances: number;
   documents: number;
   facilities: number;
   corroborators: number;
@@ -323,19 +324,29 @@ export async function getCaseTotals(): Promise<{
   events: number;
 }> {
   const supabase = getSupabaseStaticClient();
-  const [grievances, documents, corroborators, events] = await Promise.all([
+  const [grievances, documents, corroborators, events, ryanFiled] = await Promise.all([
     supabase.from("case_grievances").select("id", { count: "exact", head: true }).eq("visibility", "public"),
     supabase.from("case_documents").select("id", { count: "exact", head: true }).eq("visibility", "public").eq("archived", false),
     supabase.from("case_people").select("id", { count: "exact", head: true }).eq("visibility", "public").or("agency.ilike.%detainee%,agency.ilike.%c-2b%,role.ilike.%witness%"),
     supabase.from("case_events").select("id", { count: "exact", head: true }).eq("visibility", "public"),
+    // Grievance forms actually filed by Ryan (excludes co-detainee IGPs Ryan was holding as evidence).
+    supabase
+      .from("case_documents")
+      .select("id", { count: "exact", head: true })
+      .eq("visibility", "public")
+      .eq("archived", false)
+      .eq("author_role", "ryan")
+      .eq("doc_type", "grievance_form"),
   ]);
   const arrest = new Date("2021-01-18");
   const pardon = new Date("2025-01-20");
   const daysDetained = Math.round((pardon.getTime() - arrest.getTime()) / 86400000);
   return {
     grievances: grievances.count ?? 0,
+    ryanFiledGrievances: ryanFiled.count ?? 0,
     documents: documents.count ?? 0,
-    facilities: 4, // DC DOC, Rappahannock, Northern Neck, Tyler/E.D.Tex.
+    facilities: 10, // Tyler/E.D.Tex., DC DOC CTF, Rappahannock, Northern Neck, FDC Houston,
+                    // Florence, Oklahoma transit, Albany, NW3 quarantine, BOP post-sentence.
     corroborators: corroborators.count ?? 0,
     daysDetained,
     events: events.count ?? 0,
