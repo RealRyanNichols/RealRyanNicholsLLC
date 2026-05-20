@@ -154,3 +154,11 @@ select:focus {
 .btn-accent:hover {
   background: var(--color-accent-strong);
 }
+
+/* Print: switch to high-contrast black-on-white for the Compensation Brief */
+@media print {
+  html, body { background: #ffffff !important; color: #000000 !important; }
+  header, footer, nav, .btn-accent { color-adjust: exact; }
+  a { color: #000000 !important; text-decoration: underline; }
+  .prose-body { color: #000000; }
+}

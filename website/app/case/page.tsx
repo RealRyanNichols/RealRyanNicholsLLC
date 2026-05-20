@@ -117,6 +117,18 @@ export default async function CasePage({
           <Stat label="Documents" value={q ? filteredDocuments.length : documents.length} />
         </div>
 
+        <p className="mt-5 text-sm">
+          <Link
+            href="/case/brief"
+            className="btn-accent inline-flex items-center rounded-full px-4 py-2 text-sm font-bold"
+          >
+            Read the Compensation Brief →
+          </Link>
+          <span className="text-xs text-[var(--color-muted)] ml-3">
+            Single-page summary for committee + counsel
+          </span>
+        </p>
+
         {/* Search */}
         <form
           method="get"
