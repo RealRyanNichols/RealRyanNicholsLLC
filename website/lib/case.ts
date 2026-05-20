@@ -41,6 +41,17 @@ export type CaseEvent = {
   shares_count: number;
 };
 
+export type CaseAuthorRole =
+  | "ryan"
+  | "co_detainee"
+  | "attorney"
+  | "court"
+  | "government"
+  | "family"
+  | "media"
+  | "evidence"
+  | "other";
+
 export type CaseDocument = {
   id: string;
   slug: string;
@@ -56,6 +67,7 @@ export type CaseDocument = {
   archived: boolean;
   relevance: number;
   transcript: string | null;
+  author_role: CaseAuthorRole;
 };
 
 const GRIEVANCE_COLS =
@@ -65,7 +77,22 @@ const PERSON_COLS =
 const EVENT_COLS =
   "id, slug, title, description, event_date, location, views_count, shares_count";
 const DOCUMENT_COLS =
-  "id, slug, title, description, doc_type, document_date, file_url, external_url, source, views_count, shares_count, archived, relevance, transcript";
+  "id, slug, title, description, doc_type, document_date, file_url, external_url, source, views_count, shares_count, archived, relevance, transcript, author_role";
+
+// Authorship ordering — Ryan's own paperwork is priority #1, corroborating
+// witness statements from fellow detainees are priority #2, everything else
+// follows. Implemented as a CASE expression in SQL since enums don't sort
+// in priority order naturally.
+const AUTHOR_PRIORITY_ORDER = "(case author_role"
+  + " when 'ryan' then 0"
+  + " when 'co_detainee' then 1"
+  + " when 'attorney' then 2"
+  + " when 'court' then 3"
+  + " when 'government' then 4"
+  + " when 'evidence' then 5"
+  + " when 'family' then 6"
+  + " when 'media' then 7"
+  + " else 8 end)";
 
 export async function getGrievances(): Promise<CaseGrievance[]> {
   const supabase = getSupabaseStaticClient();
@@ -143,6 +170,36 @@ export async function getDocuments(): Promise<CaseDocument[]> {
   return (data ?? []) as CaseDocument[];
 }
 
+// Sort evidence so Ryan's own paperwork shows first, then corroborating
+// witnesses, then court/government documents.
+function rankByAuthorRole(role: CaseAuthorRole): number {
+  switch (role) {
+    case "ryan": return 0;
+    case "co_detainee": return 1;
+    case "attorney": return 2;
+    case "court": return 3;
+    case "government": return 4;
+    case "evidence": return 5;
+    case "family": return 6;
+    case "media": return 7;
+    default: return 8;
+  }
+}
+
+function sortEvidenceForCaseEntity(docs: CaseDocument[]): CaseDocument[] {
+  return [...docs].sort((a, b) => {
+    const ra = rankByAuthorRole(a.author_role);
+    const rb = rankByAuthorRole(b.author_role);
+    if (ra !== rb) return ra - rb;
+    if (a.document_date && b.document_date) {
+      return b.document_date.localeCompare(a.document_date);
+    }
+    if (a.document_date) return -1;
+    if (b.document_date) return 1;
+    return (b.relevance ?? 0) - (a.relevance ?? 0);
+  });
+}
+
 export async function getAllDocumentsForAdmin(): Promise<CaseDocument[]> {
   const supabase = await getSupabaseServerClient();
   const { data } = await supabase
@@ -191,10 +248,8 @@ export async function getDocumentsForGrievance(grievanceId: string): Promise<Cas
     .select(DOCUMENT_COLS)
     .in("id", ids)
     .eq("visibility", "public")
-    .eq("archived", false)
-    .order("document_date", { ascending: false, nullsFirst: false })
-    .order("relevance", { ascending: false });
-  return (data ?? []) as CaseDocument[];
+    .eq("archived", false);
+  return sortEvidenceForCaseEntity((data ?? []) as CaseDocument[]);
 }
 
 export async function getDocumentsForEvent(eventId: string): Promise<CaseDocument[]> {
@@ -210,9 +265,8 @@ export async function getDocumentsForEvent(eventId: string): Promise<CaseDocumen
     .select(DOCUMENT_COLS)
     .in("id", ids)
     .eq("visibility", "public")
-    .eq("archived", false)
-    .order("document_date", { ascending: false, nullsFirst: false });
-  return (data ?? []) as CaseDocument[];
+    .eq("archived", false);
+  return sortEvidenceForCaseEntity((data ?? []) as CaseDocument[]);
 }
 
 export async function getDocumentsForPerson(personId: string): Promise<CaseDocument[]> {
@@ -228,7 +282,6 @@ export async function getDocumentsForPerson(personId: string): Promise<CaseDocum
     .select(DOCUMENT_COLS)
     .in("id", ids)
     .eq("visibility", "public")
-    .eq("archived", false)
-    .order("document_date", { ascending: false, nullsFirst: false });
-  return (data ?? []) as CaseDocument[];
+    .eq("archived", false);
+  return sortEvidenceForCaseEntity((data ?? []) as CaseDocument[]);
 }
