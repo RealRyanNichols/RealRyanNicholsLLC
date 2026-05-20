@@ -2,9 +2,11 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { format } from "date-fns";
-import { getPostBySlug, getPublishedPosts } from "@/lib/posts";
+import { getPostBySlug, getPublishedPosts, getCommentCount } from "@/lib/posts";
 import { PostBody } from "@/components/PostBody";
-import { ShareRow } from "@/components/ShareRow";
+import { ShareButton } from "@/components/ShareButton";
+import { PostStats } from "@/components/PostStats";
+import { ViewTracker } from "@/components/ViewTracker";
 import { CommentList } from "@/components/CommentList";
 import { CommentForm } from "@/components/CommentForm";
 import { VerseSidebar } from "@/components/VerseSidebar";
@@ -101,10 +103,14 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
     canNotify = adminCheck === true || (post.author_id ? post.author_id === data.user.id : false);
   }
 
-  const allPosts = await getPublishedPosts();
+  const [allPosts, commentCount] = await Promise.all([
+    getPublishedPosts(),
+    getCommentCount(post.id),
+  ]);
   const readNext = allPosts.filter((p) => p.id !== post.id).slice(0, 4);
 
   const displayTitle = post.title ?? (deriveExcerpt(post.body, null).slice(0, 80) || "Note");
+  const postUrl = `${SITE.url}/posts/${post.slug}`;
   const articleLd = {
     "@context": "https://schema.org",
     "@type":
@@ -165,11 +171,20 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
               {post.title}
             </h1>
           ) : null}
-          <p className={post.title ? "mt-2 text-sm text-[var(--color-muted)]" : "text-sm text-[var(--color-muted)]"}>
-            By {SITE.author}
-          </p>
+          <div className={post.title ? "mt-3 flex items-center justify-between gap-3 flex-wrap" : "flex items-center justify-between gap-3 flex-wrap"}>
+            <p className="text-sm text-[var(--color-muted)]">By {SITE.author}</p>
+            <div className="flex items-center gap-3">
+              <PostStats
+                views={post.views_count ?? 0}
+                comments={commentCount}
+                size="sm"
+              />
+              <ShareButton url={postUrl} title={displayTitle} compact />
+            </div>
+          </div>
         </header>
 
+        <ViewTracker slug={post.slug} />
         <PostMain post={post} />
 
         {canNotify && post.status === "published" && (
@@ -177,11 +192,11 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
             <NotifySubscribersButton postId={post.id} />
           </div>
         )}
-        <div className="mt-8 border-t border-[var(--color-line)] pt-6">
-          <ShareRow
-            url={`${SITE.url}/posts/${post.slug}`}
-            title={displayTitle}
-          />
+        <div className="mt-8 border-t border-[var(--color-line)] pt-6 flex items-center justify-between gap-3 flex-wrap">
+          <p className="text-sm text-[var(--color-ink-soft)] font-medium">
+            Share this post — get it back in front of people
+          </p>
+          <ShareButton url={postUrl} title={displayTitle} />
         </div>
         <div className="mt-8">
           <SignupForm disabled={!SITE.mailingAddress} />

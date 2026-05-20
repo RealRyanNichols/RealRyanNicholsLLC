@@ -2,7 +2,8 @@ import Link from "next/link";
 import { formatDistanceToNowStrict } from "date-fns";
 import type { MediaItem, Post } from "@/lib/types";
 import { PostBody } from "@/components/PostBody";
-import { ShareRow } from "@/components/ShareRow";
+import { ShareButton } from "@/components/ShareButton";
+import { PostStats } from "@/components/PostStats";
 import { SITE } from "@/lib/site";
 import { muxThumbnailUrl } from "@/lib/mux";
 
@@ -20,10 +21,6 @@ export function PostCard({
     : "";
   const postUrl = `${SITE.url}/posts/${post.slug}`;
   const shareTitle = post.title ?? (post.body ? post.body.slice(0, 80) : SITE.name);
-  const linkLabel =
-    commentCount === 0
-      ? "Read & comment →"
-      : `Read & ${commentCount} comment${commentCount === 1 ? "" : "s"} →`;
 
   return (
     <article className="group/card border-b border-[var(--color-line)] py-7 first:pt-2 transition">
@@ -46,13 +43,20 @@ export function PostCard({
       <PostCardBody post={post} truncate={truncate} />
 
       <div className="mt-5 flex items-center justify-between gap-3 text-sm">
-        <Link
-          href={`/posts/${post.slug}`}
-          className="text-[var(--color-accent)] hover:underline underline-offset-4 font-semibold"
-        >
-          {linkLabel}
-        </Link>
-        <ShareRow url={postUrl} title={shareTitle} compact />
+        <PostStats
+          views={post.views_count ?? 0}
+          comments={commentCount}
+          size="sm"
+        />
+        <div className="flex items-center gap-2">
+          <Link
+            href={`/posts/${post.slug}`}
+            className="text-[var(--color-accent)] hover:underline underline-offset-4 font-semibold whitespace-nowrap"
+          >
+            Read →
+          </Link>
+          <ShareButton url={postUrl} title={shareTitle} compact />
+        </div>
       </div>
     </article>
   );
