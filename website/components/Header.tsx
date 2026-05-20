@@ -41,13 +41,18 @@ export async function Header() {
         </Link>
         <nav className="flex items-center gap-0.5 sm:gap-2 text-sm">
           <NavLink href="/">Feed</NavLink>
-          <NavLink href="/jan-6">Jan 6</NavLink>
+          <NavLink href="/case">The Case</NavLink>
           <NavLink href="/about">About</NavLink>
-          <NavLink href="/support">Support</NavLink>
+          <Link
+            href="/support"
+            className="btn-accent ml-1 inline-flex items-center rounded-full px-3.5 py-1.5 text-xs font-semibold"
+          >
+            Donate
+          </Link>
           {isAdmin ? (
             <Link
               href="/admin/new"
-              className="btn-accent ml-2 inline-flex items-center rounded-full px-3.5 py-1.5 text-xs transition"
+              className="ml-1 inline-flex items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3.5 py-1.5 text-xs font-semibold text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition"
               aria-label="New post"
             >
               + New

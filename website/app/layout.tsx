@@ -4,6 +4,7 @@ import Link from "next/link";
 import { SITE } from "@/lib/site";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { MobileSupportBar } from "@/components/MobileSupportBar";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
@@ -48,8 +49,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd) }}
         />
         <Header />
-        <main className="flex-1 w-full">{children}</main>
+        <main className="flex-1 w-full pb-20 md:pb-0">{children}</main>
         <Footer />
+        <MobileSupportBar />
         <Link
           href="#top"
           aria-hidden="true"
