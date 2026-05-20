@@ -105,7 +105,7 @@ export default async function CasePage({
           The case · United States v. Nichols
         </p>
         <h1 className="mt-2 text-4xl sm:text-6xl font-bold tracking-tight leading-[1.02]">
-          {totals.daysDetained.toLocaleString()} days. Four facilities. No conviction.
+          {totals.daysDetained.toLocaleString()} days. Ten facilities. No conviction.
         </h1>
         <p className="mt-4 text-base sm:text-lg text-[var(--color-ink-soft)] max-w-3xl leading-relaxed">
           Ryan Nichols — United States Marine Corps veteran, founder of Wholesale Universe, Inc.
@@ -322,8 +322,8 @@ const NARRATIVE_ACTS: { range: [number, number]; label: string; tag: string; lea
   {
     range: [29, 32],
     label: "Act VI — The Pattern Across Facilities",
-    tag: "Not just one jail",
-    lead: "The treatment did not stop at the DC DOC fence line — it followed Ryan to Rappahannock Regional Jail and was inflicted on other J6 defendants at Northern Neck. Unannounced transfers. Identical conditions. And a grievance system that names U.S. Marshals and a DC DOC Chief acknowledging it is broken.",
+    tag: "Ten different facilities",
+    lead: "Ryan was cycled through ten different facilities — Tyler (E.D. Tex.), Oklahoma transit, NW3 quarantine, DC DOC CTF, Rappahannock Regional Jail, Northern Neck Regional Jail, FDC Houston, Florence, Albany Jail, and post-sentence BOP. The same pattern of denied medical care, denied legal access, denied family contact, and a broken grievance system followed him at every stop. The IGP-broken finding has U.S. Marshals and a DC DOC Chief on the record.",
   },
   {
     range: [33, 34],

@@ -6,6 +6,7 @@ import {
   getPeople,
   getEvents,
   getDocuments,
+  getCaseTotals,
 } from "@/lib/case";
 import { ShareButton } from "@/components/ShareButton";
 import { PrintButton } from "@/components/PrintButton";
@@ -32,11 +33,12 @@ export const metadata: Metadata = {
 };
 
 export default async function BriefPage() {
-  const [grievances, people, events, documents] = await Promise.all([
+  const [grievances, people, events, documents, totals] = await Promise.all([
     getGrievances(),
     getPeople(),
     getEvents(),
     getDocuments(),
+    getCaseTotals(),
   ]);
 
   // Sort grievances by severity desc, then display order
@@ -66,7 +68,7 @@ export default async function BriefPage() {
     ["indictment", "docket", "motion", "ruling", "order", "transcript", "affidavit"].includes(d.doc_type)
   );
 
-  const totalFilings = grievances.reduce((s, g) => s + (g.count ?? 0), 0);
+  const ryanFiledGrievances = totals.ryanFiledGrievances;
 
   return (
     <article className="mx-auto max-w-4xl px-4 py-10 print:py-4 print:px-0">
@@ -100,10 +102,10 @@ export default async function BriefPage() {
 
       {/* Top-line numbers */}
       <section className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 print:grid-cols-4 print:gap-2">
-        <Stat label="Grievances filed" value={String(grievances.length)} sub={`${totalFilings} total filings`} />
-        <Stat label="Officials named" value={String(people.length)} sub="DC DOC + USAO" />
+        <Stat label="Grievance categories" value={String(grievances.length)} sub={`${ryanFiledGrievances} forms Ryan personally filed`} />
+        <Stat label="Officials named" value={String(people.length)} sub="across agencies" />
         <Stat label="Timeline events" value={String(events.length)} sub="2021 – 2026" />
-        <Stat label="Documents" value={String(documents.length)} sub="in the record" />
+        <Stat label="Documents in the record" value={String(documents.length)} sub="incl. corroborating" />
       </section>
 
       {/* Executive summary */}
@@ -121,15 +123,20 @@ export default async function BriefPage() {
           January 2025.
         </p>
         <p>
-          During pretrial detention at the D.C. Department of Corrections, Mr.
-          Nichols filed{" "}
-          <strong>{totalFilings} formal grievances across {grievances.length} distinct categories</strong>
-          {" "}documenting violations of his Sixth Amendment right to counsel and
-          discovery, deprivation of mental health care that culminated in a
-          neighboring inmate&apos;s suicide, OC-spray attacks on the entire pod,
-          punitive water shut-offs, racial remarks from staff, and a
-          systematically broken grievance process. Documentation includes the
-          original Indictment, the federal Docket Summary, the supporting
+          During pretrial detention, Mr. Nichols personally filed{" "}
+          <strong>{ryanFiledGrievances} formal Inmate Grievance Procedure forms</strong>{" "}
+          across <strong>{grievances.length} distinct grievance categories</strong>{" "}
+          — documenting the Brady-suppressed Marcus DePiola / 1% Watchdog
+          informant relationship, violations of his Sixth Amendment right to
+          counsel and discovery, deprivation of mental health care that
+          culminated in a neighboring inmate&apos;s suicide, OC-spray attacks
+          on the entire pod, punitive water shut-offs, racial remarks from
+          staff, and a systematically broken grievance process. The case
+          file also holds corroborating witness statements and IGPs from
+          fellow January 6 detainees that Mr. Nichols collected as evidence;
+          those are catalogued separately from his own filings. Documentation
+          includes the original Indictment, the federal Docket Summary, the
+          supporting
           Affidavit, sworn motions for reconsideration of detention, the
           Government&apos;s oppositions, the 2025 Omnibus Motion transcript, and
           a Master Grievance Spreadsheet that the United States Marshals Office
