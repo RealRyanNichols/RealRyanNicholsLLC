@@ -19,12 +19,23 @@ export const metadata: Metadata = {
   alternates: { canonical: `${SITE.url}/case/witnesses` },
 };
 
-const CORROBORATOR_AGENCY_PATTERNS = [
-  /detainee/i,
-  /c-2b/i,
-  /witness/i,
-  /co.?defendant/i,
-];
+// Mirror the getCaseTotals filter exactly so the hero count and the wall count
+// always match.
+const FACILITY_STAFF_EXCLUSIONS = new Set([
+  "cpl-o-connor",
+  "supt-ted-hull",
+]);
+
+function isCorroborator(p: { role: string | null; agency: string | null; slug: string }) {
+  if (FACILITY_STAFF_EXCLUSIONS.has(p.slug)) return false;
+  const haystack = `${p.role ?? ""} ${p.agency ?? ""}`.toLowerCase();
+  return (
+    /detainee/.test(haystack) ||
+    /co-defendant/.test(haystack) ||
+    /witness/.test(haystack) ||
+    /c-2b/.test(haystack)
+  );
+}
 
 const FEDERAL_OFFICER_PATTERNS = [
   /marshals service/i,
@@ -32,9 +43,7 @@ const FEDERAL_OFFICER_PATTERNS = [
 
 export default async function WitnessesPage() {
   const all = await getPeople();
-  const corroborators = all.filter((p) =>
-    CORROBORATOR_AGENCY_PATTERNS.some((re) => p.agency && re.test(p.agency)),
-  );
+  const corroborators = all.filter(isCorroborator);
   const federalAcknowledgments = all.filter(
     (p) =>
       FEDERAL_OFFICER_PATTERNS.some((re) => p.agency && re.test(p.agency)) ||

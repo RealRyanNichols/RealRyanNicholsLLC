@@ -29,7 +29,7 @@ type DamageItem = {
 
 export default async function DamagesPage() {
   const totals = await getCaseTotals();
-  const years = Math.round((totals.daysDetained / 365) * 10) / 10;
+  const years = (totals.daysDetained / 365.25).toFixed(1);
 
   const damages: DamageItem[] = [
     {
@@ -159,7 +159,41 @@ export default async function DamagesPage() {
         <h2 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight">
           What this case is asking for.
         </h2>
-        <ul className="mt-4 space-y-3 text-sm sm:text-base text-[var(--color-ink-soft)] leading-relaxed">
+
+        <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="rounded-xl border border-[var(--color-accent)] bg-[var(--color-surface)] p-4 print:border-black">
+            <p className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
+              Starting claim
+            </p>
+            <div className="mt-1 text-3xl sm:text-4xl font-bold leading-none text-[var(--color-accent)]">
+              $35,000,000
+            </div>
+          </div>
+          <div className="rounded-xl border border-[var(--color-accent)] bg-[var(--color-surface)] p-4 print:border-black">
+            <p className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
+              Supported range
+            </p>
+            <div className="mt-1 text-3xl sm:text-4xl font-bold leading-none text-[var(--color-accent)]">
+              $45–50M
+            </div>
+          </div>
+          <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 print:border-black">
+            <p className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
+              Years of liberty lost
+            </p>
+            <div className="mt-1 text-3xl sm:text-4xl font-bold leading-none text-[var(--color-ink)]">
+              {years}
+            </div>
+          </div>
+        </div>
+        <p className="mt-3 text-xs text-[var(--color-muted)] leading-relaxed">
+          The starting figure represents the documented itemized harms above. The supported
+          range reflects the addition of consequential damages: lost lifetime earning capacity,
+          long-term medical care for documented sequelae, and the irreversible destruction of
+          the family unit and Wholesale Universe, Inc.
+        </p>
+
+        <ul className="mt-5 space-y-3 text-sm sm:text-base text-[var(--color-ink-soft)] leading-relaxed">
           <li>
             <span className="font-bold text-[var(--color-ink)]">Compensatory damages</span> for
             wrongful pretrial detention, business destruction, marriage destruction, medical
@@ -178,7 +212,8 @@ export default async function DamagesPage() {
           <li>
             <span className="font-bold text-[var(--color-ink)]">Public accountability</span> for
             the named DC DOC, U.S. Marshals, and federal-court officials whose conduct is in the
-            documentary record.
+            documentary record — including the Brady violation surrounding Marcus DePiola and
+            1% Watchdog.
           </li>
         </ul>
       </section>

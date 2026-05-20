@@ -327,7 +327,16 @@ export async function getCaseTotals(): Promise<{
   const [grievances, documents, corroborators, events, ryanFiled] = await Promise.all([
     supabase.from("case_grievances").select("id", { count: "exact", head: true }).eq("visibility", "public"),
     supabase.from("case_documents").select("id", { count: "exact", head: true }).eq("visibility", "public").eq("archived", false),
-    supabase.from("case_people").select("id", { count: "exact", head: true }).eq("visibility", "public").or("agency.ilike.%detainee%,agency.ilike.%c-2b%,role.ilike.%witness%"),
+    // Corroborating witnesses: detainees, co-defendants, named witnesses, regardless of which
+    // facility's people record they sit under. Excludes facility staff explicitly named.
+    supabase
+      .from("case_people")
+      .select("id", { count: "exact", head: true })
+      .eq("visibility", "public")
+      .or(
+        "role.ilike.%detainee%,role.ilike.%co-defendant%,role.ilike.%witness%,agency.ilike.%c-2b%,agency.ilike.%detainee%",
+      )
+      .not("slug", "in", "(cpl-o-connor,supt-ted-hull)"),
     supabase.from("case_events").select("id", { count: "exact", head: true }).eq("visibility", "public"),
     // Grievance forms actually filed by Ryan (excludes co-detainee IGPs Ryan was holding as evidence).
     supabase
