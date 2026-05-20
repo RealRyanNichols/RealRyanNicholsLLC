@@ -288,3 +288,56 @@ export async function getDocumentsForPerson(personId: string): Promise<CaseDocum
     .eq("archived", false);
   return sortEvidenceForCaseEntity((data ?? []) as CaseDocument[]);
 }
+
+export async function getPeopleForGrievance(grievanceId: string): Promise<CasePerson[]> {
+  const supabase = getSupabaseStaticClient();
+  // Get all docs linked to this grievance, then all people linked to those docs.
+  const { data: docLinks } = await supabase
+    .from("case_doc_grievance")
+    .select("document_id")
+    .eq("grievance_id", grievanceId);
+  const docIds = (docLinks ?? []).map((l) => l.document_id);
+  if (docIds.length === 0) return [];
+  const { data: personLinks } = await supabase
+    .from("case_doc_person")
+    .select("person_id")
+    .in("document_id", docIds);
+  const personIds = Array.from(new Set((personLinks ?? []).map((l) => l.person_id)));
+  if (personIds.length === 0) return [];
+  const { data } = await supabase
+    .from("case_people")
+    .select(PERSON_COLS)
+    .in("id", personIds)
+    .eq("visibility", "public")
+    .order("agency", { ascending: true })
+    .order("name", { ascending: true });
+  return (data ?? []) as CasePerson[];
+}
+
+export async function getCaseTotals(): Promise<{
+  grievances: number;
+  documents: number;
+  facilities: number;
+  corroborators: number;
+  daysDetained: number;
+  events: number;
+}> {
+  const supabase = getSupabaseStaticClient();
+  const [grievances, documents, corroborators, events] = await Promise.all([
+    supabase.from("case_grievances").select("id", { count: "exact", head: true }).eq("visibility", "public"),
+    supabase.from("case_documents").select("id", { count: "exact", head: true }).eq("visibility", "public").eq("archived", false),
+    supabase.from("case_people").select("id", { count: "exact", head: true }).eq("visibility", "public").or("agency.ilike.%detainee%,agency.ilike.%c-2b%,role.ilike.%witness%"),
+    supabase.from("case_events").select("id", { count: "exact", head: true }).eq("visibility", "public"),
+  ]);
+  const arrest = new Date("2021-01-18");
+  const pardon = new Date("2025-01-20");
+  const daysDetained = Math.round((pardon.getTime() - arrest.getTime()) / 86400000);
+  return {
+    grievances: grievances.count ?? 0,
+    documents: documents.count ?? 0,
+    facilities: 4, // DC DOC, Rappahannock, Northern Neck, Tyler/E.D.Tex.
+    corroborators: corroborators.count ?? 0,
+    daysDetained,
+    events: events.count ?? 0,
+  };
+}

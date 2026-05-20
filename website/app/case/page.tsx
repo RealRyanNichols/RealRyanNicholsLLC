@@ -6,6 +6,7 @@ import {
   getPeople,
   getEvents,
   getDocuments,
+  getCaseTotals,
 } from "@/lib/case";
 import { getSiteSettings } from "@/lib/site-settings";
 import { SITE } from "@/lib/site";
@@ -61,11 +62,12 @@ export default async function CasePage({
       ? (view as Tab)
       : "grievances";
 
-  const [grievances, people, events, documents] = await Promise.all([
+  const [grievances, people, events, documents, totals] = await Promise.all([
     getGrievances(),
     getPeople(),
     getEvents(),
     getDocuments(),
+    getCaseTotals(),
   ]);
 
   const filteredGrievances = q
@@ -98,36 +100,54 @@ export default async function CasePage({
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
-      <header className="mb-8">
+      <header className="mb-10">
         <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
           The case · United States v. Nichols
         </p>
-        <h1 className="mt-2 text-4xl sm:text-5xl font-bold tracking-tight leading-[1.05]">
-          The full record — grievances, people, timeline, documents.
+        <h1 className="mt-2 text-4xl sm:text-6xl font-bold tracking-tight leading-[1.02]">
+          {totals.daysDetained.toLocaleString()} days. Four facilities. No conviction.
         </h1>
-        <p className="mt-4 text-base text-[var(--color-ink-soft)] max-w-2xl leading-relaxed">
-          Every filed grievance, every named official, every event on the
-          timeline, every document. Read it from whichever angle you want — they
-          all cross-reference each other.
+        <p className="mt-4 text-base sm:text-lg text-[var(--color-ink-soft)] max-w-3xl leading-relaxed">
+          Ryan Nichols — United States Marine Corps veteran, founder of Wholesale Universe, Inc.
+          (a multi-million-dollar wholesale/retail company), Texas Search and Rescue specialist,
+          father. Pardoned by President Trump on January 20, 2025. This is the documented record of
+          what the previous administration did to him in the years between — and what it cost him.
         </p>
-        <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl">
-          <Stat label="Grievances" value={q ? filteredGrievances.length : grievances.length} />
-          <Stat label="Events" value={q ? filteredEvents.length : events.length} />
-          <Stat label="People" value={q ? filteredPeople.length : people.length} />
-          <Stat label="Documents" value={q ? filteredDocuments.length : documents.length} />
+
+        <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl">
+          <BigStat label="Days detained" value={totals.daysDetained.toLocaleString()} />
+          <BigStat label="Grievances filed" value={String(totals.grievances)} />
+          <BigStat label="Documents on file" value={String(totals.documents)} />
+          <BigStat label="Co-detainees corroborating" value={String(totals.corroborators)} />
         </div>
 
-        <p className="mt-5 text-sm">
+        <div className="mt-6 flex flex-wrap gap-3">
           <Link
             href="/case/brief"
-            className="btn-accent inline-flex items-center rounded-full px-4 py-2 text-sm font-bold"
+            className="btn-accent inline-flex items-center rounded-full px-5 py-2.5 text-sm font-bold"
           >
             Read the Compensation Brief →
           </Link>
-          <span className="text-xs text-[var(--color-muted)] ml-3">
-            Single-page summary for committee + counsel
-          </span>
-        </p>
+          <Link
+            href="/case/damages"
+            className="inline-flex items-center rounded-full border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-5 py-2.5 text-sm font-bold text-[var(--color-accent)] hover:opacity-90"
+          >
+            What it cost him — Damages →
+          </Link>
+          <Link
+            href="/case/witnesses"
+            className="inline-flex items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-5 py-2.5 text-sm font-bold text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          >
+            Wall of Corroborators →
+          </Link>
+        </div>
+
+        <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2 max-w-2xl">
+          <SmallStat label="Events" value={q ? filteredEvents.length : events.length} />
+          <SmallStat label="People named" value={q ? filteredPeople.length : people.length} />
+          <SmallStat label="Facilities" value={totals.facilities} />
+          <SmallStat label="Federal officers on record (IGP broken)" value={2} />
+        </div>
 
         {/* Search */}
         <form
@@ -200,6 +220,28 @@ function Stat({ label, value }: { label: string; value: number }) {
       <div className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] mt-0.5">
         {label}
       </div>
+    </div>
+  );
+}
+
+function BigStat({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+      <div className="text-3xl sm:text-4xl font-bold tracking-tight leading-none text-[var(--color-accent)]">
+        {value}
+      </div>
+      <div className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold mt-2">
+        {label}
+      </div>
+    </div>
+  );
+}
+
+function SmallStat({ label, value }: { label: string; value: number | string }) {
+  return (
+    <div className="rounded-lg border border-[var(--color-line)] px-2.5 py-1.5 text-[var(--color-ink-soft)]">
+      <span className="text-sm font-bold text-[var(--color-ink)] mr-1.5">{value}</span>
+      <span className="text-[10px] uppercase tracking-wider">{label}</span>
     </div>
   );
 }
