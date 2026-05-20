@@ -126,7 +126,7 @@ export default async function BriefPage() {
           During pretrial detention, Mr. Nichols personally filed{" "}
           <strong>{ryanFiledGrievances} formal Inmate Grievance Procedure forms</strong>{" "}
           across <strong>{grievances.length} distinct grievance categories</strong>{" "}
-          — documenting the Brady-suppressed Marcus DePiola / 1% Watchdog
+          — documenting the Brady-suppressed Marcus DiPaola / 1% Watchdog
           informant relationship, violations of his Sixth Amendment right to
           counsel and discovery, deprivation of mental health care that
           culminated in a neighboring inmate&apos;s suicide, OC-spray attacks
@@ -134,14 +134,35 @@ export default async function BriefPage() {
           staff, and a systematically broken grievance process. The case
           file also holds corroborating witness statements and IGPs from
           fellow January 6 detainees that Mr. Nichols collected as evidence;
-          those are catalogued separately from his own filings. Documentation
-          includes the original Indictment, the federal Docket Summary, the
-          supporting
-          Affidavit, sworn motions for reconsideration of detention, the
-          Government&apos;s oppositions, the 2025 Omnibus Motion transcript, and
-          a Master Grievance Spreadsheet that the United States Marshals Office
-          relied on when it determined that the facility&apos;s grievance
-          process was broken.
+          those are catalogued separately from his own filings.
+        </p>
+        <p>
+          On <strong>August 10, 2022</strong>, attorneys Joseph D. McBride and
+          Jonathan S. Gross filed a <strong>65-page Petition for Writ of Habeas
+          Corpus under 28 U.S.C. § 2241</strong> on Mr. Nichols&apos; behalf
+          (<em>Nichols v. Garland</em>, Civil Action No. 1:22-cv-02356), naming
+          Attorney General Merrick Garland and DC Jail CTF Deputy Warden Michelle
+          Jones as respondents and asserting five constitutional causes of action
+          under the First, Fifth, Sixth, and Eighth Amendments. The petition
+          incorporates sworn witness statements from fellow C-2B detainees
+          (Jeffrey McKellop, Jessica Watkins, Daniel Caldwell, Timothy
+          Hale-Cusanelli, James McGrew) and cites the contempt finding entered
+          by Judge Royce C. Lamberth against DC DOC Director Quincy Booth in{" "}
+          <em>U.S. v. Worrell</em> on October 13, 2021 for the same conditions.
+          Additional external corroboration on the record: the U.S. Marshals
+          Service inspection memo of October 20, 2021 (standing sewage, food
+          and water withheld); the Congressional &ldquo;Unusually Cruel&rdquo;
+          report of December 7, 2021; and the 14-Member Congressional letter
+          of January 3, 2022 to BOP Director Carvajal, who resigned weeks later.
+        </p>
+        <p>
+          Documentation includes the original Indictment, the federal Docket
+          Summary, the supporting Affidavit, sworn motions for reconsideration
+          of detention, the Government&apos;s oppositions, the 2025 Omnibus
+          Motion transcript, the full Habeas Corpus petition described above,
+          and a Master Grievance Spreadsheet that the United States Marshals
+          Office relied on when it determined that the facility&apos;s
+          grievance process was broken.
         </p>
         <p>
           This brief is prepared for review under the Justice Department&apos;s{" "}

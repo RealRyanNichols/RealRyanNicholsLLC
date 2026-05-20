@@ -29,6 +29,9 @@ export async function generateMetadata({
   if (!g) return { title: "Not found" };
   const url = `${SITE.url}/case/grievances/${g.slug}`;
   const description = g.summary ?? `Grievance #${g.display_order}: ${g.title}`;
+  const ogImages = g.og_image_url
+    ? [{ url: g.og_image_url, width: 1200, height: 630, alt: g.title }]
+    : undefined;
   return {
     title: `${g.title} · Grievance #${g.display_order}`,
     description,
@@ -37,8 +40,14 @@ export async function generateMetadata({
       title: `${g.title} — United States v. Nichols`,
       description,
       url,
+      images: ogImages,
     },
-    twitter: { card: "summary_large_image", title: g.title, description },
+    twitter: {
+      card: "summary_large_image",
+      title: g.title,
+      description,
+      images: g.og_image_url ? [g.og_image_url] : undefined,
+    },
     alternates: { canonical: url },
   };
 }

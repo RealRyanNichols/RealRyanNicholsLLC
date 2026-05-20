@@ -39,7 +39,7 @@ export default async function DamagesPage() {
         totals.daysDetained.toLocaleString() + " days — roughly " + years + " years — in federal detention without conviction. Multiple bond hearings denied. " +
         "Most of that time in solitary confinement.",
       estimate: years + " years of liberty",
-      sourceSlug: "detention-pre-trial",
+      sourceSlug: "solitary-confinement-conditions",
     },
     {
       label: "Business destroyed — Wholesale Universe, Inc.",
@@ -212,7 +212,7 @@ export default async function DamagesPage() {
           <li>
             <span className="font-bold text-[var(--color-ink)]">Public accountability</span> for
             the named DC DOC, U.S. Marshals, and federal-court officials whose conduct is in the
-            documentary record — including the Brady violation surrounding Marcus DePiola and
+            documentary record — including the Brady violation surrounding Marcus DiPaola and
             1% Watchdog.
           </li>
         </ul>

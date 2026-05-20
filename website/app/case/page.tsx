@@ -299,7 +299,7 @@ const NARRATIVE_ACTS: { range: [number, number]; label: string; tag: string; lea
     range: [8, 12],
     label: "Act II — Sixth Amendment / Defense Crippled",
     tag: "Right to counsel & evidence",
-    lead: "Brady evidence withheld. Discovery withheld. Legal mail confiscated. Attorney access denied. The constitutional preconditions for any fair trial — denied. The lead grievance: AUSA Brasher's pre-plea denials of Marcus DePiola's FBI ties, contradicted by Marcus's own public-record self-admission a year and a half after sentencing.",
+    lead: "Brady evidence withheld. Discovery withheld. Legal mail confiscated. Attorney access denied. The constitutional preconditions for any fair trial — denied. The lead grievance: AUSA Brasher's pre-plea denials of Marcus DiPaola's FBI ties, contradicted by Marcus's own public-record self-admission a year and a half after sentencing.",
   },
   {
     range: [13, 20],

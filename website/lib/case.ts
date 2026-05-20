@@ -16,6 +16,7 @@ export type CaseGrievance = {
   display_order: number;
   views_count: number;
   shares_count: number;
+  og_image_url: string | null;
 };
 
 export type CasePerson = {
@@ -74,7 +75,7 @@ export type CaseDocument = {
 };
 
 const GRIEVANCE_COLS =
-  "id, slug, title, summary, body, category, severity, count, display_order, views_count, shares_count";
+  "id, slug, title, summary, body, category, severity, count, display_order, views_count, shares_count, og_image_url";
 const PERSON_COLS =
   "id, slug, name, role, agency, description, photo_url, views_count, shares_count";
 const EVENT_COLS =
