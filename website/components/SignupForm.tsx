@@ -8,9 +8,22 @@ type State =
   | { kind: "success"; message: string }
   | { kind: "error"; message: string };
 
-export function SignupForm() {
+export function SignupForm({ disabled = false }: { disabled?: boolean }) {
   const [state, setState] = useState<State>({ kind: "idle" });
   const [email, setEmail] = useState("");
+
+  if (disabled) {
+    return (
+      <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
+        <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] mb-2">
+          Email signup
+        </p>
+        <p className="text-sm text-[var(--color-ink-soft)]">
+          Subscriptions open shortly. Check back soon.
+        </p>
+      </div>
+    );
+  }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();

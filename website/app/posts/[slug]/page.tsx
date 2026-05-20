@@ -184,7 +184,7 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
           />
         </div>
         <div className="mt-8">
-          <SignupForm />
+          <SignupForm disabled={!SITE.mailingAddress} />
         </div>
         <ReadNext posts={readNext} />
         <section className="mt-12 border-t border-[var(--color-line)] pt-8">

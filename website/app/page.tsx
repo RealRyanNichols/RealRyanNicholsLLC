@@ -3,6 +3,7 @@ import { PostCard } from "@/components/PostCard";
 import { ProfileHero } from "@/components/ProfileHero";
 import { VerseSidebar } from "@/components/VerseSidebar";
 import { SignupForm } from "@/components/SignupForm";
+import { SITE } from "@/lib/site";
 import Link from "next/link";
 
 export const revalidate = 60;
@@ -13,6 +14,7 @@ export default async function HomePage() {
     posts.map(async (p) => [p.id, await getCommentCount(p.id)] as const)
   );
   const countMap = new Map(counts);
+  const signupDisabled = !SITE.mailingAddress;
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -35,7 +37,7 @@ export default async function HomePage() {
       </div>
       <aside className="space-y-5">
         <VerseSidebar />
-        <SignupForm />
+        <SignupForm disabled={signupDisabled} />
         <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5 text-sm text-[var(--color-ink-soft)]">
           <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] mb-2">
             About this site
