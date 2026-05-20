@@ -1,8 +1,13 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getGrievanceBySlug, getGrievances } from "@/lib/case";
+import { getGrievanceBySlug, getGrievances, getCaseCommentsCount } from "@/lib/case";
 import { ShareButton } from "@/components/ShareButton";
+import { CaseStats } from "@/components/CaseStats";
+import { CaseViewTracker } from "@/components/CaseViewTracker";
+import { CaseCommentList } from "@/components/CaseCommentList";
+import { CaseCommentForm } from "@/components/CaseCommentForm";
+import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { SITE } from "@/lib/site";
 
 export const revalidate = 300;
@@ -46,8 +51,14 @@ export default async function GrievancePage({
   if (!g) notFound();
   const url = `${SITE.url}/case/grievances/${g.slug}`;
 
+  const supabase = await getSupabaseServerClient();
+  const { data: auth } = await supabase.auth.getUser();
+  const commentCount = await getCaseCommentsCount("grievance", g.id);
+
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
+      <CaseViewTracker type="grievance" slug={g.slug} />
+
       <nav className="text-sm text-[var(--color-muted)] mb-4">
         <Link href="/case" className="hover:underline">
           ← The Case
@@ -81,7 +92,7 @@ export default async function GrievancePage({
         </p>
       ) : null}
 
-      <div className="mt-6 flex items-center gap-4 text-sm">
+      <div className="mt-6 flex items-center gap-4 text-sm flex-wrap">
         <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-3">
           <div className="text-2xl font-bold">{g.count}</div>
           <div className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-semibold">
@@ -94,7 +105,15 @@ export default async function GrievancePage({
             severity
           </div>
         </div>
-        <ShareButton url={url} title={`${g.title} — United States v. Nichols`} />
+        <ShareButton url={url} title={`${g.title} — United States v. Nichols`} slug={g.slug} caseKind="grievance" />
+      </div>
+
+      <div className="mt-4">
+        <CaseStats
+          views={g.views_count}
+          shares={g.shares_count}
+          comments={commentCount}
+        />
       </div>
 
       {g.body ? (
@@ -105,10 +124,25 @@ export default async function GrievancePage({
         </p>
       )}
 
+      <section className="mt-12 border-t border-[var(--color-line)] pt-8">
+        <h2 className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">
+          Discussion
+        </h2>
+        <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
+          Comments here become part of the public record. Moderated.
+        </p>
+        <div className="mt-5">
+          <CaseCommentList type="grievance" id={g.id} />
+        </div>
+        <div className="mt-6">
+          <CaseCommentForm type="grievance" slug={g.slug} signedIn={!!auth.user} />
+        </div>
+      </section>
+
       <div className="mt-10 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-ink-soft)]">
         Help keep this case visible.{" "}
         <Link href="/support" className="text-[var(--color-accent)] underline font-semibold">
-          Support Ryan's rebuild
+          Support Ryan&apos;s rebuild
         </Link>
         .
       </div>

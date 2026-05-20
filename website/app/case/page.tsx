@@ -293,25 +293,28 @@ function GrievancesView({ grievances }: { grievances: Awaited<ReturnType<typeof 
 function TimelineView({ events }: { events: Awaited<ReturnType<typeof getEvents>> }) {
   return (
     <ol className="space-y-0">
-      {events.map((e, i) => (
+      {events.map((e) => (
         <li key={e.id} className="relative pl-8 pb-8 border-l border-[var(--color-line)] last:border-l-0">
           <span
             className="absolute -left-[7px] top-1 h-3.5 w-3.5 rounded-full bg-[var(--color-accent)] ring-4 ring-[var(--color-paper)]"
             aria-hidden
           />
-          <time className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
-            {format(new Date(e.event_date), "MMMM d, yyyy")}
-          </time>
-          <h2 className="mt-1 text-lg font-bold tracking-tight">{e.title}</h2>
-          {e.description ? (
-            <p className="mt-2 text-sm text-[var(--color-ink-soft)] leading-relaxed max-w-2xl">
-              {e.description}
-            </p>
-          ) : null}
-          {e.location ? (
-            <p className="mt-1 text-xs text-[var(--color-muted)]">📍 {e.location}</p>
-          ) : null}
-          {i === events.length - 1 ? null : null}
+          <Link href={`/case/events/${e.slug}`} className="group block">
+            <time className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+              {format(new Date(e.event_date), "MMMM d, yyyy")}
+            </time>
+            <h2 className="mt-1 text-lg font-bold tracking-tight group-hover:text-[var(--color-accent)] transition">
+              {e.title}
+            </h2>
+            {e.description ? (
+              <p className="mt-2 text-sm text-[var(--color-ink-soft)] leading-relaxed max-w-2xl">
+                {e.description}
+              </p>
+            ) : null}
+            {e.location ? (
+              <p className="mt-1 text-xs text-[var(--color-muted)]">📍 {e.location}</p>
+            ) : null}
+          </Link>
         </li>
       ))}
     </ol>

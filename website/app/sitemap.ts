@@ -4,6 +4,7 @@ import {
   getGrievances,
   getPeople,
   getDocuments,
+  getEvents,
 } from "@/lib/case";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { SITE } from "@/lib/site";
@@ -11,11 +12,12 @@ import { SITE } from "@/lib/site";
 export const revalidate = 600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [posts, grievances, people, documents] = await Promise.all([
+  const [posts, grievances, people, documents, events] = await Promise.all([
     getPublishedPosts(),
     getGrievances(),
     getPeople(),
     getDocuments(),
+    getEvents(),
   ]);
 
   // Public, non-banned, has-username profiles only
@@ -70,6 +72,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.75,
   }));
 
+  const eventEntries: MetadataRoute.Sitemap = events.map((e) => ({
+    url: `${SITE.url}/case/events/${e.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.8,
+  }));
+
   const profileEntries: MetadataRoute.Sitemap = (profiles ?? []).map((p) => ({
     url: `${SITE.url}/u/${p.username}`,
     lastModified: p.updated_at ?? now,
@@ -83,6 +92,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...grievanceEntries,
     ...personEntries,
     ...documentEntries,
+    ...eventEntries,
     ...profileEntries,
   ];
 }

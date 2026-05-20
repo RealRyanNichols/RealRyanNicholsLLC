@@ -23,22 +23,29 @@ function buildPlatforms(url: string, title: string): Platform[] {
   ];
 }
 
+type CaseKind = "grievance" | "event" | "document" | "person";
+
 export function ShareButton({
   url,
   title,
   slug,
+  caseKind,
   compact = false,
 }: {
   url: string;
   title: string;
   slug?: string;
+  caseKind?: CaseKind;
   compact?: boolean;
 }) {
   function recordShare() {
     if (!slug) return;
-    // Fire-and-forget; the click should not wait for the count update.
     const supabase = getSupabaseBrowserClient();
-    void supabase.rpc("increment_post_shares", { post_slug: slug });
+    if (caseKind) {
+      void supabase.rpc("increment_case_shares", { p_type: caseKind, p_slug: slug });
+    } else {
+      void supabase.rpc("increment_post_shares", { post_slug: slug });
+    }
   }
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
