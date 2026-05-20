@@ -5,6 +5,7 @@ import Image from "next/image";
 import { format } from "date-fns";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { SITE } from "@/lib/site";
+import { SupporterBadge } from "@/components/SupporterBadge";
 
 export const revalidate = 60;
 
@@ -13,7 +14,7 @@ async function getProfile(username: string) {
   const { data } = await supabase
     .from("profiles")
     .select(
-      "id, display_name, username, bio, location, avatar_url, status, verified_at, verified_linked_account, created_at"
+      "id, display_name, username, bio, location, avatar_url, status, verified_at, verified_linked_account, is_supporter, created_at"
     )
     .eq("username", username.toLowerCase())
     .neq("status", "banned")
@@ -95,6 +96,7 @@ export default async function UserProfilePage({
                   Pending review
                 </span>
               ) : null}
+              {profile.is_supporter ? <SupporterBadge size="md" /> : null}
             </div>
 
             <p className="mt-1 text-sm text-[var(--color-muted)] font-mono">

@@ -38,7 +38,7 @@ export default async function AdminUsersPage({
   let query = supabase
     .from("profiles")
     .select(
-      "id, display_name, full_name, username, bio, location, status, verified_at, verified_linked_account, admin_notes, created_at"
+      "id, display_name, full_name, username, bio, location, status, verified_at, verified_linked_account, admin_notes, is_supporter, created_at"
     )
     .order("created_at", { ascending: false });
 
