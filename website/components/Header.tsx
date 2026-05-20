@@ -2,11 +2,16 @@ import Link from "next/link";
 import Image from "next/image";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { SITE } from "@/lib/site";
+import { getSiteSettings } from "@/lib/site-settings";
 
 export async function Header() {
   const supabase = await getSupabaseServerClient();
-  const { data } = await supabase.auth.getUser();
+  const [{ data }, settings] = await Promise.all([
+    supabase.auth.getUser(),
+    getSiteSettings(),
+  ]);
   const user = data.user;
+  const avatarUrl = settings.avatar_url;
   let isAdmin = false;
   if (user) {
     const { data: adminCheck } = await supabase.rpc("is_admin", { uid: user.id });
@@ -17,15 +22,16 @@ export async function Header() {
     <header className="border-b border-[var(--color-line)] bg-[#0a0a0c]/85 backdrop-blur-xl sticky top-0 z-30">
       <div className="mx-auto max-w-5xl px-4 h-16 flex items-center justify-between gap-4">
         <Link href="/" className="flex items-center gap-2.5 group" aria-label="Ryan Nichols — Home">
-          {SITE.avatarPath ? (
+          {avatarUrl ? (
             <Image
-              src={SITE.avatarPath}
+              src={avatarUrl}
               alt=""
               aria-hidden
               width={36}
               height={36}
               className="h-9 w-9 rounded-full object-cover ring-2 ring-[var(--color-accent-glow)]"
               priority
+              unoptimized={avatarUrl.startsWith("http")}
             />
           ) : (
             <span
