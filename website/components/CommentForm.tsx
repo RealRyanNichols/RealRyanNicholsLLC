@@ -20,7 +20,7 @@ export function CommentForm({ postId, signedIn }: Props) {
 
   if (!signedIn) {
     return (
-      <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5 text-sm">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 text-sm">
         <p className="text-[var(--color-ink-soft)]">
           Comments are signed-only. No anonymous accounts.{" "}
           <Link className="text-[var(--color-accent)] underline" href="/login">
@@ -58,7 +58,7 @@ export function CommentForm({ postId, signedIn }: Props) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
+    <form onSubmit={onSubmit} className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
       <label htmlFor="comment" className="text-xs uppercase tracking-wider text-[var(--color-muted)] block mb-2">
         Add your comment
       </label>

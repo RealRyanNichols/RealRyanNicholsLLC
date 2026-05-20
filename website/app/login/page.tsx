@@ -38,7 +38,7 @@ export default function LoginPage() {
       </p>
       <form
         onSubmit={onSubmit}
-        className="mt-6 rounded-2xl border border-[var(--color-line)] bg-white p-5"
+        className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
       >
         <label htmlFor="login-email" className="text-xs uppercase tracking-wider text-[var(--color-muted)] block mb-2">
           Your email

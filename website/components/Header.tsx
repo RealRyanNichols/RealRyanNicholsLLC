@@ -14,32 +14,32 @@ export async function Header() {
   }
 
   return (
-    <header className="border-b border-[var(--color-line)] bg-[var(--color-paper)]/90 backdrop-blur sticky top-0 z-30">
-      <div className="mx-auto max-w-5xl px-4 h-14 flex items-center justify-between gap-4">
+    <header className="border-b border-[var(--color-line)] bg-[#0a0a0c]/85 backdrop-blur-xl sticky top-0 z-30">
+      <div className="mx-auto max-w-5xl px-4 h-16 flex items-center justify-between gap-4">
         <Link href="/" className="flex items-center gap-2.5 group" aria-label="Ryan Nichols — Home">
           {SITE.avatarPath ? (
             <Image
               src={SITE.avatarPath}
               alt=""
               aria-hidden
-              width={32}
-              height={32}
-              className="h-8 w-8 rounded-full object-cover"
+              width={36}
+              height={36}
+              className="h-9 w-9 rounded-full object-cover ring-2 ring-[var(--color-accent-glow)]"
               priority
             />
           ) : (
             <span
-              className="inline-flex h-8 w-8 rounded-full bg-[var(--color-accent)] text-white items-center justify-center text-sm font-semibold"
+              className="inline-flex h-9 w-9 rounded-full bg-[var(--color-accent)] text-[#0a0a0c] items-center justify-center text-sm font-bold ring-2 ring-[var(--color-accent-glow)]"
               aria-hidden
             >
               RN
             </span>
           )}
-          <span className="font-semibold text-[var(--color-ink)] group-hover:underline underline-offset-4">
+          <span className="font-bold tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-accent)] transition">
             Ryan Nichols
           </span>
         </Link>
-        <nav className="flex items-center gap-1 sm:gap-3 text-sm">
+        <nav className="flex items-center gap-0.5 sm:gap-2 text-sm">
           <NavLink href="/">Feed</NavLink>
           <NavLink href="/jan-6">Jan 6</NavLink>
           <NavLink href="/about">About</NavLink>
@@ -47,7 +47,7 @@ export async function Header() {
           {isAdmin ? (
             <Link
               href="/admin/new"
-              className="ml-2 inline-flex items-center rounded-full bg-[var(--color-accent)] px-3 py-1.5 text-white text-xs font-medium hover:opacity-90 transition"
+              className="btn-accent ml-2 inline-flex items-center rounded-full px-3.5 py-1.5 text-xs transition"
               aria-label="New post"
             >
               + New
@@ -56,14 +56,14 @@ export async function Header() {
           {user ? (
             <Link
               href="/account"
-              className="ml-1 inline-flex items-center rounded-full bg-[var(--color-ink)] px-3 py-1.5 text-white text-xs font-medium hover:bg-[var(--color-accent)] transition"
+              className="ml-1 inline-flex items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3.5 py-1.5 text-xs font-medium text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition"
             >
               Account
             </Link>
           ) : (
             <Link
               href="/login"
-              className="ml-2 inline-flex items-center rounded-full bg-[var(--color-ink)] px-3 py-1.5 text-white text-xs font-medium hover:bg-[var(--color-accent)] transition"
+              className="ml-2 inline-flex items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3.5 py-1.5 text-xs font-medium text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition"
             >
               Sign in
             </Link>
@@ -78,7 +78,7 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
   return (
     <Link
       href={href}
-      className="px-2 py-1 rounded-md text-[var(--color-ink-soft)] hover:text-[var(--color-accent)] hover:bg-[var(--color-accent-soft)] transition"
+      className="px-2.5 py-1.5 rounded-md text-[var(--color-ink-soft)] font-medium hover:text-[var(--color-accent)] hover:bg-[var(--color-accent-soft)] transition"
     >
       {children}
     </Link>
