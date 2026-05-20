@@ -1,22 +1,27 @@
 import Link from "next/link";
 import Image from "next/image";
 import { SITE } from "@/lib/site";
+import { getSiteSettings } from "@/lib/site-settings";
 
-export function ProfileHero() {
-  const hasCover = !!SITE.coverPath;
-  const hasAvatar = !!SITE.avatarPath;
+export async function ProfileHero() {
+  const settings = await getSiteSettings();
+  const coverUrl = settings.cover_url;
+  const avatarUrl = settings.avatar_url;
+  const hasCover = !!coverUrl;
+  const hasAvatar = !!avatarUrl;
 
   return (
     <section className="relative overflow-hidden rounded-3xl border border-[var(--color-line)] bg-gradient-to-br from-[var(--color-surface-2)] to-[var(--color-surface)]">
       <div className="relative h-32 sm:h-48 md:h-56 w-full overflow-hidden">
         {hasCover ? (
           <Image
-            src={SITE.coverPath}
+            src={coverUrl!}
             alt=""
             fill
             sizes="(min-width: 1024px) 768px, 100vw"
             className="object-cover"
             priority
+            unoptimized={coverUrl!.startsWith("http")}
           />
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-surface-2)] to-black" />
@@ -33,12 +38,13 @@ export function ProfileHero() {
         <div className="flex flex-col sm:flex-row sm:items-end gap-4 sm:gap-6">
           {hasAvatar ? (
             <Image
-              src={SITE.avatarPath}
+              src={avatarUrl!}
               alt={SITE.name}
               width={144}
               height={144}
               className="h-24 w-24 sm:h-32 sm:w-32 rounded-full object-cover flex-shrink-0 ring-4 ring-[var(--color-paper)] bg-[var(--color-surface)]"
               priority
+              unoptimized={avatarUrl!.startsWith("http")}
             />
           ) : (
             <div
