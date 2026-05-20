@@ -7,6 +7,8 @@ import { PostBody } from "@/components/PostBody";
 import { ShareButton } from "@/components/ShareButton";
 import { PostStats } from "@/components/PostStats";
 import { ViewTracker } from "@/components/ViewTracker";
+import { ReactionRow } from "@/components/ReactionRow";
+import { getReactionsForPost } from "@/lib/reactions";
 import { CommentList } from "@/components/CommentList";
 import { CommentForm } from "@/components/CommentForm";
 import { VerseSidebar } from "@/components/VerseSidebar";
@@ -103,9 +105,10 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
     canNotify = adminCheck === true || (post.author_id ? post.author_id === data.user.id : false);
   }
 
-  const [allPosts, commentCount] = await Promise.all([
+  const [allPosts, commentCount, reactions] = await Promise.all([
     getPublishedPosts(),
     getCommentCount(post.id),
+    getReactionsForPost(post.id),
   ]);
   const readNext = allPosts.filter((p) => p.id !== post.id).slice(0, 4);
 
@@ -187,6 +190,15 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
 
         <ViewTracker slug={post.slug} />
         <PostMain post={post} />
+
+        <div className="mt-6">
+          <ReactionRow
+            postId={post.id}
+            initialCounts={reactions.counts}
+            initialUserReactions={reactions.mine}
+            signedIn={signedIn}
+          />
+        </div>
 
         {canNotify && post.status === "published" && (
           <div className="mt-8">
