@@ -1,5 +1,7 @@
+import Link from "next/link";
 import { formatDistanceToNowStrict } from "date-fns";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { SupporterBadge } from "@/components/SupporterBadge";
 
 type CommentRow = {
   id: string;
@@ -11,7 +13,11 @@ type CommentRow = {
 type ProfileRow = {
   id: string;
   display_name: string | null;
+  username: string | null;
   avatar_url: string | null;
+  is_supporter: boolean;
+  verified_at: string | null;
+  verified_linked_account: boolean;
 };
 
 export async function CommentList({ postId }: { postId: string }) {
@@ -43,7 +49,9 @@ export async function CommentList({ postId }: { postId: string }) {
   const userIds = Array.from(new Set(comments.map((c) => c.user_id)));
   const { data: rawProfiles } = await supabase
     .from("profiles")
-    .select("id, display_name, avatar_url")
+    .select(
+      "id, display_name, username, avatar_url, is_supporter, verified_at, verified_linked_account"
+    )
     .in("id", userIds);
   const profiles = new Map<string, ProfileRow>(
     (rawProfiles ?? []).map((p) => [p.id, p as ProfileRow])
@@ -55,6 +63,7 @@ export async function CommentList({ postId }: { postId: string }) {
         const profile = profiles.get(c.user_id);
         const name = profile?.display_name ?? "Reader";
         const initial = name.charAt(0).toUpperCase();
+        const verified = !!profile?.verified_at || !!profile?.verified_linked_account;
         return (
           <li key={c.id} className="flex gap-3">
             <div
@@ -63,9 +72,27 @@ export async function CommentList({ postId }: { postId: string }) {
             >
               {initial}
             </div>
-            <div className="flex-1">
-              <div className="flex items-baseline gap-2 text-sm">
-                <span className="font-semibold text-[var(--color-ink)]">{name}</span>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-baseline gap-2 flex-wrap text-sm">
+                {profile?.username ? (
+                  <Link
+                    href={`/u/${profile.username}`}
+                    className="font-semibold text-[var(--color-ink)] hover:text-[var(--color-accent)] hover:underline"
+                  >
+                    {name}
+                  </Link>
+                ) : (
+                  <span className="font-semibold text-[var(--color-ink)]">{name}</span>
+                )}
+                {verified ? (
+                  <span
+                    title="Verified by admin"
+                    className="rounded-full bg-emerald-900/30 border border-emerald-700 text-emerald-300 px-1.5 py-0.5 text-[10px] uppercase tracking-wider font-bold"
+                  >
+                    ✓
+                  </span>
+                ) : null}
+                {profile?.is_supporter ? <SupporterBadge size="xs" /> : null}
                 <span className="text-[var(--color-muted)] text-xs">
                   {formatDistanceToNowStrict(new Date(c.created_at), { addSuffix: true })}
                 </span>

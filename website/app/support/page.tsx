@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 
 export default function SupportPage() {
   const donateUrl = process.env.NEXT_PUBLIC_DONATION_URL;
+  const supporterUrl = SITE.supporterUrl;
   const mailing = SITE.mailingAddress;
 
   return (
@@ -86,6 +87,40 @@ export default function SupportPage() {
           </p>
         </section>
       )}
+
+      {supporterUrl ? (
+        <section className="mt-10 rounded-2xl border-2 border-amber-700 p-6 bg-gradient-to-br from-amber-950/30 to-[var(--color-surface)] relative overflow-hidden">
+          <div
+            className="pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full blur-3xl bg-amber-500/20"
+            aria-hidden
+          />
+          <p className="relative text-xs uppercase tracking-wider text-amber-400 font-bold">
+            Supporter Membership · $5 / month
+          </p>
+          <h2 className="relative font-display text-2xl sm:text-3xl mt-2 text-[var(--color-ink)]">
+            Become a verified Supporter
+          </h2>
+          <p className="relative mt-3 text-[var(--color-ink-soft)] leading-relaxed">
+            $5 a month, billed by Stripe. You get a gold ★ Supporter badge on
+            your profile and every comment you leave, your name shows verified
+            (matching the card on file), and you keep this independent site
+            running while it&apos;s still rebuilding.
+          </p>
+          <p className="relative mt-2 text-xs text-[var(--color-muted)]">
+            Reading, signing up, and commenting all stay free for everyone.
+            This is a tip jar with a badge, not a paywall.
+          </p>
+          <a
+            href={supporterUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative inline-flex items-center mt-5 rounded-full bg-amber-600 hover:bg-amber-500 px-6 py-2.5 text-sm font-bold text-[#1a1308] transition"
+            data-track="supporter-checkout"
+          >
+            Start Supporter Membership →
+          </a>
+        </section>
+      ) : null}
 
       <section className="mt-10">
         <h2 className="font-display text-2xl text-[var(--color-ink)]">
