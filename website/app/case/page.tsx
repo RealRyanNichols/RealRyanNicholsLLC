@@ -365,7 +365,7 @@ function TimelineView({ events }: { events: Awaited<ReturnType<typeof getEvents>
           />
           <Link href={`/case/events/${e.slug}`} className="group block">
             <time className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
-              {format(new Date(e.event_date), "MMMM d, yyyy")}
+              {e.event_date ? format(new Date(e.event_date), "MMMM d, yyyy") : "Date pending verification"}
             </time>
             <h2 className="mt-1 text-lg font-bold tracking-tight group-hover:text-[var(--color-accent)] transition">
               {e.title}

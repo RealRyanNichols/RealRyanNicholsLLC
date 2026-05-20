@@ -28,7 +28,7 @@ export async function generateMetadata({
   const e = await getEventBySlug(slug);
   if (!e) return { title: "Not found" };
   const url = `${SITE.url}/case/events/${e.slug}`;
-  const description = e.description ?? `${e.title} — ${format(new Date(e.event_date), "MMMM d, yyyy")}`;
+  const description = e.description ?? (e.event_date ? `${e.title} — ${format(new Date(e.event_date), "MMMM d, yyyy")}` : e.title);
   return {
     title: `${e.title} · Timeline`,
     description,
@@ -74,7 +74,7 @@ export default async function EventPage({
           Event
         </span>
         <span className="text-xs text-[var(--color-muted)] font-semibold">
-          {format(new Date(e.event_date), "MMMM d, yyyy")}
+          {e.event_date ? format(new Date(e.event_date), "MMMM d, yyyy") : "Date pending verification"}
         </span>
         {e.location ? (
           <span className="text-xs text-[var(--color-muted)]">
