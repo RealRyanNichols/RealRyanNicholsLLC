@@ -104,16 +104,11 @@ export default async function DocumentPage({
         <img
           src={proxiedImage}
           alt={d.title}
-          loading="lazy"
-          className="w-full h-auto select-none"
-          draggable={false}
-          onContextMenu={undefined}
+          loading="eager"
+          className="w-full h-auto block"
         />
-        <figcaption className="px-4 py-3 text-xs text-[var(--color-muted)] flex items-center justify-between gap-3 flex-wrap">
-          <span>
-            © realryannichols.com. Watermarked. Do not republish without attribution.
-          </span>
-          {externalUrl ? (
+        {externalUrl ? (
+          <figcaption className="px-4 py-3 text-xs text-[var(--color-muted)] flex items-center justify-end gap-3 flex-wrap">
             <a
               href={externalUrl}
               target="_blank"
@@ -122,8 +117,8 @@ export default async function DocumentPage({
             >
               Open source →
             </a>
-          ) : null}
-        </figcaption>
+          </figcaption>
+        ) : null}
       </figure>
 
       <div className="mt-10 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-ink-soft)]">
