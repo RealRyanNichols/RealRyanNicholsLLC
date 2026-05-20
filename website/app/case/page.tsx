@@ -43,12 +43,19 @@ export async function generateMetadata(): Promise<Metadata> {
 
 type Tab = "grievances" | "timeline" | "people" | "documents";
 
+function matchesQuery(q: string, ...fields: (string | null | undefined)[]) {
+  if (!q) return true;
+  const needle = q.toLowerCase();
+  return fields.some((f) => (f ?? "").toLowerCase().includes(needle));
+}
+
 export default async function CasePage({
   searchParams,
 }: {
-  searchParams: Promise<{ view?: string }>;
+  searchParams: Promise<{ view?: string; q?: string }>;
 }) {
-  const { view } = await searchParams;
+  const { view, q: rawQ } = await searchParams;
+  const q = (rawQ ?? "").trim();
   const tab: Tab =
     view === "timeline" || view === "people" || view === "documents"
       ? (view as Tab)
@@ -60,6 +67,34 @@ export default async function CasePage({
     getEvents(),
     getDocuments(),
   ]);
+
+  const filteredGrievances = q
+    ? grievances.filter((g) =>
+        matchesQuery(q, g.title, g.summary, g.body, g.category)
+      )
+    : grievances;
+  const filteredPeople = q
+    ? people.filter((p) =>
+        matchesQuery(q, p.name, p.role, p.agency, p.description)
+      )
+    : people;
+  const filteredEvents = q
+    ? events.filter((e) =>
+        matchesQuery(q, e.title, e.description, e.location)
+      )
+    : events;
+  const filteredDocuments = q
+    ? documents.filter((d) =>
+        matchesQuery(q, d.title, d.description, d.doc_type, d.source)
+      )
+    : documents;
+
+  const totalHits = q
+    ? filteredGrievances.length +
+      filteredPeople.length +
+      filteredEvents.length +
+      filteredDocuments.length
+    : 0;
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
@@ -76,27 +111,72 @@ export default async function CasePage({
           all cross-reference each other.
         </p>
         <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl">
-          <Stat label="Grievances" value={grievances.length} />
-          <Stat label="Events" value={events.length} />
-          <Stat label="People" value={people.length} />
-          <Stat label="Documents" value={documents.length} />
+          <Stat label="Grievances" value={q ? filteredGrievances.length : grievances.length} />
+          <Stat label="Events" value={q ? filteredEvents.length : events.length} />
+          <Stat label="People" value={q ? filteredPeople.length : people.length} />
+          <Stat label="Documents" value={q ? filteredDocuments.length : documents.length} />
         </div>
+
+        {/* Search */}
+        <form
+          method="get"
+          action="/case"
+          className="mt-6 flex flex-col sm:flex-row gap-2 max-w-2xl"
+        >
+          {tab !== "grievances" ? (
+            <input type="hidden" name="view" value={tab} />
+          ) : null}
+          <input
+            type="search"
+            name="q"
+            defaultValue={q}
+            placeholder="Search grievances, people, events, documents…"
+            className="flex-1 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm"
+          />
+          <button
+            type="submit"
+            className="btn-accent rounded-md px-4 py-2 text-sm font-bold"
+          >
+            Search
+          </button>
+          {q ? (
+            <Link
+              href={`/case${tab === "grievances" ? "" : `?view=${tab}`}`}
+              className="inline-flex items-center justify-center rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm font-medium text-[var(--color-ink-soft)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            >
+              Clear
+            </Link>
+          ) : null}
+        </form>
+        {q ? (
+          <p className="mt-2 text-xs text-[var(--color-muted)]">
+            {totalHits} match{totalHits === 1 ? "" : "es"} for &quot;{q}&quot; across all 4 sections.
+          </p>
+        ) : null}
       </header>
 
       <nav
         className="flex flex-wrap gap-1 border-b border-[var(--color-line)] mb-8"
         aria-label="Case view"
       >
-        <TabLink active={tab === "grievances"} href="/case?view=grievances">Grievances</TabLink>
-        <TabLink active={tab === "timeline"} href="/case?view=timeline">Timeline</TabLink>
-        <TabLink active={tab === "people"} href="/case?view=people">People</TabLink>
-        <TabLink active={tab === "documents"} href="/case?view=documents">Documents</TabLink>
+        <TabLink active={tab === "grievances"} href={`/case?view=grievances${q ? `&q=${encodeURIComponent(q)}` : ""}`}>
+          Grievances {q ? `(${filteredGrievances.length})` : ""}
+        </TabLink>
+        <TabLink active={tab === "timeline"} href={`/case?view=timeline${q ? `&q=${encodeURIComponent(q)}` : ""}`}>
+          Timeline {q ? `(${filteredEvents.length})` : ""}
+        </TabLink>
+        <TabLink active={tab === "people"} href={`/case?view=people${q ? `&q=${encodeURIComponent(q)}` : ""}`}>
+          People {q ? `(${filteredPeople.length})` : ""}
+        </TabLink>
+        <TabLink active={tab === "documents"} href={`/case?view=documents${q ? `&q=${encodeURIComponent(q)}` : ""}`}>
+          Documents {q ? `(${filteredDocuments.length})` : ""}
+        </TabLink>
       </nav>
 
-      {tab === "grievances" && <GrievancesView grievances={grievances} />}
-      {tab === "timeline" && <TimelineView events={events} />}
-      {tab === "people" && <PeopleView people={people} />}
-      {tab === "documents" && <DocumentsView documents={documents} />}
+      {tab === "grievances" && <GrievancesView grievances={filteredGrievances} />}
+      {tab === "timeline" && <TimelineView events={filteredEvents} />}
+      {tab === "people" && <PeopleView people={filteredPeople} />}
+      {tab === "documents" && <DocumentsView documents={filteredDocuments} />}
     </div>
   );
 }
