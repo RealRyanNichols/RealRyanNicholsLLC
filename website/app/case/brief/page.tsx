@@ -108,7 +108,7 @@ export default async function BriefPage() {
           Executive summary
         </h2>
         <p>
-          Ryan Nichols, a United States Marine Corps combat veteran and active
+          Ryan Nichols, a United States Marine Corps veteran and active
           Search and Rescue specialist, was prosecuted, detained pretrial, and
           tortured by a weaponized Biden-era Department of Justice for his
           conduct on January 6, 2021. He was pardoned by President Trump in
