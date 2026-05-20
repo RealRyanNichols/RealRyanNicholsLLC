@@ -39,7 +39,7 @@ export default async function DamagesPage() {
         totals.daysDetained.toLocaleString() + " days — roughly " + years + " years — in federal detention without conviction. Multiple bond hearings denied. " +
         "Most of that time in solitary confinement.",
       estimate: years + " years of liberty",
-      sourceSlug: "detention-pre-trial",
+      sourceSlug: "solitary-confinement-conditions",
     },
     {
       label: "Business destroyed — Wholesale Universe, Inc.",
