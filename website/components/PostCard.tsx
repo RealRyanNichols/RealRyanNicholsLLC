@@ -26,11 +26,11 @@ export function PostCard({
       : `Read & ${commentCount} comment${commentCount === 1 ? "" : "s"} →`;
 
   return (
-    <article className="border-b border-[var(--color-line)] py-7 first:pt-2">
-      <header className="flex items-center justify-between gap-3 mb-2">
+    <article className="group/card border-b border-[var(--color-line)] py-7 first:pt-2 transition">
+      <header className="flex items-center justify-between gap-3 mb-3">
         <div className="flex items-center gap-2 text-xs text-[var(--color-muted)]">
           {post.pinned && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-accent-soft)] text-[var(--color-accent)] px-2 py-0.5 font-medium">
+            <span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-accent-soft)] text-[var(--color-accent)] px-2 py-0.5 font-semibold uppercase tracking-wider text-[10px]">
               Pinned
             </span>
           )}
@@ -45,10 +45,10 @@ export function PostCard({
 
       <PostCardBody post={post} truncate={truncate} />
 
-      <div className="mt-4 flex items-center justify-between gap-3 text-sm">
+      <div className="mt-5 flex items-center justify-between gap-3 text-sm">
         <Link
           href={`/posts/${post.slug}`}
-          className="text-[var(--color-accent)] hover:underline underline-offset-4 font-medium"
+          className="text-[var(--color-accent)] hover:underline underline-offset-4 font-semibold"
         >
           {linkLabel}
         </Link>
@@ -157,7 +157,7 @@ function TypeBadge({ type }: { type: Post["type"] }) {
   if (type === "text") return null;
   const label = type === "note" ? "Note" : type === "photo" ? "Photo" : "Video";
   return (
-    <span className="rounded-full border border-[var(--color-line)] px-2 py-0.5 text-[10px] uppercase tracking-wider">
+    <span className="rounded-full bg-[var(--color-accent-soft)] text-[var(--color-accent)] px-2 py-0.5 text-[10px] uppercase tracking-wider font-bold">
       {label}
     </span>
   );

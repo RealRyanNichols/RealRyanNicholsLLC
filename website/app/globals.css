@@ -1,13 +1,27 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ink: #1a1a1a;
-  --color-ink-soft: #3f3f46;
-  --color-muted: #71717a;
-  --color-paper: #fafaf7;
-  --color-line: #e7e5e0;
-  --color-accent: #c2410c;
-  --color-accent-soft: #fef3ec;
+  /* Dark mode social-media palette.
+     Background is near-black with a slight cool tint; cards sit on
+     #16161a; accent orange is brighter than before so it pops against
+     the dark surfaces. */
+  --color-paper: #0a0a0c;
+  --color-surface: #16161a;
+  --color-surface-2: #1f1f24;
+  --color-line: #2a2a30;
+  --color-line-soft: #1f1f24;
+
+  --color-ink: #fafafa;
+  --color-ink-soft: #d4d4d8;
+  --color-muted: #888892;
+
+  --color-accent: #f97316;
+  --color-accent-strong: #ea580c;
+  --color-accent-soft: #2a1408;
+  --color-accent-glow: rgba(249, 115, 22, 0.18);
+
+  --color-success: #22c55e;
+  --color-danger: #ef4444;
 
   --font-display: "Source Serif 4", "Iowan Old Style", "Charter", "Georgia", serif;
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -19,12 +33,61 @@ body {
   color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: #0a0a0c;
+}
+
+/* Tighter, more confident headings — feels closer to X / Threads. */
+h1, h2, h3 {
+  font-family: var(--font-display);
+  letter-spacing: -0.015em;
+  color: var(--color-ink);
+}
+
+a {
+  color: inherit;
+}
+
+input,
+textarea,
+select {
+  background: var(--color-surface);
+  color: var(--color-ink);
+  border-color: var(--color-line);
+  caret-color: var(--color-accent);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-muted);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-accent) !important;
+  box-shadow: 0 0 0 3px var(--color-accent-glow);
+}
+
+/* Cards / panels share this look so every surface feels like one system. */
+.surface {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+}
+.surface-2 {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-line);
 }
 
 .prose-body {
   font-family: var(--font-display);
   font-size: 1.0625rem;
-  line-height: 1.75;
+  line-height: 1.7;
   color: var(--color-ink-soft);
 }
 
@@ -71,4 +134,23 @@ body {
   margin: 1.25em 0;
   font-style: italic;
   color: var(--color-ink);
+}
+
+.prose-body code {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-line);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  font-size: 0.92em;
+}
+
+/* Glowing accent button used for primary CTAs that need to demand a tap. */
+.btn-accent {
+  background: var(--color-accent);
+  color: #0a0a0c;
+  font-weight: 600;
+  box-shadow: 0 0 24px var(--color-accent-glow);
+}
+.btn-accent:hover {
+  background: var(--color-accent-strong);
 }

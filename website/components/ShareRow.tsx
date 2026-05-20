@@ -20,7 +20,7 @@ export function ShareRow({
         {items.map((i) => (
           <li key={i.name}>
             <a
-              className="rounded-full border border-[var(--color-line)] px-2.5 py-1 hover:bg-white text-[var(--color-ink-soft)] hover:text-[var(--color-accent)]"
+              className="rounded-full border border-[var(--color-line)] px-2.5 py-1 hover:bg-[var(--color-surface-2)] text-[var(--color-ink-soft)] hover:text-[var(--color-accent)] hover:border-[var(--color-accent)] transition"
               href={i.href}
               target="_blank"
               rel="noopener"
@@ -39,7 +39,7 @@ export function ShareRow({
         {items.map((i) => (
           <li key={i.name}>
             <a
-              className="inline-flex items-center rounded-lg border border-[var(--color-line)] px-3 py-2 text-sm hover:bg-white text-[var(--color-ink-soft)] hover:text-[var(--color-accent)]"
+              className="inline-flex items-center rounded-lg border border-[var(--color-line)] px-3 py-2 text-sm hover:bg-[var(--color-surface-2)] text-[var(--color-ink-soft)] hover:text-[var(--color-accent)] hover:border-[var(--color-accent)] transition"
               href={i.href}
               target="_blank"
               rel="noopener"
