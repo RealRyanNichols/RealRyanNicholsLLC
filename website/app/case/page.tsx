@@ -7,14 +7,39 @@ import {
   getEvents,
   getDocuments,
 } from "@/lib/case";
+import { getSiteSettings } from "@/lib/site-settings";
+import { SITE } from "@/lib/site";
 
 export const revalidate = 300;
 
-export const metadata: Metadata = {
-  title: "The Case",
-  description:
-    "Ryan Nichols' January 6 case archive — grievances filed, people involved, every event on the timeline, every document available.",
-};
+const CASE_TITLE = "The Case · United States v. Nichols";
+const CASE_DESCRIPTION =
+  "Ryan Nichols' January 6 case archive — every filed grievance, every named official, every event on the timeline, every document. The full record.";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  const ogImage = settings.case_og_url ?? `${SITE.url}/og/case-default.png`;
+  return {
+    title: "The Case",
+    description: CASE_DESCRIPTION,
+    openGraph: {
+      type: "article",
+      title: CASE_TITLE,
+      description: CASE_DESCRIPTION,
+      url: `${SITE.url}/case`,
+      images: settings.case_og_url
+        ? [{ url: ogImage, width: 1200, height: 630, alt: CASE_TITLE }]
+        : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: CASE_TITLE,
+      description: CASE_DESCRIPTION,
+      images: settings.case_og_url ? [ogImage] : undefined,
+    },
+    alternates: { canonical: `${SITE.url}/case` },
+  };
+}
 
 type Tab = "grievances" | "timeline" | "people" | "documents";
 
