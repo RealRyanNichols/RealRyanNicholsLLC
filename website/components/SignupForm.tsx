@@ -75,7 +75,7 @@ export function SignupForm({ disabled = false }: { disabled?: boolean }) {
         <button
           type="submit"
           disabled={state.kind === "submitting"}
-          className="rounded-lg bg-[var(--color-ink)] px-4 py-2 text-white text-sm font-medium hover:bg-[var(--color-accent)] disabled:opacity-60 transition"
+          className="btn-accent rounded-lg px-4 py-2 text-sm disabled:opacity-60"
         >
           {state.kind === "submitting" ? "Adding..." : "Subscribe"}
         </button>

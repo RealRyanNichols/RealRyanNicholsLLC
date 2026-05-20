@@ -47,7 +47,7 @@ export function NotifySubscribersButton({ postId }: { postId: string }) {
           type="button"
           onClick={onClick}
           disabled={state.kind === "sending"}
-          className="inline-flex items-center rounded-lg bg-[var(--color-ink)] px-3 py-2 text-white text-sm font-medium hover:bg-[var(--color-accent)] disabled:opacity-60 transition"
+          className="btn-accent inline-flex items-center rounded-lg px-3 py-2 text-sm disabled:opacity-60"
         >
           {state.kind === "sending" ? "Sending…" : "Send to subscribers"}
         </button>

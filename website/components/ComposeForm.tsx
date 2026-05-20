@@ -422,7 +422,7 @@ function SubmitButton({
     <button
       type="submit"
       disabled={busy}
-      className="rounded-md bg-[var(--color-ink)] px-5 py-2.5 text-white text-sm font-medium hover:bg-[var(--color-accent)] disabled:opacity-60 transition"
+      className="btn-accent rounded-md px-5 py-2.5 text-sm disabled:opacity-60"
     >
       {busy ? "Working…" : children}
     </button>

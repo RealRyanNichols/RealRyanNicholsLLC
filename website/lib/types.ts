@@ -1,6 +1,15 @@
 export type PostStatus = "draft" | "published" | "hidden";
 export type CommentStatus = "pending" | "approved" | "hidden" | "deleted";
-export type ReactionKind = "amen" | "pray" | "support";
+export type ReactionKind =
+  | "amen"
+  | "pray"
+  | "support"
+  | "fire"
+  | "flag"
+  | "salute"
+  | "laugh"
+  | "sad"
+  | "mad";
 export type PostType = "text" | "note" | "photo" | "video";
 export type MuxStatus = "uploading" | "processing" | "ready" | "errored";
 
