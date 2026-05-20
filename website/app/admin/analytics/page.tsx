@@ -174,6 +174,9 @@ export default async function AdminAnalyticsPage() {
         />
       </section>
 
+      {/* Live session data */}
+      <LiveSessions />
+
       {/* Recent activity */}
       <section className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-5">
         <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
@@ -240,6 +243,250 @@ function Stat({ label, value, sub }: { label: string; value: string; sub?: strin
       </div>
       {sub ? <div className="text-xs text-[var(--color-ink-soft)] mt-1">{sub}</div> : null}
     </div>
+  );
+}
+
+async function LiveSessions() {
+  const supabase = await getSupabaseServerClient();
+  const fiveMinAgo = subDays(new Date(), 0);
+  fiveMinAgo.setMinutes(fiveMinAgo.getMinutes() - 5);
+  const oneHourAgo = subDays(new Date(), 0);
+  oneHourAgo.setHours(oneHourAgo.getHours() - 1);
+  const oneDayAgo = subDays(new Date(), 1);
+
+  const [
+    { count: activeNow },
+    { count: sessions24h },
+    { data: views24h },
+    { data: topClicks },
+    { data: recentSessions },
+  ] = await Promise.all([
+    supabase
+      .from("page_views")
+      .select("id", { count: "exact", head: true })
+      .gte("last_activity_at", fiveMinAgo.toISOString()),
+    supabase
+      .from("page_views")
+      .select("session_id", { count: "exact", head: true })
+      .gte("started_at", oneDayAgo.toISOString()),
+    supabase
+      .from("page_views")
+      .select("path, started_at, last_activity_at, scroll_max")
+      .gte("started_at", oneDayAgo.toISOString())
+      .limit(1000),
+    supabase
+      .from("page_events")
+      .select("target, kind, path")
+      .gte("at", oneDayAgo.toISOString())
+      .limit(2000),
+    supabase
+      .from("page_views")
+      .select("session_id, user_id, path, started_at, last_activity_at, scroll_max, ref")
+      .gte("started_at", oneDayAgo.toISOString())
+      .order("started_at", { ascending: false })
+      .limit(20),
+  ]);
+
+  // Aggregate per-path stats
+  const pathStats = new Map<
+    string,
+    { views: number; totalDwellSec: number; totalScroll: number }
+  >();
+  let totalDwell = 0;
+  let totalDwellCount = 0;
+  for (const v of views24h ?? []) {
+    const dwell =
+      (new Date(v.last_activity_at).getTime() -
+        new Date(v.started_at).getTime()) /
+      1000;
+    const s = pathStats.get(v.path) ?? {
+      views: 0,
+      totalDwellSec: 0,
+      totalScroll: 0,
+    };
+    s.views += 1;
+    s.totalDwellSec += Math.max(0, dwell);
+    s.totalScroll += v.scroll_max ?? 0;
+    pathStats.set(v.path, s);
+    if (dwell > 0 && dwell < 3600) {
+      totalDwell += dwell;
+      totalDwellCount += 1;
+    }
+  }
+  const topPaths = Array.from(pathStats.entries())
+    .map(([path, s]) => ({
+      path,
+      views: s.views,
+      avgDwell: s.views > 0 ? Math.round(s.totalDwellSec / s.views) : 0,
+      avgScroll: s.views > 0 ? Math.round(s.totalScroll / s.views) : 0,
+    }))
+    .sort((a, b) => b.views - a.views)
+    .slice(0, 10);
+
+  // Aggregate clicks
+  const clickAgg = new Map<string, number>();
+  for (const e of topClicks ?? []) {
+    if (!e.target) continue;
+    const key = `${e.kind}: ${e.target}`;
+    clickAgg.set(key, (clickAgg.get(key) ?? 0) + 1);
+  }
+  const topClickList = Array.from(clickAgg.entries())
+    .map(([label, n]) => ({ label, n }))
+    .sort((a, b) => b.n - a.n)
+    .slice(0, 10);
+
+  const avgDwellSec = totalDwellCount > 0 ? Math.round(totalDwell / totalDwellCount) : 0;
+
+  return (
+    <>
+      <section className="mt-10">
+        <h2 className="text-lg font-bold tracking-tight">Live sessions (last 24 hours)</h2>
+        <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <Stat
+            label="Active now"
+            value={String(activeNow ?? 0)}
+            sub="last 5 min"
+          />
+          <Stat
+            label="Page views (24h)"
+            value={String(views24h?.length ?? 0)}
+          />
+          <Stat
+            label="Sessions (24h)"
+            value={String(sessions24h ?? 0)}
+            sub="unique"
+          />
+          <Stat
+            label="Avg dwell"
+            value={`${avgDwellSec}s`}
+            sub="per page view"
+          />
+        </div>
+      </section>
+
+      <section className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+          <h3 className="text-base font-bold tracking-tight">
+            Top pages — views, dwell, scroll
+          </h3>
+          {topPaths.length === 0 ? (
+            <p className="mt-3 text-sm text-[var(--color-muted)] italic">
+              No traffic yet in the last 24h.
+            </p>
+          ) : (
+            <table className="mt-3 w-full text-sm">
+              <thead className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
+                <tr>
+                  <th className="text-left py-1">Path</th>
+                  <th className="text-right py-1">Views</th>
+                  <th className="text-right py-1">Dwell</th>
+                  <th className="text-right py-1">Scroll</th>
+                </tr>
+              </thead>
+              <tbody>
+                {topPaths.map((p) => (
+                  <tr key={p.path} className="border-t border-[var(--color-line)]">
+                    <td className="py-1.5 font-mono text-xs truncate max-w-[180px]">
+                      {p.path}
+                    </td>
+                    <td className="py-1.5 text-right tabular-nums font-semibold">
+                      {p.views}
+                    </td>
+                    <td className="py-1.5 text-right tabular-nums text-[var(--color-ink-soft)]">
+                      {p.avgDwell}s
+                    </td>
+                    <td className="py-1.5 text-right tabular-nums text-[var(--color-ink-soft)]">
+                      {p.avgScroll}%
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+          <p className="mt-3 text-xs text-[var(--color-muted)]">
+            Dwell = time from first to last activity on the page. Scroll = max
+            % of the page reached.
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+          <h3 className="text-base font-bold tracking-tight">Top click targets (24h)</h3>
+          {topClickList.length === 0 ? (
+            <p className="mt-3 text-sm text-[var(--color-muted)] italic">
+              No clicks tracked yet.
+            </p>
+          ) : (
+            <ol className="mt-3 space-y-1.5">
+              {topClickList.map((c, i) => (
+                <li
+                  key={c.label}
+                  className="flex items-center gap-2 text-xs"
+                >
+                  <span className="w-5 text-[var(--color-muted)] font-bold">
+                    {i + 1}
+                  </span>
+                  <span className="flex-1 truncate font-mono">{c.label}</span>
+                  <span className="font-bold tabular-nums">{c.n}</span>
+                </li>
+              ))}
+            </ol>
+          )}
+        </div>
+      </section>
+
+      <section className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+        <h3 className="text-base font-bold tracking-tight">
+          Recent sessions ({(recentSessions ?? []).length})
+        </h3>
+        {!recentSessions || recentSessions.length === 0 ? (
+          <p className="mt-3 text-sm text-[var(--color-muted)] italic">
+            No sessions recorded yet.
+          </p>
+        ) : (
+          <table className="mt-3 w-full text-xs">
+            <thead className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
+              <tr>
+                <th className="text-left py-1">Session</th>
+                <th className="text-left py-1">Path</th>
+                <th className="text-right py-1">Dwell</th>
+                <th className="text-right py-1">Scroll</th>
+                <th className="text-right py-1">User</th>
+              </tr>
+            </thead>
+            <tbody>
+              {recentSessions.map((s) => {
+                const dwell = Math.max(
+                  0,
+                  Math.round(
+                    (new Date(s.last_activity_at).getTime() -
+                      new Date(s.started_at).getTime()) /
+                      1000
+                  )
+                );
+                return (
+                  <tr
+                    key={`${s.session_id}-${s.path}-${s.started_at}`}
+                    className="border-t border-[var(--color-line)]"
+                  >
+                    <td className="py-1.5 font-mono text-[10px] text-[var(--color-muted)]">
+                      {s.session_id.slice(0, 8)}
+                    </td>
+                    <td className="py-1.5 font-mono truncate max-w-[200px]">{s.path}</td>
+                    <td className="py-1.5 text-right tabular-nums">{dwell}s</td>
+                    <td className="py-1.5 text-right tabular-nums">
+                      {s.scroll_max ?? 0}%
+                    </td>
+                    <td className="py-1.5 text-right">
+                      {s.user_id ? "signed in" : "anon"}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
+      </section>
+    </>
   );
 }
 

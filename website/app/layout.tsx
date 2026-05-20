@@ -2,9 +2,11 @@ import "./globals.css";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE } from "@/lib/site";
+import { Suspense } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { MobileSupportBar } from "@/components/MobileSupportBar";
+import { PageViewTracker } from "@/components/PageViewTracker";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
@@ -61,6 +63,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="flex-1 w-full pb-20 md:pb-0">{children}</main>
         <Footer />
         <MobileSupportBar />
+        <Suspense fallback={null}>
+          <PageViewTracker />
+        </Suspense>
         <Link
           href="#top"
           aria-hidden="true"
