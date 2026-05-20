@@ -158,9 +158,10 @@ function GrievancesView({ grievances }: { grievances: Awaited<ReturnType<typeof 
   return (
     <div className="space-y-3">
       {grievances.map((g) => (
-        <article
+        <Link
           key={g.id}
-          className="group rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-accent)] transition p-5"
+          href={`/case/grievances/${g.slug}`}
+          className="block group rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-accent)] transition p-5"
         >
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1 min-w-0">
@@ -191,7 +192,7 @@ function GrievancesView({ grievances }: { grievances: Awaited<ReturnType<typeof 
               </div>
             </div>
           </div>
-        </article>
+        </Link>
       ))}
     </div>
   );
@@ -229,9 +230,10 @@ function PeopleView({ people }: { people: Awaited<ReturnType<typeof getPeople>> 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
       {people.map((p) => (
-        <article
+        <Link
           key={p.id}
-          className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 hover:border-[var(--color-accent)] transition"
+          href={`/case/people/${p.slug}`}
+          className="block rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 hover:border-[var(--color-accent)] transition"
         >
           <h2 className="text-lg font-bold tracking-tight">{p.name}</h2>
           <p className="text-sm text-[var(--color-accent)] font-medium mt-0.5">
@@ -243,7 +245,7 @@ function PeopleView({ people }: { people: Awaited<ReturnType<typeof getPeople>> 
               {p.description}
             </p>
           ) : null}
-        </article>
+        </Link>
       ))}
     </div>
   );
@@ -253,11 +255,9 @@ function DocumentsView({ documents }: { documents: Awaited<ReturnType<typeof get
   return (
     <div className="space-y-2">
       {documents.map((d) => (
-        <a
+        <Link
           key={d.id}
-          href={d.file_url ?? d.external_url ?? "#"}
-          target="_blank"
-          rel="noopener noreferrer"
+          href={`/case/documents/${d.slug}`}
           className="block rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-accent)] transition p-4"
         >
           <div className="flex items-center justify-between gap-4">
@@ -286,7 +286,7 @@ function DocumentsView({ documents }: { documents: Awaited<ReturnType<typeof get
               Open →
             </span>
           </div>
-        </a>
+        </Link>
       ))}
     </div>
   );
