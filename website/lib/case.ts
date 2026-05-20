@@ -53,6 +53,9 @@ export type CaseDocument = {
   source: string | null;
   views_count: number;
   shares_count: number;
+  archived: boolean;
+  relevance: number;
+  transcript: string | null;
 };
 
 const GRIEVANCE_COLS =
@@ -62,7 +65,7 @@ const PERSON_COLS =
 const EVENT_COLS =
   "id, slug, title, description, event_date, location, views_count, shares_count";
 const DOCUMENT_COLS =
-  "id, slug, title, description, doc_type, document_date, file_url, external_url, source, views_count, shares_count";
+  "id, slug, title, description, doc_type, document_date, file_url, external_url, source, views_count, shares_count, archived, relevance, transcript";
 
 export async function getGrievances(): Promise<CaseGrievance[]> {
   const supabase = getSupabaseStaticClient();
@@ -133,7 +136,20 @@ export async function getDocuments(): Promise<CaseDocument[]> {
     .from("case_documents")
     .select(DOCUMENT_COLS)
     .eq("visibility", "public")
-    .order("document_date", { ascending: true, nullsFirst: false });
+    .eq("archived", false)
+    .order("document_date", { ascending: false, nullsFirst: false })
+    .order("relevance", { ascending: false })
+    .order("title", { ascending: true });
+  return (data ?? []) as CaseDocument[];
+}
+
+export async function getAllDocumentsForAdmin(): Promise<CaseDocument[]> {
+  const supabase = await getSupabaseServerClient();
+  const { data } = await supabase
+    .from("case_documents")
+    .select(DOCUMENT_COLS)
+    .order("document_date", { ascending: false, nullsFirst: false })
+    .order("slug", { ascending: true });
   return (data ?? []) as CaseDocument[];
 }
 
