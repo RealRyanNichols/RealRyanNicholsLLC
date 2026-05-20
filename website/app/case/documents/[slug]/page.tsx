@@ -7,6 +7,7 @@ import { ShareButton } from "@/components/ShareButton";
 import { CaseStats } from "@/components/CaseStats";
 import { CaseViewTracker } from "@/components/CaseViewTracker";
 import { SITE } from "@/lib/site";
+import { detectVideo } from "@/lib/video";
 
 export const revalidate = 300;
 
@@ -49,6 +50,7 @@ export default async function DocumentPage({
   const url = `${SITE.url}/case/documents/${d.slug}`;
   const externalUrl = d.file_url ?? d.external_url;
   const proxiedImage = `/api/case-doc/${d.slug}/image`;
+  const video = detectVideo(d.external_url);
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
@@ -100,25 +102,54 @@ export default async function DocumentPage({
       </div>
 
       <figure className="mt-8 rounded-xl overflow-hidden border border-[var(--color-line)] bg-black">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={proxiedImage}
-          alt={d.title}
-          loading="eager"
-          className="w-full h-auto block"
-        />
-        {externalUrl ? (
-          <figcaption className="px-4 py-3 text-xs text-[var(--color-muted)] flex items-center justify-end gap-3 flex-wrap">
-            <a
-              href={externalUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[var(--color-accent)] underline font-semibold"
-            >
-              Open source →
-            </a>
-          </figcaption>
-        ) : null}
+        {video ? (
+          <>
+            <div className={`relative w-full ${video.kind === "tiktok" ? "aspect-[9/16]" : "aspect-video"}`}>
+              <iframe
+                src={video.embedUrl}
+                title={d.title}
+                loading="eager"
+                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                referrerPolicy="strict-origin-when-cross-origin"
+                className="absolute inset-0 w-full h-full border-0"
+              />
+            </div>
+            <figcaption className="px-4 py-3 text-xs text-[var(--color-muted)] flex items-center justify-between gap-3 flex-wrap">
+              <span>Source: {video.platformLabel}</span>
+              <a
+                href={video.watchUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[var(--color-accent)] underline font-semibold"
+              >
+                Open on {video.platformLabel} →
+              </a>
+            </figcaption>
+          </>
+        ) : (
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={proxiedImage}
+              alt={d.title}
+              loading="eager"
+              className="w-full h-auto block"
+            />
+            {externalUrl ? (
+              <figcaption className="px-4 py-3 text-xs text-[var(--color-muted)] flex items-center justify-end gap-3 flex-wrap">
+                <a
+                  href={externalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[var(--color-accent)] underline font-semibold"
+                >
+                  Open source →
+                </a>
+              </figcaption>
+            ) : null}
+          </>
+        )}
       </figure>
 
       <div className="mt-10 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-ink-soft)]">
