@@ -38,7 +38,39 @@ const SECTION_LEAD: Record<CaseAuthorRole, string> = {
   other: "Other documents on file.",
 };
 
-function groupByAuthor(docs: CaseDocument[]): { role: CaseAuthorRole; docs: CaseDocument[] }[] {
+// Group documents that share the same series_lead_slug so multi-page items
+// render together. Returns either a list of single docs or a list of series
+// (single docs are series of length 1).
+type DocSeries = {
+  lead: CaseDocument;
+  pages: CaseDocument[]; // ordered by series_position; the lead is always page 1
+};
+
+function buildSeries(docs: CaseDocument[]): DocSeries[] {
+  const byLead = new Map<string, CaseDocument[]>();
+  const standalone: CaseDocument[] = [];
+  for (const d of docs) {
+    if (d.series_lead_slug) {
+      const arr = byLead.get(d.series_lead_slug) ?? [];
+      arr.push(d);
+      byLead.set(d.series_lead_slug, arr);
+    } else {
+      standalone.push(d);
+    }
+  }
+  const result: DocSeries[] = [];
+  for (const d of standalone) {
+    result.push({ lead: d, pages: [d] });
+  }
+  for (const [leadSlug, pages] of byLead) {
+    pages.sort((a, b) => a.series_position - b.series_position);
+    const lead = pages.find((p) => p.slug === leadSlug) ?? pages[0];
+    result.push({ lead, pages });
+  }
+  return result;
+}
+
+function groupByAuthor(series: DocSeries[]): { role: CaseAuthorRole; series: DocSeries[] }[] {
   const order: CaseAuthorRole[] = [
     "ryan",
     "co_detainee",
@@ -51,8 +83,8 @@ function groupByAuthor(docs: CaseDocument[]): { role: CaseAuthorRole; docs: Case
     "other",
   ];
   return order
-    .map((role) => ({ role, docs: docs.filter((d) => d.author_role === role) }))
-    .filter((g) => g.docs.length > 0);
+    .map((role) => ({ role, series: series.filter((s) => s.lead.author_role === role) }))
+    .filter((g) => g.series.length > 0);
 }
 
 export function EvidenceGrid({ documents }: { documents: CaseDocument[] }) {
@@ -63,72 +95,89 @@ export function EvidenceGrid({ documents }: { documents: CaseDocument[] }) {
       </p>
     );
   }
-  const groups = groupByAuthor(documents);
+  const allSeries = buildSeries(documents);
+  const groups = groupByAuthor(allSeries);
   return (
     <div className="space-y-10">
-      {groups.map(({ role, docs }) => (
-        <section key={role}>
-          <div className="mb-4">
-            <h3 className="text-sm font-bold tracking-tight flex items-center gap-2 flex-wrap">
-              <span className={`inline-block rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-wider font-bold ${ROLE_CLASS[role]}`}>
-                {ROLE_LABEL[role]}
-              </span>
-              <span>
-                {docs.length} {docs.length === 1 ? "document" : "documents"}
-              </span>
-            </h3>
-            <p className="text-xs text-[var(--color-muted)] mt-1 max-w-2xl">
-              {SECTION_LEAD[role]}
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {docs.map((d) => (
-              <article
-                key={d.id}
-                className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] overflow-hidden"
-              >
-                <a
-                  href={`/api/case-doc/${d.slug}/image`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block bg-black"
-                  aria-label={`Open ${d.title} full size`}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={`/api/case-doc/${d.slug}/image`}
-                    alt={d.title}
-                    loading="lazy"
-                    className="w-full h-auto block"
-                  />
-                </a>
-                <div className="px-4 py-3 flex items-baseline justify-between gap-3 flex-wrap">
-                  <div className="min-w-0 flex-1">
-                    <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent)] font-bold">
-                      {d.doc_type}
-                      {d.document_date ? (
-                        <>
-                          {" · "}
-                          {format(new Date(d.document_date), "MMM d, yyyy")}
-                        </>
-                      ) : null}
-                    </p>
-                    <p className="mt-1 text-sm font-semibold leading-snug text-[var(--color-ink)]">
-                      {d.title}
-                    </p>
-                  </div>
-                  <Link
-                    href={`/case/documents/${d.slug}`}
-                    className="text-xs font-semibold text-[var(--color-accent)] hover:underline whitespace-nowrap"
-                  >
-                    Share & discuss →
-                  </Link>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-      ))}
+      {groups.map(({ role, series }) => {
+        const docCount = series.reduce((n, s) => n + s.pages.length, 0);
+        return (
+          <section key={role}>
+            <div className="mb-4">
+              <h3 className="text-sm font-bold tracking-tight flex items-center gap-2 flex-wrap">
+                <span className={`inline-block rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-wider font-bold ${ROLE_CLASS[role]}`}>
+                  {ROLE_LABEL[role]}
+                </span>
+                <span>
+                  {docCount} {docCount === 1 ? "document" : "documents"}
+                  {series.length !== docCount ? ` in ${series.length} ${series.length === 1 ? "item" : "items"}` : ""}
+                </span>
+              </h3>
+              <p className="text-xs text-[var(--color-muted)] mt-1 max-w-2xl">
+                {SECTION_LEAD[role]}
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {series.map((s) => (
+                <SeriesCard key={s.lead.id} series={s} />
+              ))}
+            </div>
+          </section>
+        );
+      })}
     </div>
+  );
+}
+
+function SeriesCard({ series }: { series: DocSeries }) {
+  const lead = series.lead;
+  const multi = series.pages.length > 1;
+  const title = multi ? lead.series_title ?? lead.title : lead.title;
+  return (
+    <article className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] overflow-hidden">
+      <div className="px-4 pt-3 pb-2 flex items-baseline justify-between gap-3 flex-wrap">
+        <div className="min-w-0 flex-1">
+          <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent)] font-bold">
+            {lead.doc_type}
+            {lead.document_date ? (
+              <>
+                {" · "}
+                {format(new Date(lead.document_date), "MMM d, yyyy")}
+              </>
+            ) : null}
+            {multi ? <span className="ml-2 text-[var(--color-muted)]">{series.pages.length} pages</span> : null}
+          </p>
+          <p className="mt-1 text-sm font-semibold leading-snug text-[var(--color-ink)]">
+            {title}
+          </p>
+        </div>
+        <Link
+          href={`/case/documents/${lead.slug}`}
+          className="text-xs font-semibold text-[var(--color-accent)] hover:underline whitespace-nowrap"
+        >
+          Share & discuss →
+        </Link>
+      </div>
+      <div className="bg-black">
+        {series.pages.map((p, i) => (
+          <a
+            key={p.id}
+            href={`/api/case-doc/${p.slug}/image`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block"
+            aria-label={`Open ${multi ? `page ${i + 1} of ${title}` : title} full size`}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`/api/case-doc/${p.slug}/image`}
+              alt={multi ? `${title} — page ${i + 1}` : p.title}
+              loading="lazy"
+              className="w-full h-auto block"
+            />
+          </a>
+        ))}
+      </div>
+    </article>
   );
 }

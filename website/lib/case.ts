@@ -68,6 +68,9 @@ export type CaseDocument = {
   relevance: number;
   transcript: string | null;
   author_role: CaseAuthorRole;
+  series_lead_slug: string | null;
+  series_position: number;
+  series_title: string | null;
 };
 
 const GRIEVANCE_COLS =
@@ -77,7 +80,7 @@ const PERSON_COLS =
 const EVENT_COLS =
   "id, slug, title, description, event_date, location, views_count, shares_count";
 const DOCUMENT_COLS =
-  "id, slug, title, description, doc_type, document_date, file_url, external_url, source, views_count, shares_count, archived, relevance, transcript, author_role";
+  "id, slug, title, description, doc_type, document_date, file_url, external_url, source, views_count, shares_count, archived, relevance, transcript, author_role, series_lead_slug, series_position, series_title";
 
 // Authorship ordering — Ryan's own paperwork is priority #1, corroborating
 // witness statements from fellow detainees are priority #2, everything else
