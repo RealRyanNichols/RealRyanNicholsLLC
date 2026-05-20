@@ -1,87 +1,157 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Support",
-  description: "Ways to support Ryan Nichols' writing and rebuild.",
+  title: "Help Ryan rebuild",
+  description:
+    "After pretrial detention and a weaponized DOJ prosecution, Ryan Nichols is rebuilding his life. Here's how you can help.",
 };
 
 export default function SupportPage() {
   const donateUrl = process.env.NEXT_PUBLIC_DONATION_URL;
+  const mailing = SITE.mailingAddress;
 
   return (
-    <article className="mx-auto max-w-3xl px-4 py-12">
-      <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-[1.05]">
-        Support the rebuild
-      </h1>
-      <p className="mt-3 text-base text-[var(--color-ink-soft)]">
-        Three ways. None of them are required to read the site.
+    <article className="mx-auto max-w-3xl px-4 py-10">
+      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+        Help me rebuild
       </p>
+      <h1 className="mt-2 text-4xl sm:text-5xl font-bold tracking-tight leading-[1.05]">
+        I&apos;m starting over from less than zero.
+      </h1>
+
+      <section className="prose-body mt-6 space-y-4">
+        <p>
+          The Biden DOJ weaponized the full force of the federal government
+          against me and other January 6 defendants. I came home to a life I
+          don&apos;t recognize. Right now I&apos;m fighting to cover rent, food,
+          and the basics — while also trying to access the mental healthcare
+          I need after what was done to me in pretrial detention.
+        </p>
+        <p>
+          I&apos;m not asking for sympathy. I&apos;m asking the people who&apos;ve
+          followed my story to help me get back on my feet so I can keep
+          telling it — on my own domain, where no algorithm can throttle me
+          and no platform can silence me.
+        </p>
+        <p>
+          Every dollar goes directly to me. There is no organization, no
+          middleman, no overhead. It pays for:
+        </p>
+        <ul>
+          <li><strong>Rent</strong> and basic living expenses while I rebuild</li>
+          <li><strong>Food</strong> for me and my family</li>
+          <li><strong>Mental healthcare</strong> — therapy, the kind I couldn&apos;t get inside</li>
+          <li><strong>Medical care</strong> I can&apos;t afford without insurance</li>
+          <li>Equipment to keep posting — camera, mic, hosting, the work that goes into this site</li>
+        </ul>
+      </section>
 
       {donateUrl ? (
-        <section className="mt-8 rounded-2xl border border-[var(--color-line)] bg-gradient-to-br from-[var(--color-surface-2)] to-[var(--color-surface)] p-6 sm:p-8 relative overflow-hidden">
+        <section className="mt-10 rounded-2xl border border-[var(--color-line)] bg-gradient-to-br from-[var(--color-surface-2)] to-[var(--color-surface)] p-6 sm:p-8 relative overflow-hidden">
           <div
-            className="pointer-events-none absolute -top-20 -right-20 h-48 w-48 rounded-full blur-3xl"
+            className="pointer-events-none absolute -top-24 -right-24 h-56 w-56 rounded-full blur-3xl"
             style={{ background: "var(--color-accent-glow)" }}
             aria-hidden
           />
           <p className="relative text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
-            Send a tip
+            Send a gift
           </p>
           <h2 className="relative font-display text-2xl sm:text-3xl mt-2 text-[var(--color-ink)]">
-            One-time gift via Stripe
+            One-time donation via Stripe
           </h2>
           <p className="relative mt-3 text-[var(--color-ink-soft)] leading-relaxed">
-            Direct contribution. No middleman fees besides what the card
-            networks charge. Every dollar funds writing time, equipment, and
-            keeping this site independent of any platform.
+            Direct to me. Any amount helps. Card / Apple Pay / Google Pay all
+            work through the secure Stripe page.
           </p>
           <a
             href={donateUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-accent relative inline-flex items-center mt-5 rounded-full px-6 py-2.5 text-sm transition"
+            className="btn-accent relative inline-flex items-center mt-5 rounded-full px-6 py-3 text-sm font-bold transition"
           >
             Open the donation page →
           </a>
+          <p className="relative mt-4 text-xs text-[var(--color-muted)]">
+            Stripe Payment Link · the payment goes directly to my account, not
+            through any organization.
+          </p>
         </section>
-      ) : null}
+      ) : (
+        <section className="mt-10 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6">
+          <p className="text-sm text-[var(--color-ink-soft)]">
+            A direct donation link is being finalized. In the meantime,
+            subscribing and sharing posts is the next-best way to help.
+          </p>
+        </section>
+      )}
 
-      <div className="prose-body mt-10 space-y-4">
-        <h2 className="font-display text-2xl text-[var(--color-ink)] mt-2">
-          Share a post
+      <section className="mt-10">
+        <h2 className="font-display text-2xl text-[var(--color-ink)]">
+          Other ways to help — every one of these matters
         </h2>
-        <p>
-          The single most useful thing you can do, at zero cost, is send a post
-          to one person who would benefit from it. Algorithms don&apos;t move
-          this place. People do.
-        </p>
 
-        <h2 className="font-display text-2xl text-[var(--color-ink)] mt-8">
-          Subscribe by email
-        </h2>
-        <p>
-          The signup form on the home page puts new posts straight in your
-          inbox. No platform in the middle, no follower count that can be
-          quietly throttled.
-        </p>
-
-        {!donateUrl ? (
-          <>
-            <h2 className="font-display text-2xl text-[var(--color-ink)] mt-8">
-              Send a tip
-            </h2>
-            <p>
-              A donation link will appear here once it&apos;s wired up. For now,
-              the best way to send something my way is to subscribe and forward
-              a post.
+        <div className="mt-4 space-y-4">
+          <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+            <h3 className="text-lg font-bold tracking-tight">Subscribe by email</h3>
+            <p className="mt-2 text-sm text-[var(--color-ink-soft)] leading-relaxed">
+              The signup form on the home page sends new posts straight to your
+              inbox. No platform in the middle. Knowing real people are listening
+              keeps me writing.
             </p>
-          </>
-        ) : null}
+            <Link
+              href="/"
+              className="inline-flex items-center mt-3 text-sm font-semibold text-[var(--color-accent)] hover:underline underline-offset-4"
+            >
+              Subscribe on the home page →
+            </Link>
+          </div>
 
-        <p className="text-[var(--color-muted)] italic">
-          Thank you for showing up.
-        </p>
-      </div>
+          <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+            <h3 className="text-lg font-bold tracking-tight">Share a post</h3>
+            <p className="mt-2 text-sm text-[var(--color-ink-soft)] leading-relaxed">
+              Algorithms don&apos;t move this place. People do. If something
+              I&apos;ve written hits, send it to one person who needs to read
+              it. That&apos;s how the audience grows without me begging X or
+              Facebook to let it through.
+            </p>
+          </div>
+
+          <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+            <h3 className="text-lg font-bold tracking-tight">Read the case</h3>
+            <p className="mt-2 text-sm text-[var(--color-ink-soft)] leading-relaxed">
+              The grievances, the people, the documents — they&apos;re all on{" "}
+              <Link href="/case" className="text-[var(--color-accent)] underline underline-offset-4">the case page</Link>.
+              Read it. Make up your own mind. Share what convicts you.
+            </p>
+          </div>
+
+          {mailing ? (
+            <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+              <h3 className="text-lg font-bold tracking-tight">Mail a paper check or letter</h3>
+              <p className="mt-2 text-sm text-[var(--color-ink-soft)] leading-relaxed">
+                If you&apos;d rather send something through the mail:
+              </p>
+              <p className="mt-2 text-sm font-mono bg-[var(--color-surface-2)] border border-[var(--color-line)] rounded-md px-3 py-2">
+                {mailing}
+              </p>
+            </div>
+          ) : null}
+
+          <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+            <h3 className="text-lg font-bold tracking-tight">Pray for me</h3>
+            <p className="mt-2 text-sm text-[var(--color-ink-soft)] leading-relaxed">
+              For my mental health, for my family, for the work of telling the
+              truth without burning out. Genesis 50:20 has carried me through.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <p className="mt-10 text-[var(--color-muted)] italic">
+        Thank you for showing up.
+      </p>
     </article>
   );
 }
