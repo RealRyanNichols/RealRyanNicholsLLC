@@ -283,6 +283,12 @@ const NARRATIVE_ACTS: { range: [number, number]; label: string; tag: string; lea
     tag: "Not just one jail",
     lead: "The treatment did not stop at the DC DOC fence line — it followed Ryan to Rappahannock Regional Jail and was inflicted on other J6 defendants at Northern Neck. Unannounced transfers. Identical conditions. And a grievance system that names U.S. Marshals and a DC DOC Chief acknowledging it is broken.",
   },
+  {
+    range: [32, 32],
+    label: "Act VII — The Damage Inflicted",
+    tag: "What it cost him",
+    lead: "Years of pretrial detention, denied family visits, intercepted mail, transfers without notice — the prosecution did not just deprive Ryan of his liberty. It destroyed his marriage and took him out of his children's daily lives. This is the harm the Anti-Weaponization Fund exists to remedy.",
+  },
 ];
 
 function GrievancesView({ grievances }: { grievances: Awaited<ReturnType<typeof getGrievances>> }) {

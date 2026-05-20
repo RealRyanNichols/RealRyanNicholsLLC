@@ -1,8 +1,8 @@
 export const SITE = {
   name: "Ryan Nichols",
-  tagline: "Husband, father, builder. Healing in public.",
+  tagline: "Father, builder, J6 survivor. Healing in public.",
   description:
-    "The personal feed of Ryan Nichols. Faith, family, building, and the long road of healing in public — written from his own front porch, on a domain he owns.",
+    "The personal feed of Ryan Nichols. Faith, fatherhood, building, and the long road of healing in public — written from his own front porch, on a domain he owns.",
   url: process.env.SITE_URL ?? "https://realryannichols.com",
   author: "Ryan Nichols",
   // Drop a square photo at website/public/avatar.jpg and set this to
