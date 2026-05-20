@@ -38,7 +38,7 @@ export default async function HomePage() {
       <aside className="space-y-5">
         <VerseSidebar />
         <SignupForm disabled={signupDisabled} />
-        <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5 text-sm text-[var(--color-ink-soft)]">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 text-sm text-[var(--color-ink-soft)]">
           <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] mb-2">
             About this site
           </p>

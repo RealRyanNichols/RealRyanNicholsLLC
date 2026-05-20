@@ -13,7 +13,7 @@ export function ReadNext({ posts }: { posts: Post[] }) {
         {posts.map((p) => (
           <li
             key={p.id}
-            className="rounded-2xl border border-[var(--color-line)] bg-white p-5 hover:border-[var(--color-accent)] transition"
+            className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 hover:border-[var(--color-accent)] transition"
           >
             <Link href={`/posts/${p.slug}`} className="block">
               <h3 className="font-semibold tracking-tight text-lg leading-snug">

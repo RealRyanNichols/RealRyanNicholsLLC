@@ -14,7 +14,7 @@ export function SignupForm({ disabled = false }: { disabled?: boolean }) {
 
   if (disabled) {
     return (
-      <div className="rounded-2xl border border-[var(--color-line)] bg-white p-5">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
         <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] mb-2">
           Email signup
         </p>
@@ -53,7 +53,7 @@ export function SignupForm({ disabled = false }: { disabled?: boolean }) {
   return (
     <form
       onSubmit={onSubmit}
-      className="rounded-2xl border border-[var(--color-line)] bg-white p-5"
+      className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
     >
       <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] mb-2">
         Get updates by email
