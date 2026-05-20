@@ -77,6 +77,7 @@ export async function GET() {
           >
             <div style={{ display: "flex" }}>· United States Marine Corps Veteran</div>
             <div style={{ display: "flex" }}>· Search and Rescue Specialist</div>
+            <div style={{ display: "flex" }}>· Founder, Wholesale Universe, Inc.</div>
             <div style={{ display: "flex" }}>· Jan 6th Pardoned Defendant</div>
             <div style={{ display: "flex" }}>· Weaponized and tortured by Biden DOJ</div>
           </div>

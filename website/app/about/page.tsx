@@ -13,9 +13,14 @@ export default function AboutPage() {
       <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight">About</h1>
       <div className="prose-body mt-6">
         <p>
-          I&apos;m Ryan Nichols. Father, builder, J6 survivor. I&apos;ve spent a lot of years on
-          platforms I don&apos;t own — getting boosted, getting throttled, getting suspended,
-          getting reinstated, watching the whole thing reset every few months.
+          I&apos;m Ryan Nichols. United States Marine Corps veteran. Founder of Wholesale
+          Universe, Inc. — a multi-million-dollar wholesale/retail company I built from
+          scratch. Search and Rescue specialist. Father. J6 survivor.
+        </p>
+        <p>
+          I&apos;ve spent a lot of years on platforms I don&apos;t own — getting boosted,
+          getting throttled, getting suspended, getting reinstated, watching the whole
+          thing reset every few months.
         </p>
         <p>
           This site is the opposite of that. It&apos;s a domain I own and a feed I write.

@@ -78,10 +78,11 @@ export default async function BriefPage() {
               United States v. Nichols
             </h1>
             <p className="mt-3 text-base text-[var(--color-ink-soft)] max-w-2xl leading-relaxed print:text-black">
-              Ryan Nichols — US Marine Corps Veteran, Search and Rescue
-              Specialist, Jan 6th Pardoned Defendant. The only January 6th
-              defendant whose judge admitted, multiple times on the record,
-              that his due process rights were violated.
+              Ryan Nichols — US Marine Corps Veteran, Founder of Wholesale
+              Universe, Inc. (a multi-million-dollar wholesale/retail company),
+              Search and Rescue Specialist, Jan 6th Pardoned Defendant. The
+              only January 6th defendant whose judge admitted, multiple times
+              on the record, that his due process rights were violated.
             </p>
           </div>
           <div className="flex items-center gap-2 print:hidden">
@@ -108,8 +109,10 @@ export default async function BriefPage() {
           Executive summary
         </h2>
         <p>
-          Ryan Nichols, a United States Marine Corps veteran and active
-          Search and Rescue specialist, was prosecuted, detained pretrial, and
+          Ryan Nichols, a United States Marine Corps veteran, founder of
+          Wholesale Universe, Inc. (a multi-million-dollar wholesale/retail
+          company), and active Search and Rescue specialist, was prosecuted,
+          detained pretrial, and
           tortured by a weaponized Biden-era Department of Justice for his
           conduct on January 6, 2021. He was pardoned by President Trump in
           January 2025.
