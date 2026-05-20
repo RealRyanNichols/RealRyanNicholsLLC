@@ -212,7 +212,7 @@ export default async function DamagesPage() {
           <li>
             <span className="font-bold text-[var(--color-ink)]">Public accountability</span> for
             the named DC DOC, U.S. Marshals, and federal-court officials whose conduct is in the
-            documentary record — including the Brady violation surrounding Marcus DePiola and
+            documentary record — including the Brady violation surrounding Marcus DiPaola and
             1% Watchdog.
           </li>
         </ul>

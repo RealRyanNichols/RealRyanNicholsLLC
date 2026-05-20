@@ -126,7 +126,7 @@ export default async function BriefPage() {
           During pretrial detention, Mr. Nichols personally filed{" "}
           <strong>{ryanFiledGrievances} formal Inmate Grievance Procedure forms</strong>{" "}
           across <strong>{grievances.length} distinct grievance categories</strong>{" "}
-          — documenting the Brady-suppressed Marcus DePiola / 1% Watchdog
+          — documenting the Brady-suppressed Marcus DiPaola / 1% Watchdog
           informant relationship, violations of his Sixth Amendment right to
           counsel and discovery, deprivation of mental health care that
           culminated in a neighboring inmate&apos;s suicide, OC-spray attacks
