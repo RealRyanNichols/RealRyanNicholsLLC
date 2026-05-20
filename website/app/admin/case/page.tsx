@@ -1,10 +1,11 @@
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { format } from "date-fns";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
-import { getDocuments } from "@/lib/case";
 import { CaseUploadForm } from "@/components/CaseUploadForm";
+import { CaseDocumentEditor } from "@/components/CaseDocumentEditor";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Upload case documents",
@@ -29,7 +30,11 @@ export default async function AdminCasePage() {
     );
   }
 
-  const documents = await getDocuments();
+  const { data: documents } = await supabase
+    .from("case_documents")
+    .select("id, slug, title, description, doc_type, document_date, file_url, external_url, visibility")
+    .order("created_at", { ascending: false });
+  const docs = documents ?? [];
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
@@ -53,7 +58,7 @@ export default async function AdminCasePage() {
       <section className="mt-12">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold tracking-tight">
-            Existing documents ({documents.length})
+            All documents ({docs.length})
           </h2>
           <Link
             href="/case?view=documents"
@@ -62,37 +67,7 @@ export default async function AdminCasePage() {
             View public list →
           </Link>
         </div>
-        <ul className="space-y-2">
-          {documents.slice(0, 15).map((d) => (
-            <li
-              key={d.id}
-              className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-3 flex items-center justify-between gap-3"
-            >
-              <div className="min-w-0 flex-1">
-                <p className="text-sm font-semibold truncate">{d.title}</p>
-                <p className="text-xs text-[var(--color-muted)] mt-0.5">
-                  {d.doc_type}
-                  {d.document_date
-                    ? ` · ${format(new Date(d.document_date), "MMM d, yyyy")}`
-                    : ""}
-                </p>
-              </div>
-              <a
-                href={d.file_url ?? d.external_url ?? "#"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs font-semibold text-[var(--color-accent)] hover:underline whitespace-nowrap"
-              >
-                Open
-              </a>
-            </li>
-          ))}
-        </ul>
-        {documents.length > 15 ? (
-          <p className="mt-3 text-xs text-[var(--color-muted)]">
-            Showing the 15 most recent. {documents.length - 15} more on /case.
-          </p>
-        ) : null}
+        <CaseDocumentEditor documents={docs} />
       </section>
     </article>
   );
