@@ -1,10 +1,11 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getPeople, getPersonBySlug } from "@/lib/case";
+import { getPeople, getPersonBySlug, getDocumentsForPerson } from "@/lib/case";
 import { ShareButton } from "@/components/ShareButton";
 import { CaseStats } from "@/components/CaseStats";
 import { CaseViewTracker } from "@/components/CaseViewTracker";
+import { EvidenceGrid } from "@/components/EvidenceGrid";
 import { SITE } from "@/lib/site";
 
 export const revalidate = 300;
@@ -47,6 +48,7 @@ export default async function PersonPage({
   const p = await getPersonBySlug(slug);
   if (!p) notFound();
   const url = `${SITE.url}/case/people/${p.slug}`;
+  const evidence = await getDocumentsForPerson(p.id);
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
@@ -88,6 +90,20 @@ export default async function PersonPage({
       <div className="mt-4">
         <CaseStats views={p.views_count} shares={p.shares_count} />
       </div>
+
+      <section className="mt-12 border-t border-[var(--color-line)] pt-8">
+        <div className="border-l-2 border-[var(--color-accent)] pl-4 mb-5">
+          <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent)] font-bold">
+            Evidence on file
+          </p>
+          <h2 className="text-lg sm:text-xl font-bold tracking-tight">
+            {evidence.length === 0
+              ? "No scans linked yet"
+              : `${evidence.length} ${evidence.length === 1 ? "document" : "documents"} on file`}
+          </h2>
+        </div>
+        <EvidenceGrid documents={evidence} />
+      </section>
 
       <div className="mt-10 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-ink-soft)]">
         <Link href="/support" className="text-[var(--color-accent)] underline font-semibold">
