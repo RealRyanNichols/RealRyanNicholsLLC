@@ -1,0 +1,104 @@
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { getPeople } from "@/lib/case";
+import { ShareButton } from "@/components/ShareButton";
+import { getSupabaseStaticClient } from "@/lib/supabase/static";
+import { SITE } from "@/lib/site";
+
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  const list = await getPeople();
+  return list.map((p) => ({ slug: p.slug }));
+}
+
+async function getPersonBySlug(slug: string) {
+  const supabase = getSupabaseStaticClient();
+  const { data } = await supabase
+    .from("case_people")
+    .select("id, slug, name, role, agency, description")
+    .eq("slug", slug)
+    .eq("visibility", "public")
+    .maybeSingle();
+  return data;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const p = await getPersonBySlug(slug);
+  if (!p) return { title: "Not found" };
+  const url = `${SITE.url}/case/people/${p.slug}`;
+  const title = `${p.name} · ${p.role ?? "person of record"}`;
+  return {
+    title,
+    description: p.description ?? `Person of record in United States v. Nichols.`,
+    openGraph: {
+      type: "article",
+      title,
+      description: p.description ?? undefined,
+      url,
+    },
+    twitter: { card: "summary_large_image", title, description: p.description ?? undefined },
+    alternates: { canonical: url },
+  };
+}
+
+export default async function PersonPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const p = await getPersonBySlug(slug);
+  if (!p) notFound();
+  const url = `${SITE.url}/case/people/${p.slug}`;
+
+  return (
+    <article className="mx-auto max-w-3xl px-4 py-10">
+      <nav className="text-sm text-[var(--color-muted)] mb-4">
+        <Link href="/case" className="hover:underline">
+          ← The Case
+        </Link>{" "}
+        ·{" "}
+        <Link href="/case?view=people" className="hover:underline">
+          All people
+        </Link>
+      </nav>
+
+      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+        Person of record
+      </p>
+      <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">
+        {p.name}
+      </h1>
+      {p.role ? (
+        <p className="mt-1 text-base font-medium text-[var(--color-accent)]">
+          {p.role}
+          {p.agency ? ` · ${p.agency}` : ""}
+        </p>
+      ) : null}
+
+      {p.description ? (
+        <p className="mt-6 text-base sm:text-lg text-[var(--color-ink-soft)] leading-relaxed whitespace-pre-wrap">
+          {p.description}
+        </p>
+      ) : null}
+
+      <div className="mt-8 flex items-center gap-3">
+        <ShareButton url={url} title={`${p.name} — United States v. Nichols`} />
+      </div>
+
+      <div className="mt-10 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-ink-soft)]">
+        <Link href="/support" className="text-[var(--color-accent)] underline font-semibold">
+          Support Ryan's rebuild
+        </Link>{" "}
+        — every dollar funds keeping this record public.
+      </div>
+    </article>
+  );
+}
