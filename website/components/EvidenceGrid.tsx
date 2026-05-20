@@ -26,6 +26,18 @@ const ROLE_CLASS: Record<CaseAuthorRole, string> = {
   other: "bg-slate-800 text-slate-300 border-slate-600",
 };
 
+const SECTION_LEAD: Record<CaseAuthorRole, string> = {
+  ryan: "Ryan Nichols' own paperwork — grievances, motions, letters, cell notes.",
+  co_detainee: "Corroborating witness statements and letters from fellow January 6 detainees.",
+  attorney: "Defense counsel correspondence (Joseph McBride, Jonathan Gross).",
+  court: "Court orders, rulings, transcripts, and docket entries.",
+  government: "Responses from DC DOC, the U.S. Marshals, and federal agencies.",
+  family: "Letters to Ryan from his wife Bonnie and family.",
+  media: "Press coverage.",
+  evidence: "Photographs and exhibits.",
+  other: "Other documents on file.",
+};
+
 function groupByAuthor(docs: CaseDocument[]): { role: CaseAuthorRole; docs: CaseDocument[] }[] {
   const order: CaseAuthorRole[] = [
     "ryan",
@@ -43,18 +55,6 @@ function groupByAuthor(docs: CaseDocument[]): { role: CaseAuthorRole; docs: Case
     .filter((g) => g.docs.length > 0);
 }
 
-const SECTION_LEAD: Record<CaseAuthorRole, string> = {
-  ryan: "Ryan Nichols' own paperwork — grievances, motions, letters, cell notes.",
-  co_detainee: "Corroborating witness statements and letters from fellow January 6 detainees.",
-  attorney: "Defense counsel correspondence (Joseph McBride, Jonathan Gross).",
-  court: "Court orders, rulings, transcripts, and docket entries.",
-  government: "Responses from DC DOC, the U.S. Marshals, and federal agencies.",
-  family: "Letters to Ryan from his wife Bonnie and family.",
-  media: "Press coverage.",
-  evidence: "Photographs and exhibits.",
-  other: "Other documents on file.",
-};
-
 export function EvidenceGrid({ documents }: { documents: CaseDocument[] }) {
   if (documents.length === 0) {
     return (
@@ -65,54 +65,66 @@ export function EvidenceGrid({ documents }: { documents: CaseDocument[] }) {
   }
   const groups = groupByAuthor(documents);
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       {groups.map(({ role, docs }) => (
         <section key={role}>
-          <div className="flex items-baseline justify-between gap-3 mb-3 flex-wrap">
-            <div>
-              <h3 className="text-sm font-bold tracking-tight">
-                <span className={`inline-block rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-wider font-bold mr-2 ${ROLE_CLASS[role]}`}>
-                  {ROLE_LABEL[role]}
-                </span>
+          <div className="mb-4">
+            <h3 className="text-sm font-bold tracking-tight flex items-center gap-2 flex-wrap">
+              <span className={`inline-block rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-wider font-bold ${ROLE_CLASS[role]}`}>
+                {ROLE_LABEL[role]}
+              </span>
+              <span>
                 {docs.length} {docs.length === 1 ? "document" : "documents"}
-              </h3>
-              <p className="text-xs text-[var(--color-muted)] mt-1 max-w-2xl">
-                {SECTION_LEAD[role]}
-              </p>
-            </div>
+              </span>
+            </h3>
+            <p className="text-xs text-[var(--color-muted)] mt-1 max-w-2xl">
+              {SECTION_LEAD[role]}
+            </p>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {docs.map((d) => (
-              <Link
+              <article
                 key={d.id}
-                href={`/case/documents/${d.slug}`}
-                className="group block rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] overflow-hidden hover:border-[var(--color-accent)] transition"
+                className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] overflow-hidden"
               >
-                <div className="aspect-[3/4] bg-black overflow-hidden">
+                <a
+                  href={`/api/case-doc/${d.slug}/image`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block bg-black"
+                  aria-label={`Open ${d.title} full size`}
+                >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={`/api/case-doc/${d.slug}/image`}
                     alt={d.title}
                     loading="lazy"
-                    draggable={false}
-                    className="w-full h-full object-cover select-none group-hover:opacity-90 transition"
+                    className="w-full h-auto block"
                   />
+                </a>
+                <div className="px-4 py-3 flex items-baseline justify-between gap-3 flex-wrap">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent)] font-bold">
+                      {d.doc_type}
+                      {d.document_date ? (
+                        <>
+                          {" · "}
+                          {format(new Date(d.document_date), "MMM d, yyyy")}
+                        </>
+                      ) : null}
+                    </p>
+                    <p className="mt-1 text-sm font-semibold leading-snug text-[var(--color-ink)]">
+                      {d.title}
+                    </p>
+                  </div>
+                  <Link
+                    href={`/case/documents/${d.slug}`}
+                    className="text-xs font-semibold text-[var(--color-accent)] hover:underline whitespace-nowrap"
+                  >
+                    Share & discuss →
+                  </Link>
                 </div>
-                <div className="p-3">
-                  <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent)] font-bold">
-                    {d.doc_type}
-                    {d.document_date ? (
-                      <>
-                        {" · "}
-                        {format(new Date(d.document_date), "MMM d, yyyy")}
-                      </>
-                    ) : null}
-                  </p>
-                  <p className="mt-1 text-xs font-semibold leading-snug line-clamp-3 text-[var(--color-ink)]">
-                    {d.title}
-                  </p>
-                </div>
-              </Link>
+              </article>
             ))}
           </div>
         </section>

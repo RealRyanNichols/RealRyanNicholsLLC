@@ -1,11 +1,8 @@
 import { NextResponse } from "next/server";
-import sharp from "sharp";
 import { getDocumentBySlug } from "@/lib/case";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-
-const FALLBACK_WIDTH = 1600;
 
 function extractDriveId(url: string | null): string | null {
   if (!url) return null;
@@ -30,7 +27,10 @@ async function fetchSourceImage(doc: { file_url: string | null; external_url: st
       if (res.ok) {
         const ct = res.headers.get("content-type") ?? "";
         if (ct.startsWith("image/")) {
-          return Buffer.from(await res.arrayBuffer());
+          return {
+            bytes: Buffer.from(await res.arrayBuffer()),
+            contentType: ct,
+          };
         }
       }
     }
@@ -40,41 +40,14 @@ async function fetchSourceImage(doc: { file_url: string | null; external_url: st
     if (res.ok) {
       const ct = res.headers.get("content-type") ?? "";
       if (ct.startsWith("image/")) {
-        return Buffer.from(await res.arrayBuffer());
+        return {
+          bytes: Buffer.from(await res.arrayBuffer()),
+          contentType: ct,
+        };
       }
     }
   }
   return null;
-}
-
-function escapeXml(s: string): string {
-  return s.replace(/[<>&'"]/g, (c) => {
-    switch (c) {
-      case "<": return "&lt;";
-      case ">": return "&gt;";
-      case "&": return "&amp;";
-      case "'": return "&apos;";
-      case '"': return "&quot;";
-      default: return c;
-    }
-  });
-}
-
-function buildWatermarkSvg(width: number, height: number, label: string): Buffer {
-  const fontSize = Math.max(20, Math.round(Math.min(width, height) / 36));
-  const tileWidth = Math.max(380, fontSize * 18);
-  const tileHeight = Math.max(180, fontSize * 6);
-  const text = escapeXml(label);
-  const svg = `<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
-  <defs>
-    <pattern id="wm" x="0" y="0" width="${tileWidth}" height="${tileHeight}" patternUnits="userSpaceOnUse" patternTransform="rotate(-30)">
-      <text x="0" y="${Math.round(tileHeight / 2)}" fill="#ffffff" fill-opacity="0.10" stroke="#000000" stroke-opacity="0.05" stroke-width="1" font-family="Helvetica, Arial, sans-serif" font-size="${fontSize}" font-weight="700" letter-spacing="2">${text}</text>
-    </pattern>
-  </defs>
-  <rect width="${width}" height="${height}" fill="url(#wm)"/>
-</svg>`;
-  return Buffer.from(svg);
 }
 
 export async function GET(
@@ -95,33 +68,12 @@ export async function GET(
     );
   }
 
-  try {
-    const base = sharp(source).rotate();
-    const meta = await base.metadata();
-    const width = meta.width ?? FALLBACK_WIDTH;
-    const height = meta.height ?? Math.round(FALLBACK_WIDTH * 1.3);
-
-    const watermark = buildWatermarkSvg(
-      width,
-      height,
-      "© REALRYANNICHOLS.COM   ·   RYAN NICHOLS",
-    );
-
-    const out = await base
-      .composite([{ input: watermark, top: 0, left: 0 }])
-      .jpeg({ quality: 86, mozjpeg: true })
-      .toBuffer();
-
-    return new NextResponse(new Uint8Array(out), {
-      status: 200,
-      headers: {
-        "content-type": "image/jpeg",
-        "cache-control": "public, max-age=300, s-maxage=86400, stale-while-revalidate=604800",
-        "content-disposition": `inline; filename="${slug}.jpg"`,
-        "x-robots-tag": "noindex, noimageindex",
-      },
-    });
-  } catch {
-    return NextResponse.json({ error: "Image processing failed." }, { status: 500 });
-  }
+  return new NextResponse(new Uint8Array(source.bytes), {
+    status: 200,
+    headers: {
+      "content-type": source.contentType,
+      "cache-control": "public, max-age=300, s-maxage=86400, stale-while-revalidate=604800",
+      "content-disposition": `inline; filename="${slug}.jpg"`,
+    },
+  });
 }
