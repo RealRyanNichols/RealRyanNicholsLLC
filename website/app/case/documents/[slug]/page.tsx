@@ -2,9 +2,10 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { format } from "date-fns";
-import { getDocuments } from "@/lib/case";
+import { getDocuments, getDocumentBySlug } from "@/lib/case";
 import { ShareButton } from "@/components/ShareButton";
-import { getSupabaseStaticClient } from "@/lib/supabase/static";
+import { CaseStats } from "@/components/CaseStats";
+import { CaseViewTracker } from "@/components/CaseViewTracker";
 import { SITE } from "@/lib/site";
 
 export const revalidate = 300;
@@ -12,17 +13,6 @@ export const revalidate = 300;
 export async function generateStaticParams() {
   const list = await getDocuments();
   return list.map((d) => ({ slug: d.slug }));
-}
-
-async function getDocumentBySlug(slug: string) {
-  const supabase = getSupabaseStaticClient();
-  const { data } = await supabase
-    .from("case_documents")
-    .select("id, slug, title, description, doc_type, document_date, file_url, external_url, source")
-    .eq("slug", slug)
-    .eq("visibility", "public")
-    .maybeSingle();
-  return data;
 }
 
 export async function generateMetadata({
@@ -57,10 +47,13 @@ export default async function DocumentPage({
   const d = await getDocumentBySlug(slug);
   if (!d) notFound();
   const url = `${SITE.url}/case/documents/${d.slug}`;
-  const fileUrl = d.file_url ?? d.external_url;
+  const externalUrl = d.file_url ?? d.external_url;
+  const proxiedImage = `/api/case-doc/${d.slug}/image`;
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
+      <CaseViewTracker type="document" slug={d.slug} />
+
       <nav className="text-sm text-[var(--color-muted)] mb-4">
         <Link href="/case" className="hover:underline">
           ← The Case
@@ -99,26 +92,43 @@ export default async function DocumentPage({
       ) : null}
 
       <div className="mt-6 flex items-center gap-3 flex-wrap">
-        {fileUrl ? (
-          <a
-            href={fileUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-accent inline-flex items-center rounded-full px-5 py-2.5 text-sm font-bold"
-          >
-            Open document →
-          </a>
-        ) : (
-          <span className="text-sm text-[var(--color-muted)] italic">
-            File not yet uploaded.
-          </span>
-        )}
-        <ShareButton url={url} title={d.title} />
+        <ShareButton url={url} title={d.title} slug={d.slug} caseKind="document" />
       </div>
+
+      <div className="mt-4">
+        <CaseStats views={d.views_count} shares={d.shares_count} />
+      </div>
+
+      <figure className="mt-8 rounded-xl overflow-hidden border border-[var(--color-line)] bg-black">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={proxiedImage}
+          alt={d.title}
+          loading="lazy"
+          className="w-full h-auto select-none"
+          draggable={false}
+          onContextMenu={undefined}
+        />
+        <figcaption className="px-4 py-3 text-xs text-[var(--color-muted)] flex items-center justify-between gap-3 flex-wrap">
+          <span>
+            © realryannichols.com. Watermarked. Do not republish without attribution.
+          </span>
+          {externalUrl ? (
+            <a
+              href={externalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[var(--color-accent)] underline font-semibold"
+            >
+              Open source →
+            </a>
+          ) : null}
+        </figcaption>
+      </figure>
 
       <div className="mt-10 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-ink-soft)]">
         <Link href="/support" className="text-[var(--color-accent)] underline font-semibold">
-          Support Ryan's rebuild
+          Support Ryan&apos;s rebuild
         </Link>{" "}
         — every dollar funds keeping this record public.
       </div>

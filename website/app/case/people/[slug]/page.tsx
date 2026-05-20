@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getPeople } from "@/lib/case";
+import { getPeople, getPersonBySlug } from "@/lib/case";
 import { ShareButton } from "@/components/ShareButton";
-import { getSupabaseStaticClient } from "@/lib/supabase/static";
+import { CaseStats } from "@/components/CaseStats";
+import { CaseViewTracker } from "@/components/CaseViewTracker";
 import { SITE } from "@/lib/site";
 
 export const revalidate = 300;
@@ -11,17 +12,6 @@ export const revalidate = 300;
 export async function generateStaticParams() {
   const list = await getPeople();
   return list.map((p) => ({ slug: p.slug }));
-}
-
-async function getPersonBySlug(slug: string) {
-  const supabase = getSupabaseStaticClient();
-  const { data } = await supabase
-    .from("case_people")
-    .select("id, slug, name, role, agency, description")
-    .eq("slug", slug)
-    .eq("visibility", "public")
-    .maybeSingle();
-  return data;
 }
 
 export async function generateMetadata({
@@ -60,6 +50,8 @@ export default async function PersonPage({
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
+      <CaseViewTracker type="person" slug={p.slug} />
+
       <nav className="text-sm text-[var(--color-muted)] mb-4">
         <Link href="/case" className="hover:underline">
           ← The Case
@@ -90,12 +82,16 @@ export default async function PersonPage({
       ) : null}
 
       <div className="mt-8 flex items-center gap-3">
-        <ShareButton url={url} title={`${p.name} — United States v. Nichols`} />
+        <ShareButton url={url} title={`${p.name} — United States v. Nichols`} slug={p.slug} caseKind="person" />
+      </div>
+
+      <div className="mt-4">
+        <CaseStats views={p.views_count} shares={p.shares_count} />
       </div>
 
       <div className="mt-10 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-ink-soft)]">
         <Link href="/support" className="text-[var(--color-accent)] underline font-semibold">
-          Support Ryan's rebuild
+          Support Ryan&apos;s rebuild
         </Link>{" "}
         — every dollar funds keeping this record public.
       </div>
