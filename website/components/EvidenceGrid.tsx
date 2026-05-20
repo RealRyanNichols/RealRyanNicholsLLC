@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { format } from "date-fns";
 import type { CaseAuthorRole, CaseDocument } from "@/lib/case";
+import { detectVideo, type VideoEmbed } from "@/lib/video";
 
 const ROLE_LABEL: Record<CaseAuthorRole, string> = {
   ryan: "Ryan",
@@ -133,12 +134,13 @@ function SeriesCard({ series }: { series: DocSeries }) {
   const lead = series.lead;
   const multi = series.pages.length > 1;
   const title = multi ? lead.series_title ?? lead.title : lead.title;
+  const video = !multi ? detectVideo(lead.external_url) : null;
   return (
     <article className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] overflow-hidden">
       <div className="px-4 pt-3 pb-2 flex items-baseline justify-between gap-3 flex-wrap">
         <div className="min-w-0 flex-1">
           <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent)] font-bold">
-            {lead.doc_type}
+            {video ? `${video.platformLabel} · video` : lead.doc_type}
             {lead.document_date ? (
               <>
                 {" · "}
@@ -158,26 +160,61 @@ function SeriesCard({ series }: { series: DocSeries }) {
           Share & discuss →
         </Link>
       </div>
-      <div className="bg-black">
-        {series.pages.map((p, i) => (
-          <a
-            key={p.id}
-            href={`/api/case-doc/${p.slug}/image`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block"
-            aria-label={`Open ${multi ? `page ${i + 1} of ${title}` : title} full size`}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={`/api/case-doc/${p.slug}/image`}
-              alt={multi ? `${title} — page ${i + 1}` : p.title}
-              loading="lazy"
-              className="w-full h-auto block"
-            />
-          </a>
-        ))}
-      </div>
+      {video ? (
+        <VideoEmbedBlock video={video} title={title} />
+      ) : (
+        <div className="bg-black">
+          {series.pages.map((p, i) => (
+            <a
+              key={p.id}
+              href={`/api/case-doc/${p.slug}/image`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block"
+              aria-label={`Open ${multi ? `page ${i + 1} of ${title}` : title} full size`}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={`/api/case-doc/${p.slug}/image`}
+                alt={multi ? `${title} — page ${i + 1}` : p.title}
+                loading="lazy"
+                className="w-full h-auto block"
+              />
+            </a>
+          ))}
+        </div>
+      )}
     </article>
+  );
+}
+
+function VideoEmbedBlock({ video, title }: { video: VideoEmbed; title: string }) {
+  // TikTok needs portrait aspect (9:16). YouTube/X use landscape (16:9).
+  const aspect = video.kind === "tiktok" ? "aspect-[9/16]" : "aspect-video";
+  return (
+    <div className="bg-black">
+      <div className={`relative w-full ${aspect}`}>
+        <iframe
+          src={video.embedUrl}
+          title={title}
+          loading="lazy"
+          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+          referrerPolicy="strict-origin-when-cross-origin"
+          className="absolute inset-0 w-full h-full border-0"
+        />
+      </div>
+      <div className="px-4 py-2 text-xs text-[var(--color-muted)] flex items-center justify-between gap-3">
+        <span>Source: {video.platformLabel}</span>
+        <a
+          href={video.watchUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[var(--color-accent)] font-semibold hover:underline"
+        >
+          Open on {video.platformLabel} →
+        </a>
+      </div>
+    </div>
   );
 }
