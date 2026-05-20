@@ -205,6 +205,15 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
                   User moderation
                 </Link>
               )}
+              {isAdmin && (
+                <Link
+                  href="/admin/analytics"
+                  role="menuitem"
+                  className="block rounded-lg px-4 py-3 text-base font-semibold text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition"
+                >
+                  Analytics
+                </Link>
+              )}
               {signedIn ? (
                 <Link
                   href="/account"
