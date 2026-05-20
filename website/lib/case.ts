@@ -177,3 +177,58 @@ export async function getCaseCommentsCount(
     .eq("status", "approved");
   return count ?? 0;
 }
+
+export async function getDocumentsForGrievance(grievanceId: string): Promise<CaseDocument[]> {
+  const supabase = getSupabaseStaticClient();
+  const { data: links } = await supabase
+    .from("case_doc_grievance")
+    .select("document_id")
+    .eq("grievance_id", grievanceId);
+  const ids = (links ?? []).map((l) => l.document_id);
+  if (ids.length === 0) return [];
+  const { data } = await supabase
+    .from("case_documents")
+    .select(DOCUMENT_COLS)
+    .in("id", ids)
+    .eq("visibility", "public")
+    .eq("archived", false)
+    .order("document_date", { ascending: false, nullsFirst: false })
+    .order("relevance", { ascending: false });
+  return (data ?? []) as CaseDocument[];
+}
+
+export async function getDocumentsForEvent(eventId: string): Promise<CaseDocument[]> {
+  const supabase = getSupabaseStaticClient();
+  const { data: links } = await supabase
+    .from("case_doc_event")
+    .select("document_id")
+    .eq("event_id", eventId);
+  const ids = (links ?? []).map((l) => l.document_id);
+  if (ids.length === 0) return [];
+  const { data } = await supabase
+    .from("case_documents")
+    .select(DOCUMENT_COLS)
+    .in("id", ids)
+    .eq("visibility", "public")
+    .eq("archived", false)
+    .order("document_date", { ascending: false, nullsFirst: false });
+  return (data ?? []) as CaseDocument[];
+}
+
+export async function getDocumentsForPerson(personId: string): Promise<CaseDocument[]> {
+  const supabase = getSupabaseStaticClient();
+  const { data: links } = await supabase
+    .from("case_doc_person")
+    .select("document_id")
+    .eq("person_id", personId);
+  const ids = (links ?? []).map((l) => l.document_id);
+  if (ids.length === 0) return [];
+  const { data } = await supabase
+    .from("case_documents")
+    .select(DOCUMENT_COLS)
+    .in("id", ids)
+    .eq("visibility", "public")
+    .eq("archived", false)
+    .order("document_date", { ascending: false, nullsFirst: false });
+  return (data ?? []) as CaseDocument[];
+}

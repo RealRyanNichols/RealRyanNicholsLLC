@@ -2,12 +2,13 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { format } from "date-fns";
-import { getEventBySlug, getEvents, getCaseCommentsCount } from "@/lib/case";
+import { getEventBySlug, getEvents, getCaseCommentsCount, getDocumentsForEvent } from "@/lib/case";
 import { ShareButton } from "@/components/ShareButton";
 import { CaseStats } from "@/components/CaseStats";
 import { CaseViewTracker } from "@/components/CaseViewTracker";
 import { CaseCommentList } from "@/components/CaseCommentList";
 import { CaseCommentForm } from "@/components/CaseCommentForm";
+import { EvidenceGrid } from "@/components/EvidenceGrid";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { SITE } from "@/lib/site";
 
@@ -49,7 +50,10 @@ export default async function EventPage({
 
   const supabase = await getSupabaseServerClient();
   const { data: auth } = await supabase.auth.getUser();
-  const commentCount = await getCaseCommentsCount("event", e.id);
+  const [commentCount, evidence] = await Promise.all([
+    getCaseCommentsCount("event", e.id),
+    getDocumentsForEvent(e.id),
+  ]);
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
@@ -100,6 +104,20 @@ export default async function EventPage({
           comments={commentCount}
         />
       </div>
+
+      <section className="mt-12 border-t border-[var(--color-line)] pt-8">
+        <div className="border-l-2 border-[var(--color-accent)] pl-4 mb-5">
+          <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent)] font-bold">
+            Evidence on file
+          </p>
+          <h2 className="text-lg sm:text-xl font-bold tracking-tight">
+            {evidence.length === 0
+              ? "No scans linked yet"
+              : `${evidence.length} ${evidence.length === 1 ? "document" : "documents"} on file`}
+          </h2>
+        </div>
+        <EvidenceGrid documents={evidence} />
+      </section>
 
       <section className="mt-12 border-t border-[var(--color-line)] pt-8">
         <h2 className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">

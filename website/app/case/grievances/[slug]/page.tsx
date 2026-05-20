@@ -1,12 +1,13 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getGrievanceBySlug, getGrievances, getCaseCommentsCount } from "@/lib/case";
+import { getGrievanceBySlug, getGrievances, getCaseCommentsCount, getDocumentsForGrievance } from "@/lib/case";
 import { ShareButton } from "@/components/ShareButton";
 import { CaseStats } from "@/components/CaseStats";
 import { CaseViewTracker } from "@/components/CaseViewTracker";
 import { CaseCommentList } from "@/components/CaseCommentList";
 import { CaseCommentForm } from "@/components/CaseCommentForm";
+import { EvidenceGrid } from "@/components/EvidenceGrid";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { SITE } from "@/lib/site";
 
@@ -53,7 +54,10 @@ export default async function GrievancePage({
 
   const supabase = await getSupabaseServerClient();
   const { data: auth } = await supabase.auth.getUser();
-  const commentCount = await getCaseCommentsCount("grievance", g.id);
+  const [commentCount, evidence] = await Promise.all([
+    getCaseCommentsCount("grievance", g.id),
+    getDocumentsForGrievance(g.id),
+  ]);
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
@@ -123,6 +127,23 @@ export default async function GrievancePage({
           Full write-up pending. Cross-referenced documents will appear here.
         </p>
       )}
+
+      <section className="mt-12 border-t border-[var(--color-line)] pt-8">
+        <div className="border-l-2 border-[var(--color-accent)] pl-4 mb-5">
+          <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent)] font-bold">
+            Evidence on file
+          </p>
+          <h2 className="text-lg sm:text-xl font-bold tracking-tight">
+            {evidence.length === 0
+              ? "No scans linked yet"
+              : `${evidence.length} ${evidence.length === 1 ? "document" : "documents"} on file`}
+          </h2>
+          <p className="text-sm text-[var(--color-ink-soft)] mt-1 max-w-2xl leading-relaxed">
+            Every page below is a watermarked scan from Ryan&apos;s own case file. Click any one to read it, share it, or copy the link.
+          </p>
+        </div>
+        <EvidenceGrid documents={evidence} />
+      </section>
 
       <section className="mt-12 border-t border-[var(--color-line)] pt-8">
         <h2 className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">
