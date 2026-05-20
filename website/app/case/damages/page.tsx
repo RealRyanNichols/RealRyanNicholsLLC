@@ -34,10 +34,12 @@ export default async function DamagesPage() {
   const damages: DamageItem[] = [
     {
       label: "Liberty lost",
-      oneLine: `${totals.daysDetained.toLocaleString()} days in pretrial detention.`,
-      body: "From the January 18, 2021 arrest to the January 20, 2025 presidential pardon, Ryan spent " +
-        totals.daysDetained.toLocaleString() + " days — roughly " + years + " years — in federal detention without conviction. Multiple bond hearings denied. " +
-        "Most of that time in solitary confinement.",
+      oneLine: `${totals.daysDetained.toLocaleString()} days in federal detention before pardon, then dismissed with prejudice.`,
+      body: "From the January 18, 2021 arrest to the January 20, 2025 full presidential pardon, Ryan spent " +
+        totals.daysDetained.toLocaleString() + " days — roughly " + years + " years — in federal detention. " +
+        "Multiple bond hearings denied. Most of that time in solitary confinement. After the pardon, U.S. Attorney " +
+        "Edward R. Martin Jr. moved to dismiss the charges with prejudice — the case cannot be brought again. " +
+        "The detention that destroyed his marriage, his business, and his health came before either of those vindications.",
       estimate: years + " years of liberty",
       sourceSlug: "solitary-confinement-conditions",
     },

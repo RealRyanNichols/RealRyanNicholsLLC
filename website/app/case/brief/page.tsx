@@ -117,10 +117,13 @@ export default async function BriefPage() {
           Ryan Nichols, a United States Marine Corps veteran, founder of
           Wholesale Universe, Inc. (a multi-million-dollar wholesale/retail
           company), and active Search and Rescue specialist, was prosecuted,
-          detained pretrial, and
-          tortured by a weaponized Biden-era Department of Justice for his
-          conduct on January 6, 2021. He was pardoned by President Trump in
-          January 2025.
+          detained pretrial, and tortured by a weaponized Biden-era Department
+          of Justice for his conduct on January 6, 2021. He received a{" "}
+          <strong>full presidential pardon</strong> from President Trump on
+          January 20, 2025. The charges were later{" "}
+          <strong>dismissed with prejudice</strong> by U.S. Attorney Edward R.
+          Martin Jr. — barring the government from ever bringing the same
+          case again.
         </p>
         <p>
           During pretrial detention, Mr. Nichols personally filed{" "}

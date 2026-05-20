@@ -105,13 +105,16 @@ export default async function CasePage({
           The case · United States v. Nichols
         </p>
         <h1 className="mt-2 text-4xl sm:text-6xl font-bold tracking-tight leading-[1.02]">
-          {totals.daysDetained.toLocaleString()} days. Ten facilities. No conviction.
+          {totals.daysDetained.toLocaleString()} days. Ten facilities. Full presidential pardon. Charges dismissed with prejudice.
         </h1>
         <p className="mt-4 text-base sm:text-lg text-[var(--color-ink-soft)] max-w-3xl leading-relaxed">
           Ryan Nichols — United States Marine Corps veteran, founder of Wholesale Universe, Inc.
           (a multi-million-dollar wholesale/retail company), Texas Search and Rescue specialist,
-          father. Pardoned by President Trump on January 20, 2025. This is the documented record of
-          what the previous administration did to him in the years between — and what it cost him.
+          father. Convicted under the previous administration. <strong>Pardoned by President Trump
+          on January 20, 2025.</strong> Charges <strong>dismissed with prejudice</strong> by U.S.
+          Attorney Edward R. Martin Jr. — the case cannot be brought again. This is the documented
+          record of what the previous administration did to him in the years between — and what
+          it cost him.
         </p>
 
         <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl">
