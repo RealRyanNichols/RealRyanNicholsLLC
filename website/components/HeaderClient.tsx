@@ -196,6 +196,15 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
                   Profile photos
                 </Link>
               )}
+              {isAdmin && (
+                <Link
+                  href="/admin/users"
+                  role="menuitem"
+                  className="block rounded-lg px-4 py-3 text-base font-semibold text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition"
+                >
+                  User moderation
+                </Link>
+              )}
               {signedIn ? (
                 <Link
                   href="/account"
