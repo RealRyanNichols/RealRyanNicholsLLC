@@ -46,6 +46,7 @@ export function PostCard({
         <PostStats
           views={post.views_count ?? 0}
           comments={commentCount}
+          shares={post.shares_count ?? 0}
           size="sm"
         />
         <div className="flex items-center gap-2">
@@ -55,7 +56,7 @@ export function PostCard({
           >
             Read →
           </Link>
-          <ShareButton url={postUrl} title={shareTitle} compact />
+          <ShareButton url={postUrl} title={shareTitle} slug={post.slug} compact />
         </div>
       </div>
     </article>

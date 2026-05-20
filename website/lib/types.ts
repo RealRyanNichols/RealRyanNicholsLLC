@@ -33,6 +33,7 @@ export type Post = {
   created_at: string;
   updated_at: string;
   views_count: number;
+  shares_count: number;
 };
 
 export type Comment = {

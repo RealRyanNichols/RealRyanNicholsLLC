@@ -3,7 +3,7 @@ import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import type { Post } from "@/lib/types";
 
 const POST_COLUMNS =
-  "id, slug, type, title, body, image_urls, media, mux_asset_id, mux_upload_id, mux_playback_id, mux_status, duration_seconds, thumbnail_url, pinned, status, author_id, category, published_at, created_at, updated_at, views_count";
+  "id, slug, type, title, body, image_urls, media, mux_asset_id, mux_upload_id, mux_playback_id, mux_status, duration_seconds, thumbnail_url, pinned, status, author_id, category, published_at, created_at, updated_at, views_count, shares_count";
 
 export async function getPublishedPosts(): Promise<Post[]> {
   const supabase = getSupabaseStaticClient();
