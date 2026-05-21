@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getCaseTotals } from "@/lib/case";
+import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { SITE } from "@/lib/site";
 
 export const revalidate = 300;
@@ -27,6 +28,20 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function J6MissionPage() {
   const totals = await getCaseTotals();
+
+  const supabase = getSupabaseStaticClient();
+  const [{ count: profilesReady }, { count: profilesClaimed }] = await Promise.all([
+    supabase
+      .from("case_people")
+      .select("id", { count: "exact", head: true })
+      .eq("is_j6_defendant", true)
+      .eq("claim_status", "unclaimed"),
+    supabase
+      .from("case_people")
+      .select("id", { count: "exact", head: true })
+      .eq("is_j6_defendant", true)
+      .eq("claim_status", "verified"),
+  ]);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -58,6 +73,15 @@ export default async function J6MissionPage() {
         <p className="mt-5 text-xl sm:text-2xl text-[var(--color-ink-soft)] leading-snug">
           Free. For every January 6 defendant. Forever.
         </p>
+
+        {(profilesReady ?? 0) > 0 ? (
+          <p className="mt-4 inline-block rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] px-4 py-1.5 text-sm font-bold text-[var(--color-blue)]">
+            {(profilesReady ?? 0).toLocaleString()} profiles ready to be claimed
+            {(profilesClaimed ?? 0) > 0
+              ? ` · ${profilesClaimed} already verified`
+              : ""}
+          </p>
+        ) : null}
 
         {/* The promise */}
         <section className="mt-10 space-y-5 text-base sm:text-lg leading-relaxed text-[var(--color-ink)]">
