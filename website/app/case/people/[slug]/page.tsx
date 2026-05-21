@@ -56,7 +56,7 @@ export default async function PersonPage({
 
       <nav className="text-sm text-[var(--color-muted)] mb-4">
         <Link href="/case" className="hover:underline">
-          ← The Case
+          ← J6 Case
         </Link>{" "}
         ·{" "}
         <Link href="/case?view=people" className="hover:underline">

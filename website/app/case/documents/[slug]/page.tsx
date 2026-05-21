@@ -58,7 +58,7 @@ export default async function DocumentPage({
 
       <nav className="text-sm text-[var(--color-muted)] mb-4">
         <Link href="/case" className="hover:underline">
-          ← The Case
+          ← J6 Case
         </Link>{" "}
         ·{" "}
         <Link href="/case?view=documents" className="hover:underline">

@@ -40,6 +40,7 @@ export default async function AdminHomePage() {
     { count: pendingComments },
     { count: subs7d },
     { count: commentReports },
+    { count: pendingTips },
     { data: pendingProfilesList },
     { data: recentSubs },
     { data: recentSessions },
@@ -78,6 +79,10 @@ export default async function AdminHomePage() {
       .from("comment_reports")
       .select("id", { count: "exact", head: true })
       .eq("resolved", false),
+    supabase
+      .from("case_tips")
+      .select("id", { count: "exact", head: true })
+      .eq("status", "pending"),
     supabase
       .from("profiles")
       .select("id, display_name, full_name, username, created_at")
@@ -312,6 +317,14 @@ export default async function AdminHomePage() {
                 {pendingProfiles ?? 0}
               </span>
             </li>
+            <li className="flex items-center justify-between gap-3">
+              <Link href="/admin/tips?filter=pending" className="hover:text-[var(--color-accent)]">
+                Pending tip-line submissions
+              </Link>
+              <span className="font-bold tabular-nums">
+                {pendingTips ?? 0}
+              </span>
+            </li>
           </ul>
         </div>
       </section>
@@ -343,6 +356,11 @@ export default async function AdminHomePage() {
             sub="Upload & mirror evidence"
           />
           <SectionLink
+            href="/admin/tips"
+            title="Tips"
+            sub="Public tip-line review"
+          />
+          <SectionLink
             href="/admin/new"
             title="New post"
             sub="Compose a post"
@@ -351,6 +369,11 @@ export default async function AdminHomePage() {
             href="/admin/profile"
             title="My profile"
             sub="Avatar & bio"
+          />
+          <SectionLink
+            href="/preview/palette"
+            title="Palette preview"
+            sub="Pick a color scheme"
           />
         </div>
       </section>
