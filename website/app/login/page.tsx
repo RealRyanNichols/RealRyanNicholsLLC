@@ -244,7 +244,7 @@ function LoginPageInner() {
           <p className="mt-3 text-sm text-emerald-400">{state.message}</p>
         ) : null}
         {state.kind === "error" ? (
-          <p className="mt-3 text-sm text-red-400">{state.message}</p>
+          <p className="mt-3 text-sm text-[var(--color-accent)]">{state.message}</p>
         ) : null}
       </form>
 
@@ -283,7 +283,7 @@ function Tab({
       className={[
         "px-3 py-1.5 rounded-full font-semibold transition",
         active
-          ? "bg-[var(--color-accent)] text-[#0a0a0c]"
+          ? "bg-[var(--color-accent)] text-[var(--color-paper)]"
           : "text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]",
       ].join(" ")}
     >

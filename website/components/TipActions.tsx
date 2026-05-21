@@ -94,7 +94,7 @@ export function TipActions({
         </div>
       ) : null}
 
-      {error ? <p className="mt-2 text-xs text-red-400">{error}</p> : null}
+      {error ? <p className="mt-2 text-xs text-[var(--color-accent)]">{error}</p> : null}
     </div>
   );
 }

@@ -86,13 +86,13 @@ export default async function J6MissionPage() {
         <section className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3">
           <Link
             href="/login?next=/account"
-            className="block rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-white px-5 py-4 text-center font-bold text-lg hover:bg-[var(--color-accent-strong)] transition"
+            className="block rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-4 text-center font-bold text-lg hover:bg-[var(--color-accent-strong)] transition"
           >
             Get a profile →
           </Link>
           <Link
             href="/submit"
-            className="block rounded-xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink)] px-5 py-4 text-center font-bold text-lg hover:border-[var(--color-accent)] transition"
+            className="block rounded-xl border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-4 text-center font-bold text-lg hover:bg-[var(--color-blue-strong)] transition"
           >
             Send a tip / share a name →
           </Link>
@@ -185,13 +185,13 @@ export default async function J6MissionPage() {
           <div className="mt-4 flex flex-wrap gap-3 justify-center">
             <Link
               href="/login?next=/account"
-              className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-white px-6 py-3 font-bold hover:bg-[var(--color-accent-strong)] transition"
+              className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-6 py-3 font-bold hover:bg-[var(--color-accent-strong)] transition"
             >
               Get a profile
             </Link>
             <Link
               href="/submit"
-              className="rounded-xl border-2 border-[var(--color-line)] px-6 py-3 font-bold hover:border-[var(--color-accent)] transition"
+              className="rounded-xl border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-6 py-3 font-bold hover:bg-[var(--color-blue-strong)] transition"
             >
               Send a tip
             </Link>
@@ -205,7 +205,7 @@ export default async function J6MissionPage() {
 function Step({ n, title, body }: { n: number; title: string; body: string }) {
   return (
     <li className="flex gap-4">
-      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[var(--color-accent)] text-white flex items-center justify-center font-bold text-lg">
+      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] flex items-center justify-center font-bold text-lg">
         {n}
       </div>
       <div className="flex-1 pt-1">

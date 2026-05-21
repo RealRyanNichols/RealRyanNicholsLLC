@@ -99,7 +99,7 @@ export default async function AdminTipsPage({
       </nav>
 
       {error ? (
-        <p className="mt-6 text-sm text-red-400">{error.message}</p>
+        <p className="mt-6 text-sm text-[var(--color-accent)]">{error.message}</p>
       ) : null}
 
       <div className="mt-6 space-y-4">
@@ -226,7 +226,7 @@ function StatusBadge({ status }: { status: string }) {
     pending: "bg-[var(--color-accent)] text-white",
     reviewed: "bg-[var(--color-surface-2)] text-[var(--color-ink-soft)]",
     merged: "bg-green-600/80 text-white",
-    rejected: "bg-zinc-800 text-zinc-400",
+    rejected: "bg-[var(--color-surface-2)] text-[var(--color-muted)]",
   };
   return (
     <span

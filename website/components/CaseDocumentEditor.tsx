@@ -222,7 +222,7 @@ function DocumentRow({ doc }: { doc: Doc }) {
               className={[
                 "rounded-full px-3 py-1 text-xs font-bold border",
                 visibility === "public"
-                  ? "bg-[var(--color-accent)] text-[#0a0a0c] border-transparent"
+                  ? "bg-[var(--color-accent)] text-[var(--color-paper)] border-transparent"
                   : "border-[var(--color-line)] text-[var(--color-ink-soft)]",
               ].join(" ")}
             >Public</button>
@@ -232,7 +232,7 @@ function DocumentRow({ doc }: { doc: Doc }) {
               className={[
                 "rounded-full px-3 py-1 text-xs font-bold border",
                 visibility === "private"
-                  ? "bg-[var(--color-accent)] text-[#0a0a0c] border-transparent"
+                  ? "bg-[var(--color-accent)] text-[var(--color-paper)] border-transparent"
                   : "border-[var(--color-line)] text-[var(--color-ink-soft)]",
               ].join(" ")}
             >Private</button>
@@ -265,7 +265,7 @@ function DocumentRow({ doc }: { doc: Doc }) {
             Delete
           </button>
         </div>
-        {err ? <p className="text-xs text-red-400">{err}</p> : null}
+        {err ? <p className="text-xs text-[var(--color-accent)]">{err}</p> : null}
       </li>
     );
   }

@@ -226,7 +226,7 @@ export function CaseUploadForm() {
             className={[
               "rounded-full px-4 py-1.5 text-xs font-semibold transition border",
               visibility === "public"
-                ? "bg-[var(--color-accent)] text-[#0a0a0c] border-transparent"
+                ? "bg-[var(--color-accent)] text-[var(--color-paper)] border-transparent"
                 : "border-[var(--color-line)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)]",
             ].join(" ")}
           >
@@ -238,7 +238,7 @@ export function CaseUploadForm() {
             className={[
               "rounded-full px-4 py-1.5 text-xs font-semibold transition border",
               visibility === "private"
-                ? "bg-[var(--color-accent)] text-[#0a0a0c] border-transparent"
+                ? "bg-[var(--color-accent)] text-[var(--color-paper)] border-transparent"
                 : "border-[var(--color-line)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)]",
             ].join(" ")}
           >
@@ -256,7 +256,7 @@ export function CaseUploadForm() {
       </button>
 
       {state.kind === "error" ? (
-        <p className="text-sm text-red-400">{state.message}</p>
+        <p className="text-sm text-[var(--color-accent)]">{state.message}</p>
       ) : null}
       {state.kind === "success" ? (
         <p className="text-sm text-emerald-400">{state.message}</p>

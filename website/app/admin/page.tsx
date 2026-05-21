@@ -41,6 +41,7 @@ export default async function AdminHomePage() {
     { count: subs7d },
     { count: commentReports },
     { count: pendingTips },
+    { count: pendingClaims },
     { data: pendingProfilesList },
     { data: recentSubs },
     { data: recentSessions },
@@ -81,6 +82,10 @@ export default async function AdminHomePage() {
       .eq("resolved", false),
     supabase
       .from("case_tips")
+      .select("id", { count: "exact", head: true })
+      .eq("status", "pending"),
+    supabase
+      .from("case_person_claims")
       .select("id", { count: "exact", head: true })
       .eq("status", "pending"),
     supabase
@@ -325,6 +330,14 @@ export default async function AdminHomePage() {
                 {pendingTips ?? 0}
               </span>
             </li>
+            <li className="flex items-center justify-between gap-3">
+              <Link href="/admin/claims?filter=pending" className="hover:text-[var(--color-accent)]">
+                Pending J6 profile claims
+              </Link>
+              <span className="font-bold tabular-nums">
+                {pendingClaims ?? 0}
+              </span>
+            </li>
           </ul>
         </div>
       </section>
@@ -359,6 +372,11 @@ export default async function AdminHomePage() {
             href="/admin/tips"
             title="Tips"
             sub="Public tip-line review"
+          />
+          <SectionLink
+            href="/admin/claims"
+            title="J6 claims"
+            sub="Approve profile claims"
           />
           <SectionLink
             href="/admin/new"

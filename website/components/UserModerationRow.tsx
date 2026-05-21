@@ -167,7 +167,7 @@ export function UserModerationRow({ profile }: { profile: Profile }) {
         </div>
       </div>
       {error ? (
-        <p className="mt-2 text-xs text-red-400">{error}</p>
+        <p className="mt-2 text-xs text-[var(--color-accent)]">{error}</p>
       ) : null}
     </div>
   );
@@ -176,7 +176,7 @@ export function UserModerationRow({ profile }: { profile: Profile }) {
 function StatusBadge({ status, verified }: { status: string; verified: boolean }) {
   if (status === "banned") {
     return (
-      <span className="rounded-full bg-red-950/50 border border-red-700 px-2 py-0.5 text-[10px] uppercase tracking-wider font-bold text-red-300">
+      <span className="rounded-full bg-red-950/50 border border-[var(--color-accent)] px-2 py-0.5 text-[10px] uppercase tracking-wider font-bold text-[var(--color-accent)]">
         banned
       </span>
     );
