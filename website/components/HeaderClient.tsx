@@ -93,6 +93,15 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             </Link>
             {isAdmin && (
               <Link
+                href="/admin"
+                className="ml-1 inline-flex items-center rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-3.5 py-1.5 text-xs font-bold text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-paper)] transition"
+                aria-label="Admin dashboard"
+              >
+                Admin
+              </Link>
+            )}
+            {isAdmin && (
+              <Link
                 href="/admin/new"
                 className="ml-1 inline-flex items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3.5 py-1.5 text-xs font-semibold text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition"
                 aria-label="New post"
@@ -171,11 +180,47 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
               <div className="my-2 border-t border-[var(--color-line)]" />
               {isAdmin && (
                 <Link
+                  href="/admin"
+                  role="menuitem"
+                  className="block rounded-lg px-4 py-3 text-base font-bold text-[var(--color-accent)] hover:bg-[var(--color-accent-soft)] transition"
+                >
+                  ★ Admin dashboard
+                </Link>
+              )}
+              {isAdmin && (
+                <Link
                   href="/admin/new"
                   role="menuitem"
                   className="block rounded-lg px-4 py-3 text-base font-semibold text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition"
                 >
                   + New post
+                </Link>
+              )}
+              {isAdmin && (
+                <Link
+                  href="/admin/users"
+                  role="menuitem"
+                  className="block rounded-lg px-4 py-3 text-base font-semibold text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition"
+                >
+                  User moderation
+                </Link>
+              )}
+              {isAdmin && (
+                <Link
+                  href="/admin/claims"
+                  role="menuitem"
+                  className="block rounded-lg px-4 py-3 text-base font-semibold text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition"
+                >
+                  J6 claims
+                </Link>
+              )}
+              {isAdmin && (
+                <Link
+                  href="/admin/tips"
+                  role="menuitem"
+                  className="block rounded-lg px-4 py-3 text-base font-semibold text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition"
+                >
+                  Tips
                 </Link>
               )}
               {isAdmin && (
@@ -189,20 +234,20 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
               )}
               {isAdmin && (
                 <Link
+                  href="/admin/og-images"
+                  role="menuitem"
+                  className="block rounded-lg px-4 py-3 text-base font-semibold text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition"
+                >
+                  OG images
+                </Link>
+              )}
+              {isAdmin && (
+                <Link
                   href="/admin/profile"
                   role="menuitem"
                   className="block rounded-lg px-4 py-3 text-base font-semibold text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition"
                 >
                   Profile photos
-                </Link>
-              )}
-              {isAdmin && (
-                <Link
-                  href="/admin/users"
-                  role="menuitem"
-                  className="block rounded-lg px-4 py-3 text-base font-semibold text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition"
-                >
-                  User moderation
                 </Link>
               )}
               {isAdmin && (
