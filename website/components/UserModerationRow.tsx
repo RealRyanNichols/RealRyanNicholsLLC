@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { format } from "date-fns";
+import { format, formatDistanceToNowStrict } from "date-fns";
 import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
 import { SupporterBadge } from "@/components/SupporterBadge";
 
@@ -23,12 +23,25 @@ type Profile = {
   email: string;
 };
 
+type Action =
+  | "approve"
+  | "deny"
+  | "ask_info"
+  | "ban"
+  | "reset_pending"
+  | "supporter_on"
+  | "supporter_off";
+
 export function UserModerationRow({ profile }: { profile: Profile }) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [askOpen, setAskOpen] = useState(false);
+  const [noteOpen, setNoteOpen] = useState(false);
+  const [question, setQuestion] = useState("");
+  const [note, setNote] = useState(profile.admin_notes ?? "");
 
-  async function update(patch: Partial<Profile>) {
+  async function update(patch: Record<string, unknown>) {
     setBusy(true);
     setError(null);
     try {
@@ -39,11 +52,60 @@ export function UserModerationRow({ profile }: { profile: Profile }) {
         .eq("id", profile.id);
       if (updErr) throw new Error(updErr.message);
       router.refresh();
+      setAskOpen(false);
+      setNoteOpen(false);
+      setQuestion("");
     } catch (e) {
       setError(e instanceof Error ? e.message : "Update failed");
     } finally {
       setBusy(false);
     }
+  }
+
+  function runAction(action: Action) {
+    if (action === "approve") {
+      update({
+        status: "active",
+        verified_at: new Date().toISOString(),
+        verified_linked_account: true,
+      });
+    } else if (action === "deny") {
+      if (!confirm(`Deny @${profile.username ?? profile.id}? They keep their account but can't comment or claim.`)) {
+        return;
+      }
+      update({ status: "denied" });
+    } else if (action === "ban") {
+      if (!confirm(`Ban @${profile.username ?? profile.id}? Stronger than deny — they're flagged as bad actor.`)) {
+        return;
+      }
+      update({ status: "banned" });
+    } else if (action === "reset_pending") {
+      update({ status: "pending" });
+    } else if (action === "supporter_on") {
+      update({
+        is_supporter: true,
+        supporter_since: new Date().toISOString(),
+      });
+    } else if (action === "supporter_off") {
+      update({ is_supporter: false, supporter_since: null });
+    }
+  }
+
+  function submitQuestion() {
+    const q = question.trim();
+    if (!q) return;
+    const stamp = format(new Date(), "yyyy-MM-dd HH:mm");
+    const appended = profile.admin_notes
+      ? `${profile.admin_notes}\n\n[${stamp}] Q: ${q}`
+      : `[${stamp}] Q: ${q}`;
+    update({
+      status: "info_requested",
+      admin_notes: appended,
+    });
+  }
+
+  function saveNote() {
+    update({ admin_notes: note.trim() || null });
   }
 
   const verified = !!profile.verified_at || profile.verified_linked_account;
@@ -63,7 +125,7 @@ export function UserModerationRow({ profile }: { profile: Profile }) {
                 @{profile.username}
               </Link>
             ) : (
-              <span className="text-xs text-amber-400">(no username)</span>
+              <span className="text-xs text-[var(--color-accent)]">(no username)</span>
             )}
             <StatusBadge status={profile.status} verified={verified} />
             {profile.is_supporter ? <SupporterBadge size="xs" /> : null}
@@ -72,12 +134,17 @@ export function UserModerationRow({ profile }: { profile: Profile }) {
             <div>
               <span className="text-[var(--color-ink-soft)]">Real name:</span>{" "}
               <span className="font-mono">
-                {profile.full_name ?? <em className="text-amber-400">missing</em>}
+                {profile.full_name ?? <em className="text-[var(--color-accent)]">missing</em>}
               </span>
             </div>
             <div>
               <span className="text-[var(--color-ink-soft)]">Email:</span>{" "}
-              <span className="font-mono">{profile.email || "—"}</span>
+              <a
+                href={`mailto:${profile.email}`}
+                className="font-mono text-[var(--color-accent)] hover:underline"
+              >
+                {profile.email || "—"}
+              </a>
             </div>
             {profile.location ? (
               <div>
@@ -87,7 +154,11 @@ export function UserModerationRow({ profile }: { profile: Profile }) {
             ) : null}
             <div>
               <span className="text-[var(--color-ink-soft)]">Joined:</span>{" "}
-              {format(new Date(profile.created_at), "MMM d, yyyy h:mma")}
+              <span title={format(new Date(profile.created_at), "yyyy-MM-dd HH:mm:ss")}>
+                {formatDistanceToNowStrict(new Date(profile.created_at), { addSuffix: true })}
+                {" · "}
+                {format(new Date(profile.created_at), "MMM d, yyyy")}
+              </span>
             </div>
           </div>
           {profile.bio ? (
@@ -95,57 +166,93 @@ export function UserModerationRow({ profile }: { profile: Profile }) {
               {profile.bio}
             </p>
           ) : null}
+          {profile.admin_notes ? (
+            <details className="mt-2">
+              <summary className="text-xs font-bold text-[var(--color-muted)] cursor-pointer hover:text-[var(--color-accent)]">
+                Admin notes ({profile.admin_notes.split("\n").filter((l) => l.trim()).length} lines)
+              </summary>
+              <pre className="mt-2 whitespace-pre-wrap text-xs text-[var(--color-ink-soft)] bg-[var(--color-paper)] border border-[var(--color-line-soft)] rounded-md p-2 font-mono">
+                {profile.admin_notes}
+              </pre>
+            </details>
+          ) : null}
         </div>
 
-        <div className="flex flex-wrap gap-1.5 sm:flex-col sm:items-stretch flex-shrink-0">
+        <div className="flex flex-wrap gap-1.5 sm:flex-col sm:items-stretch flex-shrink-0 sm:min-w-[160px]">
           {profile.status !== "active" ? (
             <button
               type="button"
               disabled={busy}
-              onClick={() =>
-                update({
-                  status: "active",
-                  verified_at: new Date().toISOString(),
-                  verified_linked_account: true,
-                })
-              }
-              className="rounded-full bg-emerald-700 hover:bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white disabled:opacity-60"
+              onClick={() => runAction("approve")}
+              className="rounded-md bg-[var(--color-success)] hover:opacity-90 px-3 py-1.5 text-xs font-bold text-[var(--color-paper)] disabled:opacity-60"
+              title="Mark as verified and active"
             >
-              ✓ Verify
+              ✓ Approve
             </button>
           ) : null}
-          {profile.status !== "pending" ? (
+          <button
+            type="button"
+            disabled={busy}
+            onClick={() => {
+              setAskOpen((v) => !v);
+              setNoteOpen(false);
+            }}
+            className="rounded-md border-2 border-[var(--color-blue)] bg-[var(--color-blue)] hover:bg-[var(--color-blue-strong)] px-3 py-1.5 text-xs font-bold text-[var(--color-paper)] disabled:opacity-60"
+            title="Save a question to ask this user before approving"
+          >
+            ? Ask Info
+          </button>
+          {profile.status !== "denied" ? (
             <button
               type="button"
               disabled={busy}
-              onClick={() => update({ status: "pending" })}
-              className="rounded-full bg-amber-700 hover:bg-amber-600 px-3 py-1.5 text-xs font-bold text-white disabled:opacity-60"
+              onClick={() => runAction("deny")}
+              className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface-2)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] px-3 py-1.5 text-xs font-bold disabled:opacity-60"
+              title="Soft rejection — they keep their account but can't act"
             >
-              Un-verify
+              ✗ Deny
             </button>
           ) : null}
           {profile.status !== "banned" ? (
             <button
               type="button"
               disabled={busy}
-              onClick={() => {
-                if (confirm(`Ban @${profile.username ?? profile.id}?`)) {
-                  update({ status: "banned" });
-                }
-              }}
-              className="rounded-full bg-red-800 hover:bg-red-700 px-3 py-1.5 text-xs font-bold text-white disabled:opacity-60"
+              onClick={() => runAction("ban")}
+              className="rounded-md bg-[var(--color-accent)] hover:bg-[var(--color-accent-strong)] px-3 py-1.5 text-xs font-bold text-[var(--color-paper)] disabled:opacity-60"
+              title="Hard ban — bad actor"
             >
-              Ban
+              🚫 Ban
             </button>
           ) : null}
+          {profile.status !== "pending" ? (
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => runAction("reset_pending")}
+              className="rounded-md border border-[var(--color-line)] hover:border-[var(--color-accent)] px-3 py-1.5 text-xs font-semibold disabled:opacity-60"
+              title="Send back to pending review"
+            >
+              ↺ Reset to pending
+            </button>
+          ) : null}
+          <button
+            type="button"
+            disabled={busy}
+            onClick={() => {
+              setNoteOpen((v) => !v);
+              setAskOpen(false);
+            }}
+            className="rounded-md border border-[var(--color-line)] hover:border-[var(--color-accent)] px-3 py-1.5 text-xs font-semibold disabled:opacity-60"
+            title="Add or edit private admin notes about this user"
+          >
+            📝 Note
+          </button>
           {profile.is_supporter ? (
             <button
               type="button"
               disabled={busy}
-              onClick={() =>
-                update({ is_supporter: false, supporter_since: null } as Partial<Profile>)
-              }
-              className="rounded-full border border-amber-700 text-amber-300 px-3 py-1.5 text-xs font-bold disabled:opacity-60"
+              onClick={() => runAction("supporter_off")}
+              className="rounded-md border border-[var(--color-line)] hover:border-[var(--color-accent)] px-3 py-1.5 text-xs font-semibold disabled:opacity-60"
             >
               Un-supporter
             </button>
@@ -153,19 +260,98 @@ export function UserModerationRow({ profile }: { profile: Profile }) {
             <button
               type="button"
               disabled={busy}
-              onClick={() =>
-                update({
-                  is_supporter: true,
-                  supporter_since: new Date().toISOString(),
-                } as Partial<Profile>)
-              }
-              className="rounded-full bg-amber-700 hover:bg-amber-600 px-3 py-1.5 text-xs font-bold text-white disabled:opacity-60"
+              onClick={() => runAction("supporter_on")}
+              className="rounded-md border border-[var(--color-line)] hover:border-[var(--color-accent)] px-3 py-1.5 text-xs font-semibold disabled:opacity-60"
             >
-              ★ Mark Supporter
+              ★ Supporter
             </button>
           )}
         </div>
       </div>
+
+      {askOpen ? (
+        <div className="mt-3 border-t border-[var(--color-line)] pt-3">
+          <p className="text-xs font-bold text-[var(--color-ink)] mb-1.5">
+            What do you want to ask{" "}
+            {profile.display_name ?? profile.full_name ?? "this user"}?
+          </p>
+          <p className="text-[11px] text-[var(--color-muted)] mb-2">
+            Saved to admin notes (timestamped). User status → info_requested.
+            Email them at <span className="font-mono">{profile.email}</span>.
+          </p>
+          <textarea
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            rows={3}
+            placeholder="e.g. 'Can you send a photo of your pardon document?' or 'Which DOJ case # is yours?'"
+            className="w-full rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-accent)]"
+          />
+          <div className="mt-2 flex flex-wrap gap-2">
+            <button
+              type="button"
+              disabled={busy || !question.trim()}
+              onClick={submitQuestion}
+              className="rounded-md bg-[var(--color-blue)] hover:bg-[var(--color-blue-strong)] px-3 py-1.5 text-xs font-bold text-[var(--color-paper)] disabled:opacity-50"
+            >
+              Save question & mark info_requested
+            </button>
+            <a
+              href={`mailto:${profile.email}?subject=${encodeURIComponent(
+                "Quick question about your realryannichols.com account",
+              )}&body=${encodeURIComponent(question)}`}
+              className="rounded-md border border-[var(--color-line)] hover:border-[var(--color-accent)] px-3 py-1.5 text-xs font-semibold inline-flex items-center"
+            >
+              Open in email →
+            </a>
+            <button
+              type="button"
+              onClick={() => {
+                setAskOpen(false);
+                setQuestion("");
+              }}
+              className="rounded-md border border-[var(--color-line)] hover:border-[var(--color-accent)] px-3 py-1.5 text-xs font-semibold"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ) : null}
+
+      {noteOpen ? (
+        <div className="mt-3 border-t border-[var(--color-line)] pt-3">
+          <p className="text-xs font-bold text-[var(--color-ink)] mb-2">
+            Admin notes (private)
+          </p>
+          <textarea
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            rows={4}
+            placeholder="Anything you want to remember about this user."
+            className="w-full rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm font-mono focus:outline-none focus:border-[var(--color-accent)]"
+          />
+          <div className="mt-2 flex flex-wrap gap-2">
+            <button
+              type="button"
+              disabled={busy}
+              onClick={saveNote}
+              className="rounded-md bg-[var(--color-accent)] hover:bg-[var(--color-accent-strong)] px-3 py-1.5 text-xs font-bold text-[var(--color-paper)] disabled:opacity-50"
+            >
+              Save note
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setNoteOpen(false);
+                setNote(profile.admin_notes ?? "");
+              }}
+              className="rounded-md border border-[var(--color-line)] hover:border-[var(--color-accent)] px-3 py-1.5 text-xs font-semibold"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ) : null}
+
       {error ? (
         <p className="mt-2 text-xs text-[var(--color-accent)]">{error}</p>
       ) : null}
@@ -174,23 +360,29 @@ export function UserModerationRow({ profile }: { profile: Profile }) {
 }
 
 function StatusBadge({ status, verified }: { status: string; verified: boolean }) {
-  if (status === "banned") {
+  const styles: Record<string, { bg: string; fg: string; label: string }> = {
+    banned: { bg: "var(--color-accent)", fg: "var(--color-paper)", label: "BANNED" },
+    denied: { bg: "var(--color-surface-2)", fg: "var(--color-muted)", label: "DENIED" },
+    info_requested: { bg: "var(--color-blue)", fg: "var(--color-paper)", label: "INFO ASKED" },
+    pending: { bg: "var(--color-tag-procedural)", fg: "var(--color-paper)", label: "PENDING" },
+  };
+  const s = styles[status];
+  if (s) {
     return (
-      <span className="rounded-full bg-red-950/50 border border-[var(--color-accent)] px-2 py-0.5 text-[10px] uppercase tracking-wider font-bold text-[var(--color-accent)]">
-        banned
-      </span>
-    );
-  }
-  if (status === "pending") {
-    return (
-      <span className="rounded-full bg-amber-950/40 border border-amber-700 px-2 py-0.5 text-[10px] uppercase tracking-wider font-bold text-amber-300">
-        pending
+      <span
+        className="rounded-full px-2 py-0.5 text-[10px] uppercase tracking-wider font-bold"
+        style={{ background: s.bg, color: s.fg }}
+      >
+        {s.label}
       </span>
     );
   }
   if (verified) {
     return (
-      <span className="rounded-full bg-emerald-950/40 border border-emerald-700 px-2 py-0.5 text-[10px] uppercase tracking-wider font-bold text-emerald-300">
+      <span
+        className="rounded-full px-2 py-0.5 text-[10px] uppercase tracking-wider font-bold"
+        style={{ background: "var(--color-success)", color: "var(--color-paper)" }}
+      >
         ✓ verified
       </span>
     );
