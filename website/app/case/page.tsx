@@ -53,14 +53,20 @@ function matchesQuery(q: string, ...fields: (string | null | undefined)[]) {
 export default async function CasePage({
   searchParams,
 }: {
-  searchParams: Promise<{ view?: string; q?: string }>;
+  searchParams: Promise<{ view?: string; q?: string; filter?: string }>;
 }) {
-  const { view, q: rawQ } = await searchParams;
+  const { view, q: rawQ, filter: rawFilter } = await searchParams;
   const q = (rawQ ?? "").trim();
   const tab: Tab =
     view === "timeline" || view === "people" || view === "documents"
       ? (view as Tab)
       : "grievances";
+  const j6Filter: "all" | "unclaimed" | "verified" | "pending" =
+    rawFilter === "unclaimed" ||
+    rawFilter === "verified" ||
+    rawFilter === "pending"
+      ? rawFilter
+      : "all";
 
   const [grievances, people, events, documents, totals] = await Promise.all([
     getGrievances(),
@@ -75,11 +81,17 @@ export default async function CasePage({
         matchesQuery(q, g.title, g.summary, g.body, g.category)
       )
     : grievances;
-  const filteredPeople = q
+  const filteredPeopleByQ = q
     ? people.filter((p) =>
         matchesQuery(q, p.name, p.role, p.agency, p.description)
       )
     : people;
+  const filteredPeople =
+    j6Filter === "all"
+      ? filteredPeopleByQ
+      : filteredPeopleByQ.filter(
+          (p) => p.is_j6_defendant && p.claim_status === j6Filter,
+        );
   const filteredEvents = q
     ? events.filter((e) =>
         matchesQuery(q, e.title, e.description, e.location)
@@ -210,7 +222,9 @@ export default async function CasePage({
 
       {tab === "grievances" && <GrievancesView grievances={filteredGrievances} />}
       {tab === "timeline" && <TimelineView events={filteredEvents} />}
-      {tab === "people" && <PeopleView people={filteredPeople} />}
+      {tab === "people" && (
+        <PeopleView people={filteredPeople} j6Filter={j6Filter} q={q} />
+      )}
       {tab === "documents" && <DocumentsView documents={filteredDocuments} />}
     </div>
   );
@@ -488,7 +502,21 @@ const PEOPLE_GROUPS: { label: string; match: (agency: string | null) => boolean;
   },
 ];
 
-function PeopleView({ people }: { people: Awaited<ReturnType<typeof getPeople>> }) {
+function PeopleView({
+  people,
+  j6Filter,
+  q,
+}: {
+  people: Awaited<ReturnType<typeof getPeople>>;
+  j6Filter: "all" | "unclaimed" | "verified" | "pending";
+  q: string;
+}) {
+  // J6 filter mode: flat alphabetical list, all J6 defendants matching the
+  // selected claim status. Skips the agency-group treatment entirely.
+  if (j6Filter !== "all") {
+    return <J6DefendantsView people={people} j6Filter={j6Filter} q={q} />;
+  }
+
   const assigned = new Set<string>();
   const groups = PEOPLE_GROUPS.map((g) => {
     const items = people.filter((p) => {
@@ -563,6 +591,118 @@ function PeopleView({ people }: { people: Awaited<ReturnType<typeof getPeople>> 
           </div>
         </section>
       ) : null}
+    </div>
+  );
+}
+
+function J6DefendantsView({
+  people,
+  j6Filter,
+  q,
+}: {
+  people: Awaited<ReturnType<typeof getPeople>>;
+  j6Filter: "unclaimed" | "verified" | "pending";
+  q: string;
+}) {
+  const heading =
+    j6Filter === "unclaimed"
+      ? `${people.length.toLocaleString()} J6 defendant profiles waiting to be claimed`
+      : j6Filter === "verified"
+        ? `${people.length.toLocaleString()} J6 defendants verified`
+        : `${people.length.toLocaleString()} J6 claims pending review`;
+  const lead =
+    j6Filter === "unclaimed"
+      ? "Profiles ready for the defendant to claim and build out. Anyone can claim — Ryan personally verifies every one against the DOJ docket before approval."
+      : j6Filter === "verified"
+        ? "Defendants who have claimed and verified their profile. Their case archive is theirs."
+        : "Claims submitted and awaiting Ryan's review.";
+  return (
+    <div>
+      <div className="border-l-2 border-[var(--color-accent)] pl-4 mb-5">
+        <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+          Anti-Weaponization Case Builder
+        </p>
+        <h2 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight">
+          {heading}
+        </h2>
+        <p className="mt-2 text-sm text-[var(--color-ink-soft)] leading-relaxed max-w-2xl">
+          {lead}
+        </p>
+      </div>
+
+      {/* Sub-filter pills */}
+      <nav className="mb-5 flex flex-wrap gap-2">
+        {(["unclaimed", "verified", "pending", "all"] as const).map((f) => {
+          const active = f === "all" ? false : f === j6Filter;
+          const allActive = f === "all";
+          const href = `/case?view=people${f !== "all" ? `&filter=${f}` : ""}${q ? `&q=${encodeURIComponent(q)}` : ""}`;
+          const label =
+            f === "all"
+              ? "All people (grouped)"
+              : f === "unclaimed"
+                ? "Ready to claim"
+                : f === "verified"
+                  ? "Verified"
+                  : "Pending review";
+          return (
+            <Link
+              key={f}
+              href={href}
+              className={[
+                "rounded-full px-3 py-1.5 text-xs font-bold border-2 transition",
+                active
+                  ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)]"
+                  : allActive
+                    ? "border-[var(--color-line)] hover:border-[var(--color-accent)]"
+                    : "border-[var(--color-line)] hover:border-[var(--color-accent)]",
+              ].join(" ")}
+            >
+              {label}
+            </Link>
+          );
+        })}
+      </nav>
+
+      {people.length === 0 ? (
+        <p className="text-sm text-[var(--color-muted)] italic py-10 text-center">
+          No profiles in this bucket yet.
+        </p>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {people.map((p) => {
+            const badge =
+              p.claim_status === "verified"
+                ? { label: "Verified", bg: "var(--color-success)" }
+                : p.claim_status === "pending"
+                  ? { label: "Claim pending", bg: "var(--color-blue)" }
+                  : { label: "Unclaimed", bg: "var(--color-accent)" };
+            return (
+              <Link
+                key={p.id}
+                href={`/case/people/${p.slug}`}
+                className="block rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 hover:border-[var(--color-accent)] transition"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <h3 className="text-base font-bold tracking-tight leading-tight">
+                    {p.name}
+                  </h3>
+                  <span
+                    className="rounded-md px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider whitespace-nowrap text-[var(--color-paper)]"
+                    style={{ background: badge.bg }}
+                  >
+                    {badge.label}
+                  </span>
+                </div>
+                {p.role ? (
+                  <p className="mt-1 text-xs text-[var(--color-muted)] leading-tight">
+                    {p.role}
+                  </p>
+                ) : null}
+              </Link>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
