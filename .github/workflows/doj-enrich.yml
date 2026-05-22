@@ -1,0 +1,35 @@
+name: doj-capitol-breach-enrich
+
+# Walks the DOJ Capitol Breach Cases master list, fetches each press
+# release, fills in NULL fields on case_people (case_number, court,
+# dates, charges, sentence, disposition, doj_url), and lands the
+# release text into pending_imports so it can be reviewed alongside
+# Court Listener docs for contradictions.
+#
+# Manual trigger only by default. No COURTLISTENER_API_TOKEN needed.
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    defaults:
+      run:
+        working-directory: website
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: website/package-lock.json
+      - run: npm ci
+      - run: npx tsx scripts/enrich-from-doj.ts
