@@ -408,6 +408,11 @@ export default async function AdminHomePage() {
             sub="Pin, unpin, draft, delete"
           />
           <SectionLink
+            href="/admin/imports"
+            title="Imports"
+            sub="Review docs scraped from Court Listener"
+          />
+          <SectionLink
             href="/admin/new"
             title="New post"
             sub="Compose a post"
