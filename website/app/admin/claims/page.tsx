@@ -73,18 +73,69 @@ export default async function AdminClaimsPage({
       .eq("status", "rejected"),
   ]);
 
-  // Pull claimant emails from auth.users for any rows missing claimant_email
+  // Pull richer claimant info: auth email + account creation, plus the
+  // user's onboarding profile data (full_name, display_name, username,
+  // location, status). Everything we have for verifying who they are.
   const userIds = Array.from(
-    new Set((claims ?? []).map((c) => c.claimant_user_id))
+    new Set((claims ?? []).map((c) => c.claimant_user_id)),
   );
-  const authEmails = new Map<string, string>();
+  type ClaimantMeta = {
+    auth_email: string;
+    account_created_at: string | null;
+    last_sign_in_at: string | null;
+    profile_full_name: string | null;
+    profile_display_name: string | null;
+    profile_username: string | null;
+    profile_status: string | null;
+    profile_location: string | null;
+    match_score: number | null;
+  };
+  const claimantMeta = new Map<string, ClaimantMeta>();
   if (userIds.length > 0) {
     const { data: users } = await supabase
       .schema("auth")
       .from("users")
-      .select("id, email")
+      .select("id, email, created_at, last_sign_in_at")
       .in("id", userIds);
-    for (const u of users ?? []) authEmails.set(u.id, u.email ?? "");
+    const { data: profilesRows } = await supabase
+      .from("profiles")
+      .select("id, full_name, display_name, username, status, location")
+      .in("id", userIds);
+    const profileById = new Map(
+      (profilesRows ?? []).map((p) => [p.id, p] as const),
+    );
+    for (const u of users ?? []) {
+      const p = profileById.get(u.id);
+      claimantMeta.set(u.id, {
+        auth_email: u.email ?? "",
+        account_created_at: u.created_at ?? null,
+        last_sign_in_at: u.last_sign_in_at ?? null,
+        profile_full_name: p?.full_name ?? null,
+        profile_display_name: p?.display_name ?? null,
+        profile_username: p?.username ?? null,
+        profile_status: p?.status ?? null,
+        profile_location: p?.location ?? null,
+        match_score: null,
+      });
+    }
+    // For each claim, compute a name-match score against the J6 profile
+    // they're trying to claim. High score = same name as the defendant.
+    await Promise.all(
+      (claims ?? []).map(async (c) => {
+        const meta = claimantMeta.get(c.claimant_user_id);
+        const person = Array.isArray(c.person) ? c.person[0] : c.person;
+        if (!meta || !meta.profile_full_name || !person?.name) return;
+        const { data: matches } = await supabase.rpc("match_j6_defendants", {
+          p_full_name: meta.profile_full_name,
+          p_limit: 10,
+        });
+        if (!Array.isArray(matches)) return;
+        const hit = matches.find(
+          (m: { slug: string }) => m.slug === person.slug,
+        );
+        if (hit) meta.match_score = (hit as { score: number }).score;
+      }),
+    );
   }
 
   return (
@@ -128,8 +179,18 @@ export default async function AdminClaimsPage({
         ) : (
           claims.map((c) => {
             const person = Array.isArray(c.person) ? c.person[0] : c.person;
+            const meta = claimantMeta.get(c.claimant_user_id);
             const claimantEmail =
-              c.claimant_email || authEmails.get(c.claimant_user_id) || "—";
+              c.claimant_email || meta?.auth_email || "—";
+            const accountAgeMs = meta?.account_created_at
+              ? Date.now() - new Date(meta.account_created_at).getTime()
+              : null;
+            const accountIsBrandNew =
+              accountAgeMs !== null && accountAgeMs < 1000 * 60 * 60; // <1 hr
+            const nameMatchPct =
+              meta?.match_score !== null && meta?.match_score !== undefined
+                ? Math.round(meta.match_score * 100)
+                : null;
             return (
               <article
                 key={c.id}
@@ -138,10 +199,11 @@ export default async function AdminClaimsPage({
                 <header className="flex flex-wrap items-baseline justify-between gap-3">
                   <div>
                     <h2 className="text-lg font-bold tracking-tight">
-                      Claiming:{" "}
+                      Claim on:{" "}
                       {person ? (
                         <Link
                           href={`/case/people/${person.slug}`}
+                          target="_blank"
                           className="text-[var(--color-accent)] hover:underline"
                         >
                           {person.name}
@@ -151,34 +213,220 @@ export default async function AdminClaimsPage({
                       )}
                     </h2>
                     <p className="text-xs text-[var(--color-muted)] mt-0.5">
-                      <a
-                        href={`mailto:${claimantEmail}`}
-                        className="text-[var(--color-accent)] hover:underline"
-                      >
-                        {claimantEmail}
-                      </a>
-                      {c.doj_case_number ? (
-                        <>
-                          {" · DOJ "}
-                          <span className="font-mono">{c.doj_case_number}</span>
-                        </>
-                      ) : null}
-                      {" · "}
+                      Submitted{" "}
                       {formatDistanceToNowStrict(new Date(c.created_at), {
                         addSuffix: true,
-                      })}
-                      {" · "}
+                      })}{" "}
+                      ·{" "}
                       <span title={format(new Date(c.created_at), "yyyy-MM-dd HH:mm:ss")}>
-                        {format(new Date(c.created_at), "MMM d, yyyy")}
+                        {format(new Date(c.created_at), "MMM d, yyyy h:mma")}
                       </span>
                     </p>
                   </div>
                   <StatusBadge status={c.status} />
                 </header>
 
-                <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-[var(--color-ink-soft)]">
-                  {c.proof}
-                </p>
+                {/* Identity panel — every field we have on this claimant */}
+                <div className="mt-3 rounded-xl border border-[var(--color-line-soft)] bg-[var(--color-paper)] p-3">
+                  <p className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-muted)] mb-2">
+                    Claimant identity (what you can verify)
+                  </p>
+                  <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1.5 text-xs">
+                    <IdRow
+                      label="Email"
+                      value={
+                        <a
+                          href={`mailto:${claimantEmail}?subject=${encodeURIComponent(
+                            `Verifying your claim on ${person?.name ?? "your J6 profile"} (realryannichols.com)`,
+                          )}`}
+                          className="font-mono text-[var(--color-accent)] hover:underline"
+                        >
+                          {claimantEmail}
+                        </a>
+                      }
+                    />
+                    <IdRow
+                      label="DOJ case #"
+                      value={
+                        c.doj_case_number ? (
+                          <a
+                            href={`https://www.google.com/search?q=%22${encodeURIComponent(
+                              c.doj_case_number,
+                            )}%22+January+6`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-mono text-[var(--color-accent)] hover:underline"
+                            title="Search the public docket"
+                          >
+                            {c.doj_case_number} ↗
+                          </a>
+                        ) : (
+                          <em className="text-[var(--color-accent)]">not provided</em>
+                        )
+                      }
+                    />
+                    <IdRow
+                      label="Account name"
+                      value={
+                        meta?.profile_full_name ? (
+                          <span className="font-mono">
+                            {meta.profile_full_name}
+                          </span>
+                        ) : (
+                          <em className="text-[var(--color-accent)]">missing</em>
+                        )
+                      }
+                    />
+                    <IdRow
+                      label="Profile name (J6)"
+                      value={<span className="font-mono">{person?.name ?? "—"}</span>}
+                    />
+                    <IdRow
+                      label="Username"
+                      value={
+                        meta?.profile_username ? (
+                          <Link
+                            href={`/u/${meta.profile_username}`}
+                            target="_blank"
+                            className="font-mono text-[var(--color-accent)] hover:underline"
+                          >
+                            @{meta.profile_username}
+                          </Link>
+                        ) : (
+                          <em className="text-[var(--color-muted)]">not set</em>
+                        )
+                      }
+                    />
+                    <IdRow
+                      label="Display name"
+                      value={
+                        meta?.profile_display_name ? (
+                          <span>{meta.profile_display_name}</span>
+                        ) : (
+                          <em className="text-[var(--color-muted)]">not set</em>
+                        )
+                      }
+                    />
+                    <IdRow
+                      label="Account created"
+                      value={
+                        meta?.account_created_at ? (
+                          <span
+                            className={
+                              accountIsBrandNew
+                                ? "font-bold text-[var(--color-accent)]"
+                                : "text-[var(--color-ink-soft)]"
+                            }
+                            title={format(
+                              new Date(meta.account_created_at),
+                              "yyyy-MM-dd HH:mm:ss",
+                            )}
+                          >
+                            {formatDistanceToNowStrict(
+                              new Date(meta.account_created_at),
+                              { addSuffix: true },
+                            )}
+                            {accountIsBrandNew ? " ⚠ brand new" : ""}
+                          </span>
+                        ) : (
+                          "—"
+                        )
+                      }
+                    />
+                    <IdRow
+                      label="Last signed in"
+                      value={
+                        meta?.last_sign_in_at ? (
+                          <span className="text-[var(--color-ink-soft)]">
+                            {formatDistanceToNowStrict(
+                              new Date(meta.last_sign_in_at),
+                              { addSuffix: true },
+                            )}
+                          </span>
+                        ) : (
+                          <em className="text-[var(--color-muted)]">never</em>
+                        )
+                      }
+                    />
+                    <IdRow
+                      label="Account status"
+                      value={
+                        <span className="font-mono text-[var(--color-ink-soft)]">
+                          {meta?.profile_status ?? "—"}
+                        </span>
+                      }
+                    />
+                    <IdRow
+                      label="Name match"
+                      value={
+                        nameMatchPct !== null ? (
+                          <span
+                            className={`font-bold ${
+                              nameMatchPct >= 85
+                                ? "text-[var(--color-success)]"
+                                : nameMatchPct >= 50
+                                  ? "text-[var(--color-tag-procedural)]"
+                                  : "text-[var(--color-accent)]"
+                            }`}
+                          >
+                            {nameMatchPct}% to {person?.name}
+                          </span>
+                        ) : (
+                          <em className="text-[var(--color-muted)]">
+                            no scoreable name on file
+                          </em>
+                        )
+                      }
+                    />
+                  </dl>
+                </div>
+
+                {/* Their proof text */}
+                <div className="mt-3">
+                  <p className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-muted)] mb-1">
+                    What they wrote as proof
+                  </p>
+                  <p className="whitespace-pre-wrap text-sm leading-relaxed text-[var(--color-ink-soft)] bg-[var(--color-paper)] border border-[var(--color-line-soft)] rounded-md p-3">
+                    {c.proof}
+                  </p>
+                </div>
+
+                {/* Verification questions Ryan can ask */}
+                {c.status === "pending" ? (
+                  <details className="mt-3">
+                    <summary className="text-xs font-bold text-[var(--color-blue)] cursor-pointer hover:underline">
+                      Verification questions to ask before approving →
+                    </summary>
+                    <div className="mt-2 rounded-md border border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-3 text-xs space-y-2">
+                      <p className="text-[var(--color-ink)]">
+                        Send one or two of these to{" "}
+                        <span className="font-mono">{claimantEmail}</span>. Pick
+                        details only the real {person?.name?.split(/\s+/)[0]}{" "}
+                        would know:
+                      </p>
+                      <ul className="list-disc ml-5 space-y-1 text-[var(--color-ink-soft)]">
+                        <li>What was your sentencing date and the name of the federal judge?</li>
+                        <li>Who was the lead AUSA (federal prosecutor) on your case?</li>
+                        <li>Who represented you — public defender or private attorney name?</li>
+                        <li>What's your BOP register number, if you were held?</li>
+                        <li>Which facility were you held at? Any block / unit assignments?</li>
+                        <li>Send a photo of yourself holding a piece of paper with today's date.</li>
+                        <li>Send a clear photo of any pardon paperwork or release documentation.</li>
+                        <li>A short video of you on a video call saying your full name and the URL of this site.</li>
+                      </ul>
+                      <a
+                        href={`mailto:${claimantEmail}?subject=${encodeURIComponent(
+                          `Quick verification on your claim — realryannichols.com`,
+                        )}&body=${encodeURIComponent(
+                          `Hi${meta?.profile_display_name ? ` ${meta.profile_display_name.split(/\s+/)[0]}` : ""},\n\nThank you for claiming the profile for ${person?.name ?? "the J6 defendant"} at realryannichols.com. Before I verify your claim and hand over edit access to your profile, I need to confirm you're the right person.\n\nCould you please reply with:\n  - Your sentencing date and the federal judge's name\n  - The name of the AUSA (federal prosecutor) on your case\n  - Your defense counsel's name\n  - A photo of yourself holding a piece of paper with today's date written on it\n\nThis is the same gate I apply to every claim. Once I confirm, you'll have full control of your profile to upload your evidence and tell your story.\n\nThank you,\nRyan Nichols`,
+                        )}`}
+                        className="inline-block rounded-md bg-[var(--color-blue)] hover:bg-[var(--color-blue-strong)] px-3 py-1.5 text-xs font-bold text-[var(--color-paper)]"
+                      >
+                        ✉ Open prefilled email →
+                      </a>
+                    </div>
+                  </details>
+                ) : null}
 
                 {c.reviewed_notes ? (
                   <p className="mt-3 text-xs text-[var(--color-muted)] border-t border-[var(--color-line)] pt-3">
@@ -201,6 +449,23 @@ export default async function AdminClaimsPage({
         </Link>
       </p>
     </article>
+  );
+}
+
+function IdRow({
+  label,
+  value,
+}: {
+  label: string;
+  value: React.ReactNode;
+}) {
+  return (
+    <div className="flex items-baseline gap-2">
+      <dt className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-muted)] flex-shrink-0 w-[100px]">
+        {label}
+      </dt>
+      <dd className="text-xs break-all">{value}</dd>
+    </div>
   );
 }
 
