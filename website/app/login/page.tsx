@@ -51,7 +51,20 @@ function LoginPageInner() {
           email,
           password,
         });
-        if (error) throw error;
+        if (error) {
+          // Friendlier error copy than Supabase defaults.
+          if (/email not confirmed/i.test(error.message)) {
+            throw new Error(
+              "Your email isn't confirmed yet. Check your inbox for the confirmation link, or use Magic Link below to sign in directly.",
+            );
+          }
+          if (/invalid login credentials/i.test(error.message)) {
+            throw new Error(
+              "Email or password is wrong. If you just created an account, try Magic Link below — we'll email you a sign-in link.",
+            );
+          }
+          throw error;
+        }
         router.push(next);
         router.refresh();
         return;
@@ -65,7 +78,7 @@ function LoginPageInner() {
             "Username must be 3–30 characters, letters/numbers/underscore/dash, not starting with a dash."
           );
         }
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -78,11 +91,30 @@ function LoginPageInner() {
           },
         });
         if (error) throw error;
-        setState({
-          kind: "sent",
-          message:
-            "Account created. Check your inbox for the confirmation link. Your profile starts in pending review — comments unlock once an admin verifies your real name.",
+        // Email confirmation is auto-handled server-side now (see the
+        // auto_confirm_user trigger). signUp returns an active session on
+        // success, so push the user straight into their account.
+        if (data.session) {
+          router.push(next);
+          router.refresh();
+          return;
+        }
+        // Defensive fallback: if no session came back for any reason, sign
+        // them in with the password they just set so they don't bounce.
+        const { error: signInErr } = await supabase.auth.signInWithPassword({
+          email,
+          password,
         });
+        if (signInErr) {
+          setState({
+            kind: "sent",
+            message:
+              "Account created. Sign in with the email + password you just set.",
+          });
+          return;
+        }
+        router.push(next);
+        router.refresh();
         return;
       }
       // magic
@@ -107,7 +139,7 @@ function LoginPageInner() {
         {mode === "signin"
           ? "Use the email and password you set up here, or switch to a magic link."
           : mode === "signup"
-            ? "Pick a password. You'll get an email to confirm your address."
+            ? "Pick a password. You're signed in immediately — no email confirmation needed."
             : "Email-only sign-in. We'll send a one-time link."}
       </p>
 
