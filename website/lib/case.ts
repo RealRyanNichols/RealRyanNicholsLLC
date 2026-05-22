@@ -124,17 +124,24 @@ export async function getGrievanceBySlug(slug: string): Promise<CaseGrievance | 
 }
 
 export async function getPeople(): Promise<CasePerson[]> {
+  // Supabase PostgREST enforces a server-side max-rows cap (1000 by default)
+  // that .limit() cannot override. With 1,500+ J6 defendant profiles, we
+  // have to paginate via .range() to get the full set.
   const supabase = getSupabaseStaticClient();
-  // Supabase PostgREST caps results at 1000 rows by default. With 1,500+
-  // J6 defendant profiles, we need an explicit higher ceiling so the
-  // /case people view returns the full set.
-  const { data } = await supabase
-    .from("case_people")
-    .select(PERSON_COLS)
-    .eq("visibility", "public")
-    .order("name", { ascending: true })
-    .limit(5000);
-  return (data ?? []) as CasePerson[];
+  const PAGE = 1000;
+  const all: CasePerson[] = [];
+  for (let from = 0; ; from += PAGE) {
+    const { data, error } = await supabase
+      .from("case_people")
+      .select(PERSON_COLS)
+      .eq("visibility", "public")
+      .order("name", { ascending: true })
+      .range(from, from + PAGE - 1);
+    if (error || !data || data.length === 0) break;
+    all.push(...(data as CasePerson[]));
+    if (data.length < PAGE) break;
+  }
+  return all;
 }
 
 export async function getPersonBySlug(slug: string): Promise<CasePerson | null> {
@@ -170,17 +177,25 @@ export async function getEventBySlug(slug: string): Promise<CaseEvent | null> {
 }
 
 export async function getDocuments(): Promise<CaseDocument[]> {
+  // Paginate past PostgREST's 1000-row server cap.
   const supabase = getSupabaseStaticClient();
-  const { data } = await supabase
-    .from("case_documents")
-    .select(DOCUMENT_COLS)
-    .eq("visibility", "public")
-    .eq("archived", false)
-    .order("document_date", { ascending: false, nullsFirst: false })
-    .order("relevance", { ascending: false })
-    .order("title", { ascending: true })
-    .limit(5000);
-  return (data ?? []) as CaseDocument[];
+  const PAGE = 1000;
+  const all: CaseDocument[] = [];
+  for (let from = 0; ; from += PAGE) {
+    const { data, error } = await supabase
+      .from("case_documents")
+      .select(DOCUMENT_COLS)
+      .eq("visibility", "public")
+      .eq("archived", false)
+      .order("document_date", { ascending: false, nullsFirst: false })
+      .order("relevance", { ascending: false })
+      .order("title", { ascending: true })
+      .range(from, from + PAGE - 1);
+    if (error || !data || data.length === 0) break;
+    all.push(...(data as CaseDocument[]));
+    if (data.length < PAGE) break;
+  }
+  return all;
 }
 
 // Sort evidence so Ryan's own paperwork shows first, then corroborating
