@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 const schema = z.object({
   claimant_email: z.string().email("Please enter a valid email."),
@@ -40,6 +41,21 @@ export async function POST(
     return NextResponse.json(
       { error: "Sign in to claim a profile." },
       { status: 401 }
+    );
+  }
+
+  // Rate limit: 10 claim submissions per hour per IP/user.
+  const rl = await checkRateLimit({
+    request,
+    bucket: "claim",
+    windowMinutes: 60,
+    maxRequests: 10,
+    userId: auth.user.id,
+  });
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: rl.error },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfterSec) } },
     );
   }
 

@@ -3,6 +3,7 @@ import { Resend } from "resend";
 import { z } from "zod";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { buildConfirmationEmail } from "@/lib/email";
+import { checkRateLimit } from "@/lib/rate-limit";
 import { SITE } from "@/lib/site";
 
 // Accept either field (or both). Validate the ones provided; require at least one.
@@ -23,6 +24,21 @@ export async function POST(request: Request) {
     return NextResponse.json(
       { error: "Signups are not configured yet." },
       { status: 503 }
+    );
+  }
+
+  // Anonymous endpoint — strict per-IP cap so we can't be used as an
+  // email-confirmation relay for spam.
+  const rl = await checkRateLimit({
+    request,
+    bucket: "subscribe",
+    windowMinutes: 60,
+    maxRequests: 5,
+  });
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: rl.error },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfterSec) } },
     );
   }
 
