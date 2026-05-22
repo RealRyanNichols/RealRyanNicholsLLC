@@ -3,7 +3,6 @@ import { PostCard } from "@/components/PostCard";
 import { ProfileHero } from "@/components/ProfileHero";
 import { VerseSidebar } from "@/components/VerseSidebar";
 import { SignupForm } from "@/components/SignupForm";
-import { J6Banner } from "@/components/J6Banner";
 import { SITE } from "@/lib/site";
 import Link from "next/link";
 
@@ -24,18 +23,14 @@ export default async function HomePage({
   const signupDisabled = !SITE.mailingAddress;
 
   // The feed renders strictly Ryan's posts in chronological order — no
-  // pinned floating, no J6 activity ticker. The J6 page owns the J6
-  // case feed; here we keep things to Ryan's own voice.
+  // pinned floating, no J6 activity ticker, no Case Builder banner.
+  // The J6 page owns J6 stuff; here we keep things to Ryan's voice.
   const rest = posts.filter((p) => !p.pinned);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
       <div className="lg:col-span-2">
         <ProfileHero />
-
-        <div className="mt-6">
-          <J6Banner />
-        </div>
 
         {/* Chronological feed — strict newest-first, no pinning */}
         <section className="mt-8">

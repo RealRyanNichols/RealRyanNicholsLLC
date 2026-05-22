@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { format } from "date-fns";
+import { J6Banner } from "@/components/J6Banner";
 import {
   getGrievances,
   getPeople,
@@ -191,6 +192,13 @@ export default async function CasePage({
           <SmallStat label="People named" value={q ? filteredPeople.length : people.length} />
           <SmallStat label="Facilities" value={totals.facilities} />
           <SmallStat label="Federal officers on record (IGP broken)" value={2} />
+        </div>
+
+        {/* Case Builder banner — anchors the wider J6 work at the top
+            of the case page. Was on the homepage; moved here so Ryan's
+            feed stays focused on his own posts. */}
+        <div className="mt-8">
+          <J6Banner />
         </div>
 
         {/* Search */}
