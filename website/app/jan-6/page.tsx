@@ -1,9 +1,41 @@
 import type { Metadata } from "next";
+import { SITE } from "@/lib/site";
+import { getOgImage } from "@/lib/og-images";
 
-export const metadata: Metadata = {
-  title: "Jan 6",
-  description: "Ryan Nichols' Jan 6 story, in his own words.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const override = await getOgImage("/jan-6");
+  const title = override?.title ?? "Jan 6";
+  const description = override?.description ?? "Ryan Nichols' Jan 6 story, in his own words.";
+  const url = `${SITE.url}/jan-6`;
+  const ogImageUrl = override?.image_url ?? null;
+  return {
+    title: "Jan 6",
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "article",
+      title,
+      description,
+      url,
+      images: ogImageUrl
+        ? [
+            {
+              url: ogImageUrl,
+              width: override?.width ?? 1200,
+              height: override?.height ?? 630,
+              alt: title,
+            },
+          ]
+        : undefined,
+    },
+    twitter: {
+      card: ogImageUrl ? "summary_large_image" : "summary",
+      title,
+      description,
+      images: ogImageUrl ? [ogImageUrl] : undefined,
+    },
+  };
+}
 
 export default function JanSixPage() {
   return (
@@ -12,6 +44,19 @@ export default function JanSixPage() {
       <p className="mt-3 text-sm text-[var(--color-muted)]">
         In my own words. Updated periodically.
       </p>
+
+      <figure className="mt-6 rounded-xl overflow-hidden border border-[var(--color-line)] bg-[var(--color-surface)]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/uploads/ryan-dc-jail.jpg"
+          alt="Ryan Nichols inside the DC Jail during pretrial detention."
+          className="w-full h-auto block"
+        />
+        <figcaption className="px-4 py-3 text-xs text-[var(--color-muted)]">
+          Inside the DC Jail. Pretrial detention, before the pardon.
+        </figcaption>
+      </figure>
+
       <div className="prose-body mt-6">
         <p>
           January 6th, 2021 changed the trajectory of my life. I&apos;m not going to relitigate

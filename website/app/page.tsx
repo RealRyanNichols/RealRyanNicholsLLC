@@ -4,7 +4,6 @@ import { ProfileHero } from "@/components/ProfileHero";
 import { VerseSidebar } from "@/components/VerseSidebar";
 import { SignupForm } from "@/components/SignupForm";
 import { J6Banner } from "@/components/J6Banner";
-import { LiveActivity } from "@/components/LiveActivity";
 import { SITE } from "@/lib/site";
 import Link from "next/link";
 
@@ -24,10 +23,9 @@ export default async function HomePage({
   const countMap = new Map(counts);
   const signupDisabled = !SITE.mailingAddress;
 
-  // Split pinned from the rest so we can render them in separate sections.
-  // In Trending mode, pinned still floats but the visual grouping makes the
-  // chronological order of unpinned posts crystal clear.
-  const pinned = posts.filter((p) => p.pinned);
+  // The feed renders strictly Ryan's posts in chronological order — no
+  // pinned floating, no J6 activity ticker. The J6 page owns the J6
+  // case feed; here we keep things to Ryan's own voice.
   const rest = posts.filter((p) => !p.pinned);
 
   return (
@@ -39,34 +37,7 @@ export default async function HomePage({
           <J6Banner />
         </div>
 
-        <div className="mt-4">
-          <LiveActivity />
-        </div>
-
-        {/* Pinned section — always shown together at the top */}
-        {pinned.length > 0 ? (
-          <section className="mt-8">
-            <div className="flex items-baseline justify-between gap-3 mb-3 border-b-2 border-[var(--color-accent)] pb-1.5">
-              <h2 className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold flex items-center gap-1.5">
-                📌 Pinned · {pinned.length}
-              </h2>
-              <p className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
-                Curated by Ryan
-              </p>
-            </div>
-            <div>
-              {pinned.map((p) => (
-                <PostCard
-                  key={p.id}
-                  post={p}
-                  commentCount={countMap.get(p.id) ?? 0}
-                />
-              ))}
-            </div>
-          </section>
-        ) : null}
-
-        {/* Chronological feed */}
+        {/* Chronological feed — strict newest-first, no pinning */}
         <section className="mt-8">
           <div className="flex items-center justify-between gap-3 mb-3 border-b border-[var(--color-line)]">
             <h2 className="sr-only">Feed</h2>
@@ -81,9 +52,7 @@ export default async function HomePage({
           </div>
           {rest.length === 0 ? (
             <p className="py-12 text-center text-[var(--color-muted)]">
-              {pinned.length > 0
-                ? "Nothing new below the pinned set yet."
-                : "No posts yet. Check back soon."}
+              No posts yet. Check back soon.
             </p>
           ) : (
             <div>
