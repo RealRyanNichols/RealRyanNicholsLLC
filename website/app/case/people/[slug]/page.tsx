@@ -82,7 +82,13 @@ export default async function PersonPage({
           </Link>
         </nav>
 
-        <ClaimMeHero name={p.name} slug={p.slug} signedIn={signedIn} />
+        <ClaimMeHero
+          name={p.name}
+          slug={p.slug}
+          signedIn={signedIn}
+          views={p.views_count}
+          shares={p.shares_count}
+        />
 
         <div className="mt-6 flex items-center gap-3">
           <ShareButton

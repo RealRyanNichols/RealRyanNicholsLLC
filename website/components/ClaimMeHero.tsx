@@ -4,10 +4,14 @@ export function ClaimMeHero({
   name,
   slug,
   signedIn,
+  views,
+  shares,
 }: {
   name: string;
   slug: string;
   signedIn: boolean;
+  views: number;
+  shares: number;
 }) {
   const firstName = name.split(/\s+/)[0] ?? name;
   const claimHref = signedIn
@@ -16,9 +20,25 @@ export function ClaimMeHero({
 
   return (
     <div className="rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-6 sm:p-10">
-      <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
-        Anti-Weaponization Case Builder · Unclaimed
-      </p>
+      <div className="flex items-center justify-between gap-3 mb-3">
+        <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+          Anti-Weaponization Case Builder · Unclaimed
+        </p>
+        {views > 0 || shares > 0 ? (
+          <p
+            className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[var(--color-blue)] whitespace-nowrap"
+            aria-label={`${views} people have viewed this profile, ${shares} shares`}
+          >
+            <span className="tabular-nums">{views.toLocaleString()}</span> watching
+            {shares > 0 ? (
+              <>
+                {" · "}
+                <span className="tabular-nums">{shares.toLocaleString()}</span> shared
+              </>
+            ) : null}
+          </p>
+        ) : null}
+      </div>
       <h1 className="mt-3 text-3xl sm:text-5xl font-bold tracking-tight font-display leading-[1.05]">
         Hey {firstName} — your J6 Anti-Weaponization Case Builder profile is
         ready to be claimed.

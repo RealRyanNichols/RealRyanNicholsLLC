@@ -47,6 +47,14 @@ export default async function AdminAnalyticsPage() {
     { data: subsRecentRaw },
     { count: profilesTotal },
     { count: profilesPending },
+    { data: caseGrievancesRaw },
+    { data: caseEventsRaw },
+    { data: caseDocumentsRaw },
+    { data: casePeopleRaw },
+    { count: j6DefendantsTotal },
+    { count: j6DefendantsClaimed },
+    { count: pendingClaims },
+    { count: pendingTips },
   ] = await Promise.all([
     supabase
       .from("posts")
@@ -101,13 +109,76 @@ export default async function AdminAnalyticsPage() {
       .from("profiles")
       .select("id", { count: "exact", head: true })
       .eq("status", "pending"),
+    supabase
+      .from("case_grievances")
+      .select("id, slug, title, views_count, shares_count")
+      .eq("visibility", "public")
+      .order("views_count", { ascending: false })
+      .limit(10),
+    supabase
+      .from("case_events")
+      .select("id, slug, title, views_count, shares_count")
+      .eq("visibility", "public")
+      .order("views_count", { ascending: false })
+      .limit(10),
+    supabase
+      .from("case_documents")
+      .select("id, slug, title, views_count, shares_count")
+      .eq("visibility", "public")
+      .eq("archived", false)
+      .order("views_count", { ascending: false })
+      .limit(10),
+    supabase
+      .from("case_people")
+      .select("id, slug, name, views_count, shares_count, claim_status")
+      .eq("visibility", "public")
+      .order("views_count", { ascending: false })
+      .limit(10),
+    supabase
+      .from("case_people")
+      .select("id", { count: "exact", head: true })
+      .eq("is_j6_defendant", true),
+    supabase
+      .from("case_people")
+      .select("id", { count: "exact", head: true })
+      .eq("is_j6_defendant", true)
+      .eq("claim_status", "verified"),
+    supabase
+      .from("case_person_claims")
+      .select("id", { count: "exact", head: true })
+      .eq("status", "pending"),
+    supabase
+      .from("case_tips")
+      .select("id", { count: "exact", head: true })
+      .eq("status", "pending"),
   ]);
 
   const posts = postsRaw ?? [];
-  const totalViews = posts.reduce((s, p) => s + (p.views_count ?? 0), 0);
-  const totalShares = posts.reduce((s, p) => s + (p.shares_count ?? 0), 0);
+  const totalPostViews = posts.reduce((s, p) => s + (p.views_count ?? 0), 0);
+  const totalPostShares = posts.reduce((s, p) => s + (p.shares_count ?? 0), 0);
   const topByViews = [...posts].sort((a, b) => (b.views_count ?? 0) - (a.views_count ?? 0)).slice(0, 10);
   const topByShares = [...posts].sort((a, b) => (b.shares_count ?? 0) - (a.shares_count ?? 0)).slice(0, 10);
+
+  const caseGrievances = caseGrievancesRaw ?? [];
+  const caseEvents = caseEventsRaw ?? [];
+  const caseDocuments = caseDocumentsRaw ?? [];
+  const casePeople = casePeopleRaw ?? [];
+  const sumViews = (rows: { views_count: number | null }[]) =>
+    rows.reduce((s, r) => s + (r.views_count ?? 0), 0);
+  const sumShares = (rows: { shares_count: number | null }[]) =>
+    rows.reduce((s, r) => s + (r.shares_count ?? 0), 0);
+  const caseViews =
+    sumViews(caseGrievances) +
+    sumViews(caseEvents) +
+    sumViews(caseDocuments) +
+    sumViews(casePeople);
+  const caseShares =
+    sumShares(caseGrievances) +
+    sumShares(caseEvents) +
+    sumShares(caseDocuments) +
+    sumShares(casePeople);
+  const totalViews = totalPostViews + caseViews;
+  const totalShares = totalPostShares + caseShares;
 
   const recentComments = recentCommentsRaw ?? [];
   const subsRecent = subsRecentRaw ?? [];
@@ -128,21 +199,38 @@ export default async function AdminAnalyticsPage() {
         depth, and click maps land in the next PR.
       </p>
 
-      {/* Top-line stats */}
+      {/* Top-line stats — site-wide, includes posts + case archive */}
       <section className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
         <Stat label="Subscribers" value={fmt(subsTotal)} sub={`+${fmt(subsLast7)} this week`} />
-        <Stat label="Total views" value={fmt(totalViews)} sub="across all posts" />
-        <Stat label="Total shares" value={fmt(totalShares)} sub="all platforms" />
+        <Stat
+          label="Total views"
+          value={fmt(totalViews)}
+          sub={`${fmt(totalPostViews)} posts · ${fmt(caseViews)} case`}
+        />
+        <Stat
+          label="Total shares"
+          value={fmt(totalShares)}
+          sub={`${fmt(totalPostShares)} posts · ${fmt(caseShares)} case`}
+        />
         <Stat label="Comments" value={fmt(commentsTotal)} sub={`+${fmt(commentsLast7)} this week`} />
       </section>
 
       <section className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <Stat label="Posts published" value={fmt(posts.length)} />
-        <Stat label="Subs (30d)" value={fmt(subsLast30)} sub="confirmed signups" />
-        <Stat label="User accounts" value={fmt(profilesTotal)} sub={`${fmt(profilesPending)} pending review`} />
         <Stat
-          label="Avg views/post"
-          value={fmt(posts.length > 0 ? Math.round(totalViews / posts.length) : 0)}
+          label="J6 defendants"
+          value={fmt(j6DefendantsTotal)}
+          sub={`${fmt(j6DefendantsClaimed)} verified`}
+        />
+        <Stat
+          label="Pending claims"
+          value={fmt(pendingClaims)}
+          sub={`${fmt(pendingTips)} tip-line items`}
+        />
+        <Stat label="Subs (30d)" value={fmt(subsLast30)} sub="confirmed signups" />
+        <Stat
+          label="User accounts"
+          value={fmt(profilesTotal)}
+          sub={`${fmt(profilesPending)} pending review`}
         />
       </section>
 
@@ -171,6 +259,60 @@ export default async function AdminAnalyticsPage() {
               : undefined,
           }))}
           emptyText="No shares recorded yet."
+        />
+      </section>
+
+      {/* Case archive attention — what's getting clicked across grievances,
+          events, documents, and people (including unclaimed J6 profiles). */}
+      <section className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-5">
+        <RankedList
+          title="Top J6 profiles by views"
+          rows={casePeople.slice(0, 10).map((p) => ({
+            href: `/case/people/${p.slug}`,
+            label: `${p.name}${
+              p.claim_status === "verified"
+                ? " · ✓ verified"
+                : p.claim_status === "pending"
+                ? " · claim pending"
+                : ""
+            }`,
+            value: p.views_count ?? 0,
+            sub: `${(p.shares_count ?? 0).toLocaleString()} shares`,
+          }))}
+          emptyText="No profile views yet."
+        />
+        <RankedList
+          title="Top documents by views"
+          rows={caseDocuments.slice(0, 10).map((d) => ({
+            href: `/case/documents/${d.slug}`,
+            label: d.title ?? "(untitled)",
+            value: d.views_count ?? 0,
+            sub: `${(d.shares_count ?? 0).toLocaleString()} shares`,
+          }))}
+          emptyText="No document views yet."
+        />
+      </section>
+
+      <section className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
+        <RankedList
+          title="Top grievances by views"
+          rows={caseGrievances.slice(0, 10).map((g) => ({
+            href: `/case/grievances/${g.slug}`,
+            label: g.title ?? "(untitled)",
+            value: g.views_count ?? 0,
+            sub: `${(g.shares_count ?? 0).toLocaleString()} shares`,
+          }))}
+          emptyText="No grievance views yet."
+        />
+        <RankedList
+          title="Top timeline events by views"
+          rows={caseEvents.slice(0, 10).map((e) => ({
+            href: `/case/events/${e.slug}`,
+            label: e.title ?? "(untitled)",
+            value: e.views_count ?? 0,
+            sub: `${(e.shares_count ?? 0).toLocaleString()} shares`,
+          }))}
+          emptyText="No event views yet."
         />
       </section>
 
