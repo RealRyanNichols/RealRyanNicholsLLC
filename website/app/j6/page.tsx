@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getCaseTotals } from "@/lib/case";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
+import { SiteMomentum } from "@/components/SiteMomentum";
 import { SITE } from "@/lib/site";
 
 export const revalidate = 300;
@@ -82,6 +83,12 @@ export default async function J6MissionPage() {
               : ""}
           </p>
         ) : null}
+
+        {/* Live momentum panel — moved off the homepage feed so it lives where
+            it makes thematic sense. Every tile clicks into the underlying list. */}
+        <section className="mt-8">
+          <SiteMomentum />
+        </section>
 
         {/* The promise */}
         <section className="mt-10 space-y-5 text-base sm:text-lg leading-relaxed text-[var(--color-ink)]">

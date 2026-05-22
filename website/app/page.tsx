@@ -3,7 +3,7 @@ import { PostCard } from "@/components/PostCard";
 import { ProfileHero } from "@/components/ProfileHero";
 import { VerseSidebar } from "@/components/VerseSidebar";
 import { SignupForm } from "@/components/SignupForm";
-import { SiteMomentum } from "@/components/SiteMomentum";
+import { J6Banner } from "@/components/J6Banner";
 import { SITE } from "@/lib/site";
 import Link from "next/link";
 
@@ -29,7 +29,7 @@ export default async function HomePage({
         <ProfileHero />
 
         <div className="mt-6">
-          <SiteMomentum />
+          <J6Banner />
         </div>
 
         <section className="mt-8">
