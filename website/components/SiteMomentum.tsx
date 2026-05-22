@@ -1,10 +1,10 @@
+import Link from "next/link";
 import { differenceInDays } from "date-fns";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 
-// One-off momentum tile used above the feed and on the J6 mission page.
-// Pulls live counts: profiles ready to claim, documents on file, total
-// views across all posts + case items, total shares, and days since
-// pardon. Reads only — no writes.
+// Live momentum panel used above the feed and on the J6 mission page.
+// Each tile drills into a real list — if you can show a number, you can
+// show what's behind it.
 export async function SiteMomentum({ variant = "wide" }: { variant?: "wide" | "compact" }) {
   const supabase = getSupabaseStaticClient();
 
@@ -70,21 +70,28 @@ export async function SiteMomentum({ variant = "wide" }: { variant?: "wide" | "c
   const pardon = new Date("2025-01-20");
   const daysSincePardon = Math.max(0, differenceInDays(new Date(), pardon));
 
-  const tiles =
+  type Tile = {
+    label: string;
+    value: number;
+    tone: "ink" | "accent" | "blue";
+    href?: string;
+  };
+
+  const tiles: Tile[] =
     variant === "compact"
       ? [
-          { label: "Profiles ready", value: profilesReady ?? 0, tone: "blue" as const },
-          { label: "Documents", value: documents ?? 0, tone: "ink" as const },
-          { label: "Total views", value: totalViews, tone: "accent" as const },
-          { label: "Days since pardon", value: daysSincePardon, tone: "ink" as const },
+          { label: "Profiles ready", value: profilesReady ?? 0, tone: "blue", href: "/case?view=people&filter=unclaimed" },
+          { label: "Documents", value: documents ?? 0, tone: "ink", href: "/case?view=documents" },
+          { label: "Total views", value: totalViews, tone: "accent", href: "/?sort=trending" },
+          { label: "Days since pardon", value: daysSincePardon, tone: "ink" },
         ]
       : [
-          { label: "Profiles ready to claim", value: profilesReady ?? 0, tone: "blue" as const },
-          { label: "Profiles verified", value: profilesClaimed ?? 0, tone: "ink" as const },
-          { label: "Documents on file", value: documents ?? 0, tone: "ink" as const },
-          { label: "Grievances filed", value: grievances ?? 0, tone: "ink" as const },
-          { label: "Total views", value: totalViews, tone: "accent" as const },
-          { label: "Total shares", value: totalShares, tone: "accent" as const },
+          { label: "Profiles ready to claim", value: profilesReady ?? 0, tone: "blue", href: "/case?view=people&filter=unclaimed" },
+          { label: "Profiles verified", value: profilesClaimed ?? 0, tone: "ink", href: "/case?view=people&filter=verified" },
+          { label: "Documents on file", value: documents ?? 0, tone: "ink", href: "/case?view=documents" },
+          { label: "Grievances filed", value: grievances ?? 0, tone: "ink", href: "/case?view=grievances" },
+          { label: "Total views", value: totalViews, tone: "accent", href: "/?sort=trending" },
+          { label: "Total shares", value: totalShares, tone: "accent", href: "/?sort=trending" },
         ];
 
   return (
@@ -97,32 +104,34 @@ export async function SiteMomentum({ variant = "wide" }: { variant?: "wide" | "c
           The J6 Case · live
         </p>
         <p className="text-xs text-[var(--color-muted)]">
-          updated continuously
+          updated continuously · tap any number
         </p>
       </div>
       <div
         className={`grid gap-3 ${
           variant === "compact"
             ? "grid-cols-2 sm:grid-cols-4"
-            : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-6"
+            : "grid-cols-2 sm:grid-cols-3"
         }`}
       >
         {tiles.map((t) => (
-          <Tile key={t.label} {...t} />
+          <TileCard key={t.label} {...t} />
         ))}
       </div>
     </section>
   );
 }
 
-function Tile({
+function TileCard({
   label,
   value,
   tone,
+  href,
 }: {
   label: string;
   value: number;
   tone: "ink" | "accent" | "blue";
+  href?: string;
 }) {
   const valueCls =
     tone === "accent"
@@ -130,16 +139,37 @@ function Tile({
       : tone === "blue"
       ? "text-[var(--color-blue)]"
       : "text-[var(--color-ink)]";
-  return (
-    <div className="rounded-xl border border-[var(--color-line-soft)] bg-[var(--color-paper)] p-3">
+
+  const inner = (
+    <>
       <div
-        className={`text-2xl sm:text-3xl font-bold tabular-nums tracking-tight ${valueCls}`}
+        className={`text-3xl sm:text-4xl font-bold tabular-nums tracking-tight leading-none ${valueCls}`}
       >
         {value.toLocaleString()}
       </div>
-      <div className="mt-0.5 text-[10px] sm:text-xs uppercase tracking-wider text-[var(--color-muted)] font-semibold leading-tight">
+      <div className="mt-2 text-[11px] sm:text-xs uppercase tracking-wider text-[var(--color-muted)] font-semibold leading-tight">
         {label}
       </div>
-    </div>
+      {href ? (
+        <div className="mt-2 text-[10px] sm:text-xs text-[var(--color-accent)] font-bold">
+          View →
+        </div>
+      ) : null}
+    </>
   );
+
+  const baseCls =
+    "block rounded-xl border border-[var(--color-line-soft)] bg-[var(--color-paper)] p-4 sm:p-5 min-h-[112px] sm:min-h-[128px]";
+
+  if (href) {
+    return (
+      <Link
+        href={href}
+        className={`${baseCls} hover:border-[var(--color-accent)] transition`}
+      >
+        {inner}
+      </Link>
+    );
+  }
+  return <div className={baseCls}>{inner}</div>;
 }
