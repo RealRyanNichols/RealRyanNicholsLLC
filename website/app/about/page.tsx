@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "About Ryan Nichols",
   description:
-    "United States Marine Corps veteran. Search and Rescue specialist. Founder of Wholesale Universe. Father. Husband. January 6 defendant pardoned January 20, 2025. Charges dismissed with prejudice.",
+    "United States Marine Corps veteran. Search and Rescue specialist. Founder of Wholesale Universe. Father. January 6 defendant pardoned January 20, 2025. Charges dismissed with prejudice.",
 };
 
 export default function AboutPage() {
@@ -18,7 +18,7 @@ export default function AboutPage() {
       </h1>
       <p className="mt-4 text-base sm:text-lg text-[var(--color-ink-soft)] leading-relaxed">
         United States Marine Corps veteran. Search and Rescue specialist.
-        Founder of Wholesale Universe. Father. Husband. January 6 defendant.{" "}
+        Founder of Wholesale Universe. Father. January 6 defendant.{" "}
         <strong>Pardoned by President Trump on January 20, 2025.</strong>{" "}
         Charges <strong>dismissed with prejudice</strong> by U.S. Attorney
         Edward R. Martin Jr. — the case cannot be brought again.
@@ -45,13 +45,13 @@ export default function AboutPage() {
         </Link>
       </div>
 
-      {/* The biography itself — written by Bonnie Nichols (Ryan's wife),
-          originally entered as Exhibit 288 in the federal case. Posted here
-          in full because the man behind the case file deserves to be known
-          for what he did BEFORE the government weaponized him. */}
+      {/* The biography itself — written by Bonnie Nichols, originally
+          entered as Exhibit 288 in the federal case. Posted here in full
+          because the man behind the case file deserves to be known for
+          what he did BEFORE the government weaponized him. */}
       <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
         <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">
-          The biography · Written by Bonnie Nichols, his wife · Filed as
+          The biography · Written by Bonnie Nichols · Filed as
           court exhibit, December 14, 2021
         </p>
         <h2 className="mt-3 text-2xl sm:text-3xl font-bold tracking-tight font-display">
@@ -60,9 +60,9 @@ export default function AboutPage() {
 
         <div className="prose-body mt-6 space-y-5">
           <p>
-            Ryan Nichols is from East Texas. Husband of Bonnie Nichols.
-            Father of two young boys, Ryan Jr. and Blake — both attended
-            Longview Christian School. Brother, uncle, and son.
+            Ryan Nichols is from East Texas. Father of two young boys,
+            Ryan Jr. and Blake — both attended Longview Christian
+            School. Brother, uncle, and son.
           </p>
 
           <p>
@@ -122,8 +122,8 @@ export default function AboutPage() {
           </h3>
           <p>
             Ryan is the founder of Wholesale Universe, a multi-million-dollar
-            wholesale and retail business that employs 10–18 people. He and
-            his wife built it from scratch. Ryan consults and coaches other
+            wholesale and retail business that employs 10–18 people. He
+            built it from scratch. Ryan consults and coaches other
             business owners — managing and scaling effectively — and offers
             free online training and local seminars for 2,000–3,000 enrolled
             students learning e-commerce on Amazon, Poshmark, eBay, and other
@@ -250,9 +250,9 @@ export default function AboutPage() {
             realtor at Texas Real Estate Executives.
           </p>
           <p>
-            Most importantly, Ryan is a faithful and loving family man. He
+            Most importantly, Ryan is a loving family man. He
             spends his time fishing, dancing, playing video games, and going
-            on adventures with his wife and kids. He strives to be a positive
+            on adventures with his kids. He strives to be a positive
             influence and role model for his boys — to help them find their
             purpose and passions by showing up to{" "}
             <em>be all you can be</em>. Ryan shares his passion for serving
@@ -295,7 +295,7 @@ export default function AboutPage() {
             Who he is
           </h3>
           <p>
-            Ryan is a loving father, faithful husband, son, and friend. He is
+            Ryan is a loving father, son, and friend. He is
             always looking for ways to make an impact — big or small — by
             helping others, even strangers, through tough times. A go-to
             person who can listen, empathize, and look for solutions to any
@@ -308,12 +308,9 @@ export default function AboutPage() {
             testament to his character.
           </p>
 
-          <p className="mt-8 text-base italic text-[var(--color-muted)]">
-            From a loving wife,
-            <br />
-            <strong className="not-italic text-[var(--color-ink)]">
-              Bonnie Nichols
-            </strong>
+          <p className="mt-8 text-sm text-[var(--color-muted)]">
+            — Bonnie Nichols, filed as Exhibit 288 in{" "}
+            <em>United States v. Nichols</em>, December 14, 2021.
           </p>
         </div>
       </section>
