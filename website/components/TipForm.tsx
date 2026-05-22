@@ -76,7 +76,7 @@ export function TipForm() {
         label="Whose case is this?"
         name="defendant_name"
         required
-        placeholder="e.g. Jason Wallis (or 'myself')"
+        placeholder="e.g. Ryan Nichols (or 'myself')"
         hint="The name of the January 6 defendant this tip is about. If it's you, put your own name."
       />
 
