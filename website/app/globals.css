@@ -1,27 +1,39 @@
 @import "tailwindcss";
 
 @theme {
-  /* Dark mode social-media palette.
-     Background is near-black with a slight cool tint; cards sit on
-     #16161a; accent orange is brighter than before so it pops against
-     the dark surfaces. */
-  --color-paper: #0a0a0c;
-  --color-surface: #16161a;
-  --color-surface-2: #1f1f24;
-  --color-line: #2a2a30;
-  --color-line-soft: #1f1f24;
+  /* American palette: cream parchment background, deep flag-red accent
+     for severe items, navy blue secondary accent for institutional /
+     procedural cues, warm dark ink. Built so the eye rests easily on
+     long-form reading but red still hits hard where it has to. */
+  --color-paper: #f6efdf;
+  --color-surface: #fdf8ea;
+  --color-surface-2: #f0e6cf;
+  --color-line: #d8c89e;
+  --color-line-soft: #e5d6b1;
 
-  --color-ink: #fafafa;
-  --color-ink-soft: #d4d4d8;
-  --color-muted: #888892;
+  --color-ink: #1a1410;
+  --color-ink-soft: #4a3e30;
+  --color-muted: #7a6a52;
 
-  --color-accent: #dc2626;
-  --color-accent-strong: #b91c1c;
-  --color-accent-soft: #2a0a0a;
-  --color-accent-glow: rgba(220, 38, 38, 0.22);
+  --color-accent: #b32419;
+  --color-accent-strong: #8d1b13;
+  --color-accent-soft: #f6dad2;
+  --color-accent-glow: rgba(179, 36, 25, 0.18);
 
-  --color-success: #22c55e;
-  --color-danger: #ef4444;
+  /* Navy blue — the second American color. Use for institutional context,
+     procedural tags, secondary CTAs. */
+  --color-blue: #1d3a6b;
+  --color-blue-strong: #142a52;
+  --color-blue-soft: #d9e2f2;
+
+  /* Severity tag palette — only red is reserved for SEVERE. */
+  --color-tag-severe: #b32419;
+  --color-tag-procedural: #b8741c;
+  --color-tag-institutional: #1d3a6b;
+  --color-tag-resolved: #2d6a4f;
+
+  --color-success: #2d6a4f;
+  --color-danger: #b32419;
 
   --font-display: "Source Serif 4", "Iowan Old Style", "Charter", "Georgia", serif;
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -38,7 +50,7 @@ body {
 
 ::selection {
   background: var(--color-accent);
-  color: #0a0a0c;
+  color: #fdf8ea;
 }
 
 /* Tighter, more confident headings — feels closer to X / Threads. */
@@ -147,12 +159,22 @@ select:focus {
 /* Glowing accent button used for primary CTAs that need to demand a tap. */
 .btn-accent {
   background: var(--color-accent);
-  color: #0a0a0c;
+  color: #fdf8ea;
   font-weight: 600;
   box-shadow: 0 0 24px var(--color-accent-glow);
 }
 .btn-accent:hover {
   background: var(--color-accent-strong);
+}
+
+/* Secondary CTA using the navy blue — pairs with red on the page. */
+.btn-blue {
+  background: var(--color-blue);
+  color: #fdf8ea;
+  font-weight: 600;
+}
+.btn-blue:hover {
+  background: var(--color-blue-strong);
 }
 
 /* Print: switch to high-contrast black-on-white for the Compensation Brief */

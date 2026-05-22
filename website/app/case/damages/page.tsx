@@ -98,7 +98,7 @@ export default async function DamagesPage() {
     <article className="mx-auto max-w-4xl px-4 py-10 print:py-0">
       <nav className="text-sm text-[var(--color-muted)] mb-4 print:hidden">
         <Link href="/case" className="hover:underline">
-          ← The Case
+          ← J6 Case
         </Link>
       </nav>
       <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">

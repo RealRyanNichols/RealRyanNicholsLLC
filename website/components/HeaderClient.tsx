@@ -14,7 +14,7 @@ type Props = {
 
 const NAV = [
   { href: "/", label: "Feed" },
-  { href: "/case", label: "The Case" },
+  { href: "/case", label: "J6 Case" },
   { href: "/about", label: "About" },
 ];
 
@@ -46,7 +46,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
 
   return (
     <>
-      <header className="border-b border-[var(--color-line)] bg-[#0a0a0c]/85 backdrop-blur-xl sticky top-0 z-30">
+      <header className="border-b border-[var(--color-line)] bg-[var(--color-paper)]/85 backdrop-blur-xl sticky top-0 z-30">
         <div className="mx-auto max-w-5xl px-4 h-16 flex items-center justify-between gap-3">
           <Link
             href="/"
@@ -67,7 +67,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
               />
             ) : (
               <span
-                className="inline-flex h-9 w-9 rounded-full bg-[var(--color-accent)] text-[#0a0a0c] items-center justify-center text-sm font-bold ring-2 ring-[var(--color-accent-glow)] flex-shrink-0"
+                className="inline-flex h-9 w-9 rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] items-center justify-center text-sm font-bold ring-2 ring-[var(--color-accent-glow)] flex-shrink-0"
                 aria-hidden
               >
                 RN
@@ -150,7 +150,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
           <div
             id="mobile-menu"
             role="menu"
-            className="md:hidden fixed top-16 inset-x-0 z-30 border-b border-[var(--color-line)] bg-[#0a0a0c]/98 backdrop-blur-xl px-4 py-3 shadow-2xl"
+            className="md:hidden fixed top-16 inset-x-0 z-30 border-b border-[var(--color-line)] bg-[var(--color-paper)]/98 backdrop-blur-xl px-4 py-3 shadow-2xl"
           >
             <nav className="flex flex-col gap-1">
               {NAV.map((n) => (

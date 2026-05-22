@@ -29,6 +29,10 @@ export type CasePerson = {
   photo_url: string | null;
   views_count: number;
   shares_count: number;
+  is_j6_defendant: boolean;
+  claim_status: "unclaimed" | "pending" | "verified" | "rejected";
+  claimed_by_user_id: string | null;
+  claim_verified_at: string | null;
 };
 
 export type CaseEvent = {
@@ -77,7 +81,7 @@ export type CaseDocument = {
 const GRIEVANCE_COLS =
   "id, slug, title, summary, body, category, severity, count, display_order, views_count, shares_count, og_image_url";
 const PERSON_COLS =
-  "id, slug, name, role, agency, description, photo_url, views_count, shares_count";
+  "id, slug, name, role, agency, description, photo_url, views_count, shares_count, is_j6_defendant, claim_status, claimed_by_user_id, claim_verified_at";
 const EVENT_COLS =
   "id, slug, title, description, event_date, location, views_count, shares_count";
 const DOCUMENT_COLS =

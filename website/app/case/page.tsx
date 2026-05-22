@@ -13,15 +13,15 @@ import { SITE } from "@/lib/site";
 
 export const revalidate = 300;
 
-const CASE_TITLE = "The Case · United States v. Nichols";
+const CASE_TITLE = "The J6 Case · United States v. Nichols & every defendant who joins";
 const CASE_DESCRIPTION =
-  "Ryan Nichols' January 6 case archive — every filed grievance, every named official, every event on the timeline, every document. The full record.";
+  "The master January 6 case archive. Starts with United States v. Nichols — every filed grievance, every named official, every event, every document. Other J6 defendants are joining and stacking their cases in. The full record, in public, free.";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
   const ogImage = settings.case_og_url ?? `${SITE.url}/og/case-default.png`;
   return {
-    title: "The Case",
+    title: "The J6 Case",
     description: CASE_DESCRIPTION,
     openGraph: {
       type: "article",

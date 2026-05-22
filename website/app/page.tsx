@@ -3,13 +3,20 @@ import { PostCard } from "@/components/PostCard";
 import { ProfileHero } from "@/components/ProfileHero";
 import { VerseSidebar } from "@/components/VerseSidebar";
 import { SignupForm } from "@/components/SignupForm";
+import { SiteMomentum } from "@/components/SiteMomentum";
 import { SITE } from "@/lib/site";
 import Link from "next/link";
 
 export const revalidate = 60;
 
-export default async function HomePage() {
-  const posts = await getPublishedPosts();
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ sort?: string }>;
+}) {
+  const { sort } = await searchParams;
+  const view: "latest" | "trending" = sort === "trending" ? "trending" : "latest";
+  const posts = await getPublishedPosts({ sort: view });
   const counts = await Promise.all(
     posts.map(async (p) => [p.id, await getCommentCount(p.id)] as const)
   );
@@ -20,8 +27,23 @@ export default async function HomePage() {
     <div className="mx-auto max-w-5xl px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
       <div className="lg:col-span-2">
         <ProfileHero />
+
+        <div className="mt-6">
+          <SiteMomentum />
+        </div>
+
         <section className="mt-8">
-          <h2 className="sr-only">Feed</h2>
+          <div className="flex items-center justify-between gap-3 mb-3 border-b border-[var(--color-line)]">
+            <h2 className="sr-only">Feed</h2>
+            <nav className="flex gap-0" role="tablist" aria-label="Feed sort">
+              <SortTab href="/" active={view === "latest"}>
+                Latest
+              </SortTab>
+              <SortTab href="/?sort=trending" active={view === "trending"}>
+                Trending
+              </SortTab>
+            </nav>
+          </div>
           {posts.length === 0 ? (
             <p className="py-12 text-center text-[var(--color-muted)]">
               No posts yet. Check back soon.
@@ -54,5 +76,29 @@ export default async function HomePage() {
         </div>
       </aside>
     </div>
+  );
+}
+
+function SortTab({
+  href,
+  active,
+  children,
+}: {
+  href: string;
+  active: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      className={[
+        "px-4 py-2.5 -mb-px border-b-2 text-sm font-bold tracking-tight transition",
+        active
+          ? "border-[var(--color-accent)] text-[var(--color-ink)]"
+          : "border-transparent text-[var(--color-muted)] hover:text-[var(--color-ink)]",
+      ].join(" ")}
+    >
+      {children}
+    </Link>
   );
 }

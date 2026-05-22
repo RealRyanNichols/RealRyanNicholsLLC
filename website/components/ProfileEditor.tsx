@@ -168,7 +168,7 @@ export function ProfileEditor({ initial }: { initial: Initial }) {
         <p className="text-sm text-emerald-400">Saved ✓</p>
       ) : null}
       {state.kind === "error" ? (
-        <p className="text-sm text-red-400">{state.message}</p>
+        <p className="text-sm text-[var(--color-accent)]">{state.message}</p>
       ) : null}
     </form>
   );

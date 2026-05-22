@@ -93,7 +93,7 @@ export default async function AdminUsersPage({
       </nav>
 
       {error ? (
-        <p className="mt-6 text-sm text-red-400">{error.message}</p>
+        <p className="mt-6 text-sm text-[var(--color-accent)]">{error.message}</p>
       ) : null}
 
       <div className="mt-6 space-y-3">

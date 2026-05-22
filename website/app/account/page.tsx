@@ -73,7 +73,7 @@ export default async function AccountPage() {
       </p>
 
       {isBanned ? (
-        <div className="mt-6 rounded-xl border border-red-700 bg-red-950/40 px-4 py-3 text-sm text-red-200">
+        <div className="mt-6 rounded-xl border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-4 py-3 text-sm text-[var(--color-accent)]">
           This account is banned. Contact the site admin if you think this is in error.
         </div>
       ) : isPending ? (
@@ -226,8 +226,8 @@ function StatusBadge({ status }: { status: string }) {
       label: "pending review",
       cls: "bg-amber-950/40 border-amber-700 text-amber-300",
     },
-    hidden: { label: "hidden", cls: "bg-red-950/40 border-red-700 text-red-300" },
-    deleted: { label: "deleted", cls: "bg-red-950/40 border-red-700 text-red-300" },
+    hidden: { label: "hidden", cls: "bg-[var(--color-accent-soft)] border-[var(--color-accent)] text-[var(--color-accent)]" },
+    deleted: { label: "deleted", cls: "bg-[var(--color-accent-soft)] border-[var(--color-accent)] text-[var(--color-accent)]" },
   };
   const m = map[status] ?? { label: status, cls: "bg-[var(--color-surface-2)] border-[var(--color-line)] text-[var(--color-muted)]" };
   return (

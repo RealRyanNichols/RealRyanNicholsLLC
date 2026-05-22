@@ -48,7 +48,7 @@ export async function ProfileHero() {
             />
           ) : (
             <div
-              className="h-24 w-24 sm:h-32 sm:w-32 rounded-full bg-[var(--color-accent)] text-[#0a0a0c] flex items-center justify-center text-3xl font-bold flex-shrink-0 ring-4 ring-[var(--color-paper)]"
+              className="h-24 w-24 sm:h-32 sm:w-32 rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] flex items-center justify-center text-3xl font-bold flex-shrink-0 ring-4 ring-[var(--color-paper)]"
               style={{ boxShadow: "0 0 40px var(--color-accent-glow)" }}
               aria-hidden
             >

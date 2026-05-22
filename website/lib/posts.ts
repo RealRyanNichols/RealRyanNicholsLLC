@@ -5,14 +5,20 @@ import type { Post } from "@/lib/types";
 const POST_COLUMNS =
   "id, slug, type, title, body, image_urls, media, mux_asset_id, mux_upload_id, mux_playback_id, mux_status, duration_seconds, thumbnail_url, pinned, status, author_id, category, published_at, created_at, updated_at, views_count, shares_count";
 
-export async function getPublishedPosts(): Promise<Post[]> {
+export async function getPublishedPosts(
+  opts: { sort?: "latest" | "trending" } = {}
+): Promise<Post[]> {
   const supabase = getSupabaseStaticClient();
-  const { data, error } = await supabase
+  let query = supabase
     .from("posts")
     .select(POST_COLUMNS)
     .eq("status", "published")
-    .order("pinned", { ascending: false })
-    .order("published_at", { ascending: false });
+    .order("pinned", { ascending: false });
+  query =
+    opts.sort === "trending"
+      ? query.order("views_count", { ascending: false, nullsFirst: false })
+      : query.order("published_at", { ascending: false });
+  const { data, error } = await query;
 
   if (error) {
     console.error("getPublishedPosts:", error);
