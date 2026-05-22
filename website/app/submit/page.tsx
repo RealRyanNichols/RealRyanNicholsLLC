@@ -2,23 +2,48 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE } from "@/lib/site";
 import { TipForm } from "@/components/TipForm";
+import { getOgImage } from "@/lib/og-images";
 
 const TITLE = "Send a tip · The J6 Case";
 const DESCRIPTION =
   "Share a January 6 defendant's name, story, or evidence. We review every tip and follow up if we need more.";
 
-export const metadata: Metadata = {
-  title: "Send a tip",
-  description: DESCRIPTION,
-  alternates: { canonical: `${SITE.url}/submit` },
-  openGraph: {
-    type: "website",
-    title: TITLE,
-    description: DESCRIPTION,
-    url: `${SITE.url}/submit`,
-  },
-  twitter: { card: "summary", title: TITLE, description: DESCRIPTION },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const override = await getOgImage("/submit");
+  const title = override?.title ?? "Send a tip";
+  const fullTitle = override?.title ?? TITLE;
+  const description = override?.description ?? DESCRIPTION;
+  const url = `${SITE.url}/submit`;
+  const ogImageUrl = override?.image_url ?? null;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "website",
+      title: fullTitle,
+      description,
+      url,
+      images: ogImageUrl
+        ? [
+            {
+              url: ogImageUrl,
+              width: override?.width ?? 1200,
+              height: override?.height ?? 630,
+              alt: fullTitle,
+            },
+          ]
+        : undefined,
+    },
+    twitter: {
+      card: ogImageUrl ? "summary_large_image" : "summary",
+      title: fullTitle,
+      description,
+      images: ogImageUrl ? [ogImageUrl] : undefined,
+    },
+  };
+}
 
 export default function SubmitPage() {
   return (
