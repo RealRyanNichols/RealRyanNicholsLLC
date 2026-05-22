@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { ComposeForm } from "@/components/ComposeForm";
 import { isMuxConfigured } from "@/lib/mux";
@@ -9,7 +10,11 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default async function NewPostPage() {
+export default async function NewPostPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ id?: string }>;
+}) {
   const supabase = await getSupabaseServerClient();
   const { data: auth } = await supabase.auth.getUser();
   if (!auth.user) {
@@ -29,15 +34,54 @@ export default async function NewPostPage() {
     );
   }
 
+  const { id } = await searchParams;
+  const editing = id && /^[0-9a-f-]{36}$/i.test(id) ? id : null;
+
+  let initial: {
+    id: string;
+    type: string;
+    title: string | null;
+    body: string | null;
+    pinned: boolean;
+  } | null = null;
+
+  if (editing) {
+    const { data: post } = await supabase
+      .from("posts")
+      .select("id, type, title, body, pinned")
+      .eq("id", editing)
+      .maybeSingle();
+    if (!post) {
+      redirect("/admin/posts");
+    }
+    initial = post;
+  }
+
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
-      <h1 className="text-3xl font-semibold tracking-tight">New post</h1>
+      <h1 className="text-3xl font-semibold tracking-tight">
+        {initial ? "Edit post" : "New post"}
+      </h1>
       <p className="mt-2 text-sm text-[var(--color-muted)]">
-        Pick a type, write or upload, hit publish. The feed at <code>/</code>{" "}
-        renders all four types in one timeline.
+        {initial ? (
+          <>
+            Editing an existing post. Changes save in place.{" "}
+            <Link
+              href="/admin/posts"
+              className="text-[var(--color-accent)] hover:underline"
+            >
+              ← Back to posts
+            </Link>
+          </>
+        ) : (
+          <>
+            Pick a type, write or upload, hit publish. The feed at <code>/</code>{" "}
+            renders all four types in one timeline.
+          </>
+        )}
       </p>
       <div className="mt-8">
-        <ComposeForm videoEnabled={isMuxConfigured()} />
+        <ComposeForm videoEnabled={isMuxConfigured()} initial={initial} />
       </div>
     </article>
   );

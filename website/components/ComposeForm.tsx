@@ -13,7 +13,43 @@ type State =
   | { kind: "submitting"; progress?: number; label?: string }
   | { kind: "error"; message: string };
 
-export function ComposeForm({ videoEnabled }: { videoEnabled: boolean }) {
+export type ComposeInitial = {
+  id: string;
+  type: string;
+  title: string | null;
+  body: string | null;
+  pinned: boolean;
+};
+
+export function ComposeForm({
+  videoEnabled,
+  initial,
+}: {
+  videoEnabled: boolean;
+  initial?: ComposeInitial | null;
+}) {
+  // When editing an existing post we lock to its type and skip the picker.
+  // Photo/video edits aren't supported in this form yet — text/body only.
+  if (initial) {
+    if (initial.type === "text") {
+      return <TextForm initial={initial} />;
+    }
+    if (initial.type === "note") {
+      return <NoteForm initial={initial} />;
+    }
+    return (
+      <div className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+        <h2 className="text-base font-bold">
+          Editing {initial.type} posts isn&apos;t supported here yet.
+        </h2>
+        <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
+          Use the admin row actions to pin / unpin, toggle draft / published, or
+          delete. To replace the media, delete and recreate.
+        </p>
+      </div>
+    );
+  }
+
   const [tab, setTab] = useState<Tab>("text");
   return (
     <div>
@@ -42,6 +78,18 @@ export function ComposeForm({ videoEnabled }: { videoEnabled: boolean }) {
       {tab === "video" && videoEnabled && <VideoForm />}
     </div>
   );
+}
+
+async function patchPost(id: string, body: Record<string, unknown>) {
+  const res = await fetch(`/api/admin/posts/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(json.error ?? "Could not save changes.");
+  }
 }
 
 function TabButton(props: {
@@ -133,19 +181,26 @@ async function createPost(body: Record<string, unknown>) {
   };
 }
 
-function TextForm() {
+function TextForm({ initial }: { initial?: ComposeInitial } = {}) {
   const router = useRouter();
+  const editing = !!initial;
   const [state, setState] = useState<State>({ kind: "idle" });
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
-  const [pinned, setPinned] = useState(false);
+  const [title, setTitle] = useState(initial?.title ?? "");
+  const [body, setBody] = useState(initial?.body ?? "");
+  const [pinned, setPinned] = useState(initial?.pinned ?? false);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setState({ kind: "submitting", label: "Publishing…" });
+    setState({ kind: "submitting", label: editing ? "Saving…" : "Publishing…" });
     try {
-      const { post } = await createPost({ type: "text", title, body, pinned });
-      router.push(`/posts/${post.slug}`);
+      if (editing && initial) {
+        await patchPost(initial.id, { title, body, pinned });
+        router.push("/admin/posts");
+        router.refresh();
+      } else {
+        const { post } = await createPost({ type: "text", title, body, pinned });
+        router.push(`/posts/${post.slug}`);
+      }
     } catch (err) {
       setState({ kind: "error", message: err instanceof Error ? err.message : "Failed." });
     }
@@ -180,24 +235,33 @@ function TextForm() {
         />
         Pin to top of feed
       </label>
-      <SubmitButton state={state}>Publish essay</SubmitButton>
+      <SubmitButton state={state}>
+        {editing ? "Save changes" : "Publish essay"}
+      </SubmitButton>
       <ErrorBanner state={state} />
       <ProgressBar state={state} />
     </form>
   );
 }
 
-function NoteForm() {
+function NoteForm({ initial }: { initial?: ComposeInitial } = {}) {
   const router = useRouter();
+  const editing = !!initial;
   const [state, setState] = useState<State>({ kind: "idle" });
-  const [body, setBody] = useState("");
+  const [body, setBody] = useState(initial?.body ?? "");
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setState({ kind: "submitting", label: "Posting…" });
+    setState({ kind: "submitting", label: editing ? "Saving…" : "Posting…" });
     try {
-      const { post } = await createPost({ type: "note", body });
-      router.push(`/posts/${post.slug}`);
+      if (editing && initial) {
+        await patchPost(initial.id, { body });
+        router.push("/admin/posts");
+        router.refresh();
+      } else {
+        const { post } = await createPost({ type: "note", body });
+        router.push(`/posts/${post.slug}`);
+      }
     } catch (err) {
       setState({ kind: "error", message: err instanceof Error ? err.message : "Failed." });
     }
@@ -215,7 +279,9 @@ function NoteForm() {
           placeholder="A quick thought — shows up in the timeline without a headline."
         />
       </Field>
-      <SubmitButton state={state}>Post note</SubmitButton>
+      <SubmitButton state={state}>
+        {editing ? "Save changes" : "Post note"}
+      </SubmitButton>
       <ErrorBanner state={state} />
       <ProgressBar state={state} />
     </form>

@@ -8,6 +8,7 @@ const patchSchema = z
     status: z.enum(["draft", "published"]).optional(),
     category: z.string().max(60).nullable().optional(),
     title: z.string().max(200).nullable().optional(),
+    body: z.string().max(50000).optional(),
   })
   .refine((v) => Object.keys(v).length > 0, "No fields to update.");
 

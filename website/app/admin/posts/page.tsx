@@ -94,8 +94,8 @@ export default async function AdminPostsPage({
         </Link>
       </div>
       <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
-        Pin / unpin, toggle draft/published, or delete. Click the title to view
-        the post page. Edit comes next.
+        Pin / unpin, toggle draft/published, edit, or delete. Click the title
+        to view the post page.
       </p>
 
       <nav className="mt-6 flex flex-wrap gap-1 border-b border-[var(--color-line)]">
