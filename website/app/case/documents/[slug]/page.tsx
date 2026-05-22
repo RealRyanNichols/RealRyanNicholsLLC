@@ -25,16 +25,27 @@ export async function generateMetadata({
   const d = await getDocumentBySlug(slug);
   if (!d) return { title: "Not found" };
   const url = `${SITE.url}/case/documents/${d.slug}`;
+  const description = d.description ?? `Document in United States v. Nichols`;
+  const ogUrl = `${SITE.url}/og/document/${d.slug}`;
+  const ogImages = [
+    { url: ogUrl, width: 1200, height: 630, alt: d.title },
+  ];
   return {
     title: d.title,
-    description: d.description ?? `Document in United States v. Nichols`,
+    description,
     openGraph: {
       type: "article",
       title: d.title,
-      description: d.description ?? undefined,
+      description,
       url,
+      images: ogImages,
     },
-    twitter: { card: "summary_large_image", title: d.title, description: d.description ?? undefined },
+    twitter: {
+      card: "summary_large_image",
+      title: d.title,
+      description,
+      images: [ogUrl],
+    },
     alternates: { canonical: url },
   };
 }

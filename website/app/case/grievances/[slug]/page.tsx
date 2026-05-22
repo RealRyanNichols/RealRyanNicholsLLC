@@ -29,9 +29,13 @@ export async function generateMetadata({
   if (!g) return { title: "Not found" };
   const url = `${SITE.url}/case/grievances/${g.slug}`;
   const description = g.summary ?? `Grievance #${g.display_order}: ${g.title}`;
-  const ogImages = g.og_image_url
-    ? [{ url: g.og_image_url, width: 1200, height: 630, alt: g.title }]
-    : undefined;
+  // Custom uploaded image wins; otherwise we fall back to the dynamic
+  // generated card at /og/grievance/[slug] so every grievance has a
+  // branded share preview without manual upload.
+  const ogUrl = g.og_image_url ?? `${SITE.url}/og/grievance/${g.slug}`;
+  const ogImages = [
+    { url: ogUrl, width: 1200, height: 630, alt: g.title },
+  ];
   return {
     title: `${g.title} · Grievance #${g.display_order}`,
     description,
@@ -46,7 +50,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: g.title,
       description,
-      images: g.og_image_url ? [g.og_image_url] : undefined,
+      images: [ogUrl],
     },
     alternates: { canonical: url },
   };

@@ -35,6 +35,10 @@ export async function generateMetadata({
   const description = isUnclaimedJ6er
     ? `${p.name} is a January 6 defendant. This profile is ready to be claimed and built out. Free, forever, no gatekeeping.`
     : p.description ?? `Person of record in United States v. Nichols.`;
+  const ogUrl = `${SITE.url}/og/person/${p.slug}`;
+  const ogImages = [
+    { url: ogUrl, width: 1200, height: 630, alt: p.name },
+  ];
   return {
     title,
     description,
@@ -43,8 +47,14 @@ export async function generateMetadata({
       title,
       description,
       url,
+      images: ogImages,
     },
-    twitter: { card: "summary_large_image", title, description },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogUrl],
+    },
     alternates: { canonical: url },
   };
 }
