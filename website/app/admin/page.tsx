@@ -42,6 +42,7 @@ export default async function AdminHomePage() {
     { count: commentReports },
     { count: pendingTips },
     { count: pendingClaims },
+    { count: pendingSubmissions },
     { data: pendingProfilesList },
     { data: recentSubs },
     { data: recentSessions },
@@ -88,6 +89,11 @@ export default async function AdminHomePage() {
       .from("case_person_claims")
       .select("id", { count: "exact", head: true })
       .eq("status", "pending"),
+    supabase
+      .from("case_documents")
+      .select("id", { count: "exact", head: true })
+      .eq("submission_status", "pending")
+      .not("submitted_by_user_id", "is", null),
     supabase
       .from("profiles")
       .select("id, display_name, full_name, username, created_at")
@@ -338,6 +344,14 @@ export default async function AdminHomePage() {
                 {pendingClaims ?? 0}
               </span>
             </li>
+            <li className="flex items-center justify-between gap-3">
+              <Link href="/admin/submissions?filter=pending" className="hover:text-[var(--color-accent)]">
+                Pending claimant uploads
+              </Link>
+              <span className="font-bold tabular-nums">
+                {pendingSubmissions ?? 0}
+              </span>
+            </li>
           </ul>
         </div>
       </section>
@@ -377,6 +391,11 @@ export default async function AdminHomePage() {
             href="/admin/claims"
             title="J6 claims"
             sub="Approve profile claims"
+          />
+          <SectionLink
+            href="/admin/submissions"
+            title="Submissions"
+            sub="Review claimant uploads"
           />
           <SectionLink
             href="/admin/og-images"
