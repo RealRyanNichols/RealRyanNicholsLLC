@@ -10,6 +10,7 @@ import { CaseCommentList } from "@/components/CaseCommentList";
 import { CaseCommentForm } from "@/components/CaseCommentForm";
 import { EvidenceGrid } from "@/components/EvidenceGrid";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { getOgImage } from "@/lib/og-images";
 import { SITE } from "@/lib/site";
 
 export const revalidate = 300;
@@ -29,9 +30,17 @@ export async function generateMetadata({
   if (!e) return { title: "Not found" };
   const url = `${SITE.url}/case/events/${e.slug}`;
   const description = e.description ?? (e.event_date ? `${e.title} — ${format(new Date(e.event_date), "MMMM d, yyyy")}` : e.title);
-  const ogUrl = `${SITE.url}/og/event/${e.slug}`;
+  // Page-level upload wins; otherwise we fall back to the auto-generated
+  // event share card so every event has a branded preview.
+  const override = await getOgImage(`/case/events/${e.slug}`);
+  const ogUrl = override?.image_url ?? `${SITE.url}/og/event/${e.slug}`;
   const ogImages = [
-    { url: ogUrl, width: 1200, height: 630, alt: e.title },
+    {
+      url: ogUrl,
+      width: override?.width ?? 1200,
+      height: override?.height ?? 630,
+      alt: e.title,
+    },
   ];
   return {
     title: `${e.title} · Timeline`,
