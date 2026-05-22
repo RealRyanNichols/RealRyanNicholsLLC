@@ -384,6 +384,11 @@ export default async function AdminHomePage() {
             sub="Social share cards per page"
           />
           <SectionLink
+            href="/admin/posts"
+            title="Posts"
+            sub="Pin, unpin, draft, delete"
+          />
+          <SectionLink
             href="/admin/new"
             title="New post"
             sub="Compose a post"

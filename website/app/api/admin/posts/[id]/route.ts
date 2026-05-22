@@ -1,0 +1,100 @@
+import { NextResponse } from "next/server";
+import { z } from "zod";
+import { getSupabaseServerClient } from "@/lib/supabase/server";
+
+const patchSchema = z
+  .object({
+    pinned: z.boolean().optional(),
+    status: z.enum(["draft", "published"]).optional(),
+    category: z.string().max(60).nullable().optional(),
+    title: z.string().max(200).nullable().optional(),
+  })
+  .refine((v) => Object.keys(v).length > 0, "No fields to update.");
+
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  const { id } = await params;
+  if (!/^[0-9a-f-]{36}$/i.test(id)) {
+    return NextResponse.json({ error: "Invalid id." }, { status: 400 });
+  }
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON." }, { status: 400 });
+  }
+  const parsed = patchSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: parsed.error.issues[0]?.message ?? "Invalid input." },
+      { status: 400 },
+    );
+  }
+
+  const supabase = await getSupabaseServerClient();
+  const { data: auth } = await supabase.auth.getUser();
+  if (!auth.user) {
+    return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
+  }
+  const { data: adminCheck } = await supabase.rpc("is_admin", {
+    uid: auth.user.id,
+  });
+  if (adminCheck !== true) {
+    return NextResponse.json({ error: "Forbidden." }, { status: 403 });
+  }
+
+  // If publishing a draft for the first time, set published_at.
+  const patch: Record<string, unknown> = { ...parsed.data };
+  if (parsed.data.status === "published") {
+    const { data: existing } = await supabase
+      .from("posts")
+      .select("published_at")
+      .eq("id", id)
+      .maybeSingle();
+    if (existing && !existing.published_at) {
+      patch.published_at = new Date().toISOString();
+    }
+  }
+
+  const { error } = await supabase.from("posts").update(patch).eq("id", id);
+  if (error) {
+    return NextResponse.json(
+      { error: error.message || "Update failed." },
+      { status: 500 },
+    );
+  }
+  return NextResponse.json({ ok: true });
+}
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  const { id } = await params;
+  if (!/^[0-9a-f-]{36}$/i.test(id)) {
+    return NextResponse.json({ error: "Invalid id." }, { status: 400 });
+  }
+
+  const supabase = await getSupabaseServerClient();
+  const { data: auth } = await supabase.auth.getUser();
+  if (!auth.user) {
+    return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
+  }
+  const { data: adminCheck } = await supabase.rpc("is_admin", {
+    uid: auth.user.id,
+  });
+  if (adminCheck !== true) {
+    return NextResponse.json({ error: "Forbidden." }, { status: 403 });
+  }
+
+  const { error } = await supabase.from("posts").delete().eq("id", id);
+  if (error) {
+    return NextResponse.json(
+      { error: error.message || "Delete failed." },
+      { status: 500 },
+    );
+  }
+  return NextResponse.json({ ok: true });
+}
