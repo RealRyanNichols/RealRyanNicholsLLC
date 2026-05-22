@@ -413,6 +413,11 @@ export default async function AdminHomePage() {
             sub="Review docs scraped from Court Listener"
           />
           <SectionLink
+            href="/admin/evidence/new"
+            title="Lock in evidence"
+            sub="Paste a tweet / article / clip and attach it"
+          />
+          <SectionLink
             href="/admin/new"
             title="New post"
             sub="Compose a post"
