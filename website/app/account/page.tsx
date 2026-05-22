@@ -4,6 +4,7 @@ import { formatDistanceToNowStrict } from "date-fns";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { SignOutButton } from "@/components/SignOutButton";
 import { ProfileEditor } from "@/components/ProfileEditor";
+import { J6Workspace } from "@/components/J6Workspace";
 
 export const dynamic = "force-dynamic";
 
@@ -22,6 +23,8 @@ export default async function AccountPage() {
     { data: profile },
     { data: myComments, count: commentsCount },
     { data: myReactions, count: reactionsCount },
+    { data: myJ6Profile },
+    { data: mySubmissions },
   ] = await Promise.all([
     supabase
       .from("profiles")
@@ -42,6 +45,21 @@ export default async function AccountPage() {
       .eq("user_id", data.user.id)
       .order("created_at", { ascending: false })
       .limit(10),
+    // If this user has been verified as the owner of a J6 defendant
+    // profile, surface their workspace.
+    supabase
+      .from("case_people")
+      .select("id, slug, name, role, description, photo_url, claim_status, views_count, shares_count")
+      .eq("claimed_by_user_id", data.user.id)
+      .eq("claim_status", "verified")
+      .maybeSingle(),
+    // Their own submissions queue (photos / docs / testimony drafts).
+    supabase
+      .from("case_documents")
+      .select("id, title, doc_type, media_kind, file_url, embed_url, submission_status, created_at")
+      .eq("submitted_by_user_id", data.user.id)
+      .order("created_at", { ascending: false })
+      .limit(20),
   ]);
 
   // Hydrate post titles for the activity lists
@@ -71,6 +89,20 @@ export default async function AccountPage() {
       <p className="text-[var(--color-ink-soft)] mt-2 text-sm">
         Signed in as <span className="font-mono">{data.user.email}</span>.
       </p>
+
+      {myJ6Profile ? (
+        <div className="mt-6">
+          <J6Workspace
+            j6Profile={myJ6Profile}
+            submissions={mySubmissions ?? []}
+            firstName={
+              (profile?.full_name?.split(/\s+/)[0]) ||
+              (profile?.display_name?.split(/\s+/)[0]) ||
+              myJ6Profile.name.split(/\s+/)[0]
+            }
+          />
+        </div>
+      ) : null}
 
       {isBanned ? (
         <div className="mt-6 rounded-xl border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-4 py-3 text-sm text-[var(--color-accent)]">
