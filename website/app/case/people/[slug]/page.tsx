@@ -8,6 +8,7 @@ import { CaseStats } from "@/components/CaseStats";
 import { CaseViewTracker } from "@/components/CaseViewTracker";
 import { EvidenceGrid } from "@/components/EvidenceGrid";
 import { ClaimMeHero, ClaimMeFooter } from "@/components/ClaimMeHero";
+import { CaseInfoCard } from "@/components/CaseInfoCard";
 import { SITE } from "@/lib/site";
 
 export const revalidate = 300;
@@ -150,6 +151,8 @@ export default async function PersonPage({
           {p.description}
         </p>
       ) : null}
+
+      <CaseInfoCard person={p} />
 
       <div className="mt-8 flex items-center gap-3">
         <ShareButton url={url} title={`${p.name} — United States v. Nichols`} slug={p.slug} caseKind="person" />

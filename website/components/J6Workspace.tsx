@@ -15,6 +15,19 @@ type J6Profile = {
   claim_status: string;
   views_count: number;
   shares_count: number;
+  case_number: string | null;
+  court: string | null;
+  judge_name: string | null;
+  prosecutor_name: string | null;
+  defense_attorney: string | null;
+  arrest_date: string | null;
+  plea_date: string | null;
+  sentence_date: string | null;
+  sentence_summary: string | null;
+  disposition: string | null;
+  charges: string[] | null;
+  news_links: string[] | null;
+  support_url: string | null;
 };
 
 type Submission = {
@@ -28,7 +41,7 @@ type Submission = {
   created_at: string;
 };
 
-type Tab = "overview" | "testimony" | "photo" | "embed" | "avatar";
+type Tab = "overview" | "testimony" | "case" | "photo" | "embed" | "avatar";
 
 export function J6Workspace({
   j6Profile,
@@ -77,6 +90,9 @@ export function J6Workspace({
         <TabBtn active={tab === "testimony"} onClick={() => setTab("testimony")}>
           ✍️ Tell your story
         </TabBtn>
+        <TabBtn active={tab === "case"} onClick={() => setTab("case")}>
+          ⚖️ My case
+        </TabBtn>
         <TabBtn active={tab === "photo"} onClick={() => setTab("photo")}>
           📸 Add photo
         </TabBtn>
@@ -98,6 +114,7 @@ export function J6Workspace({
             currentDescription={j6Profile.description}
           />
         ) : null}
+        {tab === "case" ? <CaseDetailsForm profile={j6Profile} /> : null}
         {tab === "photo" ? <PhotoUploadForm personId={j6Profile.id} /> : null}
         {tab === "embed" ? <EmbedForm personId={j6Profile.id} /> : null}
         {tab === "avatar" ? (
@@ -108,6 +125,247 @@ export function J6Workspace({
         ) : null}
       </div>
     </section>
+  );
+}
+
+function CaseDetailsForm({ profile }: { profile: J6Profile }) {
+  const router = useRouter();
+  const [caseNumber, setCaseNumber] = useState(profile.case_number ?? "");
+  const [court, setCourt] = useState(profile.court ?? "");
+  const [judge, setJudge] = useState(profile.judge_name ?? "");
+  const [prosecutor, setProsecutor] = useState(profile.prosecutor_name ?? "");
+  const [attorney, setAttorney] = useState(profile.defense_attorney ?? "");
+  const [arrestDate, setArrestDate] = useState(profile.arrest_date ?? "");
+  const [pleaDate, setPleaDate] = useState(profile.plea_date ?? "");
+  const [sentenceDate, setSentenceDate] = useState(profile.sentence_date ?? "");
+  const [sentenceSummary, setSentenceSummary] = useState(
+    profile.sentence_summary ?? "",
+  );
+  const [disposition, setDisposition] = useState(profile.disposition ?? "");
+  const [chargesRaw, setChargesRaw] = useState(
+    (profile.charges ?? []).join("\n"),
+  );
+  const [newsLinksRaw, setNewsLinksRaw] = useState(
+    (profile.news_links ?? []).join("\n"),
+  );
+  const [supportUrl, setSupportUrl] = useState(profile.support_url ?? "");
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState<string | null>(null);
+
+  async function save() {
+    if (busy) return;
+    setBusy(true);
+    setMsg(null);
+    try {
+      const res = await fetch("/api/account/j6/case-details", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          person_id: profile.id,
+          case_number: caseNumber,
+          court,
+          judge_name: judge,
+          prosecutor_name: prosecutor,
+          defense_attorney: attorney,
+          arrest_date: arrestDate,
+          plea_date: pleaDate,
+          sentence_date: sentenceDate,
+          sentence_summary: sentenceSummary,
+          disposition,
+          charges_raw: chargesRaw,
+          news_links_raw: newsLinksRaw,
+          support_url: supportUrl,
+        }),
+      });
+      const j = (await res.json().catch(() => ({}))) as { error?: string };
+      if (!res.ok) {
+        setMsg(j.error ?? "Could not save.");
+        return;
+      }
+      setMsg("Saved. Live on your public profile.");
+      router.refresh();
+    } catch {
+      setMsg("Network error.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="space-y-4">
+      <p className="text-sm text-[var(--color-ink-soft)]">
+        The facts of your case. Every field is optional — fill in what you
+        want public. Saves go live on your profile immediately.
+      </p>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <CaseField
+          label="Case number"
+          value={caseNumber}
+          onChange={setCaseNumber}
+          placeholder="e.g. 1:21-cr-00117"
+        />
+        <CaseField
+          label="Court"
+          value={court}
+          onChange={setCourt}
+          placeholder="e.g. U.S. District Court for the District of Columbia"
+        />
+        <CaseField
+          label="Judge"
+          value={judge}
+          onChange={setJudge}
+          placeholder="e.g. Hon. Royce Lamberth"
+        />
+        <CaseField
+          label="Prosecutor (AUSA)"
+          value={prosecutor}
+          onChange={setProsecutor}
+          placeholder="e.g. AUSA Douglas Brasher"
+        />
+        <CaseField
+          label="Defense attorney"
+          value={attorney}
+          onChange={setAttorney}
+          placeholder="Your lawyer's name"
+        />
+        <CaseField
+          label="Disposition"
+          value={disposition}
+          onChange={setDisposition}
+          placeholder="pardoned / dismissed / sentenced / awaiting trial"
+        />
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <CaseDate label="Arrest date" value={arrestDate} onChange={setArrestDate} />
+        <CaseDate label="Plea date" value={pleaDate} onChange={setPleaDate} />
+        <CaseDate
+          label="Sentence date"
+          value={sentenceDate}
+          onChange={setSentenceDate}
+        />
+      </div>
+
+      <div>
+        <label className="text-xs font-bold block mb-1.5">
+          Sentence summary
+        </label>
+        <textarea
+          value={sentenceSummary}
+          onChange={(e) => setSentenceSummary(e.target.value)}
+          rows={3}
+          maxLength={5000}
+          placeholder="e.g. 41 months federal prison, 3 years supervised release, $2,000 restitution"
+          className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-accent)] resize-y"
+        />
+      </div>
+
+      <div>
+        <label className="text-xs font-bold block mb-1.5">
+          Charges (one per line)
+        </label>
+        <textarea
+          value={chargesRaw}
+          onChange={(e) => setChargesRaw(e.target.value)}
+          rows={4}
+          maxLength={5000}
+          placeholder={
+            "18 U.S.C. § 1512(c)(2) — Obstruction of an official proceeding\n18 U.S.C. § 231(a)(3) — Civil disorder"
+          }
+          className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm font-mono focus:outline-none focus:border-[var(--color-accent)] resize-y"
+        />
+      </div>
+
+      <div>
+        <label className="text-xs font-bold block mb-1.5">
+          News links about your case (one per line)
+        </label>
+        <textarea
+          value={newsLinksRaw}
+          onChange={(e) => setNewsLinksRaw(e.target.value)}
+          rows={3}
+          maxLength={5000}
+          placeholder={
+            "https://example.com/news-story\nhttps://example.com/another-piece"
+          }
+          className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm font-mono focus:outline-none focus:border-[var(--color-accent)] resize-y"
+        />
+      </div>
+
+      <div>
+        <label className="text-xs font-bold block mb-1.5">
+          Support link (GiveSendGo, GoFundMe, etc.)
+        </label>
+        <input
+          type="url"
+          value={supportUrl}
+          onChange={(e) => setSupportUrl(e.target.value)}
+          maxLength={500}
+          placeholder="https://givesendgo.com/your-page"
+          className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2.5 text-sm font-mono focus:outline-none focus:border-[var(--color-accent)]"
+        />
+      </div>
+
+      {msg ? <p className="text-sm text-[var(--color-accent)]">{msg}</p> : null}
+
+      <button
+        type="button"
+        disabled={busy}
+        onClick={save}
+        className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 font-bold hover:bg-[var(--color-accent-strong)] disabled:opacity-50"
+      >
+        {busy ? "Saving…" : "Save case details →"}
+      </button>
+    </div>
+  );
+}
+
+function CaseField({
+  label,
+  value,
+  onChange,
+  placeholder,
+}: {
+  label: string;
+  value: string;
+  onChange: (s: string) => void;
+  placeholder?: string;
+}) {
+  return (
+    <div>
+      <label className="text-xs font-bold block mb-1.5">{label}</label>
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        maxLength={500}
+        placeholder={placeholder}
+        className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2.5 text-sm focus:outline-none focus:border-[var(--color-accent)]"
+      />
+    </div>
+  );
+}
+
+function CaseDate({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  onChange: (s: string) => void;
+}) {
+  return (
+    <div>
+      <label className="text-xs font-bold block mb-1.5">{label}</label>
+      <input
+        type="date"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2.5 text-sm focus:outline-none focus:border-[var(--color-accent)]"
+      />
+    </div>
   );
 }
 
