@@ -49,7 +49,12 @@ export default async function AccountPage() {
     // profile, surface their workspace.
     supabase
       .from("case_people")
-      .select("id, slug, name, role, description, photo_url, claim_status, views_count, shares_count")
+      .select(
+        `id, slug, name, role, description, photo_url, claim_status, views_count, shares_count,
+         case_number, court, judge_name, prosecutor_name, defense_attorney,
+         arrest_date, plea_date, sentence_date, sentence_summary, disposition,
+         charges, news_links, support_url`,
+      )
       .eq("claimed_by_user_id", data.user.id)
       .eq("claim_status", "verified")
       .maybeSingle(),
