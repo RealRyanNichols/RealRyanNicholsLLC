@@ -125,11 +125,15 @@ export async function getGrievanceBySlug(slug: string): Promise<CaseGrievance | 
 
 export async function getPeople(): Promise<CasePerson[]> {
   const supabase = getSupabaseStaticClient();
+  // Supabase PostgREST caps results at 1000 rows by default. With 1,500+
+  // J6 defendant profiles, we need an explicit higher ceiling so the
+  // /case people view returns the full set.
   const { data } = await supabase
     .from("case_people")
     .select(PERSON_COLS)
     .eq("visibility", "public")
-    .order("name", { ascending: true });
+    .order("name", { ascending: true })
+    .limit(5000);
   return (data ?? []) as CasePerson[];
 }
 
@@ -174,7 +178,8 @@ export async function getDocuments(): Promise<CaseDocument[]> {
     .eq("archived", false)
     .order("document_date", { ascending: false, nullsFirst: false })
     .order("relevance", { ascending: false })
-    .order("title", { ascending: true });
+    .order("title", { ascending: true })
+    .limit(5000);
   return (data ?? []) as CaseDocument[];
 }
 
