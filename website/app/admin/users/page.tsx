@@ -52,6 +52,18 @@ export default async function AdminUsersPage({
   // server-side service role would be cleaner, but since we're already RLS-
   // authorized as admin, we can pull the email from auth.users via a join.
   const userEmails = new Map<string, string>();
+  // Suggested J6 profile matches per user, keyed by user id.
+  const j6Matches = new Map<
+    string,
+    {
+      person_id: string;
+      slug: string;
+      name: string;
+      role: string | null;
+      claim_status: string;
+      score: number;
+    }[]
+  >();
   if (profiles && profiles.length > 0) {
     const ids = profiles.map((p) => p.id);
     const { data: users } = await supabase
@@ -62,6 +74,26 @@ export default async function AdminUsersPage({
     if (users) {
       for (const u of users) userEmails.set(u.id, u.email ?? "");
     }
+    // Fetch J6 matches for every user that has a full_name. One RPC call
+    // per user is fine at this list size (admin page, low traffic).
+    await Promise.all(
+      profiles.map(async (p) => {
+        if (!p.full_name?.trim()) return;
+        const { data: matches } = await supabase.rpc("match_j6_defendants", {
+          p_full_name: p.full_name,
+          p_limit: 5,
+        });
+        if (Array.isArray(matches) && matches.length > 0) {
+          // Filter weak matches (score < 0.3) unless it's the only hit
+          const filtered = matches.filter(
+            (m: { score: number }) => m.score >= 0.3,
+          );
+          if (filtered.length > 0) {
+            j6Matches.set(p.id, filtered);
+          }
+        }
+      }),
+    );
   }
 
   return (
@@ -107,6 +139,7 @@ export default async function AdminUsersPage({
                 ...p,
                 email: userEmails.get(p.id) ?? "",
               }}
+              j6Matches={j6Matches.get(p.id) ?? []}
             />
           ))
         )}
