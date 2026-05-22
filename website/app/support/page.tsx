@@ -1,12 +1,45 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE } from "@/lib/site";
+import { getOgImage } from "@/lib/og-images";
 
-export const metadata: Metadata = {
-  title: "Help Ryan rebuild",
-  description:
-    "After pretrial detention and a weaponized DOJ prosecution, Ryan Nichols is rebuilding his life. Here's how you can help.",
-};
+const DEFAULT_DESCRIPTION =
+  "After pretrial detention and a weaponized DOJ prosecution, Ryan Nichols is rebuilding his life. Here's how you can help.";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const override = await getOgImage("/support");
+  const title = override?.title ?? "Help Ryan rebuild";
+  const description = override?.description ?? DEFAULT_DESCRIPTION;
+  const url = `${SITE.url}/support`;
+  const ogImageUrl = override?.image_url ?? null;
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "website",
+      title,
+      description,
+      url,
+      images: ogImageUrl
+        ? [
+            {
+              url: ogImageUrl,
+              width: override?.width ?? 1200,
+              height: override?.height ?? 630,
+              alt: title,
+            },
+          ]
+        : undefined,
+    },
+    twitter: {
+      card: ogImageUrl ? "summary_large_image" : "summary",
+      title,
+      description,
+      images: ogImageUrl ? [ogImageUrl] : undefined,
+    },
+  };
+}
 
 export default function SupportPage() {
   const donateUrl = process.env.NEXT_PUBLIC_DONATION_URL;
