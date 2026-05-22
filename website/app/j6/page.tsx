@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getCaseTotals } from "@/lib/case";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { SiteMomentum } from "@/components/SiteMomentum";
+import { getOgImage } from "@/lib/og-images";
 import { SITE } from "@/lib/site";
 
 export const revalidate = 300;
@@ -12,18 +13,39 @@ const DESCRIPTION =
   "Free profiles, free upload tools, free login — for every January 6 defendant. Your case stacks into the master J6 case. The full record, in public, with no gatekeeping.";
 
 export async function generateMetadata(): Promise<Metadata> {
+  const override = await getOgImage("/j6");
+  const title = override?.title ?? "The J6 Case";
+  const fullTitle = override?.title ?? TITLE;
+  const description = override?.description ?? DESCRIPTION;
   const url = `${SITE.url}/j6`;
+  const ogImageUrl = override?.image_url ?? null;
+
   return {
-    title: "The J6 Case",
-    description: DESCRIPTION,
+    title,
+    description,
     alternates: { canonical: url },
     openGraph: {
       type: "website",
-      title: TITLE,
-      description: DESCRIPTION,
+      title: fullTitle,
+      description,
       url,
+      images: ogImageUrl
+        ? [
+            {
+              url: ogImageUrl,
+              width: override?.width ?? 1200,
+              height: override?.height ?? 630,
+              alt: fullTitle,
+            },
+          ]
+        : undefined,
     },
-    twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
+    twitter: {
+      card: "summary_large_image",
+      title: fullTitle,
+      description,
+      images: ogImageUrl ? [ogImageUrl] : undefined,
+    },
   };
 }
 
