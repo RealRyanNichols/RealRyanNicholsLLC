@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 const schema = z.object({
   post_id: z.string().uuid("Invalid post id."),
@@ -26,6 +27,22 @@ export async function POST(request: Request) {
   const { data: auth } = await supabase.auth.getUser();
   if (!auth.user) {
     return NextResponse.json({ error: "You must be signed in to comment." }, { status: 401 });
+  }
+
+  // 20 comments / 10 min per user/IP — generous for real engagement,
+  // tight enough to stop floods.
+  const rl = await checkRateLimit({
+    request,
+    bucket: "comment",
+    windowMinutes: 10,
+    maxRequests: 20,
+    userId: auth.user.id,
+  });
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: rl.error },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfterSec) } },
+    );
   }
 
   const { error } = await supabase.from("comments").insert({

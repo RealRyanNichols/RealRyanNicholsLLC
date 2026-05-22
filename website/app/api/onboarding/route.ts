@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 const schema = z.object({
   full_name: z
@@ -26,6 +27,22 @@ export async function POST(request: Request) {
   const { data: auth } = await supabase.auth.getUser();
   if (!auth.user) {
     return NextResponse.json({ error: "Sign in first." }, { status: 401 });
+  }
+
+  // Rate limit: 10 onboarding updates per hour per IP. Stops a bot from
+  // creating many accounts in parallel and racing to claim profiles.
+  const rl = await checkRateLimit({
+    request,
+    bucket: "onboarding",
+    windowMinutes: 60,
+    maxRequests: 10,
+    userId: auth.user.id,
+  });
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: rl.error },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfterSec) } },
+    );
   }
 
   let body: unknown;
