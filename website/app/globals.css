@@ -39,51 +39,58 @@
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-html,
-body {
-  background: var(--color-paper);
-  color: var(--color-ink);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
+/* Base resets live in @layer base so Tailwind utility classes — which
+   live in @layer utilities — reliably override them. Without the layer
+   wrapper, unlayered rules beat layered ones regardless of specificity,
+   which caused button labels like "Back the work" (cream-on-blue) to
+   show inherited body ink instead of the explicit text utility color. */
+@layer base {
+  html,
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
 
-::selection {
-  background: var(--color-accent);
-  color: #fdf8ea;
-}
+  ::selection {
+    background: var(--color-accent);
+    color: #fdf8ea;
+  }
 
-/* Tighter, more confident headings — feels closer to X / Threads. */
-h1, h2, h3 {
-  font-family: var(--font-display);
-  letter-spacing: -0.015em;
-  color: var(--color-ink);
-}
+  /* Tighter, more confident headings — feels closer to X / Threads. */
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.015em;
+    color: var(--color-ink);
+  }
 
-a {
-  color: inherit;
-}
+  a {
+    color: inherit;
+  }
 
-input,
-textarea,
-select {
-  background: var(--color-surface);
-  color: var(--color-ink);
-  border-color: var(--color-line);
-  caret-color: var(--color-accent);
-}
+  input,
+  textarea,
+  select {
+    background: var(--color-surface);
+    color: var(--color-ink);
+    border-color: var(--color-line);
+    caret-color: var(--color-accent);
+  }
 
-input::placeholder,
-textarea::placeholder {
-  color: var(--color-muted);
-}
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-muted);
+  }
 
-input:focus,
-textarea:focus,
-select:focus {
-  outline: none;
-  border-color: var(--color-accent) !important;
-  box-shadow: 0 0 0 3px var(--color-accent-glow);
+  input:focus,
+  textarea:focus,
+  select:focus {
+    outline: none;
+    border-color: var(--color-accent) !important;
+    box-shadow: 0 0 0 3px var(--color-accent-glow);
+  }
 }
 
 /* Cards / panels share this look so every surface feels like one system. */

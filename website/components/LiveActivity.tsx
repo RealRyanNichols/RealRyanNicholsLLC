@@ -1,16 +1,9 @@
-import { formatDistanceToNowStrict } from "date-fns";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
+import { LiveActivityRotator, type LiveActivityItem } from "./LiveActivityRotator";
 
-type Activity = {
-  when: string;
-  icon: string;
-  text: string;
-  href?: string;
-};
-
-// Compact ticker above the feed — shows the freshest things happening
-// on the site. Re-renders with the homepage's 60s ISR cycle so visitors
-// who reload see live momentum.
+// Pulls the freshest claims, submissions, and verifications, then hands
+// the merged list to the client rotator so each item gets its own time
+// in the strip. Server-side ISR (60s) refreshes the pool.
 export async function LiveActivity() {
   const supabase = getSupabaseStaticClient();
   const since = new Date(Date.now() - 1000 * 60 * 60 * 48).toISOString(); // 48 hrs
@@ -29,7 +22,7 @@ export async function LiveActivity() {
       .eq("status", "approved")
       .gte("created_at", since)
       .order("created_at", { ascending: false })
-      .limit(4),
+      .limit(20),
     supabase
       .from("case_documents")
       .select(
@@ -40,7 +33,7 @@ export async function LiveActivity() {
       .not("submitted_by_user_id", "is", null)
       .gte("created_at", since)
       .order("created_at", { ascending: false })
-      .limit(4),
+      .limit(20),
     supabase
       .from("case_people")
       .select("slug, name, claim_verified_at")
@@ -48,10 +41,10 @@ export async function LiveActivity() {
       .eq("claim_status", "verified")
       .gte("claim_verified_at", since)
       .order("claim_verified_at", { ascending: false })
-      .limit(4),
+      .limit(20),
   ]);
 
-  const items: Activity[] = [];
+  const items: LiveActivityItem[] = [];
 
   for (const c of recentClaims ?? []) {
     const p = Array.isArray(c.person) ? c.person[0] : c.person;
@@ -87,7 +80,7 @@ export async function LiveActivity() {
     items.push({
       when: p.claim_verified_at,
       icon: "🟢",
-      text: `${p.name} joined`,
+      text: `${p.name} just joined`,
       href: `/case/people/${p.slug}`,
     });
   }
@@ -95,42 +88,14 @@ export async function LiveActivity() {
   items.sort(
     (a, b) => new Date(b.when).getTime() - new Date(a.when).getTime(),
   );
-  const top = items.slice(0, 5);
+  // Cap the rotator pool. At 3.5s per item, 20 items cycle in ~70s
+  // before looping. Plenty of variety without burning through ancient
+  // activity from the tail of the 48-hour window.
+  const top = items.slice(0, 20);
 
   if (top.length === 0) {
     return null;
   }
 
-  return (
-    <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 overflow-hidden">
-      <div className="flex items-center gap-3">
-        <span className="flex-shrink-0 flex items-center gap-1.5 text-[10px] uppercase tracking-wider font-bold text-[var(--color-success)]">
-          <span className="inline-block w-1.5 h-1.5 rounded-full bg-[var(--color-success)] animate-pulse" />
-          LIVE
-        </span>
-        <ul className="flex-1 flex flex-wrap gap-x-4 gap-y-1 min-w-0 text-xs">
-          {top.map((a, i) => (
-            <li key={i} className="flex items-center gap-1.5 min-w-0">
-              <span className="flex-shrink-0">{a.icon}</span>
-              {a.href ? (
-                <a
-                  href={a.href}
-                  className="font-bold text-[var(--color-ink)] hover:text-[var(--color-accent)] truncate"
-                >
-                  {a.text}
-                </a>
-              ) : (
-                <span className="font-bold text-[var(--color-ink)] truncate">
-                  {a.text}
-                </span>
-              )}
-              <span className="text-[var(--color-muted)] whitespace-nowrap">
-                · {formatDistanceToNowStrict(new Date(a.when), { addSuffix: false })}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
+  return <LiveActivityRotator items={top} />;
 }
