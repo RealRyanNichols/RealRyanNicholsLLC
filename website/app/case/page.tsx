@@ -9,6 +9,7 @@ import {
   getCaseTotals,
 } from "@/lib/case";
 import { getSiteSettings } from "@/lib/site-settings";
+import { getOgImage, canonicalPath } from "@/lib/og-images";
 import { SITE } from "@/lib/site";
 
 export const revalidate = 300;
@@ -17,28 +18,56 @@ const CASE_TITLE = "The J6 Case · United States v. Nichols & every defendant wh
 const CASE_DESCRIPTION =
   "The master January 6 case archive. Starts with United States v. Nichols — every filed grievance, every named official, every event, every document. Other J6 defendants are joining and stacking their cases in. The full record, in public, free.";
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ view?: string; q?: string; filter?: string }>;
+}): Promise<Metadata> {
+  const sp = await searchParams;
+  // Strip the search query from the canonical OG lookup — q is user input
+  // and won't have a configured OG image. View/filter are part of the URL
+  // shape that matters for share cards.
+  const lookupParams: Record<string, string | undefined> = {};
+  if (sp.view) lookupParams.view = sp.view;
+  if (sp.filter) lookupParams.filter = sp.filter;
+  const canonical = canonicalPath("/case", lookupParams);
+  const override = await getOgImage(canonical);
+
   const settings = await getSiteSettings();
-  const ogImage = settings.case_og_url ?? `${SITE.url}/og/case-default.png`;
+  const fallbackOg = settings.case_og_url ?? `${SITE.url}/og/case-default.png`;
+  const ogImageUrl = override?.image_url ?? (settings.case_og_url ? fallbackOg : null);
+
+  const title = override?.title ?? "The J6 Case";
+  const description = override?.description ?? CASE_DESCRIPTION;
+  const fullTitle = override?.title ?? CASE_TITLE;
+  const canonicalUrl = `${SITE.url}${canonical}`;
+
   return {
-    title: "The J6 Case",
-    description: CASE_DESCRIPTION,
+    title,
+    description,
     openGraph: {
       type: "article",
-      title: CASE_TITLE,
-      description: CASE_DESCRIPTION,
-      url: `${SITE.url}/case`,
-      images: settings.case_og_url
-        ? [{ url: ogImage, width: 1200, height: 630, alt: CASE_TITLE }]
+      title: fullTitle,
+      description,
+      url: canonicalUrl,
+      images: ogImageUrl
+        ? [
+            {
+              url: ogImageUrl,
+              width: override?.width ?? 1200,
+              height: override?.height ?? 630,
+              alt: fullTitle,
+            },
+          ]
         : undefined,
     },
     twitter: {
       card: "summary_large_image",
-      title: CASE_TITLE,
-      description: CASE_DESCRIPTION,
-      images: settings.case_og_url ? [ogImage] : undefined,
+      title: fullTitle,
+      description,
+      images: ogImageUrl ? [ogImageUrl] : undefined,
     },
-    alternates: { canonical: `${SITE.url}/case` },
+    alternates: { canonical: canonicalUrl },
   };
 }
 

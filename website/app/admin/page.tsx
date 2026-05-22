@@ -379,6 +379,11 @@ export default async function AdminHomePage() {
             sub="Approve profile claims"
           />
           <SectionLink
+            href="/admin/og-images"
+            title="OG images"
+            sub="Social share cards per page"
+          />
+          <SectionLink
             href="/admin/new"
             title="New post"
             sub="Compose a post"
