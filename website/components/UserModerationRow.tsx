@@ -23,6 +23,15 @@ type Profile = {
   email: string;
 };
 
+type J6Match = {
+  person_id: string;
+  slug: string;
+  name: string;
+  role: string | null;
+  claim_status: string;
+  score: number;
+};
+
 type Action =
   | "approve"
   | "deny"
@@ -32,7 +41,13 @@ type Action =
   | "supporter_on"
   | "supporter_off";
 
-export function UserModerationRow({ profile }: { profile: Profile }) {
+export function UserModerationRow({
+  profile,
+  j6Matches = [],
+}: {
+  profile: Profile;
+  j6Matches?: J6Match[];
+}) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -108,6 +123,34 @@ export function UserModerationRow({ profile }: { profile: Profile }) {
     update({ admin_notes: note.trim() || null });
   }
 
+  async function linkToJ6Profile(personId: string, personName: string) {
+    if (
+      !confirm(
+        `Link ${profile.full_name ?? profile.email} to ${personName}? This approves the user, verifies the J6 profile to them, and rejects any other pending claims on that profile.`,
+      )
+    ) {
+      return;
+    }
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await fetch(`/api/admin/users/${profile.id}/link-j6`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ person_id: personId }),
+      });
+      if (!res.ok) {
+        const j = (await res.json().catch(() => ({}))) as { error?: string };
+        throw new Error(j.error ?? "Link failed.");
+      }
+      router.refresh();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Link failed.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   const verified = !!profile.verified_at || profile.verified_linked_account;
 
   return (
@@ -165,6 +208,70 @@ export function UserModerationRow({ profile }: { profile: Profile }) {
             <p className="mt-2 text-sm text-[var(--color-ink-soft)] leading-relaxed">
               {profile.bio}
             </p>
+          ) : null}
+          {j6Matches.length > 0 ? (
+            <div className="mt-3 rounded-lg border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-3">
+              <p className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-blue)]">
+                Possible J6 profile matches
+              </p>
+              <ul className="mt-2 space-y-1.5">
+                {j6Matches.map((m) => {
+                  const pct = Math.round(m.score * 100);
+                  const claimed = m.claim_status === "verified";
+                  const strong = m.score >= 0.85;
+                  return (
+                    <li
+                      key={m.person_id}
+                      className="flex items-center justify-between gap-2 text-sm"
+                    >
+                      <div className="min-w-0">
+                        <Link
+                          href={`/case/people/${m.slug}`}
+                          target="_blank"
+                          className="font-bold hover:text-[var(--color-accent)]"
+                        >
+                          {m.name}
+                        </Link>
+                        {m.role ? (
+                          <span className="ml-2 text-xs text-[var(--color-muted)]">
+                            {m.role}
+                          </span>
+                        ) : null}
+                        <span
+                          className={`ml-2 text-[10px] font-bold uppercase tracking-wider rounded px-1.5 py-0.5 ${
+                            strong
+                              ? "bg-[var(--color-success)] text-[var(--color-paper)]"
+                              : "bg-[var(--color-surface-2)] text-[var(--color-ink-soft)]"
+                          }`}
+                        >
+                          {pct}% match
+                        </span>
+                        {claimed ? (
+                          <span className="ml-1 text-[10px] font-bold uppercase tracking-wider rounded px-1.5 py-0.5 bg-[var(--color-accent)] text-[var(--color-paper)]">
+                            ALREADY CLAIMED
+                          </span>
+                        ) : null}
+                      </div>
+                      {!claimed ? (
+                        <button
+                          type="button"
+                          disabled={busy}
+                          onClick={() => linkToJ6Profile(m.person_id, m.name)}
+                          className="flex-shrink-0 rounded-md bg-[var(--color-blue)] hover:bg-[var(--color-blue-strong)] px-2.5 py-1 text-xs font-bold text-[var(--color-paper)] disabled:opacity-50"
+                        >
+                          🔗 Link
+                        </button>
+                      ) : null}
+                    </li>
+                  );
+                })}
+              </ul>
+              <p className="mt-2 text-[10px] text-[var(--color-muted)]">
+                Linking sets the user to <strong>active</strong>, marks the J6
+                profile <strong>verified</strong> to them, and auto-rejects any
+                other pending claims on that profile.
+              </p>
+            </div>
           ) : null}
           {profile.admin_notes ? (
             <details className="mt-2">
