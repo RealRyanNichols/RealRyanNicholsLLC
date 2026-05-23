@@ -3,23 +3,28 @@ import { z } from "zod";
 import { createHash } from "crypto";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 
-const schema = z.object({
-  submitter_name: z.string().max(200).optional().nullable(),
-  submitter_email: z
-    .string()
-    .email("Please enter a valid email.")
-    .optional()
-    .or(z.literal("")),
-  defendant_name: z
-    .string()
-    .min(1, "Whose case is this?")
-    .max(200, "Name is too long."),
-  narrative: z
-    .string()
-    .min(20, "Tell us a bit more — at least a couple sentences.")
-    .max(20000, "That's too long for one tip — pick the most important pieces."),
-  urls: z.array(z.string().url()).max(20).optional(),
-});
+const schema = z
+  .object({
+    category: z.enum(["j6", "national", "local", "other"]).default("j6"),
+    location: z.string().max(200).optional().nullable(),
+    submitter_name: z.string().max(200).optional().nullable(),
+    submitter_email: z
+      .string()
+      .email("Please enter a valid email.")
+      .optional()
+      .or(z.literal("")),
+    // Subject is required for J6 case tips (whose case), optional for news.
+    defendant_name: z.string().max(200).optional().or(z.literal("")),
+    narrative: z
+      .string()
+      .min(20, "Tell us a bit more — at least a couple sentences.")
+      .max(20000, "That's too long for one tip — pick the most important pieces."),
+    urls: z.array(z.string().url()).max(20).optional(),
+  })
+  .refine(
+    (d) => d.category !== "j6" || !!(d.defendant_name && d.defendant_name.trim()),
+    { path: ["defendant_name"], message: "Whose case is this?" },
+  );
 
 function hashIp(ip: string): string {
   const salt = process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
@@ -72,9 +77,11 @@ export async function POST(request: Request) {
       : null;
 
   const { error } = await supabase.from("case_tips").insert({
+    category: parsed.data.category,
+    location: parsed.data.location?.trim() || null,
     submitter_name: parsed.data.submitter_name?.trim() || null,
     submitter_email: emailIn?.trim() ?? null,
-    defendant_name: parsed.data.defendant_name.trim(),
+    defendant_name: parsed.data.defendant_name?.trim() || null,
     narrative: parsed.data.narrative.trim(),
     urls: parsed.data.urls ?? [],
     ip_hash: ipHash,

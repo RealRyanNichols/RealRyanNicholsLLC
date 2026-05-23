@@ -45,7 +45,7 @@ export default async function AdminTipsPage({
   let query = supabase
     .from("case_tips")
     .select(
-      "id, submitter_name, submitter_email, defendant_name, narrative, urls, status, reviewed_at, reviewed_notes, created_at"
+      "id, category, location, submitter_name, submitter_email, defendant_name, narrative, urls, status, reviewed_at, reviewed_notes, created_at"
     )
     .order("created_at", { ascending: false });
   if (view !== "all") {
@@ -119,8 +119,18 @@ export default async function AdminTipsPage({
               >
                 <header className="flex flex-wrap items-baseline justify-between gap-3">
                   <div>
+                    <div className="flex items-center gap-2 flex-wrap mb-1">
+                      <CategoryChip category={t.category} />
+                      {t.location ? (
+                        <span className="text-[11px] text-[var(--color-muted)] font-mono">
+                          📍 {t.location}
+                        </span>
+                      ) : null}
+                    </div>
                     <h2 className="text-lg font-bold tracking-tight">
-                      About: {t.defendant_name}
+                      {t.defendant_name
+                        ? `About: ${t.defendant_name}`
+                        : "(no subject given)"}
                     </h2>
                     <p className="text-xs text-[var(--color-muted)] mt-0.5">
                       {t.submitter_name || "anonymous"}
@@ -218,6 +228,22 @@ function TabLink({
     >
       {children}
     </Link>
+  );
+}
+
+function CategoryChip({ category }: { category?: string | null }) {
+  const cat = category ?? "j6";
+  const map: Record<string, { label: string; cls: string }> = {
+    j6: { label: "J6 case", cls: "bg-[var(--color-accent)] text-white" },
+    national: { label: "National news", cls: "bg-[var(--color-blue)] text-white" },
+    local: { label: "Local news", cls: "bg-green-700 text-white" },
+    other: { label: "Other", cls: "bg-[var(--color-surface-2)] text-[var(--color-ink-soft)]" },
+  };
+  const m = map[cat] ?? map.other;
+  return (
+    <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${m.cls}`}>
+      {m.label}
+    </span>
   );
 }
 

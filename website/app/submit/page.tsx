@@ -4,9 +4,9 @@ import { SITE } from "@/lib/site";
 import { TipForm } from "@/components/TipForm";
 import { getOgImage } from "@/lib/og-images";
 
-const TITLE = "Send a tip · The J6 Case";
+const TITLE = "Send a tip · realryannichols.com newsroom";
 const DESCRIPTION =
-  "Share a January 6 defendant's name, story, or evidence. We review every tip and follow up if we need more.";
+  "Got a story? J6 case, national news, or something happening in your own town — send it here. We read every tip and follow up if we need more. No account required.";
 
 export async function generateMetadata(): Promise<Metadata> {
   const override = await getOgImage("/submit");
@@ -49,15 +49,16 @@ export default function SubmitPage() {
   return (
     <article className="mx-auto max-w-2xl px-4 py-10">
       <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
-        The J6 Case · Tip line
+        The newsroom · Tip line
       </p>
       <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight font-display">
         Send a tip
       </h1>
       <p className="mt-3 text-base text-[var(--color-ink-soft)] leading-relaxed">
-        Use this if you have a name to add, a story to share, or evidence to
-        send — and you don't want to make an account. We read every tip. We
-        follow up if we need more.
+        This started as the J6 tip line. It&apos;s bigger now. A January 6
+        case, a national story the press won&apos;t touch, or something
+        happening in your own town — if it needs daylight, send it here. We
+        read every tip and follow up if we need more. No account required.
       </p>
       <p className="mt-2 text-sm text-[var(--color-muted)]">
         Want your own profile and upload tools instead?{" "}
