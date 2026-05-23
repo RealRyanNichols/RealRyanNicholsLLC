@@ -7,6 +7,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { MobileSupportBar } from "@/components/MobileSupportBar";
 import { PageViewTracker } from "@/components/PageViewTracker";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
@@ -66,6 +67,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Suspense fallback={null}>
           <PageViewTracker />
         </Suspense>
+        <Analytics />
         <Link
           href="#top"
           aria-hidden="true"

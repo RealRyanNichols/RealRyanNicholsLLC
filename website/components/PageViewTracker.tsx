@@ -52,15 +52,38 @@ export function PageViewTracker() {
     viewIdRef.current = null;
 
     const supabase = getSupabaseBrowserClient();
-    supabase
-      .rpc("record_page_view", {
-        p_session_id: sid,
-        p_path: fullPath,
-        p_ref: ref || null,
-        p_ua: ua || null,
+    // Send the initial view through /api/track-pageview instead of the
+    // bare RPC — the route reads Vercel's geo headers (country, region,
+    // city) and computes a daily-rotating visitor hash that the client
+    // can't see. Falls back to the bare RPC in dev / non-Vercel where
+    // the headers are missing but the RPC still works fine.
+    void fetch("/api/track-pageview", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        session_id: sid,
+        path: fullPath,
+        ref: ref || null,
+        ua: ua || null,
+      }),
+      keepalive: true,
+    })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => {
+        viewIdRef.current = j && typeof j.id === "number" ? j.id : null;
       })
-      .then(({ data }) => {
-        viewIdRef.current = typeof data === "number" ? data : null;
+      .catch(() => {
+        // Last-resort fallback: bare RPC (no geo).
+        void supabase
+          .rpc("record_page_view", {
+            p_session_id: sid,
+            p_path: fullPath,
+            p_ref: ref || null,
+            p_ua: ua || null,
+          })
+          .then(({ data }) => {
+            viewIdRef.current = typeof data === "number" ? data : null;
+          });
       });
 
     function touch(force = false) {

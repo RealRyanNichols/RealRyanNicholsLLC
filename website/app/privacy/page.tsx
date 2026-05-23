@@ -55,8 +55,30 @@ export default function PrivacyPage() {
               not used for tracking and roll off automatically.
             </li>
             <li>
-              <strong>No third-party tracking by default.</strong> No Google
-              Analytics, no Facebook Pixel, no advertising scripts.
+              <strong>Page-view analytics (own collection).</strong> Each
+              page-view records: the path you visited, the referrer (which
+              site sent you here, if any), the country / region / city of
+              your visit (from Vercel&apos;s free request headers — your
+              IP is <em>not</em> stored), a coarse device classification
+              (mobile / desktop / tablet / bot), an opaque per-browser
+              session id, and your scroll / dwell on that page. To count
+              unique visitors without retaining IPs, the IP is one-way
+              hashed with a daily-rotating salt before any storage — so
+              two visits in the same day count as one person, and the
+              salt rotates every day so we cannot track anyone across
+              days. This data is admin-only and used to understand which
+              evidence pages are reaching people and where they came from.
+            </li>
+            <li>
+              <strong>Vercel Analytics.</strong> The hosting platform&apos;s
+              built-in analytics is enabled. Vercel counts page views and
+              top referrers / countries / devices in their dashboard. It
+              uses no cookies and stores no personal data — Vercel
+              publishes its own privacy disclosures at vercel.com/legal.
+            </li>
+            <li>
+              <strong>No third-party advertising trackers.</strong> No
+              Google Analytics, no Facebook Pixel, no ad-network scripts.
             </li>
           </ul>
         </section>

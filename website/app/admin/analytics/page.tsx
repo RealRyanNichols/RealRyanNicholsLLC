@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { format, formatDistanceToNowStrict, subDays } from "date-fns";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { WorldMap } from "@/components/WorldMap";
+import { flagFor, nameFor } from "@/lib/country-coords";
 
 export const metadata: Metadata = {
   title: "Analytics",
@@ -195,8 +197,10 @@ export default async function AdminAnalyticsPage() {
         Attention dashboard
       </h1>
       <p className="mt-2 text-sm text-[var(--color-ink-soft)] max-w-2xl">
-        Everything I can show from current data. Per-session dwell time, scroll
-        depth, and click maps land in the next PR.
+        Everything from the page-view beacon — geo, referrers, devices,
+        dwell, scroll, clicks, per-defendant profile views. Country and
+        city come from Vercel&apos;s free request headers; no IPs are
+        stored. Visitor counts use a daily-rotating one-way hash.
       </p>
 
       {/* Top-line stats — site-wide, includes posts + case archive */}
@@ -318,6 +322,15 @@ export default async function AdminAnalyticsPage() {
 
       {/* Live session data */}
       <LiveSessions />
+
+      {/* Geography + referrer chain — pulls from analytics_summary
+          and analytics_live_visitors which read the new geo columns
+          on page_views. */}
+      <Geography />
+
+      {/* Per-defendant view counts — which J6 profile got the most
+          eyes this week. */}
+      <TopDefendantProfiles />
 
       {/* Recent activity */}
       <section className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -629,6 +642,313 @@ async function LiveSessions() {
         )}
       </section>
     </>
+  );
+}
+
+async function Geography() {
+  const supabase = await getSupabaseServerClient();
+  const [{ data: sum7 }, { data: sum30 }, { data: live }] = await Promise.all([
+    supabase.rpc("analytics_summary", { days: 7 }),
+    supabase.rpc("analytics_summary", { days: 30 }),
+    supabase.rpc("analytics_live_visitors"),
+  ]);
+
+  type Summary = {
+    views_total?: number;
+    unique_visitors?: number;
+    sessions?: number;
+    live_now?: number;
+    top_countries?: Array<{ country: string; views: number }>;
+    top_cities?: Array<{
+      country: string;
+      region: string | null;
+      city: string;
+      views: number;
+    }>;
+    top_referrers?: Array<{ host: string; views: number }>;
+    top_pages?: Array<{ path: string; views: number }>;
+    devices?: Record<string, number>;
+    heatmap?: Array<[number, number, number]>; // [dow, hr, n]
+  };
+  const s7 = (sum7 ?? {}) as Summary;
+  const s30 = (sum30 ?? {}) as Summary;
+  type LiveRow = {
+    sid: string;
+    country: string | null;
+    region: string | null;
+    city: string | null;
+    path: string;
+    last_seen: string;
+  };
+  const liveList = ((live ?? []) as LiveRow[]).slice(0, 50);
+  const countries7 = s7.top_countries ?? [];
+
+  return (
+    <>
+      <section className="mt-10">
+        <h2 className="text-lg font-bold tracking-tight">
+          Who&apos;s reading — last 7 days
+        </h2>
+        <p className="mt-1 text-xs text-[var(--color-muted)]">
+          Country / region / city pulled from Vercel&apos;s free request
+          headers. No IPs stored. Visitor counts use a daily-rotating
+          one-way hash.
+        </p>
+        <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <Stat
+            label="Live right now"
+            value={fmt(s7.live_now ?? 0)}
+            sub="last 5 min"
+          />
+          <Stat
+            label="Unique visitors (7d)"
+            value={fmt(s7.unique_visitors ?? 0)}
+            sub={`${fmt(s7.sessions ?? 0)} sessions`}
+          />
+          <Stat
+            label="Views (7d)"
+            value={fmt(s7.views_total ?? 0)}
+            sub={`${fmt(s30.views_total ?? 0)} 30d`}
+          />
+          <Stat
+            label="Countries (7d)"
+            value={fmt(countries7.length)}
+            sub={
+              s7.devices
+                ? Object.entries(s7.devices)
+                    .filter(([k]) => k !== "bot" && k !== "unknown")
+                    .sort(([, a], [, b]) => (b ?? 0) - (a ?? 0))
+                    .slice(0, 2)
+                    .map(([k, n]) => `${k} ${fmt(n)}`)
+                    .join(" · ")
+                : undefined
+            }
+          />
+        </div>
+      </section>
+
+      <section className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+        <h3 className="text-base font-bold tracking-tight">
+          World map — views by country (7d)
+        </h3>
+        {countries7.length === 0 ? (
+          <p className="mt-3 text-sm text-[var(--color-muted)] italic">
+            No geo data yet — first visits with country headers haven&apos;t
+            landed. Visit the site from outside admin once and refresh.
+          </p>
+        ) : (
+          <div className="mt-3">
+            <WorldMap data={countries7} />
+          </div>
+        )}
+      </section>
+
+      <section className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+          <h3 className="text-base font-bold tracking-tight">
+            Top countries (7d)
+          </h3>
+          {countries7.length === 0 ? (
+            <p className="mt-3 text-sm text-[var(--color-muted)] italic">
+              No country data yet.
+            </p>
+          ) : (
+            <ol className="mt-3 space-y-1.5">
+              {countries7.slice(0, 15).map((c, i) => (
+                <li
+                  key={c.country}
+                  className="flex items-center gap-3 text-sm"
+                >
+                  <span className="w-5 text-xs font-bold text-[var(--color-muted)]">
+                    {i + 1}
+                  </span>
+                  <span className="text-lg leading-none" aria-hidden>
+                    {flagFor(c.country)}
+                  </span>
+                  <span className="flex-1 truncate">{nameFor(c.country)}</span>
+                  <span className="font-bold tabular-nums">
+                    {fmt(c.views)}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          )}
+        </div>
+
+        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+          <h3 className="text-base font-bold tracking-tight">
+            Top cities (7d)
+          </h3>
+          {(s7.top_cities ?? []).length === 0 ? (
+            <p className="mt-3 text-sm text-[var(--color-muted)] italic">
+              No city data yet.
+            </p>
+          ) : (
+            <ol className="mt-3 space-y-1.5">
+              {(s7.top_cities ?? []).slice(0, 15).map((c, i) => (
+                <li
+                  key={`${c.city}-${c.region}-${c.country}`}
+                  className="flex items-center gap-3 text-sm"
+                >
+                  <span className="w-5 text-xs font-bold text-[var(--color-muted)]">
+                    {i + 1}
+                  </span>
+                  <span className="text-lg leading-none" aria-hidden>
+                    {flagFor(c.country)}
+                  </span>
+                  <span className="flex-1 truncate">
+                    {c.city}
+                    {c.region ? (
+                      <span className="text-[var(--color-muted)]">
+                        , {c.region}
+                      </span>
+                    ) : null}
+                  </span>
+                  <span className="font-bold tabular-nums">
+                    {fmt(c.views)}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          )}
+        </div>
+      </section>
+
+      <section className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+          <h3 className="text-base font-bold tracking-tight">
+            Top referrers (7d)
+          </h3>
+          <p className="mt-1 text-xs text-[var(--color-muted)]">
+            Where they came from — Twitter, Google, Substack, etc. Blank
+            = direct visit or hidden referrer.
+          </p>
+          {(s7.top_referrers ?? []).length === 0 ? (
+            <p className="mt-3 text-sm text-[var(--color-muted)] italic">
+              No referrer data yet.
+            </p>
+          ) : (
+            <ol className="mt-3 space-y-1.5">
+              {(s7.top_referrers ?? []).slice(0, 15).map((r, i) => (
+                <li
+                  key={r.host}
+                  className="flex items-center gap-3 text-sm"
+                >
+                  <span className="w-5 text-xs font-bold text-[var(--color-muted)]">
+                    {i + 1}
+                  </span>
+                  <span className="flex-1 truncate font-mono">{r.host}</span>
+                  <span className="font-bold tabular-nums">
+                    {fmt(r.views)}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          )}
+        </div>
+
+        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+          <h3 className="text-base font-bold tracking-tight">
+            Live visitors right now ({liveList.length})
+          </h3>
+          <p className="mt-1 text-xs text-[var(--color-muted)]">
+            One row per session active in the last 5 minutes, current
+            page.
+          </p>
+          {liveList.length === 0 ? (
+            <p className="mt-3 text-sm text-[var(--color-muted)] italic">
+              No one on the site right now.
+            </p>
+          ) : (
+            <ul className="mt-3 space-y-1.5 max-h-[420px] overflow-y-auto">
+              {liveList.map((v) => (
+                <li
+                  key={v.sid}
+                  className="flex items-center gap-2 text-xs"
+                >
+                  <span className="text-base leading-none" aria-hidden>
+                    {flagFor(v.country)}
+                  </span>
+                  <span className="text-[var(--color-ink-soft)] truncate min-w-[80px]">
+                    {v.city ?? "—"}
+                    {v.region ? `, ${v.region}` : ""}
+                  </span>
+                  <span className="flex-1 font-mono truncate">{v.path}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </section>
+    </>
+  );
+}
+
+async function TopDefendantProfiles() {
+  const supabase = await getSupabaseServerClient();
+  const [{ data: top7 }, { data: top30 }] = await Promise.all([
+    supabase.rpc("analytics_top_defendants", { days: 7 }),
+    supabase.rpc("analytics_top_defendants", { days: 30 }),
+  ]);
+
+  type Row = {
+    slug: string;
+    name: string;
+    views: number;
+    claim_status: string;
+  };
+  const rows7 = (top7 ?? []) as Row[];
+  const rows30 = (top30 ?? []) as Row[];
+
+  if (rows7.length === 0 && rows30.length === 0) return null;
+
+  function render(rows: Row[]) {
+    return rows.slice(0, 10).map((r, i) => (
+      <li key={r.slug} className="flex items-center gap-3 text-sm">
+        <span className="w-5 text-xs font-bold text-[var(--color-muted)]">
+          {i + 1}
+        </span>
+        <Link
+          href={`/case/people/${r.slug}`}
+          className="flex-1 truncate hover:text-[var(--color-accent)] font-medium"
+        >
+          {r.name}
+          {r.claim_status === "verified" ? (
+            <span className="text-[var(--color-success)] ml-1">✓</span>
+          ) : null}
+        </Link>
+        <span className="font-bold tabular-nums">{fmt(r.views)}</span>
+      </li>
+    ));
+  }
+
+  return (
+    <section className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+        <h3 className="text-base font-bold tracking-tight">
+          Top J6 profiles — last 7 days
+        </h3>
+        {rows7.length === 0 ? (
+          <p className="mt-3 text-sm text-[var(--color-muted)] italic">
+            No defendant-profile views yet this week.
+          </p>
+        ) : (
+          <ol className="mt-3 space-y-1.5">{render(rows7)}</ol>
+        )}
+      </div>
+      <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+        <h3 className="text-base font-bold tracking-tight">
+          Top J6 profiles — last 30 days
+        </h3>
+        {rows30.length === 0 ? (
+          <p className="mt-3 text-sm text-[var(--color-muted)] italic">
+            No defendant-profile views yet this month.
+          </p>
+        ) : (
+          <ol className="mt-3 space-y-1.5">{render(rows30)}</ol>
+        )}
+      </div>
+    </section>
   );
 }
 

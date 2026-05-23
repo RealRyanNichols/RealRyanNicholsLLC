@@ -16,6 +16,7 @@
     "@mux/mux-player-react": "^3.13.0",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.46.1",
+    "@vercel/analytics": "^2.0.1",
     "date-fns": "^4.1.0",
     "next": "15.0.4",
     "react": "19.0.0",
