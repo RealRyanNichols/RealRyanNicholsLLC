@@ -7,8 +7,7 @@ import { PostBody } from "@/components/PostBody";
 import { ShareButton } from "@/components/ShareButton";
 import { PostStats } from "@/components/PostStats";
 import { ViewTracker } from "@/components/ViewTracker";
-import { ReactionRow } from "@/components/ReactionRow";
-import { getReactionsForPost } from "@/lib/reactions";
+import { ReactionBar } from "@/components/ReactionBar";
 import { CommentList } from "@/components/CommentList";
 import { CommentForm } from "@/components/CommentForm";
 import { VerseSidebar } from "@/components/VerseSidebar";
@@ -107,10 +106,9 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
   }
 
   const path = `/posts/${post.slug}`;
-  const [allPosts, commentCount, reactions, pulseRes] = await Promise.all([
+  const [allPosts, commentCount, pulseRes] = await Promise.all([
     getPublishedPosts(),
     getCommentCount(post.id),
-    getReactionsForPost(post.id),
     supabase.rpc("post_live_pulse", { p_path: path }),
   ]);
   const readNext = allPosts.filter((p) => p.id !== post.id).slice(0, 4);
@@ -209,12 +207,7 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
         <PostFollowCapture path={path} seed={pulseSeed} />
 
         <div className="mt-6">
-          <ReactionRow
-            postId={post.id}
-            initialCounts={reactions.counts}
-            initialUserReactions={reactions.mine}
-            signedIn={signedIn}
-          />
+          <ReactionBar targetType="post" targetId={post.id} />
         </div>
 
         {canNotify && post.status === "published" && (
