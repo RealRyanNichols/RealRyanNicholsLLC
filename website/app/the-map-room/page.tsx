@@ -8,6 +8,7 @@ import { MapRoomPatterns } from "@/components/MapRoomPatterns";
 import { MapRoomDocket } from "@/components/MapRoomDocket";
 import { MapRoomTrail } from "@/components/MapRoomTrail";
 import { MapRoomPinnedPost } from "@/components/MapRoomPinnedPost";
+import { ShareRail } from "@/components/ShareRail";
 
 // Tight 30s ISR — the live counts come from the client poll, but the
 // SSR'd first paint stays fresh enough that share previews and search
@@ -22,7 +23,10 @@ const DESCRIPTION =
 export async function generateMetadata(): Promise<Metadata> {
   const override = await getOgImage("/the-map-room");
   const url = `${SITE.url}/the-map-room`;
-  const ogImageUrl = override?.image_url ?? null;
+  // Custom upload wins; otherwise we fall back to the dynamic OG card
+  // at /og/map-room so every share embeds the live counters at unfurl
+  // time instead of a static placeholder.
+  const ogUrl = override?.image_url ?? `${SITE.url}/og/map-room`;
   return {
     title: override?.title ?? "The Map Room",
     description: override?.description ?? DESCRIPTION,
@@ -32,22 +36,20 @@ export async function generateMetadata(): Promise<Metadata> {
       title: override?.title ?? TITLE,
       description: override?.description ?? DESCRIPTION,
       url,
-      images: ogImageUrl
-        ? [
-            {
-              url: ogImageUrl,
-              width: override?.width ?? 1200,
-              height: override?.height ?? 630,
-              alt: TITLE,
-            },
-          ]
-        : undefined,
+      images: [
+        {
+          url: ogUrl,
+          width: override?.width ?? 1200,
+          height: override?.height ?? 630,
+          alt: TITLE,
+        },
+      ],
     },
     twitter: {
-      card: ogImageUrl ? "summary_large_image" : "summary",
+      card: "summary_large_image",
       title: override?.title ?? TITLE,
       description: override?.description ?? DESCRIPTION,
-      images: ogImageUrl ? [ogImageUrl] : undefined,
+      images: [ogUrl],
     },
   };
 }
@@ -97,6 +99,13 @@ export default async function TheMapRoomPage() {
         initialTotals={initialTotals}
         initialCountries={initialCountries}
       />
+
+      <div className="mt-4">
+        <ShareRail
+          url={`${SITE.url}/the-map-room`}
+          title="Live world map of who's reading the J6 case file right now — realryannichols.com/the-map-room"
+        />
+      </div>
 
       <header className="mt-10 max-w-3xl">
         <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
