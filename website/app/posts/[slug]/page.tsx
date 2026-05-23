@@ -13,6 +13,7 @@ import { CommentList } from "@/components/CommentList";
 import { CommentForm } from "@/components/CommentForm";
 import { VerseSidebar } from "@/components/VerseSidebar";
 import { SignupForm } from "@/components/SignupForm";
+import { PostLivePulse, PostFollowCapture } from "@/components/PostLivePulse";
 import { ReadNext } from "@/components/ReadNext";
 import { NotifySubscribersButton } from "@/components/NotifySubscribersButton";
 import { VideoPlayer } from "@/components/VideoPlayer";
@@ -105,12 +106,17 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
     canNotify = adminCheck === true || (post.author_id ? post.author_id === data.user.id : false);
   }
 
-  const [allPosts, commentCount, reactions] = await Promise.all([
+  const path = `/posts/${post.slug}`;
+  const [allPosts, commentCount, reactions, pulseRes] = await Promise.all([
     getPublishedPosts(),
     getCommentCount(post.id),
     getReactionsForPost(post.id),
+    supabase.rpc("post_live_pulse", { p_path: path }),
   ]);
   const readNext = allPosts.filter((p) => p.id !== post.id).slice(0, 4);
+  const pulseSeed = (pulseRes.data as
+    | { reading_now: number; today: number; week: number; site_reading_now: number }
+    | null) ?? undefined;
 
   const displayTitle = post.title ?? (deriveExcerpt(post.body, null).slice(0, 80) || "Note");
   const postUrl = `${SITE.url}/posts/${post.slug}`;
@@ -175,7 +181,16 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
             </h1>
           ) : null}
           <div className={post.title ? "mt-3 flex items-center justify-between gap-3 flex-wrap" : "flex items-center justify-between gap-3 flex-wrap"}>
-            <p className="text-sm text-[var(--color-muted)]">By {SITE.author}</p>
+            <div>
+              <p className="text-sm text-[var(--color-muted)]">By {SITE.author}</p>
+              <div className="mt-1">
+                <PostLivePulse
+                  path={path}
+                  totalViews={post.views_count ?? 0}
+                  seed={pulseSeed}
+                />
+              </div>
+            </div>
             <div className="flex items-center gap-3">
               <PostStats
                 views={post.views_count ?? 0}
@@ -190,6 +205,8 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
 
         <ViewTracker slug={post.slug} />
         <PostMain post={post} />
+
+        <PostFollowCapture path={path} seed={pulseSeed} />
 
         <div className="mt-6">
           <ReactionRow
@@ -210,9 +227,6 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
             Share this post — get it back in front of people
           </p>
           <ShareButton url={postUrl} title={displayTitle} slug={post.slug} />
-        </div>
-        <div className="mt-8">
-          <SignupForm disabled={!SITE.mailingAddress} />
         </div>
         <ReadNext posts={readNext} />
         <section className="mt-12 border-t border-[var(--color-line)] pt-8">
