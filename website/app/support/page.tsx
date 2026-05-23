@@ -4,11 +4,11 @@ import { SITE } from "@/lib/site";
 import { getOgImage } from "@/lib/og-images";
 
 const DEFAULT_DESCRIPTION =
-  "After pretrial detention and a weaponized DOJ prosecution, Ryan Nichols is rebuilding his life. Here's how you can help.";
+  "I'm spending my last dime building this so I — and every other J6 defendant — can get on our feet. If the work matters to you, here's how to help me keep going.";
 
 export async function generateMetadata(): Promise<Metadata> {
   const override = await getOgImage("/support");
-  const title = override?.title ?? "Help Ryan rebuild";
+  const title = override?.title ?? "I'm asking for help";
   const description = override?.description ?? DEFAULT_DESCRIPTION;
   const url = `${SITE.url}/support`;
   const ogImageUrl = override?.image_url ?? null;
@@ -49,37 +49,56 @@ export default function SupportPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
       <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
-        Help me rebuild
+        An honest ask
       </p>
       <h1 className="mt-2 text-4xl sm:text-5xl font-bold tracking-tight leading-[1.05]">
-        I&apos;m starting over from less than zero.
+        I&apos;m spending my last dime on this.
       </h1>
 
       <section className="prose-body mt-6 space-y-4">
         <p>
-          The Biden DOJ weaponized the full force of the federal government
-          against me and other January 6 defendants. I came home to a life I
-          don&apos;t recognize. Right now I&apos;m fighting to cover rent, food,
-          and the basics — while also trying to access the mental healthcare
-          I need after what was done to me in pretrial detention.
+          I&apos;m putting everything I have left into this site so that I —
+          and every other January 6 defendant — can get paid for what was
+          done to us. Not handouts. A platform. A record. Profiles every
+          J6er owns, free, forever, that no platform can throttle and no
+          algorithm can bury.
         </p>
         <p>
-          I&apos;m not asking for sympathy. I&apos;m asking the people who&apos;ve
-          followed my story to help me get back on my feet so I can keep
-          telling it — on my own domain, where no algorithm can throttle me
-          and no platform can silence me.
+          I need help sustaining right now.
         </p>
         <p>
-          Every dollar goes directly to me. There is no organization, no
-          middleman, no overhead. It pays for:
+          Prison messed me up. My brain does not function the same way it
+          did before I went in for J6. There are days when reading a single
+          paragraph takes me three tries. There are nights I can&apos;t sleep
+          and days I can&apos;t get out of bed. They damaged me — extremely.
+          I&apos;m not hiding it because hiding it is what they want.
+        </p>
+        <p>
+          What I can still do is sit here and use the skills I&apos;ve got —
+          investigation, coding, building, and getting <strong>attention</strong>
+          {" "}that sustains — to expose evil people who hurt good ones. The
+          DOJ scrubbed their own Capitol Breach Cases page. I salvaged it
+          from the Wayback Machine and now realryannichols.com is the only
+          public mirror of all 1,092 defendants on the list. That&apos;s
+          one example of what your support pays for. There&apos;s more
+          coming.
+        </p>
+        <p>
+          I just need some help from supporters who want to see this
+          continue. Every dollar goes directly to me. There&apos;s no
+          organization, no middleman, no overhead. It pays for:
         </p>
         <ul>
           <li><strong>Rent</strong> and basic living expenses while I rebuild</li>
           <li><strong>Food</strong> for me and my family</li>
-          <li><strong>Mental healthcare</strong> — therapy, the kind I couldn&apos;t get inside</li>
+          <li><strong>Mental healthcare</strong> I need after pretrial detention</li>
           <li><strong>Medical care</strong> I can&apos;t afford without insurance</li>
-          <li>Equipment to keep posting — camera, mic, hosting, the work that goes into this site</li>
+          <li><strong>Hosting + tooling</strong> to keep the archive online and growing</li>
         </ul>
+        <p>
+          Thank you. I appreciate every bit of help I can get, and I will
+          keep showing up here as long as you do.
+        </p>
       </section>
 
       {donateUrl ? (
@@ -154,6 +173,50 @@ export default function SupportPage() {
           </a>
         </section>
       ) : null}
+
+      {/* Service offer — not a donation. A real exchange of value Ryan
+          can deliver with the skills he still has. Distinct from the
+          donate / supporter blocks above; positioned as its own offer
+          card with a clear price and warranty so nobody confuses it
+          with the J6 case work, which stays free forever. */}
+      <section className="mt-10 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-6 sm:p-8 relative overflow-hidden">
+        <div
+          className="pointer-events-none absolute -top-24 -left-24 h-56 w-56 rounded-full blur-3xl"
+          style={{ background: "var(--color-blue-glow, rgba(59,130,246,0.25))" }}
+          aria-hidden
+        />
+        <p className="relative text-xs uppercase tracking-wider text-[var(--color-blue)] font-bold">
+          Hire me · $997
+        </p>
+        <h2 className="relative font-display text-2xl sm:text-3xl mt-2 text-[var(--color-ink)]">
+          Want a site like this one? I&apos;ll build you yours.
+        </h2>
+        <p className="relative mt-3 text-[var(--color-ink-soft)] leading-relaxed">
+          A personal &ldquo;social media&rdquo; site — your own feed, your
+          own profile, your own domain, your own audience. Built the same
+          way I built mine: fast, on your own terms, no algorithm in the
+          middle, no platform that can ban you for telling the truth.
+        </p>
+        <ul className="relative mt-4 space-y-2 text-sm text-[var(--color-ink-soft)] leading-relaxed">
+          <li><strong>$997</strong> one-time, flat fee for the initial build.</li>
+          <li>I run it for <strong>30 days</strong> while you learn the ropes.</li>
+          <li>After 30 days I <strong>hand it to you</strong> — code, domain access, database, everything. <strong>100% yours.</strong></li>
+          <li>It comes with a <strong>warranty</strong>. If something I built breaks in normal use, I fix it.</li>
+        </ul>
+        <p className="relative mt-4 text-xs text-[var(--color-muted)]">
+          Important: this is separate from the J6 work. <strong>J6 case
+          profiles on realryannichols.com are free forever</strong> — every
+          J6 defendant gets one linked to their case, no payment, no
+          subscription, no catch. This $997 offer is for people who want
+          a full <em>replica</em> of this site for themselves.
+        </p>
+        <a
+          href="mailto:ryan@realryannichols.com?subject=Website%20build%20inquiry%20(%24997%20replica)&body=Hi%20Ryan%2C%0A%0AI%27d%20like%20a%20site%20like%20realryannichols.com.%20A%20bit%20about%20me%2Fwhat%20I%20want%20to%20publish%3A%0A%0A"
+          className="relative inline-flex items-center mt-5 rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-6 py-3 text-sm font-bold hover:bg-[var(--color-blue-strong)] transition"
+        >
+          Email me about a build →
+        </a>
+      </section>
 
       <section className="mt-10">
         <h2 className="font-display text-2xl text-[var(--color-ink)]">
