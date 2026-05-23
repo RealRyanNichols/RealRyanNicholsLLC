@@ -114,10 +114,44 @@ export default async function TheMapRoomPage() {
         </p>
       </header>
 
+      {/* The Case Nexus banner — the new flagship view. Lands as a
+          full-width promo card before the action grid so the visitor
+          sees it first. */}
+      <Link
+        href="/case/nexus"
+        className="mt-10 block rounded-2xl border-2 border-[var(--color-blue)] bg-gradient-to-br from-[#0a1429] via-[#0e1a36] to-[#1c2a4a] p-5 sm:p-7 relative overflow-hidden group hover:from-[#0e1a36] hover:via-[#1c2a4a] hover:to-[#1c2a4a] transition"
+      >
+        <div
+          className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full blur-3xl"
+          style={{ background: "rgba(127, 227, 169, 0.18)" }}
+          aria-hidden
+        />
+        <div className="relative flex items-start justify-between gap-4 flex-wrap">
+          <div className="max-w-xl">
+            <p className="text-[10px] uppercase tracking-[0.25em] text-[#7fe3a9] font-bold flex items-center gap-1.5">
+              <span className="inline-block w-2 h-2 rounded-full bg-[#7fe3a9] animate-pulse" />
+              New · The Case Nexus
+            </p>
+            <h2 className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight font-display text-[var(--color-paper)]">
+              The whole J6 case, on one interactive map.
+            </h2>
+            <p className="mt-2 text-sm sm:text-base text-[#cfd9ea] leading-relaxed">
+              Every co-defendant cluster, every defendant, every archived
+              document — laid out as a force-directed graph you can drag,
+              zoom, and walk. Search a name, click a node, expand the
+              network.
+            </p>
+          </div>
+          <span className="text-[var(--color-paper)] font-bold text-sm flex-shrink-0 group-hover:translate-x-1 transition-transform">
+            Walk the graph →
+          </span>
+        </div>
+      </Link>
+
       {/* Action rail — the four permanent invitations. Same shape for
           every visitor; nothing here gates on auth so even a first
           drop-in has a clear next step. */}
-      <section className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+      <section className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         <ActionCard
           href="/case"
           accent="accent"
