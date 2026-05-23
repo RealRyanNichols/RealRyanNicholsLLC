@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { SITE } from "@/lib/site";
+import { HeaderStatusStrip } from "@/components/HeaderStatusStrip";
 
 type Props = {
   avatarUrl: string | null;
@@ -12,10 +13,12 @@ type Props = {
   isAdmin: boolean;
 };
 
+// Public nav order, per Ryan's spec: J6 Case first, Map Room second,
+// About third. Donate is a permanent CTA chip after the public links;
+// admin / +new / account chips append for the right user.
 const NAV = [
-  { href: "/", label: "Feed" },
-  { href: "/the-map-room", label: "Map Room" },
   { href: "/case", label: "J6 Case" },
+  { href: "/the-map-room", label: "Map Room" },
   { href: "/about", label: "About" },
 ];
 
@@ -47,6 +50,11 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
 
   return (
     <>
+      {/* Techy: monospace status strip above the nav showing live
+          counters from the Map Room RPCs. Polls every 30s in the
+          background so the chrome itself signals "this is a live
+          system" before you even scroll. */}
+      <HeaderStatusStrip />
       <header className="border-b border-[var(--color-line)] bg-[var(--color-paper)]/85 backdrop-blur-xl sticky top-0 z-30">
         <div className="mx-auto max-w-5xl px-4 h-16 flex items-center justify-between gap-3">
           <Link
