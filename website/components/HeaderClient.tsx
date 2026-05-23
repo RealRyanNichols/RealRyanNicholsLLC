@@ -18,6 +18,7 @@ type Props = {
 // admin / +new / account chips append for the right user.
 const NAV = [
   { href: "/case", label: "J6 Case" },
+  { href: "/evidence-the-doj-tried-to-erase", label: "Evidence" },
   { href: "/the-map-room", label: "Map Room" },
   { href: "/about", label: "About" },
 ];
