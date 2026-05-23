@@ -150,6 +150,29 @@ export default async function SalvagedDojRecordPage({
         />
       </div>
 
+      <Link
+        href="/evidence-the-doj-tried-to-erase"
+        className="mt-6 block rounded-2xl border-2 border-[var(--color-blue)] bg-gradient-to-br from-[#0a1429] to-[#1c2a4a] p-5 group hover:from-[#0e1a36] hover:to-[#1c2a4a] transition"
+      >
+        <div className="flex items-center justify-between gap-4 flex-wrap">
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.2em] text-[#7fe3a9] font-bold">
+              Start here
+            </p>
+            <p className="mt-1 text-lg sm:text-xl font-bold tracking-tight font-display text-[var(--color-paper)]">
+              This is Exhibit A. Read the whole story →
+            </p>
+            <p className="mt-1 text-sm text-[#cfd9ea]">
+              <span className="font-bold">Evidence the DOJ Tried to Erase</span> — what
+              came down, why it&apos;s verifiable, and every way to walk it.
+            </p>
+          </div>
+          <span className="text-[var(--color-paper)] font-bold text-sm flex-shrink-0 group-hover:translate-x-1 transition-transform">
+            Open →
+          </span>
+        </div>
+      </Link>
+
       <section className="mt-8 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-5 sm:p-6">
         <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-blue)]">
           Provenance
