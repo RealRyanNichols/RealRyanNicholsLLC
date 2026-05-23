@@ -66,17 +66,10 @@ type Totals = {
   countries_now: number;
 };
 
-type Country = { country: string; viewers: number };
-
 export default async function TheMapRoomPage() {
   const supabase = getSupabaseStaticClient();
-  const [{ data: totals }, { data: countries }] = await Promise.all([
-    supabase.rpc("site_totals"),
-    supabase.rpc("live_visitor_countries"),
-  ]);
+  const { data: totals } = await supabase.rpc("site_totals");
 
-  // Default to zeros if the RPCs haven't been deployed yet / a sub-
-  // query failed. The client poll will replace these within 20s.
   const initialTotals: Totals = (totals as Totals | null) ?? {
     defendants: 0,
     defendants_verified: 0,
@@ -88,17 +81,13 @@ export default async function TheMapRoomPage() {
     live_now: 0,
     countries_now: 0,
   };
-  const initialCountries: Country[] = (countries as Country[] | null) ?? [];
 
   return (
     <article className="mx-auto max-w-5xl px-4 py-6 sm:py-8">
       {/* Map Room leads with the RADAR. No preamble. The visitor's
           first frame is moving dots on a navy command-screen, not a
           headline. The narrative slot lives below the data. */}
-      <MapRoomLive
-        initialTotals={initialTotals}
-        initialCountries={initialCountries}
-      />
+      <MapRoomLive initialTotals={initialTotals} />
 
       <div className="mt-4">
         <ShareRail
