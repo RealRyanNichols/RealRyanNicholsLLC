@@ -20,6 +20,7 @@ const AUTHOR_ROLES = [
 const ALL_THEMES = [
   "entrapment","excessive_force","death_or_injury","police_misconduct",
   "government_lies","contradiction","due_process","abuse_in_custody",
+  "harassment","death_threats",
 ];
 
 const schema = z.object({

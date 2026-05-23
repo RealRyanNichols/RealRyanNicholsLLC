@@ -22,7 +22,9 @@ type Theme =
   | "government_lies"
   | "contradiction"
   | "due_process"
-  | "abuse_in_custody";
+  | "abuse_in_custody"
+  | "harassment"
+  | "death_threats";
 
 const THEMES: { value: Theme; label: string }[] = [
   { value: "all", label: "All themes" },
@@ -34,6 +36,8 @@ const THEMES: { value: Theme; label: string }[] = [
   { value: "contradiction", label: "🔁 Contradictions" },
   { value: "due_process", label: "⚖️ Due process" },
   { value: "abuse_in_custody", label: "🔒 Abuse in custody" },
+  { value: "harassment", label: "🎯 Harassment" },
+  { value: "death_threats", label: "☠️ Death threats" },
 ];
 
 export default async function AdminImportsPage({

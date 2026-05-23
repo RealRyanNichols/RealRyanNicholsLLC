@@ -160,6 +160,14 @@ const THEME_PATTERNS: Array<{ theme: string; rx: RegExp }> = [
     theme: "abuse_in_custody",
     rx: /\b(solitary|medical (?:neglect|denial)|denied medical|beaten|abuse|mistreat|sleep deprivation|black hole)\b/i,
   },
+  {
+    theme: "harassment",
+    rx: /\b(harass|mass[- ]?report|brigade|pile[- ]?on|coordinated (?:attack|campaign)|doxx?|cancel(?:ed|led)?|swatting|account (?:banned|suspend|locked)|deplatform)\b/i,
+  },
+  {
+    theme: "death_threats",
+    rx: /\b(death threat|kill (?:you|him|her|them)|murder you|hang(?:ed)? you|threats? (?:of|to) (?:violence|kill)|wish (?:you|he|she|they) (?:was )?dead)\b/i,
+  },
 ];
 
 export type EvidenceScore = { themes: string[]; importance: number };

@@ -40,6 +40,8 @@ const THEMES = [
   { value: "contradiction", label: "🔁 Contradictions" },
   { value: "due_process", label: "⚖️ Due process" },
   { value: "abuse_in_custody", label: "🔒 Abuse in custody" },
+  { value: "harassment", label: "🎯 Harassment / brigade" },
+  { value: "death_threats", label: "☠️ Death threats" },
 ];
 
 type Result = {
