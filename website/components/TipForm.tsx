@@ -3,10 +3,19 @@
 import { useState } from "react";
 
 type Status = "idle" | "submitting" | "ok" | "error";
+type Category = "j6" | "national" | "local" | "other";
+
+const CATEGORIES: { value: Category; label: string; blurb: string }[] = [
+  { value: "j6", label: "J6 case", blurb: "A January 6 defendant, case, or detention story." },
+  { value: "national", label: "National news", blurb: "A national story, official, or pattern worth exposing." },
+  { value: "local", label: "Local news", blurb: "Something happening in your town or state." },
+  { value: "other", label: "Other", blurb: "Anything else you think we should see." },
+];
 
 export function TipForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [category, setCategory] = useState<Category>("j6");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -22,6 +31,8 @@ export function TipForm() {
       .filter((s) => /^https?:\/\//i.test(s));
 
     const payload = {
+      category,
+      location: String(fd.get("location") ?? "").trim() || null,
       submitter_name: String(fd.get("submitter_name") ?? "").trim() || null,
       submitter_email: String(fd.get("submitter_email") ?? "").trim() || "",
       defendant_name: String(fd.get("defendant_name") ?? "").trim(),
@@ -70,15 +81,63 @@ export function TipForm() {
     );
   }
 
+  const isJ6 = category === "j6";
+  const subjectLabel = isJ6 ? "Whose case is this?" : "Subject — who or what (optional)";
+  const subjectHint = isJ6
+    ? "The January 6 defendant this tip is about. If it's you, put your own name."
+    : "The person, agency, company, or topic this is about, if you know.";
+  const subjectPlaceholder = isJ6
+    ? "e.g. Ryan Nichols (or 'myself')"
+    : "e.g. a name, an agency, a company, a headline";
+
   return (
     <form onSubmit={onSubmit} className="space-y-4">
+      {/* What kind of tip — turns the J6 line into a full newsroom intake. */}
+      <div>
+        <label className="block text-sm font-semibold mb-1.5">
+          What kind of tip is this?
+          <span className="text-[var(--color-accent)] ml-1">*</span>
+        </label>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          {CATEGORIES.map((c) => (
+            <button
+              key={c.value}
+              type="button"
+              onClick={() => setCategory(c.value)}
+              aria-pressed={category === c.value}
+              className={[
+                "rounded-lg border-2 px-3 py-2 text-sm font-bold transition text-left",
+                category === c.value
+                  ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
+                  : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)]",
+              ].join(" ")}
+            >
+              {c.label}
+            </button>
+          ))}
+        </div>
+        <p className="mt-1.5 text-xs text-[var(--color-muted)]">
+          {CATEGORIES.find((c) => c.value === category)?.blurb}
+        </p>
+      </div>
+
       <Field
-        label="Whose case is this?"
+        key={isJ6 ? "subj-j6" : "subj-news"}
+        label={subjectLabel}
         name="defendant_name"
-        required
-        placeholder="e.g. Ryan Nichols (or 'myself')"
-        hint="The name of the January 6 defendant this tip is about. If it's you, put your own name."
+        required={isJ6}
+        placeholder={subjectPlaceholder}
+        hint={subjectHint}
       />
+
+      {category === "local" ? (
+        <Field
+          label="Where? (city & state)"
+          name="location"
+          placeholder="e.g. Longview, TX"
+          hint="So we can route and verify local tips."
+        />
+      ) : null}
 
       <Field
         label="The story / evidence"
