@@ -239,23 +239,33 @@ export default async function CasePage({
         ) : null}
       </header>
 
-      <nav
-        className="flex flex-wrap gap-1 border-b border-[var(--color-line)] mb-8"
-        aria-label="Case view"
-      >
-        <TabLink active={tab === "grievances"} href={`/case?view=grievances${q ? `&q=${encodeURIComponent(q)}` : ""}`}>
-          Grievances {q ? `(${filteredGrievances.length})` : ""}
-        </TabLink>
-        <TabLink active={tab === "timeline"} href={`/case?view=timeline${q ? `&q=${encodeURIComponent(q)}` : ""}`}>
-          Timeline {q ? `(${filteredEvents.length})` : ""}
-        </TabLink>
-        <TabLink active={tab === "people"} href={`/case?view=people${q ? `&q=${encodeURIComponent(q)}` : ""}`}>
-          People {q ? `(${filteredPeople.length})` : ""}
-        </TabLink>
-        <TabLink active={tab === "documents"} href={`/case?view=documents${q ? `&q=${encodeURIComponent(q)}` : ""}`}>
-          Documents {q ? `(${filteredDocuments.length})` : ""}
-        </TabLink>
-      </nav>
+      <div className="flex items-end justify-between gap-3 flex-wrap border-b border-[var(--color-line)] mb-8">
+        <nav
+          className="flex flex-wrap gap-1"
+          aria-label="Case view"
+        >
+          <TabLink active={tab === "grievances"} href={`/case?view=grievances${q ? `&q=${encodeURIComponent(q)}` : ""}`}>
+            Grievances {q ? `(${filteredGrievances.length})` : ""}
+          </TabLink>
+          <TabLink active={tab === "timeline"} href={`/case?view=timeline${q ? `&q=${encodeURIComponent(q)}` : ""}`}>
+            Timeline {q ? `(${filteredEvents.length})` : ""}
+          </TabLink>
+          <TabLink active={tab === "people"} href={`/case?view=people${q ? `&q=${encodeURIComponent(q)}` : ""}`}>
+            People {q ? `(${filteredPeople.length})` : ""}
+          </TabLink>
+          <TabLink active={tab === "documents"} href={`/case?view=documents${q ? `&q=${encodeURIComponent(q)}` : ""}`}>
+            Documents {q ? `(${filteredDocuments.length})` : ""}
+          </TabLink>
+        </nav>
+        <Link
+          href="/case/nexus"
+          className="mb-1 inline-flex items-center gap-1.5 rounded-full border-2 border-[#1f2f55] bg-[#0a1429] px-3.5 py-1.5 text-xs font-bold text-[#cfd9ea] hover:border-[#7fe3a9] hover:text-[#7fe3a9] transition"
+        >
+          <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#7fe3a9] animate-pulse" aria-hidden />
+          View as graph
+          <span aria-hidden>→</span>
+        </Link>
+      </div>
 
       {tab === "grievances" && <GrievancesView grievances={filteredGrievances} />}
       {tab === "timeline" && <TimelineView events={filteredEvents} />}
