@@ -4,6 +4,10 @@ import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { getOgImage } from "@/lib/og-images";
 import { SITE } from "@/lib/site";
 import { MapRoomLive } from "@/components/MapRoomLive";
+import { MapRoomPatterns } from "@/components/MapRoomPatterns";
+import { MapRoomDocket } from "@/components/MapRoomDocket";
+import { MapRoomTrail } from "@/components/MapRoomTrail";
+import { MapRoomPinnedPost } from "@/components/MapRoomPinnedPost";
 
 // Tight 30s ISR — the live counts come from the client poll, but the
 // SSR'd first paint stays fresh enough that share previews and search
@@ -192,10 +196,16 @@ export default async function TheMapRoomPage() {
         </div>
       </section>
 
-      <p className="mt-10 text-xs text-[var(--color-muted)] text-center">
-        Pattern panels (top judges · charge histogram · sentence
-        distribution · daily docket digest) arrive in the next pass.
-      </p>
+      {/* Slice 2 — the four sections that turn the Map Room from a
+          landing page into a destination people return to: patterns
+          hidden in the existing archive, today's docket (what hit the
+          record in the last 24h), trail of the week (what people are
+          actually reading), and Ryan's most-recent post embedded
+          inline so the human stays in frame. */}
+      <MapRoomPatterns />
+      <MapRoomDocket />
+      <MapRoomTrail />
+      <MapRoomPinnedPost />
     </article>
   );
 }
