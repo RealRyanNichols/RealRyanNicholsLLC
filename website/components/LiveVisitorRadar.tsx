@@ -122,6 +122,10 @@ export function LiveVisitorRadar({ initial }: { initial: Ping[] }) {
   }, []);
 
   function onWheel(e: React.WheelEvent<SVGSVGElement>) {
+    // Don't hijack the page scroll: only zoom when ⌘/Ctrl is held.
+    // Plain wheel falls through so the page scrolls normally; the
+    // +/− buttons remain the primary zoom control.
+    if (!(e.ctrlKey || e.metaKey)) return;
     e.preventDefault();
     const factor = e.deltaY < 0 ? 1.18 : 1 / 1.18;
     // Zoom toward the cursor.
@@ -142,6 +146,10 @@ export function LiveVisitorRadar({ initial }: { initial: Ping[] }) {
 
   function onPointerDown(e: React.PointerEvent<SVGSVGElement>) {
     if (e.button !== 0) return;
+    // Only the mouse drags-to-pan. On touch we let the browser handle
+    // the gesture (vertical scroll) so the page never gets trapped;
+    // touch users zoom/pan via the on-screen buttons.
+    if (e.pointerType !== "mouse") return;
     (e.target as Element).setPointerCapture?.(e.pointerId);
     dragRef.current = {
       active: true,
@@ -219,7 +227,7 @@ export function LiveVisitorRadar({ initial }: { initial: Ping[] }) {
         <svg
           ref={svgRef}
           viewBox={`0 0 ${W} ${H}`}
-          className="block w-full h-auto select-none touch-none"
+          className="block w-full h-auto select-none touch-pan-y"
           style={{ cursor: dragRef.current?.active ? "grabbing" : "grab" }}
           onWheel={onWheel}
           onPointerDown={onPointerDown}
@@ -228,7 +236,7 @@ export function LiveVisitorRadar({ initial }: { initial: Ping[] }) {
           onPointerLeave={onPointerUp}
           onPointerCancel={onPointerUp}
           role="img"
-          aria-label="Live world map showing each active visitor as an individual ping. Pan with drag, zoom with wheel, click a ping to see its activity."
+          aria-label="Live world map showing each active visitor as an individual ping. Drag to pan, use the + and − buttons to zoom, click a ping to see its activity."
         >
           <defs>
             <style>{`
@@ -344,7 +352,7 @@ export function LiveVisitorRadar({ initial }: { initial: Ping[] }) {
           </button>
         </div>
         <p className="absolute bottom-2 left-3 text-[9px] text-[#7c8aa6] font-mono uppercase tracking-wider z-10 select-none">
-          drag · scroll · click
+          drag · +/− to zoom · click
         </p>
       </div>
 

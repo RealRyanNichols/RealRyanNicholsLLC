@@ -19,7 +19,7 @@ import {
   type SimulationLinkDatum,
 } from "d3-force";
 import { select } from "d3-selection";
-import { zoom, type ZoomBehavior } from "d3-zoom";
+import { zoom, zoomIdentity, type ZoomBehavior } from "d3-zoom";
 import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
 
 // ─── Wire types straight from the SQL RPCs ─────────────────────────────
@@ -237,20 +237,47 @@ export function CaseNexus({ initial }: { initial: GraphPayload }) {
   }
 
   // Pan + zoom via d3-zoom on the SVG root. Applies transform to the
-  // top-level <g> so all children scale together.
+  // top-level <g> so all children scale together. Crucially, this does
+  // NOT hijack page scrolling:
+  //   • plain mouse wheel  → the page scrolls (zoom needs ⌘/Ctrl)
+  //   • single-finger touch → the page scrolls; two fingers pan/zoom
+  //   • mouse drag (button 0) → pans the graph
+  const zoomRef = useRef<{
+    svg: ReturnType<typeof select<SVGSVGElement, unknown>>;
+    z: ZoomBehavior<SVGSVGElement, unknown>;
+  } | null>(null);
+
   useEffect(() => {
     if (!svgRef.current || !gRef.current) return;
-    const svg = select(svgRef.current);
+    const svg = select<SVGSVGElement, unknown>(svgRef.current);
     const g = select(gRef.current);
-    const z: ZoomBehavior<SVGSVGElement, unknown> = zoom<SVGSVGElement, unknown>()
+    const z = zoom<SVGSVGElement, unknown>()
       .scaleExtent([0.3, 4])
+      .filter((event) => {
+        const e = event as WheelEvent & TouchEvent & MouseEvent;
+        if (e.type === "wheel") return e.ctrlKey || e.metaKey;
+        if (e.type === "touchstart" || e.type === "touchmove")
+          return (e.touches?.length ?? 0) >= 2;
+        return !e.button;
+      })
       .on("zoom", (event) => {
         g.attr("transform", event.transform.toString());
       });
     svg.call(z);
+    zoomRef.current = { svg, z };
     return () => {
       svg.on(".zoom", null);
+      zoomRef.current = null;
     };
+  }, []);
+
+  const zoomByFactor = useCallback((k: number) => {
+    const r = zoomRef.current;
+    if (r) r.z.scaleBy(r.svg, k);
+  }, []);
+  const resetZoom = useCallback(() => {
+    const r = zoomRef.current;
+    if (r) r.z.transform(r.svg, zoomIdentity);
   }, []);
 
   const selectedNode = useMemo<RawNode | null>(
@@ -332,8 +359,9 @@ export function CaseNexus({ initial }: { initial: GraphPayload }) {
           ref={svgRef}
           viewBox={`0 0 ${W} ${H}`}
           className="block w-full h-auto cursor-grab active:cursor-grabbing select-none"
+          style={{ touchAction: "pan-y" }}
           role="img"
-          aria-label="Interactive knowledge graph of January 6 defendants, cases, and documents. Pan with drag, zoom with wheel, click a node to see its details and expand its connections."
+          aria-label="Interactive knowledge graph of January 6 defendants, cases, and documents. Drag to pan, use the + and − buttons (or ⌘/Ctrl + scroll) to zoom, click a node to see its details and expand its connections."
         >
           <g ref={gRef}>
             {/* Edges first so they sit behind nodes */}
@@ -460,9 +488,23 @@ export function CaseNexus({ initial }: { initial: GraphPayload }) {
           </div>
         </div>
 
+        {/* Zoom controls — explicit buttons so zooming never depends on
+            hijacking the page's scroll wheel. */}
+        <div className="absolute bottom-3 right-3 z-10 flex flex-col gap-1.5">
+          <ZoomButton label="Zoom in" onClick={() => zoomByFactor(1.4)}>
+            +
+          </ZoomButton>
+          <ZoomButton label="Zoom out" onClick={() => zoomByFactor(1 / 1.4)}>
+            −
+          </ZoomButton>
+          <ZoomButton label="Reset view" onClick={resetZoom}>
+            ⟲
+          </ZoomButton>
+        </div>
+
         {/* Bottom hint */}
         <p className="absolute bottom-2 left-3 text-[9px] text-[#7c8aa6] font-mono uppercase tracking-wider z-10 select-none pointer-events-none">
-          drag · scroll · click a node
+          drag · +/− to zoom · click a node
         </p>
       </div>
 
@@ -594,5 +636,26 @@ function LegendDot({
       />
       <span>{children}</span>
     </div>
+  );
+}
+
+function ZoomButton({
+  label,
+  onClick,
+  children,
+}: {
+  label: string;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      onClick={onClick}
+      className="h-9 w-9 rounded-full border border-[#3a557c] bg-[#0e1a36]/90 text-[#cfd9ea] text-lg font-bold leading-none flex items-center justify-center hover:border-[#7fe3a9] hover:text-[#7fe3a9] transition"
+    >
+      {children}
+    </button>
   );
 }
