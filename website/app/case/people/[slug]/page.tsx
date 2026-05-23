@@ -9,6 +9,7 @@ import { CaseViewTracker } from "@/components/CaseViewTracker";
 import { EvidenceGrid } from "@/components/EvidenceGrid";
 import { ClaimMeHero, ClaimMeFooter } from "@/components/ClaimMeHero";
 import { CaseInfoCard } from "@/components/CaseInfoCard";
+import { ReactionBar } from "@/components/ReactionBar";
 import { SITE } from "@/lib/site";
 
 export const revalidate = 300;
@@ -110,6 +111,14 @@ export default async function PersonPage({
           />
         </div>
 
+        <div className="mt-6">
+          <ReactionBar
+            targetType="person"
+            targetId={p.slug}
+            prompt={`Stand with ${p.name} — tap to react, no signup`}
+          />
+        </div>
+
         <ClaimMeFooter name={p.name} />
       </article>
     );
@@ -160,6 +169,10 @@ export default async function PersonPage({
 
       <div className="mt-4">
         <CaseStats views={p.views_count} shares={p.shares_count} />
+      </div>
+
+      <div className="mt-6">
+        <ReactionBar targetType="person" targetId={p.slug} />
       </div>
 
       <section className="mt-12 border-t border-[var(--color-line)] pt-8">

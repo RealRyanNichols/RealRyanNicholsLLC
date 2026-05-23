@@ -4,6 +4,7 @@ import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { getOgImage } from "@/lib/og-images";
 import { SITE } from "@/lib/site";
 import { ShareRail } from "@/components/ShareRail";
+import { ReactionBar } from "@/components/ReactionBar";
 
 // The flagship evidence landing page. Dramatic front door that funnels
 // into the searchable salvaged record + the three analytic lenses.
@@ -130,6 +131,14 @@ export default async function EvidenceErasedPage() {
         <ShareRail
           url={`${SITE.url}/evidence-the-doj-tried-to-erase`}
           title="The Biden DOJ deleted its master list of every January 6 defendant after the pardons. It's preserved here — 1,092 names, 3,230 documents, verifiable against the Internet Archive: realryannichols.com/evidence-the-doj-tried-to-erase"
+        />
+      </div>
+
+      <div className="mt-4">
+        <ReactionBar
+          targetType="evidence"
+          targetId="evidence-the-doj-tried-to-erase"
+          prompt="They tried to erase it. Tap how that hits you — no signup."
         />
       </div>
 
