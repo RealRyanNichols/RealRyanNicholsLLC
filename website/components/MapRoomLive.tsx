@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
 import { WorldMap } from "@/components/WorldMap";
+import { HotRightNow } from "@/components/HotRightNow";
 import { COUNTRY_COORDS, flagFor, nameFor } from "@/lib/country-coords";
 
 type Country = { country: string; viewers: number };
@@ -61,55 +62,75 @@ export function MapRoomLive({
   );
 
   return (
-    <div className="space-y-6">
-      {/* Hero ticker */}
-      <div className="rounded-2xl border-2 border-[var(--color-accent)] bg-gradient-to-br from-[var(--color-paper)] to-[var(--color-surface)] p-5 sm:p-7">
-        <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-[var(--color-success)] font-bold">
-          <span className="inline-block w-2 h-2 rounded-full bg-[var(--color-success)] animate-pulse" />
-          LIVE — last 5 min
+    <div className="space-y-5">
+      {/* Radar hero — world map first, full-bleed inside a navy command
+          surface so the page announces itself as a live ops screen
+          before any words are read. Counter overlays on top-left, hot-
+          right-now ticker sits on top-right. Visually contrasts the
+          parchment archive feel of /case. */}
+      <div className="relative rounded-2xl overflow-hidden border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] shadow-[0_10px_40px_-12px_var(--color-accent-glow)]">
+        {/* Map fills the surface; we tint the inner SVG via CSS vars so
+            the continents read on the navy ground. */}
+        <div
+          className="px-3 pt-3 pb-4 sm:px-5 sm:pt-5"
+          style={
+            {
+              ["--color-paper" as string]: "#0e1a36",
+              ["--color-line" as string]: "#3a557c",
+              ["--color-surface" as string]: "#0e1a36",
+            } as React.CSSProperties
+          }
+        >
+          {countries.length === 0 ? (
+            <div className="flex items-center justify-center py-16 text-center">
+              <p className="text-sm text-[#cfd9ea] italic max-w-md">
+                Radar quiet — no sessions in the last 5 minutes. The map
+                fills the moment somebody opens the case. Country-level
+                only, no IPs.
+              </p>
+            </div>
+          ) : (
+            <WorldMap
+              data={countries.map((c) => ({
+                country: c.country,
+                views: Number(c.viewers),
+              }))}
+            />
+          )}
         </div>
-        <div className="mt-3 flex items-baseline gap-3 flex-wrap">
-          <div className="text-5xl sm:text-7xl font-bold tabular-nums tracking-tight font-display text-[var(--color-accent)] leading-none">
-            {totals.live_now.toLocaleString()}
-          </div>
-          <div className="text-base sm:text-lg font-bold text-[var(--color-ink)]">
-            {totals.live_now === 1 ? "person reading" : "people reading"} the
-            case
-          </div>
-        </div>
-        <div className="mt-2 text-sm text-[var(--color-ink-soft)]">
-          From{" "}
-          <strong className="text-[var(--color-ink)] tabular-nums">
-            {totals.countries_now}
-          </strong>{" "}
-          {totals.countries_now === 1 ? "country" : "countries"} right now.
-        </div>
-      </div>
 
-      {/* World map */}
-      <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-3 sm:p-5">
-        {countries.length === 0 ? (
-          <div className="flex items-center justify-center py-16 text-center">
-            <p className="text-sm text-[var(--color-ink-soft)] italic max-w-md">
-              No one online in the last 5 minutes. When somebody opens the
-              case, a dot appears here — country-level only, no names, no
-              cities, no IPs stored.
-            </p>
+        {/* Overlay strip: LIVE count + countries, anchored bottom-left
+            and bottom-right so they don't collide with the map. */}
+        <div className="absolute top-3 left-3 sm:top-4 sm:left-5 z-10">
+          <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] font-bold text-[#7fe3a9]">
+            <span className="inline-block w-2 h-2 rounded-full bg-[#7fe3a9] animate-pulse" />
+            Live · last 5 min
           </div>
-        ) : (
-          <WorldMap
-            data={countries.map((c) => ({
-              country: c.country,
-              views: Number(c.viewers),
-            }))}
-          />
-        )}
+          <div className="mt-1 flex items-baseline gap-2 flex-wrap">
+            <span className="text-4xl sm:text-6xl font-bold tabular-nums tracking-tight font-display text-[var(--color-paper)] leading-none drop-shadow">
+              {totals.live_now.toLocaleString()}
+            </span>
+            <span className="text-xs sm:text-sm font-bold text-[#cfd9ea]">
+              {totals.live_now === 1 ? "reading" : "reading the case"}
+            </span>
+          </div>
+          <p className="mt-0.5 text-[11px] text-[#a9b7d0]">
+            from{" "}
+            <span className="text-[var(--color-paper)] font-bold tabular-nums">
+              {totals.countries_now}
+            </span>{" "}
+            {totals.countries_now === 1 ? "country" : "countries"}
+          </p>
+        </div>
+
+        {/* Country chips along the bottom — only renders when we have
+            real visitors. Stays in the navy zone for the visual unit. */}
         {knownCountries.length > 0 ? (
-          <div className="mt-3 flex flex-wrap gap-2 justify-center text-[10px] uppercase tracking-wider font-bold">
-            {knownCountries.slice(0, 12).map((c) => (
+          <div className="px-3 pb-3 sm:px-5 sm:pb-4 -mt-1 flex flex-wrap gap-1.5 text-[10px] uppercase tracking-wider font-bold">
+            {knownCountries.slice(0, 14).map((c) => (
               <span
                 key={c.country}
-                className="rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] px-2.5 py-1 flex items-center gap-1.5"
+                className="rounded-full border border-[#3a557c] bg-[#0a1429] text-[#cfd9ea] px-2.5 py-1 flex items-center gap-1.5"
                 title={`${nameFor(c.country)}: ${c.viewers} viewing`}
               >
                 <span className="text-sm leading-none" aria-hidden>
@@ -121,6 +142,11 @@ export function MapRoomLive({
           </div>
         ) : null}
       </div>
+
+      {/* Hot now ticker — what's on screens RIGHT NOW. Polls every
+          15s, sits directly below the radar so the visitor sees the
+          map → "here's what people are looking at" in one glance. */}
+      <HotRightNow initial={[]} />
 
       {/* The permanent four — counters that don't move much but anchor
           the page's weight. Big, confident, tabular. */}

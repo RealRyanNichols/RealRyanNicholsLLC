@@ -113,7 +113,25 @@ export function WorldMap({
         opacity="0.85"
       />
 
-      {/* One dot per country, area scaled by views. Min radius 4, max 28. */}
+      {/* Pulse-ring keyframes inlined so the dots feel alive — proves
+          the map is real-time without needing JS animation. */}
+      <defs>
+        <style>{`
+          @keyframes wmap-pulse {
+            0%   { transform: scale(1);   opacity: 0.55; }
+            70%  { transform: scale(2.4); opacity: 0;    }
+            100% { transform: scale(2.4); opacity: 0;    }
+          }
+          .wmap-pulse-ring {
+            transform-origin: center;
+            transform-box: fill-box;
+            animation: wmap-pulse 2.2s ease-out infinite;
+          }
+        `}</style>
+      </defs>
+
+      {/* One dot per country, area scaled by views. Min radius 4, max
+          28. A second circle pulses out from it to give the live feel. */}
       {known.map((d) => {
         const meta = COUNTRY_COORDS[d.country.toUpperCase()];
         const [cx, cy] = project(meta.lng, meta.lat);
@@ -124,12 +142,21 @@ export function WorldMap({
               cx={cx}
               cy={cy}
               r={r}
+              className="wmap-pulse-ring"
+              fill="none"
+              stroke={highlightColor}
+              strokeWidth="2"
+            />
+            <circle
+              cx={cx}
+              cy={cy}
+              r={r}
               fill={highlightColor}
-              fillOpacity="0.45"
+              fillOpacity="0.55"
               stroke={highlightColor}
               strokeWidth="1"
             />
-            <title>{`${meta.flag} ${meta.name}: ${d.views.toLocaleString()} views`}</title>
+            <title>{`${meta.flag} ${meta.name}: ${d.views.toLocaleString()} viewing`}</title>
           </g>
         );
       })}

@@ -89,28 +89,32 @@ export default async function TheMapRoomPage() {
   const initialCountries: Country[] = (countries as Country[] | null) ?? [];
 
   return (
-    <article className="mx-auto max-w-5xl px-4 py-8 sm:py-12">
-      <header className="mb-8 sm:mb-10">
-        <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
-          The Map Room · realryannichols.com
-        </p>
-        <h1 className="mt-2 text-4xl sm:text-6xl font-bold tracking-tight leading-[1.02] font-display">
-          The live record of the J6 case.
-        </h1>
-        <p className="mt-4 text-base sm:text-lg text-[var(--color-ink-soft)] max-w-3xl leading-relaxed">
-          United States v. Nichols. <strong>Pardoned</strong> by President
-          Trump on January 20, 2025. Charges{" "}
-          <strong>dismissed with prejudice</strong> by U.S. Attorney Edward
-          R. Martin Jr. The case cannot be brought again. This room holds
-          the running record — every defendant, every document, every
-          person who came to read it. In public. Free. No algorithm.
-        </p>
-      </header>
-
+    <article className="mx-auto max-w-5xl px-4 py-6 sm:py-8">
+      {/* Map Room leads with the RADAR. No preamble. The visitor's
+          first frame is moving dots on a navy command-screen, not a
+          headline. The narrative slot lives below the data. */}
       <MapRoomLive
         initialTotals={initialTotals}
         initialCountries={initialCountries}
       />
+
+      <header className="mt-10 max-w-3xl">
+        <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+          The Map Room · realryannichols.com
+        </p>
+        <h1 className="mt-2 text-3xl sm:text-5xl font-bold tracking-tight leading-[1.05] font-display">
+          The live record of the J6 case.
+        </h1>
+        <p className="mt-4 text-base sm:text-lg text-[var(--color-ink-soft)] leading-relaxed">
+          <em>United States v. Nichols.</em> <strong>Pardoned</strong> by
+          President Trump on January 20, 2025. Charges{" "}
+          <strong>dismissed with prejudice</strong> by U.S. Attorney
+          Edward R. Martin Jr. The case cannot be brought again. This
+          room holds the running record — every defendant, every
+          document, every person who came to read it. In public. Free.
+          No algorithm.
+        </p>
+      </header>
 
       {/* Action rail — the four permanent invitations. Same shape for
           every visitor; nothing here gates on auth so even a first
