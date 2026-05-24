@@ -1,22 +1,53 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE } from "@/lib/site";
+import { getOgImage } from "@/lib/og-images";
 import { ShareRail } from "@/components/ShareRail";
 import { ReactionBar } from "@/components/ReactionBar";
 
-export const dynamic = "force-dynamic";
+// Cache + periodically revalidate instead of force-dynamic: the page is
+// static content, so caching makes it fast (better SEO/attention) while
+// still picking up an admin-set OG image within the window.
+export const revalidate = 600;
 
 const TITLE = "The Fights — power back to the people of East Texas";
 const DESCRIPTION =
   "The fights Ryan Nichols is taking up: East Texas water rights, the First Amendment, land rights, tax fairness, and equal justice under the law. Power back to the people.";
 
-export const metadata: Metadata = {
-  title: "The Fights",
-  description: DESCRIPTION,
-  alternates: { canonical: `${SITE.url}/fights` },
-  openGraph: { type: "website", title: TITLE, description: DESCRIPTION, url: `${SITE.url}/fights` },
-  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const override = await getOgImage("/fights");
+  const title = override?.title ?? TITLE;
+  const description = override?.description ?? DESCRIPTION;
+  const url = `${SITE.url}/fights`;
+  const ogImageUrl = override?.image_url ?? null;
+  return {
+    title: override?.title ?? "The Fights",
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "website",
+      title,
+      description,
+      url,
+      images: ogImageUrl
+        ? [
+            {
+              url: ogImageUrl,
+              width: override?.width ?? 1200,
+              height: override?.height ?? 630,
+              alt: title,
+            },
+          ]
+        : undefined,
+    },
+    twitter: {
+      card: ogImageUrl ? "summary_large_image" : "summary",
+      title,
+      description,
+      images: ogImageUrl ? [ogImageUrl] : undefined,
+    },
+  };
+}
 
 // Ryan's issue-advocacy — his stated values, framed in his voice. These
 // are starting statements he can sharpen; they take positions on issues,
