@@ -25,6 +25,7 @@ export async function POST(request: NextRequest) {
     data: {
       id?: string;
       upload_id?: string;
+      asset_id?: string;
       live_stream_id?: string;
       active_asset_id?: string;
       recent_asset_ids?: string[];
@@ -43,8 +44,8 @@ export async function POST(request: NextRequest) {
   //   video.asset.errored          -> mark errored
   switch (event.type) {
     case "video.upload.asset_created": {
-      const uploadId = event.data.upload_id ?? event.data.id;
-      const assetId = event.data.id;
+      const uploadId = event.data.id ?? event.data.upload_id;
+      const assetId = event.data.asset_id;
       if (!uploadId || !assetId) break;
       await supabase
         .from("posts")

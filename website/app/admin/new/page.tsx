@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { ComposeForm } from "@/components/ComposeForm";
-import { isMuxConfigured } from "@/lib/mux";
+import { getVideoConfigStatus } from "@/lib/video-config";
 
 export const metadata: Metadata = {
   title: "New post",
@@ -81,7 +81,7 @@ export default async function NewPostPage({
         )}
       </p>
       <div className="mt-8">
-        <ComposeForm muxConfigured={isMuxConfigured()} initial={initial} />
+        <ComposeForm videoConfig={getVideoConfigStatus()} initial={initial} />
       </div>
     </article>
   );

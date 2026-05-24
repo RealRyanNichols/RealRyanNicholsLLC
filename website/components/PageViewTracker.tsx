@@ -2,26 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-
-const SESSION_KEY = "rn_session_id";
-
-function getSessionId(): string {
-  if (typeof window === "undefined") return "";
-  try {
-    let id = window.sessionStorage.getItem(SESSION_KEY);
-    if (!id) {
-      id = (
-        typeof crypto !== "undefined" && "randomUUID" in crypto
-          ? crypto.randomUUID()
-          : Math.random().toString(36).slice(2) + Date.now().toString(36)
-      ).replace(/-/g, "");
-      window.sessionStorage.setItem(SESSION_KEY, id);
-    }
-    return id;
-  } catch {
-    return "";
-  }
-}
+import { getSessionId, getVisitorId } from "@/lib/client-ids";
 
 function getScrollPct(): number {
   if (typeof window === "undefined") return 0;
@@ -68,6 +49,7 @@ export function PageViewTracker() {
   useEffect(() => {
     const sid = getSessionId();
     if (!sid) return;
+    const visitorId = getVisitorId();
 
     const fullPath =
       pathname + (search.toString() ? `?${search.toString()}` : "");
@@ -78,7 +60,7 @@ export function PageViewTracker() {
     const firedMilestones = new Set<number>();
 
     // Initial view → /api/track-pageview. The route reads Vercel's geo
-    // headers + computes the daily visitor hash and creates the
+    // headers + computes the first-party visitor hash and creates the
     // page_views row. Dwell/scroll/clicks are then reported against
     // (session_id, path) via /api/track-event, so we never depend on
     // round-tripping the row id back to the browser.
@@ -87,6 +69,7 @@ export function PageViewTracker() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         session_id: sid,
+        visitor_id: visitorId || null,
         path: fullPath,
         ref: ref || null,
         ua: ua || null,

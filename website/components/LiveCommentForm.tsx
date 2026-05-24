@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { trackEvent } from "@/lib/analytics";
+import { getSessionId, getVisitorId } from "@/lib/client-ids";
 
 type State =
   | { kind: "idle" }
@@ -34,6 +35,8 @@ export function LiveCommentForm({ liveStreamId }: { liveStreamId: string }) {
           live_stream_id: liveStreamId,
           display_name: displayName || undefined,
           body,
+          session_id: getSessionId() || undefined,
+          visitor_id: getVisitorId() || undefined,
         }),
       });
       const json = await response.json().catch(() => ({}));

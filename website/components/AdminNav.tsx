@@ -13,6 +13,7 @@ const GROUPS: { label: string; items: { href: string; label: string }[] }[] = [
     items: [
       { href: "/admin", label: "Overview" },
       { href: "/admin/analytics", label: "Analytics" },
+      { href: "/admin/audience", label: "Audience intel" },
     ],
   },
   {

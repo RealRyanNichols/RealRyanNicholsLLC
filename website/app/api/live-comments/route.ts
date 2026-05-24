@@ -3,12 +3,17 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { checkRateLimit, clientIp } from "@/lib/rate-limit";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
+import { visitorHash } from "@/lib/visitor-hash";
 
 const schema = z.object({
   live_stream_id: z.string().uuid("Invalid live stream."),
   display_name: z.string().max(80).optional().or(z.literal("")),
   body: z.string().min(1, "Comment cannot be empty.").max(1000, "Comment is too long."),
+  session_id: z.string().min(8).max(64).optional().or(z.literal("")),
+  visitor_id: z.string().min(8).max(80).optional().or(z.literal("")),
 });
+
+export const runtime = "nodejs";
 
 function hashIp(ip: string): string {
   const salt = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "live-comments";
@@ -56,13 +61,32 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Live room not found." }, { status: 404 });
   }
 
-  const { error } = await supabase.from("live_comments").insert({
+  const ip = clientIp(request);
+  const insert = {
     live_stream_id: parsed.data.live_stream_id,
     display_name: parsed.data.display_name?.trim() || null,
     body: parsed.data.body.trim(),
     status: "approved",
-    ip_hash: hashIp(clientIp(request)),
-  });
+    ip_hash: hashIp(ip),
+    session_id: parsed.data.session_id || null,
+    visitor_hash: visitorHash(
+      parsed.data.visitor_id || null,
+      ip,
+      request.headers.get("user-agent"),
+    ),
+  };
+
+  const { error } = await supabase.from("live_comments").insert(insert);
+  if (error && /session_id|visitor_hash|column/i.test(error.message)) {
+    const { error: retryError } = await supabase.from("live_comments").insert({
+      live_stream_id: insert.live_stream_id,
+      display_name: insert.display_name,
+      body: insert.body,
+      status: insert.status,
+      ip_hash: insert.ip_hash,
+    });
+    if (!retryError) return NextResponse.json({ ok: true });
+  }
 
   if (error) {
     return NextResponse.json(

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { trackEvent } from "@/lib/analytics";
+import { getSessionId, getVisitorId } from "@/lib/client-ids";
 
 type State =
   | { kind: "idle" }
@@ -45,6 +46,8 @@ export function PrivateMessageBox({
           subject: subject || undefined,
           message,
           source_path: window.location.pathname,
+          session_id: getSessionId() || undefined,
+          visitor_id: getVisitorId() || undefined,
         }),
       });
       const json = await response.json().catch(() => ({}));

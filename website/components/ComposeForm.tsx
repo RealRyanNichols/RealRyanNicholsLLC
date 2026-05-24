@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
 import { POST_VIDEO_BUCKET, POST_VIDEO_MAX_BYTES, formatBytes } from "@/lib/direct-video";
 import { VIDEO_CHANNELS } from "@/lib/video-channels";
+import type { VideoConfigStatus } from "@/lib/video-config";
 
 type Tab = "text" | "note" | "photo" | "video";
 
@@ -24,10 +25,10 @@ export type ComposeInitial = {
 };
 
 export function ComposeForm({
-  muxConfigured,
+  videoConfig,
   initial,
 }: {
-  muxConfigured: boolean;
+  videoConfig: VideoConfigStatus;
   initial?: ComposeInitial | null;
 }) {
   const [tab, setTab] = useState<Tab>("text");
@@ -76,7 +77,7 @@ export function ComposeForm({
       {tab === "text" && <TextForm />}
       {tab === "note" && <NoteForm />}
       {tab === "photo" && <PhotoForm />}
-      {tab === "video" && <VideoForm muxConfigured={muxConfigured} />}
+      {tab === "video" && <VideoForm videoConfig={videoConfig} />}
     </div>
   );
 }
@@ -399,7 +400,7 @@ function PhotoForm() {
   );
 }
 
-function VideoForm({ muxConfigured }: { muxConfigured: boolean }) {
+function VideoForm({ videoConfig }: { videoConfig: VideoConfigStatus }) {
   const router = useRouter();
   const [state, setState] = useState<State>({ kind: "idle" });
   const [title, setTitle] = useState("");
@@ -415,10 +416,12 @@ function VideoForm({ muxConfigured }: { muxConfigured: boolean }) {
     }
     setState({ kind: "submitting", label: "Creating post…", progress: 0 });
     try {
-      if (!muxConfigured) {
+      if (!videoConfig.muxConfigured) {
         if (file.size > POST_VIDEO_MAX_BYTES) {
           throw new Error(
-            `This fallback uploader accepts up to ${formatBytes(POST_VIDEO_MAX_BYTES)}. Add Mux for larger videos.`
+            `This file is ${formatBytes(file.size)}. Videos over ${formatBytes(
+              POST_VIDEO_MAX_BYTES,
+            )} need Mux. Missing in Vercel: ${videoConfig.missing.join(", ") || "Mux credentials"}.`
           );
         }
         const supabase = getSupabaseBrowserClient();
@@ -452,7 +455,7 @@ function VideoForm({ muxConfigured }: { muxConfigured: boolean }) {
         category,
       });
       if (!mux_upload_url) {
-        throw new Error("Mux upload URL missing — server may not be configured.");
+        throw new Error("Mux upload URL missing. Check /admin/new video setup and Vercel env.");
       }
       // Direct browser → Mux upload with progress.
       await uploadWithProgress(mux_upload_url, file, (p) =>
@@ -505,7 +508,7 @@ function VideoForm({ muxConfigured }: { muxConfigured: boolean }) {
       <Field
         label="Video file"
         hint={
-          muxConfigured
+          videoConfig.muxConfigured
             ? "MP4 / MOV / MKV. HD recommended. Mux handles transcoding to adaptive bitrate."
             : `Temporary owned fallback: MP4 / MOV / WebM up to ${formatBytes(POST_VIDEO_MAX_BYTES)}. Larger videos need Mux credentials or a handoff file.`
         }
@@ -518,6 +521,29 @@ function VideoForm({ muxConfigured }: { muxConfigured: boolean }) {
           className="block text-sm"
         />
       </Field>
+      {!videoConfig.muxConfigured ? (
+        <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          <p className="font-bold">Large video upload is waiting on Mux credentials.</p>
+          <p className="mt-1">
+            Add these Vercel production env vars, then redeploy:{" "}
+            <code>{videoConfig.missing.join(", ") || "MUX_TOKEN_ID, MUX_TOKEN_SECRET"}</code>.
+          </p>
+          <p className="mt-1">
+            Mux webhook URL: <code>{videoConfig.webhookUrl}</code>
+          </p>
+        </div>
+      ) : !videoConfig.readyForProcessingUpdates ? (
+        <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          <p className="font-bold">Uploads can start, but processing updates are incomplete.</p>
+          <p className="mt-1">
+            Add <code>{videoConfig.missing.join(", ")}</code> so Mux can flip uploaded videos
+            from processing to ready automatically.
+          </p>
+          <p className="mt-1">
+            Mux webhook URL: <code>{videoConfig.webhookUrl}</code>
+          </p>
+        </div>
+      ) : null}
       <SubmitButton state={state}>Upload for review</SubmitButton>
       <ErrorBanner state={state} />
       <ProgressBar state={state} />

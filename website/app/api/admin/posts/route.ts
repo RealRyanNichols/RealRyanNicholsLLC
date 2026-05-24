@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { getMuxClient, isMuxConfigured } from "@/lib/mux";
+import { getVideoConfigStatus } from "@/lib/video-config";
 
 const mediaItemSchema = z.object({
   url: z.string().url(),
@@ -76,18 +77,39 @@ export async function POST(request: Request) {
     input.type === "video" && input.media?.[0]?.url ? input.media : null;
   if (input.type === "video") {
     if (!directVideoMedia && !isMuxConfigured()) {
+      const config = getVideoConfigStatus();
       return NextResponse.json(
-        { error: "Video streaming is not configured yet. Upload a fallback video file first or set MUX_TOKEN_ID and MUX_TOKEN_SECRET." },
+        {
+          error:
+            "Large video uploads need Mux. Add the missing Vercel environment variables, then redeploy.",
+          missing: config.missing,
+          webhook_url: config.webhookUrl,
+        },
         { status: 503 }
       );
     }
     if (!directVideoMedia) {
       const mux = getMuxClient();
       const upload = await mux.video.uploads.create({
-        cors_origin: process.env.SITE_URL ?? "*",
+        cors_origin: process.env.SITE_URL ?? "https://realryannichols.com",
+        timeout: 60 * 60 * 24,
         new_asset_settings: {
-          playback_policy: ["public"],
-          encoding_tier: "smart",
+          playback_policies: ["public"],
+          video_quality: "basic",
+          inputs: [
+            {
+              generated_subtitles: [
+                {
+                  language_code: "en",
+                  name: "English",
+                },
+              ],
+            },
+          ],
+          meta: {
+            title: input.title,
+            creator_id: auth.user.id,
+          },
         },
       });
       if (!upload.url) {

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "Privacy policy for realryannichols.com.",
 };
 
-const EFFECTIVE_DATE = "May 19, 2026";
+const EFFECTIVE_DATE = "May 24, 2026";
 
 export default function PrivacyPage() {
   return (
@@ -58,16 +58,25 @@ export default function PrivacyPage() {
               <strong>Page-view analytics (own collection).</strong> Each
               page-view records: the path you visited, the referrer (which
               site sent you here, if any), the country / region / city of
-              your visit (from Vercel&apos;s free request headers — your
-              IP is <em>not</em> stored), a coarse device classification
-              (mobile / desktop / tablet / bot), an opaque per-browser
-              session id, and your scroll / dwell on that page. To count
-              unique visitors without retaining IPs, the IP is one-way
-              hashed with a daily-rotating salt before any storage — so
-              two visits in the same day count as one person, and the
-              salt rotates every day so we cannot track anyone across
-              days. This data is admin-only and used to understand which
-              evidence pages are reaching people and where they came from.
+              your visit (from Vercel&apos;s request headers — your IP is
+              <em> not</em> stored), a coarse device classification
+              (mobile / desktop / tablet / bot), an opaque per-session id,
+              a first-party per-browser visitor id stored in localStorage,
+              and your scroll / dwell / click activity on that page. The
+              browser visitor id is one-way hashed before storage. If
+              localStorage is unavailable, a short-lived IP + user-agent
+              hash is used only as a fallback. This data is admin-only and
+              used to understand which evidence pages are reaching people,
+              what people engage with, and where support or subscription
+              asks should be improved.
+            </li>
+            <li>
+              <strong>Messages tied to sessions.</strong> If you leave a
+              public live comment or send a private message, the comment or
+              message may be tied to the same anonymous visitor/session
+              identifiers so the admin can understand the path that led to
+              the comment or request. Names, emails, phone numbers, and
+              message text are only stored when you submit them.
             </li>
             <li>
               <strong>Vercel Analytics.</strong> The hosting platform&apos;s
