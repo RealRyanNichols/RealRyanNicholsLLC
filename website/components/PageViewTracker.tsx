@@ -75,6 +75,7 @@ export function PageViewTracker() {
     const ua = typeof navigator !== "undefined" ? navigator.userAgent : null;
     scrollMaxRef.current = 0;
     lastFlushRef.current = 0;
+    const firedMilestones = new Set<number>();
 
     // Initial view → /api/track-pageview. The route reads Vercel's geo
     // headers + computes the daily visitor hash and creates the
@@ -92,6 +93,32 @@ export function PageViewTracker() {
       }),
       keepalive: true,
     });
+
+    // Acquisition / campaign attribution — captured once per page load so
+    // we can see which UTM campaign or referrer sent each session.
+    try {
+      const params = new URLSearchParams(search.toString());
+      const utm = {
+        source: params.get("utm_source"),
+        medium: params.get("utm_medium"),
+        campaign: params.get("utm_campaign"),
+        content: params.get("utm_content"),
+        term: params.get("utm_term"),
+      };
+      if (Object.values(utm).some(Boolean) || ref) {
+        beacon({
+          session_id: sid,
+          path: fullPath,
+          kind: "acquisition",
+          target: JSON.stringify({
+            ...utm,
+            ref: ref ? ref.slice(0, 200) : null,
+          }).slice(0, 480),
+        });
+      }
+    } catch {
+      // best effort
+    }
 
     // Send a dwell/scroll heartbeat (throttled) or, when kind is set, a
     // click/outbound event (always sent). Both carry the current scroll
@@ -111,7 +138,21 @@ export function PageViewTracker() {
     }
 
     function onScroll() {
-      scrollMaxRef.current = Math.max(scrollMaxRef.current, getScrollPct());
+      const pct = getScrollPct();
+      scrollMaxRef.current = Math.max(scrollMaxRef.current, pct);
+      // Fire a one-time event as each depth milestone is crossed, so we
+      // can see how far down readers actually get.
+      for (const m of [25, 50, 75, 100]) {
+        if (pct >= m && !firedMilestones.has(m)) {
+          firedMilestones.add(m);
+          beacon({
+            session_id: sid,
+            path: fullPath,
+            scroll: scrollMaxRef.current,
+            kind: `scroll_${m}`,
+          });
+        }
+      }
       flush(false);
     }
     function onVisibility() {

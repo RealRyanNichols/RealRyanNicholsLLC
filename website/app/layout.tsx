@@ -7,7 +7,9 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { MobileSupportBar } from "@/components/MobileSupportBar";
 import { PageViewTracker } from "@/components/PageViewTracker";
+import { ThirdPartyAnalytics } from "@/components/ThirdPartyAnalytics";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
@@ -68,6 +70,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <PageViewTracker />
         </Suspense>
         <Analytics />
+        <SpeedInsights />
+        <ThirdPartyAnalytics />
         <Link
           href="#top"
           aria-hidden="true"
