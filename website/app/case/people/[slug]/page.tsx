@@ -155,6 +155,17 @@ export default async function PersonPage({
         </p>
       ) : null}
 
+      {p.photo_url ? (
+        <div className="mt-5 overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-paper)]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={p.photo_url}
+            alt={p.name}
+            className="w-full max-h-[460px] object-cover"
+          />
+        </div>
+      ) : null}
+
       {p.description ? (
         <p className="mt-6 text-base sm:text-lg text-[var(--color-ink-soft)] leading-relaxed whitespace-pre-wrap">
           {p.description}
