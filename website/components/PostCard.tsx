@@ -54,7 +54,7 @@ export function PostCard({
             href={`/posts/${post.slug}`}
             className="text-[var(--color-accent)] hover:underline underline-offset-4 font-semibold whitespace-nowrap"
           >
-            Read →
+            {post.type === "video" ? "Watch →" : "Read →"}
           </Link>
           <ShareButton url={postUrl} title={shareTitle} slug={post.slug} compact />
         </div>

@@ -11,6 +11,8 @@ export function PostAdminRow({
   bodyExcerpt,
   type,
   category,
+  muxStatus,
+  muxPlaybackId,
   pinned,
   status,
   viewsCount,
@@ -24,6 +26,8 @@ export function PostAdminRow({
   bodyExcerpt: string | null;
   type: string;
   category: string | null;
+  muxStatus: string | null;
+  muxPlaybackId: string | null;
   pinned: boolean;
   status: string;
   viewsCount: number;
@@ -34,6 +38,11 @@ export function PostAdminRow({
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const isVideo = type === "video";
+  const videoReady = isVideo && muxStatus === "ready" && !!muxPlaybackId;
+  const canPublish = !isVideo || videoReady;
+  const inspectHref =
+    status === "published" ? `/posts/${slug}` : `/admin/posts/${id}/preview`;
 
   async function patch(body: Record<string, unknown>) {
     setBusy(true);
@@ -96,12 +105,13 @@ export function PostAdminRow({
                 DRAFT
               </span>
             ) : null}
+            {isVideo ? <VideoStateBadge status={muxStatus} ready={videoReady} /> : null}
             {category ? <span className="uppercase">{category}</span> : null}
             <span title={publishedAtAbsolute}>· {publishedAtRelative}</span>
           </div>
           <h3 className="mt-1 text-base sm:text-lg font-bold tracking-tight">
             <Link
-              href={`/posts/${slug}`}
+              href={inspectHref}
               target="_blank"
               className="hover:text-[var(--color-accent)]"
             >
@@ -147,14 +157,25 @@ export function PostAdminRow({
           ) : (
             <button
               type="button"
-              disabled={busy}
+              disabled={busy || !canPublish}
               onClick={() => patch({ status: "published" })}
-              className="rounded-md bg-[var(--color-success)] hover:opacity-90 px-3 py-1.5 text-xs font-bold text-[var(--color-paper)] disabled:opacity-50"
-              title="Publish — show in public feed"
+              className="rounded-md bg-[var(--color-success)] hover:opacity-90 px-3 py-1.5 text-xs font-bold text-[var(--color-paper)] disabled:opacity-50 disabled:cursor-not-allowed"
+              title={
+                canPublish
+                  ? "Publish - show in public feed"
+                  : "Video must finish processing before it can be published"
+              }
             >
-              Publish
+              {videoReady ? "Publish video" : "Publish"}
             </button>
           )}
+          <Link
+            href={`/admin/posts/${id}/preview`}
+            className="rounded-md border border-[var(--color-line)] hover:border-[var(--color-accent)] px-3 py-1.5 text-xs font-semibold text-center"
+            title="Preview this post inside admin"
+          >
+            Preview
+          </Link>
           <Link
             href={`/admin/new?id=${id}`}
             className="rounded-md border border-[var(--color-line)] hover:border-[var(--color-accent)] px-3 py-1.5 text-xs font-semibold text-center"
@@ -177,6 +198,35 @@ export function PostAdminRow({
         <p className="mt-2 text-xs text-[var(--color-accent)]">{err}</p>
       ) : null}
     </article>
+  );
+}
+
+function VideoStateBadge({
+  status,
+  ready,
+}: {
+  status: string | null;
+  ready: boolean;
+}) {
+  if (ready) {
+    return (
+      <span className="rounded-full bg-[var(--color-success)] text-[var(--color-paper)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
+        READY TO PUBLISH
+      </span>
+    );
+  }
+  const label =
+    status === "errored"
+      ? "VIDEO ERROR"
+      : status === "processing"
+        ? "PROCESSING"
+        : status === "uploading"
+          ? "UPLOADING"
+          : "VIDEO NOT READY";
+  return (
+    <span className="rounded-full bg-[var(--color-surface-2)] text-[var(--color-ink-soft)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
+      {label}
+    </span>
   );
 }
 

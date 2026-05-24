@@ -427,11 +427,10 @@ function VideoForm() {
       );
       setState({
         kind: "submitting",
-        label: "Upload complete. Mux is transcoding — this can take a minute. Your post will auto-publish.",
+        label: "Upload complete. Mux is transcoding. Review it in admin, then publish when it is ready.",
         progress: 1,
       });
-      // The webhook will flip status to 'published' once Mux is done.
-      router.push(`/posts/${post.slug}`);
+      router.push(`/admin/posts/${post.id}/preview`);
     } catch (err) {
       setState({ kind: "error", message: err instanceof Error ? err.message : "Failed." });
     }
@@ -469,7 +468,7 @@ function VideoForm() {
           className="block text-sm"
         />
       </Field>
-      <SubmitButton state={state}>Upload and publish</SubmitButton>
+      <SubmitButton state={state}>Upload for review</SubmitButton>
       <ErrorBanner state={state} />
       <ProgressBar state={state} />
     </form>

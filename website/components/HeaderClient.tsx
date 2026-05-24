@@ -19,6 +19,7 @@ type Props = {
 // view. Donate is a permanent CTA chip; admin/+new/account append.
 const NAV = [
   { href: "/", label: "Feed" },
+  { href: "/videos", label: "Videos" },
   { href: "/case", label: "J6 Case" },
   { href: "/fights", label: "The Fights" },
   { href: "/the-map-room", label: "Map Room" },

@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
 
   // We care about three event types:
   //   video.upload.asset_created   -> asset_id is now known
-  //   video.asset.ready            -> playback_id + duration are known, publish
+  //   video.asset.ready            -> playback_id + duration are known
   //   video.asset.errored          -> mark errored
   switch (event.type) {
     case "video.upload.asset_created": {
@@ -76,8 +76,6 @@ export async function POST(request: NextRequest) {
           mux_status: "ready",
           duration_seconds: duration,
           thumbnail_url: muxThumbnailUrl(playbackId, { width: 1200 }),
-          status: "published",
-          published_at: new Date().toISOString(),
         })
         .eq("mux_asset_id", assetId);
       break;

@@ -2,7 +2,7 @@ import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import type { Post } from "@/lib/types";
 
-const POST_COLUMNS =
+export const POST_COLUMNS =
   "id, slug, type, title, body, image_urls, media, mux_asset_id, mux_upload_id, mux_playback_id, mux_status, duration_seconds, thumbnail_url, pinned, status, author_id, category, published_at, created_at, updated_at, views_count, shares_count";
 
 export async function getPublishedPosts(
@@ -38,6 +38,21 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
 
   if (error) {
     console.error("getPostBySlug:", error);
+    return null;
+  }
+  return (data ?? null) as Post | null;
+}
+
+export async function getAdminPostById(id: string): Promise<Post | null> {
+  const supabase = await getSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("posts")
+    .select(POST_COLUMNS)
+    .eq("id", id)
+    .maybeSingle();
+
+  if (error) {
+    console.error("getAdminPostById:", error);
     return null;
   }
   return (data ?? null) as Post | null;
