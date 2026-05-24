@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getCommentCount, getPublishedPosts } from "@/lib/posts";
 import { PostCard } from "@/components/PostCard";
+import { LiveNowBanner } from "@/components/LiveNowBanner";
+import { getActiveLiveStream } from "@/lib/live";
 import { VIDEO_CHANNELS, normalizeVideoChannel } from "@/lib/video-channels";
 
 export const revalidate = 60;
@@ -14,7 +16,11 @@ export const metadata: Metadata = {
 };
 
 export default async function VideosPage() {
-  const posts = (await getPublishedPosts()).filter((p) => p.type === "video");
+  const [publishedPosts, activeLiveStream] = await Promise.all([
+    getPublishedPosts(),
+    getActiveLiveStream(),
+  ]);
+  const posts = publishedPosts.filter((p) => p.type === "video");
   const counts = await Promise.all(
     posts.map(async (p) => [p.id, await getCommentCount(p.id)] as const),
   );
@@ -33,6 +39,7 @@ export default async function VideosPage() {
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-10">
+      <LiveNowBanner stream={activeLiveStream} />
       <nav className="mb-5 text-sm text-[var(--color-muted)]">
         <Link href="/" className="hover:underline">
           Back to feed

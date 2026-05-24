@@ -3,6 +3,8 @@ import { PostCard } from "@/components/PostCard";
 import { ProfileHero } from "@/components/ProfileHero";
 import { VerseSidebar } from "@/components/VerseSidebar";
 import { SignupForm } from "@/components/SignupForm";
+import { LiveNowBanner } from "@/components/LiveNowBanner";
+import { getActiveLiveStream } from "@/lib/live";
 import { SITE } from "@/lib/site";
 import Link from "next/link";
 
@@ -15,7 +17,10 @@ export default async function HomePage({
 }) {
   const { sort } = await searchParams;
   const view: "latest" | "trending" = sort === "trending" ? "trending" : "latest";
-  const posts = await getPublishedPosts({ sort: view });
+  const [posts, activeLiveStream] = await Promise.all([
+    getPublishedPosts({ sort: view }),
+    getActiveLiveStream(),
+  ]);
   const counts = await Promise.all(
     posts.map(async (p) => [p.id, await getCommentCount(p.id)] as const),
   );
@@ -34,6 +39,7 @@ export default async function HomePage({
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
       <div className="lg:col-span-2">
+        <LiveNowBanner stream={activeLiveStream} />
         <ProfileHero />
 
         {/* Chronological feed — strict newest-first, no pinning */}

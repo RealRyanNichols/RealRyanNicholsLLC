@@ -19,6 +19,7 @@ type Props = {
 // view. Donate is a permanent CTA chip; admin/+new/account append.
 const NAV = [
   { href: "/", label: "Feed" },
+  { href: "/live", label: "Live" },
   { href: "/videos", label: "Videos" },
   { href: "/case", label: "J6 Case" },
   { href: "/fights", label: "The Fights" },
@@ -216,6 +217,15 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
                   className="block rounded-lg px-4 py-3 text-base font-semibold text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition"
                 >
                   + New post
+                </Link>
+              )}
+              {isAdmin && (
+                <Link
+                  href="/admin/live"
+                  role="menuitem"
+                  className="block rounded-lg px-4 py-3 text-base font-semibold text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition"
+                >
+                  Live control room
                 </Link>
               )}
               {isAdmin && (

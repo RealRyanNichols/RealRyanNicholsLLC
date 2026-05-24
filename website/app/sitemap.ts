@@ -6,18 +6,20 @@ import {
   getDocuments,
   getEvents,
 } from "@/lib/case";
+import { getPublicLiveStreams } from "@/lib/live";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { SITE } from "@/lib/site";
 
 export const revalidate = 600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [posts, grievances, people, documents, events] = await Promise.all([
+  const [posts, grievances, people, documents, events, liveStreams] = await Promise.all([
     getPublishedPosts(),
     getGrievances(),
     getPeople(),
     getDocuments(),
     getEvents(),
+    getPublicLiveStreams(),
   ]);
 
   // Public, non-banned, has-username profiles only
@@ -41,6 +43,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE.url}/case?view=people`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     { url: `${SITE.url}/case?view=documents`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     { url: `${SITE.url}/videos`, lastModified: now, changeFrequency: "daily", priority: 0.9 },
+    { url: `${SITE.url}/live`, lastModified: now, changeFrequency: "daily", priority: 0.9 },
     { url: `${SITE.url}/fights`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     { url: `${SITE.url}/the-map-room`, lastModified: now, changeFrequency: "daily", priority: 0.85 },
     { url: `${SITE.url}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
@@ -55,6 +58,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: p.updated_at,
     changeFrequency: "weekly",
     priority: p.pinned ? 0.95 : 0.85,
+  }));
+
+  const liveEntries: MetadataRoute.Sitemap = liveStreams.map((stream) => ({
+    url: `${SITE.url}/live/${stream.slug}`,
+    lastModified: stream.updated_at,
+    changeFrequency: stream.status === "live" ? "hourly" : "weekly",
+    priority: stream.status === "live" ? 1.0 : 0.75,
   }));
 
   const grievanceEntries: MetadataRoute.Sitemap = grievances.map((g) => ({
@@ -95,6 +105,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     ...staticEntries,
     ...postEntries,
+    ...liveEntries,
     ...grievanceEntries,
     ...personEntries,
     ...documentEntries,

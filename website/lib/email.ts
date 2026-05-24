@@ -147,7 +147,7 @@ export function buildPostBroadcastEmail(opts: {
 
   const text = `${opts.post.title}
 
-${excerpt}${truncated ? "…" : ""}
+${excerpt}${truncated ? "..." : ""}
 
 Read the rest: ${url}
 ${footerText(unsubUrl)}`;
@@ -158,6 +158,45 @@ ${footerText(unsubUrl)}`;
       <p style="font-size:15px;line-height:1.65;color:#444;margin:0 0 20px;">${esc(excerpt)}${truncated ? "…" : ""}</p>
       <p style="margin:0 0 24px;">
         <a href="${url}" style="background:#1a1a1a;color:#fff;text-decoration:none;padding:10px 16px;border-radius:8px;display:inline-block;font-weight:600;">Read the rest →</a>
+      </p>
+      ${footerHtml(unsubUrl)}
+    </div>
+  `;
+
+  return { subject, html, text, headers: listUnsubscribeHeaders(unsubUrl) };
+}
+
+export function buildLiveBroadcastEmail(opts: {
+  live: { title: string; description: string; slug: string };
+  unsubscribeToken: string;
+}): EmailEnvelope {
+  const unsubUrl = unsubscribeUrl(opts.unsubscribeToken);
+  const url = `${SITE.url}/live/${opts.live.slug}`;
+  const excerpt =
+    opts.live.description.slice(0, 280).replace(/\s+/g, " ").trim() ||
+    "Ryan is live now on the site he owns.";
+  const truncated = opts.live.description.length > 280;
+  const subject = `LIVE: ${opts.live.title}`;
+
+  const text = `Ryan is live now.
+
+${opts.live.title}
+
+${excerpt}${truncated ? "…" : ""}
+
+Watch here: ${url}
+${footerText(unsubUrl)}`;
+
+  const html = `
+    <div style="${FONT}color:#1a1a1a;max-width:560px;margin:0 auto;padding:24px 16px;">
+      <p style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#b42318;margin:0 0 10px;">Live now</p>
+      <h1 style="font-size:24px;line-height:1.25;margin:0 0 12px;">${esc(opts.live.title)}</h1>
+      <p style="font-size:15px;line-height:1.65;color:#444;margin:0 0 20px;">${esc(excerpt)}${truncated ? "..." : ""}</p>
+      <p style="margin:0 0 24px;">
+        <a href="${url}" style="background:#b42318;color:#fff;text-decoration:none;padding:12px 18px;border-radius:8px;display:inline-block;font-weight:700;">Watch live on RealRyanNichols.com -&gt;</a>
+      </p>
+      <p style="font-size:13px;line-height:1.6;color:#666;margin:0 0 12px;">
+        No platform feed. No algorithm. The video is on Ryan's site.
       </p>
       ${footerHtml(unsubUrl)}
     </div>

@@ -2,6 +2,8 @@ import Mux from "@mux/mux-node";
 
 let _client: Mux | null = null;
 
+export const MUX_RTMP_URL = "rtmps://global-live.mux.com:443/app";
+
 export function getMuxClient(): Mux {
   if (_client) return _client;
   const tokenId = process.env.MUX_TOKEN_ID;
