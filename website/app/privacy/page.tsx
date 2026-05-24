@@ -77,8 +77,19 @@ export default function PrivacyPage() {
               publishes its own privacy disclosures at vercel.com/legal.
             </li>
             <li>
-              <strong>No third-party advertising trackers.</strong> No
-              Google Analytics, no Facebook Pixel, no ad-network scripts.
+              <strong>Speed Insights.</strong> Vercel&apos;s performance
+              monitoring measures page-load speed (Core Web Vitals) in
+              aggregate. No personal data.
+            </li>
+            <li>
+              <strong>Analytics &amp; advertising pixels.</strong> This site
+              may load Google Analytics (GA4) and the Meta (Facebook) Pixel
+              to understand how people find and use the site and to reach
+              similar audiences on those platforms. When active, these set
+              cookies and report activity to Google / Meta under their own
+              privacy policies. You can opt out with a standard ad/tracker
+              blocker or through Google&apos;s and Meta&apos;s ad-settings
+              pages.
             </li>
           </ul>
         </section>
