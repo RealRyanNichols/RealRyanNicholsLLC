@@ -75,7 +75,7 @@ export default async function CaseNexusPage() {
       });
 
   return (
-    <article className="mx-auto max-w-6xl px-4 py-6 sm:py-8">
+    <article className="mx-auto max-w-[96rem] px-4 py-6 sm:py-8">
       {/* Hero — short, no preamble. The graph itself is the headline. */}
       <header className="max-w-3xl mb-4">
         <p className="text-xs uppercase tracking-[0.2em] text-[#7fe3a9] font-bold">
@@ -87,9 +87,8 @@ export default async function CaseNexusPage() {
         <p className="mt-3 text-base sm:text-lg text-[var(--color-ink-soft)] leading-relaxed">
           Every co-defendant cluster the DOJ ever filed, every defendant
           named on the salvaged Capitol Breach Cases listing, every
-          document we&apos;ve archived — laid out as a live force-directed
-          graph. Drag the canvas. Scroll to zoom. Click any node to open
-          its details and pull its 1-hop neighborhood into view.
+          document we&apos;ve archived — organized into readable case clusters
+          with search, focus, and expansion controls.
         </p>
       </header>
 

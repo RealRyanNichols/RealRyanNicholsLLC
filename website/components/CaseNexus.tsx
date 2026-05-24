@@ -14,6 +14,8 @@ import {
   forceManyBody,
   forceCenter,
   forceCollide,
+  forceX,
+  forceY,
   type Simulation,
   type SimulationNodeDatum,
   type SimulationLinkDatum,
@@ -68,12 +70,15 @@ type SearchHit = {
 // ─── Simulation node — the live position-bearing copy ──────────────────
 type SimNode = SimulationNodeDatum & {
   node: RawNode;
+  targetX?: number;
+  targetY?: number;
 };
 type SimLink = SimulationLinkDatum<SimNode> & { kind: RawEdge["kind"] };
 
 // ─── Constants ─────────────────────────────────────────────────────────
-const W = 1100;
-const H = 650;
+const W = 1280;
+const H = 760;
+const MAP_PADDING = 72;
 
 // Node radius / color by type. Bigger = more important visually.
 function nodeRadius(n: RawNode): number {
@@ -95,6 +100,128 @@ function nodeStroke(n: RawNode, selected: boolean): string {
   if (n.type === "case") return "#3a557c";
   if (n.type === "defendant" && n.claim_status === "verified") return "#3aa672";
   return "#0e1a36";
+}
+
+function linkNodeId(value: SimLink["source"] | SimLink["target"]): string {
+  return typeof value === "string" ? value : (value as SimNode).node.id;
+}
+
+function hashNumber(input: string): number {
+  let hash = 0;
+  for (let i = 0; i < input.length; i += 1) {
+    hash = (hash * 31 + input.charCodeAt(i)) >>> 0;
+  }
+  return hash;
+}
+
+function readableCaseCenters(count: number): Array<{ x: number; y: number }> {
+  if (count === 0) return [];
+  const cols = Math.min(5, Math.max(2, Math.ceil(Math.sqrt(count * 1.4))));
+  const rows = Math.ceil(count / cols);
+  const usableW = W - MAP_PADDING * 2;
+  const usableH = H - MAP_PADDING * 2;
+  return Array.from({ length: count }, (_, i) => {
+    const col = i % cols;
+    const row = Math.floor(i / cols);
+    const x = MAP_PADDING + (usableW * (col + 0.5)) / cols;
+    const y = MAP_PADDING + (usableH * (row + 0.5)) / rows;
+    return { x, y };
+  });
+}
+
+function applyReadableLayout(nodes: SimNode[], links: SimLink[]) {
+  const byId = new Map(nodes.map((n) => [n.node.id, n]));
+  const caseNodes = nodes
+    .filter((n) => n.node.type === "case")
+    .sort((a, b) => {
+      const aCase = a.node as RawCaseNode;
+      const bCase = b.node as RawCaseNode;
+      return bCase.defendant_count - aCase.defendant_count || aCase.label.localeCompare(bCase.label);
+    });
+  const centers = readableCaseCenters(caseNodes.length);
+  const caseCenterById = new Map<string, { x: number; y: number }>();
+
+  caseNodes.forEach((node, index) => {
+    const center = centers[index] ?? { x: W / 2, y: H / 2 };
+    node.targetX = center.x;
+    node.targetY = center.y;
+    caseCenterById.set(node.node.id, center);
+  });
+
+  const caseForDefendant = new Map<string, string>();
+  for (const node of nodes) {
+    if (node.node.type === "defendant" && node.node.case_number) {
+      caseForDefendant.set(node.node.id, `case:${node.node.case_number}`);
+    }
+  }
+  for (const link of links) {
+    if (link.kind !== "member_of") continue;
+    const sourceId = linkNodeId(link.source);
+    const targetId = linkNodeId(link.target);
+    const source = byId.get(sourceId)?.node;
+    const target = byId.get(targetId)?.node;
+    if (source?.type === "defendant" && target?.type === "case") {
+      caseForDefendant.set(sourceId, targetId);
+    } else if (source?.type === "case" && target?.type === "defendant") {
+      caseForDefendant.set(targetId, sourceId);
+    }
+  }
+
+  const membersByCase = new Map<string, SimNode[]>();
+  for (const node of nodes) {
+    if (node.node.type !== "defendant") continue;
+    const caseId = caseForDefendant.get(node.node.id);
+    if (!caseId) continue;
+    const list = membersByCase.get(caseId) ?? [];
+    list.push(node);
+    membersByCase.set(caseId, list);
+  }
+
+  for (const [caseId, members] of membersByCase) {
+    const center = caseCenterById.get(caseId) ?? { x: W / 2, y: H / 2 };
+    members
+      .sort((a, b) => a.node.label.localeCompare(b.node.label))
+      .forEach((node, index) => {
+        const ring = Math.floor(index / 16);
+        const countOnRing = Math.min(16, Math.max(1, members.length - ring * 16));
+        const angle = ((index % 16) / countOnRing) * Math.PI * 2 + ring * 0.38;
+        const radius = 58 + ring * 34;
+        node.targetX = center.x + Math.cos(angle) * radius;
+        node.targetY = center.y + Math.sin(angle) * radius;
+      });
+  }
+
+  const docCounts = new Map<string, number>();
+  for (const link of links) {
+    if (link.kind !== "has_document") continue;
+    const sourceId = linkNodeId(link.source);
+    const targetId = linkNodeId(link.target);
+    const source = byId.get(sourceId);
+    const target = byId.get(targetId);
+    const defendant = source?.node.type === "defendant" ? source : target?.node.type === "defendant" ? target : null;
+    const document = source?.node.type === "document" ? source : target?.node.type === "document" ? target : null;
+    if (!defendant || !document) continue;
+    const count = docCounts.get(defendant.node.id) ?? 0;
+    docCounts.set(defendant.node.id, count + 1);
+    const angle = (count / Math.max(4, count + 1)) * Math.PI * 2 + hashNumber(document.node.id) * 0.00001;
+    document.targetX = (defendant.targetX ?? defendant.x ?? W / 2) + Math.cos(angle) * 24;
+    document.targetY = (defendant.targetY ?? defendant.y ?? H / 2) + Math.sin(angle) * 24;
+  }
+
+  const looseNodes = nodes.filter((node) => node.targetX == null || node.targetY == null);
+  looseNodes.forEach((node, index) => {
+    const angle = (index / Math.max(1, looseNodes.length)) * Math.PI * 2;
+    node.targetX = W / 2 + Math.cos(angle) * 210;
+    node.targetY = H / 2 + Math.sin(angle) * 210;
+  });
+
+  for (const node of nodes) {
+    const jitter = (hashNumber(node.node.id) % 17) - 8;
+    if (node.x == null || node.y == null) {
+      node.x = (node.targetX ?? W / 2) + jitter;
+      node.y = (node.targetY ?? H / 2) - jitter;
+    }
+  }
 }
 
 // ─── Component ─────────────────────────────────────────────────────────
@@ -148,7 +275,7 @@ export function CaseNexus({
       );
       return;
     }
-    mergePayload(initial, /* center */ true);
+    mergePayload(initial);
     setVersion((v) => v + 1);
     trackEvent("nexus_loaded", {
       nodes: initial.nodes.length,
@@ -157,35 +284,17 @@ export function CaseNexus({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // mergePayload: dedupe nodes by id, dedupe edges by source/target.
-  // New defendant nodes are placed near their case node so the layout
-  // doesn't ricochet on expand. (If the case is already laid out, new
-  // members appear right where they belong.)
-  function mergePayload(p: GraphPayload, center: boolean) {
+  // mergePayload: dedupe nodes/edges, then re-apply a deterministic
+  // investigation-map layout. The force engine only settles collisions;
+  // it no longer gets to scatter the whole case across empty space.
+  function mergePayload(p: GraphPayload) {
     const existingById = new Map(nodesRef.current.map((n) => [n.node.id, n]));
     for (const rn of p.nodes) {
       if (existingById.has(rn.id)) {
         // Keep position. Optionally upgrade the node (e.g. claim_status).
         existingById.get(rn.id)!.node = rn;
       } else {
-        // Place new defendant near its case node if we know it.
-        let x = W / 2;
-        let y = H / 2;
-        if (rn.type === "defendant" && rn.case_number) {
-          const caseNode = existingById.get("case:" + rn.case_number);
-          if (caseNode?.x != null && caseNode?.y != null) {
-            x = caseNode.x + (Math.random() - 0.5) * 40;
-            y = caseNode.y + (Math.random() - 0.5) * 40;
-          } else if (!center) {
-            x = W / 2 + (Math.random() - 0.5) * 80;
-            y = H / 2 + (Math.random() - 0.5) * 80;
-          }
-        } else if (rn.type === "document") {
-          // Documents anchor to their defendant later via the link force.
-          x = W / 2 + (Math.random() - 0.5) * 80;
-          y = H / 2 + (Math.random() - 0.5) * 80;
-        }
-        const sn: SimNode = { node: rn, x, y };
+        const sn: SimNode = { node: rn };
         nodesRef.current.push(sn);
         existingById.set(rn.id, sn);
       }
@@ -207,6 +316,7 @@ export function CaseNexus({
       linksRef.current.push({ source: sNode, target: tNode, kind: e.kind });
       existingLinkKey.add(k);
     }
+    applyReadableLayout(nodesRef.current, linksRef.current);
   }
 
   // Run / restart the force simulation whenever the graph grows.
@@ -217,17 +327,22 @@ export function CaseNexus({
         "link",
         forceLink<SimNode, SimLink>(linksRef.current)
           .id((d) => d.node.id)
-          .distance((l) => (l.kind === "has_document" ? 30 : 60))
-          .strength((l) => (l.kind === "has_document" ? 0.4 : 0.7)),
+          .distance((l) => (l.kind === "has_document" ? 22 : 42))
+          .strength((l) => (l.kind === "has_document" ? 0.35 : 0.55)),
       )
-      .force("charge", forceManyBody().strength(-110))
-      .force("center", forceCenter(W / 2, H / 2).strength(0.04))
+      .force(
+        "charge",
+        forceManyBody<SimNode>().strength((d) => (d.node.type === "case" ? -90 : -38)),
+      )
+      .force("x", forceX<SimNode>((d) => d.targetX ?? W / 2).strength((d) => (d.node.type === "case" ? 0.7 : 0.22)))
+      .force("y", forceY<SimNode>((d) => d.targetY ?? H / 2).strength((d) => (d.node.type === "case" ? 0.7 : 0.22)))
+      .force("center", forceCenter(W / 2, H / 2).strength(0.025))
       .force(
         "collide",
-        forceCollide<SimNode>().radius((d) => nodeRadius(d.node) + 2),
+        forceCollide<SimNode>().radius((d) => nodeRadius(d.node) + 6),
       )
-      .alpha(0.9)
-      .alphaDecay(0.035)
+      .alpha(0.75)
+      .alphaDecay(0.06)
       .on("tick", tick);
 
     simRef.current = sim;
@@ -314,6 +429,55 @@ export function CaseNexus({
     const r = zoomRef.current;
     if (r) r.z.transform(r.svg, zoomIdentity);
   }, []);
+  const fitMap = useCallback((ids?: Set<string>) => {
+    const r = zoomRef.current;
+    if (!r) return;
+    const nodes = ids
+      ? nodesRef.current.filter((n) => ids.has(n.node.id))
+      : nodesRef.current;
+    if (nodes.length === 0) return;
+    const bounds = nodes.reduce(
+      (acc, n) => {
+        const radius = nodeRadius(n.node) + 24;
+        const x = n.x ?? n.targetX ?? W / 2;
+        const y = n.y ?? n.targetY ?? H / 2;
+        return {
+          minX: Math.min(acc.minX, x - radius),
+          maxX: Math.max(acc.maxX, x + radius),
+          minY: Math.min(acc.minY, y - radius),
+          maxY: Math.max(acc.maxY, y + radius),
+        };
+      },
+      {
+        minX: Number.POSITIVE_INFINITY,
+        maxX: Number.NEGATIVE_INFINITY,
+        minY: Number.POSITIVE_INFINITY,
+        maxY: Number.NEGATIVE_INFINITY,
+      },
+    );
+    const width = Math.max(1, bounds.maxX - bounds.minX);
+    const height = Math.max(1, bounds.maxY - bounds.minY);
+    const scale = Math.max(0.34, Math.min(3.2, Math.min(W / width, H / height) * 0.86));
+    const centerX = bounds.minX + width / 2;
+    const centerY = bounds.minY + height / 2;
+    r.z.transform(
+      r.svg,
+      zoomIdentity
+        .translate(W / 2 - centerX * scale, H / 2 - centerY * scale)
+        .scale(scale),
+    );
+  }, []);
+  const centerNode = useCallback((id: string, scale = 2.2) => {
+    const r = zoomRef.current;
+    const node = nodesRef.current.find((n) => n.node.id === id);
+    if (!r || !node) return;
+    const x = node.x ?? node.targetX ?? W / 2;
+    const y = node.y ?? node.targetY ?? H / 2;
+    r.z.transform(
+      r.svg,
+      zoomIdentity.translate(W / 2 - x * scale, H / 2 - y * scale).scale(scale),
+    );
+  }, []);
 
   const selectedNode = useMemo<RawNode | null>(
     () =>
@@ -324,6 +488,31 @@ export function CaseNexus({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [selectedId, version],
   );
+  const selectedNeighborhood = useMemo(() => {
+    if (!selectedId) return new Set<string>();
+    const ids = new Set<string>([selectedId]);
+    for (const link of linksRef.current) {
+      const sourceId = linkNodeId(link.source);
+      const targetId = linkNodeId(link.target);
+      if (sourceId === selectedId) ids.add(targetId);
+      if (targetId === selectedId) ids.add(sourceId);
+    }
+    return ids;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedId, version]);
+
+  useEffect(() => {
+    if (selectedId) return;
+    if (nodesRef.current.length === 0) return;
+    const timer = window.setTimeout(() => fitMap(), 320);
+    return () => window.clearTimeout(timer);
+  }, [fitMap, selectedId, version]);
+
+  useEffect(() => {
+    if (!selectedId) return;
+    const timer = window.setTimeout(() => centerNode(selectedId), 120);
+    return () => window.clearTimeout(timer);
+  }, [centerNode, selectedId, version]);
 
   // Expand: pull the 1-hop neighborhood of the selected node and merge.
   const expandSelected = useCallback(async () => {
@@ -344,7 +533,7 @@ export function CaseNexus({
         trackEvent("nexus_expand_failed", { node_type: selectedNode.type });
       } else if (data) {
         const payload = data as GraphPayload;
-        mergePayload(payload, false);
+        mergePayload(payload);
         setVersion((v) => v + 1);
         trackEvent("nexus_expand_loaded", {
           node_type: selectedNode.type,
@@ -416,7 +605,7 @@ export function CaseNexus({
       setGraphError("The Nexus could not load that search result. Try another result or refresh.");
       trackEvent("nexus_search_pick_failed", { result_type: h.type });
     } else if (data) {
-      mergePayload(data as GraphPayload, false);
+      mergePayload(data as GraphPayload);
       setVersion((v) => v + 1);
       selectNode(h.id, "search");
     }
@@ -430,98 +619,169 @@ export function CaseNexus({
     (n) => n.node.type === "document",
   ).length;
   const hasGraphData = nodesRef.current.length > 0;
+  const visibleCases = nodesRef.current
+    .filter((n): n is SimNode & { node: RawCaseNode } => n.node.type === "case")
+    .sort((a, b) => b.node.defendant_count - a.node.defendant_count)
+    .slice(0, 18);
+  const focusCount = selectedNeighborhood.size;
 
   return (
     <div className="relative">
-      <div className="rounded-2xl overflow-hidden border-2 border-[var(--color-blue)] bg-[#0a1429]">
-        <svg
-          ref={svgRef}
-          viewBox={`0 0 ${W} ${H}`}
-          className="block w-full h-auto cursor-grab active:cursor-grabbing select-none"
-          style={{ touchAction: "pan-y" }}
-          role="img"
-          aria-label="Interactive knowledge graph of January 6 defendants, cases, and documents. Drag to pan, use the + and − buttons (or ⌘/Ctrl + scroll) to zoom, click a node to see its details and expand its connections."
-        >
-          <g ref={gRef}>
-            {/* Edges first so they sit behind nodes */}
-            {linksRef.current.map((l, i) => {
-              const s = typeof l.source === "string" ? null : (l.source as SimNode);
-              const t = typeof l.target === "string" ? null : (l.target as SimNode);
-              const sId = s?.node.id ?? (l.source as unknown as string);
-              const tId = t?.node.id ?? (l.target as unknown as string);
-              return (
-                <line
-                  key={`${sId}-${tId}-${i}`}
-                  data-eid={i}
-                  data-source={sId}
-                  data-target={tId}
-                  stroke={l.kind === "has_document" ? "#3a557c" : "#5a7aa6"}
-                  strokeWidth={l.kind === "has_document" ? 0.6 : 1}
-                  strokeOpacity={l.kind === "has_document" ? 0.5 : 0.7}
-                />
-              );
-            })}
-            {/* Nodes */}
-            {nodesRef.current.map((sn) => {
-              const isSelected = selectedId === sn.node.id;
-              return (
-                <g key={sn.node.id}>
-                  <circle
-                    data-nid={sn.node.id}
-                    r={nodeRadius(sn.node) + (isSelected ? 2 : 0)}
-                    fill={nodeFill(sn.node)}
-                    stroke={nodeStroke(sn.node, isSelected)}
-                    strokeWidth={isSelected ? 2.5 : 1}
-                    style={{ cursor: "pointer" }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      selectNode(sn.node.id, "graph");
-                    }}
-                  >
-                    <title>{nodeTitle(sn.node)}</title>
-                  </circle>
-                  {sn.node.type === "case" ? (
-                    <text
-                      data-nid={sn.node.id}
-                      className="pointer-events-none select-none"
-                      textAnchor="middle"
-                      fontSize="9"
-                      fontFamily="ui-monospace, monospace"
-                      fontWeight="bold"
-                      fill="#cfd9ea"
-                    >
-                      {sn.node.label}
-                    </text>
-                  ) : null}
-                </g>
-              );
-            })}
-          </g>
-        </svg>
+      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_22rem]">
+        <div className="relative overflow-hidden rounded-xl border-2 border-[var(--color-blue)] bg-[#071126]">
+          <div className="overflow-x-auto overflow-y-hidden">
+            <svg
+              ref={svgRef}
+              viewBox={`0 0 ${W} ${H}`}
+              className="block h-[520px] w-[920px] max-w-none cursor-grab select-none active:cursor-grabbing sm:h-[64vh] sm:min-h-[560px] sm:w-full sm:max-h-[800px]"
+              style={{ touchAction: "pan-y" }}
+              role="img"
+              aria-label="Interactive knowledge graph of January 6 defendants, cases, and documents."
+            >
+              <g ref={gRef}>
+                {linksRef.current.map((l, i) => {
+                  const sId = linkNodeId(l.source);
+                  const tId = linkNodeId(l.target);
+                  const inFocus =
+                    !selectedId ||
+                    (selectedNeighborhood.has(sId) && selectedNeighborhood.has(tId));
+                  return (
+                    <line
+                      key={`${sId}-${tId}-${i}`}
+                      data-eid={i}
+                      data-source={sId}
+                      data-target={tId}
+                      x1={(l.source as SimNode).x ?? 0}
+                      y1={(l.source as SimNode).y ?? 0}
+                      x2={(l.target as SimNode).x ?? 0}
+                      y2={(l.target as SimNode).y ?? 0}
+                      stroke={l.kind === "has_document" ? "#3a557c" : "#6389bd"}
+                      strokeWidth={l.kind === "has_document" ? 0.7 : 1.2}
+                      strokeOpacity={
+                        inFocus ? (l.kind === "has_document" ? 0.45 : 0.74) : 0.08
+                      }
+                    />
+                  );
+                })}
+                {nodesRef.current.map((sn) => {
+                  const isSelected = selectedId === sn.node.id;
+                  const inFocus = !selectedId || selectedNeighborhood.has(sn.node.id);
+                  const showLabel =
+                    sn.node.type === "case" ||
+                    isSelected ||
+                    (selectedId && inFocus && sn.node.type === "defendant");
+                  return (
+                    <g key={sn.node.id} opacity={inFocus ? 1 : 0.22}>
+                      <circle
+                        data-nid={sn.node.id}
+                        cx={sn.x ?? sn.targetX ?? 0}
+                        cy={sn.y ?? sn.targetY ?? 0}
+                        r={nodeRadius(sn.node) + (isSelected ? 3 : 0)}
+                        fill={nodeFill(sn.node)}
+                        stroke={nodeStroke(sn.node, isSelected)}
+                        strokeWidth={isSelected ? 3 : 1.2}
+                        style={{ cursor: "pointer" }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          selectNode(sn.node.id, "graph");
+                        }}
+                      >
+                        <title>{nodeTitle(sn.node)}</title>
+                      </circle>
+                      {showLabel ? (
+                        <text
+                          data-nid={sn.node.id}
+                          x={sn.x ?? sn.targetX ?? 0}
+                          y={(sn.y ?? sn.targetY ?? 0) - nodeRadius(sn.node) - 5}
+                          className="pointer-events-none select-none"
+                          textAnchor="middle"
+                          fontSize={sn.node.type === "case" ? "10" : "8"}
+                          fontFamily="ui-monospace, monospace"
+                          fontWeight={sn.node.type === "case" ? "700" : "600"}
+                          fill={isSelected ? "#ffffff" : "#d8e4f7"}
+                          paintOrder="stroke"
+                          stroke="#071126"
+                          strokeWidth="3"
+                        >
+                          {labelForMap(sn.node)}
+                        </text>
+                      ) : null}
+                    </g>
+                  );
+                })}
+              </g>
+            </svg>
+          </div>
 
-        {/* Top-left: live counts + legend */}
-        <div className="absolute top-3 left-3 z-10 max-w-[14rem] hidden sm:block">
-          <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#7fe3a9] flex items-center gap-1.5">
-            <span className="inline-block w-2 h-2 rounded-full bg-[#7fe3a9] animate-pulse" />
-            Case Nexus · live
+          <div className="absolute left-3 top-3 z-10 max-w-[15rem] rounded-md border border-[#203a64]/80 bg-[#071126]/88 px-3 py-2 backdrop-blur">
+            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#7fe3a9]">
+              <span className="inline-block h-2 w-2 rounded-full bg-[#7fe3a9]" />
+              Case Nexus
+            </div>
+            <div className="mt-1 text-[11px] font-mono leading-tight text-[#a9b7d0]">
+              {totalCases} cases · {totalDefendants} defendants
+              {totalDocs > 0 ? ` · ${totalDocs} docs` : null}
+              {selectedId ? ` · ${focusCount} in focus` : null}
+            </div>
           </div>
-          <div className="mt-1.5 text-[11px] font-mono text-[#a9b7d0] leading-tight">
-            {totalCases} cases · {totalDefendants} defendants
-            {totalDocs > 0 ? ` · ${totalDocs} docs` : null}
+
+          <div className="absolute bottom-20 right-3 z-10 flex items-end gap-1.5 sm:bottom-3">
+            <div className="flex gap-1.5">
+              <MapActionButton label="Fit whole map" onClick={() => fitMap()}>
+                Fit
+              </MapActionButton>
+              <MapActionButton
+                label="Focus selected neighborhood"
+                onClick={() => fitMap(selectedNeighborhood)}
+                disabled={!selectedId}
+              >
+                Focus
+              </MapActionButton>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <ZoomButton label="Zoom in" onClick={() => zoomByFactor(1.35)}>
+                +
+              </ZoomButton>
+              <ZoomButton label="Zoom out" onClick={() => zoomByFactor(1 / 1.35)}>
+                -
+              </ZoomButton>
+              <ZoomButton label="Reset view" onClick={resetZoom}>
+                0
+              </ZoomButton>
+            </div>
           </div>
-          <div className="mt-2 space-y-0.5 text-[10px] font-mono text-[#7c8aa6]">
-            <LegendDot color="#1f2f55" stroke="#3a557c">case (sized by # defendants)</LegendDot>
-            <LegendDot color="#7fe3a9" stroke="#3aa672">verified defendant</LegendDot>
-            <LegendDot color="#ffd166" stroke="#0e1a36">claim pending</LegendDot>
-            <LegendDot color="#e08658" stroke="#0e1a36">unclaimed</LegendDot>
-            <LegendDot color="#7c8aa6" stroke="#0e1a36">document</LegendDot>
-          </div>
+
+          {!hasGraphData ? (
+            <div className="absolute inset-0 z-10 flex items-center justify-center bg-[#0a1429]/90 px-6 text-center">
+              <div className="max-w-md">
+                <p className="text-sm font-bold text-[var(--color-paper)]">
+                  Case Nexus data is temporarily unavailable.
+                </p>
+                <p className="mt-2 text-xs text-[#a9b7d0]">
+                  The public case archive is still online while this graph feed
+                  recovers.
+                </p>
+                <Link
+                  href="/case"
+                  className="mt-4 inline-flex rounded-full border border-[#7fe3a9] px-4 py-1.5 text-xs font-bold text-[#7fe3a9] hover:bg-[#7fe3a9]/10"
+                >
+                  Open case archive
+                </Link>
+              </div>
+            </div>
+          ) : null}
         </div>
 
-        {/* Top-right: search */}
-        <div className="absolute top-3 right-3 left-3 sm:left-auto z-10 sm:w-[20rem]">
+        <aside className="rounded-xl border-2 border-[#203a64] bg-[#0e1a36] p-4 text-[#cfd9ea]">
           <div className="relative">
+            <label
+              htmlFor="case-nexus-search"
+              className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#7fe3a9]"
+            >
+              Find a case or name
+            </label>
             <input
+              id="case-nexus-search"
               type="search"
               value={query}
               onChange={(e) => {
@@ -529,13 +789,11 @@ export function CaseNexus({
                 setSearchOpen(true);
               }}
               onFocus={() => setSearchOpen(true)}
-              onBlur={() => setTimeout(() => setSearchOpen(false), 180)}
-              placeholder="Search a name or case number…"
-              className="w-full rounded-md border border-[#3a557c] bg-[#0e1a36] px-3 py-2 text-[12px] font-mono text-[var(--color-paper)] placeholder:text-[#7c8aa6] focus:border-[#7fe3a9] focus:outline-none"
-              aria-label="Search the graph"
+              placeholder="Search name or case number"
+              className="mt-2 w-full rounded-md border border-[#3a557c] bg-[#071126] px-3 py-2 text-[12px] font-mono text-[var(--color-paper)] placeholder:text-[#7c8aa6] focus:border-[#7fe3a9] focus:outline-none"
             />
             {searchOpen && query.trim().length > 0 ? (
-              <div className="absolute top-full mt-1 left-0 right-0 bg-[#0e1a36] border border-[#3a557c] rounded-md shadow-lg max-h-80 overflow-auto z-20">
+              <div className="mt-2 max-h-72 overflow-auto rounded-md border border-[#3a557c] bg-[#071126]">
                 {searchLoading ? (
                   <p className="px-3 py-2 text-[12px] font-mono text-[#a9b7d0]">
                     Searching...
@@ -552,9 +810,9 @@ export function CaseNexus({
                           type="button"
                           onMouseDown={(e) => e.preventDefault()}
                           onClick={() => pickHit(h)}
-                          className="w-full text-left px-3 py-2 hover:bg-[#1c2a4a] flex items-baseline justify-between gap-3"
+                          className="flex w-full items-baseline justify-between gap-3 px-3 py-2 text-left hover:bg-[#1c2a4a]"
                         >
-                          <span className="text-[12px] text-[var(--color-paper)] truncate">
+                          <span className="truncate text-[12px] text-[var(--color-paper)]">
                             <span
                               className={
                                 h.type === "case"
@@ -566,7 +824,7 @@ export function CaseNexus({
                             </span>{" "}
                             {h.label}
                           </span>
-                          <span className="text-[10px] text-[#7c8aa6] font-mono whitespace-nowrap">
+                          <span className="whitespace-nowrap text-[10px] font-mono text-[#7c8aa6]">
                             {h.sub}
                           </span>
                         </button>
@@ -585,105 +843,138 @@ export function CaseNexus({
               </div>
             ) : null}
           </div>
-        </div>
 
-        {/* Zoom controls — explicit buttons so zooming never depends on
-            hijacking the page's scroll wheel. */}
-        <div className="absolute bottom-3 right-3 z-10 flex flex-col gap-1.5">
-          <ZoomButton label="Zoom in" onClick={() => zoomByFactor(1.4)}>
-            +
-          </ZoomButton>
-          <ZoomButton label="Zoom out" onClick={() => zoomByFactor(1 / 1.4)}>
-            −
-          </ZoomButton>
-          <ZoomButton label="Reset view" onClick={resetZoom}>
-            ⟲
-          </ZoomButton>
-        </div>
+          <div className="mt-4 border-t border-[#203a64] pt-4">
+            {selectedNode ? (
+              <div>
+                <div className="flex items-start justify-between gap-3">
+                  <h3 className="text-base font-bold tracking-tight text-[var(--color-paper)]">
+                    {nodeHeadline(selectedNode)}
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedId(null);
+                      window.setTimeout(() => fitMap(), 30);
+                    }}
+                    className="text-[10px] font-bold uppercase tracking-wider text-[#7c8aa6] hover:text-[var(--color-paper)]"
+                  >
+                    Clear
+                  </button>
+                </div>
 
-        {/* Bottom hint */}
-        <p className="absolute bottom-2 left-3 text-[9px] text-[#7c8aa6] font-mono uppercase tracking-wider z-10 select-none pointer-events-none">
-          drag · +/− to zoom · click a node
-        </p>
+                <div className="mt-3">
+                  <NodeDetail node={selectedNode} />
+                </div>
 
-        {!hasGraphData ? (
-          <div className="absolute inset-0 z-10 flex items-center justify-center bg-[#0a1429]/90 px-6 text-center">
-            <div className="max-w-md">
-              <p className="text-sm font-bold text-[var(--color-paper)]">
-                Case Nexus data is temporarily unavailable.
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={expandSelected}
+                    disabled={loadingExpand}
+                    className="rounded-full border-2 border-[#7fe3a9] bg-[#7fe3a9]/15 px-4 py-1.5 text-xs font-bold text-[#7fe3a9] transition hover:bg-[#7fe3a9]/25 disabled:opacity-50"
+                  >
+                    {loadingExpand ? "Expanding..." : "Expand"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => fitMap(selectedNeighborhood)}
+                    className="rounded-full border border-[#3a557c] bg-[#071126] px-4 py-1.5 text-xs font-bold text-[#cfd9ea] transition hover:border-[#7fe3a9] hover:text-[#7fe3a9]"
+                  >
+                    Fit focus
+                  </button>
+                  {selectedNode.type === "defendant" ? (
+                    <Link
+                      href={`/case/people/${selectedNode.slug}`}
+                      className="rounded-full border border-[#3a557c] bg-[#071126] px-4 py-1.5 text-xs font-bold text-[#cfd9ea] transition hover:border-[#7fe3a9] hover:text-[#7fe3a9]"
+                    >
+                      Profile
+                    </Link>
+                  ) : null}
+                  {selectedNode.type === "document" ? (
+                    <a
+                      href={
+                        selectedNode.doc_url.startsWith("http")
+                          ? selectedNode.doc_url
+                          : `https://web.archive.org/web/2023*/https://www.justice.gov${selectedNode.doc_url}`
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rounded-full border border-[#3a557c] bg-[#071126] px-4 py-1.5 text-xs font-bold text-[#cfd9ea] transition hover:border-[#7fe3a9] hover:text-[#7fe3a9]"
+                    >
+                      Document
+                    </a>
+                  ) : null}
+                </div>
+              </div>
+            ) : (
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#7fe3a9]">
+                  Map status
+                </p>
+                <p className="mt-2 text-xs font-mono leading-relaxed text-[#a9b7d0]">
+                  {totalCases} case clusters are arranged in rows. Pick any case
+                  below to bring that cluster into focus.
+                </p>
+              </div>
+            )}
+          </div>
+
+          <div className="mt-4 border-t border-[#203a64] pt-4">
+            <div className="mb-2 flex items-baseline justify-between gap-3">
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#7fe3a9]">
+                Case clusters
               </p>
-              <p className="mt-2 text-xs text-[#a9b7d0]">
-                The public case archive is still online while this graph feed
-                recovers.
-              </p>
-              <Link
-                href="/case"
-                className="mt-4 inline-flex rounded-full border border-[#7fe3a9] px-4 py-1.5 text-xs font-bold text-[#7fe3a9] hover:bg-[#7fe3a9]/10"
+              <button
+                type="button"
+                onClick={() => fitMap()}
+                className="text-[10px] font-bold uppercase tracking-wider text-[#7c8aa6] hover:text-[var(--color-paper)]"
               >
-                Open case archive →
-              </Link>
+                Fit all
+              </button>
+            </div>
+            <div className="max-h-[26rem] space-y-1 overflow-auto pr-1">
+              {visibleCases.map((caseNode) => {
+                const active = selectedId === caseNode.node.id;
+                return (
+                  <button
+                    key={caseNode.node.id}
+                    type="button"
+                    onClick={() => selectNode(caseNode.node.id, "graph")}
+                    className={`flex w-full items-center justify-between gap-3 rounded-md border px-3 py-2 text-left transition ${
+                      active
+                        ? "border-[#7fe3a9] bg-[#7fe3a9]/10"
+                        : "border-[#203a64] bg-[#071126] hover:border-[#3a557c]"
+                    }`}
+                  >
+                    <span className="truncate text-[12px] font-bold text-[var(--color-paper)]">
+                      {caseNode.node.label}
+                    </span>
+                    <span className="whitespace-nowrap text-[10px] font-mono text-[#7c8aa6]">
+                      {caseNode.node.defendant_count}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </div>
-        ) : null}
+
+          <div className="mt-4 border-t border-[#203a64] pt-4 text-[10px] font-mono text-[#7c8aa6]">
+            <div className="grid grid-cols-2 gap-x-3 gap-y-1">
+              <LegendDot color="#1f2f55" stroke="#3a557c">case</LegendDot>
+              <LegendDot color="#7fe3a9" stroke="#3aa672">verified</LegendDot>
+              <LegendDot color="#ffd166" stroke="#0e1a36">pending</LegendDot>
+              <LegendDot color="#e08658" stroke="#0e1a36">unclaimed</LegendDot>
+              <LegendDot color="#7c8aa6" stroke="#0e1a36">document</LegendDot>
+            </div>
+          </div>
+        </aside>
       </div>
 
       {graphError && hasGraphData ? (
         <p className="mt-3 rounded-md border border-[#ffd166]/50 bg-[#ffd166]/10 px-3 py-2 text-xs font-mono text-[#ffd166]">
           {graphError}
         </p>
-      ) : null}
-
-      {/* Detail drawer */}
-      {selectedNode ? (
-        <div className="mt-3 rounded-2xl border-2 border-[#7fe3a9] bg-[#0e1a36] text-[#cfd9ea] p-5">
-          <div className="flex items-baseline justify-between gap-3 flex-wrap mb-3">
-            <h3 className="text-lg font-bold tracking-tight text-[var(--color-paper)]">
-              {nodeHeadline(selectedNode)}
-            </h3>
-            <button
-              type="button"
-              onClick={() => setSelectedId(null)}
-              className="text-[10px] uppercase tracking-wider text-[#7c8aa6] hover:text-[var(--color-paper)] font-bold"
-            >
-              Close ×
-            </button>
-          </div>
-
-          <NodeDetail node={selectedNode} />
-
-          <div className="mt-4 flex flex-wrap gap-2">
-            <button
-              type="button"
-              onClick={expandSelected}
-              disabled={loadingExpand}
-              className="rounded-full border-2 border-[#7fe3a9] bg-[#7fe3a9]/15 px-4 py-1.5 text-xs font-bold text-[#7fe3a9] hover:bg-[#7fe3a9]/25 disabled:opacity-50 transition"
-            >
-              {loadingExpand ? "Expanding…" : "Expand connections →"}
-            </button>
-            {selectedNode.type === "defendant" ? (
-              <Link
-                href={`/case/people/${selectedNode.slug}`}
-                className="rounded-full border border-[#3a557c] bg-[#0a1429] px-4 py-1.5 text-xs font-bold text-[#cfd9ea] hover:border-[#7fe3a9] hover:text-[#7fe3a9] transition"
-              >
-                Open profile →
-              </Link>
-            ) : null}
-            {selectedNode.type === "document" ? (
-              <a
-                href={
-                  selectedNode.doc_url.startsWith("http")
-                    ? selectedNode.doc_url
-                    : `https://web.archive.org/web/2023*/https://www.justice.gov${selectedNode.doc_url}`
-                }
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-full border border-[#3a557c] bg-[#0a1429] px-4 py-1.5 text-xs font-bold text-[#cfd9ea] hover:border-[#7fe3a9] hover:text-[#7fe3a9] transition"
-              >
-                Open document (Wayback) →
-              </a>
-            ) : null}
-          </div>
-        </div>
       ) : null}
     </div>
   );
@@ -699,6 +990,16 @@ function nodeTitle(n: RawNode): string {
 function nodeHeadline(n: RawNode): string {
   if (n.type === "case") return `Case ${n.label}`;
   return n.label;
+}
+
+function labelForMap(n: RawNode): string {
+  if (n.type === "case") return n.label;
+  if (n.type === "defendant") {
+    const parts = n.label.trim().split(/\s+/);
+    if (parts.length <= 2) return n.label;
+    return `${parts[0]} ${parts[parts.length - 1]}`;
+  }
+  return "doc";
 }
 
 function NodeDetail({ node }: { node: RawNode }) {
@@ -779,6 +1080,30 @@ function ZoomButton({
       aria-label={label}
       onClick={onClick}
       className="h-9 w-9 rounded-full border border-[#3a557c] bg-[#0e1a36]/90 text-[#cfd9ea] text-lg font-bold leading-none flex items-center justify-center hover:border-[#7fe3a9] hover:text-[#7fe3a9] transition"
+    >
+      {children}
+    </button>
+  );
+}
+
+function MapActionButton({
+  label,
+  onClick,
+  disabled = false,
+  children,
+}: {
+  label: string;
+  onClick: () => void;
+  disabled?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      onClick={onClick}
+      disabled={disabled}
+      className="h-9 rounded-full border border-[#3a557c] bg-[#0e1a36]/90 px-3 text-[11px] font-bold uppercase tracking-wider text-[#cfd9ea] transition hover:border-[#7fe3a9] hover:text-[#7fe3a9] disabled:cursor-not-allowed disabled:opacity-45"
     >
       {children}
     </button>
