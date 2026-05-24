@@ -1,5 +1,5 @@
 import { createHash } from "crypto";
-import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { getSupabaseServiceClient } from "@/lib/supabase/service";
 
 function hashIp(ip: string): string {
   const salt =
@@ -31,7 +31,7 @@ export async function checkRateLimit(opts: {
   userId?: string | null;
 }): Promise<RateLimitResult> {
   const ipHash = hashIp(clientIp(opts.request));
-  const supabase = await getSupabaseServerClient();
+  const supabase = getSupabaseServiceClient();
   const windowStart = new Date(
     Date.now() - opts.windowMinutes * 60 * 1000,
   ).toISOString();

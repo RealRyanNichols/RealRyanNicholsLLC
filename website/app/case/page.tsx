@@ -327,17 +327,6 @@ export default async function CasePage({
   );
 }
 
-function Stat({ label, value }: { label: string; value: number }) {
-  return (
-    <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2.5">
-      <div className="text-2xl font-bold tracking-tight">{value}</div>
-      <div className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] mt-0.5">
-        {label}
-      </div>
-    </div>
-  );
-}
-
 function BigStat({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4">

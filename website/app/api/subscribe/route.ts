@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { z } from "zod";
-import { getSupabaseServerClient } from "@/lib/supabase/server";
+import {
+  getSupabaseServiceClient,
+  isSupabaseServiceConfigured,
+} from "@/lib/supabase/service";
 import { buildConfirmationEmail } from "@/lib/email";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { SITE } from "@/lib/site";
@@ -20,6 +23,13 @@ type EmailAction = "created" | "already_subscribed" | "reconfirm" | "reactivate"
 type PhoneAction = "created" | "already_subscribed" | "reactivate" | null;
 
 export async function POST(request: Request) {
+  if (!isSupabaseServiceConfigured()) {
+    return NextResponse.json(
+      { error: "Signup intake is not configured yet." },
+      { status: 503 },
+    );
+  }
+
   // Anonymous endpoint — strict per-IP cap so we can't be used as an
   // email-confirmation relay for spam.
   const rl = await checkRateLimit({
@@ -63,7 +73,16 @@ export async function POST(request: Request) {
     );
   }
 
-  const supabase = await getSupabaseServerClient();
+  let supabase: ReturnType<typeof getSupabaseServiceClient>;
+  try {
+    supabase = getSupabaseServiceClient();
+  } catch {
+    return NextResponse.json(
+      { error: "Signup intake is not configured yet." },
+      { status: 503 },
+    );
+  }
+
   const { data, error } = await supabase.rpc("signup_or_refresh_v2", {
     p_email: emailIn,
     p_phone: phoneIn,

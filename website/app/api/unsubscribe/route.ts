@@ -1,12 +1,18 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { getSupabaseServiceClient } from "@/lib/supabase/service";
 import { SITE } from "@/lib/site";
 
 async function processToken(token: string | null): Promise<string> {
   if (!token) {
     return new URL("/unsubscribed?status=invalid", SITE.url).toString();
   }
-  const supabase = await getSupabaseServerClient();
+  let supabase: ReturnType<typeof getSupabaseServiceClient>;
+  try {
+    supabase = getSupabaseServiceClient();
+  } catch {
+    return new URL("/unsubscribed?status=invalid", SITE.url).toString();
+  }
+
   const { data, error } = await supabase.rpc("unsubscribe_signup", { p_token: token });
   if (error || !data || data.length === 0 || !data[0].success) {
     return new URL("/unsubscribed?status=invalid", SITE.url).toString();

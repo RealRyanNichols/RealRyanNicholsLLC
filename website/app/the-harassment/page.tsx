@@ -45,19 +45,6 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-type Row = {
-  id: string;
-  slug: string;
-  title: string;
-  description: string | null;
-  doc_type: string;
-  document_date: string | null;
-  external_url: string | null;
-  file_url: string | null;
-  source: string | null;
-  evidence_themes?: string[] | null;
-};
-
 export default async function HarassmentWallPage() {
   const supabase = getSupabaseStaticClient();
 

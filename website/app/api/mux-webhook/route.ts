@@ -1,22 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { createClient } from "@supabase/supabase-js";
 import { muxThumbnailUrl, getMuxClient } from "@/lib/mux";
-
-// Mux webhooks update video posts asynchronously after upload + transcoding.
-// We need to write to the posts table without a user session, so we use a
-// service-role client. This file is the ONLY place that role is used.
-function getServiceClient() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !serviceKey) {
-    throw new Error(
-      "SUPABASE_SERVICE_ROLE_KEY must be set for the Mux webhook to update post rows."
-    );
-  }
-  return createClient(url, serviceKey, {
-    auth: { persistSession: false, autoRefreshToken: false },
-  });
-}
+import { getSupabaseServiceClient } from "@/lib/supabase/service";
 
 export async function POST(request: NextRequest) {
   const secret = process.env.MUX_WEBHOOK_SECRET;
@@ -47,7 +31,7 @@ export async function POST(request: NextRequest) {
     };
   };
 
-  const supabase = getServiceClient();
+  const supabase = getSupabaseServiceClient();
 
   // We care about three event types:
   //   video.upload.asset_created   -> asset_id is now known

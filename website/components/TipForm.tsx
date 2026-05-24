@@ -67,7 +67,7 @@ export function TipForm({ defaultCategory = "national" }: { defaultCategory?: Ca
           Tip received.
         </h2>
         <p className="mt-2 text-[var(--color-ink-soft)]">
-          We read every tip. If we need more, we'll reach out at the email you
+          We read every tip. If we need more, we&apos;ll reach out at the email you
           provided.
         </p>
         <button

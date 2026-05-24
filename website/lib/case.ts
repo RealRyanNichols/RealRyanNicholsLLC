@@ -100,21 +100,6 @@ const EVENT_COLS =
 const DOCUMENT_COLS =
   "id, slug, title, description, doc_type, document_date, file_url, external_url, source, views_count, shares_count, archived, relevance, transcript, author_role, series_lead_slug, series_position, series_title";
 
-// Authorship ordering — Ryan's own paperwork is priority #1, corroborating
-// witness statements from fellow detainees are priority #2, everything else
-// follows. Implemented as a CASE expression in SQL since enums don't sort
-// in priority order naturally.
-const AUTHOR_PRIORITY_ORDER = "(case author_role"
-  + " when 'ryan' then 0"
-  + " when 'co_detainee' then 1"
-  + " when 'attorney' then 2"
-  + " when 'court' then 3"
-  + " when 'government' then 4"
-  + " when 'evidence' then 5"
-  + " when 'family' then 6"
-  + " when 'media' then 7"
-  + " else 8 end)";
-
 export async function getGrievances(): Promise<CaseGrievance[]> {
   const supabase = getSupabaseStaticClient();
   const { data } = await supabase

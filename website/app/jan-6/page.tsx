@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { SITE } from "@/lib/site";
 import { getOgImage } from "@/lib/og-images";
 
@@ -71,7 +72,7 @@ export default function JanSixPage() {
         <p>
           When I write here about Jan 6, I&apos;m writing it the way I would tell it on my
           porch, not the way a press release would tell it. The newer posts on the
-          <a href="/" className="underline mx-1">feed</a>
+          <Link href="/" className="underline mx-1">feed</Link>
           are where I&apos;m working through it in real time. This page collects the longer,
           settled pieces.
         </p>
