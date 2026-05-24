@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE } from "@/lib/site";
 import { getOgImage } from "@/lib/og-images";
+import { DonateButtons } from "@/components/DonateButtons";
 
 const DEFAULT_DESCRIPTION =
   "I'm spending my last dime building this so I — and every other J6 defendant — can get on our feet. If the work matters to you, here's how to help me keep going.";
@@ -115,21 +116,10 @@ export default function SupportPage() {
             One-time donation via Stripe
           </h2>
           <p className="relative mt-3 text-[var(--color-ink-soft)] leading-relaxed">
-            Direct to me. Any amount helps. Card / Apple Pay / Google Pay all
-            work through the secure Stripe page.
+            Pick an amount. Any size moves the needle — rent, food, the mental
+            healthcare, and the servers that keep this record online.
           </p>
-          <a
-            href={donateUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-accent relative inline-flex items-center mt-5 rounded-full px-6 py-3 text-sm font-bold transition"
-          >
-            Open the donation page →
-          </a>
-          <p className="relative mt-4 text-xs text-[var(--color-muted)]">
-            Stripe Payment Link · the payment goes directly to my account, not
-            through any organization.
-          </p>
+          <DonateButtons donateUrl={donateUrl} />
         </section>
       ) : (
         <section className="mt-10 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6">
