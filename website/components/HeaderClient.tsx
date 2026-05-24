@@ -13,10 +13,11 @@ type Props = {
   isAdmin: boolean;
 };
 
-// Public nav order, per Ryan's spec: J6 Case first, Map Room second,
-// About third. Donate is a permanent CTA chip after the public links;
-// admin / +new / account chips append for the right user.
+// Public nav. "Feed" leads so visitors always have a one-tap way back to
+// Ryan's home feed. Donate is a permanent CTA chip after the public
+// links; admin / +new / account chips append for the right user.
 const NAV = [
+  { href: "/", label: "Feed" },
   { href: "/case", label: "J6 Case" },
   { href: "/evidence-the-doj-tried-to-erase", label: "Evidence" },
   { href: "/the-map-room", label: "Map Room" },
