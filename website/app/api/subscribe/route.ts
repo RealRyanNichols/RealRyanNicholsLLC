@@ -20,13 +20,6 @@ type EmailAction = "created" | "already_subscribed" | "reconfirm" | "reactivate"
 type PhoneAction = "created" | "already_subscribed" | "reactivate" | null;
 
 export async function POST(request: Request) {
-  if (!SITE.mailingAddress) {
-    return NextResponse.json(
-      { error: "Signups are not configured yet." },
-      { status: 503 }
-    );
-  }
-
   // Anonymous endpoint — strict per-IP cap so we can't be used as an
   // email-confirmation relay for spam.
   const rl = await checkRateLimit({
@@ -61,9 +54,11 @@ export async function POST(request: Request) {
   // Email leg requires Resend creds. If only phone was given we can skip the check.
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.RESEND_FROM_EMAIL;
-  if (emailIn && (!apiKey || !from)) {
+  // Email requires a verified sender (Resend) AND a physical mailing address
+  // (CAN-SPAM). Phone signups carry no such requirement, so they always work.
+  if (emailIn && (!apiKey || !from || !SITE.mailingAddress)) {
     return NextResponse.json(
-      { error: "Email sending is not configured yet. Try phone instead." },
+      { error: "Email signups aren't enabled yet — enter a phone number instead." },
       { status: 503 }
     );
   }
