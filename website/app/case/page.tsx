@@ -201,6 +201,47 @@ export default async function CasePage({
           <J6Banner />
         </div>
 
+        {/* Explore-the-case hub — every tool with its function spelled out,
+            so nothing is a mystery and Evidence stays front-and-center. */}
+        <section className="mt-8">
+          <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold mb-3">
+            Explore this case
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            <HubCard
+              href="/evidence-the-doj-tried-to-erase"
+              title="Evidence the DOJ Tried to Erase"
+              sub="The scrubbed federal record — preserved and hash-verified."
+              featured
+            />
+            <HubCard
+              href="/the-map-room"
+              title="The Map Room — LIVE"
+              sub="Who's reading the case right now, on a live world map."
+            />
+            <HubCard
+              href="/case/officials"
+              title="Accountability Index"
+              sub="Everyone named in the record, grouped by agency."
+            />
+            <HubCard
+              href="/case/nexus"
+              title="The Nexus"
+              sub="Force-directed graph of the co-defendant network."
+            />
+            <HubCard
+              href="/case/timeline"
+              title="The Timeline"
+              sub="Every arrest and sentencing, month by month."
+            />
+            <HubCard
+              href="/case/geography"
+              title="The Geography"
+              sub="Every J6 defendant plotted by home state."
+            />
+          </div>
+        </section>
+
         {/* Search */}
         <form
           method="get"
@@ -801,5 +842,41 @@ function DocumentsView({ documents }: { documents: Awaited<ReturnType<typeof get
         </Link>
       ))}
     </div>
+  );
+}
+
+function HubCard({
+  href,
+  title,
+  sub,
+  featured,
+}: {
+  href: string;
+  title: string;
+  sub: string;
+  featured?: boolean;
+}) {
+  return (
+    <Link
+      href={href}
+      className={[
+        "block rounded-2xl border-2 p-4 transition group",
+        featured
+          ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)]"
+          : "border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-accent)]",
+      ].join(" ")}
+    >
+      <p
+        className={[
+          "text-sm font-bold tracking-tight",
+          featured
+            ? "text-[var(--color-accent)]"
+            : "text-[var(--color-ink)] group-hover:text-[var(--color-accent)]",
+        ].join(" ")}
+      >
+        {title} <span aria-hidden>→</span>
+      </p>
+      <p className="mt-1 text-xs leading-snug text-[var(--color-ink-soft)]">{sub}</p>
+    </Link>
   );
 }
