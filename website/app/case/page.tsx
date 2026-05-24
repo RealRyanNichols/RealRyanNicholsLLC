@@ -257,14 +257,23 @@ export default async function CasePage({
             Documents {q ? `(${filteredDocuments.length})` : ""}
           </TabLink>
         </nav>
-        <Link
-          href="/case/nexus"
-          className="mb-1 inline-flex items-center gap-1.5 rounded-full border-2 border-[#1f2f55] bg-[#0a1429] px-3.5 py-1.5 text-xs font-bold text-[#cfd9ea] hover:border-[#7fe3a9] hover:text-[#7fe3a9] transition"
-        >
-          <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#7fe3a9] animate-pulse" aria-hidden />
-          View as graph
-          <span aria-hidden>→</span>
-        </Link>
+        <div className="mb-1 flex items-center gap-2">
+          <Link
+            href="/case/officials"
+            className="inline-flex items-center gap-1.5 rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-3.5 py-1.5 text-xs font-bold text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-paper)] transition"
+          >
+            Who&apos;s named
+            <span aria-hidden>→</span>
+          </Link>
+          <Link
+            href="/case/nexus"
+            className="inline-flex items-center gap-1.5 rounded-full border-2 border-[#1f2f55] bg-[#0a1429] px-3.5 py-1.5 text-xs font-bold text-[#cfd9ea] hover:border-[#7fe3a9] hover:text-[#7fe3a9] transition"
+          >
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#7fe3a9] animate-pulse" aria-hidden />
+            View as graph
+            <span aria-hidden>→</span>
+          </Link>
+        </div>
       </div>
 
       {tab === "grievances" && <GrievancesView grievances={filteredGrievances} />}
