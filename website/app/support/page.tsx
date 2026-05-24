@@ -119,60 +119,51 @@ export default async function SupportPage() {
         </p>
       </section>
 
-      {donateUrl ? (
-        <section
-          id="support-mission"
-          className="mt-10 rounded-2xl border border-[var(--color-line)] bg-gradient-to-br from-[var(--color-surface-2)] to-[var(--color-surface)] p-6 sm:p-8 relative overflow-hidden scroll-mt-24"
-        >
-          <p className="relative text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
-            Support mission board
-          </p>
-          <h2 className="relative font-display text-2xl sm:text-3xl mt-2 text-[var(--color-ink)]">
-            Pick what your support is for.
-          </h2>
-          <p className="relative mt-3 text-[var(--color-ink-soft)] leading-relaxed">
-            This is the transparent version: choose the mission, leave a note,
-            decide whether you want your name or amount public, then Stripe
-            handles the payment.
-          </p>
+      <section
+        id="support-mission"
+        className="mt-10 rounded-2xl border border-[var(--color-line)] bg-gradient-to-br from-[var(--color-surface-2)] to-[var(--color-surface)] p-6 sm:p-8 relative overflow-hidden scroll-mt-24"
+      >
+        <p className="relative text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+          Support mission board
+        </p>
+        <h2 className="relative font-display text-2xl sm:text-3xl mt-2 text-[var(--color-ink)]">
+          Pick what your support is for.
+        </h2>
+        <p className="relative mt-3 text-[var(--color-ink-soft)] leading-relaxed">
+          This is the transparent version: choose the mission, leave a note,
+          decide whether you want your name or amount public, then Stripe
+          handles the payment when the direct payment link is active.
+        </p>
 
-          <div className="relative mt-5 grid gap-3 sm:grid-cols-3">
-            <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4">
-              <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">
-                Current goal
-              </p>
-              <p className="mt-1 text-sm font-bold text-[var(--color-ink)]">
-                Keep the site live and the archive moving.
-              </p>
-            </div>
-            <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4">
-              <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">
-                Investigation work
-              </p>
-              <p className="mt-1 text-sm font-bold text-[var(--color-ink)]">
-                Public records, case files, timelines, and receipts.
-              </p>
-            </div>
-            <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4">
-              <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">
-                Give-back rule
-              </p>
-              <p className="mt-1 text-sm font-bold text-[var(--color-ink)]">
-                Extra support rolls to the next goal or someone in the community.
-              </p>
-            </div>
+        <div className="relative mt-5 grid gap-3 sm:grid-cols-3">
+          <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4">
+            <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">
+              Current goal
+            </p>
+            <p className="mt-1 text-sm font-bold text-[var(--color-ink)]">
+              Keep the site live and the archive moving.
+            </p>
           </div>
+          <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4">
+            <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">
+              Investigation work
+            </p>
+            <p className="mt-1 text-sm font-bold text-[var(--color-ink)]">
+              Public records, case files, timelines, and receipts.
+            </p>
+          </div>
+          <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4">
+            <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">
+              Give-back rule
+            </p>
+            <p className="mt-1 text-sm font-bold text-[var(--color-ink)]">
+              Extra support rolls to the next goal or someone in the community.
+            </p>
+          </div>
+        </div>
 
-          <SupportIntentForm donateUrl={donateUrl} />
-        </section>
-      ) : (
-        <section className="mt-10 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6">
-          <p className="text-sm text-[var(--color-ink-soft)]">
-            A direct donation link is being finalized. In the meantime,
-            subscribing and sharing posts is the next-best way to help.
-          </p>
-        </section>
-      )}
+        <SupportIntentForm donateUrl={donateUrl ?? ""} />
+      </section>
 
       {supporterUrl ? (
         <section className="mt-10 rounded-2xl border-2 border-amber-700 p-6 bg-gradient-to-br from-amber-950/30 to-[var(--color-surface)] relative overflow-hidden">

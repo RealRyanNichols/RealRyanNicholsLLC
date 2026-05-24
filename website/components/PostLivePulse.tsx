@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
+import { trackEvent } from "@/lib/analytics";
 
 type Pulse = {
   reading_now: number;
@@ -139,9 +140,11 @@ export function PostFollowCapture({
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!email) {
+      trackEvent("follow_capture_failed", { path, reason: "empty" });
       setState({ kind: "error", message: "Enter your email." });
       return;
     }
+    trackEvent("follow_capture_attempt", { path });
     setState({ kind: "submitting" });
     try {
       const res = await fetch("/api/subscribe", {
@@ -151,15 +154,18 @@ export function PostFollowCapture({
       });
       const json = await res.json();
       if (!res.ok) {
+        trackEvent("follow_capture_failed", { path, reason: "api" });
         setState({ kind: "error", message: json.error ?? "Something went wrong." });
         return;
       }
+      trackEvent("follow_capture_success", { path });
       setState({
         kind: "success",
         message: json.message ?? "You're on the list. Check your inbox to confirm.",
       });
       setEmail("");
     } catch {
+      trackEvent("follow_capture_failed", { path, reason: "network" });
       setState({ kind: "error", message: "Network error. Please try again." });
     }
   }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 type Status = "idle" | "submitting" | "ok" | "error";
 type Category = "j6" | "national" | "local" | "other";
@@ -39,6 +40,12 @@ export function TipForm({ defaultCategory = "national" }: { defaultCategory?: Ca
       narrative: String(fd.get("narrative") ?? "").trim(),
       urls,
     };
+    trackEvent("tip_submit_attempt", {
+      category,
+      has_email: payload.submitter_email.length > 0,
+      has_name: Boolean(payload.submitter_name),
+      url_count: urls.length,
+    });
 
     try {
       const res = await fetch("/api/tips", {
@@ -48,13 +55,20 @@ export function TipForm({ defaultCategory = "national" }: { defaultCategory?: Ca
       });
       const json = (await res.json().catch(() => ({}))) as { error?: string };
       if (!res.ok) {
+        trackEvent("tip_submit_failed", { category, reason: "api" });
         setStatus("error");
         setErrorMsg(json.error ?? "Something went wrong. Try again.");
         return;
       }
+      trackEvent("tip_submit_success", {
+        category,
+        has_email: payload.submitter_email.length > 0,
+        url_count: urls.length,
+      });
       setStatus("ok");
       form.reset();
     } catch {
+      trackEvent("tip_submit_failed", { category, reason: "network" });
       setStatus("error");
       setErrorMsg("Network error. Try again.");
     }
@@ -103,7 +117,10 @@ export function TipForm({ defaultCategory = "national" }: { defaultCategory?: Ca
             <button
               key={c.value}
               type="button"
-              onClick={() => setCategory(c.value)}
+              onClick={() => {
+                setCategory(c.value);
+                trackEvent("tip_category_select", { category: c.value });
+              }}
               aria-pressed={category === c.value}
               className={[
                 "rounded-lg border-2 px-3 py-2 text-sm font-bold transition text-left",

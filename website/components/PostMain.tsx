@@ -3,6 +3,7 @@ import { muxThumbnailUrl } from "@/lib/mux";
 import { PostBody } from "@/components/PostBody";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { getDirectVideoUrl } from "@/lib/direct-video";
+import { TrackedVideo } from "@/components/TrackedVideo";
 
 export function PostMain({ post }: { post: Post }) {
   if (post.type === "video") {
@@ -17,13 +18,7 @@ export function PostMain({ post }: { post: Post }) {
             title={post.title ?? undefined}
           />
         ) : directVideoUrl ? (
-          <video
-            src={directVideoUrl}
-            controls
-            playsInline
-            preload="metadata"
-            className="aspect-video w-full rounded-lg bg-black"
-          />
+          <TrackedVideo src={directVideoUrl} title={post.title ?? undefined} />
         ) : (
           <div className="aspect-video w-full rounded-lg bg-black/90 flex items-center justify-center text-white text-sm">
             {post.mux_status === "errored"

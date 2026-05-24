@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
+import { trackEvent } from "@/lib/analytics";
 
 type Platform = {
   name: string;
@@ -38,13 +39,21 @@ export function ShareButton({
   caseKind?: CaseKind;
   compact?: boolean;
 }) {
-  function recordShare() {
-    if (!slug) return;
-    const supabase = getSupabaseBrowserClient();
-    if (caseKind) {
-      void supabase.rpc("increment_case_shares", { p_type: caseKind, p_slug: slug });
-    } else {
-      void supabase.rpc("increment_post_shares", { post_slug: slug });
+  function recordShare(action: string, platform = "site") {
+    trackEvent(action, {
+      platform,
+      slug: slug ?? "none",
+      kind: caseKind ?? "post",
+      compact,
+      title: title.slice(0, 120),
+    });
+    if (slug) {
+      const supabase = getSupabaseBrowserClient();
+      if (caseKind) {
+        void supabase.rpc("increment_case_shares", { p_type: caseKind, p_slug: slug });
+      } else {
+        void supabase.rpc("increment_post_shares", { post_slug: slug });
+      }
     }
   }
   const [open, setOpen] = useState(false);
@@ -80,7 +89,7 @@ export function ShareButton({
     if (typeof navigator === "undefined" || typeof navigator.share !== "function") return;
     try {
       await navigator.share({ title, text: title, url });
-      recordShare();
+      recordShare("share_native", "native");
       setOpen(false);
     } catch {
       // user cancelled or share failed — keep menu open, don't count
@@ -90,7 +99,7 @@ export function ShareButton({
   async function copy() {
     try {
       await navigator.clipboard.writeText(url);
-      recordShare();
+      recordShare("share_copy", "copy");
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {
@@ -104,7 +113,10 @@ export function ShareButton({
     <div ref={wrapRef} className="relative">
       <button
         type="button"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => {
+          setOpen((v) => !v);
+          if (!open) recordShare("share_menu_open");
+        }}
         aria-haspopup="menu"
         aria-expanded={open}
         className={
@@ -150,7 +162,7 @@ export function ShareButton({
               rel="noopener noreferrer"
               role="menuitem"
               onClick={() => {
-                recordShare();
+                recordShare("share_platform", p.name);
                 setOpen(false);
               }}
               className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-accent)] transition"

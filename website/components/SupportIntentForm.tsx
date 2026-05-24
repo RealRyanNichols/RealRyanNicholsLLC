@@ -5,7 +5,7 @@ import { trackEvent } from "@/lib/analytics";
 
 type Purpose = "site" | "video" | "children" | "officials" | "community" | "needed";
 type DisplayAs = "name" | "anonymous";
-type Status = "idle" | "submitting" | "error";
+type Status = "idle" | "submitting" | "saved" | "error";
 
 const PURPOSES: { value: Purpose; label: string; blurb: string }[] = [
   {
@@ -53,6 +53,7 @@ export function SupportIntentForm({ donateUrl }: { donateUrl: string }) {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   function stripeUrl(intentId: string | null, email: string): string {
+    if (!donateUrl) return "";
     try {
       const url = new URL(donateUrl);
       if (intentId) url.searchParams.set("client_reference_id", intentId);
@@ -83,6 +84,14 @@ export function SupportIntentForm({ donateUrl }: { donateUrl: string }) {
       display_as: displayAs,
       show_amount: showAmount,
     };
+    trackEvent("support_intent_attempt", {
+      purpose,
+      amount: intendedAmount || "other",
+      anonymous: displayAs === "anonymous",
+      publish_message: publishMessage,
+      show_amount: showAmount,
+      has_message: payload.message.length > 0,
+    });
 
     try {
       const res = await fetch("/api/support-intent", {
@@ -95,6 +104,7 @@ export function SupportIntentForm({ donateUrl }: { donateUrl: string }) {
         intent_id?: string;
       };
       if (!res.ok) {
+        trackEvent("support_intent_failed", { purpose, reason: "api" });
         setStatus("error");
         setErrorMsg(json.error ?? "Could not save your note. Try again.");
         return;
@@ -106,8 +116,22 @@ export function SupportIntentForm({ donateUrl }: { donateUrl: string }) {
         publish_message: publishMessage,
         show_amount: showAmount,
       });
+      if (!donateUrl) {
+        trackEvent("support_note_saved_no_checkout", {
+          purpose,
+          amount: intendedAmount || "other",
+        });
+        setStatus("saved");
+        form.reset();
+        return;
+      }
+      trackEvent("support_checkout_open", {
+        purpose,
+        amount: intendedAmount || "other",
+      });
       window.location.assign(stripeUrl(json.intent_id ?? null, email));
     } catch {
+      trackEvent("support_intent_failed", { purpose, reason: "network" });
       setStatus("error");
       setErrorMsg("Network error. Try again.");
     }
@@ -124,7 +148,10 @@ export function SupportIntentForm({ donateUrl }: { donateUrl: string }) {
             <button
               key={p.value}
               type="button"
-              onClick={() => setPurpose(p.value)}
+              onClick={() => {
+                setPurpose(p.value);
+                trackEvent("support_purpose_select", { purpose: p.value });
+              }}
               aria-pressed={purpose === p.value}
               className={[
                 "rounded-lg border-2 px-4 py-3 text-left transition",
@@ -153,7 +180,13 @@ export function SupportIntentForm({ donateUrl }: { donateUrl: string }) {
             <button
               key={a}
               type="button"
-              onClick={() => setAmount(String(a))}
+              onClick={() => {
+                setAmount(String(a));
+                trackEvent("support_amount_select", {
+                  amount: a,
+                  custom: false,
+                });
+              }}
               aria-pressed={amount === String(a)}
               className={[
                 "rounded-lg border-2 px-3 py-2 text-sm font-bold transition",
@@ -167,7 +200,13 @@ export function SupportIntentForm({ donateUrl }: { donateUrl: string }) {
           ))}
           <button
             type="button"
-            onClick={() => setAmount("custom")}
+            onClick={() => {
+              setAmount("custom");
+              trackEvent("support_amount_select", {
+                amount: "custom",
+                custom: true,
+              });
+            }}
             aria-pressed={amount === "custom"}
             className={[
               "rounded-lg border-2 px-3 py-2 text-sm font-bold transition",
@@ -216,7 +255,10 @@ export function SupportIntentForm({ donateUrl }: { donateUrl: string }) {
         <div className="grid sm:grid-cols-2 gap-2">
           <button
             type="button"
-            onClick={() => setDisplayAs("anonymous")}
+            onClick={() => {
+              setDisplayAs("anonymous");
+              trackEvent("support_visibility_select", { display_as: "anonymous" });
+            }}
             aria-pressed={displayAs === "anonymous"}
             className={[
               "rounded-lg border-2 px-3 py-2 text-left text-sm font-bold transition",
@@ -229,7 +271,10 @@ export function SupportIntentForm({ donateUrl }: { donateUrl: string }) {
           </button>
           <button
             type="button"
-            onClick={() => setDisplayAs("name")}
+            onClick={() => {
+              setDisplayAs("name");
+              trackEvent("support_visibility_select", { display_as: "name" });
+            }}
             aria-pressed={displayAs === "name"}
             className={[
               "rounded-lg border-2 px-3 py-2 text-left text-sm font-bold transition",
@@ -245,7 +290,12 @@ export function SupportIntentForm({ donateUrl }: { donateUrl: string }) {
           <input
             type="checkbox"
             checked={publishMessage}
-            onChange={(e) => setPublishMessage(e.target.checked)}
+            onChange={(e) => {
+              setPublishMessage(e.target.checked);
+              trackEvent("support_publish_toggle", {
+                publish_message: e.target.checked,
+              });
+            }}
             className="mt-1 h-4 w-4 accent-[var(--color-accent)]"
           />
           Ryan may publish my message as a public supporter note.
@@ -254,7 +304,12 @@ export function SupportIntentForm({ donateUrl }: { donateUrl: string }) {
           <input
             type="checkbox"
             checked={showAmount}
-            onChange={(e) => setShowAmount(e.target.checked)}
+            onChange={(e) => {
+              setShowAmount(e.target.checked);
+              trackEvent("support_show_amount_toggle", {
+                show_amount: e.target.checked,
+              });
+            }}
             className="mt-1 h-4 w-4 accent-[var(--color-accent)]"
           />
           If published, Ryan may show the amount.
@@ -267,17 +322,27 @@ export function SupportIntentForm({ donateUrl }: { donateUrl: string }) {
         </p>
       ) : null}
 
+      {status === "saved" ? (
+        <p className="text-sm text-emerald-700 bg-emerald-500/10 border border-emerald-500/30 rounded-lg px-3 py-2">
+          Your note was saved. Ryan can review it before anything is made public.
+        </p>
+      ) : null}
+
       <button
         type="submit"
         disabled={status === "submitting"}
         className="btn-accent w-full rounded-full px-6 py-4 text-base font-bold transition disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {status === "submitting" ? "Saving note..." : "Save my note and open Stripe →"}
+        {status === "submitting"
+          ? "Saving note..."
+          : donateUrl
+            ? "Save my note and open Stripe →"
+            : "Save my note"}
       </button>
 
       <p className="text-xs text-[var(--color-muted)] text-center">
-        Your note saves first. Stripe handles the payment securely. Ryan can
-        review the note later and publish only what you allowed.
+        Your note saves first. {donateUrl ? "Stripe handles the payment securely. " : ""}
+        Ryan can review the note later and publish only what you allowed.
       </p>
     </form>
   );

@@ -301,6 +301,7 @@ export default async function AdminAnalyticsPage() {
       </section>
 
       <TrackerHealth />
+      <AttentionFunnel />
 
       {/* Top posts */}
       <section id="top-content" className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -609,6 +610,208 @@ async function TrackerHealth() {
           value={latestEvent ? formatDistanceToNowStrict(new Date(latestEvent.at), { addSuffix: true }) : "none"}
           sub={latestEvent?.kind ?? "no event yet"}
         />
+      </div>
+    </section>
+  );
+}
+
+type EventRow = {
+  kind: string | null;
+  target: string | null;
+  path: string | null;
+  at: string;
+};
+
+function countKinds(rows: EventRow[], kinds: string[]): number {
+  const wanted = new Set(kinds);
+  return rows.reduce((sum, row) => sum + (row.kind && wanted.has(row.kind) ? 1 : 0), 0);
+}
+
+function percent(part: number, whole: number): string {
+  if (whole <= 0) return "0%";
+  return `${Math.round((part / whole) * 100)}%`;
+}
+
+async function AttentionFunnel() {
+  const supabase = await getSupabaseServerClient();
+  const oneDayAgo = subDays(new Date(), 1).toISOString();
+  const sevenDaysAgo = subDays(new Date(), 7).toISOString();
+
+  const [
+    { count: views24 },
+    { count: views7 },
+    { data: events24Raw },
+    { data: events7Raw },
+  ] = await Promise.all([
+    supabase
+      .from("page_views")
+      .select("id", { count: "exact", head: true })
+      .gte("started_at", oneDayAgo),
+    supabase
+      .from("page_views")
+      .select("id", { count: "exact", head: true })
+      .gte("started_at", sevenDaysAgo),
+    supabase
+      .from("page_events")
+      .select("kind, target, path, at")
+      .gte("at", oneDayAgo)
+      .order("at", { ascending: false })
+      .limit(5000),
+    supabase
+      .from("page_events")
+      .select("kind, target, path, at")
+      .gte("at", sevenDaysAgo)
+      .order("at", { ascending: false })
+      .limit(5000),
+  ]);
+
+  const events24 = (events24Raw ?? []) as EventRow[];
+  const events7 = (events7Raw ?? []) as EventRow[];
+
+  const videoPlays7 = countKinds(events7, ["video_play"]);
+  const videoHalf7 = countKinds(events7, ["video_progress_50"]);
+  const videoDone7 = countKinds(events7, ["video_complete"]);
+  const livePlays7 = countKinds(events7, ["live_play", "live_replay_play"]);
+  const shareOpens7 = countKinds(events7, ["share_menu_open"]);
+  const shares7 = countKinds(events7, ["share_copy", "share_native", "share_platform"]);
+  const commentStarts7 = countKinds(events7, ["comment_start", "case_comment_start"]);
+  const commentSends7 = countKinds(events7, ["comment_submit_success", "case_comment_submit_success"]);
+  const supportStarts7 = countKinds(events7, ["support_intent_attempt"]);
+  const supportSaved7 = countKinds(events7, ["support_intent_saved"]);
+  const checkout7 = countKinds(events7, ["support_checkout_open"]);
+  const tipAttempts7 = countKinds(events7, ["tip_submit_attempt"]);
+  const tipWins7 = countKinds(events7, ["tip_submit_success"]);
+  const subscribeAttempts7 = countKinds(events7, ["subscribe_attempt", "follow_capture_attempt"]);
+  const subscribeWins7 = countKinds(events7, ["subscribe_success", "follow_capture_success"]);
+  const reactions7 = countKinds(events7, ["reaction_toggle"]);
+
+  const topEventCounts = new Map<string, number>();
+  for (const event of events7) {
+    if (!event.kind) continue;
+    topEventCounts.set(event.kind, (topEventCounts.get(event.kind) ?? 0) + 1);
+  }
+  const topEvents = Array.from(topEventCounts.entries())
+    .map(([kind, n]) => ({ kind, n }))
+    .sort((a, b) => b.n - a.n)
+    .slice(0, 12);
+
+  const attentionActions = [
+    {
+      label: "Video retention",
+      href: "/videos",
+      value: `${percent(videoHalf7, videoPlays7)} hit halfway`,
+      sub: `${fmt(videoPlays7)} plays · ${fmt(videoHalf7)} halfway · ${fmt(videoDone7)} complete`,
+    },
+    {
+      label: "Live pull",
+      href: "/admin/live",
+      value: fmt(livePlays7),
+      sub: "live or replay plays",
+    },
+    {
+      label: "Share conversion",
+      href: "#top-content",
+      value: `${percent(shares7, shareOpens7)} complete`,
+      sub: `${fmt(shareOpens7)} menus · ${fmt(shares7)} shares/copies`,
+    },
+    {
+      label: "Public conversation",
+      href: "#recent-comments",
+      value: `${percent(commentSends7, commentStarts7)} posted`,
+      sub: `${fmt(commentStarts7)} starts · ${fmt(commentSends7)} submitted`,
+    },
+    {
+      label: "Support intent",
+      href: "/support#support-mission",
+      value: `${percent(supportSaved7, supportStarts7)} saved`,
+      sub: `${fmt(supportStarts7)} starts · ${fmt(checkout7)} checkout opens`,
+    },
+    {
+      label: "Subscriber capture",
+      href: "#recent-subscribers",
+      value: `${percent(subscribeWins7, subscribeAttempts7)} captured`,
+      sub: `${fmt(subscribeAttempts7)} attempts · ${fmt(subscribeWins7)} success`,
+    },
+    {
+      label: "Direct tips",
+      href: "/admin/tips",
+      value: `${percent(tipWins7, tipAttempts7)} received`,
+      sub: `${fmt(tipAttempts7)} starts · ${fmt(tipWins7)} submitted`,
+    },
+    {
+      label: "Reactions",
+      href: "#recent-comments",
+      value: fmt(reactions7),
+      sub: "public proof taps",
+    },
+  ];
+
+  return (
+    <section
+      id="attention-funnel"
+      className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
+    >
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h2 className="text-lg font-bold tracking-tight">Attention funnel</h2>
+          <p className="mt-1 text-xs text-[var(--color-muted)]">
+            The public path: watch, react, share, comment, subscribe, support.
+          </p>
+        </div>
+        <span className="rounded-full bg-[var(--color-accent-soft)] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[var(--color-accent)]">
+          Last 7 days
+        </span>
+      </div>
+
+      <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <Stat label="Views (24h)" value={fmt(views24)} sub={`${fmt(events24.length)} events`} />
+        <Stat label="Views (7d)" value={fmt(views7)} sub={`${fmt(events7.length)} events`} />
+        <Stat label="Shares (7d)" value={fmt(shares7)} sub={`${fmt(shareOpens7)} menus opened`} />
+        <Stat label="Public actions" value={fmt(commentSends7 + reactions7)} sub="comments + reactions" />
+      </div>
+
+      <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div>
+          <h3 className="text-base font-bold tracking-tight">Conversion checkpoints</h3>
+          <div className="mt-3 space-y-2">
+            {attentionActions.map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="block rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-3 transition hover:border-[var(--color-accent)]"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-sm font-bold">{item.label}</span>
+                  <span className="text-sm font-mono font-bold text-[var(--color-accent)]">
+                    {item.value}
+                  </span>
+                </div>
+                <p className="mt-1 text-xs text-[var(--color-muted)]">{item.sub}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <h3 className="text-base font-bold tracking-tight">Top event names</h3>
+          {topEvents.length === 0 ? (
+            <p className="mt-3 text-sm text-[var(--color-muted)] italic">
+              No named attention events yet.
+            </p>
+          ) : (
+            <ol className="mt-3 space-y-1.5">
+              {topEvents.map((event, i) => (
+                <li key={event.kind} className="flex items-center gap-3 text-sm">
+                  <span className="w-5 text-xs font-bold text-[var(--color-muted)]">
+                    {i + 1}
+                  </span>
+                  <span className="flex-1 truncate font-mono">{event.kind}</span>
+                  <span className="font-bold tabular-nums">{fmt(event.n)}</span>
+                </li>
+              ))}
+            </ol>
+          )}
+        </div>
       </div>
     </section>
   );

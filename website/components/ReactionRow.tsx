@@ -3,6 +3,7 @@
 import { useState, useTransition, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
+import { trackEvent } from "@/lib/analytics";
 
 type Kind =
   | "amen"
@@ -66,6 +67,12 @@ export function ReactionRow({
       ...prev,
       [kind]: Math.max(0, (prev[kind] ?? 0) + (isOn ? -1 : 1)),
     }));
+    trackEvent("reaction_toggle", {
+      target_type: "post",
+      target_id: postId,
+      reaction: kind,
+      active: !isOn,
+    });
 
     startTransition(async () => {
       const supabase = getSupabaseBrowserClient();

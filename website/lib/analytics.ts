@@ -31,16 +31,23 @@ export function trackEvent(name: string, props: Props = {}): void {
     if (sid) {
       const body = JSON.stringify({
         session_id: sid,
-        path: window.location.pathname,
+        path: `${window.location.pathname}${window.location.search}`,
         kind: name,
         target: JSON.stringify(props).slice(0, 480),
       });
       if (navigator.sendBeacon) {
-        navigator.sendBeacon(
+        const queued = navigator.sendBeacon(
           "/api/track-event",
           new Blob([body], { type: "application/json" }),
         );
+        if (queued) return;
       }
+      void fetch("/api/track-event", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body,
+        keepalive: true,
+      });
     }
   } catch {
     /* noop */

@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
+import { trackEvent } from "@/lib/analytics";
 
 type Props = {
   postId: string;
@@ -17,6 +18,7 @@ type State =
 export function CommentForm({ postId, signedIn }: Props) {
   const [state, setState] = useState<State>({ kind: "idle" });
   const [body, setBody] = useState("");
+  const started = useRef(false);
 
   if (!signedIn) {
     return (
@@ -38,6 +40,7 @@ export function CommentForm({ postId, signedIn }: Props) {
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    trackEvent("comment_submit_attempt", { post_id: postId });
     setState({ kind: "submitting" });
     try {
       const res = await fetch("/api/comments", {
@@ -47,12 +50,15 @@ export function CommentForm({ postId, signedIn }: Props) {
       });
       const json = await res.json();
       if (!res.ok) {
+        trackEvent("comment_submit_failed", { post_id: postId });
         setState({ kind: "error", message: json.error ?? "Could not post comment." });
         return;
       }
+      trackEvent("comment_submit_success", { post_id: postId });
       setState({ kind: "success" });
       setBody("");
     } catch {
+      trackEvent("comment_submit_failed", { post_id: postId });
       setState({ kind: "error", message: "Network error. Please try again." });
     }
   }
@@ -69,7 +75,14 @@ export function CommentForm({ postId, signedIn }: Props) {
         maxLength={4000}
         rows={4}
         value={body}
-        onChange={(e) => setBody(e.target.value)}
+        onChange={(e) => {
+          const next = e.target.value;
+          setBody(next);
+          if (next.trim().length > 0 && !started.current) {
+            started.current = true;
+            trackEvent("comment_start", { post_id: postId });
+          }
+        }}
         placeholder="Disagree without threats. Sign with your name."
         className="w-full rounded-lg border border-[var(--color-line)] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-accent)]"
       />

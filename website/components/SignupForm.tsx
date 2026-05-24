@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 type State =
   | { kind: "idle" }
@@ -15,7 +16,10 @@ export function SignupForm({ emailEnabled = false }: { emailEnabled?: boolean })
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const channel =
+      email && phone ? "email_phone" : email ? "email" : phone ? "phone" : "empty";
     if (!email && !phone) {
+      trackEvent("subscribe_failed", { channel, reason: "empty" });
       setState({
         kind: "error",
         message: emailEnabled
@@ -24,6 +28,7 @@ export function SignupForm({ emailEnabled = false }: { emailEnabled?: boolean })
       });
       return;
     }
+    trackEvent("subscribe_attempt", { channel });
     setState({ kind: "submitting" });
     try {
       const res = await fetch("/api/subscribe", {
@@ -33,9 +38,15 @@ export function SignupForm({ emailEnabled = false }: { emailEnabled?: boolean })
       });
       const json = await res.json();
       if (!res.ok) {
+        trackEvent("subscribe_failed", { channel, reason: "api" });
         setState({ kind: "error", message: json.error ?? "Something went wrong." });
         return;
       }
+      trackEvent("subscribe_success", {
+        channel,
+        email_action: json.email_action ?? "none",
+        phone_action: json.phone_action ?? "none",
+      });
       setState({
         kind: "success",
         message: json.message ?? "You're on the list.",
@@ -43,6 +54,7 @@ export function SignupForm({ emailEnabled = false }: { emailEnabled?: boolean })
       setEmail("");
       setPhone("");
     } catch {
+      trackEvent("subscribe_failed", { channel, reason: "network" });
       setState({ kind: "error", message: "Network error. Please try again." });
     }
   }

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
+import { trackEvent } from "@/lib/analytics";
 
 const SESSION_KEY = "rn_session_id";
 
@@ -105,6 +106,12 @@ export function ReactionBar({
       setTotal((t) => Math.max(0, t + (had ? -1 : 1)));
 
       if (!sid.current) sid.current = getSessionId();
+      trackEvent("reaction_toggle", {
+        target_type: targetType,
+        target_id: targetId.slice(0, 120),
+        reaction: kind,
+        active: !had,
+      });
       const supabase = getSupabaseBrowserClient();
       const { data } = await supabase.rpc("er_toggle", {
         p_target_type: targetType,

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { LivePlayer } from "@/components/LivePlayer";
 import { SignupForm } from "@/components/SignupForm";
+import { ShareButton } from "@/components/ShareButton";
 import { getLiveStreamBySlug, liveStatusLabel, liveUrl } from "@/lib/live";
 import { SITE } from "@/lib/site";
 
@@ -102,6 +103,7 @@ export default async function LiveStreamPage({
             >
               Support the work
             </Link>
+            <ShareButton url={liveUrl(stream.slug)} title={stream.title} compact />
             <Link
               href="/videos"
               className="rounded-full border border-[var(--color-line)] px-4 py-2 text-sm font-black hover:border-[var(--color-accent)]"
