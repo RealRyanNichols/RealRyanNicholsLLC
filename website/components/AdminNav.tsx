@@ -3,13 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-// Grouped admin sections. Kept short + scannable so the bar reads at a
-// glance and works as a horizontal scroller on mobile.
+// Grouped admin sections. On desktop this is a readable vertical sidebar
+// (every section visible at once); on mobile it's a compact wrapping bar
+// (no horizontal scrolling, nothing hidden off-screen).
 const GROUPS: { label: string; items: { href: string; label: string }[] }[] = [
-  {
-    label: "Money",
-    items: [{ href: "/admin/donations", label: "Donations" }],
-  },
+  { label: "Money", items: [{ href: "/admin/donations", label: "Donations" }] },
   {
     label: "Audience",
     items: [
@@ -21,7 +19,7 @@ const GROUPS: { label: string; items: { href: string; label: string }[] }[] = [
     label: "Publish",
     items: [
       { href: "/admin/posts", label: "Posts" },
-      { href: "/admin/new", label: "+ New" },
+      { href: "/admin/new", label: "New post" },
     ],
   },
   {
@@ -33,7 +31,7 @@ const GROUPS: { label: string; items: { href: string; label: string }[] }[] = [
     ],
   },
   {
-    label: "Case + people",
+    label: "Case & people",
     items: [
       { href: "/admin/users", label: "Users" },
       { href: "/admin/case", label: "Case docs" },
@@ -55,39 +53,60 @@ export function AdminNav() {
     href === "/admin" ? pathname === "/admin" : pathname.startsWith(href);
 
   return (
-    <nav
-      aria-label="Admin sections"
-      className="sticky top-16 z-20 -mx-4 mb-6 border-b border-[var(--color-line)] bg-[var(--color-paper)]/90 backdrop-blur-xl px-4"
-    >
-      <div className="mx-auto max-w-6xl flex items-stretch gap-1 overflow-x-auto py-2 no-scrollbar">
-        {GROUPS.map((g, gi) => (
-          <div key={g.label} className="flex items-center gap-1">
-            {gi > 0 ? (
-              <span className="mx-1 h-5 w-px bg-[var(--color-line)] flex-shrink-0" aria-hidden />
-            ) : null}
-            <span className="text-[9px] uppercase tracking-wider text-[var(--color-muted)] font-bold px-1 hidden sm:inline whitespace-nowrap">
+    <>
+      {/* Mobile: compact wrapping bar — everything visible, no slider */}
+      <div className="lg:hidden sticky top-16 z-20 -mx-4 mb-5 border-b border-[var(--color-line)] bg-[var(--color-paper)]/90 backdrop-blur-xl px-4 py-3">
+        <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--color-muted)] font-bold mb-2">
+          Admin
+        </p>
+        <div className="flex flex-wrap gap-1.5">
+          {GROUPS.flatMap((g) => g.items).map((it) => (
+            <Link
+              key={it.href}
+              href={it.href}
+              className={[
+                "rounded-full px-3 py-1.5 text-xs font-bold transition",
+                isActive(it.href)
+                  ? "bg-[var(--color-accent)] text-[var(--color-paper)]"
+                  : "bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:bg-[var(--color-accent-soft)] hover:text-[var(--color-accent)]",
+              ].join(" ")}
+            >
+              {it.label}
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* Desktop: readable vertical sidebar — all sections at a glance */}
+      <nav className="hidden lg:block lg:sticky lg:top-20 text-sm">
+        <p className="px-3 mb-4 text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+          Admin
+        </p>
+        {GROUPS.map((g) => (
+          <div key={g.label} className="mb-5">
+            <p className="px-3 mb-1.5 text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
               {g.label}
-            </span>
-            {g.items.map((it) => {
-              const active = isActive(it.href);
-              return (
-                <Link
-                  key={it.href}
-                  href={it.href}
-                  className={[
-                    "rounded-full px-3 py-1.5 text-xs font-bold whitespace-nowrap transition",
-                    active
-                      ? "bg-[var(--color-accent)] text-[var(--color-paper)]"
-                      : "bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:bg-[var(--color-accent-soft)] hover:text-[var(--color-accent)]",
-                  ].join(" ")}
-                >
-                  {it.label}
-                </Link>
-              );
-            })}
+            </p>
+            <ul className="space-y-0.5">
+              {g.items.map((it) => (
+                <li key={it.href}>
+                  <Link
+                    href={it.href}
+                    className={[
+                      "block rounded-lg px-3 py-2 font-semibold transition",
+                      isActive(it.href)
+                        ? "bg-[var(--color-accent)] text-[var(--color-paper)]"
+                        : "text-[var(--color-ink-soft)] hover:bg-[var(--color-accent-soft)] hover:text-[var(--color-accent)]",
+                    ].join(" ")}
+                  >
+                    {it.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         ))}
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 }

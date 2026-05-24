@@ -28,9 +28,11 @@ export default async function AdminLayout({
   }
 
   return (
-    <div>
-      <AdminNav />
-      {children}
+    <div className="lg:flex lg:gap-6">
+      <aside className="lg:w-56 lg:flex-shrink-0 lg:border-r lg:border-[var(--color-line)] lg:px-4 lg:pt-6 lg:min-h-[calc(100vh-4rem)]">
+        <AdminNav />
+      </aside>
+      <div className="flex-1 min-w-0">{children}</div>
     </div>
   );
 }

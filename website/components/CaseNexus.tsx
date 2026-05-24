@@ -421,7 +421,7 @@ export function CaseNexus({ initial }: { initial: GraphPayload }) {
         </svg>
 
         {/* Top-left: live counts + legend */}
-        <div className="absolute top-3 left-3 z-10 max-w-[14rem]">
+        <div className="absolute top-3 left-3 z-10 max-w-[14rem] hidden sm:block">
           <div className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#7fe3a9] flex items-center gap-1.5">
             <span className="inline-block w-2 h-2 rounded-full bg-[#7fe3a9] animate-pulse" />
             Case Nexus · live
@@ -440,7 +440,7 @@ export function CaseNexus({ initial }: { initial: GraphPayload }) {
         </div>
 
         {/* Top-right: search */}
-        <div className="absolute top-3 right-3 z-10 w-[20rem] max-w-[60vw]">
+        <div className="absolute top-3 right-3 left-3 sm:left-auto z-10 sm:w-[20rem]">
           <div className="relative">
             <input
               type="search"

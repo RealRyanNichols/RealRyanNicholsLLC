@@ -5,6 +5,7 @@ import { getOgImage } from "@/lib/og-images";
 import { SITE } from "@/lib/site";
 import { CaseGeographyMap, type GeoPayload } from "@/components/CaseGeographyMap";
 import { ShareRail } from "@/components/ShareRail";
+import { ReactionBar } from "@/components/ReactionBar";
 
 export const revalidate = 300;
 
@@ -78,6 +79,9 @@ export default async function CaseGeographyPage() {
           url={`${SITE.url}/case/geography`}
           title="Every J6 defendant by home state — the prosecution wave on the US map: realryannichols.com/case/geography"
         />
+      </div>
+      <div className="mt-3">
+        <ReactionBar targetType="page" targetId="case-geography" />
       </div>
 
       <section className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3">

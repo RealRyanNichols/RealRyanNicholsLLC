@@ -97,8 +97,8 @@ export default async function AdminDonationsPage() {
 
           <section className="mt-8">
             <h2 className="text-lg font-bold tracking-tight mb-3">Recent gifts</h2>
-            <div className="rounded-2xl border border-[var(--color-line)] overflow-hidden">
-              <table className="w-full text-sm">
+            <div className="rounded-2xl border border-[var(--color-line)] overflow-x-auto">
+              <table className="w-full min-w-[28rem] text-sm">
                 <thead className="bg-[var(--color-surface)] text-[10px] uppercase tracking-wider text-[var(--color-muted)]">
                   <tr>
                     <th className="text-left px-4 py-2 font-bold">When</th>

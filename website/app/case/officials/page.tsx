@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { ShareRail } from "@/components/ShareRail";
+import { ReactionBar } from "@/components/ReactionBar";
 import { SITE } from "@/lib/site";
 
 export const revalidate = 300;
@@ -140,6 +141,9 @@ export default async function AccountabilityIndexPage() {
           url={`${SITE.url}/case/officials`}
           title="The Accountability Index — everyone named in the record of United States v. Nichols, by agency: realryannichols.com/case/officials"
         />
+      </div>
+      <div className="mt-3">
+        <ReactionBar targetType="page" targetId="case-officials" />
       </div>
 
       <div className="mt-10 space-y-10">

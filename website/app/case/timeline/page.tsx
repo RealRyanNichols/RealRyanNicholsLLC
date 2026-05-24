@@ -5,6 +5,7 @@ import { getOgImage } from "@/lib/og-images";
 import { SITE } from "@/lib/site";
 import { CaseTimeline, type TimelinePayload } from "@/components/CaseTimeline";
 import { ShareRail } from "@/components/ShareRail";
+import { ReactionBar } from "@/components/ReactionBar";
 
 // 5-minute ISR — the timeline shifts only when new defendants get
 // matched in or claimants edit their pages.
@@ -94,6 +95,9 @@ export default async function CaseTimelinePage() {
           url={`${SITE.url}/case/timeline`}
           title="The J6 sentencing wave — every prosecution on the time axis: realryannichols.com/case/timeline"
         />
+      </div>
+      <div className="mt-3">
+        <ReactionBar targetType="page" targetId="case-timeline" />
       </div>
 
       {/* Cross-links to the other lenses */}
