@@ -5,6 +5,7 @@ import { getOgImage } from "@/lib/og-images";
 import { SITE } from "@/lib/site";
 import { CaseNexus } from "@/components/CaseNexus";
 import { ShareRail } from "@/components/ShareRail";
+import { ReactionBar } from "@/components/ReactionBar";
 
 // 5-minute ISR — the seed is the top co-defendant clusters, which only
 // shift when new defendants get matched in. No need to hit Supabase on
@@ -91,6 +92,9 @@ export default async function CaseNexusPage() {
           url={`${SITE.url}/case/nexus`}
           title="The Case Nexus — every J6 defendant, every case, every document, in one interactive graph: realryannichols.com/case/nexus"
         />
+      </div>
+      <div className="mt-3">
+        <ReactionBar targetType="page" targetId="case-nexus" />
       </div>
 
       {/* Cross-links to the rest of the room */}
