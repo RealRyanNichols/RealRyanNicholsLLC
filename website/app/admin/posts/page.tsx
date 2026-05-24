@@ -42,7 +42,7 @@ export default async function AdminPostsPage({
   let query = supabase
     .from("posts")
     .select(
-      "id, slug, type, title, body, pinned, status, category, published_at, created_at, views_count, shares_count",
+      "id, slug, type, title, body, pinned, status, category, mux_status, mux_playback_id, published_at, created_at, views_count, shares_count",
     )
     .order("pinned", { ascending: false })
     .order("published_at", { ascending: false, nullsFirst: false })
@@ -137,6 +137,8 @@ export default async function AdminPostsPage({
                 }
                 type={p.type}
                 category={p.category}
+                muxStatus={p.mux_status}
+                muxPlaybackId={p.mux_playback_id}
                 pinned={!!p.pinned}
                 status={p.status}
                 viewsCount={p.views_count ?? 0}

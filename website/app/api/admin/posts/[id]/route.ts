@@ -49,11 +49,29 @@ export async function PATCH(
   // If publishing a draft for the first time, set published_at.
   const patch: Record<string, unknown> = { ...parsed.data };
   if (parsed.data.status === "published") {
-    const { data: existing } = await supabase
+    const { data: existing, error: existingError } = await supabase
       .from("posts")
-      .select("published_at")
+      .select("published_at, type, mux_status, mux_playback_id")
       .eq("id", id)
       .maybeSingle();
+    if (existingError) {
+      return NextResponse.json(
+        { error: existingError.message || "Could not load post." },
+        { status: 500 },
+      );
+    }
+    if (!existing) {
+      return NextResponse.json({ error: "Post not found." }, { status: 404 });
+    }
+    if (
+      existing.type === "video" &&
+      (existing.mux_status !== "ready" || !existing.mux_playback_id)
+    ) {
+      return NextResponse.json(
+        { error: "This video is not ready to publish yet." },
+        { status: 409 },
+      );
+    }
     if (existing && !existing.published_at) {
       patch.published_at = new Date().toISOString();
     }

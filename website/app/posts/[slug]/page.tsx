@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { format } from "date-fns";
 import { getPostBySlug, getPublishedPosts, getCommentCount } from "@/lib/posts";
-import { PostBody } from "@/components/PostBody";
 import { ShareButton } from "@/components/ShareButton";
 import { PostStats } from "@/components/PostStats";
 import { ViewTracker } from "@/components/ViewTracker";
@@ -15,7 +14,7 @@ import { SignupForm } from "@/components/SignupForm";
 import { PostLivePulse, PostFollowCapture } from "@/components/PostLivePulse";
 import { ReadNext } from "@/components/ReadNext";
 import { NotifySubscribersButton } from "@/components/NotifySubscribersButton";
-import { VideoPlayer } from "@/components/VideoPlayer";
+import { PostMain } from "@/components/PostMain";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { SITE } from "@/lib/site";
 import { muxThumbnailUrl } from "@/lib/mux";
@@ -67,25 +66,13 @@ export async function generateMetadata(props: {
       images: [{ url: ogImage, width: 1200, height: 630, alt: displayTitle }],
     },
     twitter: {
-      card: post.type === "video" ? "player" : "summary_large_image",
+      card: "summary_large_image",
       title: displayTitle,
       description: excerpt,
       images: [ogImage],
     },
     alternates: { canonical: `/posts/${post.slug}` },
   };
-
-  // Add og:video tags for video posts so Facebook/LinkedIn can embed.
-  if (post.type === "video" && post.mux_playback_id) {
-    meta.openGraph!.videos = [
-      {
-        url: `https://stream.mux.com/${post.mux_playback_id}.m3u8`,
-        type: "application/x-mpegURL",
-        width: 1280,
-        height: 720,
-      },
-    ];
-  }
 
   return meta;
 }
@@ -134,7 +121,7 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
     ...(post.type === "video" && post.mux_playback_id
       ? {
           thumbnailUrl: muxThumbnailUrl(post.mux_playback_id, { width: 1200 }),
-          contentUrl: `https://stream.mux.com/${post.mux_playback_id}.m3u8`,
+          embedUrl: `${SITE.url}/posts/${post.slug}`,
           duration: post.duration_seconds
             ? `PT${Math.round(post.duration_seconds)}S`
             : undefined,
@@ -242,69 +229,4 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
       </aside>
     </div>
   );
-}
-
-function PostMain({ post }: { post: Awaited<ReturnType<typeof getPostBySlug>> }) {
-  if (!post) return null;
-
-  if (post.type === "video") {
-    const ready = post.mux_status === "ready" && !!post.mux_playback_id;
-    return (
-      <>
-        {ready ? (
-          <VideoPlayer
-            playbackId={post.mux_playback_id!}
-            poster={muxThumbnailUrl(post.mux_playback_id!, { width: 1280, time: 1 })}
-            title={post.title ?? undefined}
-          />
-        ) : (
-          <div className="aspect-video w-full rounded-lg bg-black/90 flex items-center justify-center text-white text-sm">
-            {post.mux_status === "errored"
-              ? "Video failed to process."
-              : "Video is still processing — refresh in a minute."}
-          </div>
-        )}
-        {post.body ? (
-          <div className="mt-5">
-            <PostBody body={post.body} />
-          </div>
-        ) : null}
-      </>
-    );
-  }
-
-  if (post.type === "photo") {
-    const media = post.media ?? [];
-    return (
-      <>
-        <div className="space-y-3">
-          {media.map((m) => (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              key={m.url}
-              src={m.url}
-              alt={m.alt ?? ""}
-              className="w-full rounded-lg border border-[var(--color-line)]"
-              width={m.width}
-              height={m.height}
-            />
-          ))}
-        </div>
-        {post.body ? (
-          <div className="mt-5">
-            <PostBody body={post.body} />
-          </div>
-        ) : null}
-      </>
-    );
-  }
-
-  if (post.type === "note") {
-    return (
-      <p className="text-xl leading-relaxed whitespace-pre-wrap">{post.body}</p>
-    );
-  }
-
-  // text
-  return <PostBody body={post.body} />;
 }
