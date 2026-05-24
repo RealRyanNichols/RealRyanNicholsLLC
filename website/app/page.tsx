@@ -72,13 +72,14 @@ export default async function HomePage({
           className="block rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-5 hover:bg-[var(--color-blue)] hover:text-[var(--color-paper)] transition group"
         >
           <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-blue)] group-hover:text-[var(--color-paper)]">
-            J6 tip line
+            The tip line
           </p>
           <p className="mt-1.5 text-base font-bold text-[var(--color-ink)] group-hover:text-[var(--color-paper)] leading-tight">
-            Got a tip? Anonymous. Free.
+            Got a story? Send it.
           </p>
           <p className="mt-1 text-xs text-[var(--color-ink-soft)] group-hover:text-[var(--color-paper)]">
-            Photos, documents, names, stories. Ryan reads every one. →
+            Local, national, worldwide — or a J6 case. Anonymous, free. Ryan
+            reads every one. →
           </p>
         </Link>
 

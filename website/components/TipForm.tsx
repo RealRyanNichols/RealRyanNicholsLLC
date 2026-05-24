@@ -7,15 +7,15 @@ type Category = "j6" | "national" | "local" | "other";
 
 const CATEGORIES: { value: Category; label: string; blurb: string }[] = [
   { value: "j6", label: "J6 case", blurb: "A January 6 defendant, case, or detention story." },
-  { value: "national", label: "National news", blurb: "A national story, official, or pattern worth exposing." },
+  { value: "national", label: "National / world news", blurb: "A national or global story, official, or pattern worth exposing." },
   { value: "local", label: "Local news", blurb: "Something happening in your town or state." },
   { value: "other", label: "Other", blurb: "Anything else you think we should see." },
 ];
 
-export function TipForm() {
+export function TipForm({ defaultCategory = "national" }: { defaultCategory?: Category } = {}) {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [category, setCategory] = useState<Category>("j6");
+  const [category, setCategory] = useState<Category>(defaultCategory);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
