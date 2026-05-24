@@ -20,7 +20,11 @@ export default async function HomePage({
     posts.map(async (p) => [p.id, await getCommentCount(p.id)] as const),
   );
   const countMap = new Map(counts);
-  const signupDisabled = !SITE.mailingAddress;
+  const emailSignupEnabled = Boolean(
+    SITE.mailingAddress &&
+      process.env.RESEND_API_KEY &&
+      process.env.RESEND_FROM_EMAIL,
+  );
 
   // The feed renders strictly Ryan's posts in chronological order — no
   // pinned floating, no J6 activity ticker, no Case Builder banner.
@@ -64,7 +68,7 @@ export default async function HomePage({
       </div>
       <aside className="space-y-5">
         <VerseSidebar />
-        <SignupForm disabled={signupDisabled} />
+        <SignupForm emailEnabled={emailSignupEnabled} />
 
         {/* Send-a-tip CTA — prominent invite for the public to participate */}
         <Link

@@ -232,7 +232,13 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
       </article>
       <aside className="space-y-5">
         <VerseSidebar />
-        <SignupForm />
+        <SignupForm
+          emailEnabled={Boolean(
+            SITE.mailingAddress &&
+              process.env.RESEND_API_KEY &&
+              process.env.RESEND_FROM_EMAIL,
+          )}
+        />
       </aside>
     </div>
   );
