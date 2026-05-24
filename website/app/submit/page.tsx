@@ -45,7 +45,16 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function SubmitPage() {
+export default async function SubmitPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ type?: string; about?: string }>;
+}) {
+  const sp = await searchParams;
+  // Entry point sets the default category: J6-area links pass ?type=j6,
+  // everything else (Feed, fights, direct) defaults to general news.
+  const defaultCategory = sp.type === "j6" ? "j6" : "national";
+
   return (
     <article className="mx-auto max-w-2xl px-4 py-10">
       <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
@@ -76,7 +85,7 @@ export default function SubmitPage() {
       </p>
 
       <div className="mt-8">
-        <TipForm />
+        <TipForm defaultCategory={defaultCategory} />
       </div>
     </article>
   );

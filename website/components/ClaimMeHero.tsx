@@ -74,7 +74,7 @@ export function ClaimMeHero({
           I am {firstName} — claim this profile →
         </Link>
         <Link
-          href={`/submit?about=${encodeURIComponent(name)}`}
+          href={`/submit?type=j6&about=${encodeURIComponent(name)}`}
           className="block rounded-xl border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-4 text-center font-bold text-base sm:text-lg hover:bg-[var(--color-blue-strong)] transition"
         >
           Not me — send a tip →
