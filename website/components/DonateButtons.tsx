@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { trackEvent } from "@/lib/analytics";
 
-// $10 / $25 / $50 / $100 / $250 + a custom amount. When the native-checkout
-// flag is on, each starts a Stripe Checkout Session via /api/checkout/donate;
-// otherwise the chips open the existing hosted Payment Link.
-const TIERS = [10, 25, 50, 100, 250];
+// $5 → $1,000 + a custom amount. When the native-checkout flag is on, each
+// starts a Stripe Checkout Session via /api/checkout/donate; otherwise the
+// chips open the existing hosted Payment Link.
+const TIERS = [5, 25, 50, 75, 100, 250, 500, 1000];
 
 export function DonateButtons({ donateUrl }: { donateUrl?: string }) {
   const native = process.env.NEXT_PUBLIC_STRIPE_NATIVE_CHECKOUT === "1";
@@ -70,7 +70,7 @@ export function DonateButtons({ donateUrl }: { donateUrl?: string }) {
 
   return (
     <div className="relative mt-5">
-      <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
+      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
         {TIERS.map((a) => (
           <button
             key={a}
@@ -79,7 +79,7 @@ export function DonateButtons({ donateUrl }: { donateUrl?: string }) {
             onClick={() => pickTier(a)}
             className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-paper)] py-3 text-base font-bold text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-paper)] transition disabled:opacity-60"
           >
-            ${a}
+            ${a.toLocaleString()}
           </button>
         ))}
       </div>
