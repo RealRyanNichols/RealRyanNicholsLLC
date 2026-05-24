@@ -83,7 +83,6 @@ export default async function J6MissionPage() {
     <>
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <article className="mx-auto max-w-3xl px-4 py-12">
