@@ -1,11 +1,11 @@
 export const VIDEO_CHANNELS = [
-  "January 6",
-  "Political analysis",
+  "J6",
   "Local investigations",
   "Family",
   "Fishing",
-  "Case builder",
+  "Political",
   "Community",
+  "Case builder",
   "Behind the scenes",
 ] as const;
 

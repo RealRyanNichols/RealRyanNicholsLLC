@@ -4,6 +4,8 @@ import Link from "next/link";
 import { LivePlayer } from "@/components/LivePlayer";
 import { SignupForm } from "@/components/SignupForm";
 import { ShareButton } from "@/components/ShareButton";
+import { LiveDiscussion } from "@/components/LiveDiscussion";
+import { PrivateMessageBox } from "@/components/PrivateMessageBox";
 import { getLiveStreamBySlug, liveStatusLabel, liveUrl } from "@/lib/live";
 import { SITE } from "@/lib/site";
 
@@ -123,8 +125,13 @@ export default async function LiveStreamPage({
               {liveUrl(stream.slug)}
             </p>
           </div>
+          <PrivateMessageBox
+            title="Sensitive detail for Ryan?"
+            source="live-detail-sidebar"
+          />
         </aside>
       </section>
+      <LiveDiscussion liveStreamId={stream.id} />
     </main>
   );
 }

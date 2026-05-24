@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
+import { Resend } from "resend";
 import { z } from "zod";
 import { createHash, randomUUID } from "crypto";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { clientIp } from "@/lib/rate-limit";
+import { buildSupportThankYouEmail } from "@/lib/email";
 
 const schema = z.object({
   purpose: z.enum(["site", "video", "children", "officials", "community", "needed"]),
@@ -61,5 +63,31 @@ export async function POST(request: Request) {
     );
   }
 
-  return NextResponse.json({ ok: true, intent_id: intentId });
+  let thank_you_sent = false;
+  const email = parsed.data.email?.trim();
+  const apiKey = process.env.RESEND_API_KEY;
+  const from = process.env.RESEND_FROM_EMAIL;
+  if (email && apiKey && from) {
+    try {
+      const envelope = buildSupportThankYouEmail({
+        displayName: parsed.data.display_name,
+        purpose: parsed.data.purpose,
+        amount: parsed.data.intended_amount,
+        message: parsed.data.message,
+      });
+      const resend = new Resend(apiKey);
+      const { error: sendError } = await resend.emails.send({
+        from,
+        to: email,
+        subject: envelope.subject,
+        html: envelope.html,
+        text: envelope.text,
+      });
+      thank_you_sent = !sendError;
+    } catch {
+      thank_you_sent = false;
+    }
+  }
+
+  return NextResponse.json({ ok: true, intent_id: intentId, thank_you_sent });
 }

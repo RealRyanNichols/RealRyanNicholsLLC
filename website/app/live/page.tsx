@@ -3,6 +3,8 @@ import Link from "next/link";
 import { LivePlayer } from "@/components/LivePlayer";
 import { SignupForm } from "@/components/SignupForm";
 import { ShareButton } from "@/components/ShareButton";
+import { LiveDiscussion } from "@/components/LiveDiscussion";
+import { PrivateMessageBox } from "@/components/PrivateMessageBox";
 import { getActiveLiveStream, liveStatusLabel } from "@/lib/live";
 import { SITE } from "@/lib/site";
 
@@ -54,6 +56,12 @@ export default async function LivePage() {
             </Link>
           </div>
           <SignupForm emailEnabled={emailSignupEnabled} />
+        </section>
+        <section className="mt-6">
+          <PrivateMessageBox
+            title="Need to reach Ryan before the next live?"
+            source="live-page-offline"
+          />
         </section>
       </main>
     );
@@ -118,8 +126,13 @@ export default async function LivePage() {
               Share the link. The attention comes back to RealRyanNichols.com.
             </p>
           </div>
+          <PrivateMessageBox
+            title="Sensitive detail for Ryan?"
+            source="live-page-sidebar"
+          />
         </aside>
       </section>
+      <LiveDiscussion liveStreamId={stream.id} />
     </main>
   );
 }

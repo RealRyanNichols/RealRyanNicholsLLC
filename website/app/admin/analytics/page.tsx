@@ -622,6 +622,10 @@ type EventRow = {
   at: string;
 };
 
+type ViewPathRow = {
+  path: string | null;
+};
+
 function countKinds(rows: EventRow[], kinds: string[]): number {
   const wanted = new Set(kinds);
   return rows.reduce((sum, row) => sum + (row.kind && wanted.has(row.kind) ? 1 : 0), 0);
@@ -630,6 +634,163 @@ function countKinds(rows: EventRow[], kinds: string[]): number {
 function percent(part: number, whole: number): string {
   if (whole <= 0) return "0%";
   return `${Math.round((part / whole) * 100)}%`;
+}
+
+type PostNextCard = {
+  label: string;
+  priority: string;
+  href: string;
+  reason: string;
+  action: string;
+  hook: string;
+  thumbnail: string;
+  metric: string;
+};
+
+function firstMatchingPath(
+  rows: { path: string; views: number }[],
+  prefix: string,
+): { path: string; views: number } | null {
+  return rows.find((row) => row.path.startsWith(prefix)) ?? null;
+}
+
+function buildPostNextCards(opts: {
+  views7: number;
+  shares7: number;
+  shareOpens7: number;
+  commentStarts7: number;
+  commentSends7: number;
+  supportStarts7: number;
+  supportSaved7: number;
+  subscribeAttempts7: number;
+  subscribeWins7: number;
+  videoPlays7: number;
+  videoHalf7: number;
+  livePlays7: number;
+  topPath: { path: string; views: number } | null;
+  topPostPath: { path: string; views: number } | null;
+  topCasePath: { path: string; views: number } | null;
+}): PostNextCard[] {
+  const cards: PostNextCard[] = [];
+  const shareRate = opts.shareOpens7 > 0 ? opts.shares7 / opts.shareOpens7 : 0;
+  const commentRate =
+    opts.commentStarts7 > 0 ? opts.commentSends7 / opts.commentStarts7 : 0;
+  const supportRate =
+    opts.supportStarts7 > 0 ? opts.supportSaved7 / opts.supportStarts7 : 0;
+  const subscribeRate =
+    opts.subscribeAttempts7 > 0
+      ? opts.subscribeWins7 / opts.subscribeAttempts7
+      : 0;
+  const retentionRate =
+    opts.videoPlays7 > 0 ? opts.videoHalf7 / opts.videoPlays7 : 0;
+
+  if (opts.videoPlays7 === 0 || retentionRate < 0.35) {
+    cards.push({
+      label: "Post a short owned video",
+      priority: "Highest leverage",
+      href: "/admin/new",
+      reason:
+        opts.videoPlays7 === 0
+          ? "No video plays in the funnel yet. The site needs a fresh watchable asset."
+          : `Only ${percent(opts.videoHalf7, opts.videoPlays7)} of video plays hit halfway.`,
+      action:
+        "Record a 60-120 second direct-to-camera update. One claim, one receipt, one question for the comments.",
+      hook: "They took me off the platforms. So I built the room where the record lives.",
+      thumbnail: "Ryan at desk, evidence map behind him, bold text: COME TO THE SOURCE",
+      metric: `${fmt(opts.videoPlays7)} plays · ${fmt(opts.videoHalf7)} halfway`,
+    });
+  }
+
+  if (opts.livePlays7 === 0) {
+    cards.push({
+      label: "Schedule the next live room",
+      priority: "Audience habit",
+      href: "/admin/live",
+      reason:
+        "No live plays in the last seven days. A recurring live window trains people to come back.",
+      action:
+        "Create a live room for tonight, announce it, and use the same title format every day.",
+      hook: "Tonight: building the case in public, answering comments, and showing the next record.",
+      thumbnail: "Live console look, red LIVE mark, text: TONIGHT ON REALRYANNICHOLS.COM",
+      metric: `${fmt(opts.livePlays7)} live/replay plays`,
+    });
+  }
+
+  if (shareRate < 0.4 && opts.views7 > 0) {
+    cards.push({
+      label: "Post a shareable receipt",
+      priority: "Distribution",
+      href: "/admin/new",
+      reason: `Share conversion is ${percent(opts.shares7, opts.shareOpens7)} from the funnel.`,
+      action:
+        "Publish one screenshot/document/timeline point with a plain question people can repost.",
+      hook:
+        "Before you argue about January 6, look at this document and tell me what you see.",
+      thumbnail: "Document close-up, highlighted date, text: READ THE RECORD",
+      metric: `${fmt(opts.shareOpens7)} share menus · ${fmt(opts.shares7)} completions`,
+    });
+  }
+
+  if (commentRate < 0.5) {
+    cards.push({
+      label: "Ask a comment-first question",
+      priority: "Public proof",
+      href: opts.topPostPath?.path ?? "/admin/new",
+      reason: `Public conversation is converting at ${percent(opts.commentSends7, opts.commentStarts7)}.`,
+      action:
+        "End the next post with one specific question. Do not ask for general thoughts.",
+      hook: "What is the one piece of evidence you want me to explain on the next live?",
+      thumbnail: "Comment thread screenshot style, text: ANSWER THIS",
+      metric: `${fmt(opts.commentStarts7)} starts · ${fmt(opts.commentSends7)} comments`,
+    });
+  }
+
+  if (supportRate < 0.35) {
+    cards.push({
+      label: "Post a transparent support update",
+      priority: "Money path",
+      href: "/support#support-mission",
+      reason: `Support intent save rate is ${percent(opts.supportSaved7, opts.supportStarts7)}.`,
+      action:
+        "Show exactly what money is needed for and what happens if more comes in than needed.",
+      hook:
+        "I do not want more than I need. Here is what support pays for, and where extra goes.",
+      thumbnail: "Simple ledger board, three columns: NEED, RECEIVED, GIVE BACK",
+      metric: `${fmt(opts.supportStarts7)} starts · ${fmt(opts.supportSaved7)} saved`,
+    });
+  }
+
+  if (subscribeRate < 0.45) {
+    cards.push({
+      label: "Post a go-live signup push",
+      priority: "Return traffic",
+      href: "/live",
+      reason: `Subscriber capture is ${percent(opts.subscribeWins7, opts.subscribeAttempts7)}.`,
+      action:
+        "Make one post whose only job is getting people onto email/SMS for live alerts.",
+      hook:
+        "If they shut down the feed, the alert list is how you know when I go live.",
+      thumbnail: "Phone notification mockup, text: RYAN IS LIVE",
+      metric: `${fmt(opts.subscribeAttempts7)} attempts · ${fmt(opts.subscribeWins7)} captured`,
+    });
+  }
+
+  const hotPath = opts.topCasePath ?? opts.topPostPath ?? opts.topPath;
+  if (hotPath) {
+    cards.push({
+      label: "Follow the hottest page",
+      priority: "Momentum",
+      href: hotPath.path,
+      reason: `${hotPath.path} is pulling the most attention in the last seven days.`,
+      action:
+        "Post a follow-up that sends people back to that exact page and asks them to share one finding.",
+      hook: "This is the page people keep opening. Here is the part they cannot ignore.",
+      thumbnail: "Analytics/map-room look, text: WHY THIS PAGE IS MOVING",
+      metric: `${fmt(hotPath.views)} views`,
+    });
+  }
+
+  return cards.slice(0, 5);
 }
 
 async function AttentionFunnel() {
@@ -642,6 +803,7 @@ async function AttentionFunnel() {
     { count: views7 },
     { data: events24Raw },
     { data: events7Raw },
+    { data: views7Raw },
   ] = await Promise.all([
     supabase
       .from("page_views")
@@ -663,10 +825,26 @@ async function AttentionFunnel() {
       .gte("at", sevenDaysAgo)
       .order("at", { ascending: false })
       .limit(5000),
+    supabase
+      .from("page_views")
+      .select("path")
+      .gte("started_at", sevenDaysAgo)
+      .limit(5000),
   ]);
 
   const events24 = (events24Raw ?? []) as EventRow[];
   const events7 = (events7Raw ?? []) as EventRow[];
+  const pathCounts = new Map<string, number>();
+  for (const view of (views7Raw ?? []) as ViewPathRow[]) {
+    if (!view.path) continue;
+    pathCounts.set(view.path, (pathCounts.get(view.path) ?? 0) + 1);
+  }
+  const topPaths = Array.from(pathCounts.entries())
+    .map(([path, views]) => ({ path, views }))
+    .sort((a, b) => b.views - a.views);
+  const topPath = topPaths[0] ?? null;
+  const topPostPath = firstMatchingPath(topPaths, "/posts/");
+  const topCasePath = firstMatchingPath(topPaths, "/case/");
 
   const videoPlays7 = countKinds(events7, ["video_play"]);
   const videoHalf7 = countKinds(events7, ["video_progress_50"]);
@@ -745,6 +923,23 @@ async function AttentionFunnel() {
       sub: "public proof taps",
     },
   ];
+  const postNextCards = buildPostNextCards({
+    views7: views7 ?? 0,
+    shares7,
+    shareOpens7,
+    commentStarts7,
+    commentSends7,
+    supportStarts7,
+    supportSaved7,
+    subscribeAttempts7,
+    subscribeWins7,
+    videoPlays7,
+    videoHalf7,
+    livePlays7,
+    topPath,
+    topPostPath,
+    topCasePath,
+  });
 
   return (
     <section
@@ -768,6 +963,64 @@ async function AttentionFunnel() {
         <Stat label="Views (7d)" value={fmt(views7)} sub={`${fmt(events7.length)} events`} />
         <Stat label="Shares (7d)" value={fmt(shares7)} sub={`${fmt(shareOpens7)} menus opened`} />
         <Stat label="Public actions" value={fmt(commentSends7 + reactions7)} sub="comments + reactions" />
+      </div>
+
+      <div className="mt-5">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <h3 className="text-base font-bold tracking-tight">What to post next</h3>
+            <p className="mt-1 text-xs text-[var(--color-muted)]">
+              Decision cards generated from the funnel. Each one has the action, hook, and thumbnail brief.
+            </p>
+          </div>
+          <Link
+            href="/admin/new"
+            className="rounded-full bg-[var(--color-accent)] px-4 py-2 text-xs font-black text-[var(--color-paper)]"
+          >
+            Create post
+          </Link>
+        </div>
+        <div className="mt-3 grid gap-3">
+          {postNextCards.map((card, index) => (
+            <Link
+              key={`${card.label}-${index}`}
+              href={card.href}
+              className="block rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4 transition hover:border-[var(--color-accent)]"
+            >
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-wider text-[var(--color-accent)]">
+                    {index + 1}. {card.priority}
+                  </p>
+                  <h4 className="mt-1 text-lg font-black tracking-tight">{card.label}</h4>
+                </div>
+                <span className="rounded-full bg-[var(--color-surface)] px-3 py-1 text-xs font-mono font-bold text-[var(--color-ink-soft)]">
+                  {card.metric}
+                </span>
+              </div>
+              <p className="mt-2 text-sm text-[var(--color-ink-soft)]">{card.reason}</p>
+              <p className="mt-3 text-sm font-semibold text-[var(--color-ink)]">
+                Do next: {card.action}
+              </p>
+              <div className="mt-3 grid gap-2 md:grid-cols-2">
+                <p className="rounded-lg bg-[var(--color-surface)] p-3 text-xs leading-relaxed">
+                  <span className="font-black uppercase tracking-wider text-[var(--color-muted)]">
+                    Hook
+                  </span>
+                  <br />
+                  {card.hook}
+                </p>
+                <p className="rounded-lg bg-[var(--color-surface)] p-3 text-xs leading-relaxed">
+                  <span className="font-black uppercase tracking-wider text-[var(--color-muted)]">
+                    Thumbnail
+                  </span>
+                  <br />
+                  {card.thumbnail}
+                </p>
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
 
       <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">

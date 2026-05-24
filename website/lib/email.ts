@@ -204,3 +204,54 @@ ${footerText(unsubUrl)}`;
 
   return { subject, html, text, headers: listUnsubscribeHeaders(unsubUrl) };
 }
+
+export function buildSupportThankYouEmail(opts: {
+  displayName?: string | null;
+  purpose?: string | null;
+  amount?: string | null;
+  message?: string | null;
+}): EmailEnvelope {
+  const name = opts.displayName?.trim() || "there";
+  const purpose = opts.purpose?.trim() || "the work";
+  const amount = opts.amount?.trim();
+  const message = opts.message?.trim();
+  const subject = "Thank you for supporting Ryan Nichols";
+
+  const text = `Hi ${name},
+
+Thank you for supporting RealRyanNichols.com.
+
+I received your support note${amount ? ` for ${amount}` : ""} marked for: ${purpose}.
+
+${message ? `Your message:\n${message}\n\n` : ""}I read these personally. If you also completed the payment step, thank you. If you only saved the note, the support page will take you to the payment link when you are ready.
+
+Support page: ${SITE.url}/support
+
+— ${SITE.author}`;
+
+  const html = `
+    <div style="${FONT}color:#1a1a1a;max-width:560px;margin:0 auto;padding:24px 16px;">
+      <p style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#7a271a;margin:0 0 10px;">Support received</p>
+      <h1 style="font-size:24px;line-height:1.25;margin:0 0 12px;">Thank you.</h1>
+      <p style="font-size:15px;line-height:1.65;color:#333;margin:0 0 14px;">
+        Hi ${esc(name)}, thank you for supporting RealRyanNichols.com.
+      </p>
+      <p style="font-size:15px;line-height:1.65;color:#444;margin:0 0 14px;">
+        I received your support note${amount ? ` for <strong>${esc(amount)}</strong>` : ""} marked for <strong>${esc(purpose)}</strong>.
+      </p>
+      ${
+        message
+          ? `<blockquote style="border-left:4px solid #d0a24a;margin:18px 0;padding:8px 0 8px 14px;color:#444;font-size:14px;line-height:1.6;">${esc(message)}</blockquote>`
+          : ""
+      }
+      <p style="font-size:14px;line-height:1.6;color:#555;margin:0 0 20px;">
+        I read these personally. If you also completed the payment step, thank you. If you only saved the note, the support page will take you to the payment link when you are ready.
+      </p>
+      <p style="margin:0 0 24px;">
+        <a href="${SITE.url}/support" style="background:#1a1a1a;color:#fff;text-decoration:none;padding:10px 16px;border-radius:8px;display:inline-block;font-weight:700;">Open support page</a>
+      </p>
+    </div>
+  `;
+
+  return { subject, html, text };
+}
