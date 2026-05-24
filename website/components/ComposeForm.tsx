@@ -3,6 +3,8 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
+import { POST_VIDEO_BUCKET, POST_VIDEO_MAX_BYTES, formatBytes } from "@/lib/direct-video";
+import { VIDEO_CHANNELS } from "@/lib/video-channels";
 
 type Tab = "text" | "note" | "photo" | "video";
 
@@ -22,10 +24,10 @@ export type ComposeInitial = {
 };
 
 export function ComposeForm({
-  videoEnabled,
+  muxConfigured,
   initial,
 }: {
-  videoEnabled: boolean;
+  muxConfigured: boolean;
   initial?: ComposeInitial | null;
 }) {
   const [tab, setTab] = useState<Tab>("text");
@@ -67,16 +69,14 @@ export function ComposeForm({
         <TabButton
           active={tab === "video"}
           onClick={() => setTab("video")}
-          disabled={!videoEnabled}
-          title={videoEnabled ? undefined : "Set MUX_TOKEN_ID and MUX_TOKEN_SECRET to enable video."}
         >
-          Video {videoEnabled ? "" : "(disabled)"}
+          Video
         </TabButton>
       </div>
       {tab === "text" && <TextForm />}
       {tab === "note" && <NoteForm />}
       {tab === "photo" && <PhotoForm />}
-      {tab === "video" && videoEnabled && <VideoForm />}
+      {tab === "video" && <VideoForm muxConfigured={muxConfigured} />}
     </div>
   );
 }
@@ -399,11 +399,12 @@ function PhotoForm() {
   );
 }
 
-function VideoForm() {
+function VideoForm({ muxConfigured }: { muxConfigured: boolean }) {
   const router = useRouter();
   const [state, setState] = useState<State>({ kind: "idle" });
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
+  const [category, setCategory] = useState<string>(VIDEO_CHANNELS[0]);
   const [file, setFile] = useState<File | null>(null);
 
   async function onSubmit(e: React.FormEvent) {
@@ -414,10 +415,41 @@ function VideoForm() {
     }
     setState({ kind: "submitting", label: "Creating post…", progress: 0 });
     try {
+      if (!muxConfigured) {
+        if (file.size > POST_VIDEO_MAX_BYTES) {
+          throw new Error(
+            `This fallback uploader accepts up to ${formatBytes(POST_VIDEO_MAX_BYTES)}. Add Mux for larger videos.`
+          );
+        }
+        const supabase = getSupabaseBrowserClient();
+        const ext = sanitizeVideoExtension(file.name);
+        const path = `videos/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+        setState({ kind: "submitting", label: "Uploading owned video file…", progress: 0.1 });
+        const { error } = await supabase.storage
+          .from(POST_VIDEO_BUCKET)
+          .upload(path, file, {
+            contentType: file.type || "video/mp4",
+            upsert: false,
+          });
+        if (error) throw new Error(error.message);
+        const { data: pub } = supabase.storage.from(POST_VIDEO_BUCKET).getPublicUrl(path);
+        setState({ kind: "submitting", label: "Saving draft…", progress: 0.95 });
+        const { post } = await createPost({
+          type: "video",
+          title,
+          body,
+          category,
+          media: [{ url: pub.publicUrl, alt: title }],
+        });
+        router.push(`/admin/posts/${post.id}/preview`);
+        return;
+      }
+
       const { post, mux_upload_url } = await createPost({
         type: "video",
         title,
         body,
+        category,
       });
       if (!mux_upload_url) {
         throw new Error("Mux upload URL missing — server may not be configured.");
@@ -457,9 +489,26 @@ function VideoForm() {
           placeholder="Set the scene — what should viewers know?"
         />
       </Field>
+      <Field label="Channel">
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="w-full rounded-md border border-[var(--color-line)] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-accent)]"
+        >
+          {VIDEO_CHANNELS.map((c) => (
+            <option key={c} value={c}>
+              {c}
+            </option>
+          ))}
+        </select>
+      </Field>
       <Field
         label="Video file"
-        hint="MP4 / MOV / MKV. HD recommended. Mux handles transcoding to adaptive bitrate."
+        hint={
+          muxConfigured
+            ? "MP4 / MOV / MKV. HD recommended. Mux handles transcoding to adaptive bitrate."
+            : `Temporary owned fallback: MP4 / MOV / WebM up to ${formatBytes(POST_VIDEO_MAX_BYTES)}. Larger videos need Mux credentials or a handoff file.`
+        }
       >
         <input
           required
@@ -474,6 +523,14 @@ function VideoForm() {
       <ProgressBar state={state} />
     </form>
   );
+}
+
+function sanitizeVideoExtension(fileName: string): string {
+  const ext = fileName.split(".").pop()?.toLowerCase();
+  if (ext === "mov" || ext === "m4v" || ext === "webm" || ext === "mkv" || ext === "avi") {
+    return ext;
+  }
+  return "mp4";
 }
 
 function SubmitButton({

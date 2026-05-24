@@ -39,6 +39,7 @@ const schema = z.discriminatedUnion("type", [
   baseSchema.extend({
     type: z.literal("video"),
     title: z.string().min(1, "Video posts need a title.").max(200),
+    media: z.array(mediaItemSchema).min(1).max(1).optional(),
   }),
 ]);
 
@@ -68,31 +69,35 @@ export async function POST(request: Request) {
   }
   const input = parsed.data;
 
-  // Video posts need Mux configured. Create the direct upload here and store
-  // the upload_id on the post so the webhook can match it later.
+  // Mux is the preferred video path. If it is not configured yet, admins can
+  // still create a site-owned direct video draft from the post-videos bucket.
   let muxUpload: { id: string; url: string } | null = null;
+  const directVideoMedia =
+    input.type === "video" && input.media?.[0]?.url ? input.media : null;
   if (input.type === "video") {
-    if (!isMuxConfigured()) {
+    if (!directVideoMedia && !isMuxConfigured()) {
       return NextResponse.json(
-        { error: "Video uploads are not configured yet. Set MUX_TOKEN_ID and MUX_TOKEN_SECRET." },
+        { error: "Video streaming is not configured yet. Upload a fallback video file first or set MUX_TOKEN_ID and MUX_TOKEN_SECRET." },
         { status: 503 }
       );
     }
-    const mux = getMuxClient();
-    const upload = await mux.video.uploads.create({
-      cors_origin: process.env.SITE_URL ?? "*",
-      new_asset_settings: {
-        playback_policy: ["public"],
-        encoding_tier: "smart",
-      },
-    });
-    if (!upload.url) {
-      return NextResponse.json(
-        { error: "Mux did not return an upload URL." },
-        { status: 502 }
-      );
+    if (!directVideoMedia) {
+      const mux = getMuxClient();
+      const upload = await mux.video.uploads.create({
+        cors_origin: process.env.SITE_URL ?? "*",
+        new_asset_settings: {
+          playback_policy: ["public"],
+          encoding_tier: "smart",
+        },
+      });
+      if (!upload.url) {
+        return NextResponse.json(
+          { error: "Mux did not return an upload URL." },
+          { status: 502 }
+        );
+      }
+      muxUpload = { id: upload.id, url: upload.url };
     }
-    muxUpload = { id: upload.id, url: upload.url };
   }
 
   const insertRow: Record<string, unknown> = {
@@ -110,6 +115,10 @@ export async function POST(request: Request) {
   };
   if (input.slug) insertRow.slug = input.slug;
   if (input.type === "photo") insertRow.media = input.media;
+  if (input.type === "video" && directVideoMedia) {
+    insertRow.media = directVideoMedia;
+    insertRow.mux_status = "ready";
+  }
   if (input.type === "video" && muxUpload) {
     insertRow.mux_upload_id = muxUpload.id;
     insertRow.mux_status = "uploading";

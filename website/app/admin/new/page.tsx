@@ -81,7 +81,7 @@ export default async function NewPostPage({
         )}
       </p>
       <div className="mt-8">
-        <ComposeForm videoEnabled={isMuxConfigured()} initial={initial} />
+        <ComposeForm muxConfigured={isMuxConfigured()} initial={initial} />
       </div>
     </article>
   );

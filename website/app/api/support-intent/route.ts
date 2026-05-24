@@ -5,7 +5,7 @@ import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { clientIp } from "@/lib/rate-limit";
 
 const schema = z.object({
-  purpose: z.enum(["site", "children", "officials", "community", "needed"]),
+  purpose: z.enum(["site", "video", "children", "officials", "community", "needed"]),
   intended_amount: z.string().max(20).optional().or(z.literal("")),
   display_name: z.string().max(120).optional().or(z.literal("")),
   email: z.string().email("Please enter a valid email.").optional().or(z.literal("")),

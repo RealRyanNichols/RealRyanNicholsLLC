@@ -5,6 +5,7 @@ import { format, formatDistanceToNowStrict, subDays } from "date-fns";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { WorldMap } from "@/components/WorldMap";
 import { flagFor, nameFor } from "@/lib/country-coords";
+import { normalizeVideoChannel } from "@/lib/video-channels";
 
 export const metadata: Metadata = {
   title: "Analytics",
@@ -160,6 +161,20 @@ export default async function AdminAnalyticsPage() {
   const totalPostShares = posts.reduce((s, p) => s + (p.shares_count ?? 0), 0);
   const topByViews = [...posts].sort((a, b) => (b.views_count ?? 0) - (a.views_count ?? 0)).slice(0, 10);
   const topByShares = [...posts].sort((a, b) => (b.shares_count ?? 0) - (a.shares_count ?? 0)).slice(0, 10);
+  const videoPosts = posts.filter((p) => p.type === "video");
+  const videoViews = videoPosts.reduce((s, p) => s + (p.views_count ?? 0), 0);
+  const videoShares = videoPosts.reduce((s, p) => s + (p.shares_count ?? 0), 0);
+  const videoChannelRows = [...videoPosts.reduce((map, p) => {
+    const channel = normalizeVideoChannel(p.category);
+    const existing = map.get(channel) ?? { channel, count: 0, views: 0, shares: 0 };
+    existing.count += 1;
+    existing.views += p.views_count ?? 0;
+    existing.shares += p.shares_count ?? 0;
+    map.set(channel, existing);
+    return map;
+  }, new Map<string, { channel: string; count: number; views: number; shares: number }>()).values()]
+    .sort((a, b) => b.views - a.views || b.shares - a.shares || b.count - a.count)
+    .slice(0, 10);
 
   const caseGrievances = caseGrievancesRaw ?? [];
   const caseEvents = caseEventsRaw ?? [];
@@ -258,6 +273,33 @@ export default async function AdminAnalyticsPage() {
         />
       </section>
 
+      <section className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <Stat
+          href="/videos"
+          label="Videos published"
+          value={fmt(videoPosts.length)}
+          sub={`${fmt(videoViews)} views`}
+        />
+        <Stat
+          href="#video-channels"
+          label="Video shares"
+          value={fmt(videoShares)}
+          sub="owned-site playback"
+        />
+        <Stat
+          href="/admin/new"
+          label="Post a video"
+          value="New"
+          sub="channel + upload"
+        />
+        <Stat
+          href="/admin/posts?filter=draft"
+          label="Draft queue"
+          value="Open"
+          sub="publish queue"
+        />
+      </section>
+
       <TrackerHealth />
 
       {/* Top posts */}
@@ -285,6 +327,32 @@ export default async function AdminAnalyticsPage() {
               : undefined,
           }))}
           emptyText="No shares recorded yet."
+        />
+      </section>
+
+      <section id="video-channels" className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-5">
+        <RankedList
+          title="Video channels by views"
+          rows={videoChannelRows.map((row) => ({
+            href: `/videos#${channelId(row.channel)}`,
+            label: row.channel,
+            value: row.views,
+            sub: `${row.count} video${row.count === 1 ? "" : "s"} · ${row.shares.toLocaleString()} shares`,
+          }))}
+          emptyText="No public videos yet."
+        />
+        <RankedList
+          title="Top videos by views"
+          rows={videoPosts
+            .sort((a, b) => (b.views_count ?? 0) - (a.views_count ?? 0))
+            .slice(0, 10)
+            .map((p) => ({
+              href: `/posts/${p.slug}`,
+              label: p.title ?? p.body?.slice(0, 60) ?? "(video)",
+              value: p.views_count ?? 0,
+              sub: `${normalizeVideoChannel(p.category)} · ${(p.shares_count ?? 0).toLocaleString()} shares`,
+            }))}
+          emptyText="No public videos yet."
         />
       </section>
 
@@ -417,6 +485,10 @@ export default async function AdminAnalyticsPage() {
       </p>
     </article>
   );
+}
+
+function channelId(channel: string): string {
+  return channel.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
 function Stat({

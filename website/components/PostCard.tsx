@@ -6,6 +6,7 @@ import { ShareButton } from "@/components/ShareButton";
 import { PostStats } from "@/components/PostStats";
 import { SITE } from "@/lib/site";
 import { muxThumbnailUrl } from "@/lib/mux";
+import { getDirectVideoUrl } from "@/lib/direct-video";
 
 export function PostCard({
   post,
@@ -98,10 +99,11 @@ function PostCardBody({ post, truncate }: { post: Post; truncate: boolean }) {
 
   if (post.type === "video") {
     const playbackId = post.mux_playback_id;
+    const directVideoUrl = getDirectVideoUrl(post.media);
     const thumb = playbackId
       ? muxThumbnailUrl(playbackId, { width: 1200, time: 1 })
       : post.thumbnail_url ?? null;
-    const isProcessing = post.mux_status && post.mux_status !== "ready";
+    const isProcessing = !directVideoUrl && post.mux_status && post.mux_status !== "ready";
     return (
       <>
         <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-3">
@@ -113,6 +115,14 @@ function PostCardBody({ post, truncate }: { post: Post; truncate: boolean }) {
           {thumb ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={thumb} alt="" className="absolute inset-0 w-full h-full object-cover" />
+          ) : directVideoUrl ? (
+            <video
+              src={directVideoUrl}
+              preload="metadata"
+              muted
+              playsInline
+              className="absolute inset-0 h-full w-full object-cover opacity-80"
+            />
           ) : null}
           <div className="absolute inset-0 flex items-center justify-center">
             {isProcessing ? (

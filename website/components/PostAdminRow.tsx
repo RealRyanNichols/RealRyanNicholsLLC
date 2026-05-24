@@ -13,6 +13,7 @@ export function PostAdminRow({
   category,
   muxStatus,
   muxPlaybackId,
+  directVideoUrl,
   pinned,
   status,
   viewsCount,
@@ -28,6 +29,7 @@ export function PostAdminRow({
   category: string | null;
   muxStatus: string | null;
   muxPlaybackId: string | null;
+  directVideoUrl: string | null;
   pinned: boolean;
   status: string;
   viewsCount: number;
@@ -39,7 +41,9 @@ export function PostAdminRow({
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const isVideo = type === "video";
-  const videoReady = isVideo && muxStatus === "ready" && !!muxPlaybackId;
+  const directVideoReady = isVideo && !!directVideoUrl && !muxPlaybackId;
+  const videoReady =
+    isVideo && ((muxStatus === "ready" && !!muxPlaybackId) || !!directVideoUrl);
   const canPublish = !isVideo || videoReady;
   const inspectHref =
     status === "published" ? `/posts/${slug}` : `/admin/posts/${id}/preview`;
@@ -105,7 +109,13 @@ export function PostAdminRow({
                 DRAFT
               </span>
             ) : null}
-            {isVideo ? <VideoStateBadge status={muxStatus} ready={videoReady} /> : null}
+            {isVideo ? (
+              <VideoStateBadge
+                status={muxStatus}
+                ready={videoReady}
+                direct={directVideoReady}
+              />
+            ) : null}
             {category ? <span className="uppercase">{category}</span> : null}
             <span title={publishedAtAbsolute}>· {publishedAtRelative}</span>
           </div>
@@ -163,7 +173,7 @@ export function PostAdminRow({
               title={
                 canPublish
                   ? "Publish - show in public feed"
-                  : "Video must finish processing before it can be published"
+                  : "Video needs an uploaded file or finished Mux processing before it can be published"
               }
             >
               {videoReady ? "Publish video" : "Publish"}
@@ -204,10 +214,19 @@ export function PostAdminRow({
 function VideoStateBadge({
   status,
   ready,
+  direct,
 }: {
   status: string | null;
   ready: boolean;
+  direct: boolean;
 }) {
+  if (direct) {
+    return (
+      <span className="rounded-full bg-[var(--color-success)] text-[var(--color-paper)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
+        DIRECT FILE READY
+      </span>
+    );
+  }
   if (ready) {
     return (
       <span className="rounded-full bg-[var(--color-success)] text-[var(--color-paper)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">

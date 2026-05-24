@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { getDirectVideoUrl } from "@/lib/direct-video";
 
 const patchSchema = z
   .object({
@@ -51,7 +52,7 @@ export async function PATCH(
   if (parsed.data.status === "published") {
     const { data: existing, error: existingError } = await supabase
       .from("posts")
-      .select("published_at, type, mux_status, mux_playback_id")
+      .select("published_at, type, media, mux_status, mux_playback_id")
       .eq("id", id)
       .maybeSingle();
     if (existingError) {
@@ -65,7 +66,8 @@ export async function PATCH(
     }
     if (
       existing.type === "video" &&
-      (existing.mux_status !== "ready" || !existing.mux_playback_id)
+      (existing.mux_status !== "ready" || !existing.mux_playback_id) &&
+      !getDirectVideoUrl(existing.media)
     ) {
       return NextResponse.json(
         { error: "This video is not ready to publish yet." },

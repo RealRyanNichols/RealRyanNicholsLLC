@@ -4,6 +4,7 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { getAdminPostById } from "@/lib/posts";
 import { PostMain } from "@/components/PostMain";
+import { getDirectVideoUrl } from "@/lib/direct-video";
 
 export const dynamic = "force-dynamic";
 
@@ -24,7 +25,9 @@ export default async function AdminPostPreviewPage({
   if (!post) notFound();
 
   const isReadyVideo =
-    post.type === "video" && post.mux_status === "ready" && !!post.mux_playback_id;
+    post.type === "video" &&
+    ((post.mux_status === "ready" && !!post.mux_playback_id) ||
+      !!getDirectVideoUrl(post.media));
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">

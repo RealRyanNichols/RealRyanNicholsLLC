@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { trackEvent } from "@/lib/analytics";
 
-type Purpose = "site" | "children" | "officials" | "community" | "needed";
+type Purpose = "site" | "video" | "children" | "officials" | "community" | "needed";
 type DisplayAs = "name" | "anonymous";
 type Status = "idle" | "submitting" | "error";
 
@@ -12,6 +12,11 @@ const PURPOSES: { value: Purpose; label: string; blurb: string }[] = [
     value: "site",
     label: "Keep the site alive",
     blurb: "Hosting, tools, archives, publishing, and the independent feed.",
+  },
+  {
+    value: "video",
+    label: "Own the video archive",
+    blurb: "Storage, streaming, transcripts, clips, and channels hosted here.",
   },
   {
     value: "children",

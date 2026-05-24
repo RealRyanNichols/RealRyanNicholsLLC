@@ -4,6 +4,7 @@ import Link from "next/link";
 import { format, formatDistanceToNowStrict } from "date-fns";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { PostAdminRow } from "@/components/PostAdminRow";
+import { getDirectVideoUrl } from "@/lib/direct-video";
 
 export const metadata: Metadata = {
   title: "Posts",
@@ -42,7 +43,7 @@ export default async function AdminPostsPage({
   let query = supabase
     .from("posts")
     .select(
-      "id, slug, type, title, body, pinned, status, category, mux_status, mux_playback_id, published_at, created_at, views_count, shares_count",
+      "id, slug, type, title, body, media, pinned, status, category, mux_status, mux_playback_id, published_at, created_at, views_count, shares_count",
     )
     .order("pinned", { ascending: false })
     .order("published_at", { ascending: false, nullsFirst: false })
@@ -139,6 +140,7 @@ export default async function AdminPostsPage({
                 category={p.category}
                 muxStatus={p.mux_status}
                 muxPlaybackId={p.mux_playback_id}
+                directVideoUrl={getDirectVideoUrl(p.media)}
                 pinned={!!p.pinned}
                 status={p.status}
                 viewsCount={p.views_count ?? 0}

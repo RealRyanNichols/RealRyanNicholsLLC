@@ -2,10 +2,12 @@ import type { Post } from "@/lib/types";
 import { muxThumbnailUrl } from "@/lib/mux";
 import { PostBody } from "@/components/PostBody";
 import { VideoPlayer } from "@/components/VideoPlayer";
+import { getDirectVideoUrl } from "@/lib/direct-video";
 
 export function PostMain({ post }: { post: Post }) {
   if (post.type === "video") {
     const ready = post.mux_status === "ready" && !!post.mux_playback_id;
+    const directVideoUrl = getDirectVideoUrl(post.media);
     return (
       <>
         {ready ? (
@@ -13,6 +15,14 @@ export function PostMain({ post }: { post: Post }) {
             playbackId={post.mux_playback_id!}
             poster={muxThumbnailUrl(post.mux_playback_id!, { width: 1280, time: 1 })}
             title={post.title ?? undefined}
+          />
+        ) : directVideoUrl ? (
+          <video
+            src={directVideoUrl}
+            controls
+            playsInline
+            preload="metadata"
+            className="aspect-video w-full rounded-lg bg-black"
           />
         ) : (
           <div className="aspect-video w-full rounded-lg bg-black/90 flex items-center justify-center text-white text-sm">
