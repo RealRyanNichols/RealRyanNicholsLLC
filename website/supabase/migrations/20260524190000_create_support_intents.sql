@@ -15,11 +15,34 @@ create table if not exists public.support_intents (
 
 alter table public.support_intents enable row level security;
 
+grant insert on public.support_intents to anon, authenticated;
 grant select, update on public.support_intents to authenticated;
 grant select, insert, update, delete on public.support_intents to service_role;
 
 do $$
 begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public'
+      and tablename = 'support_intents'
+      and policyname = 'Visitors can create support intents'
+  ) then
+    create policy "Visitors can create support intents"
+    on public.support_intents
+    for insert
+    to anon, authenticated
+    with check (
+      status = 'started'
+      and purpose in ('site', 'children', 'officials', 'community', 'needed')
+      and display_as in ('name', 'anonymous')
+      and (intended_amount is null or char_length(intended_amount) <= 20)
+      and (display_name is null or char_length(display_name) <= 120)
+      and (message is null or char_length(message) <= 2000)
+      and ip_hash is not null
+      and char_length(ip_hash) = 64
+    );
+  end if;
+
   if not exists (
     select 1 from pg_policies
     where schemaname = 'public'
