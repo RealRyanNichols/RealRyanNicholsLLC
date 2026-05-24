@@ -21,6 +21,7 @@ import {
 import { select } from "d3-selection";
 import { zoom, zoomIdentity, type ZoomBehavior } from "d3-zoom";
 import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
+import { trackEvent } from "@/lib/analytics";
 
 // ─── Wire types straight from the SQL RPCs ─────────────────────────────
 type RawDefendantNode = {
@@ -97,7 +98,13 @@ function nodeStroke(n: RawNode, selected: boolean): string {
 }
 
 // ─── Component ─────────────────────────────────────────────────────────
-export function CaseNexus({ initial }: { initial: GraphPayload }) {
+export function CaseNexus({
+  initial,
+  initialError = null,
+}: {
+  initial: GraphPayload;
+  initialError?: string | null;
+}) {
   const svgRef = useRef<SVGSVGElement | null>(null);
   const gRef = useRef<SVGGElement | null>(null);
   const simRef = useRef<Simulation<SimNode, SimLink> | null>(null);
@@ -114,11 +121,39 @@ export function CaseNexus({ initial }: { initial: GraphPayload }) {
   const [query, setQuery] = useState("");
   const [hits, setHits] = useState<SearchHit[]>([]);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [searchError, setSearchError] = useState<string | null>(null);
+  const [graphError, setGraphError] = useState<string | null>(initialError);
+
+  const selectNode = useCallback(
+    (id: string, origin: "graph" | "search") => {
+      setSelectedId(id);
+      trackEvent("nexus_node_select", {
+        node_type: id.split(":")[0] || "unknown",
+        origin,
+      });
+    },
+    [],
+  );
 
   // Seed the graph on mount.
   useEffect(() => {
+    if (initialError) {
+      setGraphError(initialError);
+    }
+    if (initial.nodes.length === 0) {
+      setGraphError(
+        initialError ??
+          "The Case Nexus data feed is empty right now. The case archive is still available below.",
+      );
+      return;
+    }
     mergePayload(initial, /* center */ true);
     setVersion((v) => v + 1);
+    trackEvent("nexus_loaded", {
+      nodes: initial.nodes.length,
+      edges: initial.edges.length,
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -294,17 +329,28 @@ export function CaseNexus({ initial }: { initial: GraphPayload }) {
   const expandSelected = useCallback(async () => {
     if (!selectedNode) return;
     setLoadingExpand(true);
+    setGraphError(null);
+    trackEvent("nexus_expand", { node_type: selectedNode.type });
     try {
       const [typ, ...rest] = selectedNode.id.split(":");
       const id = rest.join(":");
       const supabase = getSupabaseBrowserClient();
-      const { data } = await supabase.rpc("nexus_neighbors", {
+      const { data, error } = await supabase.rpc("nexus_neighbors", {
         p_node_type: typ,
         p_node_id: id,
       });
-      if (data) {
-        mergePayload(data as GraphPayload, false);
+      if (error) {
+        setGraphError("The Nexus could not load those connections. Try another node or refresh.");
+        trackEvent("nexus_expand_failed", { node_type: selectedNode.type });
+      } else if (data) {
+        const payload = data as GraphPayload;
+        mergePayload(payload, false);
         setVersion((v) => v + 1);
+        trackEvent("nexus_expand_loaded", {
+          node_type: selectedNode.type,
+          nodes: payload.nodes.length,
+          edges: payload.edges.length,
+        });
       }
     } finally {
       setLoadingExpand(false);
@@ -313,33 +359,66 @@ export function CaseNexus({ initial }: { initial: GraphPayload }) {
 
   // Debounced search.
   useEffect(() => {
-    if (!query.trim()) {
+    const q = query.trim();
+    if (!q) {
       setHits([]);
+      setSearchLoading(false);
+      setSearchError(null);
       return;
     }
+    if (q.length < 2) {
+      setHits([]);
+      setSearchLoading(false);
+      setSearchError(null);
+      return;
+    }
+    let cancelled = false;
+    setSearchLoading(true);
+    setSearchError(null);
     const t = setTimeout(async () => {
       const supabase = getSupabaseBrowserClient();
-      const { data } = await supabase.rpc("nexus_search", { q: query.trim() });
-      setHits((data as SearchHit[]) ?? []);
+      const { data, error } = await supabase.rpc("nexus_search", { q });
+      if (cancelled) return;
+      if (error) {
+        setHits([]);
+        setSearchError("Search is temporarily unavailable.");
+        trackEvent("nexus_search_failed", { query_length: q.length });
+      } else {
+        const results = ((data as SearchHit[]) ?? []).slice(0, 15);
+        setHits(results);
+        trackEvent("nexus_search", {
+          query_length: q.length,
+          results: results.length,
+        });
+      }
+      setSearchLoading(false);
     }, 180);
-    return () => clearTimeout(t);
+    return () => {
+      cancelled = true;
+      clearTimeout(t);
+    };
   }, [query]);
 
   // Picking a search result: fetch its 1-hop, merge, focus.
   async function pickHit(h: SearchHit) {
     setSearchOpen(false);
     setQuery(h.label);
+    setGraphError(null);
+    trackEvent("nexus_search_pick", { result_type: h.type });
     const [typ, ...rest] = h.id.split(":");
     const id = rest.join(":");
     const supabase = getSupabaseBrowserClient();
-    const { data } = await supabase.rpc("nexus_neighbors", {
+    const { data, error } = await supabase.rpc("nexus_neighbors", {
       p_node_type: typ,
       p_node_id: id,
     });
-    if (data) {
+    if (error) {
+      setGraphError("The Nexus could not load that search result. Try another result or refresh.");
+      trackEvent("nexus_search_pick_failed", { result_type: h.type });
+    } else if (data) {
       mergePayload(data as GraphPayload, false);
       setVersion((v) => v + 1);
-      setSelectedId(h.id);
+      selectNode(h.id, "search");
     }
   }
 
@@ -350,6 +429,7 @@ export function CaseNexus({ initial }: { initial: GraphPayload }) {
   const totalDocs = nodesRef.current.filter(
     (n) => n.node.type === "document",
   ).length;
+  const hasGraphData = nodesRef.current.length > 0;
 
   return (
     <div className="relative">
@@ -395,7 +475,7 @@ export function CaseNexus({ initial }: { initial: GraphPayload }) {
                     style={{ cursor: "pointer" }}
                     onClick={(e) => {
                       e.stopPropagation();
-                      setSelectedId(sn.node.id);
+                      selectNode(sn.node.id, "graph");
                     }}
                   >
                     <title>{nodeTitle(sn.node)}</title>
@@ -454,35 +534,55 @@ export function CaseNexus({ initial }: { initial: GraphPayload }) {
               className="w-full rounded-md border border-[#3a557c] bg-[#0e1a36] px-3 py-2 text-[12px] font-mono text-[var(--color-paper)] placeholder:text-[#7c8aa6] focus:border-[#7fe3a9] focus:outline-none"
               aria-label="Search the graph"
             />
-            {searchOpen && hits.length > 0 ? (
-              <ul className="absolute top-full mt-1 left-0 right-0 bg-[#0e1a36] border border-[#3a557c] rounded-md shadow-lg max-h-80 overflow-auto z-20">
-                {hits.map((h) => (
-                  <li key={h.id}>
-                    <button
-                      type="button"
-                      onMouseDown={(e) => e.preventDefault()}
-                      onClick={() => pickHit(h)}
-                      className="w-full text-left px-3 py-2 hover:bg-[#1c2a4a] flex items-baseline justify-between gap-3"
-                    >
-                      <span className="text-[12px] text-[var(--color-paper)] truncate">
-                        <span
-                          className={
-                            h.type === "case"
-                              ? "text-[#7fa9e3]"
-                              : "text-[#e08658]"
-                          }
+            {searchOpen && query.trim().length > 0 ? (
+              <div className="absolute top-full mt-1 left-0 right-0 bg-[#0e1a36] border border-[#3a557c] rounded-md shadow-lg max-h-80 overflow-auto z-20">
+                {searchLoading ? (
+                  <p className="px-3 py-2 text-[12px] font-mono text-[#a9b7d0]">
+                    Searching...
+                  </p>
+                ) : searchError ? (
+                  <p className="px-3 py-2 text-[12px] font-mono text-[#ffd166]">
+                    {searchError}
+                  </p>
+                ) : hits.length > 0 ? (
+                  <ul>
+                    {hits.map((h) => (
+                      <li key={h.id}>
+                        <button
+                          type="button"
+                          onMouseDown={(e) => e.preventDefault()}
+                          onClick={() => pickHit(h)}
+                          className="w-full text-left px-3 py-2 hover:bg-[#1c2a4a] flex items-baseline justify-between gap-3"
                         >
-                          {h.type === "case" ? "case" : "def."}
-                        </span>{" "}
-                        {h.label}
-                      </span>
-                      <span className="text-[10px] text-[#7c8aa6] font-mono whitespace-nowrap">
-                        {h.sub}
-                      </span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
+                          <span className="text-[12px] text-[var(--color-paper)] truncate">
+                            <span
+                              className={
+                                h.type === "case"
+                                  ? "text-[#7fa9e3]"
+                                  : "text-[#e08658]"
+                              }
+                            >
+                              {h.type === "case" ? "case" : "def."}
+                            </span>{" "}
+                            {h.label}
+                          </span>
+                          <span className="text-[10px] text-[#7c8aa6] font-mono whitespace-nowrap">
+                            {h.sub}
+                          </span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                ) : query.trim().length < 2 ? (
+                  <p className="px-3 py-2 text-[12px] font-mono text-[#7c8aa6]">
+                    Type at least two characters.
+                  </p>
+                ) : (
+                  <p className="px-3 py-2 text-[12px] font-mono text-[#7c8aa6]">
+                    No matching case or defendant.
+                  </p>
+                )}
+              </div>
             ) : null}
           </div>
         </div>
@@ -505,7 +605,33 @@ export function CaseNexus({ initial }: { initial: GraphPayload }) {
         <p className="absolute bottom-2 left-3 text-[9px] text-[#7c8aa6] font-mono uppercase tracking-wider z-10 select-none pointer-events-none">
           drag · +/− to zoom · click a node
         </p>
+
+        {!hasGraphData ? (
+          <div className="absolute inset-0 z-10 flex items-center justify-center bg-[#0a1429]/90 px-6 text-center">
+            <div className="max-w-md">
+              <p className="text-sm font-bold text-[var(--color-paper)]">
+                Case Nexus data is temporarily unavailable.
+              </p>
+              <p className="mt-2 text-xs text-[#a9b7d0]">
+                The public case archive is still online while this graph feed
+                recovers.
+              </p>
+              <Link
+                href="/case"
+                className="mt-4 inline-flex rounded-full border border-[#7fe3a9] px-4 py-1.5 text-xs font-bold text-[#7fe3a9] hover:bg-[#7fe3a9]/10"
+              >
+                Open case archive →
+              </Link>
+            </div>
+          </div>
+        ) : null}
       </div>
+
+      {graphError && hasGraphData ? (
+        <p className="mt-3 rounded-md border border-[#ffd166]/50 bg-[#ffd166]/10 px-3 py-2 text-xs font-mono text-[#ffd166]">
+          {graphError}
+        </p>
+      ) : null}
 
       {/* Detail drawer */}
       {selectedNode ? (

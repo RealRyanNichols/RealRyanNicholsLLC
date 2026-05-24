@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { getSupabaseServiceClient } from "@/lib/supabase/service";
+import { getSupabaseStaticClient } from "@/lib/supabase/static";
 
 // Server-side sink for engagement events + scroll/dwell heartbeats.
 // The client hits this with navigator.sendBeacon (which survives page
 // navigation and unload, unlike a fire-and-forget supabase.rpc from the
-// browser). Writes go through the same server Supabase client that the
-// page-view beacon already uses successfully, so delivery is reliable.
+// browser). Writes go through public RPCs with tight input validation and
+// RLS-protected tables, so the route does not depend on a service-role key.
 //
 // Two shapes, distinguished by `kind`:
 //   { session_id, path, kind, target }  -> record_page_event  (a click)
@@ -37,9 +37,9 @@ export async function POST(request: Request) {
   }
   const { session_id, path, kind, target, scroll } = parsed.data;
 
-  let supabase: ReturnType<typeof getSupabaseServiceClient>;
+  let supabase: ReturnType<typeof getSupabaseStaticClient>;
   try {
-    supabase = getSupabaseServiceClient();
+    supabase = getSupabaseStaticClient();
   } catch {
     return new NextResponse(null, { status: 204 });
   }
