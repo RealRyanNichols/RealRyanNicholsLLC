@@ -13,13 +13,13 @@ type Props = {
   isAdmin: boolean;
 };
 
-// Public nav. "Feed" leads so visitors always have a one-tap way back to
-// Ryan's home feed. Donate is a permanent CTA chip after the public
-// links; admin / +new / account chips append for the right user.
+// Public nav. "Feed" (home) leads. The J6 Case is the hub for everything
+// case-related — Evidence + the data lenses live inside it, so they're no
+// longer confusing top-level peers. Map Room stays as the distinct LIVE
+// view. Donate is a permanent CTA chip; admin/+new/account append.
 const NAV = [
   { href: "/", label: "Feed" },
   { href: "/case", label: "J6 Case" },
-  { href: "/evidence-the-doj-tried-to-erase", label: "Evidence" },
   { href: "/the-map-room", label: "Map Room" },
   { href: "/about", label: "About" },
 ];
