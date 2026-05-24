@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { formatDistanceToNowStrict } from "date-fns";
+import { VoiceStoryRecorder } from "@/components/VoiceStoryRecorder";
 
 type J6Profile = {
   id: string;
@@ -520,11 +521,20 @@ function TestimonyForm({
         did. What you want the public to know. As long or short as you want —
         this lands at the top of your profile.
       </p>
+      <p className="text-sm font-semibold text-[var(--color-ink)]">
+        Don&apos;t feel like typing? Talk it out — tap the mic and tell your
+        story. We&apos;ll turn your voice into text you can edit.
+      </p>
+      <VoiceStoryRecorder
+        onAppendText={(text) =>
+          setBody((prev) => (prev && !/\s$/.test(prev) ? prev + " " : prev) + text)
+        }
+      />
       <textarea
         value={body}
         onChange={(e) => setBody(e.target.value)}
         rows={14}
-        placeholder="Start typing your story…"
+        placeholder="Start typing — or tap the mic above and just talk."
         className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-3 text-base leading-relaxed focus:outline-none focus:border-[var(--color-accent)] font-sans resize-y"
       />
       <p className="text-xs text-[var(--color-muted)]">
