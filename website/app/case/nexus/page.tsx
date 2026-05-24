@@ -54,15 +54,25 @@ type GraphPayload = {
   nodes: unknown[];
   edges: unknown[];
   seed?: { cases: number; defendants: number };
+  error?: string | null;
 };
 
 export default async function CaseNexusPage() {
   const supabase = getSupabaseStaticClient();
-  const { data } = await supabase.rpc("nexus_initial_seed", { seed_size: 25 });
-  const initial: GraphPayload = (data as GraphPayload | null) ?? {
-    nodes: [],
-    edges: [],
-  };
+  const { data, error } = await supabase.rpc("nexus_initial_seed", {
+    seed_size: 25,
+  });
+  const initial: GraphPayload = error
+    ? {
+        nodes: [],
+        edges: [],
+        error:
+          "The Case Nexus graph feed did not load. The case archive is still available.",
+      }
+    : ((data as GraphPayload | null) ?? {
+        nodes: [],
+        edges: [],
+      });
 
   return (
     <article className="mx-auto max-w-6xl px-4 py-6 sm:py-8">
@@ -84,7 +94,10 @@ export default async function CaseNexusPage() {
       </header>
 
       {/* The graph */}
-      <CaseNexus initial={initial as Parameters<typeof CaseNexus>[0]["initial"]} />
+      <CaseNexus
+        initial={initial as Parameters<typeof CaseNexus>[0]["initial"]}
+        initialError={initial.error ?? null}
+      />
 
       {/* Share rail */}
       <div className="mt-4">

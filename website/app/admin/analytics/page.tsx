@@ -205,41 +205,63 @@ export default async function AdminAnalyticsPage() {
 
       {/* Top-line stats — site-wide, includes posts + case archive */}
       <section className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <Stat label="Subscribers" value={fmt(subsTotal)} sub={`+${fmt(subsLast7)} this week`} />
         <Stat
+          href="#recent-subscribers"
+          label="Subscribers"
+          value={fmt(subsTotal)}
+          sub={`+${fmt(subsLast7)} this week`}
+        />
+        <Stat
+          href="#live-sessions"
           label="Total views"
           value={fmt(totalViews)}
           sub={`${fmt(totalPostViews)} posts · ${fmt(caseViews)} case`}
         />
         <Stat
+          href="#top-content"
           label="Total shares"
           value={fmt(totalShares)}
           sub={`${fmt(totalPostShares)} posts · ${fmt(caseShares)} case`}
         />
-        <Stat label="Comments" value={fmt(commentsTotal)} sub={`+${fmt(commentsLast7)} this week`} />
+        <Stat
+          href="#recent-comments"
+          label="Comments"
+          value={fmt(commentsTotal)}
+          sub={`+${fmt(commentsLast7)} this week`}
+        />
       </section>
 
       <section className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
         <Stat
+          href="/case/nexus"
           label="J6 defendants"
           value={fmt(j6DefendantsTotal)}
           sub={`${fmt(j6DefendantsClaimed)} verified`}
         />
         <Stat
+          href="/admin/claims"
           label="Pending claims"
           value={fmt(pendingClaims)}
           sub={`${fmt(pendingTips)} tip-line items`}
         />
-        <Stat label="Subs (30d)" value={fmt(subsLast30)} sub="confirmed signups" />
         <Stat
+          href="#recent-subscribers"
+          label="Subs (30d)"
+          value={fmt(subsLast30)}
+          sub="confirmed signups"
+        />
+        <Stat
+          href="/admin/users"
           label="User accounts"
           value={fmt(profilesTotal)}
           sub={`${fmt(profilesPending)} pending review`}
         />
       </section>
 
+      <TrackerHealth />
+
       {/* Top posts */}
-      <section className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-5">
+      <section id="top-content" className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-5">
         <RankedList
           title="Top 10 by views"
           rows={topByViews.map((p) => ({
@@ -323,6 +345,8 @@ export default async function AdminAnalyticsPage() {
       {/* Live session data */}
       <LiveSessions />
 
+      <NexusAttention />
+
       {/* Geography + referrer chain — pulls from analytics_summary
           and analytics_live_visitors which read the new geo columns
           on page_views. */}
@@ -334,7 +358,10 @@ export default async function AdminAnalyticsPage() {
 
       {/* Recent activity */}
       <section className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+        <div
+          id="recent-subscribers"
+          className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
+        >
           <h2 className="text-lg font-bold tracking-tight">Recent subscribers (10 newest)</h2>
           <ul className="mt-3 space-y-2">
             {subsRecent.length === 0 ? (
@@ -353,7 +380,10 @@ export default async function AdminAnalyticsPage() {
           </ul>
         </div>
 
-        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+        <div
+          id="recent-comments"
+          className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
+        >
           <h2 className="text-lg font-bold tracking-tight">Recent comments (10 newest)</h2>
           <ul className="mt-3 space-y-3">
             {recentComments.length === 0 ? (
@@ -389,15 +419,251 @@ export default async function AdminAnalyticsPage() {
   );
 }
 
-function Stat({ label, value, sub }: { label: string; value: string; sub?: string }) {
-  return (
-    <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-3">
+function Stat({
+  label,
+  value,
+  sub,
+  href,
+}: {
+  label: string;
+  value: string;
+  sub?: string;
+  href?: string;
+}) {
+  const body = (
+    <>
       <div className="text-3xl font-bold tracking-tight">{value}</div>
       <div className="text-[11px] uppercase tracking-wider text-[var(--color-muted)] mt-1 font-semibold">
         {label}
       </div>
       {sub ? <div className="text-xs text-[var(--color-ink-soft)] mt-1">{sub}</div> : null}
-    </div>
+    </>
+  );
+  const classes =
+    "rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-3";
+  if (href) {
+    return (
+      <Link
+        href={href}
+        className={`${classes} block transition hover:border-[var(--color-accent)] hover:-translate-y-0.5`}
+      >
+        {body}
+      </Link>
+    );
+  }
+  return <div className={classes}>{body}</div>;
+}
+
+async function TrackerHealth() {
+  const supabase = await getSupabaseServerClient();
+  const fifteenMinAgo = new Date(Date.now() - 15 * 60 * 1000).toISOString();
+  const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+
+  const [
+    { count: views15 },
+    { count: events15 },
+    { count: views60 },
+    { count: events60 },
+    { data: latestViews },
+    { data: latestEvents },
+  ] = await Promise.all([
+    supabase
+      .from("page_views")
+      .select("id", { count: "exact", head: true })
+      .gte("started_at", fifteenMinAgo),
+    supabase
+      .from("page_events")
+      .select("id", { count: "exact", head: true })
+      .gte("at", fifteenMinAgo),
+    supabase
+      .from("page_views")
+      .select("id", { count: "exact", head: true })
+      .gte("started_at", oneHourAgo),
+    supabase
+      .from("page_events")
+      .select("id", { count: "exact", head: true })
+      .gte("at", oneHourAgo),
+    supabase
+      .from("page_views")
+      .select("started_at, path")
+      .order("started_at", { ascending: false })
+      .limit(1),
+    supabase
+      .from("page_events")
+      .select("at, kind, path")
+      .order("at", { ascending: false })
+      .limit(1),
+  ]);
+
+  const latestView = latestViews?.[0] ?? null;
+  const latestEvent = latestEvents?.[0] ?? null;
+  const writingNow = (views15 ?? 0) > 0 || (events15 ?? 0) > 0;
+
+  return (
+    <section
+      id="tracker-health"
+      className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
+    >
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 className="text-lg font-bold tracking-tight">Tracker health</h2>
+          <p className="mt-1 text-xs text-[var(--color-muted)]">
+            First-party collector status, pulled from live page_views and page_events.
+          </p>
+        </div>
+        <span
+          className={`rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider ${
+            writingNow
+              ? "bg-[var(--color-success)]/15 text-[var(--color-success)]"
+              : "bg-[var(--color-danger)]/15 text-[var(--color-danger)]"
+          }`}
+        >
+          {writingNow ? "Writing now" : "Quiet"}
+        </span>
+      </div>
+
+      <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <Stat label="Views (15m)" value={fmt(views15)} sub={`${fmt(views60)} in 1h`} />
+        <Stat label="Events (15m)" value={fmt(events15)} sub={`${fmt(events60)} in 1h`} />
+        <Stat
+          href={latestView?.path || undefined}
+          label="Latest view"
+          value={latestView ? formatDistanceToNowStrict(new Date(latestView.started_at), { addSuffix: true }) : "none"}
+          sub={latestView?.path ?? "no path yet"}
+        />
+        <Stat
+          href={latestEvent?.path || undefined}
+          label="Latest event"
+          value={latestEvent ? formatDistanceToNowStrict(new Date(latestEvent.at), { addSuffix: true }) : "none"}
+          sub={latestEvent?.kind ?? "no event yet"}
+        />
+      </div>
+    </section>
+  );
+}
+
+async function NexusAttention() {
+  const supabase = await getSupabaseServerClient();
+  const sevenDaysAgo = subDays(new Date(), 7).toISOString();
+  const thirtyDaysAgo = subDays(new Date(), 30).toISOString();
+
+  const [
+    { count: views7 },
+    { count: views30 },
+    { data: events7 },
+    { data: recentEvents },
+  ] = await Promise.all([
+    supabase
+      .from("page_views")
+      .select("id", { count: "exact", head: true })
+      .like("path", "/case/nexus%")
+      .gte("started_at", sevenDaysAgo),
+    supabase
+      .from("page_views")
+      .select("id", { count: "exact", head: true })
+      .like("path", "/case/nexus%")
+      .gte("started_at", thirtyDaysAgo),
+    supabase
+      .from("page_events")
+      .select("kind, target, at, path")
+      .like("kind", "nexus_%")
+      .gte("at", sevenDaysAgo)
+      .order("at", { ascending: false })
+      .limit(1000),
+    supabase
+      .from("page_events")
+      .select("kind, target, at, path")
+      .like("kind", "nexus_%")
+      .order("at", { ascending: false })
+      .limit(8),
+  ]);
+
+  const eventRows = events7 ?? [];
+  const eventCounts = new Map<string, number>();
+  for (const row of eventRows) {
+    eventCounts.set(row.kind, (eventCounts.get(row.kind) ?? 0) + 1);
+  }
+  const topEvents = Array.from(eventCounts.entries())
+    .map(([kind, n]) => ({ kind, n }))
+    .sort((a, b) => b.n - a.n)
+    .slice(0, 8);
+
+  const nodeSelects = eventCounts.get("nexus_node_select") ?? 0;
+  const searches = eventCounts.get("nexus_search") ?? 0;
+
+  return (
+    <section
+      id="nexus-attention"
+      className="mt-10 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
+    >
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h2 className="text-lg font-bold tracking-tight">Nexus attention</h2>
+          <p className="mt-1 text-xs text-[var(--color-muted)]">
+            Searches, node clicks, expansions, and failed loads from /case/nexus.
+          </p>
+        </div>
+        <Link
+          href="/case/nexus"
+          className="text-xs font-semibold text-[var(--color-accent)] hover:underline"
+        >
+          Open Nexus →
+        </Link>
+      </div>
+
+      <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <Stat href="/case/nexus" label="Nexus views" value={fmt(views7)} sub={`${fmt(views30)} in 30d`} />
+        <Stat label="Nexus events" value={fmt(eventRows.length)} sub="last 7d" />
+        <Stat label="Node selects" value={fmt(nodeSelects)} sub="graph/search clicks" />
+        <Stat label="Searches" value={fmt(searches)} sub="queries without raw text" />
+      </div>
+
+      <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div>
+          <h3 className="text-base font-bold tracking-tight">Top Nexus events (7d)</h3>
+          {topEvents.length === 0 ? (
+            <p className="mt-3 text-sm text-[var(--color-muted)] italic">
+              No Nexus interaction events yet.
+            </p>
+          ) : (
+            <ol className="mt-3 space-y-1.5">
+              {topEvents.map((event, i) => (
+                <li key={event.kind} className="flex items-center gap-3 text-sm">
+                  <span className="w-5 text-xs font-bold text-[var(--color-muted)]">
+                    {i + 1}
+                  </span>
+                  <span className="flex-1 truncate font-mono">{event.kind}</span>
+                  <span className="font-bold tabular-nums">{fmt(event.n)}</span>
+                </li>
+              ))}
+            </ol>
+          )}
+        </div>
+
+        <div>
+          <h3 className="text-base font-bold tracking-tight">Recent Nexus events</h3>
+          {!recentEvents || recentEvents.length === 0 ? (
+            <p className="mt-3 text-sm text-[var(--color-muted)] italic">
+              No recent Nexus events.
+            </p>
+          ) : (
+            <ul className="mt-3 space-y-1.5">
+              {recentEvents.map((event) => (
+                <li
+                  key={`${event.kind}-${event.at}-${event.path}`}
+                  className="flex items-center gap-3 text-xs"
+                >
+                  <span className="flex-1 truncate font-mono">{event.kind}</span>
+                  <span className="text-[var(--color-muted)] whitespace-nowrap">
+                    {formatDistanceToNowStrict(new Date(event.at), { addSuffix: true })}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
+    </section>
   );
 }
 

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createHmac } from "crypto";
-import { getSupabaseServiceClient } from "@/lib/supabase/service";
+import { getSupabaseStaticClient } from "@/lib/supabase/static";
 
 // Beacon that records a page view with everything the client doesn't
 // see — Vercel's geo headers (country / region / city), the canonical
@@ -92,9 +92,9 @@ export async function POST(request: Request) {
   const referrer_host = parseHost(parsed.data.ref ?? null);
   const device_kind = classifyDevice(parsed.data.ua ?? null);
 
-  let supabase: ReturnType<typeof getSupabaseServiceClient>;
+  let supabase: ReturnType<typeof getSupabaseStaticClient>;
   try {
-    supabase = getSupabaseServiceClient();
+    supabase = getSupabaseStaticClient();
   } catch {
     return new NextResponse(null, { status: 204 });
   }
