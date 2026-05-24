@@ -1,10 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import {
-  getSupabaseServiceClient,
-  isSupabaseServiceConfigured,
-} from "@/lib/supabase/service";
-import { checkRateLimit } from "@/lib/rate-limit";
+import { createHash, randomUUID } from "crypto";
+import { getSupabaseStaticClient } from "@/lib/supabase/static";
+import { clientIp } from "@/lib/rate-limit";
 
 const schema = z.object({
   purpose: z.enum(["site", "children", "officials", "community", "needed"]),
@@ -17,14 +15,12 @@ const schema = z.object({
   show_amount: z.boolean().default(false),
 });
 
-export async function POST(request: Request) {
-  if (!isSupabaseServiceConfigured()) {
-    return NextResponse.json(
-      { error: "Support notes are not configured yet." },
-      { status: 503 },
-    );
-  }
+function hashIp(ip: string): string {
+  const salt = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "support-intent";
+  return createHash("sha256").update(`${salt}|${ip}`).digest("hex");
+}
 
+export async function POST(request: Request) {
   let payload: unknown;
   try {
     payload = await request.json();
@@ -40,26 +36,12 @@ export async function POST(request: Request) {
     );
   }
 
-  const limit = await checkRateLimit({
-    request,
-    bucket: "support-intent",
-    windowMinutes: 60,
-    maxRequests: 8,
-  });
-  if (!limit.ok) {
-    return NextResponse.json(
-      { error: limit.error },
-      {
-        status: 429,
-        headers: { "Retry-After": String(limit.retryAfterSec) },
-      },
-    );
-  }
-
-  const supabase = getSupabaseServiceClient();
-  const { data, error } = await supabase
+  const intentId = randomUUID();
+  const supabase = getSupabaseStaticClient();
+  const { error } = await supabase
     .from("support_intents")
     .insert({
+      id: intentId,
       purpose: parsed.data.purpose,
       intended_amount: parsed.data.intended_amount?.trim() || null,
       display_name: parsed.data.display_name?.trim() || null,
@@ -68,11 +50,9 @@ export async function POST(request: Request) {
       publish_message: parsed.data.publish_message,
       display_as: parsed.data.display_as,
       show_amount: parsed.data.show_amount,
-      ip_hash: limit.ipHash,
+      ip_hash: hashIp(clientIp(request)),
       status: "started",
-    })
-    .select("id")
-    .single();
+    });
 
   if (error) {
     return NextResponse.json(
@@ -81,5 +61,5 @@ export async function POST(request: Request) {
     );
   }
 
-  return NextResponse.json({ ok: true, intent_id: data.id as string });
+  return NextResponse.json({ ok: true, intent_id: intentId });
 }
