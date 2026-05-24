@@ -3,6 +3,8 @@ import Link from "next/link";
 import { SITE } from "@/lib/site";
 import { getOgImage } from "@/lib/og-images";
 import { DonateButtons } from "@/components/DonateButtons";
+import { LiveAttentionMeter } from "@/components/LiveAttentionMeter";
+import { getSupabaseStaticClient } from "@/lib/supabase/static";
 
 const DEFAULT_DESCRIPTION =
   "I'm spending my last dime building this so I — and every other J6 defendant — can get on our feet. If the work matters to you, here's how to help me keep going.";
@@ -42,10 +44,21 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function SupportPage() {
+export default async function SupportPage() {
   const donateUrl = process.env.NEXT_PUBLIC_DONATION_URL;
   const supporterUrl = SITE.supporterUrl;
   const mailing = SITE.mailingAddress;
+
+  // Seed the live attention meter server-side so the first paint already
+  // shows a real number — no "0 reading now" flash while the client polls.
+  let livePulseSeed: { reading_now: number; today: number; week: number } | undefined;
+  try {
+    const supabase = getSupabaseStaticClient();
+    const { data } = await supabase.rpc("site_live_pulse");
+    if (data) livePulseSeed = data as typeof livePulseSeed;
+  } catch {
+    /* meter falls back to client poll */
+  }
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
@@ -56,7 +69,11 @@ export default function SupportPage() {
         I&apos;m spending my last dime on this.
       </h1>
 
-      <section className="prose-body mt-6 space-y-4">
+      <div className="mt-8">
+        <LiveAttentionMeter donateUrl={donateUrl} seed={livePulseSeed} />
+      </div>
+
+      <section className="prose-body mt-10 space-y-4">
         <p>
           I&apos;m putting everything I have left into this site so that I —
           and every other January 6 defendant — can get paid for what was
