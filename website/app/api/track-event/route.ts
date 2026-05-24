@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { getSupabaseServiceClient } from "@/lib/supabase/service";
 
 // Server-side sink for engagement events + scroll/dwell heartbeats.
 // The client hits this with navigator.sendBeacon (which survives page
@@ -37,7 +37,12 @@ export async function POST(request: Request) {
   }
   const { session_id, path, kind, target, scroll } = parsed.data;
 
-  const supabase = await getSupabaseServerClient();
+  let supabase: ReturnType<typeof getSupabaseServiceClient>;
+  try {
+    supabase = getSupabaseServiceClient();
+  } catch {
+    return new NextResponse(null, { status: 204 });
+  }
 
   // Always refresh dwell/scroll for this session+path.
   const touch = supabase.rpc("touch_page_view_by_session", {

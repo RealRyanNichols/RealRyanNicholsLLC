@@ -53,7 +53,6 @@ export default async function SalvagedDojRecordPage({
     { count: total },
     { count: matched },
     { count: sentenced },
-    { count: docCount },
   ] = await Promise.all([
     supabase.from("doj_capitol_archive").select("id", { count: "exact", head: true }),
     supabase
@@ -64,10 +63,6 @@ export default async function SalvagedDojRecordPage({
       .from("doj_capitol_archive")
       .select("id", { count: "exact", head: true })
       .ilike("status_text", "%sentenced%"),
-    supabase
-      .from("doj_capitol_archive")
-      .select("id", { count: "exact", head: true })
-      .not("doc_urls", "is", null),
   ]);
 
   // Aggregate doc-link count.

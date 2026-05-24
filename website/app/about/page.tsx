@@ -131,7 +131,7 @@ export default function AboutPage() {
           </p>
           <p>
             The business houses relief supplies in its warehouse and
-            regularly donates to the Highway 80 Rescue Mission, The Women's
+            regularly donates to the Highway 80 Rescue Mission, The Women&apos;s
             Shelter, and heavy coats for the homeless in Dallas during
             freezing temperatures. During COVID, Ryan paid his staff to take
             time off so they could participate in rescue relief through
@@ -269,22 +269,22 @@ export default function AboutPage() {
             What the arrest did to his family
           </h3>
           <p>
-            Since Ryan's arrest, his sons — Ryan Jr. and Blake — have endured
+            Since Ryan&apos;s arrest, his sons — Ryan Jr. and Blake — have endured
             a traumatizing experience having their father, their role model,
             their best friend ripped from their lives. They struggled in
             school, struggled to sleep, struggled to express their emotions
             and the pain it caused their little hearts. They began
             counseling. They told the counselor they feared they may never
             see their dad again, and found it hard to talk about because
-            they didn't want to hurt mom.
+            they didn&apos;t want to hurt mom.
           </p>
           <p>
             Ryan Jr. expressed anger, fear, and anxiety. His grades dropped
             to the low 70s — from being a straight-A student — and he
             refused to do his work, daydreamed, and cried. He said{" "}
-            <em>"because life is too hard"</em> to manage. Blake, age 5,
-            said <em>"Mom, am I ever going to see my dad again? I forgot
-            what he looks like."</em>
+            <em>&quot;because life is too hard&quot;</em> to manage. Blake, age 5,
+            said <em>&quot;Mom, am I ever going to see my dad again? I forgot
+            what he looks like.&quot;</em>
           </p>
           <p>
             Every night before bedtime they say a prayer, and a 5-year-old

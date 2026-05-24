@@ -343,7 +343,6 @@ export function CaseNexus({ initial }: { initial: GraphPayload }) {
     }
   }
 
-  const totalNodes = nodesRef.current.length;
   const totalDefendants = nodesRef.current.filter(
     (n) => n.node.type === "defendant",
   ).length;

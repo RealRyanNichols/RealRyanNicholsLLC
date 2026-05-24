@@ -1,6 +1,5 @@
 import { ImageResponse } from "next/og";
 import { getGrievanceBySlug } from "@/lib/case";
-import { SITE } from "@/lib/site";
 
 export const runtime = "nodejs";
 export const revalidate = 3600;

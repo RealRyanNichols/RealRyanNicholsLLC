@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { Resend } from "resend";
-import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { getSupabaseServiceClient } from "@/lib/supabase/service";
 import { buildWelcomeEmail } from "@/lib/email";
 import { SITE } from "@/lib/site";
 
@@ -10,7 +10,13 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(new URL("/subscribed?status=invalid", SITE.url));
   }
 
-  const supabase = await getSupabaseServerClient();
+  let supabase: ReturnType<typeof getSupabaseServiceClient>;
+  try {
+    supabase = getSupabaseServiceClient();
+  } catch {
+    return NextResponse.redirect(new URL("/subscribed?status=invalid", SITE.url));
+  }
+
   const { data, error } = await supabase.rpc("confirm_signup", { p_token: token });
   if (error || !data || data.length === 0 || !data[0].success) {
     return NextResponse.redirect(new URL("/subscribed?status=invalid", SITE.url));

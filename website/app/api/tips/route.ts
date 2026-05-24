@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createHash } from "crypto";
-import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { getSupabaseServiceClient } from "@/lib/supabase/service";
 
 const schema = z
   .object({
@@ -55,7 +55,15 @@ export async function POST(request: Request) {
   }
 
   const ipHash = hashIp(clientIp(request));
-  const supabase = await getSupabaseServerClient();
+  let supabase: ReturnType<typeof getSupabaseServiceClient>;
+  try {
+    supabase = getSupabaseServiceClient();
+  } catch {
+    return NextResponse.json(
+      { error: "Tip intake is not configured yet." },
+      { status: 503 },
+    );
+  }
 
   const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
   const { count: recentCount } = await supabase

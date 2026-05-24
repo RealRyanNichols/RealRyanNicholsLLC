@@ -1,14 +1,13 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createHmac } from "crypto";
-import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { getSupabaseServiceClient } from "@/lib/supabase/service";
 
 // Beacon that records a page view with everything the client doesn't
 // see — Vercel's geo headers (country / region / city), the canonical
 // referrer host, a daily-rotating one-way visitor hash for unique-
 // visitor counts without storing IPs, and a coarse device classifier.
-// The client (PageViewTracker) keeps using the touch_page_view +
-// record_page_event RPCs for dwell, scroll, and clicks.
+// PageViewTracker sends dwell, scroll, and clicks through /api/track-event.
 
 // Vercel populates x-vercel-ip-country/region/city on both runtimes.
 // node lets us use node:crypto for the visitor hash without pulling in
@@ -93,7 +92,13 @@ export async function POST(request: Request) {
   const referrer_host = parseHost(parsed.data.ref ?? null);
   const device_kind = classifyDevice(parsed.data.ua ?? null);
 
-  const supabase = await getSupabaseServerClient();
+  let supabase: ReturnType<typeof getSupabaseServiceClient>;
+  try {
+    supabase = getSupabaseServiceClient();
+  } catch {
+    return new NextResponse(null, { status: 204 });
+  }
+
   const { data, error } = await supabase.rpc("record_page_view", {
     p_session_id: parsed.data.session_id,
     p_path: parsed.data.path,

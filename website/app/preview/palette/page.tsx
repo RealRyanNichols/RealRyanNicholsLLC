@@ -292,7 +292,7 @@ export default async function PalettePreviewPage({
               information.
             </p>
             <p className="mt-3 text-sm text-[var(--color-muted)]">
-              Tertiary text — the kind you read when you want context but it's
+              Tertiary text — the kind you read when you want context but it&apos;s
               not the headline.
             </p>
           </section>
@@ -301,7 +301,7 @@ export default async function PalettePreviewPage({
 
       <p className="mt-6 text-sm text-[var(--color-ink-soft)]">
         Like this one? Tell me which palette letter (A, B, or C) to apply
-        site-wide. I'll update <code>app/globals.css</code> in the next PR.
+        site-wide. I&apos;ll update <code>app/globals.css</code> in the next PR.
       </p>
     </article>
   );

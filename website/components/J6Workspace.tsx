@@ -66,7 +66,7 @@ export function J6Workspace({
       <p className="mt-2 text-sm sm:text-base text-[var(--color-ink-soft)] leading-snug">
         Your profile is verified. The site is yours. Build your case in your own
         words — every piece of evidence you upload waits for one quick review
-        before going public, then it's live on{" "}
+        before going public, then it&apos;s live on{" "}
         <Link
           href={`/case/people/${j6Profile.slug}`}
           target="_blank"
@@ -719,7 +719,7 @@ function EmbedForm({ personId }: { personId: string }) {
     <form onSubmit={submit} className="space-y-3">
       <p className="text-sm text-[var(--color-ink-soft)]">
         Paste a TikTok, YouTube, X (Twitter), Rumble, or other public video URL
-        and it'll embed on your profile.
+        and it&apos;ll embed on your profile.
       </p>
       <div>
         <label className="text-xs font-bold block mb-1.5">

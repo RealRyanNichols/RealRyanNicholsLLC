@@ -45,6 +45,7 @@ export async function GET(
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
+            alt={p.name}
             src={p.photo_url}
             width={1200}
             height={630}

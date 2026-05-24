@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { format } from "date-fns";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { UserModerationRow } from "@/components/UserModerationRow";
 

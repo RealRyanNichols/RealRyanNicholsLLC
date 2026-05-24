@@ -28,6 +28,8 @@ export function ComposeForm({
   videoEnabled: boolean;
   initial?: ComposeInitial | null;
 }) {
+  const [tab, setTab] = useState<Tab>("text");
+
   // When editing an existing post we lock to its type and skip the picker.
   // Photo/video edits aren't supported in this form yet — text/body only.
   if (initial) {
@@ -50,7 +52,6 @@ export function ComposeForm({
     );
   }
 
-  const [tab, setTab] = useState<Tab>("text");
   return (
     <div>
       <div className="flex flex-wrap gap-1 border-b border-[var(--color-line)] mb-6">
@@ -376,8 +377,8 @@ function PhotoForm() {
       {media.length > 0 ? (
         <div className="mb-4 grid grid-cols-3 sm:grid-cols-4 gap-2">
           {media.map((m, i) => (
-            // eslint-disable-next-line @next/next/no-img-element
             <div key={m.url} className="relative aspect-square rounded-md overflow-hidden border border-[var(--color-line)]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={m.url} alt="" className="absolute inset-0 w-full h-full object-cover" />
               <button
                 type="button"

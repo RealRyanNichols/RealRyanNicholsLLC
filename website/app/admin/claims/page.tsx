@@ -408,9 +408,9 @@ export default async function AdminClaimsPage({
                         <li>What was your sentencing date and the name of the federal judge?</li>
                         <li>Who was the lead AUSA (federal prosecutor) on your case?</li>
                         <li>Who represented you — public defender or private attorney name?</li>
-                        <li>What's your BOP register number, if you were held?</li>
+                        <li>What&apos;s your BOP register number, if you were held?</li>
                         <li>Which facility were you held at? Any block / unit assignments?</li>
-                        <li>Send a photo of yourself holding a piece of paper with today's date.</li>
+                        <li>Send a photo of yourself holding a piece of paper with today&apos;s date.</li>
                         <li>Send a clear photo of any pardon paperwork or release documentation.</li>
                         <li>A short video of you on a video call saying your full name and the URL of this site.</li>
                       </ul>

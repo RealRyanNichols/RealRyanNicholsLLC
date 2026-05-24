@@ -59,7 +59,6 @@ export default async function EvidenceErasedPage() {
     { count: matched },
     { count: sentenced },
     { data: docAgg },
-    { count: distinctCasesApprox },
   ] = await Promise.all([
     supabase.from("doj_capitol_archive").select("id", { count: "exact", head: true }),
     supabase
@@ -75,7 +74,6 @@ export default async function EvidenceErasedPage() {
       .select("doc_urls")
       .not("doc_urls", "is", null)
       .limit(2000),
-    supabase.from("doj_capitol_archive").select("case_number", { count: "exact", head: true }).not("case_number", "is", null),
   ]);
 
   const docLinks = (docAgg ?? []).reduce(
