@@ -6,7 +6,7 @@ import { trackEvent } from "@/lib/analytics";
 // amount on its own secure page, so these chips open that page and pass
 // the intended amount to analytics (donate_click) — anchoring lifts
 // conversion, and we learn which amounts people reach for.
-const AMOUNTS = [25, 50, 100, 250, 500];
+const AMOUNTS = [5, 25, 50, 75, 100, 250, 500, 1000];
 
 export function DonateButtons({ donateUrl }: { donateUrl: string }) {
   function go(amount: string) {
@@ -16,7 +16,7 @@ export function DonateButtons({ donateUrl }: { donateUrl: string }) {
 
   return (
     <div className="relative mt-5">
-      <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+      <div className="grid grid-cols-3 gap-2">
         {AMOUNTS.map((a) => (
           <button
             key={a}
@@ -24,7 +24,7 @@ export function DonateButtons({ donateUrl }: { donateUrl: string }) {
             onClick={() => go(String(a))}
             className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-paper)] py-3 text-base font-bold text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-paper)] transition"
           >
-            ${a}
+            ${a.toLocaleString()}
           </button>
         ))}
         <button
