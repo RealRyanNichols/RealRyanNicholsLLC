@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
-import { DonateButtons } from "./DonateButtons";
 
 type Pulse = { reading_now: number; today: number; week: number };
 
@@ -82,9 +81,12 @@ export function LiveAttentionMeter({
       </p>
 
       {donateUrl ? (
-        <div className="relative">
-          <DonateButtons donateUrl={donateUrl} />
-        </div>
+        <a
+          href="#support-mission"
+          className="btn-accent relative mt-5 inline-flex w-full justify-center rounded-full px-6 py-4 text-base font-bold transition sm:w-auto"
+        >
+          Pick what your support funds →
+        </a>
       ) : null}
     </section>
   );

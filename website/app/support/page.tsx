@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE } from "@/lib/site";
 import { getOgImage } from "@/lib/og-images";
-import { DonateButtons } from "@/components/DonateButtons";
 import { LiveAttentionMeter } from "@/components/LiveAttentionMeter";
+import { SupportIntentForm } from "@/components/SupportIntentForm";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 
 const DEFAULT_DESCRIPTION =
@@ -120,23 +120,50 @@ export default async function SupportPage() {
       </section>
 
       {donateUrl ? (
-        <section className="mt-10 rounded-2xl border border-[var(--color-line)] bg-gradient-to-br from-[var(--color-surface-2)] to-[var(--color-surface)] p-6 sm:p-8 relative overflow-hidden">
-          <div
-            className="pointer-events-none absolute -top-24 -right-24 h-56 w-56 rounded-full blur-3xl"
-            style={{ background: "var(--color-accent-glow)" }}
-            aria-hidden
-          />
+        <section
+          id="support-mission"
+          className="mt-10 rounded-2xl border border-[var(--color-line)] bg-gradient-to-br from-[var(--color-surface-2)] to-[var(--color-surface)] p-6 sm:p-8 relative overflow-hidden scroll-mt-24"
+        >
           <p className="relative text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
-            Send a gift
+            Support mission board
           </p>
           <h2 className="relative font-display text-2xl sm:text-3xl mt-2 text-[var(--color-ink)]">
-            One-time donation via Stripe
+            Pick what your support is for.
           </h2>
           <p className="relative mt-3 text-[var(--color-ink-soft)] leading-relaxed">
-            Pick an amount. Any size moves the needle — rent, food, the mental
-            healthcare, and the servers that keep this record online.
+            This is the transparent version: choose the mission, leave a note,
+            decide whether you want your name or amount public, then Stripe
+            handles the payment.
           </p>
-          <DonateButtons donateUrl={donateUrl} />
+
+          <div className="relative mt-5 grid gap-3 sm:grid-cols-3">
+            <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4">
+              <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">
+                Current goal
+              </p>
+              <p className="mt-1 text-sm font-bold text-[var(--color-ink)]">
+                Keep the site live and the archive moving.
+              </p>
+            </div>
+            <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4">
+              <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">
+                Investigation work
+              </p>
+              <p className="mt-1 text-sm font-bold text-[var(--color-ink)]">
+                Public records, case files, timelines, and receipts.
+              </p>
+            </div>
+            <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4">
+              <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">
+                Give-back rule
+              </p>
+              <p className="mt-1 text-sm font-bold text-[var(--color-ink)]">
+                Extra support rolls to the next goal or someone in the community.
+              </p>
+            </div>
+          </div>
+
+          <SupportIntentForm donateUrl={donateUrl} />
         </section>
       ) : (
         <section className="mt-10 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6">

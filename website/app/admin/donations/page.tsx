@@ -18,6 +18,20 @@ type Charge = {
   description?: string | null;
 };
 
+type SupportIntent = {
+  id: string;
+  created_at: string;
+  purpose: string;
+  intended_amount: string | null;
+  display_name: string | null;
+  email: string | null;
+  message: string | null;
+  publish_message: boolean;
+  display_as: string;
+  show_amount: boolean;
+  status: string;
+};
+
 async function stripeGet(path: string, key: string): Promise<{ data?: Charge[] } | null> {
   try {
     const r = await fetch(`https://api.stripe.com/v1/${path}`, {
@@ -61,6 +75,14 @@ export default async function AdminDonationsPage() {
     .eq("is_supporter", true)
     .order("supporter_since", { ascending: false });
   const supporterCount = supporters?.length ?? 0;
+
+  const { data: supportIntents } = await supabase
+    .from("support_intents")
+    .select(
+      "id, created_at, purpose, intended_amount, display_name, email, message, publish_message, display_as, show_amount, status",
+    )
+    .order("created_at", { ascending: false })
+    .limit(25);
 
   // One-time donation revenue lives in Stripe — pull it if a key is set.
   let totalCents = 0;
@@ -163,6 +185,58 @@ export default async function AdminDonationsPage() {
           </div>
         </section>
       )}
+
+      <section className="mt-10">
+        <h2 className="text-lg font-bold tracking-tight mb-1">
+          Support notes
+        </h2>
+        <p className="text-xs text-[var(--color-muted)] mb-3">
+          Notes captured on the support page before Stripe opens.
+        </p>
+        {!supportIntents?.length ? (
+          <p className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 text-sm text-[var(--color-ink-soft)] italic">
+            No support notes yet.
+          </p>
+        ) : (
+          <div className="rounded-2xl border border-[var(--color-line)] divide-y divide-[var(--color-line)]">
+            {(supportIntents as SupportIntent[]).map((intent) => (
+              <article key={intent.id} className="p-4">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div>
+                    <p className="text-sm font-bold text-[var(--color-ink)]">
+                      {intent.display_as === "anonymous"
+                        ? "Anonymous supporter"
+                        : intent.display_name || intent.email || "Supporter"}
+                    </p>
+                    <p className="text-xs text-[var(--color-muted)]">
+                      {format(new Date(intent.created_at), "MMM d, yyyy h:mm a")}
+                      {" · "}
+                      {intent.purpose.replaceAll("_", " ")}
+                      {intent.intended_amount
+                        ? ` · intended $${intent.intended_amount}`
+                        : ""}
+                    </p>
+                  </div>
+                  <span className="rounded-full border border-[var(--color-line)] px-2.5 py-1 text-xs font-bold text-[var(--color-muted)]">
+                    {intent.status}
+                  </span>
+                </div>
+                {intent.message ? (
+                  <p className="mt-3 whitespace-pre-wrap text-sm text-[var(--color-ink-soft)] leading-relaxed">
+                    {intent.message}
+                  </p>
+                ) : null}
+                <p className="mt-3 text-xs text-[var(--color-muted)]">
+                  Publish message: {intent.publish_message ? "yes" : "no"}
+                  {" · "}
+                  Show amount: {intent.show_amount ? "yes" : "no"}
+                  {intent.email ? ` · ${intent.email}` : ""}
+                </p>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
 
       {/* Supporter memberships — always available from the app DB */}
       <section className="mt-10">
