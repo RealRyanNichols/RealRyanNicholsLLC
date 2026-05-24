@@ -30,6 +30,79 @@ export async function GET(
       ? p.role ?? "Pardoned January 6 defendant"
       : p.role ?? "Person of record";
 
+  // When a photo is set, the share card *is* the photo with a caption bar.
+  if (p.photo_url) {
+    return new ImageResponse(
+      (
+        <div
+          style={{
+            height: "100%",
+            width: "100%",
+            display: "flex",
+            position: "relative",
+            background: "#1a1410",
+          }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={p.photo_url}
+            width={1200}
+            height={630}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: 1200,
+              height: 630,
+              objectFit: "cover",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              width: 1200,
+              display: "flex",
+              flexDirection: "column",
+              gap: 8,
+              padding: "44px 56px",
+              background: "rgba(0,0,0,0.62)",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                fontSize: 18,
+                fontWeight: 700,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                color: "#f6efdf",
+              }}
+            >
+              {eyebrow}
+            </div>
+            <div
+              style={{
+                display: "flex",
+                fontSize: 68,
+                fontWeight: 700,
+                color: "#ffffff",
+                lineHeight: 1.0,
+              }}
+            >
+              {p.name}
+            </div>
+            <div style={{ display: "flex", fontSize: 26, color: "#e8dcc0" }}>
+              {lead}
+            </div>
+          </div>
+        </div>
+      ),
+      { width: 1200, height: 630 },
+    );
+  }
+
   return new ImageResponse(
     (
       <div
