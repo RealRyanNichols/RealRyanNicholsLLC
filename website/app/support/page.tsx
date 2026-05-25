@@ -5,7 +5,10 @@ import { getOgImage } from "@/lib/og-images";
 import { LiveAttentionMeter } from "@/components/LiveAttentionMeter";
 import { SupportIntentForm } from "@/components/SupportIntentForm";
 import { SupportersWall } from "@/components/SupportersWall";
+import { FundingGoalMeter } from "@/components/FundingGoalMeter";
+import { DonateBox } from "@/components/DonateBox";
 import { getPublishedSupporters } from "@/lib/supporters";
+import { getFundingData } from "@/lib/funding";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 
 const DEFAULT_DESCRIPTION =
@@ -66,6 +69,9 @@ export default async function SupportPage() {
   // Ryan publishes notes from /admin/donations).
   const supporters = await getPublishedSupporters();
 
+  // Transparent monthly funding goal (null until configured in /admin).
+  const funding = await getFundingData();
+
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
       <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
@@ -74,6 +80,13 @@ export default async function SupportPage() {
       <h1 className="mt-2 text-4xl sm:text-5xl font-bold tracking-tight leading-[1.05]">
         I&apos;m spending my last dime on this.
       </h1>
+
+      {funding ? (
+        <div className="mt-8 space-y-5">
+          <FundingGoalMeter data={funding} />
+          <DonateBox donateUrl={donateUrl} />
+        </div>
+      ) : null}
 
       <div className="mt-8">
         <LiveAttentionMeter donateUrl={donateUrl} seed={livePulseSeed} />
