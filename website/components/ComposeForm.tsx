@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
 import { POST_VIDEO_BUCKET, POST_VIDEO_MAX_BYTES, formatBytes } from "@/lib/direct-video";
@@ -14,6 +14,12 @@ type Media = { url: string; width?: number; height?: number; alt?: string };
 type State =
   | { kind: "idle" }
   | { kind: "submitting"; progress?: number; label?: string }
+  | { kind: "error"; message: string };
+
+type MuxHealth =
+  | { kind: "idle"; message: string }
+  | { kind: "checking"; message: string }
+  | { kind: "ok"; message: string }
   | { kind: "error"; message: string };
 
 export type ComposeInitial = {
@@ -403,10 +409,64 @@ function PhotoForm() {
 function VideoForm({ videoConfig }: { videoConfig: VideoConfigStatus }) {
   const router = useRouter();
   const [state, setState] = useState<State>({ kind: "idle" });
+  const [muxHealth, setMuxHealth] = useState<MuxHealth>({
+    kind: videoConfig.muxConfigured ? "checking" : "idle",
+    message: videoConfig.muxConfigured
+      ? "Checking Mux credentials..."
+      : "Mux credentials are not configured yet.",
+  });
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [category, setCategory] = useState<string>(VIDEO_CHANNELS[0]);
   const [file, setFile] = useState<File | null>(null);
+
+  const runMuxHealthCheck = useCallback(async () => {
+    if (!videoConfig.muxConfigured) {
+      setMuxHealth({
+        kind: "idle",
+        message: "Mux credentials are not configured yet.",
+      });
+      return;
+    }
+
+    setMuxHealth({ kind: "checking", message: "Checking Mux credentials..." });
+    try {
+      const res = await fetch("/api/admin/video-health", { cache: "no-store" });
+      const json = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        error?: string;
+        message?: string;
+        ready_for_processing_updates?: boolean;
+      };
+
+      if (!res.ok || !json.ok) {
+        setMuxHealth({
+          kind: "error",
+          message: json.error ?? "Mux credentials could not be verified.",
+        });
+        return;
+      }
+
+      setMuxHealth({
+        kind: "ok",
+        message: json.ready_for_processing_updates
+          ? "Mux credentials accepted. Uploads and processing webhooks are ready."
+          : "Mux credentials accepted. Webhook/service-role settings still need review for automatic ready status.",
+      });
+    } catch (error) {
+      setMuxHealth({
+        kind: "error",
+        message:
+          error instanceof Error
+            ? `Mux check failed: ${error.message}`
+            : "Mux check failed.",
+      });
+    }
+  }, [videoConfig.muxConfigured]);
+
+  useEffect(() => {
+    void runMuxHealthCheck();
+  }, [runMuxHealthCheck]);
 
   function onVideoFile(files: FileList | null) {
     const next = files?.[0] ?? null;
@@ -554,6 +614,30 @@ function VideoForm({ videoConfig }: { videoConfig: VideoConfigStatus }) {
           <p className="mt-1">
             Mux webhook URL: <code>{videoConfig.webhookUrl}</code>
           </p>
+        </div>
+      ) : null}
+      {videoConfig.muxConfigured ? (
+        <div
+          className={[
+            "mb-4 rounded-lg border px-4 py-3 text-sm",
+            muxHealth.kind === "ok"
+              ? "border-green-200 bg-green-50 text-green-800"
+              : muxHealth.kind === "error"
+                ? "border-red-200 bg-red-50 text-red-700"
+                : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)]",
+          ].join(" ")}
+        >
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p className="font-medium">{muxHealth.message}</p>
+            <button
+              type="button"
+              onClick={runMuxHealthCheck}
+              disabled={muxHealth.kind === "checking"}
+              className="rounded-md border border-current px-3 py-2 text-xs font-bold disabled:opacity-60"
+            >
+              {muxHealth.kind === "checking" ? "Checking..." : "Check Mux"}
+            </button>
+          </div>
         </div>
       ) : null}
       <SubmitButton state={state}>Upload for review</SubmitButton>
