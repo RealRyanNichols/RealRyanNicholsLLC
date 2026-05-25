@@ -10,7 +10,7 @@ function getServiceClient() {
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !serviceKey) {
     throw new Error(
-      "SUPABASE_SERVICE_ROLE_KEY must be set for the Mux webhook to update post rows."
+      "SUPABASE_SERVICE_ROLE_KEY must be set for the Mux webhook to update post rows.",
     );
   }
   return createClient(url, serviceKey, {
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
   if (!secret) {
     return NextResponse.json(
       { error: "MUX_WEBHOOK_SECRET not configured." },
-      { status: 503 }
+      { status: 503 },
     );
   }
 
@@ -40,7 +40,11 @@ export async function POST(request: NextRequest) {
     type: string;
     data: {
       id?: string;
+      // On video.upload.* the data is the Upload (id = upload id, asset_id =
+      // the created asset). On video.asset.* the data is the Asset (id = asset
+      // id, upload_id = the direct upload that created it).
       upload_id?: string;
+      asset_id?: string;
       playback_ids?: { id: string; policy: string }[];
       duration?: number;
       status?: string;
@@ -49,14 +53,11 @@ export async function POST(request: NextRequest) {
 
   const supabase = getServiceClient();
 
-  // We care about three event types:
-  //   video.upload.asset_created   -> asset_id is now known
-  //   video.asset.ready            -> playback_id + duration are known, publish
-  //   video.asset.errored          -> mark errored
   switch (event.type) {
     case "video.upload.asset_created": {
+      // data is the Upload: its id is the upload id, asset_id is the new asset.
       const uploadId = event.data.upload_id ?? event.data.id;
-      const assetId = event.data.id;
+      const assetId = event.data.asset_id;
       if (!uploadId || !assetId) break;
       await supabase
         .from("posts")
@@ -65,30 +66,44 @@ export async function POST(request: NextRequest) {
       break;
     }
     case "video.asset.ready": {
-      const assetId = event.data.id;
+      // data is the Asset. Match on the upload id (always set at post creation
+      // and present here for direct uploads) so this works even if the
+      // asset_created event was missed or arrived out of order.
+      const assetId = event.data.id ?? null;
+      const uploadId = event.data.upload_id ?? null;
       const playbackId = event.data.playback_ids?.[0]?.id ?? null;
       const duration = event.data.duration ?? null;
-      if (!assetId || !playbackId) break;
-      await supabase
-        .from("posts")
-        .update({
-          mux_playback_id: playbackId,
-          mux_status: "ready",
-          duration_seconds: duration,
-          thumbnail_url: muxThumbnailUrl(playbackId, { width: 1200 }),
-          status: "published",
-          published_at: new Date().toISOString(),
-        })
-        .eq("mux_asset_id", assetId);
+      if (!playbackId) break;
+      const patch = {
+        mux_asset_id: assetId,
+        mux_playback_id: playbackId,
+        mux_status: "ready",
+        duration_seconds: duration,
+        thumbnail_url: muxThumbnailUrl(playbackId, { width: 1200 }),
+        status: "published",
+        published_at: new Date().toISOString(),
+      };
+      if (uploadId) {
+        await supabase.from("posts").update(patch).eq("mux_upload_id", uploadId);
+      } else if (assetId) {
+        await supabase.from("posts").update(patch).eq("mux_asset_id", assetId);
+      }
       break;
     }
     case "video.asset.errored": {
-      const assetId = event.data.id;
-      if (!assetId) break;
-      await supabase
-        .from("posts")
-        .update({ mux_status: "errored" })
-        .eq("mux_asset_id", assetId);
+      const assetId = event.data.id ?? null;
+      const uploadId = event.data.upload_id ?? null;
+      if (uploadId) {
+        await supabase
+          .from("posts")
+          .update({ mux_status: "errored" })
+          .eq("mux_upload_id", uploadId);
+      } else if (assetId) {
+        await supabase
+          .from("posts")
+          .update({ mux_status: "errored" })
+          .eq("mux_asset_id", assetId);
+      }
       break;
     }
     default:
