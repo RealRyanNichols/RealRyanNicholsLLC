@@ -255,3 +255,64 @@ Support page: ${SITE.url}/support
 
   return { subject, html, text };
 }
+
+// Transactional notices for the J6 free-claim path (not marketing — no
+// unsubscribe footer). Returns the admin notice + the claimant confirmation.
+export function buildJ6ClaimEmails(opts: {
+  productName: string;
+  claimantEmail: string;
+  orderId: string;
+  shipping?: unknown;
+  notes?: string | null;
+}): { admin: EmailEnvelope; user: EmailEnvelope } {
+  const shippingStr =
+    opts.shipping && typeof opts.shipping === "object"
+      ? JSON.stringify(opts.shipping, null, 2)
+      : "(none provided)";
+
+  const admin: EmailEnvelope = {
+    subject: `[J6 Free Claim] ${opts.productName} — ${opts.claimantEmail}`,
+    text: `A verified J6 defendant claimed a free product.
+
+Product: ${opts.productName}
+Claimant: ${opts.claimantEmail}
+Order: ${opts.orderId}
+Notes: ${opts.notes || "(none)"}
+Shipping:
+${shippingStr}
+
+Deliver, then mark the order fulfilled in /admin/orders.`,
+    html: `
+      <div style="${FONT}color:#1a1a1a;max-width:560px;margin:0 auto;padding:24px 16px;">
+        <h1 style="font-size:20px;margin:0 0 12px;">New J6 free claim</h1>
+        <p style="font-size:14px;color:#333;margin:0 0 6px;"><strong>Product:</strong> ${esc(opts.productName)}</p>
+        <p style="font-size:14px;color:#333;margin:0 0 6px;"><strong>Claimant:</strong> ${esc(opts.claimantEmail)}</p>
+        <p style="font-size:14px;color:#333;margin:0 0 6px;"><strong>Order:</strong> ${esc(opts.orderId)}</p>
+        <p style="font-size:14px;color:#333;margin:0 0 6px;"><strong>Notes:</strong> ${esc(opts.notes || "(none)")}</p>
+        <pre style="font-size:12px;background:#f5f5f5;padding:12px;border-radius:8px;white-space:pre-wrap;">${esc(shippingStr)}</pre>
+        <p style="font-size:13px;color:#666;">Deliver, then mark fulfilled in /admin/orders.</p>
+      </div>`,
+  };
+
+  const user: EmailEnvelope = {
+    subject: `Your free claim is in — ${opts.productName}`,
+    text: `Thank you.
+
+Your claim for "${opts.productName}" came through as a verified January 6 defendant — at no charge. Ryan will follow up personally with delivery details within 48 hours.
+
+— ${SITE.author}
+${SITE.url}`,
+    html: `
+      <div style="${FONT}color:#1a1a1a;max-width:560px;margin:0 auto;padding:24px 16px;">
+        <h1 style="font-size:22px;margin:0 0 16px;">Your free claim is in.</h1>
+        <p style="font-size:15px;line-height:1.6;color:#333;margin:0 0 16px;">
+          Your claim for <strong>${esc(opts.productName)}</strong> came through as a verified
+          January 6 defendant — at no charge. I'll follow up personally with delivery
+          details within 48 hours.
+        </p>
+        <p style="font-size:15px;line-height:1.6;color:#333;margin:0;">— ${esc(SITE.author)}</p>
+      </div>`,
+  };
+
+  return { admin, user };
+}
