@@ -18,6 +18,7 @@ import { PostMain } from "@/components/PostMain";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { SITE } from "@/lib/site";
 import { muxThumbnailUrl } from "@/lib/mux";
+import { getOgImage } from "@/lib/og-images";
 
 export const revalidate = 60;
 
@@ -41,10 +42,19 @@ export async function generateMetadata(props: {
   const displayTitle = post.title ?? (deriveExcerpt(post.body, null).slice(0, 80) || "Note");
   const excerpt = deriveExcerpt(post.body, post.title);
 
-  // Pick an OG image based on type. Video gets the Mux thumbnail; photo gets
-  // the first image; everything else uses the generated /og/[slug] card.
+  // Per-post override from the /admin/og-images tool (path "/posts/<slug>").
+  // Lets you set a custom share image + SEO title/description per post, live,
+  // with no deploy. Falls back to the type-based image + auto excerpt.
+  const override = await getOgImage(`/posts/${post.slug}`);
+
   let ogImage: string;
-  if (post.type === "video" && post.mux_playback_id) {
+  let ogWidth = 1200;
+  let ogHeight = 630;
+  if (override?.image_url) {
+    ogImage = override.image_url;
+    ogWidth = override.width ?? 1200;
+    ogHeight = override.height ?? 630;
+  } else if (post.type === "video" && post.mux_playback_id) {
     ogImage = muxThumbnailUrl(post.mux_playback_id, { width: 1200, height: 630, fitMode: "smartcrop" });
   } else if (post.type === "photo" && post.media && post.media[0]) {
     ogImage = post.media[0].url;
@@ -52,23 +62,26 @@ export async function generateMetadata(props: {
     ogImage = `/og/${post.slug}`;
   }
 
+  const metaTitle = override?.title ?? displayTitle;
+  const metaDescription = override?.description ?? excerpt;
+
   const url = `${SITE.url}/posts/${post.slug}`;
   const meta: Metadata = {
-    title: displayTitle,
-    description: excerpt,
+    title: metaTitle,
+    description: metaDescription,
     openGraph: {
       type: "article",
-      title: displayTitle,
-      description: excerpt,
+      title: metaTitle,
+      description: metaDescription,
       url,
       publishedTime: post.published_at ?? undefined,
       authors: [SITE.author],
-      images: [{ url: ogImage, width: 1200, height: 630, alt: displayTitle }],
+      images: [{ url: ogImage, width: ogWidth, height: ogHeight, alt: metaTitle }],
     },
     twitter: {
       card: "summary_large_image",
-      title: displayTitle,
-      description: excerpt,
+      title: metaTitle,
+      description: metaDescription,
       images: [ogImage],
     },
     alternates: { canonical: `/posts/${post.slug}` },
