@@ -194,6 +194,33 @@ export default async function CasePage({
           <SmallStat label="Federal officers on record (IGP broken)" value={2} />
         </div>
 
+        {/* Front door to the full defendant directory — the most-requested
+            destination, made impossible to miss. */}
+        <Link
+          href="/case?view=people&filter=unclaimed"
+          className="mt-6 flex items-center justify-between gap-4 rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-5 hover:bg-[var(--color-accent)] transition group"
+        >
+          <div>
+            <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-accent)] group-hover:text-[var(--color-paper)]">
+              The directory
+            </p>
+            <p className="mt-1 text-xl sm:text-2xl font-bold tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-paper)]">
+              Browse all J6 defendants →
+            </p>
+            <p className="mt-1 text-sm text-[var(--color-ink-soft)] group-hover:text-[var(--color-paper)]">
+              {people.filter((p) => p.is_j6_defendant).length.toLocaleString()}{" "}
+              defendant profiles on record. Find a name, claim a profile, build a
+              case.
+            </p>
+          </div>
+          <span
+            aria-hidden
+            className="text-3xl font-bold flex-shrink-0 text-[var(--color-accent)] group-hover:text-[var(--color-paper)]"
+          >
+            →
+          </span>
+        </Link>
+
         {/* Case Builder banner — anchors the wider J6 work at the top
             of the case page. Was on the homepage; moved here so Ryan's
             feed stays focused on his own posts. */}

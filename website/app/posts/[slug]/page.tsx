@@ -55,7 +55,9 @@ export async function generateMetadata(props: {
     ogWidth = override.width ?? 1200;
     ogHeight = override.height ?? 630;
   } else if (post.type === "video" && post.mux_playback_id) {
-    ogImage = muxThumbnailUrl(post.mux_playback_id, { width: 1200, height: 630, fitMode: "smartcrop" });
+    // Same frame (time: 1) as the video thumbnail shown in the feed/player, so
+    // the social share image matches the video's thumbnail.
+    ogImage = muxThumbnailUrl(post.mux_playback_id, { width: 1200, height: 630, fitMode: "smartcrop", time: 1 });
   } else if (post.type === "photo" && post.media && post.media[0]) {
     ogImage = post.media[0].url;
   } else {
@@ -133,7 +135,7 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
     mainEntityOfPage: `${SITE.url}/posts/${post.slug}`,
     ...(post.type === "video" && post.mux_playback_id
       ? {
-          thumbnailUrl: muxThumbnailUrl(post.mux_playback_id, { width: 1200 }),
+          thumbnailUrl: muxThumbnailUrl(post.mux_playback_id, { width: 1200, time: 1 }),
           embedUrl: `${SITE.url}/posts/${post.slug}`,
           duration: post.duration_seconds
             ? `PT${Math.round(post.duration_seconds)}S`
