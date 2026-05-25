@@ -41,14 +41,16 @@ export async function POST(request: Request) {
 
   const { data: existing, error: loadErr } = await svc
     .from("products")
-    .select("id, stripe_product_id, stripe_price_id, price_cents")
+    .select("id, name, description, stripe_product_id, stripe_price_id, price_cents")
     .eq("id", d.id)
     .single();
   if (loadErr || !existing) {
     return NextResponse.json({ error: "Product not found." }, { status: 404 });
   }
 
-  const update: Record<string, unknown> = { updated_at: new Date().toISOString() };
+  const update: Record<string, unknown> = {
+    updated_at: new Date().toISOString(),
+  };
   if (d.name !== undefined) update.name = d.name;
   if (d.description !== undefined) update.description = d.description || null;
   if (d.image_url !== undefined) update.image_url = d.image_url || null;
@@ -57,14 +59,33 @@ export async function POST(request: Request) {
   if (d.active !== undefined) update.active = d.active;
   if (d.sort_order !== undefined) update.sort_order = d.sort_order;
 
-  // Stripe Prices are immutable: on a price change, mint a new Price and
-  // archive the old one, then point the row at the new Price.
-  if (
+  const stripeConfigured = !!process.env.STRIPE_SECRET_KEY;
+  const nameForStripe = d.name ?? existing.name;
+  const priceForStripe = d.price_cents ?? existing.price_cents;
+
+  if (!existing.stripe_product_id && stripeConfigured) {
+    // First-time (e.g. seeded) product: mint its Stripe Product + Price so it
+    // becomes purchasable.
+    const stripe = requireStripe();
+    const product = await stripe.products.create({
+      name: nameForStripe,
+      description: (d.description ?? existing.description) || undefined,
+    });
+    const price = await stripe.prices.create({
+      product: product.id,
+      unit_amount: priceForStripe,
+      currency: "usd",
+    });
+    update.stripe_product_id = product.id;
+    update.stripe_price_id = price.id;
+    update.price_cents = priceForStripe;
+  } else if (
     d.price_cents !== undefined &&
     d.price_cents !== existing.price_cents &&
-    process.env.STRIPE_SECRET_KEY &&
+    stripeConfigured &&
     existing.stripe_product_id
   ) {
+    // Price change: Stripe Prices are immutable — mint a new one, archive old.
     const stripe = requireStripe();
     const newPrice = await stripe.prices.create({
       product: existing.stripe_product_id,
@@ -84,7 +105,8 @@ export async function POST(request: Request) {
     update.price_cents = d.price_cents;
   }
 
-  if (d.name !== undefined && process.env.STRIPE_SECRET_KEY && existing.stripe_product_id) {
+  // Keep the Stripe product name in sync on rename.
+  if (d.name !== undefined && stripeConfigured && existing.stripe_product_id) {
     try {
       const stripe = requireStripe();
       await stripe.products.update(existing.stripe_product_id, { name: d.name });

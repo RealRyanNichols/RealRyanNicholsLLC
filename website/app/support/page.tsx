@@ -3,6 +3,8 @@ import Link from "next/link";
 import { SITE } from "@/lib/site";
 import { getOgImage } from "@/lib/og-images";
 import { DonateButtons } from "@/components/DonateButtons";
+import { SupporterButton } from "@/components/SupporterButton";
+import { BuyButton } from "@/components/BuyButton";
 import { LiveAttentionMeter } from "@/components/LiveAttentionMeter";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 
@@ -48,6 +50,7 @@ export default async function SupportPage() {
   const donateUrl = process.env.NEXT_PUBLIC_DONATION_URL;
   const supporterUrl = SITE.supporterUrl;
   const mailing = SITE.mailingAddress;
+  const nativeCheckout = process.env.NEXT_PUBLIC_STRIPE_NATIVE_CHECKOUT === "1";
 
   // Seed the live attention meter server-side so the first paint already
   // shows a real number — no "0 reading now" flash while the client polls.
@@ -119,7 +122,7 @@ export default async function SupportPage() {
         </p>
       </section>
 
-      {donateUrl ? (
+      {donateUrl || nativeCheckout ? (
         <section className="mt-10 rounded-2xl border border-[var(--color-line)] bg-gradient-to-br from-[var(--color-surface-2)] to-[var(--color-surface)] p-6 sm:p-8 relative overflow-hidden">
           <div
             className="pointer-events-none absolute -top-24 -right-24 h-56 w-56 rounded-full blur-3xl"
@@ -169,15 +172,7 @@ export default async function SupportPage() {
             Reading, signing up, and commenting all stay free for everyone.
             This is a tip jar with a badge, not a paywall.
           </p>
-          <a
-            href={supporterUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="relative inline-flex items-center mt-5 rounded-full bg-amber-600 hover:bg-amber-500 px-6 py-2.5 text-sm font-bold text-[#1a1308] transition"
-            data-track="supporter-checkout"
-          >
-            Start Supporter Membership →
-          </a>
+          <SupporterButton supporterUrl={supporterUrl} />
         </section>
       ) : null}
 
@@ -217,12 +212,21 @@ export default async function SupportPage() {
           subscription, no catch. This $997 offer is for people who want
           a full <em>replica</em> of this site for themselves.
         </p>
-        <a
-          href="mailto:ryan@realryannichols.com?subject=Website%20build%20inquiry%20(%24997%20replica)&body=Hi%20Ryan%2C%0A%0AI%27d%20like%20a%20site%20like%20realryannichols.com.%20A%20bit%20about%20me%2Fwhat%20I%20want%20to%20publish%3A%0A%0A"
-          className="relative inline-flex items-center mt-5 rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-6 py-3 text-sm font-bold hover:bg-[var(--color-blue-strong)] transition"
-        >
-          Email me about a build →
-        </a>
+        <div className="relative mt-5 flex flex-wrap items-center gap-3">
+          <a
+            href="mailto:ryan@realryannichols.com?subject=Website%20build%20inquiry%20(%24997%20replica)&body=Hi%20Ryan%2C%0A%0AI%27d%20like%20a%20site%20like%20realryannichols.com.%20A%20bit%20about%20me%2Fwhat%20I%20want%20to%20publish%3A%0A%0A"
+            className="inline-flex items-center rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-6 py-3 text-sm font-bold hover:bg-[var(--color-blue-strong)] transition"
+          >
+            Email me about a build →
+          </a>
+          {nativeCheckout ? (
+            <BuyButton
+              slug="build-your-site"
+              label="Pay now ($997)"
+              className="inline-flex items-center rounded-full border-2 border-[var(--color-blue)] px-6 py-3 text-sm font-bold text-[var(--color-blue)] hover:bg-[var(--color-blue)] hover:text-[var(--color-paper)] transition"
+            />
+          ) : null}
+        </div>
       </section>
 
       <section className="mt-10">

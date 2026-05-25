@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { format } from "date-fns";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { getSupabaseServiceClient } from "@/lib/supabase/service";
 
 export const metadata: Metadata = {
   title: "Donations",
@@ -61,6 +62,18 @@ export default async function AdminDonationsPage() {
     .eq("is_supporter", true)
     .order("supporter_since", { ascending: false });
   const supporterCount = supporters?.length ?? 0;
+
+  // Recorded donations (written by the Stripe webhook → donations table).
+  const svc = getSupabaseServiceClient();
+  const { data: donationRows } = await svc
+    .from("donations")
+    .select("email, name, amount_cents, recurring, refunded_at, created_at")
+    .order("created_at", { ascending: false })
+    .limit(50);
+  const donations = donationRows ?? [];
+  const donTotalCents = donations
+    .filter((d) => !d.refunded_at)
+    .reduce((s, d) => s + (d.amount_cents ?? 0), 0);
 
   // One-time donation revenue lives in Stripe — pull it if a key is set.
   let totalCents = 0;
@@ -163,6 +176,41 @@ export default async function AdminDonationsPage() {
           </div>
         </section>
       )}
+
+      {/* Recorded donations from the Stripe webhook */}
+      <section className="mt-10">
+        <h2 className="text-lg font-bold tracking-tight mb-1">
+          Recorded donations
+        </h2>
+        <p className="text-xs text-[var(--color-muted)] mb-3">
+          {donations.length} recorded in-app · {usd(donTotalCents)} (excl.
+          refunds). The native checkout writes these directly via webhook.
+        </p>
+        {donations.length === 0 ? (
+          <p className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 text-sm text-[var(--color-ink-soft)] italic">
+            No donations recorded in-app yet. One-time gifts through the Payment
+            Link show in the Stripe section above.
+          </p>
+        ) : (
+          <ul className="rounded-2xl border border-[var(--color-line)] divide-y divide-[var(--color-line)]">
+            {donations.map((d, i) => (
+              <li
+                key={i}
+                className="flex items-center justify-between px-4 py-2.5 text-sm"
+              >
+                <span className="text-[var(--color-ink-soft)] truncate">
+                  {d.name || d.email || "Anonymous"}
+                  {d.recurring ? " · recurring" : ""}
+                  {d.refunded_at ? " · refunded" : ""}
+                </span>
+                <span className="font-mono font-bold">
+                  {usd(d.amount_cents)}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
 
       {/* Supporter memberships — always available from the app DB */}
       <section className="mt-10">
