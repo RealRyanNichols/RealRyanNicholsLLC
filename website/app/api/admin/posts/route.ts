@@ -44,6 +44,58 @@ const schema = z.discriminatedUnion("type", [
   }),
 ]);
 
+const DEFAULT_SITE_ORIGIN = "https://realryannichols.com";
+
+function getConfiguredSiteOrigin(): string {
+  try {
+    return new URL(process.env.SITE_URL ?? DEFAULT_SITE_ORIGIN).origin;
+  } catch {
+    return DEFAULT_SITE_ORIGIN;
+  }
+}
+
+function getRequestOrigin(request: Request): string | null {
+  const origin = request.headers.get("origin");
+  if (origin) return origin;
+
+  const referer = request.headers.get("referer");
+  if (!referer) return null;
+  try {
+    return new URL(referer).origin;
+  } catch {
+    return null;
+  }
+}
+
+function isAllowedUploadOrigin(origin: string): boolean {
+  try {
+    const { hostname } = new URL(origin);
+    return (
+      hostname === "realryannichols.com" ||
+      hostname === "www.realryannichols.com" ||
+      hostname === "app.realryannichols.com" ||
+      hostname === "realryanichols-personal.vercel.app" ||
+      (hostname.startsWith("realryanichols-personal-") && hostname.endsWith(".vercel.app"))
+    );
+  } catch {
+    return false;
+  }
+}
+
+function getMuxUploadCorsOrigin(request: Request): string {
+  const requestOrigin = getRequestOrigin(request);
+  if (requestOrigin && isAllowedUploadOrigin(requestOrigin)) {
+    return requestOrigin;
+  }
+  return getConfiguredSiteOrigin();
+}
+
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error && error.message) return error.message;
+  if (typeof error === "string") return error;
+  return "Unknown error.";
+}
+
 export async function POST(request: Request) {
   const supabase = await getSupabaseServerClient();
   const { data: auth } = await supabase.auth.getUser();
@@ -90,28 +142,36 @@ export async function POST(request: Request) {
     }
     if (!directVideoMedia) {
       const mux = getMuxClient();
-      const upload = await mux.video.uploads.create({
-        cors_origin: process.env.SITE_URL ?? "https://realryannichols.com",
-        timeout: 60 * 60 * 24,
-        new_asset_settings: {
-          playback_policies: ["public"],
-          video_quality: "basic",
-          inputs: [
-            {
-              generated_subtitles: [
-                {
-                  language_code: "en",
-                  name: "English",
-                },
-              ],
+      let upload: Awaited<ReturnType<typeof mux.video.uploads.create>>;
+      try {
+        upload = await mux.video.uploads.create({
+          cors_origin: getMuxUploadCorsOrigin(request),
+          timeout: 60 * 60 * 24,
+          new_asset_settings: {
+            playback_policies: ["public"],
+            video_quality: "basic",
+            inputs: [
+              {
+                generated_subtitles: [
+                  {
+                    language_code: "en",
+                    name: "English",
+                  },
+                ],
+              },
+            ],
+            meta: {
+              title: input.title,
+              creator_id: auth.user.id,
             },
-          ],
-          meta: {
-            title: input.title,
-            creator_id: auth.user.id,
           },
-        },
-      });
+        });
+      } catch (error) {
+        return NextResponse.json(
+          { error: `Mux upload setup failed: ${getErrorMessage(error)}` },
+          { status: 502 }
+        );
+      }
       if (!upload.url) {
         return NextResponse.json(
           { error: "Mux did not return an upload URL." },

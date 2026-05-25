@@ -583,9 +583,15 @@ function uploadWithProgress(
   file: File,
   onProgress: (fraction: number) => void
 ): Promise<void> {
+  const uploadUrl = normalizeUploadUrl(url);
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
-    xhr.open("PUT", url);
+    try {
+      xhr.open("PUT", uploadUrl);
+    } catch {
+      uploadWithFetch(uploadUrl, file, onProgress).then(resolve, reject);
+      return;
+    }
     xhr.upload.onprogress = (e) => {
       if (e.lengthComputable) onProgress(e.loaded / e.total);
     };
@@ -593,9 +599,46 @@ function uploadWithProgress(
       if (xhr.status >= 200 && xhr.status < 300) resolve();
       else reject(new Error(`Upload failed: ${xhr.status} ${xhr.statusText}`));
     };
-    xhr.onerror = () => reject(new Error("Network error during upload."));
-    xhr.send(file);
+    xhr.onerror = () =>
+      reject(
+        new Error(
+          "Network error during video upload. Refresh the page and try again; if you are on www/app, open realryannichols.com/admin/new directly."
+        )
+      );
+    try {
+      xhr.send(file);
+    } catch {
+      uploadWithFetch(uploadUrl, file, onProgress).then(resolve, reject);
+    }
   });
+}
+
+function normalizeUploadUrl(url: string): string {
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol !== "https:") {
+      throw new Error("Mux returned a non-HTTPS upload URL.");
+    }
+    return parsed.toString();
+  } catch {
+    throw new Error("Mux returned an invalid upload URL. Refresh the page and try again.");
+  }
+}
+
+async function uploadWithFetch(
+  url: string,
+  file: File,
+  onProgress: (fraction: number) => void
+): Promise<void> {
+  onProgress(0.05);
+  const res = await fetch(url, {
+    method: "PUT",
+    body: file,
+  });
+  if (!res.ok) {
+    throw new Error(`Upload failed: ${res.status} ${res.statusText}`);
+  }
+  onProgress(1);
 }
 
 function readImageDimensions(file: File): Promise<{ width: number; height: number } | null> {
