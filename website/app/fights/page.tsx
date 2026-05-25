@@ -4,6 +4,7 @@ import { SITE } from "@/lib/site";
 import { getOgImage } from "@/lib/og-images";
 import { ShareRail } from "@/components/ShareRail";
 import { ReactionBar } from "@/components/ReactionBar";
+import { FIGHTS } from "@/lib/fights";
 
 // Cache + periodically revalidate instead of force-dynamic: the page is
 // static content, so caching makes it fast (better SEO/attention) while
@@ -49,37 +50,6 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-// Ryan's issue-advocacy — his stated values, framed in his voice. These
-// are starting statements he can sharpen; they take positions on issues,
-// not on any office or opponent.
-const FIGHTS: { tag: string; title: string; body: string }[] = [
-  {
-    tag: "East Texas",
-    title: "Water Rights",
-    body: "Water is the lifeblood of East Texas. I'm fighting to keep it in the hands of the people who live on this land — not sold off, piped out to the metros, or controlled over our heads by interests who never set foot here.",
-  },
-  {
-    tag: "Free speech",
-    title: "The First Amendment",
-    body: "I was banned, brigaded, and prosecuted over speech. No American should lose their voice to an algorithm or a weaponized agency. The First Amendment isn't a technicality — it's the whole ballgame, and I'll defend it for people I agree with and people I don't.",
-  },
-  {
-    tag: "Property",
-    title: "Land Rights",
-    body: "Your land is your stake in this country. I'm fighting eminent-domain abuse and any government or corporation that treats a family's private property as theirs to take.",
-  },
-  {
-    tag: "Your paycheck",
-    title: "Tax Fairness",
-    body: "Working people are taxed into the ground while the connected get the carve-outs. I'm fighting for a system that stops punishing the people who actually build everything.",
-  },
-  {
-    tag: "Two-tier no more",
-    title: "Equal Justice Under the Law",
-    body: "I lived two-tier justice from the inside. Those four words are carved over the Supreme Court — Equal Justice Under Law — and I'm fighting to make them true for everyone, not just whoever the government happens to like that week.",
-  },
-];
-
 export default function FightsPage() {
   return (
     <article className="mx-auto max-w-4xl px-4 py-8 sm:py-12">
@@ -115,9 +85,10 @@ export default function FightsPage() {
 
       <div className="mt-8 space-y-3">
         {FIGHTS.map((f) => (
-          <section
-            key={f.title}
-            className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6"
+          <Link
+            key={f.slug}
+            href={`/fights/${f.slug}`}
+            className="group block rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6 hover:border-[var(--color-accent)] transition"
           >
             <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
               {f.tag}
@@ -126,9 +97,12 @@ export default function FightsPage() {
               {f.title}
             </h2>
             <p className="mt-2 text-base text-[var(--color-ink-soft)] leading-relaxed">
-              {f.body}
+              {f.short}
             </p>
-          </section>
+            <span className="mt-3 inline-block text-sm font-bold text-[var(--color-accent)] group-hover:underline">
+              Read the fight →
+            </span>
+          </Link>
         ))}
       </div>
 
