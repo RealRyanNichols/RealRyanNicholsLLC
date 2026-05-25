@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { format } from "date-fns";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { SupportNoteModerator } from "@/components/SupportNoteModerator";
+import { FundingAdmin } from "@/components/FundingAdmin";
 
 export const metadata: Metadata = {
   title: "Donations",
@@ -85,6 +86,51 @@ export default async function AdminDonationsPage() {
     .order("created_at", { ascending: false })
     .limit(25);
 
+  // Transparent funding goal: all line items (incl. inactive) + settings + snapshot.
+  const [fundingItemsRes, fundingSettingsRes, fundingSnapRes] = await Promise.all([
+    supabase
+      .from("funding_line_items")
+      .select("id, label, blurb, amount_cents, cadence, sort_order, is_active")
+      .order("sort_order", { ascending: true }),
+    supabase
+      .from("funding_settings")
+      .select("campaign_title, campaign_blurb, manual_raised_cents, manual_note, show_amounts")
+      .eq("id", "default")
+      .maybeSingle(),
+    supabase.rpc("funding_snapshot"),
+  ]);
+  const fundingItems = (fundingItemsRes.data ?? []) as {
+    id: string;
+    label: string;
+    blurb: string | null;
+    amount_cents: number;
+    cadence: "monthly" | "one_time";
+    sort_order: number;
+    is_active: boolean;
+  }[];
+  const fundingSettings = (fundingSettingsRes.data ?? {
+    campaign_title: "Fund the truth",
+    campaign_blurb: null,
+    manual_raised_cents: 0,
+    manual_note: null,
+    show_amounts: true,
+  }) as {
+    campaign_title: string;
+    campaign_blurb: string | null;
+    manual_raised_cents: number;
+    manual_note: string | null;
+    show_amounts: boolean;
+  };
+  const fundingGoalCents = fundingItems
+    .filter((i) => i.is_active && i.cadence === "monthly")
+    .reduce((s, i) => s + i.amount_cents, 0);
+  const fundingSnap = Array.isArray(fundingSnapRes.data)
+    ? fundingSnapRes.data[0]
+    : fundingSnapRes.data;
+  const fundingRaisedCents = Number(
+    (fundingSnap as { raised_cents?: number } | null)?.raised_cents ?? 0,
+  );
+
   // One-time donation revenue lives in Stripe — pull it if a key is set.
   let totalCents = 0;
   let chargeCount = 0;
@@ -109,6 +155,13 @@ export default async function AdminDonationsPage() {
       <p className="mt-1 text-sm text-[var(--color-muted)]">
         Every dollar in, in one place.
       </p>
+
+      <FundingAdmin
+        initialItems={fundingItems}
+        initialSettings={fundingSettings}
+        goalCents={fundingGoalCents}
+        raisedCents={fundingRaisedCents}
+      />
 
       {key && stripeOk ? (
         <>
