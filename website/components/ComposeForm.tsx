@@ -408,6 +408,12 @@ function VideoForm({ videoConfig }: { videoConfig: VideoConfigStatus }) {
   const [category, setCategory] = useState<string>(VIDEO_CHANNELS[0]);
   const [file, setFile] = useState<File | null>(null);
 
+  function onVideoFile(files: FileList | null) {
+    const next = files?.[0] ?? null;
+    setFile(next);
+    if (next) setState({ kind: "idle" });
+  }
+
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!file) {
@@ -509,26 +515,23 @@ function VideoForm({ videoConfig }: { videoConfig: VideoConfigStatus }) {
         <span className="block text-sm font-medium text-[var(--color-ink)] mb-1">
           Video file
         </span>
-        <label className="relative block cursor-pointer rounded-md border border-dashed border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-4 text-sm transition hover:border-[var(--color-accent)] focus-within:border-[var(--color-accent)] focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-[var(--color-accent)]">
+        <div className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
           <input
             required
             type="file"
             accept="video/*,.mp4,.mov,.m4v,.webm,.mkv"
-            onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-            className="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
+            onChange={(e) => onVideoFile(e.target.files)}
+            className="block w-full max-w-full rounded-md border border-[var(--color-line)] bg-white px-3 py-3 text-base text-[var(--color-ink)] file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:bg-[var(--color-accent)] file:px-3 file:py-2 file:text-sm file:font-bold file:text-white"
             aria-label="Choose video file"
           />
-          <span className="pointer-events-none block font-bold text-[var(--color-ink)]">
-            {file ? file.name : "Tap to choose a video"}
-          </span>
-          <span className="pointer-events-none mt-1 block text-xs text-[var(--color-muted)]">
+          <p className="mt-2 text-xs text-[var(--color-muted)]">
             {file
-              ? `${formatBytes(file.size)} selected`
+              ? `${file.name} — ${formatBytes(file.size)} selected`
               : videoConfig.muxConfigured
                 ? "MP4, MOV, WebM, or MKV. Mux handles the large upload."
                 : `MP4, MOV, or WebM up to ${formatBytes(POST_VIDEO_MAX_BYTES)} until Mux is configured.`}
-          </span>
-        </label>
+          </p>
+        </div>
       </div>
       {!videoConfig.muxConfigured ? (
         <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
