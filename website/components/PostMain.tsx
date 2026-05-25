@@ -14,7 +14,7 @@ export function PostMain({ post }: { post: Post }) {
         {ready ? (
           <VideoPlayer
             playbackId={post.mux_playback_id!}
-            poster={muxThumbnailUrl(post.mux_playback_id!, { width: 1280, time: 1 })}
+            poster={post.thumbnail_url ?? muxThumbnailUrl(post.mux_playback_id!, { width: 1280, time: 1 })}
             title={post.title ?? undefined}
           />
         ) : directVideoUrl ? (

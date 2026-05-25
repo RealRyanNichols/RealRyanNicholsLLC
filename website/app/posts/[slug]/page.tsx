@@ -54,6 +54,9 @@ export async function generateMetadata(props: {
     ogImage = override.image_url;
     ogWidth = override.width ?? 1200;
     ogHeight = override.height ?? 630;
+  } else if (post.type === "video" && post.thumbnail_url) {
+    // A custom thumbnail the author chose at upload wins over the Mux frame.
+    ogImage = post.thumbnail_url;
   } else if (post.type === "video" && post.mux_playback_id) {
     // Same frame (time: 1) as the video thumbnail shown in the feed/player, so
     // the social share image matches the video's thumbnail.
