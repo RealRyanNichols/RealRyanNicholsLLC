@@ -408,7 +408,6 @@ function PhotoForm() {
 
 function VideoForm({ videoConfig }: { videoConfig: VideoConfigStatus }) {
   const router = useRouter();
-  const videoInputRef = useRef<HTMLInputElement | null>(null);
   const [state, setState] = useState<State>({ kind: "idle" });
   const [muxHealth, setMuxHealth] = useState<MuxHealth>({
     kind: videoConfig.muxConfigured ? "checking" : "idle",
@@ -423,13 +422,13 @@ function VideoForm({ videoConfig }: { videoConfig: VideoConfigStatus }) {
   const [thumbUrl, setThumbUrl] = useState<string | null>(null);
   const [thumbBusy, setThumbBusy] = useState(false);
   const [canCancel, setCanCancel] = useState(false);
-  const thumbInputRef = useRef<HTMLInputElement | null>(null);
   const xhrRef = useRef<XMLHttpRequest | null>(null);
   const postIdRef = useRef<string | null>(null);
   const cancelledRef = useRef(false);
 
-  async function onThumb(files: FileList | null) {
-    const f = files?.[0];
+  async function onThumb(e: React.ChangeEvent<HTMLInputElement>) {
+    const input = e.currentTarget;
+    const f = input.files?.[0];
     if (!f) return;
     setThumbBusy(true);
     try {
@@ -446,7 +445,7 @@ function VideoForm({ videoConfig }: { videoConfig: VideoConfigStatus }) {
       setState({ kind: "error", message: err instanceof Error ? err.message : "Thumbnail upload failed." });
     } finally {
       setThumbBusy(false);
-      if (thumbInputRef.current) thumbInputRef.current.value = "";
+      input.value = "";
     }
   }
 
@@ -522,21 +521,6 @@ function VideoForm({ videoConfig }: { videoConfig: VideoConfigStatus }) {
     const next = files?.[0] ?? null;
     setFile(next);
     if (next) setState({ kind: "idle" });
-  }
-
-  function openVideoPicker() {
-    const input = videoInputRef.current;
-    if (!input) return;
-    const picker = input as HTMLInputElement & { showPicker?: () => void };
-    try {
-      if (picker.showPicker) {
-        picker.showPicker();
-        return;
-      }
-    } catch {
-      // Some browsers expose showPicker but still throw. Native click is the fallback.
-    }
-    input.click();
   }
 
   async function onSubmit(e: React.FormEvent) {
@@ -661,22 +645,16 @@ function VideoForm({ videoConfig }: { videoConfig: VideoConfigStatus }) {
           Video file
         </span>
         <div className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
-          <button
-            type="button"
-            onClick={openVideoPicker}
-            className="btn-accent inline-flex w-full items-center justify-center rounded-md px-4 py-3 text-sm font-bold sm:w-auto"
-          >
-            Choose video file
-          </button>
-          <input
-            ref={videoInputRef}
-            required
-            type="file"
-            accept="video/*,.mp4,.mov,.m4v,.webm,.mkv"
-            onChange={(e) => onVideoFile(e.target.files)}
-            className="sr-only"
-            aria-label="Choose video file"
-          />
+          <label className="btn-accent inline-flex w-full cursor-pointer items-center justify-center rounded-md px-4 py-3 text-sm font-bold sm:w-auto">
+            {file ? "Choose a different video" : "Choose video file"}
+            <input
+              type="file"
+              accept="video/*,.mp4,.mov,.m4v,.webm,.mkv"
+              onChange={(e) => onVideoFile(e.target.files)}
+              className="sr-only"
+              aria-label="Choose video file"
+            />
+          </label>
           <p className="mt-2 text-xs text-[var(--color-muted)]">
             {file
               ? `${file.name} — ${formatBytes(file.size)} selected`
@@ -696,14 +674,21 @@ function VideoForm({ videoConfig }: { videoConfig: VideoConfigStatus }) {
             we&apos;ll use a frame from the video.
           </p>
           <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => thumbInputRef.current?.click()}
-              disabled={thumbBusy}
-              className="rounded-md border border-[var(--color-line)] px-3 py-2 text-sm font-bold disabled:opacity-60"
+            <label
+              className={[
+                "inline-flex cursor-pointer items-center rounded-md border border-[var(--color-line)] px-3 py-2 text-sm font-bold",
+                thumbBusy ? "opacity-60 pointer-events-none" : "",
+              ].join(" ")}
             >
               {thumbBusy ? "Uploading…" : thumbUrl ? "Replace thumbnail" : "Choose thumbnail"}
-            </button>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={onThumb}
+                className="sr-only"
+                aria-label="Choose thumbnail image"
+              />
+            </label>
             {thumbUrl ? (
               <button
                 type="button"
@@ -714,14 +699,6 @@ function VideoForm({ videoConfig }: { videoConfig: VideoConfigStatus }) {
               </button>
             ) : null}
           </div>
-          <input
-            ref={thumbInputRef}
-            type="file"
-            accept="image/*"
-            onChange={(e) => onThumb(e.target.files)}
-            className="sr-only"
-            aria-label="Choose thumbnail image"
-          />
           {thumbUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
