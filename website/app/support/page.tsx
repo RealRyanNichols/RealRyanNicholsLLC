@@ -4,6 +4,8 @@ import { SITE } from "@/lib/site";
 import { getOgImage } from "@/lib/og-images";
 import { LiveAttentionMeter } from "@/components/LiveAttentionMeter";
 import { SupportIntentForm } from "@/components/SupportIntentForm";
+import { SupportersWall } from "@/components/SupportersWall";
+import { getPublishedSupporters } from "@/lib/supporters";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 
 const DEFAULT_DESCRIPTION =
@@ -59,6 +61,10 @@ export default async function SupportPage() {
   } catch {
     /* meter falls back to client poll */
   }
+
+  // Published supporter notes for the public wall (consent-gated; empty until
+  // Ryan publishes notes from /admin/donations).
+  const supporters = await getPublishedSupporters();
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
@@ -164,6 +170,8 @@ export default async function SupportPage() {
 
         <SupportIntentForm donateUrl={donateUrl ?? ""} />
       </section>
+
+      <SupportersWall supporters={supporters} />
 
       {supporterUrl ? (
         <section className="mt-10 rounded-2xl border-2 border-amber-700 p-6 bg-gradient-to-br from-amber-950/30 to-[var(--color-surface)] relative overflow-hidden">

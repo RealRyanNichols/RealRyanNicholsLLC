@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { format } from "date-fns";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { SupportNoteModerator } from "@/components/SupportNoteModerator";
 
 export const metadata: Metadata = {
   title: "Donations",
@@ -230,8 +231,11 @@ export default async function AdminDonationsPage() {
                   Publish message: {intent.publish_message ? "yes" : "no"}
                   {" · "}
                   Show amount: {intent.show_amount ? "yes" : "no"}
+                  {" · "}
+                  Name: {intent.display_as === "name" ? intent.display_name || "—" : "anonymous"}
                   {intent.email ? ` · ${intent.email}` : ""}
                 </p>
+                <SupportNoteModerator id={intent.id} status={intent.status} />
               </article>
             ))}
           </div>
