@@ -55,18 +55,37 @@ export async function POST(request: NextRequest) {
     }
     case "video.asset.ready": {
       const assetId = event.data.id;
+      const uploadId = event.data.upload_id;
       const playbackId = event.data.playback_ids?.[0]?.id ?? null;
       const duration = event.data.duration ?? null;
       if (!assetId || !playbackId) break;
-      await supabase
-        .from("posts")
-        .update({
-          mux_playback_id: playbackId,
-          mux_status: "ready",
-          duration_seconds: duration,
-          thumbnail_url: muxThumbnailUrl(playbackId, { width: 1200 }),
-        })
-        .eq("mux_asset_id", assetId);
+      // Mark the post fully published. Previously this handler set
+      // mux_status="ready" but never set status / published_at, so transcoded
+      // videos stayed as drafts forever even though the upload UI promises
+      // auto-publish.
+      const postsUpdate = {
+        mux_asset_id: assetId,
+        mux_playback_id: playbackId,
+        mux_status: "ready",
+        duration_seconds: duration,
+        thumbnail_url: muxThumbnailUrl(playbackId, { width: 1200 }),
+        status: "published",
+        published_at: new Date().toISOString(),
+      };
+      // Match on the upload id when available — it is always written at post
+      // creation, so this keeps working even if video.upload.asset_created was
+      // missed or arrived out of order. Fall back to asset id otherwise.
+      if (uploadId) {
+        await supabase
+          .from("posts")
+          .update(postsUpdate)
+          .eq("mux_upload_id", uploadId);
+      } else {
+        await supabase
+          .from("posts")
+          .update(postsUpdate)
+          .eq("mux_asset_id", assetId);
+      }
       if (event.data.live_stream_id) {
         await supabase
           .from("live_streams")
