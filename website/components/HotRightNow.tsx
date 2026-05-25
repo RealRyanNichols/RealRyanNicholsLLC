@@ -33,23 +33,23 @@ export function HotRightNow({ initial }: { initial: Row[] }) {
 
   return (
     <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2">
-      <div className="flex items-center gap-3 flex-nowrap overflow-x-auto">
+      <div className="flex flex-wrap items-center gap-2 sm:flex-nowrap sm:gap-3 sm:overflow-x-auto">
         <span className="flex-shrink-0 inline-flex items-center gap-1.5 text-[10px] uppercase tracking-wider font-bold text-[var(--color-accent)]">
           <span className="inline-block w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] animate-pulse" />
           Hot now
         </span>
-        <ul className="flex flex-nowrap gap-2 min-w-0">
+        <ul className="flex min-w-0 flex-wrap gap-2 sm:flex-nowrap">
           {rows.map((r) => (
             <li
               key={r.path}
-              className="flex-shrink-0 rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-2.5 py-1 flex items-center gap-1.5"
+              className="min-w-0 max-w-full rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-2.5 py-1 flex items-center gap-1.5 sm:flex-shrink-0"
             >
               <span className="text-[10px] font-bold tabular-nums text-[var(--color-accent)]">
                 {Number(r.viewers)}
               </span>
               <Link
                 href={r.path}
-                className="text-xs font-mono text-[var(--color-ink)] hover:text-[var(--color-accent)] truncate max-w-[220px]"
+                className="min-w-0 max-w-[70vw] truncate text-xs font-mono text-[var(--color-ink)] hover:text-[var(--color-accent)] sm:max-w-[220px]"
                 title={r.path}
               >
                 {r.path}

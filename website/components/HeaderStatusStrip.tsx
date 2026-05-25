@@ -36,8 +36,8 @@ export function HeaderStatusStrip() {
 
   return (
     <div className="border-b border-[var(--color-line)] bg-[#0e1a36] text-[#cfd9ea]">
-      <div className="mx-auto max-w-5xl px-4 py-1.5 flex items-center justify-between gap-3 text-[10px] font-mono uppercase tracking-wider">
-        <div className="flex items-center gap-3 sm:gap-5 overflow-x-auto flex-nowrap">
+      <div className="mx-auto max-w-5xl px-4 py-1.5 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 text-[10px] font-mono uppercase tracking-wider">
+        <div className="min-w-0 flex flex-1 flex-wrap items-center gap-x-3 gap-y-1 sm:gap-x-5">
           <Cell color="#7fe3a9" pulse label="LIVE" value={t?.live_now ?? 0} suffix="reading" />
           <Cell label="countries" value={t?.countries_now ?? 0} />
           <Cell label="defendants" value={t?.defendants ?? 0} />

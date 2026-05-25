@@ -52,6 +52,15 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  main {
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: hidden;
   }
 
   ::selection {

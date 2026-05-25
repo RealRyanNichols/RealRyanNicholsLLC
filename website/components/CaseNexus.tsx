@@ -628,12 +628,12 @@ export function CaseNexus({
   return (
     <div className="relative">
       <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_22rem]">
-        <div className="relative overflow-hidden rounded-xl border-2 border-[var(--color-blue)] bg-[#071126]">
-          <div className="overflow-x-auto overflow-y-hidden">
+        <div className="relative min-w-0 overflow-hidden rounded-xl border-2 border-[var(--color-blue)] bg-[#071126]">
+          <div className="min-w-0 overflow-hidden">
             <svg
               ref={svgRef}
               viewBox={`0 0 ${W} ${H}`}
-              className="block h-[520px] w-[920px] max-w-none cursor-grab select-none active:cursor-grabbing sm:h-[64vh] sm:min-h-[560px] sm:w-full sm:max-h-[800px]"
+              className="block h-[430px] w-full max-w-full cursor-grab select-none active:cursor-grabbing sm:h-[64vh] sm:min-h-[560px] sm:max-h-[800px]"
               style={{ touchAction: "pan-y" }}
               role="img"
               aria-label="Interactive knowledge graph of January 6 defendants, cases, and documents."
