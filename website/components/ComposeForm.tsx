@@ -420,6 +420,55 @@ function VideoForm({ videoConfig }: { videoConfig: VideoConfigStatus }) {
   const [body, setBody] = useState("");
   const [category, setCategory] = useState<string>(VIDEO_CHANNELS[0]);
   const [file, setFile] = useState<File | null>(null);
+  const [thumbUrl, setThumbUrl] = useState<string | null>(null);
+  const [thumbBusy, setThumbBusy] = useState(false);
+  const [canCancel, setCanCancel] = useState(false);
+  const thumbInputRef = useRef<HTMLInputElement | null>(null);
+  const xhrRef = useRef<XMLHttpRequest | null>(null);
+  const postIdRef = useRef<string | null>(null);
+  const cancelledRef = useRef(false);
+
+  async function onThumb(files: FileList | null) {
+    const f = files?.[0];
+    if (!f) return;
+    setThumbBusy(true);
+    try {
+      const supabase = getSupabaseBrowserClient();
+      const ext = f.name.split(".").pop()?.toLowerCase() ?? "jpg";
+      const path = `thumbs/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+      const { error } = await supabase.storage
+        .from("post-media")
+        .upload(path, f, { contentType: f.type, upsert: false });
+      if (error) throw new Error(error.message);
+      const { data: pub } = supabase.storage.from("post-media").getPublicUrl(path);
+      setThumbUrl(pub.publicUrl);
+    } catch (err) {
+      setState({ kind: "error", message: err instanceof Error ? err.message : "Thumbnail upload failed." });
+    } finally {
+      setThumbBusy(false);
+      if (thumbInputRef.current) thumbInputRef.current.value = "";
+    }
+  }
+
+  // Abort an in-progress upload and clean up the draft post that was created
+  // to start it, so a wrong-file upload can be stopped and re-done cleanly.
+  async function cancelUpload() {
+    cancelledRef.current = true;
+    setCanCancel(false);
+    xhrRef.current?.abort();
+    xhrRef.current = null;
+    const id = postIdRef.current;
+    postIdRef.current = null;
+    setState({ kind: "submitting", label: "Canceling upload…" });
+    if (id) {
+      try {
+        await fetch(`/api/admin/posts/${id}`, { method: "DELETE" });
+      } catch {
+        /* draft cleanup is best-effort */
+      }
+    }
+    setState({ kind: "idle" });
+  }
 
   const runMuxHealthCheck = useCallback(async () => {
     if (!videoConfig.muxConfigured) {
@@ -525,6 +574,7 @@ function VideoForm({ videoConfig }: { videoConfig: VideoConfigStatus }) {
           body,
           category,
           media: [{ url: pub.publicUrl, alt: title }],
+          thumbnail_url: thumbUrl ?? undefined,
         });
         router.push(`/admin/posts/${post.id}/preview`);
         return;
@@ -535,14 +585,27 @@ function VideoForm({ videoConfig }: { videoConfig: VideoConfigStatus }) {
         title,
         body,
         category,
+        thumbnail_url: thumbUrl ?? undefined,
       });
       if (!mux_upload_url) {
         throw new Error("Mux upload URL missing. Check /admin/new video setup and Vercel env.");
       }
-      // Direct browser → Mux upload with progress.
-      await uploadWithProgress(mux_upload_url, file, (p) =>
-        setState({ kind: "submitting", label: `Uploading ${Math.round(p * 100)}%…`, progress: p })
+      // Direct browser → Mux upload with progress. Track the post + request so
+      // the upload can be canceled mid-flight (wrong file, etc.).
+      postIdRef.current = post.id;
+      cancelledRef.current = false;
+      setCanCancel(true);
+      await uploadWithProgress(
+        mux_upload_url,
+        file,
+        (p) => setState({ kind: "submitting", label: `Uploading ${Math.round(p * 100)}%…`, progress: p }),
+        (xhr) => {
+          xhrRef.current = xhr;
+        },
       );
+      setCanCancel(false);
+      xhrRef.current = null;
+      postIdRef.current = null;
       setState({
         kind: "submitting",
         label: "Upload complete. Mux is transcoding. Review it in admin, then publish when it is ready.",
@@ -550,6 +613,12 @@ function VideoForm({ videoConfig }: { videoConfig: VideoConfigStatus }) {
       });
       router.push(`/admin/posts/${post.id}/preview`);
     } catch (err) {
+      setCanCancel(false);
+      if (cancelledRef.current) {
+        cancelledRef.current = false;
+        setState({ kind: "idle" });
+        return;
+      }
       setState({ kind: "error", message: err instanceof Error ? err.message : "Failed." });
     }
   }
@@ -617,6 +686,52 @@ function VideoForm({ videoConfig }: { videoConfig: VideoConfigStatus }) {
           </p>
         </div>
       </div>
+      <div className="mb-4">
+        <span className="block text-sm font-medium text-[var(--color-ink)] mb-1">
+          Thumbnail (optional)
+        </span>
+        <div className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+          <p className="text-xs text-[var(--color-muted)] mb-2">
+            The image that shows in the feed and as the social share card. Skip it and
+            we&apos;ll use a frame from the video.
+          </p>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => thumbInputRef.current?.click()}
+              disabled={thumbBusy}
+              className="rounded-md border border-[var(--color-line)] px-3 py-2 text-sm font-bold disabled:opacity-60"
+            >
+              {thumbBusy ? "Uploading…" : thumbUrl ? "Replace thumbnail" : "Choose thumbnail"}
+            </button>
+            {thumbUrl ? (
+              <button
+                type="button"
+                onClick={() => setThumbUrl(null)}
+                className="text-xs font-semibold text-[var(--color-ink-soft)] hover:underline"
+              >
+                Remove
+              </button>
+            ) : null}
+          </div>
+          <input
+            ref={thumbInputRef}
+            type="file"
+            accept="image/*"
+            onChange={(e) => onThumb(e.target.files)}
+            className="sr-only"
+            aria-label="Choose thumbnail image"
+          />
+          {thumbUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={thumbUrl}
+              alt=""
+              className="mt-3 w-40 rounded-md border border-[var(--color-line)]"
+            />
+          ) : null}
+        </div>
+      </div>
       {!videoConfig.muxConfigured ? (
         <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
           <p className="font-bold">Large video upload is waiting on Mux credentials.</p>
@@ -664,7 +779,18 @@ function VideoForm({ videoConfig }: { videoConfig: VideoConfigStatus }) {
           </div>
         </div>
       ) : null}
-      <SubmitButton state={state}>Upload for review</SubmitButton>
+      <div className="flex flex-wrap items-center gap-3">
+        <SubmitButton state={state}>Upload for review</SubmitButton>
+        {canCancel ? (
+          <button
+            type="button"
+            onClick={cancelUpload}
+            className="rounded-md border border-red-300 bg-red-50 px-4 py-2.5 text-sm font-bold text-red-700 hover:bg-red-100"
+          >
+            Cancel upload
+          </button>
+        ) : null}
+      </div>
       <ErrorBanner state={state} />
       <ProgressBar state={state} />
     </form>
@@ -701,7 +827,8 @@ function SubmitButton({
 function uploadWithProgress(
   url: string,
   file: File,
-  onProgress: (fraction: number) => void
+  onProgress: (fraction: number) => void,
+  onXhr?: (xhr: XMLHttpRequest) => void
 ): Promise<void> {
   const uploadUrl = normalizeUploadUrl(url);
   return new Promise((resolve, reject) => {
@@ -712,6 +839,7 @@ function uploadWithProgress(
       uploadWithFetch(uploadUrl, file, onProgress).then(resolve, reject);
       return;
     }
+    onXhr?.(xhr);
     xhr.upload.onprogress = (e) => {
       if (e.lengthComputable) onProgress(e.loaded / e.total);
     };
@@ -719,6 +847,7 @@ function uploadWithProgress(
       if (xhr.status >= 200 && xhr.status < 300) resolve();
       else reject(new Error(`Upload failed: ${xhr.status} ${xhr.statusText}`));
     };
+    xhr.onabort = () => reject(new Error("__cancelled__"));
     xhr.onerror = () =>
       reject(
         new Error(

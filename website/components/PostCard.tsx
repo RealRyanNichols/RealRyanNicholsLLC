@@ -100,9 +100,9 @@ function PostCardBody({ post, truncate }: { post: Post; truncate: boolean }) {
   if (post.type === "video") {
     const playbackId = post.mux_playback_id;
     const directVideoUrl = getDirectVideoUrl(post.media);
-    const thumb = playbackId
-      ? muxThumbnailUrl(playbackId, { width: 1200, time: 1 })
-      : post.thumbnail_url ?? null;
+    const thumb =
+      post.thumbnail_url ??
+      (playbackId ? muxThumbnailUrl(playbackId, { width: 1200, time: 1 }) : null);
     const isProcessing = !directVideoUrl && post.mux_status && post.mux_status !== "ready";
     return (
       <>

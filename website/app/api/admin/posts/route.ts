@@ -22,6 +22,9 @@ const baseSchema = z.object({
   pinned: z.boolean().optional(),
   status: z.enum(["draft", "published"]).default("published"),
   category: z.string().max(60).optional().nullable(),
+  // Optional custom poster/thumbnail (e.g. for a video) — overrides the
+  // Mux-generated frame on the feed, the player, and the social card.
+  thumbnail_url: z.string().url().optional().nullable(),
 });
 
 const schema = z.discriminatedUnion("type", [
@@ -196,6 +199,7 @@ export async function POST(request: Request) {
         : new Date().toISOString(),
   };
   if (input.slug) insertRow.slug = input.slug;
+  if (input.thumbnail_url) insertRow.thumbnail_url = input.thumbnail_url;
   if (input.type === "photo") insertRow.media = input.media;
   if (input.type === "video" && directVideoMedia) {
     insertRow.media = directVideoMedia;
