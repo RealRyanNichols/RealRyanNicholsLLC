@@ -13,34 +13,73 @@ type Props = {
   isAdmin: boolean;
 };
 
-// Public nav. "Feed" (home) leads. The J6 Case is the hub for everything
-// case-related — Evidence + the data lenses live inside it, so they're no
-// longer confusing top-level peers. Map Room stays as the distinct LIVE
-// view. Donate is a permanent CTA chip; admin/+new/account append.
-const NAV = [
+// Public nav. Condensed into a few top-level slots so it doesn't smoosh:
+// case-related views fold under "The Case", media folds under "Watch".
+// Donate is a permanent CTA chip; admin/+new/account append.
+type NavItem = { href: string; label: string };
+type NavGroup = { label: string; items: NavItem[] };
+type NavEntry = NavItem | NavGroup;
+
+function isGroup(e: NavEntry): e is NavGroup {
+  return (e as NavGroup).items !== undefined;
+}
+
+// The path portion of an href (drops any query string) for active-state checks.
+function hrefPath(href: string): string {
+  return href.split("?")[0];
+}
+
+const NAV: NavEntry[] = [
   { href: "/", label: "Feed" },
-  { href: "/live", label: "Live" },
-  { href: "/videos", label: "Videos" },
-  { href: "/case", label: "J6 Case" },
-  { href: "/case?view=people&filter=unclaimed", label: "Defendants" },
+  {
+    label: "The Case",
+    items: [
+      { href: "/case", label: "J6 Case overview" },
+      { href: "/case?view=people&filter=unclaimed", label: "All J6 defendants" },
+      { href: "/the-map-room", label: "The Map Room" },
+    ],
+  },
   { href: "/fights", label: "The Fights" },
-  { href: "/the-map-room", label: "Map Room" },
+  {
+    label: "Watch",
+    items: [
+      { href: "/live", label: "Live now" },
+      { href: "/videos", label: "Videos" },
+    ],
+  },
   { href: "/about", label: "About" },
 ];
 
 export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
   const [open, setOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const pathname = usePathname();
 
-  // Close menu on route change
+  // Close menus on route change
   useEffect(() => {
     setOpen(false);
+    setOpenDropdown(null);
   }, [pathname]);
+
+  // Close any open desktop dropdown on an outside click.
+  useEffect(() => {
+    if (!openDropdown) return;
+    function onDocClick(e: MouseEvent) {
+      if (!(e.target as HTMLElement).closest?.("[data-nav-dropdown]")) {
+        setOpenDropdown(null);
+      }
+    }
+    document.addEventListener("click", onDocClick);
+    return () => document.removeEventListener("click", onDocClick);
+  }, [openDropdown]);
 
   // Close menu on escape, lock body scroll when open
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") {
+        setOpen(false);
+        setOpenDropdown(null);
+      }
     }
     document.addEventListener("keydown", onKey);
     if (open) {
@@ -95,11 +134,23 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
 
           {/* Desktop nav — visible at md+ */}
           <nav className="hidden md:flex items-center gap-1 text-sm">
-            {NAV.map((n) => (
-              <NavLink key={n.href} href={n.href} active={pathname === n.href}>
-                {n.label}
-              </NavLink>
-            ))}
+            {NAV.map((n) =>
+              isGroup(n) ? (
+                <NavDropdown
+                  key={n.label}
+                  group={n}
+                  pathname={pathname}
+                  open={openDropdown === n.label}
+                  onToggle={() =>
+                    setOpenDropdown((cur) => (cur === n.label ? null : n.label))
+                  }
+                />
+              ) : (
+                <NavLink key={n.href} href={n.href} active={pathname === n.href}>
+                  {n.label}
+                </NavLink>
+              ),
+            )}
             <Link
               href="/support"
               className="btn-accent ml-1 inline-flex items-center rounded-full px-3.5 py-1.5 text-xs font-semibold"
@@ -177,21 +228,44 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             className="md:hidden fixed top-16 inset-x-0 z-30 border-b border-[var(--color-line)] bg-[var(--color-paper)]/98 backdrop-blur-xl px-4 py-3 shadow-2xl"
           >
             <nav className="flex flex-col gap-1">
-              {NAV.map((n) => (
-                <Link
-                  key={n.href}
-                  href={n.href}
-                  role="menuitem"
-                  className={[
-                    "block rounded-lg px-4 py-3 text-base font-semibold transition",
-                    pathname === n.href
-                      ? "bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
-                      : "text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)]",
-                  ].join(" ")}
-                >
-                  {n.label}
-                </Link>
-              ))}
+              {NAV.map((n) =>
+                isGroup(n) ? (
+                  <div key={n.label} className="mt-1">
+                    <p className="px-4 pt-2 pb-1 text-[11px] uppercase tracking-[0.18em] text-[var(--color-muted)] font-bold">
+                      {n.label}
+                    </p>
+                    {n.items.map((it) => (
+                      <Link
+                        key={it.href}
+                        href={it.href}
+                        role="menuitem"
+                        className={[
+                          "block rounded-lg px-4 py-3 text-base font-semibold transition",
+                          pathname === hrefPath(it.href)
+                            ? "bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
+                            : "text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)]",
+                        ].join(" ")}
+                      >
+                        {it.label}
+                      </Link>
+                    ))}
+                  </div>
+                ) : (
+                  <Link
+                    key={n.href}
+                    href={n.href}
+                    role="menuitem"
+                    className={[
+                      "block rounded-lg px-4 py-3 text-base font-semibold transition",
+                      pathname === n.href
+                        ? "bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
+                        : "text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)]",
+                    ].join(" ")}
+                  >
+                    {n.label}
+                  </Link>
+                ),
+              )}
               <div className="my-2 border-t border-[var(--color-line)]" />
               {isAdmin && (
                 <Link
@@ -338,6 +412,72 @@ function NavLink({
     >
       {children}
     </Link>
+  );
+}
+
+function NavDropdown({
+  group,
+  pathname,
+  open,
+  onToggle,
+}: {
+  group: NavGroup;
+  pathname: string;
+  open: boolean;
+  onToggle: () => void;
+}) {
+  const active = group.items.some((it) => pathname === hrefPath(it.href));
+  return (
+    <div className="relative" data-nav-dropdown>
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-expanded={open}
+        aria-haspopup="menu"
+        className={[
+          "inline-flex items-center gap-1 px-2.5 py-1.5 rounded-md font-medium transition",
+          active || open
+            ? "text-[var(--color-accent)] bg-[var(--color-accent-soft)]"
+            : "text-[var(--color-ink-soft)] hover:text-[var(--color-accent)] hover:bg-[var(--color-accent-soft)]",
+        ].join(" ")}
+      >
+        {group.label}
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className={["h-3.5 w-3.5 transition-transform", open ? "rotate-180" : ""].join(" ")}
+          aria-hidden
+        >
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </button>
+      {open ? (
+        <div
+          role="menu"
+          className="absolute right-0 mt-1 min-w-52 rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)]/98 backdrop-blur-xl p-1 shadow-2xl"
+        >
+          {group.items.map((it) => (
+            <Link
+              key={it.href}
+              href={it.href}
+              role="menuitem"
+              className={[
+                "block rounded-lg px-3 py-2 text-sm font-medium transition whitespace-nowrap",
+                pathname === hrefPath(it.href)
+                  ? "bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
+                  : "text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)]",
+              ].join(" ")}
+            >
+              {it.label}
+            </Link>
+          ))}
+        </div>
+      ) : null}
+    </div>
   );
 }
 
