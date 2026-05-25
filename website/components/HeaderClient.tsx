@@ -22,6 +22,7 @@ const NAV = [
   { href: "/live", label: "Live" },
   { href: "/videos", label: "Videos" },
   { href: "/case", label: "J6 Case" },
+  { href: "/case?view=people&filter=unclaimed", label: "Defendants" },
   { href: "/fights", label: "The Fights" },
   { href: "/the-map-room", label: "Map Room" },
   { href: "/about", label: "About" },
