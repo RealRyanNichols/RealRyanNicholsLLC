@@ -49,6 +49,7 @@ export type Post = {
   updated_at: string;
   views_count: number;
   shares_count: number;
+  inbound_shares_count: number;
 };
 
 export type LiveSimulcastTarget = {
