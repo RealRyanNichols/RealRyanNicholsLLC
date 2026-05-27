@@ -11,25 +11,21 @@ import { getSupabaseStaticClient } from "@/lib/supabase/static";
 export async function MapRoomPatterns() {
   const supabase = getSupabaseStaticClient();
 
+  // Defendant status + document-type histogram come from case_pattern_stats()
+  // (server-side) so they're correct past PostgREST's 1000-row fetch cap —
+  // case_people (1571) and case_documents (1044) both exceed it. Grievances
+  // (~34) and events (~39) stay direct fetches; they carry the per-row detail
+  // (title / severity / date) the panels need and are well under the cap.
   const [
-    { data: defStatus },
+    { data: stats },
     { data: grievances },
-    { data: docTypes },
     { data: yearCounts },
   ] = await Promise.all([
-    supabase
-      .from("case_people")
-      .select("claim_status")
-      .eq("is_j6_defendant", true),
+    supabase.rpc("case_pattern_stats"),
     supabase
       .from("case_grievances")
       .select("slug, title, severity")
       .eq("visibility", "public"),
-    supabase
-      .from("case_documents")
-      .select("doc_type")
-      .eq("visibility", "public")
-      .eq("archived", false),
     supabase
       .from("case_events")
       .select("event_date")
@@ -37,18 +33,20 @@ export async function MapRoomPatterns() {
       .not("event_date", "is", null),
   ]);
 
-  // Roll up J6 defendant claim status
-  const statusCount: Record<string, number> = {
-    unclaimed: 0,
-    pending: 0,
-    verified: 0,
-    rejected: 0,
+  const cp = (stats ?? {}) as {
+    defendants_total?: number;
+    defendants_verified?: number;
+    defendants_pending?: number;
+    defendants_unclaimed?: number;
+    documents_total?: number;
+    doc_types?: { type: string; n: number }[];
   };
-  for (const row of defStatus ?? []) {
-    const k = (row.claim_status as string) ?? "unclaimed";
-    statusCount[k] = (statusCount[k] ?? 0) + 1;
-  }
-  const defendantTotal = (defStatus ?? []).length;
+  const defendantTotal = cp.defendants_total ?? 0;
+  const statusCount = {
+    verified: cp.defendants_verified ?? 0,
+    pending: cp.defendants_pending ?? 0,
+    unclaimed: cp.defendants_unclaimed ?? 0,
+  };
 
   // Roll up severity 1..5
   const sev: Record<1 | 2 | 3 | 4 | 5, { n: number; top: string | null }> = {
@@ -65,15 +63,11 @@ export async function MapRoomPatterns() {
   }
   const grievanceMax = Math.max(...Object.values(sev).map((s) => s.n), 1);
 
-  // Roll up doc_type → take top 8
-  const docCount: Record<string, number> = {};
-  for (const d of docTypes ?? []) {
-    const k = (d.doc_type as string) ?? "other";
-    docCount[k] = (docCount[k] ?? 0) + 1;
-  }
-  const docTop = Object.entries(docCount)
-    .sort(([, a], [, b]) => b - a)
-    .slice(0, 8);
+  // Document-type histogram — already aggregated + sorted server-side.
+  const documentsTotal = cp.documents_total ?? 0;
+  const docTop: [string, number][] = (cp.doc_types ?? [])
+    .slice(0, 8)
+    .map((d) => [d.type, d.n]);
   const docMax = Math.max(...docTop.map(([, n]) => n), 1);
 
   // Roll events by year
@@ -185,7 +179,7 @@ export async function MapRoomPatterns() {
 
         {/* PANEL 3 — documents by type */}
         <Panel
-          title={`${(docTypes ?? []).length.toLocaleString()} documents — by type`}
+          title={`${documentsTotal.toLocaleString()} documents — by type`}
           hint="The shape of the evidence file. Mostly motions, orders, transcripts, exhibits — the procedural trail and the corroborating media."
         >
           <div className="space-y-1.5 mt-2">

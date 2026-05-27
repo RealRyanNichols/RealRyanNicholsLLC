@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { differenceInDays } from "date-fns";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 
 // Live momentum panel used above the feed and on the J6 mission page.
@@ -8,67 +7,26 @@ import { getSupabaseStaticClient } from "@/lib/supabase/static";
 export async function SiteMomentum({ variant = "wide" }: { variant?: "wide" | "compact" }) {
   const supabase = getSupabaseStaticClient();
 
-  const [
-    { count: profilesReady },
-    { count: profilesClaimed },
-    { count: documents },
-    { count: grievances },
-    { data: postSums },
-    { data: caseGrievanceSums },
-    { data: caseEventSums },
-    { data: caseDocSums },
-    { data: casePersonSums },
-  ] = await Promise.all([
-    supabase
-      .from("case_people")
-      .select("id", { count: "exact", head: true })
-      .eq("is_j6_defendant", true)
-      .eq("claim_status", "unclaimed"),
-    supabase
-      .from("case_people")
-      .select("id", { count: "exact", head: true })
-      .eq("is_j6_defendant", true)
-      .eq("claim_status", "verified"),
-    supabase
-      .from("case_documents")
-      .select("id", { count: "exact", head: true })
-      .eq("visibility", "public")
-      .eq("archived", false),
-    supabase
-      .from("case_grievances")
-      .select("id", { count: "exact", head: true })
-      .eq("visibility", "public"),
-    supabase.from("posts").select("views_count, shares_count").eq("status", "published"),
-    supabase.from("case_grievances").select("views_count, shares_count").eq("visibility", "public"),
-    supabase.from("case_events").select("views_count, shares_count").eq("visibility", "public"),
-    supabase
-      .from("case_documents")
-      .select("views_count, shares_count")
-      .eq("visibility", "public")
-      .eq("archived", false),
-    supabase.from("case_people").select("views_count, shares_count").eq("visibility", "public"),
-  ]);
-
-  const sumViews = (rows: { views_count: number | null }[] | null) =>
-    (rows ?? []).reduce((s, r) => s + (r.views_count ?? 0), 0);
-  const sumShares = (rows: { shares_count: number | null }[] | null) =>
-    (rows ?? []).reduce((s, r) => s + (r.shares_count ?? 0), 0);
-
-  const totalViews =
-    sumViews(postSums) +
-    sumViews(caseGrievanceSums) +
-    sumViews(caseEventSums) +
-    sumViews(caseDocSums) +
-    sumViews(casePersonSums);
-  const totalShares =
-    sumShares(postSums) +
-    sumShares(caseGrievanceSums) +
-    sumShares(caseEventSums) +
-    sumShares(caseDocSums) +
-    sumShares(casePersonSums);
-
-  const pardon = new Date("2025-01-20");
-  const daysSincePardon = Math.max(0, differenceInDays(new Date(), pardon));
+  // Server-side aggregation (site_totals RPC) — accurate past PostgREST's
+  // 1000-row fetch cap. Counting/summing rows in JS undercounted once
+  // case_people (1571) and case_documents (1044) passed 1000.
+  const { data: rpc } = await supabase.rpc("site_totals");
+  const t = (rpc ?? {}) as {
+    defendants_unclaimed?: number;
+    defendants_verified?: number;
+    documents?: number;
+    grievances?: number;
+    total_views?: number;
+    total_shares?: number;
+    days_since_pardon?: number;
+  };
+  const profilesReady = t.defendants_unclaimed ?? 0;
+  const profilesClaimed = t.defendants_verified ?? 0;
+  const documents = t.documents ?? 0;
+  const grievances = t.grievances ?? 0;
+  const totalViews = t.total_views ?? 0;
+  const totalShares = t.total_shares ?? 0;
+  const daysSincePardon = t.days_since_pardon ?? 0;
 
   type Tile = {
     label: string;
