@@ -4,14 +4,14 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { getPostBySlug, getPublishedPosts, getCommentCount } from "@/lib/posts";
 import { ShareButton } from "@/components/ShareButton";
-import { PostStats } from "@/components/PostStats";
+import { PostStatsPanel } from "@/components/PostStatsPanel";
 import { ViewTracker } from "@/components/ViewTracker";
 import { ReactionBar } from "@/components/ReactionBar";
 import { CommentList } from "@/components/CommentList";
 import { CommentForm } from "@/components/CommentForm";
 import { VerseSidebar } from "@/components/VerseSidebar";
 import { SignupForm } from "@/components/SignupForm";
-import { PostLivePulse, PostFollowCapture } from "@/components/PostLivePulse";
+import { PostFollowCapture } from "@/components/PostLivePulse";
 import { ReadNext } from "@/components/ReadNext";
 import { NotifySubscribersButton } from "@/components/NotifySubscribersButton";
 import { PostMain } from "@/components/PostMain";
@@ -186,25 +186,21 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
           <div className={post.title ? "mt-3 flex items-center justify-between gap-3 flex-wrap" : "flex items-center justify-between gap-3 flex-wrap"}>
             <div>
               <p className="text-sm text-[var(--color-muted)]">By {SITE.author}</p>
-              <div className="mt-1">
-                <PostLivePulse
-                  path={path}
-                  totalViews={post.views_count ?? 0}
-                  seed={pulseSeed}
-                />
-              </div>
             </div>
             <div className="flex items-center gap-3">
-              <PostStats
-                views={post.views_count ?? 0}
-                comments={commentCount}
-                shares={post.shares_count ?? 0}
-                size="sm"
-              />
               <ShareButton url={postUrl} title={displayTitle} slug={post.slug} compact />
             </div>
           </div>
         </header>
+
+        <PostStatsPanel
+          path={path}
+          totalReach={post.views_count ?? 0}
+          shares={post.shares_count ?? 0}
+          inboundShares={post.inbound_shares_count ?? 0}
+          comments={commentCount}
+          seed={pulseSeed}
+        />
 
         <ViewTracker slug={post.slug} />
         <PostMain post={post} />

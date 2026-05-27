@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
 import { trackEvent } from "@/lib/analytics";
 
-type Pulse = {
+export type Pulse = {
   reading_now: number;
   today: number;
   week: number;
@@ -13,7 +13,7 @@ type Pulse = {
 
 // Shared poller. Hits post_live_pulse(path) every 12s. Starts from the
 // server-rendered seed so the first paint already has real numbers.
-function useLivePulse(path: string, seed?: Partial<Pulse>): Pulse {
+export function useLivePulse(path: string, seed?: Partial<Pulse>): Pulse {
   const [pulse, setPulse] = useState<Pulse>({
     reading_now: seed?.reading_now ?? 0,
     today: seed?.today ?? 0,

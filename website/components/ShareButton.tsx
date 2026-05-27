@@ -47,7 +47,10 @@ export function ShareButton({
       compact,
       title: title.slice(0, 120),
     });
-    if (slug) {
+    // shares_count = actual outbound shares only. Opening the menu is tracked
+    // as an event but must NOT inflate the share counter.
+    const countsAsShare = action !== "share_menu_open";
+    if (slug && countsAsShare) {
       const supabase = getSupabaseBrowserClient();
       if (caseKind) {
         void supabase.rpc("increment_case_shares", { p_type: caseKind, p_slug: slug });
