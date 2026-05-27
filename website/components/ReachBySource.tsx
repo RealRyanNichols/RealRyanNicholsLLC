@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { format, formatDistanceToNowStrict } from "date-fns";
+import { formatDistanceToNowStrict } from "date-fns";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { ReachLineChart } from "@/components/ReachLineChart";
 
 // Reads arrivals_overview() — the edge-middleware page_arrivals truth — and
 // shows reach broken down by source class (human / AI / search / social /
@@ -52,7 +53,6 @@ export async function ReachBySource({ excludeSelf }: { excludeSelf: boolean }) {
   const total = o.total ?? 0;
   const byClass = o.by_class ?? {};
   const byDay = o.by_day ?? [];
-  const maxDay = Math.max(1, ...byDay.map((d) => d.total));
   const humanTotal = byClass["human"] ?? 0;
   const botTotal = total - humanTotal;
 
@@ -105,34 +105,9 @@ export async function ReachBySource({ excludeSelf }: { excludeSelf: boolean }) {
         ))}
       </div>
 
-      {/* Stacked daily series */}
+      {/* Interactive daily strands */}
       <div className="mt-5">
-        <h3 className="text-sm font-bold tracking-tight mb-2">Daily arrivals (stacked by source)</h3>
-        <div className="space-y-1">
-          {byDay.map((d) => (
-            <div key={d.day} className="flex items-center gap-2">
-              <span className="w-14 text-[10px] text-[var(--color-muted)] tabular-nums">
-                {format(new Date(d.day), "MMM d")}
-              </span>
-              <div className="flex-1 flex h-3 rounded-sm overflow-hidden bg-[var(--color-line)]/40">
-                {CLASS_META.map((c) => {
-                  const n =
-                    c.key === "search-bot" ? d.search
-                    : c.key === "ai-bot" ? d.ai
-                    : c.key === "social-bot" ? d.social
-                    : c.key === "uptime-bot" ? d.uptime
-                    : c.key === "unknown" ? d.unknown
-                    : d.human;
-                  if (!n) return null;
-                  return <div key={c.key} style={{ width: `${(n / maxDay) * 100}%`, background: c.color }} />;
-                })}
-              </div>
-              <span className="w-10 text-right text-[10px] tabular-nums text-[var(--color-ink-soft)]">
-                {fmt(d.total)}
-              </span>
-            </div>
-          ))}
-        </div>
+        <ReachLineChart data={byDay} />
       </div>
 
       <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-5">
