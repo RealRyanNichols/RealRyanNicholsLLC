@@ -6,6 +6,7 @@ import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { WorldMap } from "@/components/WorldMap";
 import { flagFor, nameFor } from "@/lib/country-coords";
 import { normalizeVideoChannel } from "@/lib/video-channels";
+import { ReachBySource } from "@/components/ReachBySource";
 
 export const metadata: Metadata = {
   title: "Analytics",
@@ -21,7 +22,13 @@ function fmt(n: number | null | undefined): string {
   return String(v);
 }
 
-export default async function AdminAnalyticsPage() {
+export default async function AdminAnalyticsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ reach?: string }>;
+}) {
+  const sp = await searchParams;
+  const excludeSelf = sp?.reach === "strict";
   const supabase = await getSupabaseServerClient();
   const { data: auth } = await supabase.auth.getUser();
   if (!auth.user) redirect("/login?next=/admin/analytics");
@@ -300,6 +307,7 @@ export default async function AdminAnalyticsPage() {
         />
       </section>
 
+      <ReachBySource excludeSelf={excludeSelf} />
       <TrackerHealth />
       <AttentionFunnel />
 

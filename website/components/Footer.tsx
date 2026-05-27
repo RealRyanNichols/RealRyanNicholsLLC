@@ -11,6 +11,7 @@ export function Footer() {
           <Link className="hover:text-[var(--color-accent)]" href="/jan-6">Jan 6</Link>
           <Link className="hover:text-[var(--color-accent)]" href="/about">About</Link>
           <Link className="hover:text-[var(--color-accent)]" href="/support">Donate</Link>
+          <Link className="hover:text-[var(--color-accent)]" href="/about/numbers">How the numbers work</Link>
           <Link className="hover:text-[var(--color-accent)]" href="/privacy">Privacy</Link>
           <Link className="hover:text-[var(--color-accent)]" href="/community-rules">Community rules</Link>
           <Link className="hover:text-[var(--color-accent)]" href="/rss.xml">RSS</Link>
