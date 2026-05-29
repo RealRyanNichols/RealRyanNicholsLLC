@@ -98,13 +98,16 @@ export default async function CasePage({
       ? rawFilter
       : "all";
 
-  const [grievances, people, events, documents, totals] = await Promise.all([
+  const [grievances, people, events, documents, totals, siteSettings] = await Promise.all([
     getGrievances(),
     getPeople(),
     getEvents(),
     getDocuments(),
     getCaseTotals(),
+    getSiteSettings(),
   ]);
+  const ryan = people.find((p) => p.slug === "ryan-nichols") ?? null;
+  const ryanPhoto = siteSettings.avatar_url ?? null;
 
   const filteredGrievances = q
     ? grievances.filter((g) =>
@@ -194,15 +197,61 @@ export default async function CasePage({
           <SmallStat label="Federal officers on record (IGP broken)" value={2} />
         </div>
 
-        {/* Front door to the full defendant directory — the most-requested
-            destination, made impossible to miss. */}
+        {/* PILLAR 1 — THE LEAD CASE. Ryan's own file is the main story this
+            whole archive is built on; surface it as the centerpiece with a
+            direct path to his full profile, not a name buried in the list. */}
+        {ryan ? (
+          <Link
+            href="/case/people/ryan-nichols"
+            className="mt-6 block overflow-hidden rounded-2xl border-2 border-[var(--color-ink)] bg-[var(--color-surface)] hover:border-[var(--color-accent)] transition group"
+          >
+            <div className="flex flex-col sm:flex-row">
+              {ryanPhoto ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={ryanPhoto}
+                  alt="Ryan Nichols"
+                  className="h-52 w-full flex-shrink-0 object-cover object-top sm:h-auto sm:w-48"
+                />
+              ) : null}
+              <div className="flex-1 p-5 sm:p-6">
+                <p className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--color-accent)]">
+                  The lead case · ✓ verified
+                </p>
+                <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
+                  United States v. Nichols
+                </h2>
+                {/* Hard docket identifiers only. The pardon, the days, and the ten
+                    facilities are already in the header above this card, so the
+                    card carries the case-file facts and the link — not a re-telling. */}
+                <p className="mt-2 text-xs sm:text-sm font-medium text-[var(--color-muted)]">
+                  Case No. {ryan.case_number ?? "1:21-cr-117"}
+                  {" · "}
+                  {ryan.court ?? "U.S. District Court for the District of Columbia"}
+                  {" · "}
+                  {ryan.charges?.length ?? 10} federal charges
+                  {ryan.judge_name ? ` · Judge ${ryan.judge_name}` : ""}
+                </p>
+                <p className="mt-2 text-sm sm:text-base text-[var(--color-ink-soft)] leading-relaxed">
+                  The case this whole archive was built on. Every filing, every named
+                  official, every document — the full record is on my file.
+                </p>
+                <span className="mt-3 inline-block text-sm font-bold text-[var(--color-accent)] group-hover:underline">
+                  Read my full case file →
+                </span>
+              </div>
+            </div>
+          </Link>
+        ) : null}
+
+        {/* PILLAR 2 — every other defendant. Front door to the full directory. */}
         <Link
           href="/case?view=people&filter=unclaimed"
           className="mt-6 flex items-center justify-between gap-4 rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-5 hover:bg-[var(--color-accent)] transition group"
         >
           <div>
             <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-accent)] group-hover:text-[var(--color-paper)]">
-              The directory
+              Every other defendant
             </p>
             <p className="mt-1 text-xl sm:text-2xl font-bold tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-paper)]">
               Browse all J6 defendants →
@@ -221,10 +270,12 @@ export default async function CasePage({
           </span>
         </Link>
 
-        {/* Case Builder banner — anchors the wider J6 work at the top
-            of the case page. Was on the homepage; moved here so Ryan's
-            feed stays focused on his own posts. */}
-        <div className="mt-8">
+        {/* PILLAR 3 — the overall J6 story, on its own: the collective record
+            beyond any single defendant. */}
+        <div className="mt-10">
+          <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-muted)] font-bold mb-3">
+            The overall J6 story
+          </p>
           <J6Banner />
         </div>
 
