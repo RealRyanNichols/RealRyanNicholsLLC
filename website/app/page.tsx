@@ -31,10 +31,10 @@ export default async function HomePage({
       process.env.RESEND_FROM_EMAIL,
   );
 
-  // The feed renders strictly Ryan's posts in chronological order — no
-  // pinned floating, no J6 activity ticker, no Case Builder banner.
-  // The J6 page owns J6 stuff; here we keep things to Ryan's voice.
-  const rest = posts.filter((p) => !p.pinned);
+  // Pinned posts float to the top of the feed; everything else follows in
+  // chronological order. getPublishedPosts already returns them pinned-first
+  // (then newest-first / by views), and PostCard shows a "Pinned" badge.
+  const feed = posts;
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -55,13 +55,13 @@ export default async function HomePage({
               </SortTab>
             </nav>
           </div>
-          {rest.length === 0 ? (
+          {feed.length === 0 ? (
             <p className="py-12 text-center text-[var(--color-muted)]">
               No posts yet. Check back soon.
             </p>
           ) : (
             <div>
-              {rest.map((p) => (
+              {feed.map((p) => (
                 <PostCard
                   key={p.id}
                   post={p}
