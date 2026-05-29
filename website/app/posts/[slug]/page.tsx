@@ -1,8 +1,13 @@
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { format } from "date-fns";
-import { getPostBySlug, getPublishedPosts, getCommentCount } from "@/lib/posts";
+import {
+  getPostBySlug,
+  getPublishedPosts,
+  getCommentCount,
+  getSlugRedirectTarget,
+} from "@/lib/posts";
 import { ShareButton } from "@/components/ShareButton";
 import { PostStatsPanel } from "@/components/PostStatsPanel";
 import { ViewTracker } from "@/components/ViewTracker";
@@ -37,20 +42,31 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const { slug } = await props.params;
   const post = await getPostBySlug(slug);
-  if (!post) return { title: "Not found" };
+  if (!post) {
+    // A renamed slug resolves to the current one so shared links + search
+    // results keep their preview/title instead of saying "Not found".
+    const target = await getSlugRedirectTarget(slug);
+    if (target) {
+      const redirected = await getPostBySlug(target);
+      if (redirected) return generateMetadata({ params: Promise.resolve({ slug: target }) });
+    }
+    return { title: "Not found" };
+  }
 
   const displayTitle = post.title ?? (deriveExcerpt(post.body, null).slice(0, 80) || "Note");
   const excerpt = deriveExcerpt(post.body, post.title);
 
   // Per-post override from the /admin/og-images tool (path "/posts/<slug>").
-  // Lets you set a custom share image + SEO title/description per post, live,
-  // with no deploy. Falls back to the type-based image + auto excerpt.
+  // Lets you set a custom share image + SEO title/description per page, live.
   const override = await getOgImage(`/posts/${post.slug}`);
 
   let ogImage: string;
   let ogWidth = 1200;
   let ogHeight = 630;
-  if (override?.image_url) {
+  if (post.og_image_url) {
+    // The per-post custom share card set in the editor wins for ALL types.
+    ogImage = post.og_image_url;
+  } else if (override?.image_url) {
     ogImage = override.image_url;
     ogWidth = override.width ?? 1200;
     ogHeight = override.height ?? 630;
@@ -61,14 +77,18 @@ export async function generateMetadata(props: {
     // Same frame (time: 1) as the video thumbnail shown in the feed/player, so
     // the social share image matches the video's thumbnail.
     ogImage = muxThumbnailUrl(post.mux_playback_id, { width: 1200, height: 630, fitMode: "smartcrop", time: 1 });
+  } else if (post.thumbnail_url) {
+    // Any post type can carry a custom feed/share thumbnail now.
+    ogImage = post.thumbnail_url;
   } else if (post.type === "photo" && post.media && post.media[0]) {
     ogImage = post.media[0].url;
   } else {
     ogImage = `/og/${post.slug}`;
   }
 
-  const metaTitle = override?.title ?? displayTitle;
-  const metaDescription = override?.description ?? excerpt;
+  // Per-post SEO overrides win, then the per-path override, then auto.
+  const metaTitle = post.seo_title ?? override?.title ?? displayTitle;
+  const metaDescription = post.seo_description ?? override?.description ?? excerpt;
 
   const url = `${SITE.url}/posts/${post.slug}`;
   const meta: Metadata = {
@@ -98,7 +118,12 @@ export async function generateMetadata(props: {
 export default async function PostPage(props: { params: Promise<{ slug: string }> }) {
   const { slug } = await props.params;
   const post = await getPostBySlug(slug);
-  if (!post) notFound();
+  if (!post) {
+    // Permanent (308) redirect from a renamed slug to its current URL.
+    const target = await getSlugRedirectTarget(slug);
+    if (target) permanentRedirect(`/posts/${target}`);
+    notFound();
+  }
 
   const supabase = await getSupabaseServerClient();
   const { data } = await supabase.auth.getUser();
@@ -136,6 +161,9 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
     dateModified: post.updated_at,
     author: { "@type": "Person", name: SITE.author, url: SITE.url },
     mainEntityOfPage: `${SITE.url}/posts/${post.slug}`,
+    ...(post.og_image_url || post.thumbnail_url
+      ? { image: [post.og_image_url ?? post.thumbnail_url] }
+      : {}),
     ...(post.type === "video" && post.mux_playback_id
       ? {
           thumbnailUrl: muxThumbnailUrl(post.mux_playback_id, { width: 1200, time: 1 }),

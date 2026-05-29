@@ -187,9 +187,9 @@ export function PostAdminRow({
             Preview
           </Link>
           <Link
-            href={`/admin/new?id=${id}`}
+            href={`/admin/posts/${id}/edit`}
             className="rounded-md border border-[var(--color-line)] hover:border-[var(--color-accent)] px-3 py-1.5 text-xs font-semibold text-center"
-            title="Edit (compose form, prefilled)"
+            title="Edit content, images, share card, and SEO"
           >
             ✏️ Edit
           </Link>

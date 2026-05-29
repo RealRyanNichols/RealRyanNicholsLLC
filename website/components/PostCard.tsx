@@ -64,14 +64,31 @@ export function PostCard({
   );
 }
 
+function FeedThumbnail({ post }: { post: Post }) {
+  if (!post.thumbnail_url) return null;
+  return (
+    <Link href={`/posts/${post.slug}`} className="block mb-3">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={post.thumbnail_url}
+        alt=""
+        className="w-full rounded-lg max-h-[420px] object-cover border border-[var(--color-line)]"
+      />
+    </Link>
+  );
+}
+
 function PostCardBody({ post, truncate }: { post: Post; truncate: boolean }) {
   if (post.type === "note") {
     return (
-      <Link href={`/posts/${post.slug}`} className="block group">
-        <p className="text-lg leading-relaxed whitespace-pre-wrap group-hover:text-[var(--color-accent)] transition">
-          {post.body}
-        </p>
-      </Link>
+      <>
+        <FeedThumbnail post={post} />
+        <Link href={`/posts/${post.slug}`} className="block group">
+          <p className="text-lg leading-relaxed whitespace-pre-wrap group-hover:text-[var(--color-accent)] transition">
+            {post.body}
+          </p>
+        </Link>
+      </>
     );
   }
 
@@ -156,6 +173,7 @@ function PostCardBody({ post, truncate }: { post: Post; truncate: boolean }) {
   const body = truncate && post.body.length > 480 ? post.body.slice(0, 480) + "…" : post.body;
   return (
     <>
+      <FeedThumbnail post={post} />
       <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">
         <Link href={`/posts/${post.slug}`} className="hover:underline underline-offset-4">
           {post.title ?? "Untitled"}
