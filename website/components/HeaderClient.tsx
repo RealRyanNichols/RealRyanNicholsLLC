@@ -48,6 +48,10 @@ const NAV: NavEntry[] = [
     ],
   },
   { href: "/about", label: "About" },
+  // The newsroom tip line — the public submits stories, names, and evidence
+  // here. Surfaced as a top-level nav item (desktop tab + mobile drawer) so the
+  // invitation to participate is never buried inside a page.
+  { href: "/submit", label: "Submit a Tip" },
 ];
 
 export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
