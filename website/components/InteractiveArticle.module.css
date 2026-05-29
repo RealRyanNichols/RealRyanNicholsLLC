@@ -1,0 +1,133 @@
+/* Premium, attention-first article renderer.
+   Big bold paragraph openings, drop caps on each section, animated
+   pull-quotes, scroll-reveal, and a reading-progress bar. */
+
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: var(--color-accent);
+  z-index: 50;
+  transition: width 0.12s linear;
+  box-shadow: 0 0 10px var(--color-accent);
+}
+
+.article {
+  font-size: 1.15rem;
+  line-height: 1.78;
+  color: var(--color-ink-soft);
+}
+
+.article p {
+  margin: 1.15em 0;
+}
+
+/* The start of every paragraph reads bolder + darker — a clear visual "kick"
+   into each new thought. */
+.article p::first-line {
+  font-weight: 700;
+  color: var(--color-ink);
+  letter-spacing: -0.01em;
+}
+
+/* Each section's opening paragraph leads with a large accent drop cap. */
+.article h2 + p::first-letter {
+  float: left;
+  font-size: 3.6em;
+  line-height: 0.74;
+  font-weight: 800;
+  margin: 0.04em 0.1em 0 0;
+  color: var(--color-accent);
+  font-family: var(--font-display, inherit);
+}
+
+.h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+  margin: 1.9em 0 0.55em;
+  color: var(--color-ink);
+}
+
+.h3 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin: 1.5em 0 0.4em;
+  color: var(--color-ink);
+}
+
+.kicker {
+  display: block;
+  width: 2.75rem;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--color-accent);
+  margin-bottom: 0.7rem;
+}
+
+.quote {
+  font-size: 1.6rem;
+  line-height: 1.32;
+  font-weight: 700;
+  color: var(--color-ink);
+  border-left: 4px solid var(--color-accent);
+  padding: 0.1em 0 0.1em 1.1rem;
+  margin: 1.7em 0;
+}
+
+.quote p {
+  margin: 0;
+}
+
+.quote p::first-line {
+  font-weight: 700;
+}
+
+.list {
+  margin: 1.1em 0;
+  padding-left: 1.35em;
+}
+
+.list li {
+  margin: 0.45em 0;
+}
+
+.img {
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  border: 1px solid var(--color-line);
+  margin: 0.25em 0 1.6em;
+}
+
+.hr {
+  border: none;
+  border-top: 1px solid var(--color-line);
+  margin: 2.6em 0;
+}
+
+/* Scroll-reveal: sections fade + rise as they enter the viewport. */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  will-change: opacity, transform;
+}
+
+.revealed {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .progress {
+    transition: none;
+  }
+}

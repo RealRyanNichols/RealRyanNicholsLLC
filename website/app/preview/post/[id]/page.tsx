@@ -8,6 +8,7 @@ import {
 import { POST_COLUMNS } from "@/lib/posts";
 import type { Post } from "@/lib/types";
 import { PostMain } from "@/components/PostMain";
+import { InteractiveArticle } from "@/components/InteractiveArticle";
 import { SITE } from "@/lib/site";
 
 // Private, unlisted draft preview. Renders a single post by its UUID using the
@@ -68,7 +69,11 @@ export default async function DraftPreviewPage({
           {post.category ? ` · ${post.category}` : ""}
         </p>
         <div className="mt-6">
-          <PostMain post={post} />
+          {post.type === "text" ? (
+            <InteractiveArticle body={post.body} />
+          ) : (
+            <PostMain post={post} />
+          )}
         </div>
       </article>
 
