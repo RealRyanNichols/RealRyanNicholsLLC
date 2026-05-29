@@ -40,6 +40,9 @@ export type Post = {
   mux_status: MuxStatus | null;
   duration_seconds: number | null;
   thumbnail_url: string | null;
+  og_image_url: string | null;
+  seo_title: string | null;
+  seo_description: string | null;
   pinned: boolean;
   status: PostStatus;
   author_id: string | null;
