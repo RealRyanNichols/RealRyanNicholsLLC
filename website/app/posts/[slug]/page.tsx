@@ -15,6 +15,7 @@ import { PostFollowCapture } from "@/components/PostLivePulse";
 import { ReadNext } from "@/components/ReadNext";
 import { NotifySubscribersButton } from "@/components/NotifySubscribersButton";
 import { PostMain } from "@/components/PostMain";
+import { StoryTipCTA } from "@/components/StoryTipCTA";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { SITE } from "@/lib/site";
 import { muxThumbnailUrl } from "@/lib/mux";
@@ -204,6 +205,10 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
 
         <ViewTracker slug={post.slug} />
         <PostMain post={post} />
+
+        {post.category === "Investigation" ? (
+          <StoryTipCTA subject={post.title ?? undefined} />
+        ) : null}
 
         <PostFollowCapture path={path} seed={pulseSeed} />
 

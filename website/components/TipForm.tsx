@@ -13,7 +13,10 @@ const CATEGORIES: { value: Category; label: string; blurb: string }[] = [
   { value: "other", label: "Other", blurb: "Anything else you think we should see." },
 ];
 
-export function TipForm({ defaultCategory = "national" }: { defaultCategory?: Category } = {}) {
+export function TipForm({
+  defaultCategory = "national",
+  subjectDefault,
+}: { defaultCategory?: Category; subjectDefault?: string } = {}) {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [category, setCategory] = useState<Category>(defaultCategory);
@@ -145,6 +148,7 @@ export function TipForm({ defaultCategory = "national" }: { defaultCategory?: Ca
         required={isJ6}
         placeholder={subjectPlaceholder}
         hint={subjectHint}
+        defaultValue={subjectDefault}
       />
 
       {category === "local" ? (
@@ -223,6 +227,7 @@ function Field({
   rows,
   placeholder,
   hint,
+  defaultValue,
 }: {
   label: string;
   name: string;
@@ -232,6 +237,7 @@ function Field({
   rows?: number;
   placeholder?: string;
   hint?: string;
+  defaultValue?: string;
 }) {
   const id = `tip-${name}`;
   const baseCls =
@@ -249,6 +255,7 @@ function Field({
           required={required}
           rows={rows ?? 4}
           placeholder={placeholder}
+          defaultValue={defaultValue}
           className={`${baseCls} font-sans resize-y`}
         />
       ) : (
@@ -258,6 +265,7 @@ function Field({
           type={type ?? "text"}
           required={required}
           placeholder={placeholder}
+          defaultValue={defaultValue}
           className={baseCls}
         />
       )}
