@@ -221,14 +221,20 @@ export default async function CasePage({
                 <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
                   United States v. Nichols
                 </h2>
+                {/* Hard docket identifiers only. The pardon, the days, and the ten
+                    facilities are already in the header above this card, so the
+                    card carries the case-file facts and the link — not a re-telling. */}
+                <p className="mt-2 text-xs sm:text-sm font-medium text-[var(--color-muted)]">
+                  Case No. {ryan.case_number ?? "1:21-cr-117"}
+                  {" · "}
+                  {ryan.court ?? "U.S. District Court for the District of Columbia"}
+                  {" · "}
+                  {ryan.charges?.length ?? 10} federal charges
+                  {ryan.judge_name ? ` · Judge ${ryan.judge_name}` : ""}
+                </p>
                 <p className="mt-2 text-sm sm:text-base text-[var(--color-ink-soft)] leading-relaxed">
-                  This archive started with one case — mine. Case No.{" "}
-                  {ryan.case_number ?? "1:21-cr-117"}, U.S. District Court for D.C.{" "}
-                  {(ryan.charges?.length ?? 10).toLocaleString()} federal charges,{" "}
-                  {totals.daysDetained.toLocaleString()} days across ten facilities, a
-                  federal judge who said on the record that my due-process rights were
-                  violated — then a full presidential pardon, charges dismissed with
-                  prejudice. The complete record is here.
+                  The case this whole archive was built on. Every filing, every named
+                  official, every document — the full record is on my file.
                 </p>
                 <span className="mt-3 inline-block text-sm font-bold text-[var(--color-accent)] group-hover:underline">
                   Read my full case file →
