@@ -11,6 +11,7 @@ import styles from "./InteractiveArticle.module.css";
 export function InteractiveArticle({ body }: { body: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
+  const [animate, setAnimate] = useState(false);
 
   // Reading-progress bar tied to how far through the article you've scrolled.
   useEffect(() => {
@@ -31,11 +32,26 @@ export function InteractiveArticle({ body }: { body: string }) {
     };
   }, []);
 
-  // Reveal blocks as they enter the viewport.
+  // Reveal blocks as they enter the viewport — a pure progressive enhancement.
+  // Content is visible by default (see CSS); we only turn on the hide-then-
+  // animate behavior once JS + IntersectionObserver are confirmed available,
+  // and we pre-reveal anything already on screen so nothing blinks out. If any
+  // of this can't run (e.g. an in-app browser), the article just stays visible.
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
-    const blocks = el.querySelectorAll(`.${styles.reveal}`);
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const blocks = Array.from(
+      el.querySelectorAll<HTMLElement>(`.${styles.reveal}`),
+    );
+    if (blocks.length === 0) return;
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    // Pre-reveal blocks already in (or near) view so they don't flash out.
+    for (const b of blocks) {
+      if (b.getBoundingClientRect().top < vh * 0.95) {
+        b.classList.add(styles.revealed);
+      }
+    }
+    setAnimate(true);
     const io = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -47,8 +63,17 @@ export function InteractiveArticle({ body }: { body: string }) {
       },
       { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
     );
-    blocks.forEach((b) => io.observe(b));
-    return () => io.disconnect();
+    for (const b of blocks) {
+      if (!b.classList.contains(styles.revealed)) io.observe(b);
+    }
+    // Safety net: never leave anything hidden — reveal everything after 2.5s.
+    const t = window.setTimeout(() => {
+      for (const b of blocks) b.classList.add(styles.revealed);
+    }, 2500);
+    return () => {
+      io.disconnect();
+      window.clearTimeout(t);
+    };
   }, [body]);
 
   return (
@@ -58,7 +83,10 @@ export function InteractiveArticle({ body }: { body: string }) {
         style={{ width: `${progress}%` }}
         aria-hidden
       />
-      <div ref={ref} className={styles.article}>
+      <div
+        ref={ref}
+        className={`${styles.article}${animate ? ` ${styles.animate}` : ""}`}
+      >
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{
