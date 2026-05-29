@@ -8,7 +8,6 @@ import {
 import { POST_COLUMNS } from "@/lib/posts";
 import type { Post } from "@/lib/types";
 import { PostMain } from "@/components/PostMain";
-import { InteractiveArticle } from "@/components/InteractiveArticle";
 import { SITE } from "@/lib/site";
 
 // Private, unlisted draft preview. Renders a single post by its UUID using the
@@ -68,12 +67,11 @@ export default async function DraftPreviewPage({
           By {SITE.author}
           {post.category ? ` · ${post.category}` : ""}
         </p>
+        {/* Plain, server-rendered article (same renderer as public posts) —
+            no client-side reveal/animation, so a draft preview can never load
+            then go blank in a locked-down or in-app browser. */}
         <div className="mt-6">
-          {post.type === "text" ? (
-            <InteractiveArticle body={post.body} />
-          ) : (
-            <PostMain post={post} />
-          )}
+          <PostMain post={post} />
         </div>
       </article>
 
