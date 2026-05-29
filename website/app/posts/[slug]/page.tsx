@@ -112,10 +112,11 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
   }
 
   const path = `/posts/${post.slug}`;
-  const [allPosts, commentCount, pulseRes] = await Promise.all([
+  const [allPosts, commentCount, pulseRes, ldOg] = await Promise.all([
     getPublishedPosts(),
     getCommentCount(post.id),
     supabase.rpc("post_live_pulse", { p_path: path }),
+    getOgImage(path),
   ]);
   const readNext = allPosts.filter((p) => p.id !== post.id).slice(0, 4);
   const pulseSeed = (pulseRes.data as
@@ -124,6 +125,13 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
 
   const displayTitle = post.title ?? (deriveExcerpt(post.body, null).slice(0, 80) || "Note");
   const postUrl = `${SITE.url}/posts/${post.slug}`;
+  const ldImage = ldOg?.image_url
+    ? ldOg.image_url.startsWith("http")
+      ? ldOg.image_url
+      : `${SITE.url}${ldOg.image_url}`
+    : post.type === "video" && post.mux_playback_id
+      ? muxThumbnailUrl(post.mux_playback_id, { width: 1200, time: 1 })
+      : null;
   const articleLd = {
     "@context": "https://schema.org",
     "@type":
@@ -131,12 +139,15 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
         ? "VideoObject"
         : post.type === "photo"
           ? "ImageObject"
-          : "Article",
+          : "NewsArticle",
     headline: displayTitle,
     datePublished: post.published_at,
     dateModified: post.updated_at,
     author: { "@type": "Person", name: SITE.author, url: SITE.url },
+    publisher: { "@type": "Organization", name: SITE.name, url: SITE.url },
     mainEntityOfPage: `${SITE.url}/posts/${post.slug}`,
+    ...(post.category ? { articleSection: post.category } : {}),
+    ...(ldImage ? { image: [ldImage] } : {}),
     ...(post.type === "video" && post.mux_playback_id
       ? {
           thumbnailUrl: muxThumbnailUrl(post.mux_playback_id, { width: 1200, time: 1 }),
