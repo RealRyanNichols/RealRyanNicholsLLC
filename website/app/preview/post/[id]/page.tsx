@@ -8,6 +8,7 @@ import {
 import { POST_COLUMNS } from "@/lib/posts";
 import type { Post } from "@/lib/types";
 import { PostMain } from "@/components/PostMain";
+import { StoryTipCTA } from "@/components/StoryTipCTA";
 import { SITE } from "@/lib/site";
 
 // Private, unlisted draft preview. Renders a single post by its UUID using the
@@ -73,6 +74,9 @@ export default async function DraftPreviewPage({
         <div className="mt-6">
           <PostMain post={post} />
         </div>
+        {post.category === "Investigation" ? (
+          <StoryTipCTA subject={post.title ?? undefined} />
+        ) : null}
       </article>
 
       <p className="mt-10 border-t border-[var(--color-line)] pt-4 text-xs text-[var(--color-muted)]">
