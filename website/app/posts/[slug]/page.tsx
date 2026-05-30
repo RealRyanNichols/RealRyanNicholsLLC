@@ -4,6 +4,7 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { getPostBySlug, getPublishedPosts, getCommentCount } from "@/lib/posts";
 import { ShareButton } from "@/components/ShareButton";
+import { FloatingShareBar } from "@/components/FloatingShareBar";
 import { PostStatsPanel } from "@/components/PostStatsPanel";
 import { ViewTracker } from "@/components/ViewTracker";
 import { ReactionBar } from "@/components/ReactionBar";
@@ -200,10 +201,12 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
               <p className="text-sm text-[var(--color-muted)]">By {SITE.author}</p>
             </div>
             <div className="flex items-center gap-3">
-              <ShareButton url={postUrl} title={displayTitle} slug={post.slug} compact />
+              <ShareButton url={postUrl} title={displayTitle} slug={post.slug} shares={post.shares_count ?? 0} compact />
             </div>
           </div>
         </header>
+
+        <FloatingShareBar url={postUrl} title={displayTitle} slug={post.slug} shares={post.shares_count ?? 0} />
 
         <PostStatsPanel
           path={path}
@@ -244,7 +247,7 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
           <p className="text-sm text-[var(--color-ink-soft)] font-medium">
             Share this post — get it back in front of people
           </p>
-          <ShareButton url={postUrl} title={displayTitle} slug={post.slug} />
+          <ShareButton url={postUrl} title={displayTitle} slug={post.slug} shares={post.shares_count ?? 0} />
         </div>
         <ReadNext posts={readNext} />
         <section className="mt-12 border-t border-[var(--color-line)] pt-8">

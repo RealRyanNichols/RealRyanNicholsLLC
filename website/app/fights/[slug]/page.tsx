@@ -94,6 +94,16 @@ export default async function FightPage(props: { params: Promise<{ slug: string 
         />
       </div>
 
+      {/* What's at stake */}
+      <section className="mt-8 rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-5 sm:p-6">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+          What&apos;s at stake
+        </p>
+        <p className="mt-2 text-lg sm:text-xl font-bold tracking-tight font-display text-[var(--color-ink)] leading-snug">
+          {fight.stakes}
+        </p>
+      </section>
+
       <div className="prose-body mt-8 space-y-5">
         {fight.body.map((para, i) => (
           <p key={i} className="text-base sm:text-lg text-[var(--color-ink)] leading-relaxed">
@@ -101,6 +111,29 @@ export default async function FightPage(props: { params: Promise<{ slug: string 
           </p>
         ))}
       </div>
+
+      {/* Where I stand — the planks */}
+      <section className="mt-10">
+        <h2 className="text-xl font-bold tracking-tight font-display">Where I stand</h2>
+        <p className="mt-1 text-sm text-[var(--color-muted)]">
+          Not slogans — concrete positions.
+        </p>
+        <ul className="mt-4 space-y-3">
+          {fight.planks.map((p, i) => (
+            <li
+              key={i}
+              className="flex gap-3 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4"
+            >
+              <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] text-xs font-bold tabular-nums">
+                {i + 1}
+              </span>
+              <span className="text-base text-[var(--color-ink)] leading-snug font-semibold">
+                {p}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </section>
 
       {fight.statements && fight.statements.length > 0 ? (
         <section className="mt-10">

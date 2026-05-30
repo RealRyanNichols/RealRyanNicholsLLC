@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { DECORATIONS, OPERATIONS, RECOGNITION } from "@/lib/bio";
 
 export const metadata: Metadata = {
   title: "About Ryan Nichols",
@@ -7,21 +8,55 @@ export const metadata: Metadata = {
     "United States Marine Corps veteran. Search and Rescue specialist. Founder of Wholesale Universe. Father. January 6 defendant pardoned January 20, 2025. Charges dismissed with prejudice.",
 };
 
+function Stat({ n, label, sub }: { n: string; label: string; sub?: string }) {
+  return (
+    <div className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+      <div className="text-2xl sm:text-3xl font-bold tracking-tight leading-none text-[var(--color-accent)] font-display tabular-nums">
+        {n}
+      </div>
+      <div className="mt-2 text-sm font-bold text-[var(--color-ink)] leading-tight">{label}</div>
+      {sub ? (
+        <div className="text-[11px] uppercase tracking-wider text-[var(--color-muted)] mt-0.5">
+          {sub}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 export default function AboutPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-12">
+      {/* ---- Dossier header ---- */}
       <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
-        About · realryannichols.com
+        Dossier · realryannichols.com
       </p>
-      <h1 className="mt-2 text-4xl sm:text-5xl font-bold tracking-tight font-display leading-[1.05]">
+      <h1 className="mt-2 text-4xl sm:text-6xl font-bold tracking-tight font-display leading-[1.02]">
         Ryan Nichols
       </h1>
-      <p className="mt-4 text-base sm:text-lg text-[var(--color-ink-soft)] leading-relaxed">
-        United States Marine Corps veteran. Search and Rescue specialist.
-        Founder of Wholesale Universe. Father. January 6 defendant.{" "}
-        <strong>Pardoned by President Trump on January 20, 2025.</strong>{" "}
-        Charges <strong>dismissed with prejudice</strong> by U.S. Attorney
-        Edward R. Martin Jr. — the case cannot be brought again.
+      <p className="mt-3 text-base sm:text-lg text-[var(--color-ink)] font-semibold leading-relaxed">
+        U.S. Marine Corps veteran · Search-and-Rescue specialist · Founder of
+        Wholesale Universe · Father of two.
+      </p>
+
+      {/* status badges */}
+      <div className="mt-4 flex flex-wrap gap-2">
+        <span className="rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] px-3 py-1 text-xs font-bold">
+          ★ Pardoned — Jan 20, 2025
+        </span>
+        <span className="rounded-full border-2 border-[var(--color-success)] text-[var(--color-success)] px-3 py-1 text-xs font-bold">
+          ✓ Charges dismissed with prejudice
+        </span>
+        <span className="rounded-full border border-[var(--color-line)] text-[var(--color-muted)] px-3 py-1 text-xs font-bold">
+          Cannot be brought again
+        </span>
+      </div>
+
+      <p className="mt-4 text-sm sm:text-base text-[var(--color-ink-soft)] leading-relaxed">
+        Pardoned by President Trump on January 20, 2025. Charges{" "}
+        <strong>dismissed with prejudice</strong> by U.S. Attorney Edward R.
+        Martin Jr. — the case cannot be brought again. This is the record of the
+        man behind the case file.
       </p>
 
       <div className="mt-6 flex flex-wrap gap-3">
@@ -45,6 +80,105 @@ export default function AboutPage() {
         </Link>
       </div>
 
+      {/* ---- At a glance ---- */}
+      <section className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <Stat n="4" label="Years active-duty Marine" sub="2010–2014" />
+        <Stat n="2 dozen+" label="Disaster deployments" sub="Since age 13" />
+        <Stat n="50+" label="Rescued in a single day" sub="Hurricane Sally" />
+        <Stat n="25K+" label="Rescue the Universe supporters" sub="Before deplatforming" />
+      </section>
+
+      {/* ---- Service record ---- */}
+      <section className="mt-6 rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+          Service record · USMC 2010–2014
+        </p>
+        <h2 className="mt-1 text-2xl font-bold tracking-tight font-display">
+          United States Marine Corps
+        </h2>
+        <dl className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-3 text-sm">
+          {[
+            ["Enlisted", "2010 — during two wars"],
+            ["Discharge", "2014 — Honorable"],
+            ["Rank", "Noncommissioned Officer"],
+            ["Okinawa, Japan", "9th Communications Battalion"],
+            ["Camp Pendleton", "2nd Bn, 1st Marines"],
+            ["Led", "30+ Marines · ASF security"],
+          ].map(([k, v]) => (
+            <div key={k}>
+              <dt className="text-[11px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
+                {k}
+              </dt>
+              <dd className="mt-0.5 font-semibold text-[var(--color-ink)] leading-snug">{v}</dd>
+            </div>
+          ))}
+        </dl>
+        <div className="mt-5 border-t border-[var(--color-line)] pt-4">
+          <p className="text-[11px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
+            Decorations
+          </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {DECORATIONS.map((d) => (
+              <span
+                key={d}
+                className="rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-1 text-xs font-bold text-[var(--color-ink)]"
+              >
+                🎖 {d}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ---- Disaster operations log ---- */}
+      <section className="mt-6">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+          Search & rescue · the operations log
+        </p>
+        <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
+          Two dozen-plus deployments. A partial record.
+        </h2>
+        <ol className="mt-5 relative border-l-2 border-[var(--color-line)] ml-3 space-y-5">
+          {OPERATIONS.map((op) => (
+            <li key={op.title} className="relative pl-6">
+              <span className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full bg-[var(--color-accent)] ring-4 ring-[var(--color-paper)]" />
+              <div className="flex flex-wrap items-baseline gap-2">
+                <span className="rounded bg-[var(--color-ink)] text-[var(--color-paper)] px-1.5 py-0.5 text-[10px] font-bold tabular-nums">
+                  {op.year}
+                </span>
+                <h3 className="text-base sm:text-lg font-bold tracking-tight font-display">
+                  {op.title}
+                </h3>
+              </div>
+              <p className="mt-1 text-sm text-[var(--color-ink-soft)] leading-snug">{op.detail}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {/* ---- Recognition ---- */}
+      <section className="mt-8 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-5 sm:p-6">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-blue)] font-bold">
+          Recognized for the rescues
+        </p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {RECOGNITION.map((r) => (
+            <span
+              key={r}
+              className="rounded-full border border-[var(--color-blue)]/30 bg-[var(--color-paper)] px-3 py-1 text-xs font-bold text-[var(--color-blue)]"
+            >
+              {r}
+            </span>
+          ))}
+        </div>
+        <p className="mt-3 text-sm text-[var(--color-ink-soft)] leading-snug">
+          Ellen DeGeneres recognized his Hurricane Florence rescues on{" "}
+          <em>The Ellen Show</em> — sponsoring Rescue the Universe with a new
+          rescue boat and donating $25,000 to the Animal Humane Society in his
+          honor.
+        </p>
+      </section>
+
       {/* The biography itself — written by Bonnie Nichols, originally
           entered as Exhibit 288 in the federal case. Posted here in full
           because the man behind the case file deserves to be known for
@@ -57,6 +191,11 @@ export default function AboutPage() {
         <h2 className="mt-3 text-2xl sm:text-3xl font-bold tracking-tight font-display">
           The man behind the case file
         </h2>
+        <p className="mt-3 text-sm text-[var(--color-muted)] italic">
+          The dossier above is the quick read. What follows is the complete
+          biography, verbatim, exactly as his wife wrote it and the defense filed
+          it in federal court.
+        </p>
 
         <div className="prose-body mt-6 space-y-5">
           <p>

@@ -1,30 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
-import { trackEvent } from "@/lib/analytics";
-
-type Platform = {
-  name: string;
-  href: string;
-};
-
-function buildPlatforms(url: string, title: string): Platform[] {
-  const t = encodeURIComponent(title);
-  const u = encodeURIComponent(url);
-  const text = encodeURIComponent(`${title}\n\n${url}`);
-  return [
-    { name: "X", href: `https://twitter.com/intent/tweet?text=${t}&url=${u}` },
-    { name: "Facebook", href: `https://www.facebook.com/sharer/sharer.php?u=${u}` },
-    { name: "Truth", href: `https://truthsocial.com/share?url=${u}` },
-    { name: "Telegram", href: `https://t.me/share/url?url=${u}&text=${t}` },
-    { name: "WhatsApp", href: `https://wa.me/?text=${text}` },
-    { name: "Reddit", href: `https://www.reddit.com/submit?url=${u}&title=${t}` },
-    { name: "Email", href: `mailto:?subject=${t}&body=${text}` },
-  ];
-}
-
-type CaseKind = "grievance" | "event" | "document" | "person";
+import {
+  buildShareIntents,
+  formatShareCount,
+  recordShare,
+  type CaseKind,
+} from "@/lib/share";
+import { ShareReward } from "@/components/ShareReward";
 
 export function ShareButton({
   url,
@@ -32,42 +15,45 @@ export function ShareButton({
   slug,
   caseKind,
   compact = false,
+  shares,
 }: {
   url: string;
   title: string;
   slug?: string;
   caseKind?: CaseKind;
   compact?: boolean;
+  /** When provided, shows a live, optimistic share count next to the button. */
+  shares?: number;
 }) {
-  function recordShare(action: string, platform = "site") {
-    trackEvent(action, {
-      platform,
-      slug: slug ?? "none",
-      kind: caseKind ?? "post",
-      compact,
-      title: title.slice(0, 120),
-    });
-    // shares_count = actual outbound shares only. Opening the menu is tracked
-    // as an event but must NOT inflate the share counter.
-    const countsAsShare = action !== "share_menu_open";
-    if (slug && countsAsShare) {
-      const supabase = getSupabaseBrowserClient();
-      if (caseKind) {
-        void supabase.rpc("increment_case_shares", { p_type: caseKind, p_slug: slug });
-      } else {
-        void supabase.rpc("increment_post_shares", { post_slug: slug });
-      }
-    }
-  }
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [supportsNative, setSupportsNative] = useState(false);
+  const [rewarded, setRewarded] = useState(false);
+  // Optimistic local count so the number visibly ticks up the instant you
+  // share — the durable value comes back from the DB on the next load.
+  const [localShares, setLocalShares] = useState(0);
   const wrapRef = useRef<HTMLDivElement | null>(null);
+  const rewardTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  function fireReward() {
+    setRewarded(true);
+    setLocalShares((n) => n + 1);
+    if (rewardTimer.current) clearTimeout(rewardTimer.current);
+    rewardTimer.current = setTimeout(() => setRewarded(false), 1600);
+  }
+
+  function share(action: "share_platform" | "share_copy" | "share_native" | "share_menu_open", platform: string) {
+    recordShare({ action, platform, title, slug, caseKind, compact });
+    if (action !== "share_menu_open") fireReward();
+  }
 
   useEffect(() => {
     setSupportsNative(
       typeof navigator !== "undefined" && typeof navigator.share === "function"
     );
+    return () => {
+      if (rewardTimer.current) clearTimeout(rewardTimer.current);
+    };
   }, []);
 
   useEffect(() => {
@@ -92,7 +78,7 @@ export function ShareButton({
     if (typeof navigator === "undefined" || typeof navigator.share !== "function") return;
     try {
       await navigator.share({ title, text: title, url });
-      recordShare("share_native", "native");
+      share("share_native", "native");
       setOpen(false);
     } catch {
       // user cancelled or share failed — keep menu open, don't count
@@ -102,7 +88,7 @@ export function ShareButton({
   async function copy() {
     try {
       await navigator.clipboard.writeText(url);
-      recordShare("share_copy", "copy");
+      share("share_copy", "copy");
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {
@@ -110,15 +96,17 @@ export function ShareButton({
     }
   }
 
-  const platforms = buildPlatforms(url, title);
+  const intents = buildShareIntents(url, title);
+  const shownCount = (shares ?? 0) + localShares;
 
   return (
     <div ref={wrapRef} className="relative">
+      <ShareReward show={rewarded} />
       <button
         type="button"
         onClick={() => {
           setOpen((v) => !v);
-          if (!open) recordShare("share_menu_open");
+          if (!open) share("share_menu_open", "site");
         }}
         aria-haspopup="menu"
         aria-expanded={open}
@@ -130,6 +118,11 @@ export function ShareButton({
       >
         <ShareIcon className={compact ? "h-3.5 w-3.5" : "h-4 w-4"} />
         Share
+        {shownCount > 0 ? (
+          <span className="tabular-nums text-[var(--color-accent)] font-bold">
+            {formatShareCount(shownCount)}
+          </span>
+        ) : null}
       </button>
       {open ? (
         <div
@@ -157,23 +150,23 @@ export function ShareButton({
             {copied ? "Link copied ✓" : "Copy link"}
           </button>
           <div className="my-1 border-t border-[var(--color-line)]" />
-          {platforms.map((p) => (
+          {intents.map((p) => (
             <a
               key={p.name}
               href={p.href}
-              target="_blank"
-              rel="noopener noreferrer"
+              target={p.scheme ? undefined : "_blank"}
+              rel={p.scheme ? undefined : "noopener noreferrer"}
               role="menuitem"
               onClick={() => {
-                recordShare("share_platform", p.name);
+                share("share_platform", p.name);
                 setOpen(false);
               }}
               className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-accent)] transition"
             >
-              <span className="w-4 text-center text-xs font-bold uppercase">
-                {p.name[0]}
+              <span className="w-4 text-center text-sm font-bold leading-none" aria-hidden>
+                {p.icon}
               </span>
-              {p.name}
+              {p.name === "X" ? "Post to X" : p.name === "Text" ? "Text it" : p.name}
             </a>
           ))}
         </div>
