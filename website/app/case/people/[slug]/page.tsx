@@ -1,7 +1,12 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getPeople, getPersonBySlug, getDocumentsForPerson } from "@/lib/case";
+import {
+  getPeople,
+  getPersonBySlug,
+  getDocumentsForPerson,
+  getCaseTotals,
+} from "@/lib/case";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { ShareButton } from "@/components/ShareButton";
 import { CaseStats } from "@/components/CaseStats";
@@ -10,6 +15,8 @@ import { EvidenceGrid } from "@/components/EvidenceGrid";
 import { ClaimMeHero, ClaimMeFooter } from "@/components/ClaimMeHero";
 import { CaseInfoCard } from "@/components/CaseInfoCard";
 import { ReactionBar } from "@/components/ReactionBar";
+import { RyanCaseProfile } from "@/components/RyanCaseProfile";
+import { SUBJECT_SLUG } from "@/lib/bio";
 import { SITE } from "@/lib/site";
 
 export const revalidate = 300;
@@ -70,6 +77,16 @@ export default async function PersonPage({
   const p = await getPersonBySlug(slug);
   if (!p) notFound();
   const url = `${SITE.url}/case/people/${p.slug}`;
+
+  // The subject of the entire site gets a bespoke flagship profile instead of
+  // the generic person template.
+  if (p.slug === SUBJECT_SLUG) {
+    const [evidence, totals] = await Promise.all([
+      getDocumentsForPerson(p.id),
+      getCaseTotals(),
+    ]);
+    return <RyanCaseProfile person={p} evidence={evidence} totals={totals} url={url} />;
+  }
 
   const isUnclaimedJ6er =
     p.is_j6_defendant === true &&
