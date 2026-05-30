@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getPeople } from "@/lib/case";
 import { SITE } from "@/lib/site";
+import { ShareRail } from "@/components/ShareRail";
+import { ReactionBar } from "@/components/ReactionBar";
 
 export const revalidate = 300;
 
@@ -69,6 +71,35 @@ export default async function WitnessesPage() {
         and a DC DOC Chief acknowledged the grievance process is broken. The pattern is not one
         man&apos;s story — it is the documented experience of a population.
       </p>
+
+      {/* ---- Stat band ---- */}
+      <section className="mt-8 grid grid-cols-3 gap-3">
+        <WitnessStat
+          n={corroborators.length + federalAcknowledgments.length}
+          label="On the record"
+          sub="Total corroborators"
+        />
+        <WitnessStat n={corroborators.length} label="Fellow detainees" sub="Signed statements" />
+        <WitnessStat
+          n={federalAcknowledgments.length}
+          label="Federal acknowledgments"
+          sub="Officers & DC DOC"
+        />
+      </section>
+
+      <div className="mt-5">
+        <ShareRail
+          url={`${SITE.url}/case/witnesses`}
+          title="He is not alone — every fellow J6 detainee and federal officer on the record corroborating the broken DC DOC grievance process: realryannichols.com/case/witnesses"
+        />
+      </div>
+      <div className="mt-3">
+        <ReactionBar
+          targetType="page"
+          targetId="case-witnesses"
+          prompt="This is a pattern, not one man's story. Tap — no signup."
+        />
+      </div>
 
       {federalAcknowledgments.length > 0 ? (
         <section className="mt-12">
@@ -148,5 +179,19 @@ export default async function WitnessesPage() {
         — every dollar funds keeping this record public.
       </div>
     </article>
+  );
+}
+
+function WitnessStat({ n, label, sub }: { n: number; label: string; sub: string }) {
+  return (
+    <div className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+      <div className="text-3xl sm:text-4xl font-bold tracking-tight leading-none text-[var(--color-accent)] font-display tabular-nums">
+        {n}
+      </div>
+      <div className="mt-2 text-sm font-bold text-[var(--color-ink)] leading-tight">{label}</div>
+      <div className="text-[11px] uppercase tracking-wider text-[var(--color-muted)] mt-0.5">
+        {sub}
+      </div>
+    </div>
   );
 }

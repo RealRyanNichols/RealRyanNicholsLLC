@@ -55,6 +55,10 @@ export default async function CaseGeographyPage() {
     totals: { with_location: 0, distinct_states: 0, all_j6: 0 },
   };
 
+  const ranked = [...payload.states].sort((a, b) => b.defendants - a.defendants);
+  const maxDef = ranked.reduce((m, s) => Math.max(m, s.defendants), 1);
+  const topState = ranked[0];
+
   return (
     <article className="mx-auto max-w-6xl px-4 py-6 sm:py-8">
       <header className="max-w-3xl mb-5">
@@ -72,6 +76,18 @@ export default async function CaseGeographyPage() {
         </p>
       </header>
 
+      {/* ---- Stat band ---- */}
+      <section className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+        <GeoStat n={payload.totals.all_j6} label="Defendants prosecuted" sub="The full wave" />
+        <GeoStat n={payload.totals.distinct_states} label="States represented" sub="Plus D.C." />
+        <GeoStat n={payload.totals.with_location} label="Plotted on the map" sub="Located to a state" />
+        <GeoStat
+          n={topState?.defendants ?? 0}
+          label={topState ? `Most: ${topState.name}` : "Most arrests"}
+          sub="Leading the country"
+        />
+      </section>
+
       <CaseGeographyMap data={payload} />
 
       <div className="mt-6">
@@ -83,6 +99,41 @@ export default async function CaseGeographyPage() {
       <div className="mt-3">
         <ReactionBar targetType="page" targetId="case-geography" />
       </div>
+
+      {/* ---- Leaderboard ---- */}
+      {ranked.length > 0 ? (
+        <section className="mt-8 rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6">
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight font-display">
+            The prosecution leaderboard
+          </h2>
+          <p className="mt-1 text-sm text-[var(--color-muted)]">
+            States ranked by defendants prosecuted — number sentenced in
+            parentheses.
+          </p>
+          <ol className="mt-4 space-y-2">
+            {ranked.slice(0, 12).map((s, i) => (
+              <li key={s.name} className="flex items-center gap-2 sm:gap-3">
+                <span className="w-5 text-right text-xs font-bold tabular-nums text-[var(--color-muted)]">
+                  {i + 1}
+                </span>
+                <span className="w-24 sm:w-36 flex-shrink-0 text-sm font-bold text-[var(--color-ink)] truncate">
+                  {s.name}
+                </span>
+                <div className="flex-1 h-5 rounded bg-[var(--color-surface-2)] overflow-hidden">
+                  <div
+                    className="h-full rounded bg-[var(--color-accent)]"
+                    style={{ width: `${Math.max(4, (s.defendants / maxDef) * 100)}%` }}
+                  />
+                </div>
+                <span className="w-16 text-right text-sm font-bold tabular-nums text-[var(--color-ink)]">
+                  {s.defendants}
+                  <span className="text-[var(--color-muted)] font-normal"> ({s.sentenced})</span>
+                </span>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ) : null}
 
       <section className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3">
         <CrossLink
@@ -102,6 +153,20 @@ export default async function CaseGeographyPage() {
         />
       </section>
     </article>
+  );
+}
+
+function GeoStat({ n, label, sub }: { n: number; label: string; sub: string }) {
+  return (
+    <div className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+      <div className="text-3xl sm:text-4xl font-bold tracking-tight leading-none text-[var(--color-accent)] font-display tabular-nums">
+        {n}
+      </div>
+      <div className="mt-2 text-sm font-bold text-[var(--color-ink)] leading-tight">{label}</div>
+      <div className="text-[11px] uppercase tracking-wider text-[var(--color-muted)] mt-0.5">
+        {sub}
+      </div>
+    </div>
   );
 }
 
