@@ -118,13 +118,16 @@ type CaptureState =
 export function PostFollowCapture({
   path,
   seed,
+  emailEnabled = false,
 }: {
   path: string;
   seed?: Partial<Pulse>;
+  emailEnabled?: boolean;
 }) {
   const pulse = useLivePulse(path, seed);
   const [state, setState] = useState<CaptureState>({ kind: "idle" });
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
 
   // The social-proof line above the form. Prefer live, fall back to a
   // strong cumulative count — never show a lonely "1".
@@ -139,33 +142,44 @@ export function PostFollowCapture({
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!email) {
+    const channel =
+      email && phone ? "email_phone" : email ? "email" : phone ? "phone" : "empty";
+    if (!email && !phone) {
       trackEvent("follow_capture_failed", { path, reason: "empty" });
-      setState({ kind: "error", message: "Enter your email." });
+      setState({
+        kind: "error",
+        message: emailEnabled
+          ? "Enter your email or phone number."
+          : "Enter your phone number.",
+      });
       return;
     }
-    trackEvent("follow_capture_attempt", { path });
+    trackEvent("follow_capture_attempt", { path, channel });
     setState({ kind: "submitting" });
     try {
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({
+          email: email || undefined,
+          phone: phone || undefined,
+        }),
       });
       const json = await res.json();
       if (!res.ok) {
-        trackEvent("follow_capture_failed", { path, reason: "api" });
+        trackEvent("follow_capture_failed", { path, reason: "api", channel });
         setState({ kind: "error", message: json.error ?? "Something went wrong." });
         return;
       }
-      trackEvent("follow_capture_success", { path });
+      trackEvent("follow_capture_success", { path, channel });
       setState({
         kind: "success",
-        message: json.message ?? "You're on the list. Check your inbox to confirm.",
+        message: json.message ?? "You're on the list.",
       });
       setEmail("");
+      setPhone("");
     } catch {
-      trackEvent("follow_capture_failed", { path, reason: "network" });
+      trackEvent("follow_capture_failed", { path, reason: "network", channel });
       setState({ kind: "error", message: "Network error. Please try again." });
     }
   }
@@ -206,34 +220,50 @@ export function PostFollowCapture({
           </h3>
           <p className="mt-2 text-sm sm:text-base text-[var(--color-ink-soft)] leading-relaxed">
             The next chapter gets posted here first — on my own domain,
-            where no platform can throttle it and no one can ban it. Drop
-            your email and it lands in your inbox the moment it&apos;s
-            live.
+            where no platform can throttle it and no one can ban it.
+            {emailEnabled
+              ? " Drop your email or number and the update reaches you the moment it's live."
+              : " Drop your number and I'll text you the moment it's live."}
           </p>
           <form
             onSubmit={onSubmit}
-            className="mt-4 flex flex-col sm:flex-row gap-2"
+            className="mt-4 flex flex-col gap-2"
           >
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              aria-label="Email address"
-              autoComplete="email"
-              className="flex-1 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3.5 py-2.5 text-sm focus:outline-none focus:border-[var(--color-accent)]"
-            />
-            <button
-              type="submit"
-              disabled={state.kind === "submitting"}
-              className="btn-accent rounded-lg px-5 py-2.5 text-sm font-bold disabled:opacity-60 whitespace-nowrap"
-            >
-              {state.kind === "submitting" ? "Adding…" : "Follow this story →"}
-            </button>
+            <div className="flex flex-col sm:flex-row gap-2">
+              {emailEnabled ? (
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  aria-label="Email address (optional)"
+                  autoComplete="email"
+                  className="flex-1 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3.5 py-2.5 text-sm focus:outline-none focus:border-[var(--color-accent)]"
+                />
+              ) : null}
+              <input
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="(555) 555-1234"
+                aria-label={emailEnabled ? "Phone number (optional)" : "Phone number"}
+                autoComplete="tel"
+                inputMode="tel"
+                className="flex-1 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3.5 py-2.5 text-sm focus:outline-none focus:border-[var(--color-accent)]"
+              />
+              <button
+                type="submit"
+                disabled={state.kind === "submitting"}
+                className="btn-accent rounded-lg px-5 py-2.5 text-sm font-bold disabled:opacity-60 whitespace-nowrap"
+              >
+                {state.kind === "submitting" ? "Adding…" : "Follow this story →"}
+              </button>
+            </div>
           </form>
           <p className="mt-2 text-[11px] text-[var(--color-muted)]">
-            One confirmation click. Unsubscribe anytime. No spam, no
-            selling your data — ever.
+            {emailEnabled
+              ? "Email gets one confirmation click. Unsubscribe anytime. No spam, no selling your data — ever."
+              : "Your number is stored until SMS updates go live — unsubscribe anytime. No spam, no selling your data — ever."}
           </p>
           {state.kind === "error" ? (
             <p className="mt-2 text-sm text-red-700">{state.message}</p>

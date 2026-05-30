@@ -221,7 +221,15 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
           <StoryTipCTA subject={post.title ?? undefined} />
         ) : null}
 
-        <PostFollowCapture path={path} seed={pulseSeed} />
+        <PostFollowCapture
+          path={path}
+          seed={pulseSeed}
+          emailEnabled={Boolean(
+            SITE.mailingAddress &&
+              process.env.RESEND_API_KEY &&
+              process.env.RESEND_FROM_EMAIL,
+          )}
+        />
 
         <div className="mt-6">
           <ReactionBar targetType="post" targetId={post.id} />
