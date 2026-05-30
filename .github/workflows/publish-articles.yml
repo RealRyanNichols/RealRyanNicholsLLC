@@ -1,0 +1,36 @@
+name: publish-articles
+
+# Publishes any markdown article in website/content/articles/ to the live site
+# (Supabase posts table) whenever one is added or changed on main. Drop a file
+# in, merge to main, and it goes live. Works for Codex, Claude Code, or Ryan.
+# Re-uses the same Supabase secrets as the courtlistener/doj pipelines.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "website/content/articles/**"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: website
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: website/package-lock.json
+      - run: npm ci
+      - run: npx tsx scripts/publish-articles.ts
