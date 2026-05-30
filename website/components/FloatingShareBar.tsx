@@ -82,8 +82,7 @@ export function FloatingShareBar({
   );
   const count = (shares ?? 0) + localShares;
 
-  function Channels({ compact }: { compact?: boolean }) {
-    const size = compact ? "h-9 w-9 text-base" : "h-10 w-10 text-lg";
+  function Channels({ cls = "h-10 w-10 text-lg" }: { cls?: string }) {
     return (
       <>
         {intents.map((p) => (
@@ -95,7 +94,7 @@ export function FloatingShareBar({
             onClick={() => onShare(p.name)}
             aria-label={`Share on ${p.name}`}
             title={`Share on ${p.name}`}
-            className={`inline-flex ${size} items-center justify-center rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] font-bold text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] hover:scale-110 transition`}
+            className={`inline-flex ${cls} items-center justify-center rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] font-bold text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] hover:scale-110 transition`}
           >
             <span aria-hidden>{p.icon}</span>
           </a>
@@ -105,7 +104,7 @@ export function FloatingShareBar({
           onClick={copyLink}
           aria-label="Copy link"
           title="Copy link"
-          className={`inline-flex ${size} items-center justify-center rounded-full border transition hover:scale-110 ${
+          className={`inline-flex ${cls} items-center justify-center rounded-full border transition hover:scale-110 ${
             copied
               ? "border-[var(--color-success)] bg-[var(--color-success)] text-[var(--color-paper)]"
               : "border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
@@ -143,20 +142,16 @@ export function FloatingShareBar({
         {count > 0 ? countPill : null}
       </div>
 
-      {/* Mobile: slim docked bar along the bottom. */}
+      {/* Mobile: the same vertical "scroller" as desktop, but pinned to the
+          right edge and kept thin/translucent so the words still read past it. */}
       <div
-        className={`fixed inset-x-3 bottom-3 z-40 flex items-center justify-between gap-2 rounded-full border border-[var(--color-line)] bg-[var(--color-surface)]/95 px-3 py-2 shadow-xl backdrop-blur transition-all duration-300 md:hidden ${
-          visible ? "opacity-100 translate-y-0" : "pointer-events-none translate-y-6 opacity-0"
+        className={`fixed right-1.5 top-1/2 z-40 flex -translate-y-1/2 flex-col items-center gap-1.5 rounded-full border border-[var(--color-line)] bg-[var(--color-surface)]/90 p-1.5 shadow-xl backdrop-blur transition-all duration-300 md:hidden ${
+          visible ? "opacity-100 translate-x-0" : "pointer-events-none translate-x-6 opacity-0"
         }`}
         aria-label="Share this page"
       >
-        <span className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-[var(--color-muted)]">
-          Share
-          {count > 0 ? countPill : null}
-        </span>
-        <div className="flex items-center gap-2">
-          <Channels compact />
-        </div>
+        <Channels cls="h-8 w-8 text-sm" />
+        {count > 0 ? countPill : null}
       </div>
     </>
   );
