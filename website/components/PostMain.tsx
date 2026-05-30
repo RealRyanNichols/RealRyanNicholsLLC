@@ -28,7 +28,7 @@ export function PostMain({ post }: { post: Post }) {
         )}
         {post.body ? (
           <div className="mt-5">
-            <PostBody body={post.body} />
+            <PostBody body={post.body} interactive postId={post.id} slug={post.slug} title={post.title ?? undefined} />
           </div>
         ) : null}
       </>
@@ -54,7 +54,7 @@ export function PostMain({ post }: { post: Post }) {
         </div>
         {post.body ? (
           <div className="mt-5">
-            <PostBody body={post.body} />
+            <PostBody body={post.body} interactive postId={post.id} slug={post.slug} title={post.title ?? undefined} />
           </div>
         ) : null}
       </>
@@ -65,5 +65,5 @@ export function PostMain({ post }: { post: Post }) {
     return <p className="text-xl leading-relaxed whitespace-pre-wrap">{post.body}</p>;
   }
 
-  return <PostBody body={post.body} />;
+  return <PostBody body={post.body} interactive postId={post.id} slug={post.slug} title={post.title ?? undefined} />;
 }
