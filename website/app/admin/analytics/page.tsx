@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { format, formatDistanceToNowStrict, subDays } from "date-fns";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
@@ -20,6 +21,16 @@ function fmt(n: number | null | undefined): string {
   if (v >= 1_000_000) return `${(v / 1_000_000).toFixed(1).replace(/\.0$/, "")}M`;
   if (v >= 1_000) return `${(v / 1_000).toFixed(1).replace(/\.0$/, "")}K`;
   return String(v);
+}
+
+function pctNum(part: number, whole: number): number {
+  if (whole <= 0) return 0;
+  return Math.round((part / whole) * 100);
+}
+
+function percent(part: number, whole: number): string {
+  if (whole <= 0) return "0%";
+  return `${Math.round((part / whole) * 100)}%`;
 }
 
 export default async function AdminAnalyticsPage({
@@ -167,7 +178,6 @@ export default async function AdminAnalyticsPage({
   const totalPostViews = posts.reduce((s, p) => s + (p.views_count ?? 0), 0);
   const totalPostShares = posts.reduce((s, p) => s + (p.shares_count ?? 0), 0);
   const topByViews = [...posts].sort((a, b) => (b.views_count ?? 0) - (a.views_count ?? 0)).slice(0, 10);
-  const topByShares = [...posts].sort((a, b) => (b.shares_count ?? 0) - (a.shares_count ?? 0)).slice(0, 10);
   const videoPosts = posts.filter((p) => p.type === "video");
   const videoViews = videoPosts.reduce((s, p) => s + (p.views_count ?? 0), 0);
   const videoShares = videoPosts.reduce((s, p) => s + (p.shares_count ?? 0), 0);
@@ -189,20 +199,12 @@ export default async function AdminAnalyticsPage({
   const casePeople = casePeopleRaw ?? [];
   const sumViews = (rows: { views_count: number | null }[]) =>
     rows.reduce((s, r) => s + (r.views_count ?? 0), 0);
-  const sumShares = (rows: { shares_count: number | null }[]) =>
-    rows.reduce((s, r) => s + (r.shares_count ?? 0), 0);
   const caseViews =
     sumViews(caseGrievances) +
     sumViews(caseEvents) +
     sumViews(caseDocuments) +
     sumViews(casePeople);
-  const caseShares =
-    sumShares(caseGrievances) +
-    sumShares(caseEvents) +
-    sumShares(caseDocuments) +
-    sumShares(casePeople);
   const totalViews = totalPostViews + caseViews;
-  const totalShares = totalPostShares + caseShares;
 
   const recentComments = recentCommentsRaw ?? [];
   const subsRecent = subsRecentRaw ?? [];
@@ -211,7 +213,7 @@ export default async function AdminAnalyticsPage({
   const postById = new Map(posts.map((p) => [p.id, p]));
 
   return (
-    <article className="mx-auto max-w-5xl px-4 py-10">
+    <article className="mx-auto max-w-5xl px-4 py-8 sm:py-10">
       <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
         Admin · analytics
       </p>
@@ -219,278 +221,283 @@ export default async function AdminAnalyticsPage({
         Attention dashboard
       </h1>
       <p className="mt-2 text-sm text-[var(--color-ink-soft)] max-w-2xl">
-        Everything from the page-view beacon — geo, referrers, devices,
-        dwell, scroll, clicks, per-defendant profile views. Country and
-        city come from Vercel&apos;s free request headers; no IPs are
-        stored. Visitor counts use a daily-rotating one-way hash.
+        The glance view: how much attention you&apos;re getting, whether it&apos;s
+        growing, what&apos;s working, and where you&apos;re leaking. Everything else
+        is tucked into the collapsible sections below.
       </p>
 
-      {/* Top-line stats — site-wide, includes posts + case archive */}
-      <section className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <Stat
-          href="#recent-subscribers"
-          label="Subscribers"
-          value={fmt(subsTotal)}
-          sub={`+${fmt(subsLast7)} this week`}
-        />
-        <Stat
-          href="#live-sessions"
-          label="Total views"
-          value={fmt(totalViews)}
-          sub={`${fmt(totalPostViews)} posts · ${fmt(caseViews)} case`}
-        />
-        <Stat
-          href="#top-content"
-          label="Total shares"
-          value={fmt(totalShares)}
-          sub={`${fmt(totalPostShares)} posts · ${fmt(caseShares)} case`}
-        />
-        <Stat
-          href="#recent-comments"
-          label="Comments"
-          value={fmt(commentsTotal)}
-          sub={`+${fmt(commentsLast7)} this week`}
-        />
-      </section>
+      {/* 1. ATTENTION SCOREBOARD — above the fold, the few numbers that matter */}
+      <Scoreboard />
 
-      <section className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <Stat
-          href="/case/nexus"
-          label="J6 defendants"
-          value={fmt(j6DefendantsTotal)}
-          sub={`${fmt(j6DefendantsClaimed)} verified`}
-        />
-        <Stat
-          href="/admin/claims"
-          label="Pending claims"
-          value={fmt(pendingClaims)}
-          sub={`${fmt(pendingTips)} tip-line items`}
-        />
-        <Stat
-          href="#recent-subscribers"
-          label="Subs (30d)"
-          value={fmt(subsLast30)}
-          sub="confirmed signups"
-        />
-        <Stat
-          href="/admin/users"
-          label="User accounts"
-          value={fmt(profilesTotal)}
-          sub={`${fmt(profilesPending)} pending review`}
-        />
-      </section>
+      {/* 2. 14-DAY TREND — one clear series: daily page views */}
+      <TrendBars />
 
-      <section className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <Stat
-          href="/videos"
-          label="Videos published"
-          value={fmt(videoPosts.length)}
-          sub={`${fmt(videoViews)} views`}
-        />
-        <Stat
-          href="#video-channels"
-          label="Video shares"
-          value={fmt(videoShares)}
-          sub="owned-site playback"
-        />
-        <Stat
-          href="/admin/new"
-          label="Post a video"
-          value="New"
-          sub="channel + upload"
-        />
-        <Stat
-          href="/admin/posts?filter=draft"
-          label="Draft queue"
-          value="Open"
-          sub="publish queue"
-        />
-      </section>
+      {/* 3. CONVERSION FUNNEL — reads top to bottom, leaks obvious */}
+      <ConversionFunnel />
 
-      <ReachBySource excludeSelf={excludeSelf} />
-      <TrackerHealth />
-      <AttentionFunnel />
+      {/* 4+. Everything below the scoreboard is secondary and collapsible */}
+      <div className="mt-10 border-t border-[var(--color-line)] pt-6">
+        <h2 className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">
+          The detail · tap any section to open
+        </h2>
+      </div>
 
-      {/* Top posts */}
-      <section id="top-content" className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-5">
-        <RankedList
-          title="Top 10 by views"
-          rows={topByViews.map((p) => ({
-            href: `/posts/${p.slug}`,
-            label: p.title ?? p.body?.slice(0, 60) ?? `(${p.type})`,
-            value: p.views_count ?? 0,
-            sub: p.published_at
-              ? formatDistanceToNowStrict(new Date(p.published_at), { addSuffix: true })
-              : undefined,
-          }))}
-          emptyText="No posts have views yet."
-        />
-        <RankedList
-          title="Top 10 by shares"
-          rows={topByShares.map((p) => ({
-            href: `/posts/${p.slug}`,
-            label: p.title ?? p.body?.slice(0, 60) ?? `(${p.type})`,
-            value: p.shares_count ?? 0,
-            sub: p.published_at
-              ? formatDistanceToNowStrict(new Date(p.published_at), { addSuffix: true })
-              : undefined,
-          }))}
-          emptyText="No shares recorded yet."
-        />
-      </section>
+      <CollapsibleSection
+        id="post-next"
+        title="What to post next"
+        summary="Decision cards generated from the funnel — action, hook, thumbnail."
+        defaultOpen
+      >
+        <AttentionFunnel />
+      </CollapsibleSection>
 
-      <section id="video-channels" className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-5">
-        <RankedList
-          title="Video channels by views"
-          rows={videoChannelRows.map((row) => ({
-            href: `/videos#${channelId(row.channel)}`,
-            label: row.channel,
-            value: row.views,
-            sub: `${row.count} video${row.count === 1 ? "" : "s"} · ${row.shares.toLocaleString()} shares`,
-          }))}
-          emptyText="No public videos yet."
-        />
-        <RankedList
-          title="Top videos by views"
-          rows={videoPosts
-            .sort((a, b) => (b.views_count ?? 0) - (a.views_count ?? 0))
-            .slice(0, 10)
-            .map((p) => ({
+      <CollapsibleSection
+        id="top-content"
+        title="Top content"
+        summary="Best posts and videos by views, plus per-channel breakdown."
+      >
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <RankedList
+            title="Top 10 posts by views"
+            rows={topByViews.map((p) => ({
               href: `/posts/${p.slug}`,
-              label: p.title ?? p.body?.slice(0, 60) ?? "(video)",
+              label: p.title ?? p.body?.slice(0, 60) ?? `(${p.type})`,
               value: p.views_count ?? 0,
-              sub: `${normalizeVideoChannel(p.category)} · ${(p.shares_count ?? 0).toLocaleString()} shares`,
+              sub: p.published_at
+                ? formatDistanceToNowStrict(new Date(p.published_at), { addSuffix: true })
+                : undefined,
             }))}
-          emptyText="No public videos yet."
-        />
-      </section>
+            emptyText="No posts have views yet."
+          />
+          <RankedList
+            title="Top videos by views"
+            rows={videoPosts
+              .slice()
+              .sort((a, b) => (b.views_count ?? 0) - (a.views_count ?? 0))
+              .slice(0, 10)
+              .map((p) => ({
+                href: `/posts/${p.slug}`,
+                label: p.title ?? p.body?.slice(0, 60) ?? "(video)",
+                value: p.views_count ?? 0,
+                sub: `${normalizeVideoChannel(p.category)} · ${(p.views_count ?? 0).toLocaleString()} views`,
+              }))}
+            emptyText="No public videos yet."
+          />
+        </section>
+        <section className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
+          <RankedList
+            title="Video channels by views"
+            rows={videoChannelRows.map((row) => ({
+              href: `/videos#${channelId(row.channel)}`,
+              label: row.channel,
+              value: row.views,
+              sub: `${row.count} video${row.count === 1 ? "" : "s"}`,
+            }))}
+            emptyText="No public videos yet."
+          />
+          <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+            <h2 className="text-lg font-bold tracking-tight">Content totals</h2>
+            <div className="mt-3 grid grid-cols-2 gap-3">
+              <Stat label="Posts published" value={fmt(posts.length)} sub={`${fmt(totalPostViews)} post views`} />
+              <Stat href="/videos" label="Videos published" value={fmt(videoPosts.length)} sub={`${fmt(videoViews)} video views`} />
+              <Stat label="Site-wide views" value={fmt(totalViews)} sub={`${fmt(caseViews)} from the case archive`} />
+              <Stat label="Share counter (posts)" value={fmt(totalPostShares + videoShares)} sub="see note below" />
+            </div>
+            <p className="mt-3 text-xs text-[var(--color-danger)]">
+              Note: the posts.shares_count column reads {fmt(totalPostShares)} — it is
+              not being written back even though real share events are firing. Use the
+              share count in the funnel above (live from page_events), not this column.
+            </p>
+          </div>
+        </section>
+      </CollapsibleSection>
 
-      {/* Case archive attention — what's getting clicked across grievances,
-          events, documents, and people (including unclaimed J6 profiles). */}
-      <section className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-5">
-        <RankedList
-          title="Top J6 profiles by views"
-          rows={casePeople.slice(0, 10).map((p) => ({
-            href: `/case/people/${p.slug}`,
-            label: `${p.name}${
-              p.claim_status === "verified"
-                ? " · ✓ verified"
-                : p.claim_status === "pending"
-                ? " · claim pending"
-                : ""
-            }`,
-            value: p.views_count ?? 0,
-            sub: `${(p.shares_count ?? 0).toLocaleString()} shares`,
-          }))}
-          emptyText="No profile views yet."
-        />
-        <RankedList
-          title="Top documents by views"
-          rows={caseDocuments.slice(0, 10).map((d) => ({
-            href: `/case/documents/${d.slug}`,
-            label: d.title ?? "(untitled)",
-            value: d.views_count ?? 0,
-            sub: `${(d.shares_count ?? 0).toLocaleString()} shares`,
-          }))}
-          emptyText="No document views yet."
-        />
-      </section>
+      <CollapsibleSection
+        id="case-archive"
+        title="Case archive attention"
+        summary="Top J6 profiles, documents, grievances and timeline events by views."
+      >
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <RankedList
+            title="Top J6 profiles by views"
+            rows={casePeople.slice(0, 10).map((p) => ({
+              href: `/case/people/${p.slug}`,
+              label: `${p.name}${
+                p.claim_status === "verified"
+                  ? " · ✓ verified"
+                  : p.claim_status === "pending"
+                  ? " · claim pending"
+                  : ""
+              }`,
+              value: p.views_count ?? 0,
+              sub: `${(p.shares_count ?? 0).toLocaleString()} shares`,
+            }))}
+            emptyText="No profile views yet."
+          />
+          <RankedList
+            title="Top documents by views"
+            rows={caseDocuments.slice(0, 10).map((d) => ({
+              href: `/case/documents/${d.slug}`,
+              label: d.title ?? "(untitled)",
+              value: d.views_count ?? 0,
+              sub: `${(d.shares_count ?? 0).toLocaleString()} shares`,
+            }))}
+            emptyText="No document views yet."
+          />
+        </section>
+        <section className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
+          <RankedList
+            title="Top grievances by views"
+            rows={caseGrievances.slice(0, 10).map((g) => ({
+              href: `/case/grievances/${g.slug}`,
+              label: g.title ?? "(untitled)",
+              value: g.views_count ?? 0,
+              sub: `${(g.shares_count ?? 0).toLocaleString()} shares`,
+            }))}
+            emptyText="No grievance views yet."
+          />
+          <RankedList
+            title="Top timeline events by views"
+            rows={caseEvents.slice(0, 10).map((e) => ({
+              href: `/case/events/${e.slug}`,
+              label: e.title ?? "(untitled)",
+              value: e.views_count ?? 0,
+              sub: `${(e.shares_count ?? 0).toLocaleString()} shares`,
+            }))}
+            emptyText="No event views yet."
+          />
+        </section>
+      </CollapsibleSection>
 
-      <section className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
-        <RankedList
-          title="Top grievances by views"
-          rows={caseGrievances.slice(0, 10).map((g) => ({
-            href: `/case/grievances/${g.slug}`,
-            label: g.title ?? "(untitled)",
-            value: g.views_count ?? 0,
-            sub: `${(g.shares_count ?? 0).toLocaleString()} shares`,
-          }))}
-          emptyText="No grievance views yet."
-        />
-        <RankedList
-          title="Top timeline events by views"
-          rows={caseEvents.slice(0, 10).map((e) => ({
-            href: `/case/events/${e.slug}`,
-            label: e.title ?? "(untitled)",
-            value: e.views_count ?? 0,
-            sub: `${(e.shares_count ?? 0).toLocaleString()} shares`,
-          }))}
-          emptyText="No event views yet."
-        />
-      </section>
+      <CollapsibleSection
+        id="reach-by-source-wrap"
+        title="Reach by source (audit-honest)"
+        summary="Every page-load split by human / AI / search / social — the strands chart."
+      >
+        <ReachBySource excludeSelf={excludeSelf} />
+      </CollapsibleSection>
 
-      {/* Live session data */}
-      <LiveSessions />
+      <CollapsibleSection
+        id="live-sessions"
+        title="Live sessions (last 24 hours)"
+        summary="Active visitors now, top pages with dwell + scroll, click targets, recent sessions."
+      >
+        <LiveSessions />
+      </CollapsibleSection>
 
-      <NexusAttention />
+      <CollapsibleSection
+        id="geography"
+        title="Geography — who's reading"
+        summary="World map, top countries, cities, referrers, and live visitors right now."
+      >
+        <Geography />
+      </CollapsibleSection>
 
-      {/* Geography + referrer chain — pulls from analytics_summary
-          and analytics_live_visitors which read the new geo columns
-          on page_views. */}
-      <Geography />
+      <CollapsibleSection
+        id="defendant-profiles"
+        title="Top J6 defendant profiles (7d / 30d)"
+        summary="Which defendant profile pulled the most eyes."
+      >
+        <TopDefendantProfiles />
+      </CollapsibleSection>
 
-      {/* Per-defendant view counts — which J6 profile got the most
-          eyes this week. */}
-      <TopDefendantProfiles />
+      <CollapsibleSection
+        id="nexus-attention"
+        title="Nexus attention"
+        summary="Searches, node clicks, expansions and failed loads from /case/nexus."
+      >
+        <NexusAttention />
+      </CollapsibleSection>
 
-      {/* Recent activity */}
-      <section className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div
-          id="recent-subscribers"
-          className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
-        >
-          <h2 className="text-lg font-bold tracking-tight">Recent subscribers (10 newest)</h2>
-          <ul className="mt-3 space-y-2">
-            {subsRecent.length === 0 ? (
-              <li className="text-sm text-[var(--color-muted)] italic">No subscribers yet.</li>
-            ) : (
-              subsRecent.map((s) => (
-                <li key={s.id} className="text-sm flex items-center justify-between gap-3">
-                  <span className="font-mono truncate">{s.email}</span>
-                  <span className="text-xs text-[var(--color-muted)] whitespace-nowrap">
-                    {s.confirmed_at ? "✓ " : "⏳ "}
-                    {formatDistanceToNowStrict(new Date(s.created_at), { addSuffix: true })}
-                  </span>
-                </li>
-              ))
-            )}
-          </ul>
-        </div>
+      <CollapsibleSection
+        id="tracker-health"
+        title="Tracker health"
+        summary="First-party collector status, pulled from live page_views and page_events."
+      >
+        <TrackerHealth />
+      </CollapsibleSection>
 
-        <div
-          id="recent-comments"
-          className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
-        >
-          <h2 className="text-lg font-bold tracking-tight">Recent comments (10 newest)</h2>
-          <ul className="mt-3 space-y-3">
-            {recentComments.length === 0 ? (
-              <li className="text-sm text-[var(--color-muted)] italic">No comments yet.</li>
-            ) : (
-              recentComments.map((c) => {
-                const post = postById.get(c.post_id);
-                return (
-                  <li key={c.id} className="text-sm border-l-2 border-[var(--color-line)] pl-3">
-                    <p className="line-clamp-2 text-[var(--color-ink-soft)]">{c.body}</p>
-                    <p className="text-xs text-[var(--color-muted)] mt-1">
-                      on{" "}
-                      <Link href={`/posts/${post?.slug ?? ""}`} className="text-[var(--color-accent)] hover:underline">
-                        {post?.title ?? "post"}
-                      </Link>{" "}
-                      · {formatDistanceToNowStrict(new Date(c.created_at), { addSuffix: true })}
-                    </p>
+      <CollapsibleSection
+        id="recent-activity"
+        title="Recent subscribers & comments"
+        summary="The 10 newest signups and approved comments."
+      >
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div
+            id="recent-subscribers"
+            className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
+          >
+            <h3 className="text-lg font-bold tracking-tight">Recent subscribers (10 newest)</h3>
+            <p className="mt-1 text-xs text-[var(--color-muted)]">
+              {fmt(subsTotal)} confirmed · {fmt(subsLast7)} this week · {fmt(subsLast30)} in 30d
+            </p>
+            <ul className="mt-3 space-y-2">
+              {subsRecent.length === 0 ? (
+                <li className="text-sm text-[var(--color-muted)] italic">No subscribers yet.</li>
+              ) : (
+                subsRecent.map((s) => (
+                  <li key={s.id} className="text-sm flex items-center justify-between gap-3">
+                    <span className="font-mono truncate">{s.email}</span>
+                    <span className="text-xs text-[var(--color-muted)] whitespace-nowrap">
+                      {s.confirmed_at ? "✓ " : "⏳ "}
+                      {formatDistanceToNowStrict(new Date(s.created_at), { addSuffix: true })}
+                    </span>
                   </li>
-                );
-              })
-            )}
-          </ul>
-        </div>
+                ))
+              )}
+            </ul>
+          </div>
+
+          <div
+            id="recent-comments"
+            className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
+          >
+            <h3 className="text-lg font-bold tracking-tight">Recent comments (10 newest)</h3>
+            <p className="mt-1 text-xs text-[var(--color-muted)]">
+              {fmt(commentsTotal)} approved · {fmt(commentsLast7)} this week
+            </p>
+            <ul className="mt-3 space-y-3">
+              {recentComments.length === 0 ? (
+                <li className="text-sm text-[var(--color-muted)] italic">No comments yet.</li>
+              ) : (
+                recentComments.map((c) => {
+                  const post = postById.get(c.post_id);
+                  return (
+                    <li key={c.id} className="text-sm border-l-2 border-[var(--color-line)] pl-3">
+                      <p className="line-clamp-2 text-[var(--color-ink-soft)]">{c.body}</p>
+                      <p className="text-xs text-[var(--color-muted)] mt-1">
+                        on{" "}
+                        <Link href={`/posts/${post?.slug ?? ""}`} className="text-[var(--color-accent)] hover:underline">
+                          {post?.title ?? "post"}
+                        </Link>{" "}
+                        · {formatDistanceToNowStrict(new Date(c.created_at), { addSuffix: true })}
+                      </p>
+                    </li>
+                  );
+                })
+              )}
+            </ul>
+          </div>
+        </section>
+      </CollapsibleSection>
+
+      {/* Account / queue quick links — kept as a compact footer row */}
+      <section className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <Stat href="/case/nexus" label="J6 defendants" value={fmt(j6DefendantsTotal)} sub={`${fmt(j6DefendantsClaimed)} verified`} />
+        <Stat href="/admin/claims" label="Pending claims" value={fmt(pendingClaims)} sub={`${fmt(pendingTips)} tip-line items`} />
+        <Stat href="/admin/users" label="User accounts" value={fmt(profilesTotal)} sub={`${fmt(profilesPending)} pending review`} />
+        <Stat href="/admin/new" label="Post a video" value="New" sub="channel + upload" />
       </section>
 
-      <p className="mt-10 text-xs text-[var(--color-muted)]">
+      <p className="mt-8 text-xs text-[var(--color-muted)]">
         Snapshot taken {format(now, "MMM d, yyyy h:mma")} ·{" "}
         <Link href="/admin/users" className="underline">User moderation</Link> ·{" "}
         <Link href="/admin/new" className="underline">New post</Link> ·{" "}
         <Link href="/admin/case" className="underline">Upload case document</Link>
+      </p>
+      <p className="mt-2 text-xs text-[var(--color-muted)] max-w-2xl">
+        Country / region / city come from Vercel&apos;s free request headers; no IPs
+        are stored. Visitor counts use a daily-rotating one-way hash.
       </p>
     </article>
   );
@@ -499,6 +506,485 @@ export default async function AdminAnalyticsPage({
 function channelId(channel: string): string {
   return channel.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
+
+// ---------------------------------------------------------------------------
+// 1. ATTENTION SCOREBOARD
+// ---------------------------------------------------------------------------
+
+type Tone = "healthy" | "watch" | "leak" | "neutral";
+
+const TONE_STYLES: Record<Tone, { value: string; chip: string }> = {
+  healthy: {
+    value: "text-[var(--color-success)]",
+    chip: "bg-[var(--color-success)]/15 text-[var(--color-success)]",
+  },
+  watch: {
+    value: "text-[#b45309]",
+    chip: "bg-[#b45309]/15 text-[#b45309]",
+  },
+  leak: {
+    value: "text-[var(--color-danger)]",
+    chip: "bg-[var(--color-danger)]/15 text-[var(--color-danger)]",
+  },
+  neutral: {
+    value: "text-[var(--color-ink)]",
+    chip: "bg-[var(--color-surface-2)] text-[var(--color-muted)]",
+  },
+};
+
+function ScoreTile({
+  href,
+  label,
+  value,
+  tone,
+  note,
+  trend,
+}: {
+  href: string;
+  label: string;
+  value: string;
+  tone: Tone;
+  note: string;
+  trend?: { dir: "up" | "down" | "flat"; text: string };
+}) {
+  const styles = TONE_STYLES[tone];
+  const arrow = trend ? (trend.dir === "up" ? "▲" : trend.dir === "down" ? "▼" : "→") : null;
+  const arrowColor =
+    trend?.dir === "up"
+      ? "text-[var(--color-success)]"
+      : trend?.dir === "down"
+      ? "text-[var(--color-danger)]"
+      : "text-[var(--color-muted)]";
+  return (
+    <Link
+      href={href}
+      className="flex flex-col rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 transition hover:border-[var(--color-accent)] hover:-translate-y-0.5"
+    >
+      <div className="flex items-center justify-between gap-2">
+        <span className="text-[11px] uppercase tracking-wider text-[var(--color-muted)] font-semibold">
+          {label}
+        </span>
+        <span className={`rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-wider ${styles.chip}`}>
+          {tone === "healthy" ? "good" : tone === "watch" ? "watch" : tone === "leak" ? "leak" : "—"}
+        </span>
+      </div>
+      <div className={`mt-1 text-3xl sm:text-4xl font-bold tracking-tight tabular-nums leading-none ${styles.value}`}>
+        {value}
+      </div>
+      {trend ? (
+        <div className={`mt-1.5 text-xs font-semibold ${arrowColor}`}>
+          {arrow} {trend.text}
+        </div>
+      ) : null}
+      <div className="mt-1.5 text-xs text-[var(--color-ink-soft)] leading-snug">{note}</div>
+    </Link>
+  );
+}
+
+async function Scoreboard() {
+  const supabase = await getSupabaseServerClient();
+  const fiveMinAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
+  const day1 = subDays(new Date(), 1).toISOString();
+  const day2 = subDays(new Date(), 2).toISOString();
+  const day7 = subDays(new Date(), 7).toISOString();
+  const day14 = subDays(new Date(), 14).toISOString();
+
+  // Count by kind with head+exact so PostgREST's 1000-row cap can never
+  // undercount (these event classes already exceed 1000 rows in 7d).
+  const eventCount = (kinds: string[]) =>
+    supabase
+      .from("page_events")
+      .select("id", { count: "exact", head: true })
+      .gte("at", day7)
+      .in("kind", kinds);
+
+  const [
+    { count: liveNow },
+    { count: views24 },
+    { count: viewsPrev24 },
+    { count: views7 },
+    { count: viewsPrev7 },
+    { count: vPlay },
+    { count: vDone },
+    { count: capAttempt },
+    { count: capSuccess },
+  ] = await Promise.all([
+    supabase
+      .from("page_views")
+      .select("session_id", { count: "exact", head: true })
+      .gte("last_activity_at", fiveMinAgo),
+    supabase
+      .from("page_views")
+      .select("id", { count: "exact", head: true })
+      .gte("started_at", day1),
+    supabase
+      .from("page_views")
+      .select("id", { count: "exact", head: true })
+      .gte("started_at", day2)
+      .lt("started_at", day1),
+    supabase
+      .from("page_views")
+      .select("id", { count: "exact", head: true })
+      .gte("started_at", day7),
+    supabase
+      .from("page_views")
+      .select("id", { count: "exact", head: true })
+      .gte("started_at", day14)
+      .lt("started_at", day7),
+    eventCount(["video_play"]),
+    eventCount(["video_complete"]),
+    eventCount(["subscribe_attempt", "follow_capture_attempt"]),
+    eventCount(["subscribe_success", "follow_capture_success"]),
+  ]);
+
+  const v24 = views24 ?? 0;
+  const vp24 = viewsPrev24 ?? 0;
+  const v7 = views7 ?? 0;
+  const vp7 = viewsPrev7 ?? 0;
+  const dir = (a: number, b: number): { dir: "up" | "down" | "flat"; text: string } => {
+    if (b <= 0) return { dir: "flat", text: "no prior data" };
+    const change = Math.round(((a - b) / b) * 100);
+    if (change > 1) return { dir: "up", text: `+${change}% vs prior` };
+    if (change < -1) return { dir: "down", text: `${change}% vs prior` };
+    return { dir: "flat", text: "flat vs prior" };
+  };
+
+  const vPlayN = vPlay ?? 0;
+  const vDoneN = vDone ?? 0;
+  const capAttemptN = capAttempt ?? 0;
+  const capSuccessN = capSuccess ?? 0;
+  const videoPct = pctNum(vDoneN, vPlayN);
+  const capPct = pctNum(capSuccessN, capAttemptN);
+  const videoTone: Tone = videoPct >= 50 ? "healthy" : videoPct >= 30 ? "watch" : "leak";
+  const capTone: Tone = capPct >= 45 ? "healthy" : capPct >= 20 ? "watch" : "leak";
+
+  // One-line plain-language read of the dashboard.
+  const growing = v7 >= vp7;
+  const meaning =
+    `You pulled ${v24.toLocaleString()} views in the last 24h and ${v7.toLocaleString()} this week — ` +
+    `attention is ${growing ? "growing" : "down"} vs the prior period. ` +
+    `Video is the strength (${videoPct}% of plays finish). ` +
+    `Email capture is the leak (${capPct}% of signup attempts succeed) — fix the signup flow.`;
+
+  return (
+    <section id="scoreboard" className="mt-8">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
+        <ScoreTile
+          href="#live-sessions"
+          label="Live now"
+          value={String(liveNow ?? 0)}
+          tone={(liveNow ?? 0) > 0 ? "healthy" : "neutral"}
+          note="Active in the last 5 minutes."
+        />
+        <ScoreTile
+          href="#trend"
+          label="Views · 24h"
+          value={fmt(v24)}
+          tone="neutral"
+          trend={dir(v24, vp24)}
+          note={`${vp24.toLocaleString()} the day before.`}
+        />
+        <ScoreTile
+          href="#trend"
+          label="Views · 7d"
+          value={fmt(v7)}
+          tone="neutral"
+          trend={dir(v7, vp7)}
+          note={`${vp7.toLocaleString()} the prior 7 days.`}
+        />
+        <ScoreTile
+          href="#funnel"
+          label="Video completion"
+          value={`${videoPct}%`}
+          tone={videoTone}
+          note={`${fmt(vDoneN)} of ${fmt(vPlayN)} plays finished (7d).`}
+        />
+        <ScoreTile
+          href="#funnel"
+          label="Email capture"
+          value={`${capPct}%`}
+          tone={capTone}
+          note={`${fmt(capSuccessN)} of ${fmt(capAttemptN)} signup attempts won (7d).`}
+        />
+      </div>
+      <p className="mt-3 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-3 text-sm text-[var(--color-ink-soft)]">
+        <span className="font-bold text-[var(--color-ink)]">What this means: </span>
+        {meaning}
+      </p>
+    </section>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// 2. 14-DAY TREND (single clear series, server-rendered bars)
+// ---------------------------------------------------------------------------
+
+async function TrendBars() {
+  const supabase = await getSupabaseServerClient();
+  const { data } = await supabase.rpc("analytics_daily_views", { p_days: 14 });
+  const rows = (Array.isArray(data) ? data : []) as { day: string; views: number }[];
+  const max = rows.reduce((m, r) => Math.max(m, r.views ?? 0), 0);
+  const total = rows.reduce((s, r) => s + (r.views ?? 0), 0);
+  const peak = rows.reduce(
+    (best, r) => ((r.views ?? 0) > best.views ? { day: r.day, views: r.views ?? 0 } : best),
+    { day: "", views: 0 },
+  );
+
+  return (
+    <section
+      id="trend"
+      className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 scroll-mt-20"
+    >
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h2 className="text-lg font-bold tracking-tight">Daily page views — last 14 days</h2>
+          <p className="mt-1 text-xs text-[var(--color-muted)]">
+            One bar per day (America/Chicago). Each bar is total page views that day —
+            humans and bots. {total.toLocaleString()} views over 14 days
+            {peak.views > 0
+              ? `, peaking at ${peak.views.toLocaleString()} on ${format(new Date(`${peak.day}T12:00:00`), "MMM d")}`
+              : ""}
+            .
+          </p>
+        </div>
+        <span className="rounded-full bg-[var(--color-accent-soft)] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[var(--color-accent)]">
+          Page views
+        </span>
+      </div>
+
+      {rows.length === 0 || max === 0 ? (
+        <p className="mt-4 text-sm text-[var(--color-muted)] italic">
+          No page views recorded in the last 14 days yet.
+        </p>
+      ) : (
+        <div className="mt-5 flex items-end gap-1.5 sm:gap-2 h-44">
+          {rows.map((r) => {
+            const h = max > 0 ? Math.max(2, Math.round((r.views / max) * 100)) : 0;
+            const d = new Date(`${r.day}T12:00:00`);
+            return (
+              <div key={r.day} className="flex-1 flex flex-col items-center justify-end h-full min-w-0">
+                <span className="mb-1 text-[9px] sm:text-[10px] font-bold tabular-nums text-[var(--color-ink-soft)]">
+                  {r.views >= 1000 ? fmt(r.views) : r.views}
+                </span>
+                <div
+                  className="w-full rounded-t bg-[var(--color-accent)] transition-all"
+                  style={{ height: `${h}%` }}
+                  title={`${format(d, "EEE MMM d")}: ${r.views.toLocaleString()} views`}
+                />
+                <span className="mt-1 text-[9px] sm:text-[10px] tabular-nums text-[var(--color-muted)] whitespace-nowrap">
+                  {format(d, "M/d")}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+      <p className="mt-3 text-xs text-[var(--color-muted)]">
+        Today&apos;s bar is partial — it only counts views so far. Tracking began
+        May 20, 2026, so days before that read zero.
+      </p>
+    </section>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// 3. CONVERSION FUNNEL
+// ---------------------------------------------------------------------------
+
+type FunnelStep = {
+  label: string;
+  value: number;
+  href: string;
+  hint: string;
+};
+
+function FunnelRow({
+  step,
+  prev,
+  max,
+  index,
+}: {
+  step: FunnelStep;
+  prev: number | null;
+  max: number;
+  index: number;
+}) {
+  const widthPct = max > 0 ? Math.max(2, Math.round((step.value / max) * 100)) : 0;
+  const stepPct = prev === null ? null : pctNum(step.value, prev);
+  // Color the step-to-step conversion: a big drop is the leak signal.
+  let dropTone = "text-[var(--color-muted)]";
+  if (stepPct !== null) {
+    if (stepPct >= 60) dropTone = "text-[var(--color-success)]";
+    else if (stepPct >= 25) dropTone = "text-[#b45309]";
+    else dropTone = "text-[var(--color-danger)]";
+  }
+  return (
+    <div className="flex items-center gap-3">
+      <span className="w-4 text-xs font-bold text-[var(--color-muted)] tabular-nums">{index + 1}</span>
+      <div className="flex-1 min-w-0">
+        <Link href={step.href} className="block group">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-sm font-semibold truncate group-hover:text-[var(--color-accent)]">
+              {step.label}
+            </span>
+            <span className="text-sm font-bold tabular-nums">{step.value.toLocaleString()}</span>
+          </div>
+          <div className="mt-1 h-3 w-full rounded-full bg-[var(--color-surface-2)] overflow-hidden">
+            <div
+              className="h-full rounded-full bg-[var(--color-accent)]"
+              style={{ width: `${widthPct}%` }}
+            />
+          </div>
+        </Link>
+        <div className="mt-1 flex items-center justify-between gap-2">
+          <span className="text-[11px] text-[var(--color-muted)]">{step.hint}</span>
+          {stepPct !== null ? (
+            <span className={`text-[11px] font-bold tabular-nums ${dropTone}`}>
+              {stepPct}% of prior step
+            </span>
+          ) : (
+            <span className="text-[11px] font-bold text-[var(--color-muted)]">top of funnel</span>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+async function ConversionFunnel() {
+  const supabase = await getSupabaseServerClient();
+  const day7 = subDays(new Date(), 7).toISOString();
+
+  // Per-kind counts via head+exact so the 1000-row PostgREST cap can never
+  // undercount (scroll/video events alone exceed 1000 rows in 7d).
+  const eventCount = (kinds: string[]) =>
+    supabase
+      .from("page_events")
+      .select("id", { count: "exact", head: true })
+      .gte("at", day7)
+      .in("kind", kinds);
+
+  const [
+    { count: views7 },
+    { count: scroll50 },
+    { count: vPlay },
+    { count: vDone },
+    { count: sharesDone },
+    { count: shareMenus },
+    { count: reactComment },
+    { count: subscribe },
+    { count: donate },
+  ] = await Promise.all([
+    supabase
+      .from("page_views")
+      .select("id", { count: "exact", head: true })
+      .gte("started_at", day7),
+    eventCount(["scroll_50"]),
+    eventCount(["video_play"]),
+    eventCount(["video_complete"]),
+    eventCount(["share_platform", "share_native", "share_copy"]),
+    eventCount(["share_menu_open"]),
+    eventCount(["reaction_toggle", "comment_submit_success", "case_comment_submit_success"]),
+    eventCount(["subscribe_success", "follow_capture_success"]),
+    eventCount(["donate_click"]),
+  ]);
+
+  const steps: FunnelStep[] = [
+    { label: "Views", value: views7 ?? 0, href: "#trend", hint: "page loads (7d)" },
+    { label: "Scroll 50%", value: scroll50 ?? 0, href: "#live-sessions", hint: "read past the halfway mark" },
+    { label: "Video play", value: vPlay ?? 0, href: "#top-content", hint: "pressed play on a video" },
+    { label: "Video complete", value: vDone ?? 0, href: "#top-content", hint: "watched to the end — your strength" },
+    { label: "Share", value: sharesDone ?? 0, href: "#top-content", hint: `${shareMenus ?? 0} share menus opened` },
+    { label: "React / Comment", value: reactComment ?? 0, href: "#recent-activity", hint: "public proof taps" },
+    { label: "Subscribe", value: subscribe ?? 0, href: "#recent-activity", hint: "joined the alert list — leaking" },
+    { label: "Donate click", value: donate ?? 0, href: "/support", hint: "tapped to give" },
+  ];
+  const max = steps.reduce((m, s) => Math.max(m, s.value), 0);
+
+  return (
+    <section
+      id="funnel"
+      className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 scroll-mt-20"
+    >
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h2 className="text-lg font-bold tracking-tight">Conversion funnel — last 7 days</h2>
+          <p className="mt-1 text-xs text-[var(--color-muted)] max-w-xl">
+            The public path, top to bottom. The bar is each step&apos;s size; the
+            percentage is that step versus the one above it, so a big drop is an
+            obvious leak.
+          </p>
+        </div>
+        <span className="rounded-full bg-[var(--color-accent-soft)] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[var(--color-accent)]">
+          Last 7 days
+        </span>
+      </div>
+
+      <div className="mt-5 space-y-3">
+        {steps.map((step, i) => (
+          <FunnelRow
+            key={step.label}
+            step={step}
+            prev={i === 0 ? null : steps[i - 1].value}
+            max={max}
+            index={i}
+          />
+        ))}
+      </div>
+
+      <p className="mt-4 text-xs text-[var(--color-muted)]">
+        Steps are independent event counts (not a strict per-visitor cohort), so
+        treat the percentages as direction, not a single funneling crowd. Share
+        figures here are live share <em>events</em> from page_events — the
+        posts.shares_count column is not being written and should be ignored.
+      </p>
+    </section>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Collapsible shell for the secondary detail sections
+// ---------------------------------------------------------------------------
+
+function CollapsibleSection({
+  id,
+  title,
+  summary,
+  defaultOpen = false,
+  children,
+}: {
+  id: string;
+  title: string;
+  summary: string;
+  defaultOpen?: boolean;
+  children: ReactNode;
+}) {
+  return (
+    <details
+      id={id}
+      open={defaultOpen}
+      className="group mt-4 rounded-2xl border border-[var(--color-line)] bg-[var(--color-paper)] scroll-mt-20"
+    >
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 [&::-webkit-details-marker]:hidden">
+        <div className="min-w-0">
+          <h2 className="text-base sm:text-lg font-bold tracking-tight">{title}</h2>
+          <p className="mt-0.5 text-xs text-[var(--color-muted)] truncate">{summary}</p>
+        </div>
+        <span
+          className="shrink-0 text-[var(--color-muted)] transition-transform group-open:rotate-180"
+          aria-hidden
+        >
+          ▾
+        </span>
+      </summary>
+      <div className="px-5 pb-5 pt-1">{children}</div>
+    </details>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Shared presentational helper
+// ---------------------------------------------------------------------------
 
 function Stat({
   label,
@@ -581,17 +1067,11 @@ async function TrackerHealth() {
   const writingNow = (views15 ?? 0) > 0 || (events15 ?? 0) > 0;
 
   return (
-    <section
-      id="tracker-health"
-      className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
-    >
+    <div>
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h2 className="text-lg font-bold tracking-tight">Tracker health</h2>
-          <p className="mt-1 text-xs text-[var(--color-muted)]">
-            First-party collector status, pulled from live page_views and page_events.
-          </p>
-        </div>
+        <p className="text-xs text-[var(--color-muted)]">
+          First-party collector status, pulled from live page_views and page_events.
+        </p>
         <span
           className={`rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider ${
             writingNow
@@ -619,7 +1099,7 @@ async function TrackerHealth() {
           sub={latestEvent?.kind ?? "no event yet"}
         />
       </div>
-    </section>
+    </div>
   );
 }
 
@@ -637,11 +1117,6 @@ type ViewPathRow = {
 function countKinds(rows: EventRow[], kinds: string[]): number {
   const wanted = new Set(kinds);
   return rows.reduce((sum, row) => sum + (row.kind && wanted.has(row.kind) ? 1 : 0), 0);
-}
-
-function percent(part: number, whole: number): string {
-  if (whole <= 0) return "0%";
-  return `${Math.round((part / whole) * 100)}%`;
 }
 
 type PostNextCard = {
@@ -871,16 +1346,6 @@ async function AttentionFunnel() {
   const subscribeWins7 = countKinds(events7, ["subscribe_success", "follow_capture_success"]);
   const reactions7 = countKinds(events7, ["reaction_toggle"]);
 
-  const topEventCounts = new Map<string, number>();
-  for (const event of events7) {
-    if (!event.kind) continue;
-    topEventCounts.set(event.kind, (topEventCounts.get(event.kind) ?? 0) + 1);
-  }
-  const topEvents = Array.from(topEventCounts.entries())
-    .map(([kind, n]) => ({ kind, n }))
-    .sort((a, b) => b.n - a.n)
-    .slice(0, 12);
-
   const attentionActions = [
     {
       label: "Video retention",
@@ -950,23 +1415,8 @@ async function AttentionFunnel() {
   });
 
   return (
-    <section
-      id="attention-funnel"
-      className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
-    >
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h2 className="text-lg font-bold tracking-tight">Attention funnel</h2>
-          <p className="mt-1 text-xs text-[var(--color-muted)]">
-            The public path: watch, react, share, comment, subscribe, support.
-          </p>
-        </div>
-        <span className="rounded-full bg-[var(--color-accent-soft)] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[var(--color-accent)]">
-          Last 7 days
-        </span>
-      </div>
-
-      <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
+    <div>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <Stat label="Views (24h)" value={fmt(views24)} sub={`${fmt(events24.length)} events`} />
         <Stat label="Views (7d)" value={fmt(views7)} sub={`${fmt(events7.length)} events`} />
         <Stat label="Shares (7d)" value={fmt(shares7)} sub={`${fmt(shareOpens7)} menus opened`} />
@@ -993,7 +1443,7 @@ async function AttentionFunnel() {
             <Link
               key={`${card.label}-${index}`}
               href={card.href}
-              className="block rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4 transition hover:border-[var(--color-accent)]"
+              className="block rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 transition hover:border-[var(--color-accent)]"
             >
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
@@ -1002,7 +1452,7 @@ async function AttentionFunnel() {
                   </p>
                   <h4 className="mt-1 text-lg font-black tracking-tight">{card.label}</h4>
                 </div>
-                <span className="rounded-full bg-[var(--color-surface)] px-3 py-1 text-xs font-mono font-bold text-[var(--color-ink-soft)]">
+                <span className="rounded-full bg-[var(--color-paper)] px-3 py-1 text-xs font-mono font-bold text-[var(--color-ink-soft)]">
                   {card.metric}
                 </span>
               </div>
@@ -1011,14 +1461,14 @@ async function AttentionFunnel() {
                 Do next: {card.action}
               </p>
               <div className="mt-3 grid gap-2 md:grid-cols-2">
-                <p className="rounded-lg bg-[var(--color-surface)] p-3 text-xs leading-relaxed">
+                <p className="rounded-lg bg-[var(--color-paper)] p-3 text-xs leading-relaxed">
                   <span className="font-black uppercase tracking-wider text-[var(--color-muted)]">
                     Hook
                   </span>
                   <br />
                   {card.hook}
                 </p>
-                <p className="rounded-lg bg-[var(--color-surface)] p-3 text-xs leading-relaxed">
+                <p className="rounded-lg bg-[var(--color-paper)] p-3 text-xs leading-relaxed">
                   <span className="font-black uppercase tracking-wider text-[var(--color-muted)]">
                     Thumbnail
                   </span>
@@ -1031,50 +1481,27 @@ async function AttentionFunnel() {
         </div>
       </div>
 
-      <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div>
-          <h3 className="text-base font-bold tracking-tight">Conversion checkpoints</h3>
-          <div className="mt-3 space-y-2">
-            {attentionActions.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                className="block rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-3 transition hover:border-[var(--color-accent)]"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <span className="text-sm font-bold">{item.label}</span>
-                  <span className="text-sm font-mono font-bold text-[var(--color-accent)]">
-                    {item.value}
-                  </span>
-                </div>
-                <p className="mt-1 text-xs text-[var(--color-muted)]">{item.sub}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <h3 className="text-base font-bold tracking-tight">Top event names</h3>
-          {topEvents.length === 0 ? (
-            <p className="mt-3 text-sm text-[var(--color-muted)] italic">
-              No named attention events yet.
-            </p>
-          ) : (
-            <ol className="mt-3 space-y-1.5">
-              {topEvents.map((event, i) => (
-                <li key={event.kind} className="flex items-center gap-3 text-sm">
-                  <span className="w-5 text-xs font-bold text-[var(--color-muted)]">
-                    {i + 1}
-                  </span>
-                  <span className="flex-1 truncate font-mono">{event.kind}</span>
-                  <span className="font-bold tabular-nums">{fmt(event.n)}</span>
-                </li>
-              ))}
-            </ol>
-          )}
+      <div className="mt-5">
+        <h3 className="text-base font-bold tracking-tight">Conversion checkpoints</h3>
+        <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
+          {attentionActions.map((item) => (
+            <Link
+              key={item.label}
+              href={item.href}
+              className="block rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-3 transition hover:border-[var(--color-accent)]"
+            >
+              <div className="flex items-center justify-between gap-3">
+                <span className="text-sm font-bold">{item.label}</span>
+                <span className="text-sm font-mono font-bold text-[var(--color-accent)]">
+                  {item.value}
+                </span>
+              </div>
+              <p className="mt-1 text-xs text-[var(--color-muted)]">{item.sub}</p>
+            </Link>
+          ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
@@ -1128,17 +1555,11 @@ async function NexusAttention() {
   const searches = eventCounts.get("nexus_search") ?? 0;
 
   return (
-    <section
-      id="nexus-attention"
-      className="mt-10 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
-    >
+    <div>
       <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h2 className="text-lg font-bold tracking-tight">Nexus attention</h2>
-          <p className="mt-1 text-xs text-[var(--color-muted)]">
-            Searches, node clicks, expansions, and failed loads from /case/nexus.
-          </p>
-        </div>
+        <p className="text-xs text-[var(--color-muted)]">
+          Searches, node clicks, expansions, and failed loads from /case/nexus.
+        </p>
         <Link
           href="/case/nexus"
           className="text-xs font-semibold text-[var(--color-accent)] hover:underline"
@@ -1199,7 +1620,7 @@ async function NexusAttention() {
           )}
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
@@ -1207,8 +1628,6 @@ async function LiveSessions() {
   const supabase = await getSupabaseServerClient();
   const fiveMinAgo = subDays(new Date(), 0);
   fiveMinAgo.setMinutes(fiveMinAgo.getMinutes() - 5);
-  const oneHourAgo = subDays(new Date(), 0);
-  oneHourAgo.setHours(oneHourAgo.getHours() - 1);
   const oneDayAgo = subDays(new Date(), 1);
 
   const [
@@ -1295,33 +1714,15 @@ async function LiveSessions() {
   const avgDwellSec = totalDwellCount > 0 ? Math.round(totalDwell / totalDwellCount) : 0;
 
   return (
-    <>
-      <section className="mt-10">
-        <h2 className="text-lg font-bold tracking-tight">Live sessions (last 24 hours)</h2>
-        <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <Stat
-            label="Active now"
-            value={String(activeNow ?? 0)}
-            sub="last 5 min"
-          />
-          <Stat
-            label="Page views (24h)"
-            value={String(views24h?.length ?? 0)}
-          />
-          <Stat
-            label="Sessions (24h)"
-            value={String(sessions24h ?? 0)}
-            sub="unique"
-          />
-          <Stat
-            label="Avg dwell"
-            value={`${avgDwellSec}s`}
-            sub="per page view"
-          />
-        </div>
-      </section>
+    <div>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <Stat label="Active now" value={String(activeNow ?? 0)} sub="last 5 min" />
+        <Stat label="Page views (24h)" value={String(views24h?.length ?? 0)} />
+        <Stat label="Sessions (24h)" value={String(sessions24h ?? 0)} sub="unique" />
+        <Stat label="Avg dwell" value={`${avgDwellSec}s`} sub="per page view" />
+      </div>
 
-      <section className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-5">
         <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
           <h3 className="text-base font-bold tracking-tight">
             Top pages — views, dwell, scroll
@@ -1331,34 +1732,36 @@ async function LiveSessions() {
               No traffic yet in the last 24h.
             </p>
           ) : (
-            <table className="mt-3 w-full text-sm">
-              <thead className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
-                <tr>
-                  <th className="text-left py-1">Path</th>
-                  <th className="text-right py-1">Views</th>
-                  <th className="text-right py-1">Dwell</th>
-                  <th className="text-right py-1">Scroll</th>
-                </tr>
-              </thead>
-              <tbody>
-                {topPaths.map((p) => (
-                  <tr key={p.path} className="border-t border-[var(--color-line)]">
-                    <td className="py-1.5 font-mono text-xs truncate max-w-[180px]">
-                      {p.path}
-                    </td>
-                    <td className="py-1.5 text-right tabular-nums font-semibold">
-                      {p.views}
-                    </td>
-                    <td className="py-1.5 text-right tabular-nums text-[var(--color-ink-soft)]">
-                      {p.avgDwell}s
-                    </td>
-                    <td className="py-1.5 text-right tabular-nums text-[var(--color-ink-soft)]">
-                      {p.avgScroll}%
-                    </td>
+            <div className="mt-3 overflow-x-auto">
+              <table className="w-full text-sm min-w-[360px]">
+                <thead className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
+                  <tr>
+                    <th className="text-left py-1">Path</th>
+                    <th className="text-right py-1">Views</th>
+                    <th className="text-right py-1">Dwell</th>
+                    <th className="text-right py-1">Scroll</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {topPaths.map((p) => (
+                    <tr key={p.path} className="border-t border-[var(--color-line)]">
+                      <td className="py-1.5 font-mono text-xs truncate max-w-[180px]">
+                        {p.path}
+                      </td>
+                      <td className="py-1.5 text-right tabular-nums font-semibold">
+                        {p.views}
+                      </td>
+                      <td className="py-1.5 text-right tabular-nums text-[var(--color-ink-soft)]">
+                        {p.avgDwell}s
+                      </td>
+                      <td className="py-1.5 text-right tabular-nums text-[var(--color-ink-soft)]">
+                        {p.avgScroll}%
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
           <p className="mt-3 text-xs text-[var(--color-muted)]">
             Dwell = time from first to last activity on the page. Scroll = max
@@ -1389,7 +1792,7 @@ async function LiveSessions() {
             </ol>
           )}
         </div>
-      </section>
+      </div>
 
       <section className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
         <h3 className="text-base font-bold tracking-tight">
@@ -1400,50 +1803,52 @@ async function LiveSessions() {
             No sessions recorded yet.
           </p>
         ) : (
-          <table className="mt-3 w-full text-xs">
-            <thead className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
-              <tr>
-                <th className="text-left py-1">Session</th>
-                <th className="text-left py-1">Path</th>
-                <th className="text-right py-1">Dwell</th>
-                <th className="text-right py-1">Scroll</th>
-                <th className="text-right py-1">User</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recentSessions.map((s) => {
-                const dwell = Math.max(
-                  0,
-                  Math.round(
-                    (new Date(s.last_activity_at).getTime() -
-                      new Date(s.started_at).getTime()) /
-                      1000
-                  )
-                );
-                return (
-                  <tr
-                    key={`${s.session_id}-${s.path}-${s.started_at}`}
-                    className="border-t border-[var(--color-line)]"
-                  >
-                    <td className="py-1.5 font-mono text-[10px] text-[var(--color-muted)]">
-                      {s.session_id.slice(0, 8)}
-                    </td>
-                    <td className="py-1.5 font-mono truncate max-w-[200px]">{s.path}</td>
-                    <td className="py-1.5 text-right tabular-nums">{dwell}s</td>
-                    <td className="py-1.5 text-right tabular-nums">
-                      {s.scroll_max ?? 0}%
-                    </td>
-                    <td className="py-1.5 text-right">
-                      {s.user_id ? "signed in" : "anon"}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <div className="mt-3 overflow-x-auto">
+            <table className="w-full text-xs min-w-[420px]">
+              <thead className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
+                <tr>
+                  <th className="text-left py-1">Session</th>
+                  <th className="text-left py-1">Path</th>
+                  <th className="text-right py-1">Dwell</th>
+                  <th className="text-right py-1">Scroll</th>
+                  <th className="text-right py-1">User</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recentSessions.map((s) => {
+                  const dwell = Math.max(
+                    0,
+                    Math.round(
+                      (new Date(s.last_activity_at).getTime() -
+                        new Date(s.started_at).getTime()) /
+                        1000
+                    )
+                  );
+                  return (
+                    <tr
+                      key={`${s.session_id}-${s.path}-${s.started_at}`}
+                      className="border-t border-[var(--color-line)]"
+                    >
+                      <td className="py-1.5 font-mono text-[10px] text-[var(--color-muted)]">
+                        {s.session_id.slice(0, 8)}
+                      </td>
+                      <td className="py-1.5 font-mono truncate max-w-[200px]">{s.path}</td>
+                      <td className="py-1.5 text-right tabular-nums">{dwell}s</td>
+                      <td className="py-1.5 text-right tabular-nums">
+                        {s.scroll_max ?? 0}%
+                      </td>
+                      <td className="py-1.5 text-right">
+                        {s.user_id ? "signed in" : "anon"}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         )}
       </section>
-    </>
+    </div>
   );
 }
 
@@ -1486,48 +1891,39 @@ async function Geography() {
   const countries7 = s7.top_countries ?? [];
 
   return (
-    <>
-      <section className="mt-10">
-        <h2 className="text-lg font-bold tracking-tight">
-          Who&apos;s reading — last 7 days
-        </h2>
-        <p className="mt-1 text-xs text-[var(--color-muted)]">
-          Country / region / city pulled from Vercel&apos;s free request
-          headers. No IPs stored. Visitor counts use a daily-rotating
-          one-way hash.
-        </p>
-        <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <Stat
-            label="Live right now"
-            value={fmt(s7.live_now ?? 0)}
-            sub="last 5 min"
-          />
-          <Stat
-            label="Unique visitors (7d)"
-            value={fmt(s7.unique_visitors ?? 0)}
-            sub={`${fmt(s7.sessions ?? 0)} sessions`}
-          />
-          <Stat
-            label="Views (7d)"
-            value={fmt(s7.views_total ?? 0)}
-            sub={`${fmt(s30.views_total ?? 0)} 30d`}
-          />
-          <Stat
-            label="Countries (7d)"
-            value={fmt(countries7.length)}
-            sub={
-              s7.devices
-                ? Object.entries(s7.devices)
-                    .filter(([k]) => k !== "bot" && k !== "unknown")
-                    .sort(([, a], [, b]) => (b ?? 0) - (a ?? 0))
-                    .slice(0, 2)
-                    .map(([k, n]) => `${k} ${fmt(n)}`)
-                    .join(" · ")
-                : undefined
-            }
-          />
-        </div>
-      </section>
+    <div>
+      <p className="text-xs text-[var(--color-muted)]">
+        Country / region / city pulled from Vercel&apos;s free request
+        headers. No IPs stored. Visitor counts use a daily-rotating
+        one-way hash.
+      </p>
+      <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <Stat label="Live right now" value={fmt(s7.live_now ?? 0)} sub="last 5 min" />
+        <Stat
+          label="Unique visitors (7d)"
+          value={fmt(s7.unique_visitors ?? 0)}
+          sub={`${fmt(s7.sessions ?? 0)} sessions`}
+        />
+        <Stat
+          label="Views (7d)"
+          value={fmt(s7.views_total ?? 0)}
+          sub={`${fmt(s30.views_total ?? 0)} 30d`}
+        />
+        <Stat
+          label="Countries (7d)"
+          value={fmt(countries7.length)}
+          sub={
+            s7.devices
+              ? Object.entries(s7.devices)
+                  .filter(([k]) => k !== "bot" && k !== "unknown")
+                  .sort(([, a], [, b]) => (b ?? 0) - (a ?? 0))
+                  .slice(0, 2)
+                  .map(([k, n]) => `${k} ${fmt(n)}`)
+                  .join(" · ")
+              : undefined
+          }
+        />
+      </div>
 
       <section className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
         <h3 className="text-base font-bold tracking-tight">
@@ -1682,7 +2078,7 @@ async function Geography() {
           )}
         </div>
       </section>
-    </>
+    </div>
   );
 }
 
@@ -1702,7 +2098,13 @@ async function TopDefendantProfiles() {
   const rows7 = (top7 ?? []) as Row[];
   const rows30 = (top30 ?? []) as Row[];
 
-  if (rows7.length === 0 && rows30.length === 0) return null;
+  if (rows7.length === 0 && rows30.length === 0) {
+    return (
+      <p className="text-sm text-[var(--color-muted)] italic">
+        No defendant-profile views yet.
+      </p>
+    );
+  }
 
   function render(rows: Row[]) {
     return rows.slice(0, 10).map((r, i) => (
@@ -1725,7 +2127,7 @@ async function TopDefendantProfiles() {
   }
 
   return (
-    <section className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-5">
+    <section className="grid grid-cols-1 md:grid-cols-2 gap-5">
       <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
         <h3 className="text-base font-bold tracking-tight">
           Top J6 profiles — last 7 days
@@ -1765,7 +2167,7 @@ function RankedList({
 }) {
   return (
     <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
-      <h2 className="text-lg font-bold tracking-tight">{title}</h2>
+      <h3 className="text-lg font-bold tracking-tight">{title}</h3>
       <ol className="mt-3 space-y-2">
         {rows.length === 0 ? (
           <li className="text-sm text-[var(--color-muted)] italic">{emptyText}</li>
