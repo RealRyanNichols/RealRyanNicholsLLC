@@ -119,44 +119,48 @@
   color: var(--color-ink-soft);
 }
 
-.prose-body p {
+/* Every prose rule is scoped with :not(.not-prose *) so embedded interactive
+   blocks (wrapped in .not-prose) opt out completely — the article's typography
+   never overrides a component's own colors/spacing. This is what makes the
+   inline donate/report/demand/poll blocks render correctly inside an article. */
+.prose-body p:not(.not-prose *) {
   margin: 0 0 1.1em;
 }
 
-.prose-body p:last-child {
+.prose-body p:not(.not-prose *):last-child {
   margin-bottom: 0;
 }
 
-.prose-body strong {
+.prose-body strong:not(.not-prose *) {
   color: var(--color-ink);
   font-weight: 600;
 }
 
-.prose-body a {
+.prose-body a:not(.not-prose *) {
   color: var(--color-accent);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 
-.prose-body ol,
-.prose-body ul {
+.prose-body ol:not(.not-prose *),
+.prose-body ul:not(.not-prose *) {
   padding-left: 1.5rem;
   margin: 0 0 1.1em;
 }
 
-.prose-body ol {
+.prose-body ol:not(.not-prose *) {
   list-style: decimal;
 }
 
-.prose-body ul {
+.prose-body ul:not(.not-prose *) {
   list-style: disc;
 }
 
-.prose-body li {
+.prose-body li:not(.not-prose *) {
   margin: 0.35em 0;
 }
 
-.prose-body blockquote {
+.prose-body blockquote:not(.not-prose *) {
   border-left: 3px solid var(--color-accent);
   padding-left: 1rem;
   margin: 1.25em 0;
@@ -164,7 +168,7 @@
   color: var(--color-ink);
 }
 
-.prose-body code {
+.prose-body code:not(.not-prose *) {
   background: var(--color-surface-2);
   border: 1px solid var(--color-line);
   padding: 0.1em 0.35em;

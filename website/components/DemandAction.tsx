@@ -47,7 +47,7 @@ export function DemandAction({ slug }: { slug?: string }) {
         <button
           type="button"
           onClick={copy}
-          className="rounded-full border-2 border-[var(--color-paper)]/40 px-5 py-2.5 text-sm font-bold hover:border-[var(--color-accent)] transition"
+          className="rounded-full border-2 border-white/40 px-5 py-2.5 text-sm font-bold text-[var(--color-paper)] hover:border-[var(--color-accent)] transition"
         >
           {copied ? "Copied ✓" : "Copy the text"}
         </button>
