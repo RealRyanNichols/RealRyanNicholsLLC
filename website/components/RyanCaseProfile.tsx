@@ -8,6 +8,7 @@ import { CaseInfoCard } from "@/components/CaseInfoCard";
 import { CaseStats } from "@/components/CaseStats";
 import { EvidenceGrid } from "@/components/EvidenceGrid";
 import { ReactionBar } from "@/components/ReactionBar";
+import type { Post } from "@/lib/types";
 
 type CaseTotals = {
   grievances: number;
@@ -27,13 +28,17 @@ export function RyanCaseProfile({
   person,
   evidence,
   totals,
+  posts,
   url,
 }: {
   person: CasePerson;
   evidence: CaseDocument[];
   totals: CaseTotals;
+  posts: Post[];
   url: string;
 }) {
+  const titledPosts = posts.filter((p) => p.title && p.title.trim()).slice(0, 6);
+
   return (
     <article className="mx-auto max-w-4xl px-4 py-10">
       <CaseViewTracker type="person" slug={person.slug} />
@@ -122,6 +127,47 @@ export function RyanCaseProfile({
 
       {/* ---- The case file (case number, court, disposition, charges) ---- */}
       <CaseInfoCard person={person} />
+
+      {/* ---- The J6 case, start to finish ---- */}
+      <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+          The case · start to finish
+        </p>
+        <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
+          Arrested to exonerated.
+        </h2>
+        <ol className="mt-5 relative border-l-2 border-[var(--color-line)] ml-3 space-y-5">
+          {[
+            { date: "Jan 18, 2021", title: "Arrested", detail: "Taken into custody in the Eastern District of Texas." },
+            { date: "Feb 12, 2021", title: "Indicted", detail: "Charged with ten counts tied to January 6." },
+            { date: "Apr 26, 2021", title: "Arraigned", detail: "Pleaded not guilty to all counts." },
+            {
+              date: "Dec 2021",
+              title: "Due process violated — on the record",
+              detail:
+                "A federal judge acknowledged from the bench that his due-process rights had been violated. He was held across ten federal and local facilities anyway.",
+            },
+            { date: "Jan 20, 2025", title: "Fully pardoned", detail: "Granted a full and unconditional pardon by President Trump." },
+            {
+              date: "2025",
+              title: "Dismissed with prejudice",
+              detail:
+                "Every charge dismissed with prejudice by U.S. Attorney Edward R. Martin Jr. — the case can never be brought again.",
+            },
+          ].map((e) => (
+            <li key={e.date} className="relative pl-6">
+              <span className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full bg-[var(--color-accent)] ring-4 ring-[var(--color-paper)]" />
+              <div className="flex flex-wrap items-baseline gap-2">
+                <span className="rounded bg-[var(--color-ink)] text-[var(--color-paper)] px-1.5 py-0.5 text-[10px] font-bold tabular-nums">
+                  {e.date}
+                </span>
+                <h3 className="text-base sm:text-lg font-bold tracking-tight font-display">{e.title}</h3>
+              </div>
+              <p className="mt-1 text-sm text-[var(--color-ink-soft)] leading-snug">{e.detail}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
 
       {/* ---- Who he is, before the government ---- */}
       <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
@@ -265,6 +311,49 @@ export function RyanCaseProfile({
           ))}
         </div>
       </section>
+
+      {/* ---- On the record now (latest dispatches) ---- */}
+      {titledPosts.length > 0 ? (
+        <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
+          <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+            On the record now
+          </p>
+          <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
+            He didn&apos;t go quiet. He built a newsroom.
+          </h2>
+          <p className="mt-3 text-base text-[var(--color-ink-soft)] leading-relaxed max-w-2xl">
+            Ryan reports on his own case — and the weaponization of the justice
+            system — as an independent investigative journalist. The latest:
+          </p>
+          <div className="mt-5 grid gap-3 sm:grid-cols-2">
+            {titledPosts.map((p) => (
+              <Link
+                key={p.slug}
+                href={`/posts/${p.slug}`}
+                className="group rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4 hover:border-[var(--color-accent)] transition"
+              >
+                <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] font-bold text-[var(--color-accent)]">
+                  {p.category ? <span>{p.category}</span> : null}
+                  {p.published_at ? (
+                    <span className="text-[var(--color-muted)]">
+                      {new Date(p.published_at).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </span>
+                  ) : null}
+                </div>
+                <p className="mt-1 text-base font-bold tracking-tight font-display leading-snug group-hover:text-[var(--color-accent)] transition">
+                  {p.title}
+                </p>
+              </Link>
+            ))}
+          </div>
+          <Link href="/" className="mt-5 inline-block text-sm font-bold text-[var(--color-accent)] hover:underline">
+            See everything in the feed →
+          </Link>
+        </section>
+      ) : null}
 
       {/* ---- Evidence on file ---- */}
       <section className="mt-12 border-t border-[var(--color-line)] pt-8">

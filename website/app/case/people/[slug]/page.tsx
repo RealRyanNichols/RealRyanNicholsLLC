@@ -7,6 +7,7 @@ import {
   getDocumentsForPerson,
   getCaseTotals,
 } from "@/lib/case";
+import { getPublishedPosts } from "@/lib/posts";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { ShareButton } from "@/components/ShareButton";
 import { CaseStats } from "@/components/CaseStats";
@@ -81,11 +82,14 @@ export default async function PersonPage({
   // The subject of the entire site gets a bespoke flagship profile instead of
   // the generic person template.
   if (p.slug === SUBJECT_SLUG) {
-    const [evidence, totals] = await Promise.all([
+    const [evidence, totals, posts] = await Promise.all([
       getDocumentsForPerson(p.id),
       getCaseTotals(),
+      getPublishedPosts(),
     ]);
-    return <RyanCaseProfile person={p} evidence={evidence} totals={totals} url={url} />;
+    return (
+      <RyanCaseProfile person={p} evidence={evidence} totals={totals} posts={posts} url={url} />
+    );
   }
 
   const isUnclaimedJ6er =
