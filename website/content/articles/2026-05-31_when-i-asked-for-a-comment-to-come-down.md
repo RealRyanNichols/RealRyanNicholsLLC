@@ -1,6 +1,6 @@
 ---
-title: "When I Asked for a Comment to Come Down"
-subtitle: "A Messenger receipt showing what happened after I asked privately for a public comment about my family to be removed."
+title: "When I Asked for a Threatening Comment to Come Down"
+subtitle: "A public Facebook receipt and Messenger thread showing what happened after a comment about my family turned into physical intimidation."
 author: "Ryan Nichols"
 date: "2026-05-31"
 category: "Wall of Shame"
@@ -13,23 +13,49 @@ I am documenting this because people keep trying to rewrite the order of events.
 
 This did not start with me looking for a fight.
 
-It started with a public comment about my family. I took it private. I added the people involved to one Messenger thread. I asked for the comment to come down. I gave them a way to end it without me publishing anything else.
+It started with a public comment about my family on an old Facebook post. I took it private. I added the people involved to one Messenger thread. I asked for the comment to come down. I gave them a way to end it without me publishing anything else.
 
 Then the messages changed from argument to physical intimidation.
 
 ## The receipt
 
-The source is a Facebook Messenger group thread displayed as **"Jessica, Trey, Amanda"** in my account. The thread includes me, Amanda Williams, and accounts displayed by Messenger as Trey Treece and Jessica Treece.
+The first source is a Google Drive evidence folder containing screenshots from Facebook. The key screenshot shows a comment by **Trey Treece** on my Facebook post dated **August 20, 2025**. The screenshot shows the comment as recent at the time it was captured, but the screenshot does not prove the exact absolute time the comment was posted.
+
+![Redacted Facebook screenshot showing a Trey Treece comment on Ryan Nichols' August 20, 2025 Facebook post. Profile photos are cropped out, and the visible comment includes the phrases "bring my family in this," "if u loved your wife and kids," "I will make u wish u never started," and "id love to square up with u."](/uploads/trey-august-comment-redacted.png)
+
+Profile photos were cropped out of the public screenshot.
+
+The second source is a Facebook Messenger group thread displayed as **"Jessica, Trey, Amanda"** in my account. The thread includes me, Amanda Williams, and accounts displayed by Messenger as Trey Treece and Jessica Treece.
 
 I preserved the Messenger thread on May 31, 2026. I also preserved a local evidence snapshot of the thread, including timestamps, hidden-message reveals, and the visible Messenger screen.
 
 ![Redacted Messenger screenshot showing a March 21, 2026 message in the Jessica, Trey, Amanda group thread. A private phone number is blacked out. The visible text includes the phrase "I promise u won't win shit" and "I love to beat the shit out of bullies like u and keep my kids out your mouth only warning."](/uploads/treece-messenger-threat-redacted.png)
 
-Private phone information is redacted from the screenshot.
+Private phone information is redacted from the Messenger screenshot.
 
 ## What happened first
 
-On March 21, 2026, I opened the private group thread with a direct message asking for a public comment thread to be removed.
+The public Facebook screenshot is what started it.
+
+The comment on my August 20, 2025 post said, in part:
+
+> "bring my family in this"
+
+It also said:
+
+> "if u loved your wife and kids then u would have never left..."
+
+Then it escalated:
+
+> "I will make u wish u never started accusing people..."
+
+And it ended with:
+
+> "id love to square up with u..."
+
+That is the public comment I wanted removed.
+
+On March 21, 2026, I opened the private group thread with a direct message asking for the public comment thread to be removed.
 
 I wrote that I appreciated the apology sent to Amanda. I said I wanted to give them another chance to take down the public comments. I explained why I believed the comment crossed a line: it reached into Amanda and our unborn child instead of staying on me.
 
