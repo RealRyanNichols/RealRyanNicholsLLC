@@ -250,6 +250,42 @@ This account replied to my post about a verified Facebook account saying I "shou
 
 That may be how the author wants to frame it. I am documenting why that frame proves the larger point. The language still tells a named January 6 defendant that the right outcome would have been a treason path ending in death.
 
+### Receipt 19 — @tramppolitics: "the world would be better if you had"
+
+Source: screenshot preserved by Ryan on May 30, 2026. I searched X for the exact phrase and did not get a stable direct status URL, so I am treating this as a screenshot-backed receipt until the original URL is archived.
+
+This reply was posted under my article about a D.C. Jail lieutenant allegedly looking at me while I was suicidal in solitary confinement and saying, "Hope you don't die."
+
+The reply says it is a shame I would "lie" about hoping that, when "we all know" the world would be better if I had. That is not a policy disagreement. That is someone entering a thread about suicide, solitary confinement, and jail abuse to say the better outcome would have been me not making it.
+
+### Receipt 20 — @KKeirsbilc9584: "traitors have no rights"
+
+Source: screenshot preserved by Ryan on May 30, 2026. I searched X for the exact phrase and did not get a stable direct status URL, so I am treating this as a screenshot-backed receipt until the original URL is archived.
+
+A verified account under the name Kathleen Keirsbilck replied under the same suicide-and-solitary thread with treason/death-penalty framing. The reply says most countries hang traitors, that in America courts are backed up, and that I will "remember traitors have no rights."
+
+That is the exact pattern again: take a pardoned January 6 defendant, call him a traitor, strip him of rights rhetorically, and then normalize the idea that the correct punishment is death or no protection at all.
+
+### Receipt 21 — X enforcement: locked for my reply in the same thread
+
+Source: screenshots preserved by Ryan on May 30, 2026.
+
+After the replies above, X showed me an enforcement screen saying my account, @RealRyanNichols, had been reported and automatically locked for violating its rules against Violent Speech.
+
+The post X identified was my reply to @0xagonally and @KKeirsbilc9584:
+
+> "@0xagonally @KKeirsbilc9584 Your side? What does that have to do with ME being abused while in custody? I didn't do that to anyone, but comments like yours are why I WILL do that and not show any mercy 'next time'."
+
+I understand why those words can be read aggressively. I should have made the sentence cleaner. But that is exactly why this receipt matters: X locked or limited my account over one broadly worded reply while the surrounding screenshots show people saying the world would be better if I had died, saying traitors have no rights, and sanitizing death-penalty rhetoric as something other than a threat.
+
+The enforcement screens said my account was temporarily limited, that I could browse in read-only mode, and that I had to delete one post before the countdown continued.
+
+This is now at least the third documented enforcement contrast on this site:
+
+- [Banned from X for a parody](/posts/banned-from-x-for-a-parody-this-is-why-i-own-my-domain): the Taken-style "trying to find me" trap and the public admission that a verified account was "casually getting" my account banned.
+- [Banned again for Space Force and discombobulater](/posts/banned-again-for-space-force-and-discombobulater-meanwhile-rot-in-hell-stays-up): the Space Force / discombobulater lock while "you deserve life in prison" stayed up.
+- [The Receipts Wall](/posts/the-receipts-wall-every-threat-x-let-stay-up): the running evidence wall tying the threats, slurs, death rhetoric, and account-lock receipts into one record.
+
 ### Cross-platform receipt — verified Facebook account, Jake Duffney
 
 Source: local exhibit file, `EX-001_2026-05-13_Jake_Duffney_Death_Threat.md`, preserved from Ryan's evidence folder. Facebook URL preserved in the exhibit: [comment thread](https://www.facebook.com/jake.duffney.2025?comment_id=Y29tbWVudDoxMzQyNDc5ODc3OTgwMjcyXzg1Mzg5ODQ1NDQ1MDE3OQ%3D%3D).
@@ -260,7 +296,7 @@ That receipt matters because this is not limited to one platform. The same death
 
 ### What I found, and what I am not claiming
 
-I found public posts and preserved screenshots using death-penalty, treason, deadly-force, prison, and dehumanizing language aimed at me or aimed at January 6 defendants in threads where I was the named target.
+I found public posts and preserved screenshots using death-penalty, suicide-related, treason, deadly-force, prison, and dehumanizing language aimed at me or aimed at January 6 defendants in threads where I was the named target.
 
 I am not claiming every one of these posts is a direct criminal threat. I am claiming they are receipts of a public pressure campaign where the acceptable language against me is far harsher than the language X used to lock my account.
 
@@ -273,6 +309,7 @@ That distinction matters. Receipts first. Claims second. Let the record do the w
 - **Anonymous accounts** can wish a pardoned citizen *life in prison* or tell him to *rot in hell.* *No action.*
 - **A homophobic slur** can sit publicly aimed at another user. *No action.*
 - **A private citizen with no military command** uses the words *Space Force* and *discombobulater* in obvious satire after being baited by a structured trap. **Locked. Twice. In 24 hours.**
+- **I respond in one broadly worded sentence** after people talk about hanging, death, and my past suicidal state. **Locked or limited again.**
 
 If "Rot in Hell" and "you deserve life in prison" and a verbatim **admission of coordinated mass-reporting** do not qualify as Violent Speech under X's own published rules, then a sarcastic Space Force riff from a pardoned private citizen cannot qualify either. **Either the rules apply consistently or they aren't rules at all — they're a weapon.**
 
