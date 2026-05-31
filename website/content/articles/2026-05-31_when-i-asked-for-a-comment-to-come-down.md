@@ -165,7 +165,7 @@ He also says:
 
 And he describes "the car that he's pointed at."
 
-{{video: /uploads/costello-bible-backstop-short.mp4 | /uploads/costello-bible-backstop-short-poster.jpg | Edited 41-second receipt from the couple's video. Source copies and transcripts are preserved in the private evidence folder.}}
+{{video: /uploads/church-bible-backstop-short.mp4 | /uploads/church-bible-backstop-short-poster.jpg | Edited 41-second receipt from the couple's video. Source copies and transcripts are preserved in the private evidence folder.}}
 
 That is now attached.
 
@@ -185,7 +185,7 @@ That same comment says:
 
 > "[The husband] had his back to him the whole time so that he couldn't say [the husband] was being confrontational."
 
-![Redacted screenshot crop of a public Facebook comment by the wife in the church-incident couple, saying Ryan was trying to convince police he was scared because her husband had something in his hand, and saying her husband had a Bible in his hand.](/uploads/costello-cops-bible-claim-redacted.png)
+![Redacted screenshot crop of a public Facebook comment by the wife in the church-incident couple, saying Ryan was trying to convince police he was scared because her husband had something in his hand, and saying her husband had a Bible in his hand.](/uploads/church-bible-claim-redacted.png)
 
 Another screenshot shows a public comment under the same wife's name saying:
 
@@ -197,7 +197,7 @@ Directly below that, another commenter says:
 
 and ties that statement to "knowing he had a gun."
 
-![Redacted screenshot crop of a public Facebook comment by the wife in the church-incident couple, saying her husband was to the point of getting violent, followed by another commenter saying someone needs to kick Ryan's ass after knowing he had a gun.](/uploads/costello-jon-violent-comment-redacted.png)
+![Redacted screenshot crop of a public Facebook comment by the wife in the church-incident couple, saying her husband was to the point of getting violent, followed by another commenter saying someone needs to kick Ryan's ass after knowing he had a gun.](/uploads/church-violent-comment-redacted.png)
 
 Those are not my words. Those are the receipts I was sent and preserved.
 
