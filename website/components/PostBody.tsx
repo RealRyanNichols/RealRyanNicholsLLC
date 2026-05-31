@@ -6,6 +6,8 @@ import { FundAllocator } from "./FundAllocator";
 import { ReactionBar } from "./ReactionBar";
 import { InlineReportForm } from "./InlineReportForm";
 import { DemandAction } from "./DemandAction";
+import { ImpactPicker } from "./ImpactPicker";
+import { ShareRow } from "./ShareRow";
 
 const TWEET_RE = /^https?:\/\/(x\.com|twitter\.com)\/[^/]+\/status\/\d+/i;
 // A paragraph that is only {{donate}} / {{report}} / {{poll: prompt}} /
@@ -50,6 +52,18 @@ function Shortcode({ kind, arg, ctx }: { kind: string; arg?: string; ctx: Ctx })
       return (
         <div className="not-prose my-7">
           <FundAllocator />
+        </div>
+      );
+    case "impact":
+      return (
+        <div className="not-prose my-7">
+          <ImpactPicker />
+        </div>
+      );
+    case "share":
+      return (
+        <div className="not-prose my-7">
+          <ShareRow />
         </div>
       );
     case "report":
