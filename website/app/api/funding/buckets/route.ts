@@ -9,6 +9,8 @@ type BucketRow = {
   blurb: string | null;
   goal_cents: number | string;
   raised_cents: number | string;
+  cadence: string;
+  sort_order: number | string;
 };
 
 type SnapshotRow = {
@@ -18,13 +20,13 @@ type SnapshotRow = {
   raised_cents: number | string;
 };
 
-// Public read for the gamified fund allocator. Returns:
-//  - buckets: each active monthly bucket with its goal and the amount DESIGNATED
-//    to it this month (donations with campaign = fund:<id>).
-//  - total:   the REAL overall money in this month (general gifts + designated +
-//    manual offline, excluding private "special" gifts) vs the sum of bucket
-//    goals. This is what the "This month, total" bar shows, so undesignated
-//    general gifts still make the meter move instead of leaving it stuck at $0.
+// Public read for the unified "Fund the Truth" tool. Returns:
+//  - buckets:  every active line item (monthly + one_time) with its goal, the
+//    amount designated to it (campaign = fund:<id>), and its cadence.
+//  - monthly:  the REAL overall money in this month (general gifts + designated
+//    + manual offline, excluding private "special" gifts) vs the $5k monthly
+//    goal (sum of monthly bucket goals). This is the headline meter, so even
+//    undesignated general gifts move it.
 // Aggregates only — no PII.
 export async function GET() {
   const supabase = getSupabaseStaticClient();
@@ -34,7 +36,7 @@ export async function GET() {
     supabase.rpc("funding_snapshot"),
   ]);
 
-  if (bucketsRes.error) return NextResponse.json({ buckets: [], total: null });
+  if (bucketsRes.error) return NextResponse.json({ buckets: [], monthly: null });
 
   const buckets = ((bucketsRes.data ?? []) as BucketRow[]).map((b) => ({
     id: b.id,
@@ -42,19 +44,22 @@ export async function GET() {
     blurb: b.blurb,
     goal_cents: Number(b.goal_cents ?? 0),
     raised_cents: Number(b.raised_cents ?? 0),
+    cadence: b.cadence === "one_time" ? "one_time" : "monthly",
+    sort_order: Number(b.sort_order ?? 0),
   }));
 
-  const goalSum = buckets.reduce((s, b) => s + b.goal_cents, 0);
+  const monthlyGoal = buckets
+    .filter((b) => b.cadence === "monthly")
+    .reduce((s, b) => s + b.goal_cents, 0);
 
-  // funding_snapshot returns a single aggregate row (as an array via RPC).
-  const snap = (snapshotRes.data as SnapshotRow[] | SnapshotRow | null);
+  const snap = snapshotRes.data as SnapshotRow[] | SnapshotRow | null;
   const snapRow = Array.isArray(snap) ? snap[0] : snap;
   const overallRaised = snapRow ? Number(snapRow.raised_cents ?? 0) : null;
 
-  const total =
+  const monthly =
     overallRaised === null
       ? null
-      : { raised_cents: overallRaised, goal_cents: goalSum };
+      : { raised_cents: overallRaised, goal_cents: monthlyGoal };
 
-  return NextResponse.json({ buckets, total });
+  return NextResponse.json({ buckets, monthly });
 }

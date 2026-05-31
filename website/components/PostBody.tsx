@@ -2,11 +2,10 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { TweetEmbed } from "./TweetEmbed";
 import { DonateBox } from "./DonateBox";
-import { FundAllocator } from "./FundAllocator";
+import { FundTheTruth } from "./FundTheTruth";
 import { ReactionBar } from "./ReactionBar";
 import { InlineReportForm } from "./InlineReportForm";
 import { DemandAction } from "./DemandAction";
-import { ImpactPicker } from "./ImpactPicker";
 import { ShareRow } from "./ShareRow";
 
 const TWEET_RE = /^https?:\/\/(x\.com|twitter\.com)\/[^/]+\/status\/\d+/i;
@@ -48,16 +47,13 @@ function Shortcode({ kind, arg, ctx }: { kind: string; arg?: string; ctx: Ctx })
           <DonateBox />
         </div>
       );
+    // The unified donation tool. `impact` is kept as an alias so any stray
+    // legacy token still renders the one tool instead of a broken block.
     case "fund":
-      return (
-        <div className="not-prose my-7">
-          <FundAllocator />
-        </div>
-      );
     case "impact":
       return (
         <div className="not-prose my-7">
-          <ImpactPicker />
+          <FundTheTruth />
         </div>
       );
     case "share":
