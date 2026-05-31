@@ -2,6 +2,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { TweetEmbed } from "./TweetEmbed";
 import { DonateBox } from "./DonateBox";
+import { FundAllocator } from "./FundAllocator";
 import { ReactionBar } from "./ReactionBar";
 import { InlineReportForm } from "./InlineReportForm";
 import { DemandAction } from "./DemandAction";
@@ -43,6 +44,12 @@ function Shortcode({ kind, arg, ctx }: { kind: string; arg?: string; ctx: Ctx })
       return (
         <div className="not-prose my-7">
           <DonateBox />
+        </div>
+      );
+    case "fund":
+      return (
+        <div className="not-prose my-7">
+          <FundAllocator />
         </div>
       );
     case "report":

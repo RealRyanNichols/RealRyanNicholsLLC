@@ -7,6 +7,7 @@ import { SupportIntentForm } from "@/components/SupportIntentForm";
 import { SupportersWall } from "@/components/SupportersWall";
 import { FundingGoalMeter } from "@/components/FundingGoalMeter";
 import { DonateBox } from "@/components/DonateBox";
+import { FundAllocator } from "@/components/FundAllocator";
 import { SupporterButton } from "@/components/SupporterButton";
 import { getPublishedSupporters } from "@/lib/supporters";
 import { getFundingData } from "@/lib/funding";
@@ -84,6 +85,7 @@ export default async function SupportPage() {
 
       <div className="mt-8 space-y-5">
         {funding ? <FundingGoalMeter data={funding} /> : null}
+        <FundAllocator />
         <DonateBox donateUrl={donateUrl} />
       </div>
 
