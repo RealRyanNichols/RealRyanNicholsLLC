@@ -63,6 +63,8 @@ export function FundingAdmin({
 
       <SettingsForm initial={initialSettings} />
 
+      <ImportStripeButton />
+
       <div className="mt-6 rounded-2xl border border-[var(--color-line)]">
         <div className="px-4 py-2 border-b border-[var(--color-line)] bg-[var(--color-surface)] text-[10px] uppercase tracking-wider font-bold text-[var(--color-muted)]">
           Line items
@@ -75,6 +77,75 @@ export function FundingAdmin({
         </div>
       </div>
     </section>
+  );
+}
+
+function ImportStripeButton() {
+  const router = useRouter();
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState<string | null>(null);
+
+  async function run() {
+    setBusy(true);
+    setMsg(null);
+    const money = (c: number) => "$" + (c / 100).toLocaleString();
+    try {
+      const res = await fetch("/api/admin/funding/import-stripe", { method: "POST" });
+      const j = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        recorded?: number;
+        recorded_cents?: number;
+        untracked_paid?: number;
+        untracked_paid_cents?: number;
+      };
+      if (!res.ok) {
+        setMsg(j.error ?? "Import failed.");
+        setBusy(false);
+        return;
+      }
+      let m = `Imported ${j.recorded ?? 0} donation${j.recorded === 1 ? "" : "s"} (${money(
+        j.recorded_cents ?? 0,
+      )}) this month.`;
+      if ((j.untracked_paid ?? 0) > 0) {
+        m += ` Heads up: ${j.untracked_paid} other paid charge${
+          j.untracked_paid === 1 ? "" : "s"
+        } (${money(
+          j.untracked_paid_cents ?? 0,
+        )}) had no donation tag — if those were gifts, add them to the offline field above.`;
+      }
+      setMsg(m);
+      router.refresh();
+    } catch {
+      setMsg("Network error.");
+    }
+    setBusy(false);
+  }
+
+  return (
+    <div className="mt-4 rounded-2xl border border-[var(--color-line)] p-4">
+      <div className="flex items-center justify-between gap-3 flex-wrap">
+        <div>
+          <p className="text-sm font-bold text-[var(--color-ink)]">
+            Import this month&apos;s Stripe donations
+          </p>
+          <p className="mt-0.5 text-[11px] text-[var(--color-muted)]">
+            Pulls completed card donations from Stripe onto the meter. Safe to run anytime —
+            it never double-counts.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={run}
+          disabled={busy}
+          className="whitespace-nowrap rounded-full bg-[var(--color-accent)] px-4 py-2 text-sm font-bold text-white disabled:opacity-50"
+        >
+          {busy ? "Importing…" : "Import from Stripe"}
+        </button>
+      </div>
+      {msg ? (
+        <p className="mt-2 text-xs font-semibold text-[var(--color-ink-soft)]">{msg}</p>
+      ) : null}
+    </div>
   );
 }
 
