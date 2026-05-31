@@ -17,14 +17,29 @@ type Bucket = {
 // vs the $5k monthly goal. Drives the headline meter.
 type Monthly = { raised_cents: number; goal_cents: number };
 
+// $50 floor — anything less is eaten by processing fees and isn't worth a
+// donor's time or Ryan's. $250 default; $500 from 10 people hits the $5k goal.
 const TIERS = [5000, 10000, 25000, 50000];
-const DEFAULT_CENTS = 25000; // $250 — the "10 people = $2,500" ask
+const DEFAULT_CENTS = 25000;
 const GENERAL = "__general__"; // "Where it's needed most" → campaign "goal"
 
-// Inline greens so the meter is guaranteed green regardless of the Tailwind build.
+// Inline colors so the meter renders consistently regardless of the Tailwind build.
 const GREEN = "#16a34a";
-const GREEN_BAR = "linear-gradient(90deg, #34d399, #16a34a)";
 const GREEN_RING = "0 0 0 3px rgba(22,163,74,0.25)";
+// Red → amber → green: the bar literally climbs "out of the red" as it fills.
+const RG_BAR =
+  "linear-gradient(90deg, #dc2626 0%, #f97316 28%, #eab308 52%, #22c55e 78%, #16a34a 100%)";
+
+// Interpolate red → amber → green for text/borders that track the funding level.
+function colorForPct(p: number): string {
+  const red = [220, 38, 38];
+  const amber = [245, 158, 11];
+  const green = [22, 163, 74];
+  const mix = (a: number[], b: number[], t: number) =>
+    a.map((v, i) => Math.round(v + (b[i] - v) * t));
+  const c = p < 50 ? mix(red, amber, p / 50) : mix(amber, green, (p - 50) / 50);
+  return `rgb(${c[0]}, ${c[1]}, ${c[2]})`;
+}
 
 function money(cents: number): string {
   return "$" + Math.round(cents / 100).toLocaleString("en-US");
@@ -74,12 +89,22 @@ function ProgressBar({ value, armed, height }: { value: number; armed: boolean; 
     const id = setTimeout(() => setW(value), 120);
     return () => clearTimeout(id);
   }, [armed, value]);
+  // The red→green gradient is anchored to the FULL track (not the fill), so a
+  // low bar reads red ("in the red") and only turns green as it nears the goal.
+  const innerW = w > 0 ? 10000 / w : 100; // % of the fill that spans one full track
   return (
     <div className="w-full rounded-full bg-[var(--color-line)] overflow-hidden" style={{ height }}>
       <div
-        className="h-full rounded-full"
-        style={{ width: `${w}%`, backgroundImage: GREEN_BAR, transition: "width 1100ms cubic-bezier(0.22,1,0.36,1)" }}
-      />
+        style={{
+          width: `${w}%`,
+          height: "100%",
+          overflow: "hidden",
+          borderRadius: 9999,
+          transition: "width 1100ms cubic-bezier(0.22,1,0.36,1)",
+        }}
+      >
+        <div style={{ width: `${innerW}%`, height: "100%", backgroundImage: RG_BAR }} />
+      </div>
     </div>
   );
 }
@@ -116,7 +141,7 @@ function NeedCard({
           <span className="text-lg" aria-hidden>{emojiFor(bucket.label)}</span>
           {bucket.label}
         </span>
-        <span className="text-xs font-bold tabular-nums" style={{ color: GREEN }}>{p}%</span>
+        <span className="text-xs font-bold tabular-nums" style={{ color: colorForPct(p) }}>{p}%</span>
       </div>
       {bucket.blurb ? (
         <p className="mt-1 text-xs text-[var(--color-muted)] leading-snug">{bucket.blurb}</p>
@@ -165,6 +190,7 @@ export function FundTheTruth() {
   const legalBuckets = (buckets ?? []).filter((b) => b.cadence === "one_time");
   const monthlyGoal = monthly?.goal_cents ?? monthlyBuckets.reduce((s, b) => s + b.goal_cents, 0);
   const monthlyRaised = monthly?.raised_cents ?? 0;
+  const monthlyPct = pct(monthlyRaised, monthlyGoal);
   const raisedShown = useCountUp(monthlyRaised, armed);
   const ready = buckets !== null;
   const selectedBucket = (buckets ?? []).find((b) => b.id === selected) ?? null;
@@ -172,8 +198,8 @@ export function FundTheTruth() {
 
   async function give() {
     setErr(null);
-    if (!(effectiveCents >= 500)) {
-      setErr("Enter at least $5.");
+    if (!(effectiveCents >= 5000)) {
+      setErr("Minimum gift is $50 — anything less gets eaten up by fees.");
       return;
     }
     setBusy(true);
@@ -232,17 +258,17 @@ export function FundTheTruth() {
         Fund the Truth · one place, everything in the open
       </p>
       <h3 className="font-display text-2xl sm:text-3xl mt-1 text-[var(--color-ink)] leading-tight">
-        $250 from 10 people = $2,500. That changes my life — this month.
+        $500 from 10 people = $5,000. That changes my life this month.
       </h3>
       <p className="mt-2 text-sm text-[var(--color-ink-soft)] leading-relaxed">
         My real monthly goal is <strong>$5,000</strong> — rent, food, medical, gas, insurance, and the
-        tools that run this site. Give wherever it&apos;s needed most, or pick exactly what to fund and
-        watch it fill. Every dollar shown, live.
+        tools that run this site. Right now I&apos;m in the red. Help me get to the green — give wherever
+        it&apos;s needed most, or pick exactly what to fund and watch it fill. Every dollar shown, live.
       </p>
 
-      {/* Headline monthly meter */}
+      {/* Headline monthly meter — climbs out of the red as it fills */}
       {ready ? (
-        <div className="mt-4 rounded-xl border-2 p-4" style={{ borderColor: GREEN }}>
+        <div className="mt-4 rounded-xl border-2 p-4" style={{ borderColor: colorForPct(monthlyPct) }}>
           <div className="flex items-baseline justify-between">
             <span className="text-3xl sm:text-4xl font-bold tabular-nums text-[var(--color-ink)] leading-none">
               {money(raisedShown)}
@@ -252,11 +278,16 @@ export function FundTheTruth() {
             </span>
           </div>
           <div className="mt-3">
-            <ProgressBar value={pct(monthlyRaised, monthlyGoal)} armed={armed} height={14} />
+            <ProgressBar value={monthlyPct} armed={armed} height={16} />
           </div>
-          <p className="mt-2 text-sm font-semibold" style={{ color: GREEN }}>
-            {pct(monthlyRaised, monthlyGoal)}% funded for {monthName}
-            {monthlyRaised > 0 ? " — thank you" : ""}.
+          <p className="mt-2 text-sm font-semibold" style={{ color: colorForPct(monthlyPct) }}>
+            {monthlyPct < 25
+              ? `Deep in the red — ${monthlyPct}% funded for ${monthName}. Help me climb out.`
+              : monthlyPct < 75
+                ? `Climbing — ${monthlyPct}% funded for ${monthName}. Keep it going.`
+                : monthlyPct < 100
+                  ? `Almost in the green — ${monthlyPct}% funded for ${monthName}.`
+                  : `Fully funded for ${monthName} — thank you.`}
           </p>
         </div>
       ) : (
@@ -289,7 +320,7 @@ export function FundTheTruth() {
               value={custom}
               onChange={(e) => setCustom(e.target.value)}
               inputMode="decimal"
-              placeholder="Enter an amount"
+              placeholder="$50 minimum"
               autoFocus
               className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] pl-7 pr-3 py-2.5 text-base focus:outline-none"
             />

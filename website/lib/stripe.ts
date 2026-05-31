@@ -14,8 +14,10 @@ export function requireStripe(): Stripe {
 
 // Donation tiers are a server-side allowlist; custom amounts are clamped
 // server-side. Never trust a client-sent amount beyond these checks.
-export const DONATION_TIERS_CENTS = [1000, 2500, 5000, 10000, 25000] as const;
-export const DONATION_MIN_CENTS = 500; // $5
+// $50 floor: anything less is eaten by processing fees — not worth the donor's
+// time or Ryan's. The unified "Fund the Truth" tool enforces the same minimum.
+export const DONATION_TIERS_CENTS = [5000, 10000, 25000, 50000] as const;
+export const DONATION_MIN_CENTS = 5000; // $50
 export const DONATION_MAX_CENTS = 1_000_000; // $10,000
 
 export function isValidDonationAmount(cents: number): boolean {

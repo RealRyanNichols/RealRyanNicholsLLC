@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { trackEvent } from "@/lib/analytics";
 
-const TIERS = [1000, 2500, 5000, 10000, 25000];
+const TIERS = [5000, 10000, 25000, 50000];
 
 function dollars(cents: number): string {
   return (cents / 100).toLocaleString("en-US");
@@ -18,12 +18,12 @@ export function DonateBox({ donateUrl }: { donateUrl?: string }) {
 
   const effectiveCents =
     amountCents === -1 ? Math.round(parseFloat(custom || "0") * 100) : amountCents;
-  const validCustom = amountCents !== -1 || effectiveCents >= 500;
+  const validCustom = amountCents !== -1 || effectiveCents >= 5000;
 
   async function donate() {
     setErr(null);
     if (!validCustom) {
-      setErr("Enter at least $5.");
+      setErr("Minimum gift is $50.");
       return;
     }
     setBusy(true);
