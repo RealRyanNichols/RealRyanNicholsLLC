@@ -148,7 +148,7 @@ Same person who fired the "Is that a threat?" bait that triggered today's lock c
 > **"Nobody cares phaggot."**
 > *Still up. Aimed directly at me. Slur unchanged from the post. No flag.*
 
-*(Re-captured screenshot pending — same privacy revert as Receipt 7.)*
+![X reply from Teddy_four (@teddy_fore1) to @RealRyanNichols: "Nobody cares phaggot."](/uploads/rrn-receipt-teddy-slur.png)
 
 **Tear-down:**
 
@@ -164,7 +164,7 @@ Same person who fired the "Is that a threat?" bait that triggered today's lock c
 > **"Lame ass bitch."**
 > *Aimed at me under a separate post. Still up.*
 
-*(Re-captured screenshot pending.)*
+![X report confirmation excerpt showing the reported line: "@RealRyanNichols Lame ass bitch."](/uploads/rrn-receipt-hec-nasty-report-crop.png)
 
 **Tear-down:**
 
@@ -246,6 +246,8 @@ This is framed as commentary, but it is still the same structure. A public reply
 
 Source: screenshot preserved by Ryan on May 30, 2026. I searched X for the exact phrase and did not get a stable direct status URL, so I am treating this as a screenshot-backed receipt until the original URL is archived.
 
+![X reply from Chief Caucasoid (@COVIDcarditis): "I wouldn't call that a death threat. It's a wish that you were charged with and convicted of treason, which may carry the death penalty as punishment."](/uploads/rrn-receipt-covidcarditis-death-penalty-wish.png)
+
 This account replied to my post about a verified Facebook account saying I "should've been put to death for treason." The reply tried to narrow it this way: it was not a death threat, it was a wish that I had been charged and convicted of treason, which may carry the death penalty.
 
 That may be how the author wants to frame it. I am documenting why that frame proves the larger point. The language still tells a named January 6 defendant that the right outcome would have been a treason path ending in death.
@@ -254,6 +256,8 @@ That may be how the author wants to frame it. I am documenting why that frame pr
 
 Source: screenshot preserved by Ryan on May 30, 2026. I searched X for the exact phrase and did not get a stable direct status URL, so I am treating this as a screenshot-backed receipt until the original URL is archived.
 
+![X reply from tramp. (@tramppolitics) under Ryan Nichols's D.C. Jail suicide post: "the world would be better if you had."](/uploads/rrn-receipt-tramppolitics-world-better-if-you-had.png)
+
 This reply was posted under my article about a D.C. Jail lieutenant allegedly looking at me while I was suicidal in solitary confinement and saying, "Hope you don't die."
 
 The reply says it is a shame I would "lie" about hoping that, when "we all know" the world would be better if I had. That is not a policy disagreement. That is someone entering a thread about suicide, solitary confinement, and jail abuse to say the better outcome would have been me not making it.
@@ -261,6 +265,8 @@ The reply says it is a shame I would "lie" about hoping that, when "we all know"
 ### Receipt 20 — @KKeirsbilc9584: "traitors have no rights"
 
 Source: screenshot preserved by Ryan on May 30, 2026. I searched X for the exact phrase and did not get a stable direct status URL, so I am treating this as a screenshot-backed receipt until the original URL is archived.
+
+![Verified X reply from Kathleen Keirsbilck (@KKeirsbilc9584): "Most country's hang their traitors..." and "traitors have no rights."](/uploads/rrn-receipt-kkeirsbilc-traitors-no-rights.png)
 
 A verified account under the name Kathleen Keirsbilck replied under the same suicide-and-solitary thread with treason/death-penalty framing. The reply says most countries hang traitors, that in America courts are backed up, and that I will "remember traitors have no rights."
 
@@ -285,6 +291,87 @@ This is now at least the third documented enforcement contrast on this site:
 - [Banned from X for a parody](/posts/banned-from-x-for-a-parody-this-is-why-i-own-my-domain): the Taken-style "trying to find me" trap and the public admission that a verified account was "casually getting" my account banned.
 - [Banned again for Space Force and discombobulater](/posts/banned-again-for-space-force-and-discombobulater-meanwhile-rot-in-hell-stays-up): the Space Force / discombobulater lock while "you deserve life in prison" stayed up.
 - [The Receipts Wall](/posts/the-receipts-wall-every-threat-x-let-stay-up): the running evidence wall tying the threats, slurs, death rhetoric, and account-lock receipts into one record.
+
+## Update — May 31: live X search and saved-screenshot audit
+
+On May 31, 2026, I ran another live X search from my logged-in account and OCR-scanned my saved threat screenshots. Search terms included **@RealRyanNichols**, **traitor**, **treason**, **hang**, **hung**, **death penalty**, **life in prison**, **suicide**, **put to death**, and related language.
+
+I am not pretending this is the entire internet. I am documenting the receipts I could capture and preserve today. The pattern did not slow down.
+
+### Receipt 22 — @Messaback01: "coming after you traitor"
+
+Source: [X status 2061064868262809882](https://x.com/Messaback01/status/2061064868262809882), captured May 31, 2026.
+
+![X post from TrumpT1 Mobile Phone Support (@Messaback01) saying "0 US Marshalls and state deputies will stop us from coming after you traitor."](/uploads/rrn-may31-coming-after-you-traitor.png)
+
+This is the one people keep pretending is not happening. The language is not just "traitor." It says nobody will stop "us" from "coming after you traitor."
+
+### Receipt 23 — @schrodingersmeh: "put to death" and "traitors should pay the price"
+
+Source: [X status 2060927830708654215](https://x.com/schrodingersmeh/status/2060927830708654215), captured May 31, 2026.
+
+![X post from None of your Bidness (@schrodingersmeh) saying Ryan is an "absolute fucking traitor" and "I disagree that you should be put to death, but all traitors should pay the price."](/uploads/rrn-may31-put-to-death-traitors-pay-price.png)
+
+This post tries to walk the line by saying "I disagree that you should be put to death," then keeps the same frame alive by saying "all traitors should pay the price." That is why I keep documenting the label first. The label is the doorway.
+
+### Receipt 24 — @JES11238: "you should've known better than to commit treason"
+
+Source: [X status 2061002157013283007](https://x.com/JES11238/status/2061002157013283007), captured May 31, 2026.
+
+![X post from J S (@JES11238) saying "Who gives a fuck what a traitor wants investigated?" and accusing Ryan Nichols of committing treason.](/uploads/rrn-may31-commit-treason.png)
+
+This one is not subtle. It says I should have known better than to "commit treason," then says I dishonored the Marine Corps, my family, my friends, and every other American.
+
+### Receipt 25 — @KKeirsbilc9584: "would have hung you from the gallows"
+
+Source: saved X screenshot from May 23, 2026.
+
+![Verified X reply from Kathleen Keirsbilck saying "any other country would have hung you from the gallows you built for the Vice-President of America."](/uploads/rrn-receipt-kathleen-gallows.png)
+
+Same account pattern, same treason frame, same execution language. The reply says I should be thankful it was America because another country "would have hung" me.
+
+### Receipt 26 — @werejag: "you should have gone the way of babbit"
+
+Source: saved X screenshot from May 22, 2026.
+
+![X reply from Juan Delacosta (@werejag) saying "they allowed you to crime. you should have gone the way of babbit."](/uploads/rrn-receipt-juan-babbitt.png)
+
+Ashli Babbitt was shot and killed on January 6. When someone replies to me and says I "should have gone the way of babbit," that is not ordinary political disagreement. It is a death comparison aimed at a named person.
+
+### Receipt 27 — @619JoeBlow: "Lock them All Up"
+
+Source: saved X screenshot from May 23, 2026.
+
+![Verified X reply from 619JoeBlow saying "The J6's are gullible & still are. They didn't learn anything. Lock them All Up."](/uploads/rrn-receipt-lock-them-all-up.png)
+
+This is the prison fantasy version of the same pattern. It is aimed at January 6 defendants as a class: "Lock them All Up."
+
+### Receipt 28 — @JJaazzee1: "STFU TRAITOR!!"
+
+Source: saved X screenshot from May 22, 2026.
+
+![X reply from JP (@JJaazzee1) saying "STFU TRAITOR!!" above Ryan Nichols's post about the weaponized Biden DOJ.](/uploads/rrn-receipt-jp-stfu-traitor.png)
+
+This one matters because the label does the work. Once "traitor" is attached, the rest of the thread starts treating prison, loss of rights, and death-penalty talk as acceptable.
+
+### Receipt 29 — @LoriNash59: "You're a traitor and a terrorist"
+
+Source: saved X screenshot from May 22, 2026.
+
+![X post from LoriNash59 saying "You're a traitor and a terrorist."](/uploads/rrn-receipt-lorinash-traitor-terrorist.png)
+
+This is the same account that appears elsewhere in the lock-cycle receipts. Again: label first, dehumanize second, report third, then pretend the enforcement is neutral.
+
+### More May 31 live-search receipts preserved
+
+These were also captured from live X status pages on May 31, 2026:
+
+- [@MalachiMul98652](https://x.com/MalachiMul98652/status/2061081281807483053): "You broke the law, traitor." ![X post from Malachi Mulligan saying "You broke the law, traitor."](/uploads/rrn-may31-broke-law-traitor.png)
+- [@RobertF41798289](https://x.com/RobertF41798289/status/2061073723558367549): "You're a traitor scum, but you deserved humane detention." ![X post from Bobby saying "You're a traitor scum, but you deserved humane detention."](/uploads/rrn-may31-traitor-scum-detention.png)
+- [@MannC84373](https://x.com/MannC84373/status/2061043344562688279): "Ask me if I care, Traitor." ![X post from Donnie Two-Weeks saying "Ask me if I care, Traitor."](/uploads/rrn-may31-ask-me-if-i-care-traitor.png)
+- [@KimberlyPitzen](https://x.com/KimberlyPitzen/status/2061023891854631248): "Traitor." ![X post from Kim saying "Traitor."](/uploads/rrn-may31-traitor-single-word.png)
+- [@TheotherTom2020](https://x.com/TheotherTom2020/status/2060930571706994834): "That's a lot of whining just to tell us you're a traitor..." ![X post from Tom saying "That's a lot of whining just to tell us you're a traitor."](/uploads/rrn-may31-whining-traitor.png)
+- [@Cat_Eat_Burger](https://x.com/Cat_Eat_Burger/status/2060918778746032386): "Maybe don't be a traitor, dickhead." ![X post from A Cat Eating a Burger saying "Maybe don't be a traitor, dickhead."](/uploads/rrn-may31-traitor-dickhead.png)
 
 ### Cross-platform receipt — verified Facebook account, Jake Duffney
 
