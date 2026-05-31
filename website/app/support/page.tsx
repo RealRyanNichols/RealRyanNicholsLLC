@@ -5,12 +5,9 @@ import { getOgImage } from "@/lib/og-images";
 import { LiveAttentionMeter } from "@/components/LiveAttentionMeter";
 import { SupportIntentForm } from "@/components/SupportIntentForm";
 import { SupportersWall } from "@/components/SupportersWall";
-import { FundingGoalMeter } from "@/components/FundingGoalMeter";
-import { DonateBox } from "@/components/DonateBox";
-import { FundAllocator } from "@/components/FundAllocator";
+import { FundTheTruth } from "@/components/FundTheTruth";
 import { SupporterButton } from "@/components/SupporterButton";
 import { getPublishedSupporters } from "@/lib/supporters";
-import { getFundingData } from "@/lib/funding";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 
 const DEFAULT_DESCRIPTION =
@@ -71,9 +68,6 @@ export default async function SupportPage() {
   // Ryan publishes notes from /admin/donations).
   const supporters = await getPublishedSupporters();
 
-  // Transparent monthly funding goal (null until configured in /admin).
-  const funding = await getFundingData();
-
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
       <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
@@ -83,10 +77,8 @@ export default async function SupportPage() {
         I&apos;m spending my last dime on this.
       </h1>
 
-      <div className="mt-8 space-y-5">
-        {funding ? <FundingGoalMeter data={funding} /> : null}
-        <FundAllocator />
-        <DonateBox donateUrl={donateUrl} />
+      <div className="mt-8">
+        <FundTheTruth />
       </div>
 
       <p className="mt-4 text-xs text-[var(--color-muted)] leading-relaxed">
