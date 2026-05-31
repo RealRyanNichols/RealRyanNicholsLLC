@@ -82,12 +82,10 @@ export default async function SupportPage() {
         I&apos;m spending my last dime on this.
       </h1>
 
-      {funding ? (
-        <div className="mt-8 space-y-5">
-          <FundingGoalMeter data={funding} />
-          <DonateBox donateUrl={donateUrl} />
-        </div>
-      ) : null}
+      <div className="mt-8 space-y-5">
+        {funding ? <FundingGoalMeter data={funding} /> : null}
+        <DonateBox donateUrl={donateUrl} />
+      </div>
 
       <p className="mt-4 text-xs text-[var(--color-muted)] leading-relaxed">
         Donations are personal gifts to Ryan Nichols — an individual, not a

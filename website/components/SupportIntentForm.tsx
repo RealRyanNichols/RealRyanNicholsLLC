@@ -116,20 +116,48 @@ export function SupportIntentForm({ donateUrl }: { donateUrl: string }) {
         publish_message: publishMessage,
         show_amount: showAmount,
       });
-      if (!donateUrl) {
-        trackEvent("support_note_saved_no_checkout", {
+      // Prefer native Stripe checkout for a concrete amount: it records the
+      // gift in the donations table (so it shows on the funding meter) and
+      // never depends on a payment-link env. "Any amount" / no amount falls
+      // back to the hosted payment link; with neither, the note is saved.
+      const dollars = parseFloat(intendedAmount || "");
+      const cents = Number.isFinite(dollars) ? Math.round(dollars * 100) : 0;
+      if (cents >= 500 && cents <= 1_000_000) {
+        try {
+          const cres = await fetch("/api/checkout/donate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              amount_cents: cents,
+              campaign: `support_${purpose}`,
+              source: "support-mission",
+            }),
+          });
+          const cj = (await cres.json().catch(() => ({}))) as { url?: string };
+          if (cres.ok && cj.url) {
+            trackEvent("support_checkout_open", { purpose, amount: intendedAmount, native: true });
+            window.location.assign(cj.url);
+            return;
+          }
+        } catch {
+          /* fall through to the payment link / save-only */
+        }
+      }
+      if (donateUrl) {
+        trackEvent("support_checkout_open", {
           purpose,
           amount: intendedAmount || "other",
+          native: false,
         });
-        setStatus("saved");
-        form.reset();
+        window.location.assign(stripeUrl(json.intent_id ?? null, email));
         return;
       }
-      trackEvent("support_checkout_open", {
+      trackEvent("support_note_saved_no_checkout", {
         purpose,
         amount: intendedAmount || "other",
       });
-      window.location.assign(stripeUrl(json.intent_id ?? null, email));
+      setStatus("saved");
+      form.reset();
     } catch {
       trackEvent("support_intent_failed", { purpose, reason: "network" });
       setStatus("error");
@@ -333,16 +361,12 @@ export function SupportIntentForm({ donateUrl }: { donateUrl: string }) {
         disabled={status === "submitting"}
         className="btn-accent w-full rounded-full px-6 py-4 text-base font-bold transition disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {status === "submitting"
-          ? "Saving note..."
-          : donateUrl
-            ? "Save my note and open Stripe →"
-            : "Save my note"}
+        {status === "submitting" ? "Saving note…" : "Save my note & continue to Stripe →"}
       </button>
 
       <p className="text-xs text-[var(--color-muted)] text-center">
-        Your note saves first. {donateUrl ? "Stripe handles the payment securely. " : ""}
-        Ryan can review the note later and publish only what you allowed.
+        Your note saves first, then Stripe handles the payment securely. Ryan can
+        review the note later and publish only what you allowed.
       </p>
     </form>
   );
