@@ -11,6 +11,11 @@ type Bucket = {
   raised_cents: number;
 };
 
+// Real overall money raised this month (general + designated + manual offline),
+// vs the sum of bucket goals. Drives the "This month, total" headline bar so
+// undesignated general gifts still move it.
+type Total = { raised_cents: number; goal_cents: number };
+
 // $50 / $100 / $250 / $500 — a deliberately bigger ask than the quick-give box.
 const TIERS = [5000, 10000, 25000, 50000];
 const DEFAULT_CENTS = 25000;
@@ -129,6 +134,7 @@ function BucketCard({
 
 export function FundAllocator() {
   const [buckets, setBuckets] = useState<Bucket[] | null>(null);
+  const [total, setTotal] = useState<Total | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
   const [amount, setAmount] = useState<number>(DEFAULT_CENTS);
   const [custom, setCustom] = useState("");
@@ -144,6 +150,7 @@ export function FundAllocator() {
         if (!alive) return;
         const bs = (j.buckets ?? []) as Bucket[];
         setBuckets(bs);
+        if (j.total) setTotal(j.total as Total);
         setSelected((cur) => cur ?? (bs[0]?.id ?? null));
         setTimeout(() => alive && setArmed(true), 80);
       })
@@ -154,8 +161,11 @@ export function FundAllocator() {
   }, []);
 
   const effectiveCents = amount === -1 ? Math.round(parseFloat(custom || "0") * 100) : amount;
-  const totalGoal = (buckets ?? []).reduce((s, b) => s + b.goal_cents, 0);
-  const totalRaised = (buckets ?? []).reduce((s, b) => s + b.raised_cents, 0);
+  const bucketGoalSum = (buckets ?? []).reduce((s, b) => s + b.goal_cents, 0);
+  const bucketRaisedSum = (buckets ?? []).reduce((s, b) => s + b.raised_cents, 0);
+  // Prefer the real overall snapshot; fall back to the bucket subtotal sum.
+  const totalGoal = total?.goal_cents ?? bucketGoalSum;
+  const totalRaised = total?.raised_cents ?? bucketRaisedSum;
   const totalShown = useCountUp(totalRaised, armed, 1300);
   const selectedBucket = (buckets ?? []).find((b) => b.id === selected) ?? null;
   const ready = buckets !== null && buckets.length > 0;
