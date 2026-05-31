@@ -7,6 +7,7 @@ import { SupportIntentForm } from "@/components/SupportIntentForm";
 import { SupportersWall } from "@/components/SupportersWall";
 import { FundingGoalMeter } from "@/components/FundingGoalMeter";
 import { DonateBox } from "@/components/DonateBox";
+import { SupporterButton } from "@/components/SupporterButton";
 import { getPublishedSupporters } from "@/lib/supporters";
 import { getFundingData } from "@/lib/funding";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
@@ -88,6 +89,13 @@ export default async function SupportPage() {
         </div>
       ) : null}
 
+      <p className="mt-4 text-xs text-[var(--color-muted)] leading-relaxed">
+        Donations are personal gifts to Ryan Nichols — an individual, not a
+        registered charity — and are <strong>not tax-deductible</strong>, with no
+        goods or services exchanged for a gift. The $5/mo Supporter badge and the
+        $997 website build below are separate, clearly-priced offers.
+      </p>
+
       <div className="mt-8">
         <LiveAttentionMeter donateUrl={donateUrl} seed={livePulseSeed} />
       </div>
@@ -150,8 +158,8 @@ export default async function SupportPage() {
         </h2>
         <p className="relative mt-3 text-[var(--color-ink-soft)] leading-relaxed">
           This is the transparent version: choose the mission, leave a note,
-          decide whether you want your name or amount public, then Stripe
-          handles the payment when the direct payment link is active.
+          decide whether your name or amount is public, then Stripe handles the
+          payment securely.
         </p>
 
         <div className="relative mt-5 grid gap-3 sm:grid-cols-3">
@@ -208,15 +216,7 @@ export default async function SupportPage() {
             Reading, signing up, and commenting all stay free for everyone.
             This is a tip jar with a badge, not a paywall.
           </p>
-          <a
-            href={supporterUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="relative inline-flex items-center mt-5 rounded-full bg-amber-600 hover:bg-amber-500 px-6 py-2.5 text-sm font-bold text-[#1a1308] transition"
-            data-track="supporter-checkout"
-          >
-            Start Supporter Membership →
-          </a>
+          <SupporterButton supporterUrl={supporterUrl} />
         </section>
       ) : null}
 

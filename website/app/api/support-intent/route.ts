@@ -3,7 +3,7 @@ import { Resend } from "resend";
 import { z } from "zod";
 import { createHash, randomUUID } from "crypto";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
-import { clientIp } from "@/lib/rate-limit";
+import { checkRateLimit, clientIp } from "@/lib/rate-limit";
 import { buildSupportThankYouEmail } from "@/lib/email";
 
 const schema = z.object({
@@ -36,6 +36,16 @@ export async function POST(request: Request) {
       { error: parsed.error.issues[0]?.message ?? "Invalid input." },
       { status: 400 },
     );
+  }
+
+  const rl = await checkRateLimit({
+    request,
+    bucket: "support_intent",
+    windowMinutes: 60,
+    maxRequests: 12,
+  });
+  if (!rl.ok) {
+    return NextResponse.json({ error: rl.error }, { status: 429 });
   }
 
   const intentId = randomUUID();
