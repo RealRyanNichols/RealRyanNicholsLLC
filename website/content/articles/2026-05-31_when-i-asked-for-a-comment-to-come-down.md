@@ -1,6 +1,6 @@
 ---
-title: "Jessica Stringfellow, Trey Treece, and the East Texas Threat Pattern"
-subtitle: "The receipts show how a private request became threats, and how the Costello gun story fed a dangerous local narrative."
+title: "Threats Against Ryan Nichols: The Treece Messages and the Costello Gun Story"
+subtitle: "I asked privately for a public comment to come down. The receipts show what came back — Messenger threats in the Treece thread, and a false 'gun' narrative I deny and want the Harrison County bodycam to settle."
 author: "Ryan Nichols"
 date: "2026-05-31"
 category: "Wall of Shame"
@@ -17,11 +17,11 @@ It started with a public comment about my family on an old Facebook post. I took
 
 Then the messages changed from argument to physical intimidation.
 
-This is not random internet noise from anonymous accounts. These are local people. The thread involves accounts displayed to me as Trey Treece and Jessica Treece. Public reporting identifies Jessica under her former name, Jessica Stringfellow. The Costello video and comments matter because that separate false-gun narrative is the same kind of East Texas rumor machine that keeps turning me into the aggressor while people say things to me that no one would tolerate if I said them back.
+This is not random internet noise from anonymous accounts. These are local people. The thread involves accounts displayed to me as Trey Treece and Jessica Treece. The Costello video and comments matter because that separate false-gun narrative is the same kind of East Texas rumor machine that keeps turning me into the aggressor while people say things to me that no one would tolerate if I said them back.
 
 That is the article.
 
-Treece/Stringfellow threats. The Costello gun story. The East Texas pattern.
+Treece threats. The Costello gun story. The East Texas pattern.
 
 Nothing more.
 
@@ -33,7 +33,7 @@ The first source is a Google Drive evidence folder containing screenshots from F
 
 Profile photos were cropped out of the public screenshot.
 
-The second source is a Facebook Messenger group thread displayed as **"Jessica, Trey, Amanda"** in my account. The thread includes me, Amanda Williams, and accounts displayed by Messenger as Trey Treece and Jessica Treece.
+The second source is a Facebook Messenger group thread displayed as **"Jessica, Trey, Amanda"** in my account. The thread includes me, Amanda, and accounts displayed by Messenger as Trey Treece and Jessica Treece.
 
 I preserved the Messenger thread on May 31, 2026. I also preserved a local evidence snapshot of the thread, including timestamps, hidden-message reveals, and the visible Messenger screen.
 
@@ -41,11 +41,7 @@ I preserved the Messenger thread on May 31, 2026. I also preserved a local evide
 
 Private phone information is redacted from the Messenger screenshot.
 
-The third source is public reporting about Harrison County. The [Marshall News Messenger](https://marshallnewsmessenger.com/2014/07/01/jailer-arrested-terminated/) published a 2014 staff report titled **"jailer arrested, terminated"** about Harrison County jailer Jessica Stringfellow. [KLTV reported](https://www.kltv.com/story/25917063/authorities-harrison-co-jailer-arrested-for-having-sex-with-inmate/) that Harrison County authorities said Stringfellow admitted during an interview that she had sex with an inmate, was fired and arrested, and was charged with sexual intercourse with a person in custody and prohibited substances/items in a correctional facility.
-
-I know Jessica in the current Messenger thread as Jessica Treece. The public reporting I can link right now is under the name Jessica Stringfellow. That history matters only because it identifies the local Harrison County context around the person in the thread and the public-record history attached to that name.
-
-The fourth source is a May 31, 2026 evidence folder I preserved from Google Drive. That folder includes screenshots of the Harrison County Sheriff's Office press release, local news posts, public comments, Messenger/profile screenshots, and videos screen-recorded from what people posted publicly. I OCR-scanned the screenshots and transcribed the videos before adding this section.
+The third source is a May 31, 2026 evidence folder I preserved from Google Drive. That folder includes screenshots of the Harrison County Sheriff's Office press release, local news posts, public comments, Messenger/profile screenshots, and videos screen-recorded from what people posted publicly. I OCR-scanned the screenshots and transcribed the videos before adding this section.
 
 The direct video receipts now show the false-gun narrative in Kacie and Jon Costello's own posted words. The longer video shows Kacie speaking from inside a vehicle. Jon is seated beside her and speaks on camera. A shorter edited version with captions is included below in this article.
 
@@ -177,7 +173,7 @@ Another short Costello video shows my mother recording my interaction with the o
 
 I deny that I pulled a gun. I deny that I pointed a gun at a vehicle. I deny that I threatened them with a gun.
 
-The video matters because it shows the public story changing from the official allegation into a much more dangerous version: "pull a gun," "pointed at," "backstop." It also matters because Jon's own words about getting "smacked" with the "words of Jesus" are relevant to whether the clean-victim narrative is complete.
+The video matters because it shows the public story changing from the official allegation into a much more dangerous version: "pull a gun," "pointed at," "backstop." That escalation — from "raised his shirt" and "hand upon grip" to "pointed at" and "backstop" — is the whole reason I am asking for the bodycam to be released.
 
 The later comment screenshots matter too.
 
@@ -257,8 +253,6 @@ It does not prove what Kacie or Jon told deputies beyond what is visible in the 
 
 It does not prove the public Facebook comment screenshots are complete threads. They are preserved as screenshots and cropped for public safety, with private address information redacted.
 
-It does not prove the final outcome of the 2014 Jessica Stringfellow criminal case. The linked sources support the narrower fact that local news reported the arrest, termination, admitted sexual relationship according to Harrison County authorities, and charges at that time.
-
 It proves something narrower: after I asked privately for a public comment to come down, the Messenger thread preserved multiple messages that I understood as physical threats and intimidation. It also shows how the separate Costello false-gun story fed the same East Texas pattern and why I am demanding the bodycam and the public record instead of letting local rumor decide what happened.
 
 ## Why it matters
@@ -271,7 +265,7 @@ The record does not support that.
 
 The record shows I gave a private off-ramp. The record shows the comments came down. The record also shows the physical-threat language that followed.
 
-The record also shows why I do not trust private whispers, deleted comments, or Harrison County rumor control. When the Treece/Stringfellow thread, the Costello false-gun narrative, and withheld bodycam all touch the same story, the answer is not silence.
+The record also shows why I do not trust private whispers, deleted comments, or Harrison County rumor control. When the Treece thread, the Costello false-gun narrative, and withheld bodycam all touch the same story, the answer is not silence.
 
 The answer is receipts.
 
