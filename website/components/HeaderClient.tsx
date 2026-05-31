@@ -47,6 +47,13 @@ const NAV: NavEntry[] = [
       { href: "/videos", label: "Videos" },
     ],
   },
+  {
+    label: "Work",
+    items: [
+      { href: "/own-your-feed", label: "Own your feed" },
+      { href: "/store", label: "Services store" },
+    ],
+  },
   { href: "/about", label: "About" },
   // The newsroom tip line — the public submits stories, names, and evidence
   // here. Surfaced as a top-level nav item (desktop tab + mobile drawer) so the
