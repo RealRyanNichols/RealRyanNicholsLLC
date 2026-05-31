@@ -1,6 +1,6 @@
 ---
-title: "When I Asked for a Threatening Comment to Come Down"
-subtitle: "A public Facebook receipt and Messenger thread showing what happened after a comment about my family turned into physical intimidation."
+title: "Trey Treece Threatened Me After I Asked for a Comment to Come Down"
+subtitle: "A public Facebook receipt, Messenger thread, Harrison County context, and the false gun narrative I believe is putting me in danger."
 author: "Ryan Nichols"
 date: "2026-05-31"
 category: "Wall of Shame"
@@ -9,13 +9,15 @@ status: "draft"
 pinned: false
 ---
 
-I am documenting this because people keep trying to rewrite the order of events.
+I am documenting this because people keep trying to rewrite the order of events in East Texas.
 
 This did not start with me looking for a fight.
 
 It started with a public comment about my family on an old Facebook post. I took it private. I added the people involved to one Messenger thread. I asked for the comment to come down. I gave them a way to end it without me publishing anything else.
 
 Then the messages changed from argument to physical intimidation.
+
+This is not random internet noise from anonymous accounts. These are local people. This is Harrison County. This is the same local rumor machine that keeps trying to turn me into the aggressor while people say things to me that no one would tolerate if I said them back.
 
 ## The receipt
 
@@ -32,6 +34,14 @@ I preserved the Messenger thread on May 31, 2026. I also preserved a local evide
 ![Redacted Messenger screenshot showing a March 21, 2026 message in the Jessica, Trey, Amanda group thread. A private phone number is blacked out. The visible text includes the phrase "I promise u won't win shit" and "I love to beat the shit out of bullies like u and keep my kids out your mouth only warning."](/uploads/treece-messenger-threat-redacted.png)
 
 Private phone information is redacted from the Messenger screenshot.
+
+The third source is public reporting about Harrison County. The [Marshall News Messenger](https://marshallnewsmessenger.com/2014/07/01/jailer-arrested-terminated/) published a 2014 staff report titled **"jailer arrested, terminated"** about Harrison County jailer Jessica Stringfellow. [KLTV reported](https://www.kltv.com/story/25917063/authorities-harrison-co-jailer-arrested-for-having-sex-with-inmate/) that Harrison County authorities said Stringfellow admitted during an interview that she had sex with an inmate, was fired and arrested, and was charged with sexual intercourse with a person in custody and prohibited substances/items in a correctional facility.
+
+I know Jessica in the current Messenger thread as Jessica Treece. The public reporting I can link right now is under the name Jessica Stringfellow. That history matters because this is not just a Facebook argument. This is a Harrison County circle, a former jailer, a jail/inmate scandal reported by local media, and now a local Messenger thread where threats and law enforcement references show up again.
+
+The fourth source is a May 31, 2026 evidence folder I preserved from Google Drive. That folder includes 120 files: screenshots of the Harrison County Sheriff's Office press release, local news posts, public comments, Messenger/profile screenshots, and two video files. I OCR-scanned those screenshots before adding this section.
+
+That folder does show screenshots involving **Kacie Costello** and my Mother's Day article/story. It does **not** yet show me the exact screenshot where John Costello, Casey Costello, Kacie Costello, or anyone else using that last name personally writes the false-gun claim in their own words. I am not going to publish that specific accusation as a finished fact until that exact receipt is attached.
 
 ## What happened first
 
@@ -115,9 +125,59 @@ At 12:16 AM, Trey replied:
 
 At 12:17 AM, the thread shows a Messenger-visible transcript/readout from Trey saying, in part, that he was not scared of the law and that I was wrong for threatening his children.
 
+At 12:05 AM, the thread shows Jessica writing that she was calling Harrison County to report me.
+
 I am not going to pretend the thread is one-sided. The thread includes hard words from me too. I told them I had an article ready. I told them I would publish if they kept coming at me. I told them I would call police. That is all in the record.
 
 But there is a difference between telling someone you will publish receipts and telling someone to meet one-on-one, saying you love to beat people, saying "only warning," and saying "when I do God be with u."
+
+## The false gun story
+
+There is another piece of this that has to be said plainly.
+
+People in East Texas keep repeating a story that I pulled a gun and pointed it around.
+
+I deny that. That did not happen.
+
+I have asked for the Harrison County bodycam footage because the footage should settle it. If there is bodycam showing me pulling a gun and pointing it around, release it. If there is bodycam showing that I did not do that, release it.
+
+That is why the bodycam matters.
+
+The Harrison County Sheriff's Office press release used one set of words. It said the allegation was that I "raised his shirt up to display a firearm and placed his hand upon grip of the firearm."
+
+![Redacted screenshot crop of a Harrison County Sheriff's Office press release dated May 11, 2026. The visible text says deputies responded to Heskell Oney Road in Harleton and that the alleged victim said Ryan Nichols raised his shirt to display a firearm and placed his hand on the grip.](/uploads/harrison-county-firearm-press-release-crop.png)
+
+Local media then amplified the story. [KLTV/KWTX reported](https://www.kwtx.com/2026/05/11/pardoned-jan-6-protester-ryan-nichols-accused-reaching-gun-during-church-dispute/) that Harrison County Sheriff B.J. Fletcher said I placed my hand on the grip and quoted him saying, "He gripped it completely." [Law&Crime later framed the allegation](https://lawandcrime.com/high-profile/jan-6-rioter-who-claimed-he-completely-changed-is-going-to-need-another-pardon-after-threatening-churchgoer-with-gun-as-he-was-putting-kid-in-car-cops/amp/) as a churchgoer being threatened with a gun.
+
+Then the public version escalated even more.
+
+A public Facebook post by Brandon Stewart said there were "No witness statements" and then claimed a social media video had the same alleged victim saying I "pulled out the gun and pointed it at the vehicle with his kids inside."
+
+![Redacted screenshot crop of a public Facebook post by Brandon Stewart. The visible post says there were no witness statements and claims a social media video says Ryan pulled out a gun and pointed it at a vehicle with kids inside.](/uploads/public-backstop-gun-pointed-claim-redacted.png)
+
+That is the difference I am talking about.
+
+The official allegation is bad enough. But when people turn "raised his shirt" and "hand upon grip" into "pulled out the gun and pointed it at the vehicle with his kids inside," they are not just repeating a charge. They are changing the image in the public's mind.
+
+That changed image is dangerous.
+
+In the same evidence folder, a public comment by Vince Simmons responded to the gun narrative by saying:
+
+> "Do that where I'm from, they'll just find pieces of you."
+
+![Redacted screenshot crop of a public Facebook comment by Vince Simmons. Profanity and slurs are blacked out. The visible threat says that somebody with a gun would have people "just find pieces of you."](/uploads/public-pieces-of-you-threat-redacted.png)
+
+That is why I am preserving the distinction.
+
+Without the exact Costello receipt attached, I am not asking anyone to take my word for what John Costello, Casey Costello, or Kacie Costello said. I am saying something narrower and documented by what is already in the screenshots: a false pulled-and-pointed gun narrative is circulating, I deny it, people are threatening me because of it, and Harrison County has not given me the bodycam footage that should answer the question.
+
+False gun stories are not harmless gossip.
+
+A false gun story tells strangers I am armed and dangerous. It gives angry people a fake excuse to treat me like a threat. It makes every public threat more dangerous because it paints a target around me and then tells the community I deserve what happens next.
+
+That is what this feels like from my side: a narrative being built around me that could get me killed while the people with the footage refuse to clear the record.
+
+I am not saying a court has found that. I am saying the record needs to be released before the lie gets somebody hurt.
 
 ## What it does not prove yet
 
@@ -129,7 +189,11 @@ It does not prove what every voice memo says. Some audio messages are visible in
 
 It does not prove what happened outside the thread.
 
-It proves something narrower: after I asked privately for a public comment to come down, the Messenger thread preserved multiple messages that I understood as physical threats and intimidation.
+It does not prove the exact public statement John Costello, Casey Costello, or Kacie Costello made unless and until the exact screenshot, post, message, or transcript is attached.
+
+It does not prove the final outcome of the 2014 Jessica Stringfellow criminal case. The linked sources support the narrower fact that local news reported the arrest, termination, admitted sexual relationship according to Harrison County authorities, and charges at that time.
+
+It proves something narrower: after I asked privately for a public comment to come down, the Messenger thread preserved multiple messages that I understood as physical threats and intimidation. It also shows why I am demanding the bodycam and the public record instead of letting local rumor decide what happened.
 
 ## Why it matters
 
@@ -140,6 +204,10 @@ Someone takes a public shot at me or my family. I answer. Then the story gets re
 The record does not support that.
 
 The record shows I gave a private off-ramp. The record shows the comments came down. The record also shows the physical-threat language that followed.
+
+The record also shows why I do not trust private whispers, deleted comments, or Harrison County rumor control. When a former jailer, a local threat thread, a false gun narrative, and withheld bodycam all touch the same story, the answer is not silence.
+
+The answer is receipts.
 
 That is why I own the domain.
 
