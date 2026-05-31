@@ -2,6 +2,7 @@ import Stripe from "stripe";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { requireStripe } from "@/lib/stripe";
 import { getSupabaseServiceClient } from "@/lib/supabase/service";
+import { recordDonationFromSession } from "@/lib/donations";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -97,23 +98,8 @@ async function handleCheckoutCompleted(
   }
 
   if (session.mode === "payment" && kind === "donation") {
-    await supabase.from("donations").upsert(
-      {
-        stripe_session_id: session.id,
-        stripe_payment_intent:
-          typeof session.payment_intent === "string"
-            ? session.payment_intent
-            : null,
-        email: session.customer_details?.email ?? null,
-        name: session.customer_details?.name ?? null,
-        amount_cents: session.amount_total ?? 0,
-        currency: session.currency ?? "usd",
-        recurring: false,
-        campaign: session.metadata?.campaign || null,
-        source: session.metadata?.source || null,
-      },
-      { onConflict: "stripe_session_id" },
-    );
+    // Shared with the /checkout/success backstop — idempotent on session id.
+    await recordDonationFromSession(session, supabase);
     return;
   }
 
