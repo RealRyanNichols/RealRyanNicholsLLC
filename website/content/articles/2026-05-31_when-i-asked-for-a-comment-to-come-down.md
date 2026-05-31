@@ -173,6 +173,32 @@ I deny that I pulled a gun. I deny that I pointed a gun at a vehicle. I deny tha
 
 The video matters because it shows the public story changing from the official allegation into a much more dangerous version: "pull a gun," "pointed at," "backstop." It also matters because Jon's own words about getting "smacked" with the "words of Jesus" are relevant to whether the clean-victim narrative is complete.
 
+The later comment screenshots matter too.
+
+One screenshot shows a public comment under Kacie Costello's name saying:
+
+> "He was trying to convince the cops that he was scared of Jon because Jon had something in his hand. Jon had his Bible in his hand."
+
+That same comment says:
+
+> "Jon had his back to him the whole time so that he couldn't say Jon was being confrontational."
+
+![Redacted screenshot crop of a public Facebook comment by Kacie Costello saying Ryan was trying to convince police he was scared because Jon had something in his hand, and saying Jon had a Bible in his hand.](/uploads/costello-cops-bible-claim-redacted.png)
+
+Another screenshot shows a public comment under Kacie Costello's name saying:
+
+> "Jon was to the point of getting violent. I was making sure that didn't happen."
+
+Directly below that, another commenter says:
+
+> "someone needs to kick his ass..."
+
+and ties that statement to "knowing he had a gun."
+
+![Redacted screenshot crop of a public Facebook comment by Kacie Costello saying Jon was to the point of getting violent, followed by another commenter saying someone needs to kick Ryan's ass after knowing he had a gun.](/uploads/costello-jon-violent-comment-redacted.png)
+
+Those are not my words. Those are the receipts I was sent and preserved.
+
 A public Facebook post by Brandon Stewart said there were "No witness statements" and then claimed a social media video had the same alleged victim saying I "pulled out the gun and pointed it at the vehicle with his kids inside."
 
 ![Redacted screenshot crop of a public Facebook post by Brandon Stewart. The visible post says there were no witness statements and claims a social media video says Ryan pulled out a gun and pointed it at a vehicle with kids inside.](/uploads/public-backstop-gun-pointed-claim-redacted.png)
@@ -188,6 +214,14 @@ In the same evidence folder, a public comment by Vince Simmons responded to the 
 > "Do that where I'm from, they'll just find pieces of you."
 
 ![Redacted screenshot crop of a public Facebook comment by Vince Simmons. Profanity and slurs are blacked out. The visible threat says that somebody with a gun would have people "just find pieces of you."](/uploads/public-pieces-of-you-threat-redacted.png)
+
+Another screenshot shows a public comment by George Ives saying:
+
+> "I'll beat yo ass till you fuck around and find out..."
+
+That same comment included a street address, which I am redacting here.
+
+![Redacted screenshot crop of a public Facebook comment by George Ives saying he would beat Ryan's ass. A street address in the comment is blacked out.](/uploads/george-ives-beat-threat-address-redacted.png)
 
 That is why I am preserving the distinction.
 
@@ -214,6 +248,8 @@ It does not prove what happened outside the thread or outside the Costello video
 It does not prove a court has ruled that the Costello statements are false or malicious.
 
 It does not prove what Kacie or Jon told deputies beyond what is visible in the public video, what appears in the Harrison County press release, and what later reporting attributed to law enforcement.
+
+It does not prove the public Facebook comment screenshots are complete threads. They are preserved as screenshots and cropped for public safety, with private address information redacted.
 
 It does not prove the final outcome of the 2014 Jessica Stringfellow criminal case. The linked sources support the narrower fact that local news reported the arrest, termination, admitted sexual relationship according to Harrison County authorities, and charges at that time.
 
