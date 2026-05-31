@@ -39,9 +39,9 @@ The third source is public reporting about Harrison County. The [Marshall News M
 
 I know Jessica in the current Messenger thread as Jessica Treece. The public reporting I can link right now is under the name Jessica Stringfellow. That history matters because this is not just a Facebook argument. This is a Harrison County circle, a former jailer, a jail/inmate scandal reported by local media, and now a local Messenger thread where threats and law enforcement references show up again.
 
-The fourth source is a May 31, 2026 evidence folder I preserved from Google Drive. That folder includes 120 files: screenshots of the Harrison County Sheriff's Office press release, local news posts, public comments, Messenger/profile screenshots, and two video files. I OCR-scanned those screenshots before adding this section.
+The fourth source is a May 31, 2026 evidence folder I preserved from Google Drive. That folder includes screenshots of the Harrison County Sheriff's Office press release, local news posts, public comments, Messenger/profile screenshots, and videos screen-recorded from what people posted publicly. I OCR-scanned the screenshots and transcribed the videos before adding this section.
 
-That folder does show screenshots involving **Kacie Costello** and my Mother's Day article/story. It does **not** yet show me the exact screenshot where John Costello, Casey Costello, Kacie Costello, or anyone else using that last name personally writes the false-gun claim in their own words. I am not going to publish that specific accusation as a finished fact until that exact receipt is attached.
+The direct video receipts now show the false-gun narrative in Kacie and Jon Costello's own posted words. The longer video shows Kacie speaking from inside a vehicle. Jon is seated beside her and speaks on camera. A shorter edited version with captions is included below in this article.
 
 ## What happened first
 
@@ -151,6 +151,28 @@ Local media then amplified the story. [KLTV/KWTX reported](https://www.kwtx.com/
 
 Then the public version escalated even more.
 
+In the Costello video, Kacie says I "was going to pull a gun" on her husband. In the same video, she says I "reached for his gun" and says Jon had his back turned.
+
+Jon then speaks on camera. He says:
+
+> "I guess he was worried about the words of Jesus getting smacked him in his face."
+
+He also says:
+
+> "Know your backstop."
+
+And he describes "the car that he's pointed at."
+
+{{video: /uploads/costello-bible-backstop-short.mp4 | /uploads/costello-bible-backstop-short-poster.jpg | Edited 41-second receipt from the Costello video. Source copies and transcripts are preserved in the private evidence folder.}}
+
+That is now attached.
+
+Another short Costello video shows my mother recording my interaction with the officer from a distance while Kacie films that scene and narrates against me. That matters because I still do not have the bodycam. When law enforcement will not release the official footage, a family member recording the police interaction is not suspicious. It is exactly how people protect the record.
+
+I deny that I pulled a gun. I deny that I pointed a gun at a vehicle. I deny that I threatened them with a gun.
+
+The video matters because it shows the public story changing from the official allegation into a much more dangerous version: "pull a gun," "pointed at," "backstop." It also matters because Jon's own words about getting "smacked" with the "words of Jesus" are relevant to whether the clean-victim narrative is complete.
+
 A public Facebook post by Brandon Stewart said there were "No witness statements" and then claimed a social media video had the same alleged victim saying I "pulled out the gun and pointed it at the vehicle with his kids inside."
 
 ![Redacted screenshot crop of a public Facebook post by Brandon Stewart. The visible post says there were no witness statements and claims a social media video says Ryan pulled out a gun and pointed it at a vehicle with kids inside.](/uploads/public-backstop-gun-pointed-claim-redacted.png)
@@ -169,7 +191,7 @@ In the same evidence folder, a public comment by Vince Simmons responded to the 
 
 That is why I am preserving the distinction.
 
-Without the exact Costello receipt attached, I am not asking anyone to take my word for what John Costello, Casey Costello, or Kacie Costello said. I am saying something narrower and documented by what is already in the screenshots: a false pulled-and-pointed gun narrative is circulating, I deny it, people are threatening me because of it, and Harrison County has not given me the bodycam footage that should answer the question.
+Now the exact Costello video receipt is attached. No one has to take my word for that part. They can watch what was posted, compare it to the official wording, and understand why I am demanding the bodycam instead of letting rumor decide the record.
 
 False gun stories are not harmless gossip.
 
@@ -187,9 +209,11 @@ It does not prove every message in the thread is a criminal threat.
 
 It does not prove what every voice memo says. Some audio messages are visible in the thread and still need independent transcription before I quote them publicly.
 
-It does not prove what happened outside the thread.
+It does not prove what happened outside the thread or outside the Costello videos.
 
-It does not prove the exact public statement John Costello, Casey Costello, or Kacie Costello made unless and until the exact screenshot, post, message, or transcript is attached.
+It does not prove a court has ruled that the Costello statements are false or malicious.
+
+It does not prove what Kacie or Jon told deputies beyond what is visible in the public video, what appears in the Harrison County press release, and what later reporting attributed to law enforcement.
 
 It does not prove the final outcome of the 2014 Jessica Stringfellow criminal case. The linked sources support the narrower fact that local news reported the arrest, termination, admitted sexual relationship according to Harrison County authorities, and charges at that time.
 
