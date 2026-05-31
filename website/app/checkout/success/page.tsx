@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { stripe } from "@/lib/stripe";
+import { recordDonationFromSession } from "@/lib/donations";
 import { PurchaseTracker } from "@/components/PurchaseTracker";
 
 export const dynamic = "force-dynamic";
@@ -59,6 +60,15 @@ export default async function SuccessPage({
         amount: li.amount_total ?? 0,
         qty: li.quantity ?? 1,
       }));
+      // Backstop recorder: write a completed donation to the donations table
+      // here so the public funding meter stays accurate even if the Stripe
+      // webhook isn't delivering yet. Idempotent with the webhook (unique
+      // session id) and never blocks the thank-you if it fails.
+      try {
+        await recordDonationFromSession(session);
+      } catch {
+        /* best-effort; the webhook is the primary recorder */
+      }
     } catch {
       /* still show a thank-you even if the lookup fails */
     }
