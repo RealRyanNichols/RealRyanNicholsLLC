@@ -1,5 +1,5 @@
 ---
-title: "Threats Against Ryan Nichols: The Treece Messages and the Costello Gun Story"
+title: "Threats Against Ryan Nichols: The Treece Messages and the Church Gun Story"
 subtitle: "I asked privately for a public comment to come down. The receipts show what came back — Messenger threats in the Treece thread, and a false 'gun' narrative I deny and want the Harrison County bodycam to settle."
 author: "Ryan Nichols"
 date: "2026-05-31"
@@ -17,11 +17,11 @@ It started with a public comment about my family on an old Facebook post. I took
 
 Then the messages changed from argument to physical intimidation.
 
-This is not random internet noise from anonymous accounts. These are local people. The thread involves accounts displayed to me as Trey Treece and Jessica Treece. The Costello video and comments matter because that separate false-gun narrative is the same kind of East Texas rumor machine that keeps turning me into the aggressor while people say things to me that no one would tolerate if I said them back.
+This is not random internet noise from anonymous accounts. These are local people. The thread involves accounts displayed to me as Trey Treece and Jessica Treece. The church-parking-lot video and comments matter because that separate false-gun narrative is the same kind of East Texas rumor machine that keeps turning me into the aggressor while people say things to me that no one would tolerate if I said them back.
 
 That is the article.
 
-Treece threats. The Costello gun story. The East Texas pattern.
+Treece threats. The church gun story. The East Texas pattern.
 
 Nothing more.
 
@@ -43,7 +43,7 @@ Private phone information is redacted from the Messenger screenshot.
 
 The third source is a May 31, 2026 evidence folder I preserved from Google Drive. That folder includes screenshots of the Harrison County Sheriff's Office press release, local news posts, public comments, Messenger/profile screenshots, and videos screen-recorded from what people posted publicly. I OCR-scanned the screenshots and transcribed the videos before adding this section.
 
-The direct video receipts now show the false-gun narrative in Kacie and Jon Costello's own posted words. The longer video shows Kacie speaking from inside a vehicle. Jon is seated beside her and speaks on camera. A shorter edited version with captions is included below in this article.
+The direct video receipts now show the false-gun narrative in the couple's own posted words. The longer video shows the wife speaking from inside a vehicle. Her husband is seated beside her and speaks on camera. A shorter edited version with captions is included below in this article.
 
 ## What happened first
 
@@ -133,7 +133,7 @@ I am not going to pretend the thread is one-sided. The thread includes hard word
 
 But there is a difference between telling someone you will publish receipts and telling someone to meet one-on-one, saying you love to beat people, saying "only warning," and saying "when I do God be with u."
 
-## How the Costello story fed it
+## How the church gun story fed it
 
 There is another piece of this pattern that has to be said plainly.
 
@@ -153,9 +153,9 @@ Local media then amplified the story. [KLTV/KWTX reported](https://www.kwtx.com/
 
 Then the public version escalated even more.
 
-In the Costello video, Kacie says I "was going to pull a gun" on her husband. In the same video, she says I "reached for his gun" and says Jon had his back turned.
+In the couple's video, the wife says I "was going to pull a gun" on her husband. In the same video, she says I "reached for his gun" and says he had his back turned.
 
-Jon then speaks on camera. He says:
+Her husband then speaks on camera. He says:
 
 > "I guess he was worried about the words of Jesus getting smacked him in his face."
 
@@ -165,11 +165,11 @@ He also says:
 
 And he describes "the car that he's pointed at."
 
-{{video: /uploads/costello-bible-backstop-short.mp4 | /uploads/costello-bible-backstop-short-poster.jpg | Edited 41-second receipt from the Costello video. Source copies and transcripts are preserved in the private evidence folder.}}
+{{video: /uploads/costello-bible-backstop-short.mp4 | /uploads/costello-bible-backstop-short-poster.jpg | Edited 41-second receipt from the couple's video. Source copies and transcripts are preserved in the private evidence folder.}}
 
 That is now attached.
 
-Another short Costello video shows my mother recording my interaction with the officer from a distance while Kacie films that scene and narrates against me. That matters because I still do not have the bodycam. When law enforcement will not release the official footage, a family member recording the police interaction is not suspicious. It is exactly how people protect the record.
+Another short video shows my mother recording my interaction with the officer from a distance while the wife films that scene and narrates against me. That matters because I still do not have the bodycam. When law enforcement will not release the official footage, a family member recording the police interaction is not suspicious. It is exactly how people protect the record.
 
 I deny that I pulled a gun. I deny that I pointed a gun at a vehicle. I deny that I threatened them with a gun.
 
@@ -177,19 +177,19 @@ The video matters because it shows the public story changing from the official a
 
 The later comment screenshots matter too.
 
-One screenshot shows a public comment under Kacie Costello's name saying:
+One screenshot shows a public comment under the wife's name saying:
 
-> "He was trying to convince the cops that he was scared of Jon because Jon had something in his hand. Jon had his Bible in his hand."
+> "He was trying to convince the cops that he was scared of [the husband] because [the husband] had something in his hand. [The husband] had his Bible in his hand."
 
 That same comment says:
 
-> "Jon had his back to him the whole time so that he couldn't say Jon was being confrontational."
+> "[The husband] had his back to him the whole time so that he couldn't say [the husband] was being confrontational."
 
-![Redacted screenshot crop of a public Facebook comment by Kacie Costello saying Ryan was trying to convince police he was scared because Jon had something in his hand, and saying Jon had a Bible in his hand.](/uploads/costello-cops-bible-claim-redacted.png)
+![Redacted screenshot crop of a public Facebook comment by the wife in the church-incident couple, saying Ryan was trying to convince police he was scared because her husband had something in his hand, and saying her husband had a Bible in his hand.](/uploads/costello-cops-bible-claim-redacted.png)
 
-Another screenshot shows a public comment under Kacie Costello's name saying:
+Another screenshot shows a public comment under the same wife's name saying:
 
-> "Jon was to the point of getting violent. I was making sure that didn't happen."
+> "[The husband] was to the point of getting violent. I was making sure that didn't happen."
 
 Directly below that, another commenter says:
 
@@ -197,7 +197,7 @@ Directly below that, another commenter says:
 
 and ties that statement to "knowing he had a gun."
 
-![Redacted screenshot crop of a public Facebook comment by Kacie Costello saying Jon was to the point of getting violent, followed by another commenter saying someone needs to kick Ryan's ass after knowing he had a gun.](/uploads/costello-jon-violent-comment-redacted.png)
+![Redacted screenshot crop of a public Facebook comment by the wife in the church-incident couple, saying her husband was to the point of getting violent, followed by another commenter saying someone needs to kick Ryan's ass after knowing he had a gun.](/uploads/costello-jon-violent-comment-redacted.png)
 
 Those are not my words. Those are the receipts I was sent and preserved.
 
@@ -227,7 +227,7 @@ That same comment included a street address, which I am redacting here.
 
 That is why I am preserving the distinction.
 
-Now the exact Costello video receipt is attached. No one has to take my word for that part. They can watch what was posted, compare it to the official wording, and understand why I am demanding the bodycam instead of letting rumor decide the record.
+Now the exact video receipt is attached. No one has to take my word for that part. They can watch what was posted, compare it to the official wording, and understand why I am demanding the bodycam instead of letting rumor decide the record.
 
 False gun stories are not harmless gossip.
 
@@ -245,15 +245,15 @@ It does not prove every message in the thread is a criminal threat.
 
 It does not prove what every voice memo says. Some audio messages are visible in the thread and still need independent transcription before I quote them publicly.
 
-It does not prove what happened outside the thread or outside the Costello videos.
+It does not prove what happened outside the thread or outside the church-parking-lot videos.
 
-It does not prove a court has ruled that the Costello statements are false or malicious.
+It does not prove a court has ruled that the couple's statements are false or malicious.
 
-It does not prove what Kacie or Jon told deputies beyond what is visible in the public video, what appears in the Harrison County press release, and what later reporting attributed to law enforcement.
+It does not prove what the couple told deputies beyond what is visible in the public video, what appears in the Harrison County press release, and what later reporting attributed to law enforcement.
 
 It does not prove the public Facebook comment screenshots are complete threads. They are preserved as screenshots and cropped for public safety, with private address information redacted.
 
-It proves something narrower: after I asked privately for a public comment to come down, the Messenger thread preserved multiple messages that I understood as physical threats and intimidation. It also shows how the separate Costello false-gun story fed the same East Texas pattern and why I am demanding the bodycam and the public record instead of letting local rumor decide what happened.
+It proves something narrower: after I asked privately for a public comment to come down, the Messenger thread preserved multiple messages that I understood as physical threats and intimidation. It also shows how the separate church gun story fed the same East Texas pattern and why I am demanding the bodycam and the public record instead of letting local rumor decide what happened.
 
 ## Why it matters
 
@@ -265,7 +265,7 @@ The record does not support that.
 
 The record shows I gave a private off-ramp. The record shows the comments came down. The record also shows the physical-threat language that followed.
 
-The record also shows why I do not trust private whispers, deleted comments, or Harrison County rumor control. When the Treece thread, the Costello false-gun narrative, and withheld bodycam all touch the same story, the answer is not silence.
+The record also shows why I do not trust private whispers, deleted comments, or Harrison County rumor control. When the Treece thread, the church gun narrative, and withheld bodycam all touch the same story, the answer is not silence.
 
 The answer is receipts.
 
