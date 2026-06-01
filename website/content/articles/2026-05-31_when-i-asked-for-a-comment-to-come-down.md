@@ -203,6 +203,12 @@ and ties that statement to "knowing he had a gun."
 
 ![Redacted screenshot crop of a public Facebook comment by the wife in the church-incident couple, saying her husband was to the point of getting violent, followed by another commenter saying someone needs to kick Ryan's ass after knowing he had a gun.](/uploads/church-violent-comment-redacted.png)
 
+The same comment also appears captured within the publicly posted video:
+
+![Still captured from the publicly posted video, showing the public comment under the wife's name: "Jon was to the point of getting violent. I was making sure that didn't happen. I didn't want him to get his first jail visit over this guy. He's not worth it."](/uploads/church-video-violent-comment.png)
+
+![Still captured from the publicly posted video, showing the public comment under the wife's name followed by another commenter writing "for sure not worth it but someone needs to kick his ass, glad it didn't get to that point now knowing he had a gun."](/uploads/church-video-kickhisass-comment.png)
+
 Those are not my words. Those are the receipts I was sent and preserved.
 
 A public Facebook post by Brandon Stewart said there were "No witness statements" and then claimed a social media video had the same alleged victim saying I "pulled out the gun and pointed it at the vehicle with his kids inside."
