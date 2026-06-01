@@ -171,6 +171,39 @@ If I pulled or pointed a gun, show the bodycam.
 
 If I did not, then the people repeating that story are helping build a false public image that makes threats against me more likely.
 
+## Exhibit G: the call Harrison County recorded
+
+There is another record Harrison County already has.
+
+The night I got out of jail, I called Harrison County and asked for the same standard to be applied both ways. I told them people were posting about me, tagging people into my pages, repeating statements I disputed, and doing the same kind of online conduct that had been used against me.
+
+I am not publishing the raw transcript here because it contains private addresses, phone numbers, driver's-license information, and names that are not necessary for the public version of the record.
+
+But the core facts matter:
+
+1. I called Harrison County and asked to make a report.
+2. I told the deputy I had screenshots, videos, names, and a timeline.
+3. I specifically raised the disputed church story and the way it was changing online.
+4. The deputy said he would document the call.
+5. The deputy said "body cam footage of our conversation" would be added.
+6. The deputy said the report would be turned over to CID.
+
+That matters because the county cannot have it both ways. If online speech, Facebook comments, screenshots, and public posts are enough to arrest me, then the same county has to explain what happens when I report online statements, threat language, false narrative escalation, and public pressure aimed back at me.
+
+That does not mean every ugly comment is a crime. [Texas Penal Code Section 42.07](https://tcss.legis.texas.gov/docs/PE/htm/PE.42.htm#42.07) has elements, intent language, and categories of conduct. The point is not that every Facebook argument should become a criminal case. The point is that the record should be handled evenly, transparently, and with the same standard applied to every side.
+
+It also matters because of the jail conversation I am still asking them to preserve. While I was still in custody, an officer questioned me about a separate video and a separate allegation. I am preserving the Miranda issue, not trying to decide it in a blog post. The legal line is narrow: under [Miranda v. Arizona](https://supreme.justia.com/cases/federal/us/384/436/), warnings are required before custodial interrogation; under [Rhode Island v. Innis](https://supreme.justia.com/cases/federal/us/446/291/), interrogation includes express questioning and its functional equivalent; and under [Vega v. Tekoh](https://supreme.justia.com/cases/federal/us/597/21-499/), a Miranda problem is usually about whether statements can be used in the prosecution's case, not an automatic end to a case.
+
+So release the bodycam.
+
+Release the jail-hallway conversation.
+
+Release the call record.
+
+Release the incident report.
+
+Let the record show what was asked, what I said, what they told me, and what they did after I reported the same pattern back to them.
+
 ## What this record proves, and what it does not
 
 This article is not claiming every person in these screenshots committed a crime.
@@ -188,7 +221,8 @@ I am claiming the public record now shows at least four things:
 1. People online repeatedly attach me to "traitor," treason, death, prison, suicide, and "no rights" language.
 2. Local East Texas people have posted or messaged physical-threat language after a family comment I asked to have removed.
 3. The public church-gun story escalated beyond the wording in the official public allegation into claims I deny.
-4. Harrison County should release the bodycam, dashcam, CAD, dispatch audio, witness statements, source statements, and officer reports so the public record can be tested against the actual evidence.
+4. Harrison County received a same-night call from me reporting the other side of the online record, and the deputy said the call would be documented and bodycam would be added.
+5. Harrison County should release the bodycam, dashcam, CAD, dispatch audio, witness statements, source statements, incident reports, jail-hallway bodycam, and officer reports so the public record can be tested against the actual evidence.
 
 That is the point.
 
