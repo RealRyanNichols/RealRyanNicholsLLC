@@ -17,7 +17,7 @@ It started with a public comment about my family on an old Facebook post. I took
 
 Then the messages changed from argument to physical intimidation.
 
-This is not random internet noise from anonymous accounts. These are local people. The thread involves accounts displayed to me as Trey Treece and Jessica Treece. The church-parking-lot video and comments matter because that separate false-gun narrative is the same kind of East Texas rumor machine that keeps turning me into the aggressor while people say things to me that no one would tolerate if I said them back.
+This is not random internet noise from anonymous accounts. These are local people. The thread involves accounts displayed to me as Trey Treece and Jessica Treece. The church incident involved people I knew personally through church, which is why the video, comments, and bodycam matter so much to me. The church-parking-lot video and comments matter because that separate false-gun narrative is the same kind of East Texas rumor machine that keeps turning me into the aggressor while people say things to me that no one would tolerate if I said them back.
 
 That is the article.
 
