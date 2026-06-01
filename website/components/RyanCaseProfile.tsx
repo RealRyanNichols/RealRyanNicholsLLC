@@ -516,26 +516,26 @@ function AttorneyBriefing() {
   ];
 
   return (
-    <section className="rounded-3xl border-2 border-[var(--color-ink)] bg-[var(--color-ink)] text-[var(--color-paper)] p-6 sm:p-9">
+    <section className="rounded-3xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] text-[var(--color-ink)] p-6 sm:p-9">
       <div className="flex flex-wrap items-center gap-2">
-        <span className="rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em]">
+        <span className="rounded-full bg-[var(--color-blue)] text-[var(--color-paper)] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em]">
           Attorney briefing
         </span>
-        <span className="rounded-full border border-white/25 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-white/80">
+        <span className="rounded-full border border-[var(--color-blue)]/40 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-blue)]">
           Seeking counsel
         </span>
       </div>
 
-      <h2 className="mt-4 text-2xl sm:text-4xl font-bold tracking-tight font-display leading-[1.08]">
+      <h2 className="mt-4 text-2xl sm:text-4xl font-bold tracking-tight font-display leading-[1.08] text-[var(--color-blue-strong)]">
         Counsel evaluating my case — start here.
       </h2>
-      <p className="mt-3 text-sm sm:text-base text-white/80 leading-relaxed max-w-2xl">
-        I&apos;m a <strong className="text-white">pardoned January 6 defendant</strong>{" "}
-        — federal charges <strong className="text-white">dismissed with prejudice</strong>,
+      <p className="mt-3 text-sm sm:text-base text-[var(--color-ink-soft)] leading-relaxed max-w-2xl">
+        I&apos;m a <strong className="text-[var(--color-ink)]">pardoned January 6 defendant</strong>{" "}
+        — federal charges <strong className="text-[var(--color-ink)]">dismissed with prejudice</strong>,
         cannot be refiled. I am now defending an{" "}
-        <strong className="text-white">active matter in Harrison County, Texas</strong>,
-        currently <strong className="text-white">pro se and seeking representation</strong>.
-        I am <strong className="text-white">not</strong> waiving counsel. The live legal
+        <strong className="text-[var(--color-ink)]">active matter in Harrison County, Texas</strong>,
+        currently <strong className="text-[var(--color-ink)]">pro se and seeking representation</strong>.
+        I am <strong className="text-[var(--color-ink)]">not</strong> waiving counsel. The live legal
         issues are below, each tied to a motion I have already filed and published.
       </p>
 
@@ -547,16 +547,16 @@ function AttorneyBriefing() {
           ["Prior matter", "Pardoned · dismissed w/ prejudice"],
           ["Motions filed", "11 + recusal, public"],
         ].map(([k, v]) => (
-          <div key={k} className="rounded-2xl border border-white/15 bg-white/[0.04] p-3">
-            <dt className="text-[10px] uppercase tracking-wider text-white/55 font-bold">{k}</dt>
-            <dd className="mt-1 text-sm font-bold text-white leading-snug">{v}</dd>
+          <div key={k} className="rounded-2xl border border-[var(--color-blue)]/20 bg-[var(--color-paper)] p-3">
+            <dt className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">{k}</dt>
+            <dd className="mt-1 text-sm font-bold text-[var(--color-ink)] leading-snug">{v}</dd>
           </div>
         ))}
       </dl>
 
       {/* Live issues, each linked to the filed motion */}
       <div className="mt-7">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-blue)] font-bold">
           Live legal issues · with the filed motion
         </p>
         <div className="mt-3 grid gap-2.5 sm:grid-cols-2">
@@ -564,29 +564,29 @@ function AttorneyBriefing() {
             <Link
               key={it.href}
               href={it.href}
-              className="group rounded-2xl border border-white/15 bg-white/[0.04] p-4 hover:border-[var(--color-accent)] transition"
+              className="group rounded-2xl border border-[var(--color-blue)]/20 bg-[var(--color-paper)] p-4 hover:border-[var(--color-blue)] transition"
             >
-              <p className="text-sm font-bold text-white group-hover:text-[var(--color-accent)] transition leading-snug">
+              <p className="text-sm font-bold text-[var(--color-ink)] group-hover:text-[var(--color-blue)] transition leading-snug">
                 {it.label}
               </p>
-              <p className="mt-1 text-xs text-white/70 leading-snug">{it.sub}</p>
+              <p className="mt-1 text-xs text-[var(--color-ink-soft)] leading-snug">{it.sub}</p>
             </Link>
           ))}
         </div>
         <Link
           href="/posts/the-transparency-motions-what-i-filed-and-why"
-          className="mt-3 inline-block text-sm font-bold text-[var(--color-accent)] hover:underline"
+          className="mt-3 inline-block text-sm font-bold text-[var(--color-blue)] hover:underline"
         >
           Read all eleven motions, why I filed each, and the exhibit index →
         </Link>
       </div>
 
       {/* Contact — attorneys */}
-      <div className="mt-7 rounded-2xl border border-[var(--color-accent)] bg-[var(--color-accent)]/10 p-5">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+      <div className="mt-7 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-paper)] p-5">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-blue)] font-bold">
           Attorneys — reach me directly
         </p>
-        <p className="mt-2 text-sm text-white/85 leading-relaxed max-w-2xl">
+        <p className="mt-2 text-sm text-[var(--color-ink-soft)] leading-relaxed max-w-2xl">
           If you practice criminal defense, First Amendment, or civil-rights litigation
           and want the full private briefing, contact me. I can send the complete
           packet — motions, declarations, exhibit index, and the case-specific
@@ -595,18 +595,18 @@ function AttorneyBriefing() {
         <div className="mt-4 flex flex-wrap items-center gap-3">
           <a
             href="mailto:ryan@realryannichols.com?subject=Attorney%20inquiry%20%E2%80%94%20Harrison%20County%20matter&body=Hi%20Ryan%2C%0A%0AI%27m%20an%20attorney%20licensed%20in%20%5Bstate%5D.%20My%20practice%20areas%3A%20%5Bareas%5D.%0A%0AI%27d%20like%20the%20full%20private%20briefing%20on%20your%20current%20matter.%0A%0A%5BName%2C%20firm%2C%20bar%20number%2C%20phone%5D"
-            className="inline-flex items-center rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:opacity-90 transition"
+            className="inline-flex items-center rounded-full bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)] transition"
           >
             ✉ Email me about representation
           </a>
           <Link
             href="/submit"
-            className="inline-flex items-center rounded-full border border-white/30 px-5 py-2.5 text-sm font-bold text-white hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition"
+            className="inline-flex items-center rounded-full border border-[var(--color-blue)]/40 px-5 py-2.5 text-sm font-bold text-[var(--color-blue)] hover:bg-[var(--color-blue)] hover:text-[var(--color-paper)] transition"
           >
             Send a secure note →
           </Link>
         </div>
-        <p className="mt-3 text-[11px] text-white/50 leading-snug">
+        <p className="mt-3 text-[11px] text-[var(--color-muted)] leading-snug">
           This page is public; it states only already-public facts and links to
           motions I have already filed. Case-specific posture and strategy are
           shared privately with counsel.
