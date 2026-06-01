@@ -128,9 +128,9 @@ export function FloatingShareBar({
 
   return (
     <>
-      {/* Desktop: vertical rail pinned to the left edge. */}
+      {/* Wide desktop: keep the rail off article content on laptop-width screens. */}
       <div
-        className={`fixed left-3 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-center gap-2 rounded-full border border-[var(--color-line)] bg-[var(--color-surface)]/95 p-2 shadow-xl backdrop-blur transition-all duration-300 md:flex ${
+        className={`fixed left-3 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-center gap-2 rounded-full border border-[var(--color-line)] bg-[var(--color-surface)]/95 p-2 shadow-xl backdrop-blur transition-all duration-300 xl:flex ${
           visible ? "opacity-100 translate-x-0" : "pointer-events-none -translate-x-4 opacity-0"
         }`}
         aria-label="Share this page"
