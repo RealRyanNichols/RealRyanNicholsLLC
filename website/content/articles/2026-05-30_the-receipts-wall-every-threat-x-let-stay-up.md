@@ -381,9 +381,193 @@ The exhibit records a May 13, 2026 public Facebook comment from a verified accou
 
 That receipt matters because this is not limited to one platform. The same death-penalty framing follows the same pattern across the internet: call me a traitor, call me an insurrectionist, then launder death language through treason talk.
 
+## Update — June 1: the local East Texas layer
+
+The national/X receipts are only one side of the record.
+
+The local layer is more dangerous to me because these are not just anonymous accounts arguing from somewhere else. These are East Texas comments, Messenger messages, public posts, and public videos connected to people who know where I live, know my church, know my family, or know the local rumor chain.
+
+I am adding this section because the pattern is now bigger than "someone was mean online."
+
+The pattern is:
+
+1. A public comment reaches into my family.
+2. I ask privately for the comment to come down.
+3. The private thread turns into physical-threat language.
+4. A separate church-parking-lot story gets repeated online in a way I deny.
+5. Public comments then start talking about violence against me because people have been told I pulled or pointed a gun.
+6. Harrison County still has not given me the bodycam I have asked for.
+
+That is why this is not gossip.
+
+This is court work. Case work. Source identification. Evidence preservation. Bodycam. CAD. Dispatch. Witness versions. Public posts. Public threats. One record.
+
+### Local receipt 1 — the comment about my family
+
+Source: redacted screenshot preserved from the Facebook evidence folder.
+
+The public Facebook screenshot shows a comment by **Trey Treece** on my August 20, 2025 post. The screenshot shows the comment as recent at the time it was captured, but it does not prove the exact absolute time the comment was posted.
+
+The visible comment includes the phrases "bring my family in this," "if u loved your wife and kids," "I will make u wish u never started," and "id love to square up with u."
+
+![Redacted Facebook screenshot showing a Trey Treece comment on Ryan Nichols' August 20, 2025 Facebook post. Profile photos are cropped out, and the visible comment includes the phrases "bring my family in this," "if u loved your wife and kids," "I will make u wish u never started," and "id love to square up with u."](/uploads/trey-august-comment-redacted.png)
+
+This is the comment I asked to have removed.
+
+### Local receipt 2 — the private thread did not calm it down
+
+Source: redacted Messenger screenshot preserved from the group thread displayed in my account as **"Jessica, Trey, Amanda."**
+
+I am not publishing private phone numbers. They are redacted.
+
+The Messenger thread contains multiple messages I understood as physical-threat language, including "fight me," "meet me and fight me one on one," "don't think i won't see u," "when I do God be with u," "I love to beat the shit out of bullies like u," and "only warning."
+
+![Redacted Messenger screenshot showing a March 21, 2026 message in the Jessica, Trey, Amanda group thread. A private phone number is blacked out. The visible text includes the phrase "I promise u won't win shit" and "I love to beat the shit out of bullies like u and keep my kids out your mouth only warning."](/uploads/treece-messenger-threat-redacted.png)
+
+That is not me hunting for drama.
+
+That is me preserving what happened after I tried to take a public comment private.
+
+### Local receipt 3 — the official allegation was already serious
+
+Source: redacted crop of the Harrison County Sheriff's Office press-release screenshot preserved in the evidence folder.
+
+The official public allegation said I "raised his shirt up to display a firearm" and placed my hand on the grip.
+
+I deny drawing, pulling, pointing, brandishing, or firing a gun.
+
+![Redacted screenshot crop of a Harrison County Sheriff's Office press release dated May 11, 2026. The visible text says deputies responded to Heskell Oney Road in Harleton and that the alleged victim said Ryan Nichols raised his shirt to display a firearm and placed his hand on the grip.](/uploads/harrison-county-firearm-press-release-crop.png)
+
+That allegation is serious enough.
+
+But the public story did not stay there.
+
+### Local receipt 4 — the story escalated into "pull a gun" and "pointed at"
+
+Source: redacted public screenshot crop preserved from a Facebook post by Brandon Stewart.
+
+The post says there were "No witness statements" and then claims a social media video showed the alleged victim saying I "pulled out the gun and pointed it at the vehicle with his kids inside."
+
+![Redacted screenshot crop of a public Facebook post by Brandon Stewart. The visible post says there were no witness statements and claims a social media video says Ryan pulled out a gun and pointed it at a vehicle with kids inside.](/uploads/public-backstop-gun-pointed-claim-redacted.png)
+
+That is the exact escalation I am talking about.
+
+"Raised shirt" and "hand on grip" became "pulled out the gun" and "pointed it at the vehicle."
+
+That changed image matters because it changes what angry people think they are allowed to do to me.
+
+### Local receipt 5 — Jon Costello's own words are why the bodycam matters
+
+Source: short edited/captioned video receipt preserved from the public Costello video.
+
+In the video, Kacie Costello says I "was going to pull a gun" and says I "reached for his gun." Jon Costello then says:
+
+> "I guess he was worried about the words of Jesus getting smacked him in his face."
+
+He also says:
+
+> "Know your backstop."
+
+and refers to "the car that he's pointed at."
+
+{{video: /uploads/church-bible-backstop-short.mp4 | /uploads/church-bible-backstop-short-poster.jpg | Edited 41-second public receipt from the Costello video. Source copies and transcripts are preserved in the private evidence folder.}}
+
+I am not asking anyone to take my word for that part.
+
+Watch it.
+
+Then ask why I still do not have the bodycam.
+
+### Local receipt 6 — "he had his Bible" and "he had his back to him"
+
+Source: redacted public Facebook comment screenshot preserved from the Costello/church-incident evidence folder.
+
+One public comment under Kacie Costello's name says I was trying to convince police I was scared because Jon had something in his hand, says Jon had his Bible in his hand, and says Jon had his back to me so I could not say he was confrontational.
+
+![Redacted screenshot crop of a public Facebook comment by the wife in the church-incident couple, saying Ryan was trying to convince police he was scared because her husband had something in his hand, and saying her husband had a Bible in his hand.](/uploads/church-bible-claim-redacted.png)
+
+That matters because Jon's own video language refers to the "words of Jesus" getting "smacked" in my face.
+
+That is why the Bible issue is not random.
+
+It is part of the source chain.
+
+### Local receipt 7 — "to the point of getting violent" and "kick his ass"
+
+Source: redacted public Facebook comment screenshot preserved from the Costello/church-incident evidence folder.
+
+Another public comment under Kacie Costello's name says Jon was "to the point of getting violent" and that she was making sure that did not happen.
+
+Directly below that, another commenter says someone needed to "kick his ass" after knowing I had a gun.
+
+![Redacted screenshot crop of a public Facebook comment by the wife in the church-incident couple, saying her husband was to the point of getting violent, followed by another commenter saying someone needs to kick Ryan's ass after knowing he had a gun.](/uploads/church-violent-comment-redacted.png)
+
+This is the part people keep skipping.
+
+If the public is told I "pulled out" or "pointed" a gun, then the next layer of commenters starts treating violence against me like it is justified.
+
+### Local receipt 8 — "they'll just find pieces of you"
+
+Source: redacted public Facebook comment screenshot preserved from the Costello/church-incident evidence folder.
+
+A public Facebook comment by Vince Simmons responded to the gun narrative by saying:
+
+> "Do that where I'm from, they'll just find pieces of you."
+
+![Redacted screenshot crop of a public Facebook comment by Vince Simmons. Profanity and slurs are blacked out. The visible threat says that somebody with a gun would have people "just find pieces of you."](/uploads/public-pieces-of-you-threat-redacted.png)
+
+That is the local consequence of the disputed image I say is false.
+
+Tell people I pointed a gun. Then people talk about finding pieces of me.
+
+### Local receipt 9 — "I'll beat yo ass"
+
+Source: redacted public Facebook comment screenshot preserved from the Costello/church-incident evidence folder.
+
+Another screenshot shows a public comment by George Ives saying:
+
+> "I'll beat yo ass till you fuck around and find out..."
+
+That same comment included a street address. I am not publishing the address.
+
+![Redacted screenshot crop of a public Facebook comment by George Ives saying he would beat Ryan's ass. A street address in the comment is blacked out.](/uploads/george-ives-beat-threat-address-redacted.png)
+
+This is why I redact.
+
+The point is the threat language, not sending readers to a street address.
+
+### Local receipt 10 — the court-record issue
+
+This is now tied directly to my pending Harrison County case.
+
+On June 1, 2026, I prepared court filings asking for preservation and production of the exact records that should settle this:
+
+- bodycam,
+- dashcam,
+- CAD,
+- dispatch audio,
+- police reports,
+- witness statements,
+- church camera footage,
+- public posts,
+- public videos,
+- screenshots,
+- source statements,
+- and every version of the story used to support the charging narrative.
+
+One of those filings says the charging narrative must be tied to specific witnesses, statements, reports, recordings, and evidence. Another says digital records can be deleted, edited, overwritten, hidden, or selectively screenshot.
+
+That is why RealRyanNichols.com is part of the evidence record now.
+
+This is not about sending anyone after anyone.
+
+Do not threaten anyone. Do not harass anyone. Do not contact anyone in my name.
+
+Send proof. Preserve records. Share the link. Support the work.
+
 ### What I found, and what I am not claiming
 
-I found public posts and preserved screenshots using death-penalty, suicide-related, treason, deadly-force, prison, and dehumanizing language aimed at me or aimed at January 6 defendants in threads where I was the named target.
+I found public posts and preserved screenshots using death-penalty, suicide-related, treason, deadly-force, prison, and dehumanizing language aimed at me or aimed at January 6 defendants in threads where I was the named target. I also found local East Texas receipts showing a public family comment, Messenger physical-threat language, public gun-story escalation, public violence talk, and court-record reasons to demand the bodycam and source statements.
 
 I am not claiming every one of these posts is a direct criminal threat. I am claiming they are receipts of a public pressure campaign where the acceptable language against me is far harsher than the language X used to lock my account.
 
