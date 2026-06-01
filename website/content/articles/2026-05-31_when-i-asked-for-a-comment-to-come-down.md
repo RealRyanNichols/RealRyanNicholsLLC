@@ -215,6 +215,28 @@ The official allegation is bad enough. But when people turn "raised his shirt" a
 
 That changed image is dangerous.
 
+## Why I am allowed to document this
+
+I am documenting this for court work, case work, public-record preservation, and my own defense.
+
+That does not mean speech is unlimited. It does not mean anyone should threaten, harass, dox, contact, or intimidate another person. I am not asking readers to do that, and I do not want that done in my name.
+
+What I am doing is narrower and lawful: preserving screenshots, videos, public posts, changing statements, media reports, and public-record issues tied to a pending case where I deny the public version being repeated about me.
+
+The Supreme Court has been clear that prior restraints on publication carry a heavy constitutional burden. In [Near v. Minnesota](https://tile.loc.gov/storage-services/service/ll/usrep/usrep283/usrep283697/usrep283697.pdf), the Court rejected a system that stopped publication before the public could read it. In [Nebraska Press Association v. Stuart](https://tile.loc.gov/storage-services/service/ll/usrep/usrep427/usrep427539/usrep427539.pdf), the Court treated prior restraints on speech about criminal proceedings as one of the most serious First Amendment problems.
+
+The Supreme Court has also protected public advocacy and distribution of information about matters of public concern. In [Organization for a Better Austin v. Keefe](https://tile.loc.gov/storage-services/service/ll/usrep/usrep402/usrep402415/usrep402415.pdf), the Court reversed an injunction that stopped citizens from distributing criticism of a private person's business practices. In [Packingham v. North Carolina](https://www.supremecourt.gov/opinions/16pdf/15-1194_08l1.pdf), the Court recognized that modern online platforms are a major place where people speak, listen, and petition.
+
+The line I am staying on is evidence and public concern, not threats. In [Counterman v. Colorado](https://www.supremecourt.gov/opinions/22pdf/22-138_43j7.pdf), the Court explained that true-threat law requires attention to the speaker's mental state. In [NAACP v. Claiborne Hardware Co.](https://tile.loc.gov/storage-services/service/ll/usrep/usrep458/usrep458886/usrep458886.pdf), the Court protected forceful political advocacy while recognizing that actual violence or true threats are different.
+
+That is why this article is built the way it is.
+
+I am not telling anyone to go after anybody.
+
+I am not publishing private addresses, private phone numbers, medical information, children's information, or anything I know should stay out of public view.
+
+I am preserving and publishing the receipts that matter because those receipts explain why I am demanding bodycam, CAD, dispatch, witness statements, and public-record clarity instead of letting rumor decide what happened.
+
 In the same evidence folder, a public comment by Vince Simmons responded to the gun narrative by saying:
 
 > "Do that where I'm from, they'll just find pieces of you."
