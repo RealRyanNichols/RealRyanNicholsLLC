@@ -39,6 +39,16 @@ function nodeText(node: HastNode | undefined): string {
 
 type Ctx = { postId?: string; slug?: string; title?: string };
 
+function parseVideoArg(arg: string | undefined) {
+  const [src, poster, caption] = (arg ?? "").split("|").map((part) => part.trim());
+  if (!src || (!src.startsWith("/") && !src.startsWith("https://"))) return null;
+  return {
+    src,
+    poster: poster || undefined,
+    caption: caption || undefined,
+  };
+}
+
 function Shortcode({ kind, arg, ctx }: { kind: string; arg?: string; ctx: Ctx }) {
   switch (kind) {
     case "donate":
@@ -85,6 +95,30 @@ function Shortcode({ kind, arg, ctx }: { kind: string; arg?: string; ctx: Ctx })
           <DemandAction slug={ctx.slug} />
         </div>
       );
+    case "video": {
+      const video = parseVideoArg(arg);
+      if (!video) return null;
+      return (
+        <figure className="not-prose my-7">
+          <video
+            controls
+            playsInline
+            preload="metadata"
+            poster={video.poster}
+            controlsList="nodownload"
+            aria-label={video.caption ?? "Video receipt"}
+            className="w-full max-h-[760px] rounded-lg border border-[var(--color-line)] bg-black"
+          >
+            <source src={video.src} type="video/mp4" />
+          </video>
+          {video.caption ? (
+            <figcaption className="mt-2 text-sm leading-relaxed text-[var(--color-muted)]">
+              {video.caption}
+            </figcaption>
+          ) : null}
+        </figure>
+      );
+    }
     default:
       return null;
   }
