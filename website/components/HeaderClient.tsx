@@ -224,20 +224,17 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             </button>
           </div>
         </div>
-      </header>
 
-      {/* Mobile dropdown drawer */}
-      {open && (
-        <>
-          <div
-            className="md:hidden fixed inset-0 z-20 bg-black/60 backdrop-blur-sm"
-            onClick={() => setOpen(false)}
-            aria-hidden
-          />
+        {/* Mobile dropdown drawer — anchored to the header's OWN bottom edge
+            (absolute top-full) so it tracks the header at any scroll position.
+            Hardcoding `top-16` overlapped the header at the top of the page,
+            where the (scroll-away) status strip pushes the header below 64px.
+            max-h + overflow keeps a long (admin) menu from running off-screen. */}
+        {open && (
           <div
             id="mobile-menu"
             role="menu"
-            className="md:hidden fixed top-16 inset-x-0 z-30 border-b border-[var(--color-line)] bg-[var(--color-paper)]/98 backdrop-blur-xl px-4 py-3 shadow-2xl"
+            className="md:hidden absolute top-full left-0 right-0 z-30 max-h-[calc(100dvh-4rem)] overflow-y-auto border-b border-[var(--color-line)] bg-[var(--color-paper)]/98 backdrop-blur-xl px-4 py-3 shadow-2xl"
           >
             <nav className="flex flex-col gap-1">
               {/* Submit a Tip — kept prominent on mobile (it's the newsroom
@@ -409,7 +406,17 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
               )}
             </nav>
           </div>
-        </>
+        )}
+      </header>
+
+      {/* Mobile menu backdrop — tap to close. Below the header/drawer (z-20),
+          above the page and the support bar. */}
+      {open && (
+        <div
+          className="md:hidden fixed inset-0 z-20 bg-black/60 backdrop-blur-sm"
+          onClick={() => setOpen(false)}
+          aria-hidden
+        />
       )}
     </>
   );
