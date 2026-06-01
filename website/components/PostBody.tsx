@@ -154,41 +154,70 @@ function CaseBanner({ arg }: { arg?: string }) {
   );
 }
 
+function ReceiptFigure({
+  receipt,
+  imageClassName,
+}: {
+  receipt: ReceiptGridItem;
+  imageClassName: string;
+}) {
+  return (
+    <figure className="overflow-hidden rounded-lg border-2 border-[var(--color-line)] bg-[var(--color-surface)] shadow-sm">
+      <div className="bg-black">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={receipt.src}
+          alt={receipt.title}
+          className={imageClassName}
+          loading="lazy"
+        />
+      </div>
+      <figcaption className="space-y-2 px-4 py-3">
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-sm font-black leading-snug text-[var(--color-ink)]">{receipt.title}</p>
+          {receipt.tag ? (
+            <span className="shrink-0 rounded-full bg-[var(--color-blue-soft)] px-2 py-0.5 text-[0.68rem] font-black uppercase tracking-normal text-[var(--color-blue)]">
+              {receipt.tag}
+            </span>
+          ) : null}
+        </div>
+        {receipt.caption ? (
+          <p className="text-sm leading-relaxed text-[var(--color-ink-soft)]">
+            {renderLinkedText(receipt.caption)}
+          </p>
+        ) : null}
+      </figcaption>
+    </figure>
+  );
+}
+
 function ReceiptGrid({ arg }: { arg?: string }) {
   const receipts = parseReceiptGridArg(arg);
   if (receipts.length === 0) return null;
   return (
     <section className="not-prose my-9 grid gap-5 md:grid-cols-2">
       {receipts.map((receipt) => (
-        <figure
+        <ReceiptFigure
           key={`${receipt.src}-${receipt.title}`}
-          className="overflow-hidden rounded-lg border-2 border-[var(--color-line)] bg-[var(--color-surface)] shadow-sm"
-        >
-          <div className="bg-black">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={receipt.src}
-              alt={receipt.title}
-              className="h-auto max-h-[520px] w-full object-contain"
-              loading="lazy"
-            />
-          </div>
-          <figcaption className="space-y-2 px-4 py-3">
-            <div className="flex items-center justify-between gap-3">
-              <p className="text-sm font-black leading-snug text-[var(--color-ink)]">{receipt.title}</p>
-              {receipt.tag ? (
-                <span className="shrink-0 rounded-full bg-[var(--color-blue-soft)] px-2 py-0.5 text-[0.68rem] font-black uppercase tracking-normal text-[var(--color-blue)]">
-                  {receipt.tag}
-                </span>
-              ) : null}
-            </div>
-            {receipt.caption ? (
-              <p className="text-sm leading-relaxed text-[var(--color-ink-soft)]">
-                {renderLinkedText(receipt.caption)}
-              </p>
-            ) : null}
-          </figcaption>
-        </figure>
+          receipt={receipt}
+          imageClassName="h-auto max-h-[520px] w-full object-contain"
+        />
+      ))}
+    </section>
+  );
+}
+
+function ReceiptStack({ arg }: { arg?: string }) {
+  const receipts = parseReceiptGridArg(arg);
+  if (receipts.length === 0) return null;
+  return (
+    <section className="not-prose my-9 space-y-6">
+      {receipts.map((receipt) => (
+        <ReceiptFigure
+          key={`${receipt.src}-${receipt.title}`}
+          receipt={receipt}
+          imageClassName="h-auto w-full object-contain"
+        />
       ))}
     </section>
   );
@@ -200,6 +229,8 @@ function Shortcode({ kind, arg, ctx }: { kind: string; arg?: string; ctx: Ctx })
       return <CaseBanner arg={arg} />;
     case "receiptgrid":
       return <ReceiptGrid arg={arg} />;
+    case "receiptstack":
+      return <ReceiptStack arg={arg} />;
     case "donate":
       return (
         <div className="not-prose my-7">

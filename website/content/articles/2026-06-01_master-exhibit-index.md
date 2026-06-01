@@ -54,10 +54,11 @@ The public version shows what can be shown safely: redacted screenshots, filing 
 | EX-007 | Public "I'll beat yo ass" threat with address redacted | NEEDS AUTHENTICATION | Preserve a direct threat while removing private location details. |
 | EX-008 | Trey Treece public family comment | NEEDS AUTHENTICATION | Show the public comment that led to the private request to take it down. |
 | EX-009 | Treece Messenger threat thread | NEEDS AUTHENTICATION | Preserve the private-thread threat receipt in redacted public form. |
-| EX-010 | May 12, 2026 Harrison County call transcript summary | PRIVATE / NOT PUBLIC | Show I reported the other side of the online conduct and asked for documentation without publishing private caller data. |
-| EX-011 | First written bodycam/source-record demand | FACT | Show I asked for the footage and source records in writing. |
-| EX-012 | Second written bodycam/source-record demand | FACT | Show this was not a one-off request. |
-| EX-013 | Bodycam refusal / records-response receipt | FACT | Preserve the public-records dispute over the footage. |
+| EX-010A | May 12, 2026 Harrison County call transcript summary | PRIVATE / NOT PUBLIC | Show I reported the other side of the online conduct and asked for documentation without publishing private caller data. |
+| EX-010B | Separate July 13, 2025 bodycam-request history tied to Lt. Ron England and case file 25-019731 | RYAN STATEMENT + FACT as screenshots | Correct the record: the polite cost/processing exchange with Cindy Black belongs to the July 13 file, not the church case. |
+| EX-011 | May 18, 2026 Cindy Black active-case response on the church case | FACT | Show the current church bodycam request was met with call-sheet-only language. |
+| EX-012 | May 18, 2026 Ryan reply objecting to the bodycam refusal | FACT / RYAN STATEMENT | Show I immediately tied the bodycam to changed public stories and called the refusal obstruction. |
+| EX-013 | May 19, 2026 second written church bodycam request with counsel copied in the private source file | FACT / RYAN STATEMENT | Show this was not a one-off request and the private source file preserves the attorney-copy chain. |
 | EX-014 | X account limitation / lock notice | FACT | Show the platform-enforcement side of the record. |
 | EX-015 | Locked tweet context | FACT | Keep the surrounding post attached to the enforcement receipt. |
 | EX-016 | Thread context and "life in prison" reply | FACT / NEEDS AUTHENTICATION | Show the speech environment around the lock. |
@@ -79,7 +80,7 @@ The public version shows what can be shown safely: redacted screenshots, filing 
 
 **Use:** This is the starting point. Before arguing over rumors, the record has to preserve the exact public allegation language.
 
-{{receiptgrid: /uploads/harrison-county-firearm-press-release-crop.png :: EX-001 - HCSO public allegation wording :: Redacted crop of the Harrison County Sheriff's Office public allegation screenshot. This is the baseline wording before the online story grew into stronger claims I dispute. :: FACT}}
+{{receiptstack: /uploads/harrison-county-firearm-press-release-crop.png :: EX-001 - HCSO public allegation wording :: Redacted crop of the Harrison County Sheriff's Office public allegation screenshot. This is the baseline wording before the online story grew into stronger claims I dispute. :: FACT}}
 
 ## EX-002 - The public story escalation I dispute
 
@@ -89,7 +90,7 @@ The public version shows what can be shown safely: redacted screenshots, filing 
 
 **Use:** This is why the bodycam matters. The official public wording and the later public version are not the same thing. If people are going to repeat a version that says I pulled out a gun and pointed it at a vehicle, then the source footage needs to be released.
 
-{{receiptgrid: /uploads/public-backstop-gun-pointed-claim-redacted.png :: EX-002 - Public escalation of the gun story :: Redacted public screenshot claiming a video said I pulled out the gun and pointed it at the vehicle. That is the version I dispute. :: NEEDS AUTHENTICATION}}
+{{receiptstack: /uploads/public-backstop-gun-pointed-claim-redacted.png :: EX-002 - Public escalation of the gun story :: Redacted public screenshot claiming a video said I pulled out the gun and pointed it at the vehicle. That is the version I dispute. :: NEEDS AUTHENTICATION}}
 
 ## EX-003 - The Costello video receipt
 
@@ -99,7 +100,7 @@ The public version shows what can be shown safely: redacted screenshots, filing 
 
 **Use:** This belongs early because it is part of the source-chain around the church dispute. The point is not to ask readers to take my word for it. The point is to show the clip, preserve the words, and compare it to the story being told about me.
 
-{{receiptgrid: /uploads/church-bible-backstop-short-poster.jpg :: EX-003A - Costello video poster frame :: Poster frame from the edited 41-second public receipt. The video receipt appears directly below. :: NEEDS AUTHENTICATION}}
+{{receiptstack: /uploads/church-bible-backstop-short-poster.jpg :: EX-003A - Costello video poster frame :: Poster frame from the edited 41-second public receipt. The video receipt appears directly below. :: NEEDS AUTHENTICATION}}
 
 {{video: /uploads/church-bible-backstop-short.mp4 | /uploads/church-bible-backstop-short-poster.jpg | EX-003B - Edited 41-second public video receipt from the Costello video. Source copies and longer context are preserved in the private evidence folder.}}
 
@@ -123,7 +124,7 @@ The public version shows what can be shown safely: redacted screenshots, filing 
 
 {{receiptgrid: /uploads/trey-august-comment-redacted.png :: EX-008 - Trey Treece public family comment :: Redacted screenshot of a Trey Treece comment on my August 20, 2025 Facebook post. The visible comment includes family language and "id love to square up with u." :: NEEDS AUTHENTICATION | /uploads/treece-messenger-threat-redacted.png :: EX-009 - Treece Messenger threat thread :: Redacted Messenger screenshot from the Jessica, Trey, Amanda thread. The visible language includes "I love to beat the shit out of bullies like u" and "only warning." :: NEEDS AUTHENTICATION}}
 
-## EX-010 - May 12, 2026 Harrison County call summary
+## EX-010A - May 12, 2026 Harrison County call summary
 
 **Source:** Transcript of Ryan Nichols' May 12, 2026 call with Harrison County.
 
@@ -133,15 +134,29 @@ The public version shows what can be shown safely: redacted screenshots, filing 
 
 **Public summary:** I called Harrison County, reported that people were saying and doing worse things to me online than what they were accusing me of, explained that I had receipts, raised the disputed church narrative, raised the need for bodycam and source records, and described why equal treatment matters. That call belongs in the record because it shows I did not just post online. I tried to document it through the county too.
 
-## EX-011 to EX-013 - Bodycam and source-record demands
+## EX-010B - July 13 bodycam history is separate from the church case
 
-**Source:** Redacted written-request screenshots and records-response screenshot.
+**Source:** July 13, 2025 incident file, case file 25-019731 screenshots, Ryan statement, and bodycam-critical-moment notes preserved in the private evidence file.
 
-**Classification:** FACT as public/redacted screenshots.
+**Classification:** RYAN STATEMENT plus FACT as screenshots. The underlying July 13 bodycam and transcript notes still need courtroom authentication if used in a filing.
 
-**Use:** This is the paper trail. If the footage supports the public story, release it. If it does not support the public story, release it. Either way, the record should not depend on rumor.
+**Use:** This is the correction. The screenshots where I was talking politely with Cindy Black about video-footage cost, processing fees, and Lt. England bodycam belong to a separate July 13, 2025 incident. They do not belong to the May 2026 church case.
 
-{{receiptgrid: /uploads/ryan-reply-bodycam-request.png :: EX-011 - First bodycam/source-record demand :: Screenshot of my public written request for bodycam/source records. This shows the demand was made in writing. :: FACT | /uploads/ryan-2nd-bodycam-request-redacted.png :: EX-012 - Second bodycam/source-record demand :: Redacted screenshot of a second written request for bodycam/source records. This shows the request was repeated. :: FACT | /uploads/harrison-bodycam-refusal-cindy-black.png :: EX-013 - Bodycam refusal / records response :: Redacted screenshot tied to the bodycam-records issue. This is part of the public-records dispute over the footage. :: FACT}}
+Here is the point: this is not my first disputed gun story. My position is that Bonnie Nichols later testified in another hearing that I fired a gun at the house on July 13, 2025. I deny that. My July 13 file says the record instead involves Lt. Ron England, my father-in-law's firearm reach, and bodycam/source footage that should be compared to the accusation.
+
+That prior bodycam-request history matters because it shows why the footage matters now. When a gun story is repeated in court or online, the answer is not rumor. The answer is the bodycam, the report, the dispatch record, the source video, and the exact timeline.
+
+{{receiptstack: /uploads/july13-cindy-bodycam-fees.png :: EX-010B-1 - Separate July 13 bodycam cost response :: Original screenshot from case file 25-019731. Cindy Black describes video-footage fees and processing costs. This belongs to the July 13 / Lt. England file, not the church case. :: FACT | /uploads/july13-ryan-authorizes-lt-england-bodycam.png :: EX-010B-2 - Ryan authorizes Lt. England bodycam processing :: Original screenshot from the same separate file. The visible text references paying for Lt. England bodycam footage from that incident. No driver's-license image is published here. :: FACT | /uploads/july13-cindy-received-bodycam-request.png :: EX-010B-3 - Cindy Black confirms receipt in the separate file :: Original screenshot from the same separate file showing the request chain continued civilly. This is prior-incident context, not the church bodycam refusal. :: FACT}}
+
+## EX-011 to EX-013 - Current church case bodycam requests, in order
+
+**Source:** May 18-19, 2026 church-case records screenshots and redacted public request images.
+
+**Classification:** FACT as screenshots, with Ryan's stated legal interpretation marked as RYAN STATEMENT.
+
+**Use:** This is the current case. This is not the July 13 file. On the church case, Cindy Black wrote that the case was still active and that the call sheet was all she could release at that time. I immediately replied that the bodycam matters because the public story had changed online. Then I sent a second written request with counsel copied in the private source file.
+
+{{receiptstack: /uploads/church-cindy-active-case-call-sheet-original.png :: EX-011 - Current church case: active-case / call-sheet-only response :: Original screenshot from May 18, 2026. Cindy Black wrote that the case was still active and the call sheet was all she could release at that time. :: FACT | /uploads/church-ryan-changed-story-bodycam-reply-original.png :: EX-012 - Ryan reply: bodycam and changed-story issue :: Original screenshot from May 18, 2026. I replied that the bodycam was the record that could test the changed public story and wrote that I viewed the refusal as obstructing my case. :: FACT / RYAN STATEMENT | /uploads/ryan-2nd-bodycam-request-redacted.png :: EX-013 - Second church bodycam request, public redacted version :: Redacted public screenshot from May 19, 2026. The private source file preserves the counsel-copy chain; the public exhibit keeps unnecessary email details out of the article. :: FACT / RYAN STATEMENT}}
 
 ## EX-014 to EX-016 - X enforcement receipts
 
@@ -191,7 +206,7 @@ The public version shows what can be shown safely: redacted screenshots, filing 
 
 **Use:** This shows the court-style matrix exists. The public page is not a substitute for the full filing, but it gives readers the structure: exhibit number, source, classification, and use.
 
-{{receiptgrid: /uploads/exhibit-index-page1.png :: EX-023 - Master exhibit matrix page one :: Page one of the Master Exhibit Index and Evidence-Classification Matrix. This is the table that labels receipts by exhibit number, source, classification, and use. :: FACT}}
+{{receiptstack: /uploads/exhibit-index-page1.png :: EX-023 - Master exhibit matrix page one :: Page one of the Master Exhibit Index and Evidence-Classification Matrix. This is the table that labels receipts by exhibit number, source, classification, and use. :: FACT}}
 
 ## EX-024 - Master declaration preview
 
