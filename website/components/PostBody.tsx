@@ -49,8 +49,113 @@ function parseVideoArg(arg: string | undefined) {
   };
 }
 
+function isSafeMediaSrc(src: string) {
+  return src.startsWith("/") || src.startsWith("https://");
+}
+
+function parseCaseBannerArg(arg: string | undefined) {
+  const [title, subtitle, statOne, statTwo, statThree] = (arg ?? "")
+    .split("|")
+    .map((part) => part.trim())
+    .filter(Boolean);
+  if (!title || !subtitle) return null;
+  return {
+    title,
+    subtitle,
+    stats: [statOne, statTwo, statThree].filter(Boolean),
+  };
+}
+
+function parseReceiptGridArg(arg: string | undefined) {
+  return (arg ?? "")
+    .split("|")
+    .map((raw) => {
+      const [src, title, caption, tag] = raw.split("::").map((part) => part.trim());
+      if (!src || !title || !isSafeMediaSrc(src)) return null;
+      return {
+        src,
+        title,
+        caption: caption || undefined,
+        tag: tag || undefined,
+      };
+    })
+    .filter((item): item is { src: string; title: string; caption?: string; tag?: string } => Boolean(item));
+}
+
+function CaseBanner({ arg }: { arg?: string }) {
+  const banner = parseCaseBannerArg(arg);
+  if (!banner) return null;
+  return (
+    <section className="not-prose my-8 overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-blue-strong)] text-[#fdf8ea] shadow-sm">
+      <div className="border-b border-white/15 bg-black/20 px-5 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-white/75">
+        Public Evidence Wall
+      </div>
+      <div className="px-5 py-6 sm:px-7 sm:py-8">
+        <h2 className="font-serif text-3xl font-black leading-[0.95] tracking-tight text-[#fdf8ea] sm:text-5xl">
+          {banner.title}
+        </h2>
+        <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/80 sm:text-lg">
+          {banner.subtitle}
+        </p>
+        {banner.stats.length > 0 ? (
+          <div className="mt-6 grid gap-3 sm:grid-cols-3">
+            {banner.stats.map((stat) => (
+              <div key={stat} className="rounded-md border border-white/15 bg-white/10 px-4 py-3">
+                <p className="text-sm font-semibold leading-snug text-[#fdf8ea]">{stat}</p>
+              </div>
+            ))}
+          </div>
+        ) : null}
+      </div>
+      <div className="h-2 bg-[var(--color-accent)]" aria-hidden />
+    </section>
+  );
+}
+
+function ReceiptGrid({ arg }: { arg?: string }) {
+  const receipts = parseReceiptGridArg(arg);
+  if (receipts.length === 0) return null;
+  return (
+    <section className="not-prose my-8 grid gap-4 md:grid-cols-2">
+      {receipts.map((receipt) => (
+        <figure
+          key={`${receipt.src}-${receipt.title}`}
+          className="overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] shadow-sm"
+        >
+          <div className="bg-black">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={receipt.src}
+              alt={receipt.title}
+              className="h-auto max-h-[440px] w-full object-contain"
+              loading="lazy"
+            />
+          </div>
+          <figcaption className="space-y-2 px-4 py-3">
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-sm font-bold leading-snug text-[var(--color-ink)]">{receipt.title}</p>
+              {receipt.tag ? (
+                <span className="shrink-0 rounded-full bg-[var(--color-blue-soft)] px-2 py-0.5 text-[0.68rem] font-bold uppercase tracking-wide text-[var(--color-blue)]">
+                  {receipt.tag}
+                </span>
+              ) : null}
+            </div>
+            {receipt.caption ? (
+              <p className="text-sm leading-relaxed text-[var(--color-ink-soft)]">{receipt.caption}</p>
+            ) : null}
+          </figcaption>
+        </figure>
+      ))}
+    </section>
+  );
+}
+
 function Shortcode({ kind, arg, ctx }: { kind: string; arg?: string; ctx: Ctx }) {
   switch (kind) {
+    case "casebanner":
+      return <CaseBanner arg={arg} />;
+    case "receiptgrid":
+      return <ReceiptGrid arg={arg} />;
     case "donate":
       return (
         <div className="not-prose my-7">
