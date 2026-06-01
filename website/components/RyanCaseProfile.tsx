@@ -373,12 +373,13 @@ export function RyanCaseProfile({
           <h2 className="text-lg sm:text-xl font-bold tracking-tight">
             {evidence.length === 0
               ? "Linked from the wider record"
-              : `${evidence.length} ${evidence.length === 1 ? "document" : "documents"} linked to him directly`}
+              : "The documents that name him directly"}
           </h2>
           <p className="text-sm text-[var(--color-ink-soft)] mt-1 max-w-2xl">
-            His name runs through the whole case file — {totals.documents.toLocaleString()}{" "}
-            documents and {totals.grievances} documented grievances.{" "}
-            <Link href="/case" className="text-[var(--color-accent)] font-semibold hover:underline">
+            {evidence.length > 0 ? "A sample pulled to this profile. " : ""}His name runs
+            through the whole case file — {totals.documents.toLocaleString()} documents and{" "}
+            {totals.grievances} documented grievances across {totals.facilities} facilities.{" "}
+            <Link href="/case?view=documents" className="text-[var(--color-accent)] font-semibold hover:underline">
               Walk the full record →
             </Link>
           </p>
@@ -389,12 +390,87 @@ export function RyanCaseProfile({
         </div>
       </section>
 
-      {/* ---- Cross-links ---- */}
-      <section className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <CrossLink href="/about" title="Full biography" sub="Exhibit 288, in her words" />
-        <CrossLink href="/case" title="The J6 Case" sub="Every grievance & document" />
-        <CrossLink href="/the-harassment" title="The Receipts Wall" sub="Every brigade, threat & ban" />
-        <CrossLink href="/support" title="Back the rebuild" sub="Fund keeping this public" />
+      {/* ---- The full record · a directory into every part of the case ---- */}
+      <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+          The full record
+        </p>
+        <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
+          Everything is public. Walk it yourself.
+        </h2>
+        <p className="mt-3 text-base text-[var(--color-ink-soft)] leading-relaxed max-w-2xl">
+          Nothing here sits behind a paywall or a login. Every grievance, every
+          document, every name — open, sourced, and laid out to be checked.
+        </p>
+        <div className="mt-6 grid grid-cols-2 lg:grid-cols-3 gap-3">
+          <CrossLink href="/case" title="The case hub" sub="Start here — the whole file, organized" />
+          <CrossLink href="/case?view=timeline" title="Timeline" sub="Arrest to pardon, day by day" />
+          <CrossLink
+            href="/case?view=grievances"
+            title="Grievances"
+            sub={`${totals.grievances} documented, with the paperwork`}
+          />
+          <CrossLink
+            href="/case?view=documents"
+            title="Documents"
+            sub={`${totals.documents.toLocaleString()} scans on the record`}
+          />
+          <CrossLink
+            href="/case/witnesses"
+            title="Co-detainees & witnesses"
+            sub={`${totals.corroborators} who corroborate the record`}
+          />
+          <CrossLink href="/case/officials" title="Officials named" sub="Who did what, on the record" />
+          <CrossLink
+            href="/case/geography"
+            title="Geography"
+            sub={`The ${totals.facilities} facilities he moved through`}
+          />
+          <CrossLink href="/case/damages" title="Damages" sub="What four years of this cost" />
+          <CrossLink href="/about" title="Full biography" sub="Exhibit 288, in his words" />
+        </div>
+      </section>
+
+      {/* ---- Closing CTA · stand with him ---- */}
+      <section className="mt-12">
+        <div className="rounded-3xl border-2 border-[var(--color-accent)] bg-gradient-to-br from-[var(--color-accent-soft)] to-[var(--color-surface)] p-6 sm:p-10 text-center">
+          <p className="text-[11px] uppercase tracking-[0.25em] text-[var(--color-accent)] font-bold">
+            Stand with him
+          </p>
+          <h2 className="mt-2 text-2xl sm:text-4xl font-bold tracking-tight font-display leading-[1.06] max-w-2xl mx-auto">
+            He kept the receipts. Help keep them public.
+          </h2>
+          <p className="mt-4 text-base text-[var(--color-ink-soft)] leading-relaxed max-w-xl mx-auto">
+            Keeping this record up — the filings, the scans, the names — costs money and
+            takes nerve. Two ways to help right now: back the rebuild, or put this page in
+            front of one more person.
+          </p>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+            <Link
+              href="/support"
+              className="inline-flex items-center rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] px-6 py-3 text-sm font-bold hover:opacity-90 transition"
+            >
+              Back the rebuild →
+            </Link>
+            <ShareButton
+              url={url}
+              title={`${person.name} — pardoned January 6 defendant, charges dismissed with prejudice. The full record:`}
+              slug={person.slug}
+              caseKind="person"
+            />
+          </div>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-xs text-[var(--color-muted)]">
+            <Link href="/the-harassment" className="hover:text-[var(--color-accent)] font-semibold">
+              The harassment wall →
+            </Link>
+            <Link href="/impact" className="hover:text-[var(--color-accent)] font-semibold">
+              Where the money goes →
+            </Link>
+            <Link href="/" className="hover:text-[var(--color-accent)] font-semibold">
+              The latest dispatches →
+            </Link>
+          </div>
+        </div>
       </section>
     </article>
   );
