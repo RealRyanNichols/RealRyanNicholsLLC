@@ -145,6 +145,8 @@ I have asked for the Harrison County bodycam footage because the footage should 
 
 That is why the bodycam matters.
 
+I also preserved my own 30-minute phone video from May 10, 2026. I am not publishing the full raw file here because it includes bystanders and faces that still need review, and the audio is not clean enough to quote without manual verification. But visually, it preserves my vantage point from inside my vehicle, the layout of the parking lot, the vehicles, and the people outside while the dispute was unfolding.
+
 The Harrison County Sheriff's Office press release used one set of words. It said the allegation was that I "raised his shirt up to display a firearm and placed his hand upon grip of the firearm."
 
 ![Redacted screenshot crop of a Harrison County Sheriff's Office press release dated May 11, 2026. The visible text says deputies responded to Heskell Oney Road in Harleton and that the alleged victim said Ryan Nichols raised his shirt to display a firearm and placed his hand on the grip.](/uploads/harrison-county-firearm-press-release-crop.png)
