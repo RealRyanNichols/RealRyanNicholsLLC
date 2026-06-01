@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createHash } from "crypto";
+import { Resend } from "resend";
 import { getSupabaseServiceClient } from "@/lib/supabase/service";
+import { SITE } from "@/lib/site";
 
 const schema = z
   .object({
@@ -102,5 +104,46 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
+
+  // Best-effort admin notification so a new tip doesn't sit unseen in /admin/tips.
+  // Non-blocking: the tip is already saved; email failure never fails the request.
+  const apiKey = process.env.RESEND_API_KEY;
+  const from = process.env.RESEND_FROM_EMAIL;
+  if (apiKey && from) {
+    const adminTo = process.env.ADMIN_NOTIFY_EMAIL ?? from;
+    const d = parsed.data;
+    const esc = (s: string) =>
+      s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    const lines = [
+      `Category: ${d.category}`,
+      d.defendant_name ? `Subject/Case: ${d.defendant_name.trim()}` : null,
+      d.location ? `Location: ${d.location.trim()}` : null,
+      d.submitter_name ? `From: ${d.submitter_name.trim()}` : "From: (anonymous)",
+      emailIn ? `Reply-to: ${emailIn.trim()}` : "Reply-to: (none given)",
+      d.urls && d.urls.length ? `Links: ${d.urls.join(", ")}` : null,
+      "",
+      d.narrative.trim(),
+    ].filter(Boolean) as string[];
+    const body = lines.join("\n");
+    const text = `New tip submitted on ${SITE.url}\n\n${body}\n\nReview/approve: ${SITE.url}/admin/tips`;
+    const html =
+      `<p style="font-family:sans-serif"><strong>New tip submitted</strong></p>` +
+      `<pre style="font-family:ui-monospace,monospace;white-space:pre-wrap;font-size:14px;line-height:1.5">${esc(body)}</pre>` +
+      `<p><a href="${SITE.url}/admin/tips">Review and approve in admin →</a></p>`;
+    try {
+      const resend = new Resend(apiKey);
+      await resend.emails.send({
+        from,
+        to: adminTo,
+        subject: `New tip: ${d.category}${d.defendant_name ? ` — ${d.defendant_name.trim()}` : ""}`,
+        html,
+        text,
+        ...(emailIn ? { replyTo: emailIn.trim() } : {}),
+      });
+    } catch {
+      /* non-blocking — tip is saved regardless */
+    }
+  }
+
   return NextResponse.json({ ok: true });
 }
