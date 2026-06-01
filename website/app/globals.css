@@ -68,10 +68,10 @@
     color: #fdf8ea;
   }
 
-  /* Tighter, more confident headings — feels closer to X / Threads. */
+  /* Strong headings without negative tracking so long article titles stay legible. */
   h1, h2, h3 {
     font-family: var(--font-display);
-    letter-spacing: -0.015em;
+    letter-spacing: 0;
     color: var(--color-ink);
   }
 

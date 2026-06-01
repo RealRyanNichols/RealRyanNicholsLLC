@@ -32,6 +32,8 @@ export type Post = {
   type: PostType;
   title: string | null;
   body: string;
+  seo_title: string | null;
+  seo_description: string | null;
   image_urls: string[] | null;
   media: MediaItem[] | null;
   mux_asset_id: string | null;

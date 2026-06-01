@@ -45,7 +45,7 @@ export async function generateMetadata(props: {
   if (!post) return { title: "Not found" };
 
   const displayTitle = post.title ?? (deriveExcerpt(post.body, null).slice(0, 80) || "Note");
-  const excerpt = deriveExcerpt(post.body, post.title);
+  const excerpt = post.seo_description ?? deriveExcerpt(post.body, post.title);
 
   // Per-post override from the /admin/og-images tool (path "/posts/<slug>").
   // Lets you set a custom share image + SEO title/description per post, live,
@@ -72,7 +72,7 @@ export async function generateMetadata(props: {
     ogImage = `/og/${post.slug}`;
   }
 
-  const metaTitle = override?.title ?? displayTitle;
+  const metaTitle = override?.title ?? post.seo_title ?? displayTitle;
   const metaDescription = override?.description ?? excerpt;
 
   const url = `${SITE.url}/posts/${post.slug}`;
@@ -194,10 +194,15 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
               </>
             )}
           </div>
-          {post.title ? (
-            <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight">
-              {post.title}
+          {displayTitle ? (
+            <h1 className="font-display text-4xl font-black leading-[1.03] tracking-normal sm:text-5xl">
+              {displayTitle}
             </h1>
+          ) : null}
+          {post.seo_description ? (
+            <p className="mt-4 max-w-3xl text-lg leading-relaxed text-[var(--color-ink-soft)] sm:text-xl">
+              {post.seo_description}
+            </p>
           ) : null}
           <div className={post.title ? "mt-3 flex items-center justify-between gap-3 flex-wrap" : "flex items-center justify-between gap-3 flex-wrap"}>
             <div>
