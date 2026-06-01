@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
+import { FundingMomentum } from "@/components/FundingMomentum";
 
 type Bucket = {
   id: string;
@@ -114,21 +115,22 @@ function NeedCard({
   selected,
   armed,
   onSelect,
+  onCoverFully,
 }: {
   bucket: Bucket;
   selected: boolean;
   armed: boolean;
   onSelect: () => void;
+  onCoverFully: () => void;
 }) {
   const p = pct(bucket.raised_cents, bucket.goal_cents);
   const shown = useCountUp(bucket.raised_cents, armed);
   const per = bucket.cadence === "monthly" ? "/mo" : "";
+  const remaining = Math.max(0, bucket.goal_cents - bucket.raised_cents);
+  const funded = remaining <= 0;
   return (
-    <button
-      type="button"
-      onClick={onSelect}
-      aria-pressed={selected}
-      className="w-full text-left rounded-xl border-2 p-3 transition-transform"
+    <div
+      className="w-full rounded-xl border-2 p-3 transition-transform"
       style={{
         borderColor: selected ? GREEN : "var(--color-line)",
         background: selected ? "rgba(22,163,74,0.06)" : "var(--color-surface)",
@@ -136,26 +138,40 @@ function NeedCard({
         transform: selected ? "scale(1.01)" : "none",
       }}
     >
-      <div className="flex items-center justify-between gap-2">
-        <span className="font-bold text-[var(--color-ink)] flex items-center gap-2 text-sm">
-          <span className="text-lg" aria-hidden>{emojiFor(bucket.label)}</span>
-          {bucket.label}
-        </span>
-        <span className="text-xs font-bold tabular-nums" style={{ color: colorForPct(p) }}>{p}%</span>
-      </div>
-      {bucket.blurb ? (
-        <p className="mt-1 text-xs text-[var(--color-muted)] leading-snug">{bucket.blurb}</p>
+      <button type="button" onClick={onSelect} aria-pressed={selected} className="w-full text-left">
+        <div className="flex items-center justify-between gap-2">
+          <span className="font-bold text-[var(--color-ink)] flex items-center gap-2 text-sm">
+            <span className="text-lg" aria-hidden>{emojiFor(bucket.label)}</span>
+            {bucket.label}
+          </span>
+          <span className="text-xs font-bold tabular-nums" style={{ color: funded ? GREEN : colorForPct(p) }}>
+            {funded ? "✓ funded" : `${p}%`}
+          </span>
+        </div>
+        {bucket.blurb ? (
+          <p className="mt-1 text-xs text-[var(--color-muted)] leading-snug">{bucket.blurb}</p>
+        ) : null}
+        <div className="mt-2">
+          <ProgressBar value={p} armed={armed} height={9} />
+        </div>
+        <div className="mt-1.5 flex items-baseline justify-between text-xs">
+          <span className="font-bold tabular-nums text-[var(--color-ink)]">
+            {money(shown)} <span className="font-medium text-[var(--color-muted)]">raised</span>
+          </span>
+          <span className="text-[var(--color-muted)] tabular-nums">of {money(bucket.goal_cents)}{per}</span>
+        </div>
+      </button>
+      {!funded && remaining >= 5000 ? (
+        <button
+          type="button"
+          onClick={onCoverFully}
+          className="mt-2 w-full rounded-lg border px-2 py-1.5 text-xs font-bold transition-colors"
+          style={{ borderColor: GREEN, color: GREEN, background: "transparent" }}
+        >
+          I&apos;ll cover this — {money(remaining)}
+        </button>
       ) : null}
-      <div className="mt-2">
-        <ProgressBar value={p} armed={armed} height={9} />
-      </div>
-      <div className="mt-1.5 flex items-baseline justify-between text-xs">
-        <span className="font-bold tabular-nums text-[var(--color-ink)]">
-          {money(shown)} <span className="font-medium text-[var(--color-muted)]">raised</span>
-        </span>
-        <span className="text-[var(--color-muted)] tabular-nums">of {money(bucket.goal_cents)}{per}</span>
-      </div>
-    </button>
+    </div>
   );
 }
 
@@ -184,6 +200,19 @@ export function FundTheTruth() {
       alive = false;
     };
   }, []);
+
+  // Select a bucket AND set the amount to exactly cover its remaining need,
+  // then scroll to the give button — the one-tap "I'll cover this" flow.
+  function coverFully(b: Bucket) {
+    const remaining = Math.max(0, b.goal_cents - b.raised_cents);
+    setSelected(b.id);
+    setAmount(remaining);
+    setCustom("");
+    trackEvent("fund_cover_fully", { target: b.label, amount_cents: remaining });
+    if (typeof document !== "undefined") {
+      setTimeout(() => document.getElementById("fund-give-btn")?.scrollIntoView({ behavior: "smooth", block: "center" }), 60);
+    }
+  }
 
   const effectiveCents = amount === -1 ? Math.round(parseFloat(custom || "0") * 100) : amount;
   const monthlyBuckets = (buckets ?? []).filter((b) => b.cadence === "monthly");
@@ -294,6 +323,9 @@ export function FundTheTruth() {
         <div className="mt-4 h-28 rounded-xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] animate-pulse" />
       )}
 
+      {/* Real-data momentum: supporters this month + recent gifts ticker */}
+      {ready ? <FundingMomentum /> : null}
+
       {/* Step 1 — amount */}
       <p className="mt-6 text-xs uppercase tracking-wider font-bold text-[var(--color-muted)]">
         1 · Choose an amount
@@ -370,6 +402,7 @@ export function FundTheTruth() {
                   setSelected(b.id);
                   trackEvent("fund_target_select", { target: b.label });
                 }}
+                onCoverFully={() => coverFully(b)}
               />
             ))}
           </div>
@@ -393,6 +426,7 @@ export function FundTheTruth() {
                   setSelected(b.id);
                   trackEvent("fund_target_select", { target: b.label });
                 }}
+                onCoverFully={() => coverFully(b)}
               />
             ))}
           </div>
@@ -407,6 +441,7 @@ export function FundTheTruth() {
 
       {/* Give */}
       <button
+        id="fund-give-btn"
         type="button"
         onClick={give}
         disabled={busy || !ready}
