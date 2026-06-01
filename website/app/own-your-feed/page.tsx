@@ -97,9 +97,136 @@ const roadmap = [
   "Any public token or tradable coin comes only after legal review, disclosures, and no investment-promise language.",
 ];
 
+const comparison = [
+  {
+    issue: "Who decides who sees you",
+    rented: "An algorithm — and it changes the rules without telling you.",
+    owned: "Anyone who visits your domain. No gatekeeper in the middle.",
+  },
+  {
+    issue: "If you get banned or throttled",
+    rented: "Your audience disappears overnight.",
+    owned: "You keep every post, every email, every supporter.",
+  },
+  {
+    issue: "Outbound links",
+    rented: "Buried, because the platform wants you to stay put.",
+    owned: "Every post is a link you own and can share anywhere.",
+  },
+  {
+    issue: "Making money",
+    rented: "Ads, or a cut handed to the platform.",
+    owned: "Calls, audits, builds, prints, support — paid to you, direct.",
+  },
+  {
+    issue: "Your record",
+    rented: "Posts scroll away and get harder to find by the hour.",
+    owned: "A permanent, searchable archive on your own site.",
+  },
+  {
+    issue: "Your proof",
+    rented: "Screenshots get “context”-flagged or quietly removed.",
+    owned: "Receipts live on a page only you control.",
+  },
+];
+
+const buildSteps = [
+  {
+    n: "01",
+    title: "Start with a call or an audit",
+    body: "A $197 call or a $297 written audit maps your story, your audience, and the fastest path to money — before anyone writes a line of code.",
+  },
+  {
+    n: "02",
+    title: "I build it on your domain",
+    body: "An owned feed, the pages you need, basic analytics, and a clear way for people to contact, support, or buy. Built around your message and your proof.",
+  },
+  {
+    n: "03",
+    title: "You get the keys",
+    body: "A 30-day handoff so you can keep posting without me. Your domain, your accounts, your content — you own all of it.",
+  },
+];
+
+const proof = [
+  { href: "/", label: "The feed", body: "Every post lands on a domain I own first — social just points back." },
+  { href: "/the-harassment", label: "The Receipts Wall", body: "Every threat and ban, kept in public and searchable." },
+  { href: "/case", label: "The case file", body: "A structured public record, not a buried thread." },
+  { href: "/impact", label: "Transparency", body: "Public numbers anyone can check." },
+  { href: "/store", label: "The store", body: "Take payment for real work. No ads, no middleman." },
+];
+
+const faqs = [
+  {
+    q: "Do I actually own it?",
+    a: "Yes. Your domain, your content, your email list, your accounts. If we ever part ways, you keep everything and nothing disappears.",
+  },
+  {
+    q: "Why not just use Substack, X, or Facebook?",
+    a: "Those rent you an audience and can throttle, lock, or erase it. This puts your home base on a domain you control. Social media becomes the billboard that points back to it.",
+  },
+  {
+    q: "Can I move my existing posts over?",
+    a: "Yes. Bringing your existing posts and audience onto the owned feed is part of the build.",
+  },
+  {
+    q: "What about the domain and hosting?",
+    a: "We sort it out on the call, and you own the domain and the accounts from day one. The build is set up so you are never locked to me.",
+  },
+  {
+    q: "Do you take crypto?",
+    a: "Card payments work today. Stablecoin payments are being added through Stripe. Any future site credits are prepaid and only good for services here — they are not an investment and carry no promise of value.",
+  },
+  {
+    q: "How long does it take?",
+    a: "A basic owned feed launches fast. The Codebase + Domain bundle adds SEO basics, analytics, launch copy, and a 30-day check-in.",
+  },
+];
+
+const serviceLd = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "Own Your Feed — domain-first feed and platform builds",
+  serviceType: "Website and owned-media platform builds",
+  provider: { "@type": "Person", name: "Ryan Nichols", url: SITE.url },
+  areaServed: "US",
+  url: `${SITE.url}/own-your-feed`,
+  description:
+    "Ryan Nichols builds domain-first feeds and public-record sites so creators, investigators, and small organizations can stop renting attention from social platforms.",
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Platform build services",
+    itemListElement: offers.map((o) => ({
+      "@type": "Offer",
+      price: o.price.replace(/[^0-9.]/g, ""),
+      priceCurrency: "USD",
+      url: `${SITE.url}${o.href}`,
+      itemOffered: { "@type": "Service", name: o.name, description: o.summary },
+    })),
+  },
+};
+
+const faqLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+
 export default function OwnYourFeedPage() {
   return (
     <article>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
+      />
       <section className="relative min-h-[68vh] overflow-hidden border-b border-[var(--color-line)]">
         <Image
           src="/social-cards/map-room.jpg"
@@ -196,6 +323,65 @@ export default function OwnYourFeedPage() {
         </div>
       </section>
 
+      <section className="border-y border-[var(--color-line)] bg-[var(--color-surface)]">
+        <div className="mx-auto max-w-5xl px-4 py-10">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-accent)]">
+            Rented land vs. your own home
+          </p>
+          <h2 className="mt-2 max-w-2xl text-3xl font-bold leading-tight tracking-normal sm:text-4xl">
+            You don&apos;t own a thing you can be evicted from.
+          </h2>
+          <div className="mt-6 overflow-hidden rounded-lg border border-[var(--color-line)]">
+            <div className="grid grid-cols-1 bg-[var(--color-surface-2)] text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-muted)] sm:grid-cols-3">
+              <div className="px-4 py-3">The question</div>
+              <div className="border-t border-[var(--color-line)] px-4 py-3 sm:border-l sm:border-t-0">
+                On rented land
+              </div>
+              <div className="border-t border-[var(--color-line)] px-4 py-3 text-[var(--color-blue)] sm:border-l sm:border-t-0">
+                On your own domain
+              </div>
+            </div>
+            {comparison.map((row) => (
+              <div
+                key={row.issue}
+                className="grid grid-cols-1 border-t border-[var(--color-line)] text-sm sm:grid-cols-3"
+              >
+                <div className="px-4 py-3 font-bold text-[var(--color-ink)]">{row.issue}</div>
+                <div className="border-t border-[var(--color-line)] px-4 py-3 text-[var(--color-ink-soft)] sm:border-l sm:border-t-0">
+                  {row.rented}
+                </div>
+                <div className="border-t border-[var(--color-line)] bg-[var(--color-blue-soft)] px-4 py-3 font-semibold text-[var(--color-ink)] sm:border-l sm:border-t-0">
+                  {row.owned}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-5xl px-4 py-10">
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-accent)]">
+          How the build works
+        </p>
+        <h2 className="mt-2 text-3xl font-bold leading-tight tracking-normal sm:text-4xl">
+          Three steps from rented to owned.
+        </h2>
+        <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+          {buildSteps.map((step) => (
+            <div
+              key={step.n}
+              className="border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
+            >
+              <p className="text-3xl font-bold text-[var(--color-line)]">{step.n}</p>
+              <h3 className="mt-2 text-xl font-bold tracking-normal">{step.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+                {step.body}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <section className="bg-[var(--color-blue)] text-[#fdf8ea]">
         <div className="mx-auto max-w-5xl px-4 py-10">
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#d8c89e]">
@@ -232,6 +418,38 @@ export default function OwnYourFeedPage() {
         </div>
       </section>
 
+      <section className="border-t border-[var(--color-line)]">
+        <div className="mx-auto max-w-5xl px-4 py-10">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-accent)]">
+            Proof — you&apos;re reading it on one
+          </p>
+          <h2 className="mt-2 max-w-2xl text-3xl font-bold leading-tight tracking-normal sm:text-4xl">
+            This site is the demo. Every piece of it is an owned feed at work.
+          </h2>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[var(--color-ink-soft)]">
+            I didn&apos;t read this in a book. I built it here first, under fire, and it
+            holds. Click anything below — it all runs on the same kind of platform I&apos;d
+            build for you.
+          </p>
+          <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {proof.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="group border border-[var(--color-line)] bg-[var(--color-surface)] p-4 transition hover:border-[var(--color-accent)]"
+              >
+                <p className="text-sm font-bold text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">
+                  {item.label}
+                </p>
+                <p className="mt-1 text-xs leading-relaxed text-[var(--color-muted)]">
+                  {item.body}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="mx-auto grid max-w-5xl grid-cols-1 gap-8 px-4 py-10 lg:grid-cols-[0.9fr_1.1fr]">
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-accent)]">
@@ -258,6 +476,35 @@ export default function OwnYourFeedPage() {
               </p>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="border-t border-[var(--color-line)] bg-[var(--color-surface)]">
+        <div className="mx-auto max-w-5xl px-4 py-10">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-accent)]">
+            Questions
+          </p>
+          <h2 className="mt-2 text-3xl font-bold leading-tight tracking-normal sm:text-4xl">
+            Straight answers before you spend a dollar.
+          </h2>
+          <div className="mt-6 divide-y divide-[var(--color-line)] border-y border-[var(--color-line)]">
+            {faqs.map((f) => (
+              <details key={f.q} className="group px-1 py-4">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-bold text-[var(--color-ink)]">
+                  {f.q}
+                  <span
+                    className="flex-none text-xl leading-none text-[var(--color-accent)] transition group-open:rotate-45"
+                    aria-hidden="true"
+                  >
+                    +
+                  </span>
+                </summary>
+                <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+                  {f.a}
+                </p>
+              </details>
+            ))}
+          </div>
         </div>
       </section>
 
