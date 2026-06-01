@@ -159,6 +159,8 @@ Her husband then speaks on camera. He says:
 
 > "I guess he was worried about the words of Jesus getting smacked him in his face."
 
+I understood that as a reference to the Bible the wife kept saying was in her husband's hand. That is my interpretation, but it is not coming from nowhere. The same set of receipts includes the wife later writing that her husband was "to the point of getting violent."
+
 He also says:
 
 > "Know your backstop."
@@ -171,7 +173,7 @@ That is now attached.
 
 Another short video shows my mother recording my interaction with the officer from a distance while the wife films that scene and narrates against me. That matters because I still do not have the bodycam. When law enforcement will not release the official footage, a family member recording the police interaction is not suspicious. It is exactly how people protect the record.
 
-I deny that I pulled a gun. I deny that I pointed a gun at a vehicle. I deny that I threatened them with a gun.
+I deny that I pulled a gun. I deny that I pointed a gun at a vehicle. I deny that I threatened them with a gun. I also deny that I invented the fear after the fact. The receipts show why I believed the situation could turn physical.
 
 The video matters because it shows the public story changing from the official allegation into a much more dangerous version: "pull a gun," "pointed at," "backstop." That escalation — from "raised his shirt" and "hand upon grip" to "pointed at" and "backstop" — is the whole reason I am asking for the bodycam to be released.
 
