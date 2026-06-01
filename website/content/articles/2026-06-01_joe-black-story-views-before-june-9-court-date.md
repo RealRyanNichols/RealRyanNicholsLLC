@@ -41,6 +41,26 @@ A Harrison County court portal screenshot from May 21, 2026 shows:
 
 That hearing date is Tuesday, June 9, 2026.
 
+## The May 12 call
+
+I also preserved a transcript of a May 12, 2026 phone call with Harrison County.
+
+That transcript matters because it shows I did not just run online and complain. I called the Sheriff's Office. I told them people were posting about me, tagging me, changing the public story, and saying things that I believed were being used to bait me into responding while I had just been told I could not speak freely online.
+
+My point on that call was simple: if Harrison County was going to treat online speech as criminal harassment when I responded to other people, then the same standard needed to work both ways.
+
+The transcript also shows me explaining the church-gun narrative problem. I told Harrison County that people were publicly describing the incident in a way I deny, and that the story being told online was different from what I understood had been reported to officers.
+
+That is why the bodycam matters so much.
+
+The deputy on the call told me he would write an incident report, include the information I gave him, and turn it over to CID or an investigator. He also told me to hold onto the photos, videos, and screenshots so I could provide them directly to the investigator.
+
+That is the record I am preserving.
+
+Not every ugly Facebook comment should become a criminal case. That is part of my point. Facebook has report buttons, harassment policies, appeals, and platform tools for that.
+
+If Facebook reviews my account and leaves my posts up, but Harrison County tells me I can be jailed over online speech while other people keep posting about me, then the standard is not being applied evenly.
+
 ## The bodycam issue
 
 The same evidence folder also contains emails with Lt. Cindy Black of the Harrison County Sheriff's Office, Civil/Open Records/Transport.
@@ -73,6 +93,12 @@ They show `Joe Black` appearing repeatedly in my Facebook story-view receipts as
 
 They show `Joe Black` appearing in at least one Facebook reaction notification tied to my comment.
 
+They show that, on May 12, 2026, I called Harrison County and reported the same online pattern from my side.
+
+They show that I told Harrison County I had screenshots, videos, and records ready to provide.
+
+They show that a deputy told me an incident report would be written and turned over for review.
+
 They show Lt. Cindy Black handling my open-records/bodycam request through the Harrison County Sheriff's Office.
 
 They show Cindy Black telling me on May 18, 2026 that the case was still active and that the call sheet was all she could release at that time.
@@ -88,6 +114,10 @@ That is enough to say I want this on the record before I walk into court.
 ## What it does not prove yet
 
 This article does not prove that the `Joe Black` shown in the story-view screenshots made any judicial decision because of my posts.
+
+It does not prove that Harrison County ignored my May 12 call on purpose.
+
+It does not prove that every person I named on that call committed a crime.
 
 It does not prove that every post was viewed.
 
@@ -110,6 +140,8 @@ I am already being told that I cannot speak freely online without risking jail.
 I am already being accused locally of things I deny.
 
 I am already asking for bodycam that should settle the public record.
+
+I am already on record calling Harrison County and asking them to document the same conduct when it was aimed at me.
 
 Now I have screenshots showing the same name as the judicial officer appearing in my story-view records before a court date where that name appears on the case setting.
 
