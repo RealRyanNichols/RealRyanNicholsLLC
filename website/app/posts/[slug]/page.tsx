@@ -30,7 +30,10 @@ export async function generateStaticParams() {
 }
 
 function deriveExcerpt(body: string, title: string | null): string {
-  const base = body || title || "";
+  const base = body
+    .replace(/^\s*\{\{[\s\S]*?\}\}\s*$/gm, "")
+    .replace(/\s+/g, " ")
+    .trim() || title || "";
   return base.slice(0, 200).replace(/\s+/g, " ").trim();
 }
 

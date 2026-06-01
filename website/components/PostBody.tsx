@@ -39,6 +39,13 @@ function nodeText(node: HastNode | undefined): string {
 
 type Ctx = { postId?: string; slug?: string; title?: string };
 
+type ReceiptGridItem = {
+  src: string;
+  title: string;
+  caption?: string;
+  tag?: string;
+};
+
 function parseVideoArg(arg: string | undefined) {
   const [src, poster, caption] = (arg ?? "").split("|").map((part) => part.trim());
   if (!src || (!src.startsWith("/") && !src.startsWith("https://"))) return null;
@@ -69,17 +76,15 @@ function parseCaseBannerArg(arg: string | undefined) {
 function parseReceiptGridArg(arg: string | undefined) {
   return (arg ?? "")
     .split("|")
-    .map((raw) => {
+    .map<ReceiptGridItem | null>((raw) => {
       const [src, title, caption, tag] = raw.split("::").map((part) => part.trim());
       if (!src || !title || !isSafeMediaSrc(src)) return null;
-      return {
-        src,
-        title,
-        caption: caption || undefined,
-        tag: tag || undefined,
-      };
+      const item: ReceiptGridItem = { src, title };
+      if (caption) item.caption = caption;
+      if (tag) item.tag = tag;
+      return item;
     })
-    .filter((item): item is { src: string; title: string; caption?: string; tag?: string } => Boolean(item));
+    .filter((item): item is ReceiptGridItem => item !== null);
 }
 
 function CaseBanner({ arg }: { arg?: string }) {
