@@ -29,6 +29,10 @@ function hrefPath(href: string): string {
   return href.split("?")[0];
 }
 
+// Four lean top-level slots so the desktop bar never smooshes against the
+// Donate / auth chips. Everything else folds into "The Case" and "More".
+// Submit-a-Tip stays prominent (it's the newsroom tip line) but lives under
+// More on desktop and gets its own row in the mobile drawer below.
 const NAV: NavEntry[] = [
   { href: "/", label: "Feed" },
   {
@@ -37,9 +41,9 @@ const NAV: NavEntry[] = [
       { href: "/case", label: "J6 Case overview" },
       { href: "/case?view=people&filter=unclaimed", label: "All J6 defendants" },
       { href: "/the-map-room", label: "The Map Room" },
+      { href: "/fights", label: "The Fights" },
     ],
   },
-  { href: "/fights", label: "The Fights" },
   {
     label: "Watch",
     items: [
@@ -48,17 +52,14 @@ const NAV: NavEntry[] = [
     ],
   },
   {
-    label: "Work",
+    label: "More",
     items: [
+      { href: "/submit", label: "Submit a Tip" },
       { href: "/own-your-feed", label: "Own your feed" },
       { href: "/store", label: "Services store" },
+      { href: "/about", label: "About" },
     ],
   },
-  { href: "/about", label: "About" },
-  // The newsroom tip line — the public submits stories, names, and evidence
-  // here. Surfaced as a top-level nav item (desktop tab + mobile drawer) so the
-  // invitation to participate is never buried inside a page.
-  { href: "/submit", label: "Submit a Tip" },
 ];
 
 export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
@@ -239,27 +240,39 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             className="md:hidden fixed top-16 inset-x-0 z-30 border-b border-[var(--color-line)] bg-[var(--color-paper)]/98 backdrop-blur-xl px-4 py-3 shadow-2xl"
           >
             <nav className="flex flex-col gap-1">
+              {/* Submit a Tip — kept prominent on mobile (it's the newsroom
+                  tip line) even though it folds under "More" on desktop. */}
+              <Link
+                href="/submit"
+                role="menuitem"
+                className="block rounded-lg border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-4 py-3 text-base font-bold text-[var(--color-accent)] transition hover:bg-[var(--color-accent)] hover:text-[var(--color-paper)]"
+              >
+                📨 Submit a Tip
+              </Link>
               {NAV.map((n) =>
                 isGroup(n) ? (
                   <div key={n.label} className="mt-1">
                     <p className="px-4 pt-2 pb-1 text-[11px] uppercase tracking-[0.18em] text-[var(--color-muted)] font-bold">
                       {n.label}
                     </p>
-                    {n.items.map((it) => (
-                      <Link
-                        key={it.href}
-                        href={it.href}
-                        role="menuitem"
-                        className={[
-                          "block rounded-lg px-4 py-3 text-base font-semibold transition",
-                          pathname === hrefPath(it.href)
-                            ? "bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
-                            : "text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)]",
-                        ].join(" ")}
-                      >
-                        {it.label}
-                      </Link>
-                    ))}
+                    {n.items
+                      // /submit already has the prominent CTA above on mobile.
+                      .filter((it) => hrefPath(it.href) !== "/submit")
+                      .map((it) => (
+                        <Link
+                          key={it.href}
+                          href={it.href}
+                          role="menuitem"
+                          className={[
+                            "block rounded-lg px-4 py-3 text-base font-semibold transition",
+                            pathname === hrefPath(it.href)
+                              ? "bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
+                              : "text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)]",
+                          ].join(" ")}
+                        >
+                          {it.label}
+                        </Link>
+                      ))}
                   </div>
                 ) : (
                   <Link

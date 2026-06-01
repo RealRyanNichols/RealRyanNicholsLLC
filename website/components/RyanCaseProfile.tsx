@@ -53,6 +53,15 @@ export function RyanCaseProfile({
         </Link>
       </nav>
 
+      {/* ============================================================
+          ATTORNEY BRIEFING — front-loaded for counsel evaluating the
+          CURRENT matter. PUBLIC PAGE: contains only already-public facts
+          and links to already-published motions. No bond status, no
+          hearing dates, no self-admissions — sensitive specifics move to
+          the private attorney conversation.
+          ============================================================ */}
+      <AttorneyBriefing />
+
       {/* ---- Hero ---- */}
       <div className="rounded-3xl border-2 border-[var(--color-accent)] bg-gradient-to-br from-[var(--color-accent-soft)] to-[var(--color-surface)] p-6 sm:p-9">
         <p className="text-[11px] uppercase tracking-[0.25em] text-[var(--color-accent)] font-bold">
@@ -364,12 +373,13 @@ export function RyanCaseProfile({
           <h2 className="text-lg sm:text-xl font-bold tracking-tight">
             {evidence.length === 0
               ? "Linked from the wider record"
-              : `${evidence.length} ${evidence.length === 1 ? "document" : "documents"} linked to him directly`}
+              : "The documents that name him directly"}
           </h2>
           <p className="text-sm text-[var(--color-ink-soft)] mt-1 max-w-2xl">
-            His name runs through the whole case file — {totals.documents.toLocaleString()}{" "}
-            documents and {totals.grievances} documented grievances.{" "}
-            <Link href="/case" className="text-[var(--color-accent)] font-semibold hover:underline">
+            {evidence.length > 0 ? "A sample pulled to this profile. " : ""}His name runs
+            through the whole case file — {totals.documents.toLocaleString()} documents and{" "}
+            {totals.grievances} documented grievances across {totals.facilities} facilities.{" "}
+            <Link href="/case?view=documents" className="text-[var(--color-accent)] font-semibold hover:underline">
               Walk the full record →
             </Link>
           </p>
@@ -380,14 +390,229 @@ export function RyanCaseProfile({
         </div>
       </section>
 
-      {/* ---- Cross-links ---- */}
-      <section className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <CrossLink href="/about" title="Full biography" sub="Exhibit 288, in her words" />
-        <CrossLink href="/case" title="The J6 Case" sub="Every grievance & document" />
-        <CrossLink href="/the-harassment" title="The Receipts Wall" sub="Every brigade, threat & ban" />
-        <CrossLink href="/support" title="Back the rebuild" sub="Fund keeping this public" />
+      {/* ---- The full record · a directory into every part of the case ---- */}
+      <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+          The full record
+        </p>
+        <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
+          Everything is public. Walk it yourself.
+        </h2>
+        <p className="mt-3 text-base text-[var(--color-ink-soft)] leading-relaxed max-w-2xl">
+          Nothing here sits behind a paywall or a login. Every grievance, every
+          document, every name — open, sourced, and laid out to be checked.
+        </p>
+        <div className="mt-6 grid grid-cols-2 lg:grid-cols-3 gap-3">
+          <CrossLink href="/case" title="The case hub" sub="Start here — the whole file, organized" />
+          <CrossLink href="/case?view=timeline" title="Timeline" sub="Arrest to pardon, day by day" />
+          <CrossLink
+            href="/case?view=grievances"
+            title="Grievances"
+            sub={`${totals.grievances} documented, with the paperwork`}
+          />
+          <CrossLink
+            href="/case?view=documents"
+            title="Documents"
+            sub={`${totals.documents.toLocaleString()} scans on the record`}
+          />
+          <CrossLink
+            href="/case/witnesses"
+            title="Co-detainees & witnesses"
+            sub={`${totals.corroborators} who corroborate the record`}
+          />
+          <CrossLink href="/case/officials" title="Officials named" sub="Who did what, on the record" />
+          <CrossLink
+            href="/case/geography"
+            title="Geography"
+            sub={`The ${totals.facilities} facilities he moved through`}
+          />
+          <CrossLink href="/case/damages" title="Damages" sub="What four years of this cost" />
+          <CrossLink href="/about" title="Full biography" sub="Exhibit 288, in his words" />
+        </div>
+      </section>
+
+      {/* ---- Closing CTA · stand with him ---- */}
+      <section className="mt-12">
+        <div className="rounded-3xl border-2 border-[var(--color-accent)] bg-gradient-to-br from-[var(--color-accent-soft)] to-[var(--color-surface)] p-6 sm:p-10 text-center">
+          <p className="text-[11px] uppercase tracking-[0.25em] text-[var(--color-accent)] font-bold">
+            Stand with him
+          </p>
+          <h2 className="mt-2 text-2xl sm:text-4xl font-bold tracking-tight font-display leading-[1.06] max-w-2xl mx-auto">
+            He kept the receipts. Help keep them public.
+          </h2>
+          <p className="mt-4 text-base text-[var(--color-ink-soft)] leading-relaxed max-w-xl mx-auto">
+            Keeping this record up — the filings, the scans, the names — costs money and
+            takes nerve. Two ways to help right now: back the rebuild, or put this page in
+            front of one more person.
+          </p>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+            <Link
+              href="/support"
+              className="inline-flex items-center rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] px-6 py-3 text-sm font-bold hover:opacity-90 transition"
+            >
+              Back the rebuild →
+            </Link>
+            <ShareButton
+              url={url}
+              title={`${person.name} — pardoned January 6 defendant, charges dismissed with prejudice. The full record:`}
+              slug={person.slug}
+              caseKind="person"
+            />
+          </div>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-xs text-[var(--color-muted)]">
+            <Link href="/the-harassment" className="hover:text-[var(--color-accent)] font-semibold">
+              The harassment wall →
+            </Link>
+            <Link href="/impact" className="hover:text-[var(--color-accent)] font-semibold">
+              Where the money goes →
+            </Link>
+            <Link href="/" className="hover:text-[var(--color-accent)] font-semibold">
+              The latest dispatches →
+            </Link>
+          </div>
+        </div>
       </section>
     </article>
+  );
+}
+
+// Attorney-facing briefing block. PUBLIC — every line here is either already
+// public record or a published motion of Ryan's. Deliberately omits bond
+// status, hearing dates, and anything that reads as an admission; those go to
+// counsel privately. Goal: give a lawyer the current posture + the live issues
+// + a contact path in the first ten seconds.
+function AttorneyBriefing() {
+  const issues: { label: string; sub: string; href: string }[] = [
+    {
+      label: "First Amendment / bond conditions",
+      sub: "Speech & publication restrictions challenged as overbroad prior restraint (Packingham, Near, Davenport).",
+      href: "/posts/motion-2-speech-bond-conditions",
+    },
+    {
+      label: "Brady & Article 39.14 discovery",
+      sub: "Demand for bodycam, CAD, dispatch, and officer notes through criminal discovery.",
+      href: "/posts/motion-4-39-14-brady-discovery",
+    },
+    {
+      label: "Bodycam preservation & release",
+      sub: "Emergency motion to preserve and produce the recording said to settle the church allegation.",
+      href: "/posts/motion-3-preserve-produce-bodycam",
+    },
+    {
+      label: "Right to counsel — no waiver",
+      sub: "Pro se filings do not waive counsel; appointment sought (Gideon, Argersinger, Rothgery).",
+      href: "/posts/motion-1-no-waiver-appointment-of-counsel",
+    },
+    {
+      label: "Recusal",
+      sub: "Motion to recuse, with supporting exhibits, filed in the current matter.",
+      href: "/posts/recuse-judge-joe-black",
+    },
+    {
+      label: "Protective order",
+      sub: "Against documented online threats and the escalating rumor narrative.",
+      href: "/posts/motion-6-protective-order",
+    },
+  ];
+
+  return (
+    <section className="rounded-3xl border-2 border-[var(--color-ink)] bg-[var(--color-ink)] text-[var(--color-paper)] p-6 sm:p-9">
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em]">
+          Attorney briefing
+        </span>
+        <span className="rounded-full border border-white/25 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-white/80">
+          Seeking counsel
+        </span>
+      </div>
+
+      <h2 className="mt-4 text-2xl sm:text-4xl font-bold tracking-tight font-display leading-[1.08]">
+        Counsel evaluating my case — start here.
+      </h2>
+      <p className="mt-3 text-sm sm:text-base text-white/80 leading-relaxed max-w-2xl">
+        I&apos;m a <strong className="text-white">pardoned January 6 defendant</strong>{" "}
+        — federal charges <strong className="text-white">dismissed with prejudice</strong>,
+        cannot be refiled. I am now defending an{" "}
+        <strong className="text-white">active matter in Harrison County, Texas</strong>,
+        currently <strong className="text-white">pro se and seeking representation</strong>.
+        I am <strong className="text-white">not</strong> waiving counsel. The live legal
+        issues are below, each tied to a motion I have already filed and published.
+      </p>
+
+      {/* Snapshot — public-safe facts only */}
+      <dl className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {[
+          ["Posture", "Active · pro se"],
+          ["Venue", "Harrison County, TX"],
+          ["Prior matter", "Pardoned · dismissed w/ prejudice"],
+          ["Motions filed", "11 + recusal, public"],
+        ].map(([k, v]) => (
+          <div key={k} className="rounded-2xl border border-white/15 bg-white/[0.04] p-3">
+            <dt className="text-[10px] uppercase tracking-wider text-white/55 font-bold">{k}</dt>
+            <dd className="mt-1 text-sm font-bold text-white leading-snug">{v}</dd>
+          </div>
+        ))}
+      </dl>
+
+      {/* Live issues, each linked to the filed motion */}
+      <div className="mt-7">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+          Live legal issues · with the filed motion
+        </p>
+        <div className="mt-3 grid gap-2.5 sm:grid-cols-2">
+          {issues.map((it) => (
+            <Link
+              key={it.href}
+              href={it.href}
+              className="group rounded-2xl border border-white/15 bg-white/[0.04] p-4 hover:border-[var(--color-accent)] transition"
+            >
+              <p className="text-sm font-bold text-white group-hover:text-[var(--color-accent)] transition leading-snug">
+                {it.label}
+              </p>
+              <p className="mt-1 text-xs text-white/70 leading-snug">{it.sub}</p>
+            </Link>
+          ))}
+        </div>
+        <Link
+          href="/posts/the-transparency-motions-what-i-filed-and-why"
+          className="mt-3 inline-block text-sm font-bold text-[var(--color-accent)] hover:underline"
+        >
+          Read all eleven motions, why I filed each, and the exhibit index →
+        </Link>
+      </div>
+
+      {/* Contact — attorneys */}
+      <div className="mt-7 rounded-2xl border border-[var(--color-accent)] bg-[var(--color-accent)]/10 p-5">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+          Attorneys — reach me directly
+        </p>
+        <p className="mt-2 text-sm text-white/85 leading-relaxed max-w-2xl">
+          If you practice criminal defense, First Amendment, or civil-rights litigation
+          and want the full private briefing, contact me. I can send the complete
+          packet — motions, declarations, exhibit index, and the case-specific
+          details that aren&apos;t on this public page.
+        </p>
+        <div className="mt-4 flex flex-wrap items-center gap-3">
+          <a
+            href="mailto:ryan@realryannichols.com?subject=Attorney%20inquiry%20%E2%80%94%20Harrison%20County%20matter&body=Hi%20Ryan%2C%0A%0AI%27m%20an%20attorney%20licensed%20in%20%5Bstate%5D.%20My%20practice%20areas%3A%20%5Bareas%5D.%0A%0AI%27d%20like%20the%20full%20private%20briefing%20on%20your%20current%20matter.%0A%0A%5BName%2C%20firm%2C%20bar%20number%2C%20phone%5D"
+            className="inline-flex items-center rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:opacity-90 transition"
+          >
+            ✉ Email me about representation
+          </a>
+          <Link
+            href="/submit"
+            className="inline-flex items-center rounded-full border border-white/30 px-5 py-2.5 text-sm font-bold text-white hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition"
+          >
+            Send a secure note →
+          </Link>
+        </div>
+        <p className="mt-3 text-[11px] text-white/50 leading-snug">
+          This page is public; it states only already-public facts and links to
+          motions I have already filed. Case-specific posture and strategy are
+          shared privately with counsel.
+        </p>
+      </div>
+    </section>
   );
 }
 
