@@ -44,8 +44,13 @@ export function VideoPlayer({
     }
   }
 
+  // No forced 16:9 box: let the player size to the video's natural aspect ratio
+  // so portrait (9:16) videos fill the width on mobile instead of being
+  // pillar-boxed into a tiny center strip. Capped at 85vh and centered so a
+  // tall portrait video doesn't dominate on desktop; landscape videos still
+  // render normally.
   return (
-    <div className="aspect-video w-full overflow-hidden rounded-lg bg-black">
+    <div className="w-full overflow-hidden rounded-lg bg-black flex justify-center">
       <MuxPlayer
         playbackId={playbackId}
         poster={poster}
@@ -57,7 +62,7 @@ export function VideoPlayer({
         onTimeUpdate={onTimeUpdate}
         onEnded={() => trackEvent("video_complete", props())}
         onError={() => trackEvent("video_error", props())}
-        style={{ width: "100%", height: "100%" }}
+        style={{ width: "100%", maxHeight: "85vh", display: "block" }}
       />
     </div>
   );
