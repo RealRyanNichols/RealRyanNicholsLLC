@@ -50,6 +50,7 @@ export function getIntegrationHealth(): IntegrationGroup[] {
   const stripeKey = present(e.STRIPE_SECRET_KEY);
   const stripeWebhook = present(e.STRIPE_WEBHOOK_SECRET);
   const supporterPrice = present(e.STRIPE_SUPPORTER_PRICE_ID);
+  const donationUrl = present(e.NEXT_PUBLIC_DONATION_URL);
 
   const serviceRole = present(e.SUPABASE_SERVICE_ROLE_KEY);
   const supaUrl = present(e.NEXT_PUBLIC_SUPABASE_URL);
@@ -135,6 +136,20 @@ export function getIntegrationHealth(): IntegrationGroup[] {
           missing: missing([[stripeKey, "STRIPE_SECRET_KEY"]]),
           where:
             "Stripe Dashboard → Developers → API keys (a restricted key with write on Checkout/Payment Intents is enough). Set STRIPE_SECRET_KEY in Vercel.",
+        },
+        {
+          id: "donation-link",
+          label: "Donation link (note → pay)",
+          status: donationUrl ? "ok" : "off",
+          critical: false,
+          summary: donationUrl
+            ? "Set — the support-note form and meter CTA can hand off to your Stripe donation page."
+            : "The native donate button still works, but the 'leave a note → pay' hand-off and some donate CTAs have no link to send people to.",
+          unlocks:
+            "The one-tap Stripe donation link used by the support-note form and the attention-meter call-to-action.",
+          missing: missing([[donationUrl, "NEXT_PUBLIC_DONATION_URL"]]),
+          where:
+            "Create a Stripe Payment Link (or use a hosted donation page) and set NEXT_PUBLIC_DONATION_URL in Vercel.",
         },
         {
           id: "stripe-webhook",
