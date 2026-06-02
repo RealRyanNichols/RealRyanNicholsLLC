@@ -3,6 +3,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { formatDistanceToNowStrict } from "date-fns";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import {
+  getIntegrationHealth,
+  countCriticalIssues,
+} from "@/lib/integration-health";
 
 export const metadata: Metadata = {
   title: "Admin",
@@ -25,6 +29,8 @@ export default async function AdminHomePage() {
       </article>
     );
   }
+
+  const criticalIssues = countCriticalIssues(getIntegrationHealth());
 
   const now = new Date();
   const fiveMinAgo = new Date(now.getTime() - 5 * 60 * 1000).toISOString();
@@ -126,6 +132,24 @@ export default async function AdminHomePage() {
       <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
         Site at a glance — visitors, pending review, recent activity. Drill in via the cards below.
       </p>
+
+      {criticalIssues > 0 ? (
+        <Link
+          href="/admin/health"
+          className="mt-5 flex items-center justify-between gap-3 rounded-2xl border border-[var(--color-accent)] bg-[var(--color-accent)]/10 px-4 py-3 transition hover:bg-[var(--color-accent)]/15"
+        >
+          <span className="text-sm">
+            <span className="font-bold">
+              {criticalIssues} core connection{criticalIssues === 1 ? "" : "s"} off
+            </span>{" "}
+            — email, payments, or database. Usually why contact / tips / pay feel
+            broken.
+          </span>
+          <span className="shrink-0 text-xs font-semibold text-[var(--color-accent)] whitespace-nowrap">
+            Fix →
+          </span>
+        </Link>
+      ) : null}
 
       {/* Top-line stats */}
       <section className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -362,6 +386,11 @@ export default async function AdminHomePage() {
           Sections
         </h2>
         <div className="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <SectionLink
+            href="/admin/health"
+            title="Connections"
+            sub="Email, payments, keys — what's on"
+          />
           <SectionLink
             href="/admin/users"
             title="Users"
