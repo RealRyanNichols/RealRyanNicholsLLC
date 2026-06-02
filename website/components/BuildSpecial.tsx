@@ -66,7 +66,7 @@ export function BuildSpecial() {
           ⚡ Today only — when the clock hits zero, it&apos;s gone ⚡
         </p>
 
-        <h1 className="mt-5 text-center text-4xl sm:text-6xl font-black leading-[1.04]">
+        <h1 className="mt-5 text-center text-4xl sm:text-6xl font-black leading-[1.04] text-white">
           I&apos;ll build you a website
           <br />
           just like <span className="text-yellow-400">this one.</span>
@@ -126,14 +126,14 @@ export function BuildSpecial() {
           </p>
         </div>
 
-        <h2 className="mt-14 text-center text-2xl font-black">What you get</h2>
+        <h2 className="mt-14 text-center text-2xl font-black text-white">What you get</h2>
         <div className="mt-5 grid gap-3 sm:grid-cols-3">
           <Feature title="Your own platform" body="Your feed, your profile, your domain, your audience — no algorithm, no platform that can ban you for telling the truth." />
           <Feature title="Built like mine" body="The same modern stack as this site: fast, clean, mobile, professional." />
           <Feature title="Genuinely sharp" body="I will not put my name on a cheap website. It will look great." />
         </div>
 
-        <h2 className="mt-14 text-center text-2xl font-black">The deal, in plain terms</h2>
+        <h2 className="mt-14 text-center text-2xl font-black text-white">The deal, in plain terms</h2>
         <ul className="mt-5 mx-auto max-w-2xl space-y-2.5 text-slate-200">
           <li>✅ <strong>$250</strong> — today only (normally $997).</li>
           <li>✅ <strong>6 spots.</strong> When they&apos;re gone, they&apos;re gone.</li>
@@ -143,7 +143,7 @@ export function BuildSpecial() {
           <li>✅ <strong>Warranty:</strong> if something I built breaks in normal use, I fix it.</li>
         </ul>
 
-        <p className="mt-12 mx-auto max-w-xl text-center text-xs text-slate-500">
+        <p className="mt-12 mx-auto max-w-xl text-center text-xs text-slate-400">
           Separate from my J6 work — J6 case profiles on RealRyanNichols.com are free forever. This $250 offer is for anyone who wants a full site of their own.
         </p>
 
