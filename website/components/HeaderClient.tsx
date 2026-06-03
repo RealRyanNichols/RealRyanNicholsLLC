@@ -66,6 +66,7 @@ const DASHBOARD_LINKS: NavItem[] = [
     tone: "ink",
   },
 ];
+const DASHBOARD_PATHS = new Set(DASHBOARD_LINKS.map((item) => hrefPath(item.href)));
 
 const NAV: NavEntry[] = [
   { href: "/", label: "Feed" },
@@ -370,7 +371,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             </button>
           </div>
         </div>
-        <SiteDashboardRail pathname={pathname} />
+        <SiteDashboardRail pathname={pathname} menuOpen={open} />
 
         {/* Mobile dropdown drawer — anchored to the header's OWN bottom edge
             (absolute top-full) so it tracks the header at any scroll position.
@@ -381,68 +382,41 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
           <div
             id="mobile-menu"
             role="menu"
-            className="lg:hidden absolute top-full left-0 right-0 z-30 max-h-[calc(100dvh-4rem)] overflow-y-auto border-b border-[var(--color-line)] bg-[#101a31]/98 px-4 py-3 text-[var(--color-paper)] shadow-2xl backdrop-blur-xl"
+            className="lg:hidden absolute top-full left-0 right-0 z-30 max-h-[calc(100dvh-4rem)] overflow-y-auto border-b border-[var(--color-line)] bg-[#101a31]/98 px-4 py-4 text-[var(--color-paper)] shadow-2xl backdrop-blur-xl"
           >
-            <nav className="flex flex-col gap-4">
-              <div>
+            <nav className="mx-auto flex max-w-3xl flex-col gap-4">
+              <section aria-label="Start here">
                 <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#7fe3a9]">
-                  Choose your lane
+                  Start here
                 </p>
                 <div className="mt-2 grid grid-cols-2 gap-2">
                   {DASHBOARD_LINKS.map((item) => (
-                    <DashboardTile
+                    <MobileQuickAction
                       key={item.href}
                       item={item}
                       active={pathname === hrefPath(item.href)}
-                      compact
                     />
                   ))}
                 </div>
-              </div>
+              </section>
               {NAV.map((n) =>
                 isGroup(n) ? (
-                  <div key={n.label}>
-                    <p className="px-1 text-[11px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
-                      {n.label}
-                    </p>
-                    <div className="mt-2 grid gap-2">
-                      {n.items.map((it) => (
-                        <Link
-                          key={it.href}
-                          href={it.href}
-                          role="menuitem"
-                          className={[
-                            "block rounded-lg border px-3 py-3 transition",
-                            pathname === hrefPath(it.href)
-                              ? "border-[#7fe3a9] bg-[#7fe3a9]/12 text-[#fdf8ea]"
-                              : "border-white/10 bg-white/5 text-[#fdf8ea] hover:border-[#d8c89e] hover:bg-white/10",
-                          ].join(" ")}
-                        >
-                          <span className="flex items-center justify-between gap-3">
-                            <span className="font-black">{it.label}</span>
-                            {it.badge ? (
-                              <span className={badgeClass(it.tone)}>{it.badge}</span>
-                            ) : null}
-                          </span>
-                          {it.desc ? (
-                            <span className="mt-1 block text-xs leading-snug text-[#cfd9ea]">
-                              {it.desc}
-                            </span>
-                          ) : null}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
+                  <MobileMenuGroup
+                    key={n.label}
+                    group={n}
+                    pathname={pathname}
+                    items={n.items.filter((it) => !DASHBOARD_PATHS.has(hrefPath(it.href)))}
+                  />
                 ) : (
                   <Link
                     key={n.href}
                     href={n.href}
                     role="menuitem"
                     className={[
-                      "block rounded-lg px-4 py-3 text-base font-semibold transition",
+                      "flex min-h-12 items-center rounded-lg border px-3 py-2.5 text-base font-black transition",
                       pathname === n.href
-                        ? "bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
-                        : "text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)]",
+                        ? "border-[#7fe3a9] bg-[#7fe3a9]/12 text-[#fdf8ea]"
+                        : "border-white/10 bg-white/5 text-[#fdf8ea] hover:border-[#d8c89e] hover:bg-white/10",
                     ].join(" ")}
                   >
                     {n.label}
@@ -618,9 +592,20 @@ function NavDropdown({
   );
 }
 
-function SiteDashboardRail({ pathname }: { pathname: string }) {
+function SiteDashboardRail({
+  pathname,
+  menuOpen,
+}: {
+  pathname: string;
+  menuOpen: boolean;
+}) {
   return (
-    <div className="border-t border-[var(--color-line)] bg-[#101a31] text-[var(--color-paper)]">
+    <div
+      className={[
+        "border-t border-[var(--color-line)] bg-[#101a31] text-[var(--color-paper)]",
+        menuOpen ? "hidden lg:block" : "",
+      ].join(" ")}
+    >
       <nav
         aria-label="Site dashboard"
         className="mx-auto flex max-w-5xl gap-2 overflow-x-auto px-4 py-2 [scrollbar-width:none] md:grid md:grid-cols-4"
@@ -640,29 +625,114 @@ function SiteDashboardRail({ pathname }: { pathname: string }) {
 function DashboardTile({
   item,
   active,
-  compact = false,
 }: {
   item: NavItem;
   active: boolean;
-  compact?: boolean;
 }) {
   return (
     <Link
       href={item.href}
       className={[
-        "min-w-[9.5rem] rounded-lg border px-3 py-2 transition md:min-w-0",
-        compact ? "min-h-20" : "min-h-16",
+        "min-w-[7.75rem] rounded-lg border px-2.5 py-2 transition sm:min-w-[9.5rem] md:min-w-0",
         active
           ? "border-[#7fe3a9] bg-[#7fe3a9]/12"
           : "border-white/10 bg-white/5 hover:border-[#d8c89e] hover:bg-white/10",
       ].join(" ")}
     >
       <span className="flex items-center justify-between gap-2">
-        <span className="text-sm font-black text-[#fdf8ea]">{item.label}</span>
+        <span className="text-xs font-black leading-tight text-[#fdf8ea] sm:text-sm">
+          {item.label}
+        </span>
+        {item.badge ? <span className={badgeClass(item.tone)}>{item.badge}</span> : null}
+      </span>
+      {item.desc ? (
+        <span className="mt-1 hidden text-[11px] font-semibold leading-snug text-[#cfd9ea] sm:block">
+          {item.desc}
+        </span>
+      ) : null}
+    </Link>
+  );
+}
+
+function MobileQuickAction({
+  item,
+  active,
+}: {
+  item: NavItem;
+  active: boolean;
+}) {
+  return (
+    <Link
+      href={item.href}
+      role="menuitem"
+      className={[
+        "min-h-14 rounded-lg border px-3 py-2.5 transition",
+        active
+          ? "border-[#7fe3a9] bg-[#7fe3a9]/12"
+          : "border-white/10 bg-white/5 hover:border-[#d8c89e] hover:bg-white/10",
+      ].join(" ")}
+    >
+      <span className="flex items-start justify-between gap-2">
+        <span className="text-sm font-black leading-tight text-[#fdf8ea]">
+          {item.label}
+        </span>
         {item.badge ? <span className={badgeClass(item.tone)}>{item.badge}</span> : null}
       </span>
       {item.desc ? (
         <span className="mt-1 block text-[11px] font-semibold leading-snug text-[#cfd9ea]">
+          {item.desc}
+        </span>
+      ) : null}
+    </Link>
+  );
+}
+
+function MobileMenuGroup({
+  group,
+  pathname,
+  items,
+}: {
+  group: NavGroup;
+  pathname: string;
+  items: NavItem[];
+}) {
+  if (items.length === 0) return null;
+  return (
+    <section aria-label={group.label}>
+      <p className="px-1 text-[11px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
+        {group.label}
+      </p>
+      <div className="mt-2 grid gap-1.5 sm:grid-cols-2">
+        {items.map((it) => (
+          <MobileNavItem
+            key={it.href}
+            item={it}
+            active={pathname === hrefPath(it.href)}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function MobileNavItem({ item, active }: { item: NavItem; active: boolean }) {
+  return (
+    <Link
+      href={item.href}
+      role="menuitem"
+      className={[
+        "block min-h-12 rounded-lg border px-3 py-2.5 transition",
+        active
+          ? "border-[#7fe3a9] bg-[#7fe3a9]/12 text-[#fdf8ea]"
+          : "border-white/10 bg-white/5 text-[#fdf8ea] hover:border-[#d8c89e] hover:bg-white/10",
+      ].join(" ")}
+    >
+      <span className="flex items-center justify-between gap-2">
+        <span className="text-sm font-black leading-tight">{item.label}</span>
+        {item.badge ? <span className={badgeClass(item.tone)}>{item.badge}</span> : null}
+      </span>
+      {item.desc ? (
+        <span className="mt-0.5 block text-[11px] font-semibold leading-snug text-[#cfd9ea]">
           {item.desc}
         </span>
       ) : null}
