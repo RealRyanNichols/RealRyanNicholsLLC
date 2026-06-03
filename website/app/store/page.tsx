@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { SITE } from "@/lib/site";
+import { StoryProtectionDemo } from "@/components/StoryProtectionDemo";
 
 export const revalidate = 300;
 
 export const metadata: Metadata = {
-  title: "Store — hire me, support the work",
+  title: "Store | Case Help, Services, and Support",
   description:
-    "Hire Ryan Nichols to build your owned feed, audit your site, or map your next move — plus prints and digital downloads. Every purchase keeps the record public.",
+    "Hire Ryan Nichols for focused review, evidence organization, public-records help, owned-site services, and direct support for the work.",
   alternates: { canonical: `${SITE.url}/store` },
 };
 
@@ -34,42 +35,196 @@ function usd(cents: number) {
 const GROUPS: { type: string; label: string; blurb: string }[] = [
   {
     type: "service",
-    label: "Services",
-    blurb: "Hire me directly — calls, audits, and owned-feed builds.",
+    label: "Paid services",
+    blurb: "Flat-fee help for clarity, attention, public records, and owned-site work.",
   },
-  { type: "digital", label: "Digital", blurb: "Downloads and templates you keep." },
+  {
+    type: "digital",
+    label: "Digital tools",
+    blurb: "Downloads, templates, checklists, and starter files you keep.",
+  },
   {
     type: "physical",
-    label: "Prints & physical",
-    blurb: "Signed, tangible, shipped to your door.",
+    label: "Physical items",
+    blurb: "Signed, tangible, shipped items when available.",
+  },
+];
+
+const PRODUCT_DETAILS: Record<
+  string,
+  {
+    tag: string;
+    bestFor: string;
+    includes: string[];
+    cta: string;
+    image: {
+      src: string;
+      alt: string;
+    };
+  }
+> = {
+  "strategy-call-30": {
+    tag: "Best first move",
+    bestFor:
+      "You have facts, links, screenshots, a case issue, a story, or a site problem and need the next three moves.",
+    includes: [
+      "Focused 30-minute call",
+      "Plain-English direction",
+      "Next-step action list",
+    ],
+    cta: "Book the call",
+    image: {
+      src: "/uploads/master-exhibit-index-og-thumbnail.png",
+      alt: "A document index visual representing organized evidence and next steps.",
+    },
+  },
+  "site-audit": {
+    tag: "Attention audit",
+    bestFor:
+      "Your site, feed, Substack, service page, or public story is not converting attention into action.",
+    includes: [
+      "Written audit",
+      "Trust and clarity fixes",
+      "Priority conversion changes",
+    ],
+    cta: "Get the audit",
+    image: {
+      src: "/uploads/why-posting-og-thumbnail.png",
+      alt: "A public proof and posting visual representing attention and trust review.",
+    },
+  },
+  "build-your-site": {
+    tag: "Owned platform",
+    bestFor:
+      "You need a domain-first home for your posts, proof, contact path, service offers, and support flow.",
+    includes: [
+      "Site/feed build",
+      "Service and support path",
+      "Basic analytics handoff",
+    ],
+    cta: "Start the build",
+    image: {
+      src: "/uploads/today-only-build-og.png",
+      alt: "A website build visual for owned publishing and service conversion.",
+    },
+  },
+  "codebase-domain-bundle": {
+    tag: "Full setup",
+    bestFor:
+      "You need the deeper platform setup: site, domain guidance, launch copy, analytics, SEO basics, and follow-up.",
+    includes: [
+      "Website and launch copy",
+      "Domain and SEO basics",
+      "30-day check-in",
+    ],
+    cta: "Build the platform",
+    image: {
+      src: "/social-cards/map-room.jpg",
+      alt: "A map room visual representing a complete domain, records, and publishing setup.",
+    },
+  },
+};
+
+const decisionCards = [
+  {
+    title: "I need help with a case or records",
+    body: "Use this when you have filings, screenshots, messages, reports, public records, or a messy timeline and need direction.",
+    href: "/case-review",
+    cta: "Start case review",
+  },
+  {
+    title: "I have a tip, document, or lead",
+    body: "Send names, dates, links, court records, screenshots, videos, or missing-record leads into Ryan's review queue.",
+    href: "/submit",
+    cta: "Submit a tip",
+  },
+  {
+    title: "I need Ryan's paid service",
+    body: "Book a call, get an audit, or hire Ryan to build a stronger owned page, feed, or public-record presentation.",
+    href: "#service-options",
+    cta: "See services",
+  },
+  {
+    title: "I want to support or gift help",
+    body: "Back the records work directly, support public case documentation, or help make service access possible for someone else.",
+    href: "/support",
+    cta: "Support the work",
+  },
+];
+
+const processSteps = [
+  {
+    title: "1. Pick the smallest useful move",
+    body: "Start with the call or case review unless you already know you need a build.",
+  },
+  {
+    title: "2. Checkout or submit",
+    body: "Paid services go through Stripe. Tips and case-review paths collect the facts first.",
+  },
+  {
+    title: "3. Ryan reviews the record",
+    body: "The work stays evidence-first: dates, documents, people, issues, missing records, and next steps.",
   },
 ];
 
 function ProductCard({ p }: { p: Product }) {
+  const detail = PRODUCT_DETAILS[p.slug];
+  const image = p.image_url
+    ? { src: p.image_url, alt: p.name }
+    : detail?.image ?? {
+        src: "/social-cards/map-room.jpg",
+        alt: "A records map room visual for Real Ryan Nichols LLC services.",
+      };
+
   return (
     <Link
       href={`/store/${p.slug}`}
-      className="group rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] overflow-hidden hover:border-[var(--color-accent)] transition"
+      className="group flex h-full flex-col overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] transition hover:border-[var(--color-accent)]"
     >
-      {p.image_url ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={p.image_url} alt={p.name} className="h-40 w-full object-cover" />
-      ) : (
-        <div className="h-40 w-full bg-[var(--color-surface-2)] flex items-center justify-center text-[var(--color-muted)] text-xs uppercase tracking-wider">
-          {p.type}
+      <div className="relative h-40 w-full overflow-hidden bg-[var(--color-surface-2)]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={image.src} alt={image.alt} className="h-full w-full object-cover" />
+        <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-3 bg-[var(--color-ink)]/88 px-4 py-3 text-white">
+          <span className="text-xs font-bold uppercase tracking-normal text-white/70">
+            {detail?.tag ?? p.type}
+          </span>
+          <span className="text-2xl font-bold text-white">
+            {usd(p.price_cents)}
+          </span>
         </div>
-      )}
-      <div className="p-4">
-        <h3 className="text-base font-bold tracking-tight group-hover:text-[var(--color-accent)]">
+      </div>
+      <div className="flex flex-1 flex-col p-5">
+        <h3 className="font-display text-2xl font-bold tracking-normal group-hover:text-[var(--color-accent)]">
           {p.name}
         </h3>
         {p.description ? (
-          <p className="mt-1 text-sm text-[var(--color-ink-soft)] line-clamp-2">
+          <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
             {p.description}
           </p>
         ) : null}
-        <p className="mt-3 text-lg font-bold text-[var(--color-accent)]">
-          {usd(p.price_cents)}
+
+        {detail ? (
+          <>
+            <p className="mt-4 text-sm font-bold text-[var(--color-ink)]">
+              Best for:
+            </p>
+            <p className="mt-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+              {detail.bestFor}
+            </p>
+            <ul className="mt-4 space-y-2 text-sm text-[var(--color-ink-soft)]">
+              {detail.includes.map((item) => (
+                <li key={item} className="flex gap-2">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-accent)]" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : null}
+
+        <p className="mt-5 flex items-center justify-between border-t border-[var(--color-line)] pt-4 text-sm font-bold text-[var(--color-accent)]">
+          <span>{detail?.cta ?? "View details"}</span>
+          <span aria-hidden="true">-&gt;</span>
         </p>
       </div>
     </Link>
@@ -100,7 +255,7 @@ export default async function StorePage() {
   const itemListLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "Ryan Nichols — store",
+    name: "Real Ryan Nichols LLC store",
     itemListElement: products.map((p, i) => ({
       "@type": "ListItem",
       position: i + 1,
@@ -122,7 +277,7 @@ export default async function StorePage() {
   };
 
   return (
-    <article className="mx-auto max-w-5xl px-4 py-10">
+    <article className="bg-[var(--color-paper)]">
       {products.length > 0 ? (
         <script
           type="application/ld+json"
@@ -130,67 +285,157 @@ export default async function StorePage() {
         />
       ) : null}
 
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
-        The store
-      </p>
-      <h1 className="mt-2 text-4xl sm:text-5xl font-bold tracking-tight">
-        Hire me. Support the work.
-      </h1>
-      <p className="mt-3 max-w-2xl text-[var(--color-ink-soft)] leading-relaxed">
-        Everything here funds the same fight — keeping the record public and the
-        lights on. Want me to build, investigate, or tell your story? That&apos;s
-        what this is.
-      </p>
-
-      <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-        {[
-          [
-            "Card today, crypto soon",
-            "Secure card checkout through Stripe now. Stablecoin payments are being added.",
-          ],
-          [
-            "What happens after you buy",
-            "You get a receipt by email, then we schedule or I start the work.",
-          ],
-          [
-            "J6 defendants",
-            "Verified January 6 defendants claim eligible services free.",
-          ],
-        ].map(([k, v]) => (
-          <div
-            key={k}
-            className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4"
-          >
-            <p className="text-sm font-bold text-[var(--color-ink)]">{k}</p>
-            <p className="mt-1 text-xs leading-relaxed text-[var(--color-muted)]">{v}</p>
+      <section className="border-b border-[var(--color-line)]">
+        <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:py-14">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-accent)]">
+              Real Ryan Nichols LLC · Store
+            </p>
+            <h1 className="mt-3 max-w-3xl font-display text-4xl font-bold leading-tight tracking-normal text-[var(--color-ink)] sm:text-5xl">
+              Pick the help you need. Get the record organized.
+            </h1>
+            <p className="mt-4 max-w-2xl text-lg leading-relaxed text-[var(--color-ink-soft)]">
+              This is the paid-services and support counter for the work: case
+              direction, evidence organization, public-records strategy,
+              attention audits, owned-site builds, and direct support for the
+              record.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                href="#service-options"
+                className="btn-accent inline-flex items-center justify-center rounded-lg px-5 py-3 text-sm font-bold"
+              >
+                See paid services
+              </Link>
+              <Link
+                href="/case-review"
+                className="inline-flex items-center justify-center rounded-lg border-2 border-[var(--color-blue)] px-5 py-3 text-sm font-bold text-[var(--color-blue)] transition hover:bg-[var(--color-blue-soft)]"
+              >
+                Start case review
+              </Link>
+              <Link
+                href="#article-demo"
+                className="inline-flex items-center justify-center rounded-lg border-2 border-[var(--color-line)] px-5 py-3 text-sm font-bold text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:bg-[var(--color-surface)]"
+              >
+                Try article demo
+              </Link>
+            </div>
           </div>
-        ))}
-      </div>
+
+          <div className="overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] shadow-lg">
+            <div className="relative h-44 bg-[var(--color-surface-2)]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/social-cards/map-room.jpg"
+                alt="Ryan Nichols map room visual with records, documents, and public case work."
+                className="h-full w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(26,20,16,0.74),rgba(26,20,16,0.12))]" />
+              <div className="absolute bottom-4 left-4 right-4">
+                <p className="max-w-sm font-display text-2xl font-bold leading-tight tracking-normal text-white">
+                  Case help, records work, and attention that leads somewhere.
+                </p>
+              </div>
+            </div>
+            <div className="p-5">
+            <h2 className="font-display text-2xl font-bold tracking-normal">
+              Use the store when:
+            </h2>
+            <div className="mt-4 grid gap-3">
+              {[
+                "You need the next three moves, not vague encouragement.",
+                "You have records, screenshots, links, filings, or a timeline that needs structure.",
+                "You want a public page, feed, or service path that turns attention into action.",
+                "You want to support the records work directly.",
+              ].map((item) => (
+                <div
+                  key={item}
+                  className="border-l-4 border-[var(--color-accent)] bg-[var(--color-paper)] px-3 py-2"
+                >
+                  <p className="text-sm font-bold leading-relaxed text-[var(--color-ink)]">
+                    {item}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <p className="mt-4 text-xs leading-relaxed text-[var(--color-muted)]">
+              Ryan is not a lawyer and Real Ryan Nichols LLC is not a law firm.
+              No legal advice, no outcome promises, no fake certainty.
+            </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {decisionCards.map((card) => (
+            <Link
+              key={card.title}
+              href={card.href}
+              className="group rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 transition hover:border-[var(--color-accent)]"
+            >
+              <h2 className="font-display text-xl font-bold tracking-normal group-hover:text-[var(--color-accent)]">
+                {card.title}
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+                {card.body}
+              </p>
+              <p className="mt-4 text-sm font-bold text-[var(--color-accent)]">
+                {card.cta} -&gt;
+              </p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <StoryProtectionDemo />
+      </section>
 
       {products.length === 0 ? (
-        <p className="mt-10 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 text-[var(--color-ink-soft)]">
-          The store is opening soon. In the meantime,{" "}
-          <Link
-            href="/support"
-            className="text-[var(--color-accent)] underline underline-offset-4"
-          >
-            support the work here
-          </Link>
-          .
-        </p>
+        <section className="mx-auto max-w-6xl px-4 pb-10 sm:px-6">
+          <p className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-6 text-[var(--color-ink-soft)]">
+            The checkout shelf is being updated. In the meantime,{" "}
+            <Link
+              href="/case-review"
+              className="font-bold text-[var(--color-accent)] underline underline-offset-4"
+            >
+              start a case review
+            </Link>{" "}
+            or{" "}
+            <Link
+              href="/support"
+              className="font-bold text-[var(--color-accent)] underline underline-offset-4"
+            >
+              support the work here
+            </Link>
+            .
+          </p>
+        </section>
       ) : (
-        <div className="mt-10 space-y-12">
+        <div
+          id="service-options"
+          className="mx-auto max-w-6xl space-y-10 px-4 py-8 sm:px-6"
+        >
           {groups.map((group) => (
             <section key={group.type}>
-              <div className="flex items-baseline justify-between gap-4 border-b border-[var(--color-line)] pb-2">
-                <h2 className="text-xl font-bold tracking-tight">{group.label}</h2>
+              <div className="flex flex-col gap-2 border-b border-[var(--color-line)] pb-3 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-accent)]">
+                    Checkout
+                  </p>
+                  <h2 className="font-display text-3xl font-bold tracking-normal">
+                    {group.label}
+                  </h2>
+                </div>
                 {group.blurb ? (
-                  <p className="hidden text-sm text-[var(--color-muted)] sm:block">
+                  <p className="max-w-lg text-sm leading-relaxed text-[var(--color-muted)]">
                     {group.blurb}
                   </p>
                 ) : null}
               </div>
-              <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {group.items.map((p) => (
                   <ProductCard key={p.slug} p={p} />
                 ))}
@@ -198,26 +443,40 @@ export default async function StorePage() {
             </section>
           ))}
 
-          <div className="flex flex-col gap-4 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 sm:flex-row sm:items-center sm:justify-between">
+          <section className="grid gap-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6 lg:grid-cols-3">
+            {processSteps.map((step) => (
+              <div key={step.title}>
+                <h3 className="font-display text-xl font-bold tracking-normal">
+                  {step.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+                  {step.body}
+                </p>
+              </div>
+            ))}
+          </section>
+
+          <div className="flex flex-col gap-4 rounded-lg border border-[var(--color-line)] bg-[var(--color-ink)] p-6 text-white sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h2 className="text-lg font-bold tracking-tight">
+              <h2 className="font-display text-2xl font-bold tracking-normal text-white">
                 Not sure which one you need?
               </h2>
-              <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
-                See how the owned-feed build works end to end, or start with the
-                30-minute call.
+              <p className="mt-1 max-w-2xl text-sm leading-relaxed text-white/80">
+                Start smaller. Use the guide, send a tip, or book the call.
+                The right first move is the one that gets the facts into order
+                without overbuying.
               </p>
             </div>
             <div className="flex flex-none flex-col gap-2 sm:flex-row">
               <Link
-                href="/own-your-feed"
-                className="btn-blue inline-flex items-center justify-center rounded-lg px-5 py-3 text-sm font-bold"
+                href="/services"
+                className="inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 text-sm font-bold text-[var(--color-ink)] transition hover:bg-[var(--color-paper)]"
               >
-                How it works
+                Services guide
               </Link>
               <Link
                 href="/store/strategy-call-30"
-                className="btn-accent inline-flex items-center justify-center rounded-lg px-5 py-3 text-sm font-bold"
+                className="inline-flex items-center justify-center rounded-lg border border-white/40 px-5 py-3 text-sm font-bold text-white transition hover:bg-white/10"
               >
                 Book the call
               </Link>

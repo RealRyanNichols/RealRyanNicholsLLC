@@ -20,6 +20,32 @@ export function TipForm({
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [category, setCategory] = useState<Category>(defaultCategory);
+  const [shareStatus, setShareStatus] = useState<"idle" | "copied">("idle");
+
+  async function shareTipLine() {
+    const url =
+      typeof window !== "undefined"
+        ? `${window.location.origin}/submit`
+        : "/submit";
+    trackEvent("tip_line_share_click", { surface: "tip_success" });
+
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: "Send a tip to Real Ryan Nichols LLC",
+          text: "If you have records, screenshots, links, names, dates, or evidence leads, send them here.",
+          url,
+        });
+        return;
+      }
+
+      await navigator.clipboard.writeText(url);
+      setShareStatus("copied");
+      window.setTimeout(() => setShareStatus("idle"), 2400);
+    } catch {
+      setShareStatus("idle");
+    }
+  }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -79,21 +105,35 @@ export function TipForm({
 
   if (status === "ok") {
     return (
-      <div className="rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-surface)] p-6">
-        <h2 className="text-2xl font-bold tracking-tight font-display">
+      <div className="rounded-lg border-2 border-[var(--color-accent)] bg-[var(--color-surface)] p-6">
+        <h2 className="font-display text-2xl font-bold tracking-normal">
           Tip received.
         </h2>
-        <p className="mt-2 text-[var(--color-ink-soft)]">
-          We read every tip. If we need more, we&apos;ll reach out at the email you
-          provided.
+        <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+          It is now in Ryan&apos;s review queue. If you left contact information
+          and the record needs another detail, Ryan can follow up.
         </p>
-        <button
-          type="button"
-          onClick={() => setStatus("idle")}
-          className="mt-4 text-sm font-semibold text-[var(--color-accent)] hover:underline"
-        >
-          Send another →
-        </button>
+        <div className="mt-4 grid gap-2 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-3 text-sm text-[var(--color-ink-soft)]">
+          <p className="font-bold text-[var(--color-ink)]">What happens now:</p>
+          <p>The tip gets reviewed, sorted, and checked against other leads.</p>
+          <p>Useful public information can support timelines, records requests, or case documentation.</p>
+        </div>
+        <div className="mt-5 flex flex-wrap gap-3">
+          <button
+            type="button"
+            onClick={() => setStatus("idle")}
+            className="rounded-lg border-2 border-[var(--color-accent)] bg-[var(--color-accent)] px-4 py-2 text-sm font-bold text-white transition hover:bg-[var(--color-accent-strong)]"
+          >
+            Send another
+          </button>
+          <button
+            type="button"
+            onClick={shareTipLine}
+            className="rounded-lg border border-[var(--color-line)] px-4 py-2 text-sm font-bold text-[var(--color-accent)] transition hover:bg-[var(--color-accent-soft)]"
+          >
+            {shareStatus === "copied" ? "Link copied" : "Share the tip line"}
+          </button>
+        </div>
       </div>
     );
   }
@@ -179,7 +219,7 @@ export function TipForm({
       />
 
       <div className="border-t border-[var(--color-line)] pt-4 space-y-4">
-        <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">
+        <p className="text-xs uppercase tracking-normal text-[var(--color-muted)] font-bold">
           So we can follow up (optional)
         </p>
         <Field
@@ -202,12 +242,26 @@ export function TipForm({
         </p>
       ) : null}
 
+      <label className="flex gap-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-3 text-xs leading-relaxed text-[var(--color-ink-soft)]">
+        <input
+          type="checkbox"
+          required
+          className="mt-0.5 h-4 w-4 shrink-0 accent-[var(--color-accent)]"
+        />
+        <span>
+          I understand this is not emergency services, legal advice, or a
+          guaranteed investigation. I am not submitting sealed material,
+          minors&apos; private information, Social Security numbers, bank data,
+          medical records, or anything I do not have permission to share.
+        </span>
+      </label>
+
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="w-full rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-white px-5 py-4 font-bold text-lg hover:bg-[var(--color-accent-strong)] transition disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full rounded-lg border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-white px-5 py-4 font-bold text-lg hover:bg-[var(--color-accent-strong)] transition disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {status === "submitting" ? "Sending…" : "Send tip →"}
+        {status === "submitting" ? "Sending..." : "Send tip"}
       </button>
 
       <p className="text-xs text-[var(--color-muted)] text-center">

@@ -520,7 +520,7 @@ export default function OwnYourFeedPage() {
             </p>
           </div>
           <Link
-            href="/store"
+            href="/services"
             className="btn-blue inline-flex items-center justify-center rounded-lg px-5 py-3 text-sm font-bold"
           >
             View all services

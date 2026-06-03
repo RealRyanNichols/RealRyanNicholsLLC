@@ -55,6 +55,7 @@ const NAV: NavEntry[] = [
     label: "More",
     items: [
       { href: "/submit", label: "Submit a Tip" },
+      { href: "/services", label: "Services" },
       { href: "/own-your-feed", label: "Own your feed" },
       { href: "/store", label: "Services store" },
       { href: "/about", label: "About" },
