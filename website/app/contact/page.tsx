@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { GuidedHelpDesk } from "@/components/GuidedHelpDesk";
 import { PrivateMessageBox } from "@/components/PrivateMessageBox";
 import { SITE } from "@/lib/site";
 
@@ -127,16 +128,7 @@ export default function ContactPage() {
             </p>
           </div>
 
-          <PrivateMessageBox
-            title="Write the private message"
-            description="This sends directly into Ryan's private admin inbox. Leave contact info only if Ryan can follow up. The message is not published."
-            source="contact-page"
-            defaultOpen
-            showToggle={false}
-            expandedIntake
-            submitLabel="Send to Ryan privately"
-            defaultSubject="Private contact"
-          />
+          <GuidedHelpDesk source="contact-page" />
         </div>
       </section>
 
@@ -218,6 +210,17 @@ export default function ContactPage() {
       </section>
 
       <section className="rrn-section">
+        <PrivateMessageBox
+          title="Already know what you need to say?"
+          description="Send a direct private message instead of using the guided assistant. This still goes into Ryan's private admin inbox and is not published."
+          source="contact-page-direct"
+          defaultOpen={false}
+          showToggle
+          expandedIntake
+          submitLabel="Send direct private message"
+          defaultSubject="Private contact"
+        />
+
         <div className="grid gap-4 lg:grid-cols-3">
           {process.map((item) => (
             <div
