@@ -210,7 +210,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
           <div className="flex md:hidden items-center gap-2">
             <Link
               href="/support"
-              className="btn-accent inline-flex items-center rounded-full px-3 py-1.5 text-xs font-semibold"
+              className="btn-accent inline-flex min-h-11 items-center rounded-full px-4 py-2 text-xs font-semibold"
             >
               Donate
             </Link>
@@ -220,7 +220,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
               aria-label={open ? "Close menu" : "Open menu"}
               aria-expanded={open}
               aria-controls="mobile-menu"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition"
             >
               {open ? <CloseIcon /> : <MenuIcon />}
             </button>

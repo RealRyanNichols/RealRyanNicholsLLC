@@ -165,7 +165,7 @@ function NeedCard({
         <button
           type="button"
           onClick={onCoverFully}
-          className="mt-2 w-full rounded-lg border px-2 py-1.5 text-xs font-bold transition-colors"
+          className="mt-2 min-h-11 w-full rounded-lg border px-2 py-2 text-xs font-bold transition-colors"
           style={{ borderColor: GREEN, color: GREEN, background: "transparent" }}
         >
           I&apos;ll cover this — {money(remaining)}
@@ -265,7 +265,7 @@ export function FundTheTruth() {
         type="button"
         onClick={() => setAmount(cents)}
         aria-pressed={on}
-        className="rounded-lg border-2 px-2 py-2.5 text-sm font-bold transition-colors"
+        className="min-h-11 rounded-lg border-2 px-2 py-2.5 text-sm font-bold transition-colors"
         style={{
           borderColor: on ? GREEN : "var(--color-line)",
           background: on ? GREEN : "var(--color-surface)",
@@ -336,7 +336,7 @@ export function FundTheTruth() {
           type="button"
           onClick={() => setAmount(-1)}
           aria-pressed={amount === -1}
-          className="w-full rounded-lg border-2 px-3 py-2.5 text-sm font-bold transition-colors"
+          className="min-h-11 w-full rounded-lg border-2 px-3 py-2.5 text-sm font-bold transition-colors"
           style={{
             borderColor: amount === -1 ? GREEN : "var(--color-line)",
             background: amount === -1 ? "rgba(22,163,74,0.06)" : "var(--color-surface)",
