@@ -636,7 +636,7 @@ export function CaseNexus({
               className="block h-[430px] w-full max-w-full cursor-grab select-none active:cursor-grabbing sm:h-[64vh] sm:min-h-[560px] sm:max-h-[800px]"
               style={{ touchAction: "pan-y" }}
               role="img"
-              aria-label="Interactive knowledge graph of January 6 defendants, cases, and documents."
+              aria-label="Interactive evidence graph of January 6 cases, defendants, documents, and visible connections."
             >
               <g ref={gRef}>
                 {linksRef.current.map((l, i) => {
@@ -716,7 +716,7 @@ export function CaseNexus({
           <div className="absolute left-3 top-3 z-10 max-w-[15rem] rounded-md border border-[#203a64]/80 bg-[#071126]/88 px-3 py-2 backdrop-blur">
             <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#7fe3a9]">
               <span className="inline-block h-2 w-2 rounded-full bg-[#7fe3a9]" />
-              Case Nexus
+              Evidence Nexus
             </div>
             <div className="mt-1 text-[11px] font-mono leading-tight text-[#a9b7d0]">
               {totalCases} cases · {totalDefendants} defendants
@@ -874,7 +874,7 @@ export function CaseNexus({
                     disabled={loadingExpand}
                     className="rounded-full border-2 border-[#7fe3a9] bg-[#7fe3a9]/15 px-4 py-1.5 text-xs font-bold text-[#7fe3a9] transition hover:bg-[#7fe3a9]/25 disabled:opacity-50"
                   >
-                    {loadingExpand ? "Expanding..." : "Expand"}
+                    {loadingExpand ? "Expanding..." : "Expand links"}
                   </button>
                   <button
                     type="button"
@@ -910,12 +910,28 @@ export function CaseNexus({
             ) : (
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#7fe3a9]">
-                  Map status
+                  Connect the record
                 </p>
                 <p className="mt-2 text-xs font-mono leading-relaxed text-[#a9b7d0]">
-                  {totalCases} case clusters are arranged in rows. Pick any case
-                  below to bring that cluster into focus.
+                  {totalCases} case clusters are arranged in rows. Pick a case,
+                  name, or document to see what it touches. Missing clue? Send
+                  the document, statement, video, photo, date, URL, or witness
+                  link that connects one case to another.
                 </p>
+                <div className="mt-3 grid grid-cols-2 gap-2">
+                  <Link
+                    href="/submit"
+                    className="rounded-md border border-[#7fe3a9] bg-[#7fe3a9]/15 px-3 py-2 text-center text-[10px] font-bold uppercase tracking-wider text-[#7fe3a9] transition hover:bg-[#7fe3a9]/25"
+                  >
+                    Add clue
+                  </Link>
+                  <Link
+                    href="/tell-your-story"
+                    className="rounded-md border border-[#3a557c] bg-[#071126] px-3 py-2 text-center text-[10px] font-bold uppercase tracking-wider text-[#cfd9ea] transition hover:border-[#7fe3a9] hover:text-[#7fe3a9]"
+                  >
+                    Tell story
+                  </Link>
+                </div>
               </div>
             )}
           </div>
@@ -960,6 +976,14 @@ export function CaseNexus({
           </div>
 
           <div className="mt-4 border-t border-[#203a64] pt-4 text-[10px] font-mono text-[#7c8aa6]">
+            <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#7fe3a9]">
+              What the lines mean
+            </p>
+            <p className="mb-3 text-[10px] leading-relaxed text-[#a9b7d0]">
+              Bright lines are people tied to the same case. Fainter lines are
+              archived documents tied to a person. Future reviewed tips can
+              become clue, witness, photo, video, or statement links.
+            </p>
             <div className="grid grid-cols-2 gap-x-3 gap-y-1">
               <LegendDot color="#1f2f55" stroke="#3a557c">case</LegendDot>
               <LegendDot color="#7fe3a9" stroke="#3aa672">verified</LegendDot>
@@ -1007,8 +1031,9 @@ function NodeDetail({ node }: { node: RawNode }) {
     return (
       <p className="text-xs text-[#a9b7d0] font-mono">
         Co-defendant cluster · {node.defendant_count} defendants on this case
-        number. Click expand to pull every defendant + their archived
-        documents into the graph.
+        number. Click expand links to pull the visible neighborhood into the
+        graph: defendants, archived documents, and any reviewed connectors the
+        database can expose.
       </p>
     );
   }
@@ -1033,14 +1058,20 @@ function NodeDetail({ node }: { node: RawNode }) {
         <p className="text-[#7c8aa6]">
           {node.has_charges ? "Charges on file. " : "No charges parsed yet. "}
           {node.has_sentence ? "Sentence on file." : "No sentence on file."}
+          {" "}Witness statements, videos, photos, and clue links can be
+          submitted for review.
         </p>
       </div>
     );
   }
   return (
-    <p className="text-xs text-[#a9b7d0] font-mono break-all">
-      {node.doc_url}
-    </p>
+    <div className="space-y-2 text-xs text-[#a9b7d0] font-mono">
+      <p className="break-all">{node.doc_url}</p>
+      <p className="text-[#7c8aa6]">
+        Document link. A document can connect cases through names, dates,
+        prosecutors, agencies, charges, locations, and repeated facts.
+      </p>
+    </div>
   );
 }
 

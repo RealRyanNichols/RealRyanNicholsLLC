@@ -13,9 +13,16 @@ import { ReactionBar } from "@/components/ReactionBar";
 export const revalidate = 300;
 
 const TITLE =
-  "The Case Nexus — the J6 knowledge graph";
+  "The Case Nexus — connect the J6 evidence map";
 const DESCRIPTION =
-  "Every January 6 defendant, every case number, every linked document — laid out as a live force-directed graph. Click any node to see its details, expand its connections, and walk the network.";
+  "A public evidence map for connecting J6 cases by case number, defendant, clue, witness statement, court document, video, picture, and archived record.";
+
+const connectionTypes = [
+  ["Court documents", "Dockets, filings, exhibits, orders, plea papers, sentencing records, and archived DOJ documents."],
+  ["Witness statements", "People who saw the same event, heard the same instruction, received the same treatment, or can confirm a timeline."],
+  ["Photos and videos", "Public clips, bodycam references, livestreams, still frames, metadata, timestamps, and location context."],
+  ["Shared clues", "Names, agencies, prosecutors, officers, facilities, dates, charges, locations, aliases, URLs, and repeated fact patterns."],
+];
 
 export async function generateMetadata(): Promise<Metadata> {
   const override = await getOgImage("/case/nexus");
@@ -60,7 +67,7 @@ type GraphPayload = {
 export default async function CaseNexusPage() {
   const supabase = getSupabaseStaticClient();
   const { data, error } = await supabase.rpc("nexus_initial_seed", {
-    seed_size: 25,
+    seed_size: 40,
   });
   const initial: GraphPayload = error
     ? {
@@ -76,20 +83,71 @@ export default async function CaseNexusPage() {
 
   return (
     <article className="mx-auto max-w-[96rem] px-4 py-6 sm:py-8">
-      {/* Hero — short, no preamble. The graph itself is the headline. */}
-      <header className="max-w-3xl mb-4">
-        <p className="text-xs uppercase tracking-[0.2em] text-[#7fe3a9] font-bold">
-          The Case Nexus · realryannichols.com
-        </p>
-        <h1 className="mt-2 text-3xl sm:text-5xl font-bold tracking-tight leading-[1.05] font-display">
-          The whole J6 case, on one map.
-        </h1>
-        <p className="mt-3 text-base sm:text-lg text-[var(--color-ink-soft)] leading-relaxed">
-          Every co-defendant cluster the DOJ ever filed, every defendant
-          named on the salvaged Capitol Breach Cases listing, every
-          document we&apos;ve archived — organized into readable case clusters
-          with search, focus, and expansion controls.
-        </p>
+      <header className="mb-5 grid gap-5 lg:grid-cols-[minmax(0,1fr)_26rem] lg:items-end">
+        <div className="max-w-4xl">
+          <p className="text-xs font-black uppercase tracking-normal text-[#7fe3a9]">
+            The Case Nexus · connect every clue
+          </p>
+          <h1 className="mt-2 font-display text-4xl font-black leading-[1.02] tracking-normal sm:text-6xl">
+            This is where the cases start connecting.
+          </h1>
+          <p className="mt-4 max-w-3xl text-base leading-relaxed text-[var(--color-ink-soft)] sm:text-xl">
+            One case by itself can look isolated. A document, witness statement,
+            court filing, video, picture, date, officer, prosecutor, agency, or
+            repeated detail can connect it to another case. The Nexus is where
+            those links become visible.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-2">
+            {["Case", "Person", "Document", "Witness", "Video", "Photo", "Clue"].map((label) => (
+              <span
+                key={label}
+                className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1 text-xs font-black uppercase tracking-normal text-[var(--color-ink)]"
+              >
+                {label}
+              </span>
+            ))}
+          </div>
+          <div className="mt-4 grid grid-cols-2 gap-2 lg:hidden">
+            <Link
+              href="/submit"
+              className="rounded-lg border border-[#7fe3a9] bg-[#7fe3a9] px-3 py-2 text-center text-xs font-black uppercase tracking-normal text-[#071126] transition hover:bg-[#9df0c0]"
+            >
+              Add a clue
+            </Link>
+            <Link
+              href="/tell-your-story"
+              className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-center text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[#7fe3a9] hover:text-[var(--color-accent)]"
+            >
+              Tell story
+            </Link>
+          </div>
+        </div>
+        <div className="hidden rounded-lg border-2 border-[#203a64] bg-[#0e1a36] p-4 text-[#cfd9ea] shadow-xl lg:block">
+          <p className="text-xs font-black uppercase tracking-normal text-[#7fe3a9]">
+            Public record target
+          </p>
+          <p className="mt-2 font-display text-2xl font-black leading-tight tracking-normal text-white">
+            If a pattern exists, the record should show the links.
+          </p>
+          <p className="mt-2 text-sm leading-relaxed text-[#a9b7d0]">
+            Start with the live graph. Then send the missing clue that connects
+            one person, document, video, photo, or statement to another.
+          </p>
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            <Link
+              href="/submit"
+              className="rounded-lg border border-[#7fe3a9] bg-[#7fe3a9] px-3 py-2 text-center text-xs font-black uppercase tracking-normal text-[#071126] transition hover:bg-[#9df0c0]"
+            >
+              Add a clue
+            </Link>
+            <Link
+              href="/tell-your-story"
+              className="rounded-lg border border-[#3a557c] bg-[#071126] px-3 py-2 text-center text-xs font-black uppercase tracking-normal text-[#cfd9ea] transition hover:border-[#7fe3a9] hover:text-[#7fe3a9]"
+            >
+              Tell story
+            </Link>
+          </div>
+        </div>
       </header>
 
       {/* The graph */}
@@ -97,6 +155,22 @@ export default async function CaseNexusPage() {
         initial={initial as Parameters<typeof CaseNexus>[0]["initial"]}
         initialError={initial.error ?? null}
       />
+
+      <section className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        {connectionTypes.map(([title, body]) => (
+          <div
+            key={title}
+            className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4"
+          >
+            <h2 className="font-display text-xl font-black tracking-normal">
+              {title}
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+              {body}
+            </p>
+          </div>
+        ))}
+      </section>
 
       {/* Share rail */}
       <div className="mt-4">
@@ -129,48 +203,50 @@ export default async function CaseNexusPage() {
       </section>
 
       {/* What it is */}
-      <section className="mt-10 rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-paper)] p-5 sm:p-6">
-        <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">
-          What you&apos;re looking at
+      <section className="mt-10 rounded-lg border-2 border-[var(--color-line)] bg-[var(--color-paper)] p-5 sm:p-6">
+        <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+          What this is becoming
         </p>
-        <h2 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight font-display">
-          A knowledge graph for a case the previous DOJ tried to hide.
+        <h2 className="mt-1 font-display text-3xl font-black tracking-normal">
+          A public case web: facts, claims, documents, media, and witness
+          statements connected by the thing they share.
         </h2>
         <div className="mt-3 prose-body text-sm sm:text-base">
           <p>
-            The page starts seeded with the 25 largest <strong>co-defendant
-            clusters</strong> — the cases where the DOJ tried multiple
-            people together (the Oath Keepers, the Proud Boys, the
-            tunnel-mob cases). Each big navy circle is a case number; each
-            small dot around it is a defendant on that case. Lines mean
-            &ldquo;named on the same docket.&rdquo;
+            The page starts with the largest <strong>co-defendant
+            clusters</strong>. Each big navy circle is a case number. Each
+            small dot is a defendant. Lines currently show two hard public
+            links: people named on the same docket and archived documents tied
+            to a person.
           </p>
           <p>
-            <strong>Click any node</strong> to open the side drawer with
-            its details. <strong>Hit &ldquo;Expand connections&rdquo;</strong>
-            to pull in that node&apos;s 1-hop neighborhood — every defendant
-            on the case, every document we&apos;ve archived for them.
-            <strong> Search by name or case number</strong> in the box up
-            top to drop a new seed anywhere in the network.
+            The next layer is what people submit: witness statements, photos,
+            videos, screenshots, court records, dispatch logs, bodycam
+            references, officer names, prosecutor names, dates, facilities,
+            charges, URLs, and repeated fact patterns. Those clues are how one
+            story starts connecting to another.
           </p>
           <p>
-            Documents jump straight to the original PDF on the Wayback
-            Machine, so even when the DOJ takes it down again, the link
-            still works.
+            <strong>Click any node</strong> to open its details.
+            <strong> Expand links</strong> to pull in its neighborhood.
+            <strong> Search by name or case number</strong> to drop a new
+            seed anywhere in the network. If you have a missing connector, send
+            it in so it can be reviewed, protected where needed, and added to
+            the record when safe.
           </p>
         </div>
         <div className="mt-5 flex flex-wrap gap-3">
           <Link
-            href="/case/the-salvaged-doj-record"
+            href="/submit"
             className="rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
           >
-            Browse the salvaged record →
+            Submit a missing connector →
           </Link>
           <Link
-            href="/the-map-room"
+            href="/case/the-salvaged-doj-record"
             className="rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
           >
-            Map Room →
+            Browse the salvaged record →
           </Link>
         </div>
       </section>
