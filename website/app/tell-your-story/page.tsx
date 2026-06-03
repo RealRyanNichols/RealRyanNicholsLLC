@@ -124,7 +124,7 @@ export default function TellYourStoryPage() {
             </div>
           </div>
 
-          <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-ink)] p-5 text-white shadow-xl sm:p-6">
+          <div className="rounded-lg border border-[var(--color-blue)] bg-[var(--color-blue-strong)] p-5 text-[var(--color-paper)] shadow-xl sm:p-6">
             <p className="text-xs font-black uppercase tracking-normal text-[#7fe3a9]">
               How the story web works
             </p>
@@ -132,12 +132,12 @@ export default function TellYourStoryPage() {
               {storyLoops.map((item, index) => (
                 <div
                   key={item.title}
-                  className="rounded-lg border border-white/15 bg-white/[0.08] p-4"
+                  className="rounded-lg border border-white/20 bg-white/[0.07] p-4"
                 >
                   <p className="text-xs font-black uppercase tracking-normal text-white/55">
                     Step {index + 1}
                   </p>
-                  <h2 className="mt-1 font-display text-2xl font-black tracking-normal">
+                  <h2 className="mt-1 font-display text-2xl font-black tracking-normal text-[var(--color-paper)]">
                     {item.title}
                   </h2>
                   <p className="mt-2 text-sm leading-relaxed text-white/80">
