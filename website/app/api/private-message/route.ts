@@ -1,8 +1,10 @@
 import { createHash } from "crypto";
 import { NextResponse } from "next/server";
+import { Resend } from "resend";
 import { z } from "zod";
 import { checkRateLimit, clientIp } from "@/lib/rate-limit";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
+import { SITE } from "@/lib/site";
 import { visitorHash } from "@/lib/visitor-hash";
 
 const schema = z.object({
@@ -91,6 +93,50 @@ export async function POST(request: Request) {
       { error: "Private message intake is not available yet." },
       { status: 500 },
     );
+  }
+
+  // Best-effort admin alert. Do not email the full private message body;
+  // sensitive details should stay in the admin inbox instead of spreading
+  // through email storage.
+  const apiKey = process.env.RESEND_API_KEY;
+  const from = process.env.RESEND_FROM_EMAIL;
+  if (apiKey && from) {
+    const adminTo = process.env.ADMIN_NOTIFY_EMAIL ?? from;
+    const subject = insert.subject || "Private message";
+    const contact = [
+      insert.display_name ? `Name: ${insert.display_name}` : "Name: (not given)",
+      insert.email ? `Email: ${insert.email}` : "Email: (not given)",
+      insert.phone ? `Phone: ${insert.phone}` : "Phone: (not given)",
+      insert.source_path ? `Source: ${insert.source_path}` : null,
+    ].filter(Boolean);
+    const text = [
+      `New private message on ${SITE.url}`,
+      "",
+      `Subject: ${subject}`,
+      ...contact,
+      "",
+      `Review in admin: ${SITE.url}/admin/messages`,
+    ].join("\n");
+    const esc = (s: string) =>
+      s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    const html =
+      `<p style="font-family:sans-serif"><strong>New private message</strong></p>` +
+      `<p style="font-family:sans-serif">Subject: ${esc(subject)}</p>` +
+      `<pre style="font-family:ui-monospace,monospace;white-space:pre-wrap;font-size:14px;line-height:1.5">${esc(contact.join("\n"))}</pre>` +
+      `<p><a href="${SITE.url}/admin/messages">Review in admin →</a></p>`;
+    try {
+      const resend = new Resend(apiKey);
+      await resend.emails.send({
+        from,
+        to: adminTo,
+        subject: `New private message: ${subject}`,
+        html,
+        text,
+        ...(insert.email ? { replyTo: insert.email } : {}),
+      });
+    } catch {
+      /* non-blocking — message is saved regardless */
+    }
   }
 
   return NextResponse.json({ ok: true });

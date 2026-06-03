@@ -13,12 +13,20 @@ type State =
 
 export function PrivateMessageBox({
   title = "Need to say something privately?",
+  description = "Public comments create attention. Use this only for sensitive details, contact info, tips, or evidence that should not be public.",
   source = "private-message",
+  defaultOpen = false,
+  showToggle = true,
 }: {
   title?: string;
+  description?: string;
   source?: string;
+  defaultOpen?: boolean;
+  showToggle?: boolean;
 }) {
-  const [state, setState] = useState<State>({ kind: "idle" });
+  const [state, setState] = useState<State>(
+    defaultOpen ? { kind: "open" } : { kind: "idle" },
+  );
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -74,31 +82,34 @@ export function PrivateMessageBox({
   return (
     <section
       id="private-message"
-      className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
+      className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
     >
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">
+          <p className="text-xs uppercase tracking-normal text-[var(--color-muted)] font-bold">
             Private lane
           </p>
-          <h2 className="mt-1 text-lg font-black tracking-tight">{title}</h2>
+          <h2 className="mt-1 font-display text-2xl font-bold tracking-normal">
+            {title}
+          </h2>
           <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-            Public comments create attention. Use this only for sensitive
-            details, contact info, tips, or evidence that should not be public.
+            {description}
           </p>
         </div>
-        <button
-          type="button"
-          onClick={() => {
-            trackEvent(open ? "private_message_close" : "private_message_open", {
-              source,
-            });
-            setState(open ? { kind: "idle" } : { kind: "open" });
-          }}
-          className="rounded-full border border-[var(--color-line)] px-3 py-1.5 text-xs font-black hover:border-[var(--color-accent)]"
-        >
-          {open ? "Close" : "Message"}
-        </button>
+        {showToggle ? (
+          <button
+            type="button"
+            onClick={() => {
+              trackEvent(open ? "private_message_close" : "private_message_open", {
+                source,
+              });
+              setState(open ? { kind: "idle" } : { kind: "open" });
+            }}
+            className="rounded-full border border-[var(--color-line)] px-3 py-1.5 text-xs font-black hover:border-[var(--color-accent)]"
+          >
+            {open ? "Close" : "Message"}
+          </button>
+        ) : null}
       </div>
 
       {open ? (
