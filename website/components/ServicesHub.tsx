@@ -187,95 +187,69 @@ export function ServicesHub() {
               media gets attention. The website captures it.
             </p>
             <div className="rrn-tap-row mt-6">
-              <TrackerLink
-                service={SERVICES[2]}
-                label="Build my site"
+              <a
+                href="#story-path"
                 className="rrn-tap btn-accent inline-flex rounded-lg px-5 py-3 text-sm font-bold"
-              />
-              <TrackerLink
-                service={SERVICES[1]}
-                label="Audit what I have"
+              >
+                See the proof path
+              </a>
+              <Link
+                href="/tell-your-story"
                 className="rrn-tap inline-flex rounded-lg border border-[#d8c89e] bg-[#fdf8ea] px-5 py-3 text-sm font-bold text-[#142a52] transition hover:border-[#fdf8ea]"
-              />
+              >
+                Try story flow
+              </Link>
             </div>
           </div>
 
-          <div className="rounded-lg border border-[#d8c89e]/50 bg-[#fdf8ea] p-4 text-[var(--color-ink)] shadow-2xl sm:p-5">
+          <div
+            id="story-path"
+            className="rounded-lg border border-[#d8c89e]/50 bg-[#fdf8ea] p-4 text-[var(--color-ink)] shadow-2xl sm:p-5"
+          >
             <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
-              Pick the smallest smart move
+              What the page should do first
             </p>
-            <h2 className="mt-2 text-2xl font-black tracking-normal">
-              What do you need right now?
+            <h2 className="mt-2 font-display text-3xl font-black leading-tight tracking-normal">
+              Make the visitor feel the story before you ask them to buy.
             </h2>
-            <div className="mt-4 grid gap-3">
-              <label className="block">
-                <span className="text-xs font-bold uppercase text-[var(--color-muted)]">
-                  Main pressure
-                </span>
-                <select
-                  value={problem}
-                  onChange={(event) => {
-                    setProblem(event.target.value as typeof problem);
-                    trackEvent("services_matcher_change", {
-                      field: "problem",
-                      value: event.target.value,
-                    });
-                  }}
-                  className="mt-1 w-full rounded-lg border border-[var(--color-line)] bg-white px-3 py-3 text-sm"
+            <div className="mt-4 grid gap-2">
+              {[
+                ["1", "Attention lands", "They see live traffic, proof, and a reason to stay."],
+                ["2", "Story opens", "They tell what happened without getting lost in a blank form."],
+                ["3", "Proof organizes", "Dates, people, records, witnesses, and missing documents become readable."],
+                ["4", "Action is obvious", "Then services, tips, support, booking, or checkout make sense."],
+              ].map(([num, title, body]) => (
+                <div
+                  key={title}
+                  className="grid grid-cols-[2.5rem_1fr] gap-3 rounded-lg border border-[var(--color-line)] bg-white p-3"
                 >
-                  {PROBLEMS.map((item) => (
-                    <option key={item.value} value={item.value}>
-                      {item.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label className="block">
-                <span className="text-xs font-bold uppercase text-[var(--color-muted)]">
-                  What kind of proof are we organizing?
-                </span>
-                <select
-                  value={proofMode}
-                  onChange={(event) => {
-                    setProofMode(event.target.value as typeof proofMode);
-                    trackEvent("services_matcher_change", {
-                      field: "proof_mode",
-                      value: event.target.value,
-                    });
-                  }}
-                  className="mt-1 w-full rounded-lg border border-[var(--color-line)] bg-white px-3 py-3 text-sm"
-                >
-                  {PROOF_MODES.map((item) => (
-                    <option key={item.value} value={item.value}>
-                      {item.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </div>
-
-            <div className="mt-4 rounded-lg border border-[var(--color-line)] bg-white p-4">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="text-xs font-bold uppercase text-[var(--color-blue)]">
-                    Recommended
-                  </p>
-                  <h3 className="mt-1 text-2xl font-black tracking-normal">
-                    {pick.name}
-                  </h3>
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-accent)] text-sm font-black text-white">
+                    {num}
+                  </span>
+                  <span>
+                    <strong className="block text-base font-black text-[var(--color-ink)]">
+                      {title}
+                    </strong>
+                    <span className="mt-1 block text-sm leading-relaxed text-[var(--color-ink-soft)]">
+                      {body}
+                    </span>
+                  </span>
                 </div>
-                <p className="text-2xl font-black text-[var(--color-accent)]">
-                  {pick.price}
-                </p>
-              </div>
-              <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-                {pick.outcome}
-              </p>
-              <TrackerLink
-                service={pick}
-                label={`Open ${pick.name}`}
-                className="btn-accent mt-4 inline-flex w-full items-center justify-center rounded-lg px-5 py-3 text-sm font-bold"
-              />
+              ))}
+            </div>
+            <div className="rrn-tap-row mt-4">
+              <Link
+                href="/tell-your-story"
+                className="rrn-tap inline-flex rounded-lg border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-4 py-2 text-sm font-black text-[var(--color-accent)]"
+              >
+                Try the story flow
+              </Link>
+              <a
+                href="#service-match"
+                className="rrn-tap inline-flex rounded-lg border border-[var(--color-line)] px-4 py-2 text-sm font-black text-[var(--color-ink)]"
+              >
+                Then pick service
+              </a>
             </div>
           </div>
         </div>
@@ -299,6 +273,89 @@ export function ServicesHub() {
               </p>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section id="service-match" className="mx-auto max-w-6xl px-4 pb-8 sm:px-6">
+        <div className="grid gap-4 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-5 lg:grid-cols-[0.75fr_1.25fr]">
+          <div>
+            <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+              Pick the smallest smart move
+            </p>
+            <h2 className="mt-2 font-display text-3xl font-black tracking-normal">
+              What do you need right now?
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+              Once the story is clear, the service should be obvious. This
+              matcher keeps people from overbuying or guessing.
+            </p>
+          </div>
+          <div className="grid gap-3 md:grid-cols-[1fr_1fr_1.1fr]">
+            <label className="block">
+              <span className="text-xs font-bold uppercase text-[var(--color-muted)]">
+                Main pressure
+              </span>
+              <select
+                value={problem}
+                onChange={(event) => {
+                  setProblem(event.target.value as typeof problem);
+                  trackEvent("services_matcher_change", {
+                    field: "problem",
+                    value: event.target.value,
+                  });
+                }}
+                className="mt-1 w-full rounded-lg border border-[var(--color-line)] bg-white px-3 py-3 text-sm"
+              >
+                {PROBLEMS.map((item) => (
+                  <option key={item.value} value={item.value}>
+                    {item.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="block">
+              <span className="text-xs font-bold uppercase text-[var(--color-muted)]">
+                Proof type
+              </span>
+              <select
+                value={proofMode}
+                onChange={(event) => {
+                  setProofMode(event.target.value as typeof proofMode);
+                  trackEvent("services_matcher_change", {
+                    field: "proof_mode",
+                    value: event.target.value,
+                  });
+                }}
+                className="mt-1 w-full rounded-lg border border-[var(--color-line)] bg-white px-3 py-3 text-sm"
+              >
+                {PROOF_MODES.map((item) => (
+                  <option key={item.value} value={item.value}>
+                    {item.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <div className="rounded-lg border border-[var(--color-line)] bg-white p-3">
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <p className="text-xs font-bold uppercase text-[var(--color-blue)]">
+                    Recommended
+                  </p>
+                  <h3 className="mt-1 text-xl font-black tracking-normal">
+                    {pick.name}
+                  </h3>
+                </div>
+                <p className="text-xl font-black text-[var(--color-accent)]">
+                  {pick.price}
+                </p>
+              </div>
+              <TrackerLink
+                service={pick}
+                label={`Open ${pick.name}`}
+                className="btn-accent mt-3 inline-flex w-full items-center justify-center rounded-lg px-4 py-2.5 text-sm font-bold"
+              />
+            </div>
+          </div>
         </div>
       </section>
 

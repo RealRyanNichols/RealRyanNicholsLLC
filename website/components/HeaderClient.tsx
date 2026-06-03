@@ -38,6 +38,13 @@ function hrefPath(href: string): string {
 
 const DASHBOARD_LINKS: NavItem[] = [
   {
+    href: "/tell-your-story",
+    label: "Story",
+    desc: "Build the pattern",
+    badge: "Tell",
+    tone: "green",
+  },
+  {
     href: "/case-review",
     label: "Help Desk",
     desc: "Ask, organize, route",
@@ -108,6 +115,13 @@ const NAV: NavEntry[] = [
     label: "Help",
     deck: "Send information, get clarity, or contact Ryan privately.",
     items: [
+      {
+        href: "/tell-your-story",
+        label: "Tell Your Story",
+        desc: "Build a private story profile Ryan can compare.",
+        badge: "Story",
+        tone: "green",
+      },
       {
         href: "/case-review",
         label: "Guided Help Desk",
@@ -602,13 +616,13 @@ function SiteDashboardRail({
   return (
     <div
       className={[
-        "border-t border-[var(--color-line)] bg-[#101a31] text-[var(--color-paper)]",
+        "border-t border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-paper)] shadow-[0_10px_28px_rgba(26,20,16,0.08)]",
         menuOpen ? "hidden lg:block" : "",
       ].join(" ")}
     >
       <nav
         aria-label="Site dashboard"
-        className="mx-auto flex max-w-5xl gap-2 overflow-x-auto px-4 py-2 [scrollbar-width:none] md:grid md:grid-cols-4"
+        className="mx-auto flex max-w-5xl gap-2.5 overflow-x-auto px-4 py-3 [scrollbar-width:none] md:grid md:grid-cols-5"
       >
         {DASHBOARD_LINKS.map((item) => (
           <DashboardTile
@@ -633,10 +647,10 @@ function DashboardTile({
     <Link
       href={item.href}
       className={[
-        "min-w-[7.75rem] rounded-lg border px-2.5 py-2 transition sm:min-w-[9.5rem] md:min-w-0",
+        "min-w-[8.75rem] rounded-lg border px-3 py-3 transition sm:min-w-[10rem] md:min-w-0",
         active
-          ? "border-[#7fe3a9] bg-[#7fe3a9]/12"
-          : "border-white/10 bg-white/5 hover:border-[#d8c89e] hover:bg-white/10",
+          ? "border-[#7fe3a9] bg-[#142447]"
+          : "border-[#243452] bg-[#101a31] hover:border-[#d8c89e] hover:bg-[#142447]",
       ].join(" ")}
     >
       <span className="flex items-center justify-between gap-2">

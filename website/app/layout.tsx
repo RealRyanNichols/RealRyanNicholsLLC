@@ -7,6 +7,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { MobileSupportBar } from "@/components/MobileSupportBar";
 import { PageViewTracker } from "@/components/PageViewTracker";
+import { PublicAttentionBar } from "@/components/PublicAttentionBar";
 import { ThirdPartyAnalytics } from "@/components/ThirdPartyAnalytics";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -63,6 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd) }}
         />
         <Header />
+        <PublicAttentionBar />
         <main className="flex-1 w-full pb-20 lg:pb-0">{children}</main>
         <Footer />
         <MobileSupportBar />

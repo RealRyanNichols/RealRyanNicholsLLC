@@ -8,8 +8,15 @@ export function MobileSupportBar() {
     >
       <nav
         aria-label="Mobile quick actions"
-        className="grid grid-cols-3 gap-2"
+        className="grid grid-cols-4 gap-2"
       >
+        <Link
+          href="/tell-your-story"
+          data-track="mobile-bar-story"
+          className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[#7fe3a9] bg-[#7fe3a9]/15 px-2 text-center text-xs font-black text-[#0e1a36]"
+        >
+          Story
+        </Link>
         <Link
           href="/submit"
           data-track="mobile-bar-submit"

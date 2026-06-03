@@ -9,6 +9,7 @@ export function Footer() {
           <Link className="hover:text-[var(--color-accent)]" href="/case">J6 Case</Link>
           <Link className="hover:text-[var(--color-accent)]" href="/j6">J6 Defendants</Link>
           <Link className="hover:text-[var(--color-accent)]" href="/jan-6">Jan 6</Link>
+          <Link className="hover:text-[var(--color-accent)]" href="/tell-your-story">Tell your story</Link>
           <Link className="hover:text-[var(--color-accent)]" href="/about">About</Link>
           <Link className="hover:text-[var(--color-accent)]" href="/support">Donate</Link>
           <Link className="hover:text-[var(--color-accent)]" href="/impact">Impact</Link>
