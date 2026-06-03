@@ -275,6 +275,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
   const [open, setOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const pathname = usePathname();
+  const isAdminPath = pathname.startsWith("/admin");
 
   // Close menus on route change
   useEffect(() => {
@@ -323,7 +324,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
           counters from the Map Room RPCs. Polls every 30s in the
           background so the chrome itself signals "this is a live
           system" before you even scroll. */}
-      <HeaderStatusStrip />
+      {!isAdminPath ? <HeaderStatusStrip /> : null}
       <header className="border-b border-[var(--color-line)] bg-[var(--color-paper)]/90 backdrop-blur-xl sticky top-0 z-30">
         <div className="mx-auto max-w-5xl px-4 h-16 flex items-center justify-between gap-3">
           <Link
@@ -437,7 +438,9 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             </button>
           </div>
         </div>
-        <SiteDashboardRail pathname={pathname} menuOpen={open} />
+        {!isAdminPath ? (
+          <SiteDashboardRail pathname={pathname} menuOpen={open} />
+        ) : null}
 
         {/* Mobile dropdown drawer — anchored to the header's OWN bottom edge
             (absolute top-full) so it tracks the header at any scroll position.

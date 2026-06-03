@@ -44,6 +44,7 @@ export default async function AdminHomePage() {
     { count: pendingProfiles },
     { count: activeProfiles },
     { count: pendingComments },
+    { count: pendingPrivateMessages },
     { count: subs7d },
     { count: commentReports },
     { count: pendingTips },
@@ -77,6 +78,10 @@ export default async function AdminHomePage() {
       .from("comments")
       .select("id", { count: "exact", head: true })
       .eq("status", "pending"),
+    supabase
+      .from("private_messages")
+      .select("id", { count: "exact", head: true })
+      .eq("status", "new"),
     supabase
       .from("notify_signups")
       .select("id", { count: "exact", head: true })
@@ -139,12 +144,20 @@ export default async function AdminHomePage() {
   const receivableCents = invoices
     .filter((i) => i.status === "open" || i.status === "failed")
     .reduce((sum, i) => sum + Math.max(0, i.amount_cents - i.amount_paid_cents), 0);
-  const inboxTotal =
+  const reviewQueueTotal =
     (pendingTips ?? 0) +
     (pendingClaims ?? 0) +
     (pendingSubmissions ?? 0) +
     (pendingComments ?? 0) +
     (commentReports ?? 0);
+  const reviewQueueHref =
+    (pendingTips ?? 0) > 0
+      ? "/admin/tips?filter=pending"
+      : (pendingClaims ?? 0) > 0
+        ? "/admin/claims?filter=pending"
+        : (pendingSubmissions ?? 0) > 0
+          ? "/admin/submissions?filter=pending"
+          : "/admin";
 
   return (
     <article className="mx-auto max-w-6xl px-4 py-8">
@@ -189,10 +202,18 @@ export default async function AdminHomePage() {
         <ActionLane
           href="/admin/messages"
           kicker="Answer"
-          title="Inbox & submissions"
-          value={String(inboxTotal)}
-          sub="tips, messages, claims, uploads, comments"
-          hot={inboxTotal > 0}
+          title="Private messages"
+          value={String(pendingPrivateMessages ?? 0)}
+          sub="contact form messages only"
+          hot={(pendingPrivateMessages ?? 0) > 0}
+        />
+        <ActionLane
+          href={reviewQueueHref}
+          kicker="Review"
+          title="Tips & submissions"
+          value={String(reviewQueueTotal)}
+          sub="tips, claims, uploads, comments"
+          hot={reviewQueueTotal > 0}
         />
         <ActionLane
           href="/admin/analytics"
@@ -456,6 +477,14 @@ export default async function AdminHomePage() {
         <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
           <h2 className="text-lg font-bold tracking-tight">Moderation queue</h2>
           <ul className="mt-3 space-y-2 text-sm">
+            <li className="flex items-center justify-between gap-3">
+              <Link href="/admin/messages?filter=new" className="hover:text-[var(--color-accent)]">
+                New private messages
+              </Link>
+              <span className="font-bold tabular-nums">
+                {pendingPrivateMessages ?? 0}
+              </span>
+            </li>
             <li className="flex items-center justify-between gap-3">
               <span>Comments awaiting approval</span>
               <span className="font-bold tabular-nums">
