@@ -37,6 +37,18 @@ const LAND_PATH =
         .join(" ")
     : PATH_GEN(land as Feature<GeometryObject>) ?? "";
 
+type RadarView = { x: number; y: number; scale: number };
+
+const WORLD_VIEW: RadarView = { x: 0, y: 0, scale: 1 };
+const US_CENTER = PROJECTION([-98.5795, 39.8283]);
+const US_VIEW: RadarView = US_CENTER
+  ? {
+      x: -((US_CENTER[0] - W / 2) * 2.45),
+      y: -((US_CENTER[1] - H / 2) * 2.45),
+      scale: 2.45,
+    }
+  : WORLD_VIEW;
+
 // ─── Types ─────────────────────────────────────────────────────────────
 type Ping = {
   ping_id: string;
@@ -101,7 +113,7 @@ export function LiveVisitorRadar({ initial }: { initial: Ping[] }) {
 
   // ── pan + zoom state ───────────────────────────────────────────────
   const svgRef = useRef<SVGSVGElement | null>(null);
-  const [view, setView] = useState({ x: 0, y: 0, scale: 1 });
+  const [view, setView] = useState<RadarView>(US_VIEW);
   const dragRef = useRef<{
     active: boolean;
     startX: number;
@@ -110,7 +122,7 @@ export function LiveVisitorRadar({ initial }: { initial: Ping[] }) {
     initY: number;
   } | null>(null);
 
-  const clamp = useCallback((next: typeof view) => {
+  const clamp = useCallback((next: RadarView) => {
     const minScale = 0.9;
     const maxScale = 8;
     const scale = Math.max(minScale, Math.min(maxScale, next.scale));
@@ -176,8 +188,12 @@ export function LiveVisitorRadar({ initial }: { initial: Ping[] }) {
   function onPointerUp() {
     if (dragRef.current) dragRef.current.active = false;
   }
-  function resetView() {
-    setView({ x: 0, y: 0, scale: 1 });
+  function showWorld() {
+    setView(WORLD_VIEW);
+  }
+
+  function showUnitedStates() {
+    setView(US_VIEW);
   }
 
   // ── Selecting a ping ───────────────────────────────────────────────
@@ -211,6 +227,18 @@ export function LiveVisitorRadar({ initial }: { initial: Ping[] }) {
         .filter((p): p is { p: Ping; x: number; y: number } => p !== null),
     [pings],
   );
+  const usPings = useMemo(
+    () => pings.filter((p) => p.country?.toUpperCase() === "US"),
+    [pings],
+  );
+  const countryCount = useMemo(() => {
+    const countries = new Set(
+      pings
+        .map((p) => p.country?.toUpperCase())
+        .filter((country): country is string => !!country),
+    );
+    return countries.size;
+  }, [pings]);
 
   // Scale the dot radius INVERSELY to zoom so dots stay readable.
   const dotR = 4 / view.scale;
@@ -236,7 +264,7 @@ export function LiveVisitorRadar({ initial }: { initial: Ping[] }) {
           onPointerLeave={onPointerUp}
           onPointerCancel={onPointerUp}
           role="img"
-          aria-label="Live world map showing each active visitor as an individual ping. Drag to pan, use the + and − buttons to zoom, click a ping to see its activity."
+          aria-label="Live map focused on the United States first, showing each active visitor as an individual ping. Drag to pan, use the controls to zoom or view the world, click a ping to see its activity."
         >
           <defs>
             <style>{`
@@ -312,16 +340,35 @@ export function LiveVisitorRadar({ initial }: { initial: Ping[] }) {
         <div className="absolute top-3 left-3 z-10">
           <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] font-bold text-[#7fe3a9]">
             <span className="inline-block w-2 h-2 rounded-full bg-[#7fe3a9] animate-pulse" />
-            Live radar
+            U.S. live radar
           </div>
           <div className="mt-1 text-3xl sm:text-5xl font-bold tabular-nums tracking-tight font-display text-[var(--color-paper)] leading-none drop-shadow">
             {pings.length}
           </div>
-          <div className="text-[11px] text-[#a9b7d0]">
-            visitors on the case right now
+          <div className="text-[11px] text-[#a9b7d0] leading-snug">
+            visitors right now · {usPings.length} U.S. · {countryCount}{" "}
+            {countryCount === 1 ? "country" : "countries"}
           </div>
         </div>
         <div className="absolute top-3 right-3 z-10 flex flex-col gap-1.5">
+          <div className="flex overflow-hidden rounded-md border border-[#3a557c] bg-[#0a1429]">
+            <button
+              type="button"
+              onClick={showUnitedStates}
+              className="h-9 px-2.5 text-[10px] font-black uppercase tracking-wider text-[#7fe3a9] hover:bg-[#1c2a4a]"
+              aria-label="Focus radar on the United States"
+            >
+              US
+            </button>
+            <button
+              type="button"
+              onClick={showWorld}
+              className="h-9 border-l border-[#3a557c] px-2.5 text-[10px] font-black uppercase tracking-wider text-[#cfd9ea] hover:bg-[#1c2a4a]"
+              aria-label="Show the whole world"
+            >
+              World
+            </button>
+          </div>
           <button
             type="button"
             onClick={() =>
@@ -342,17 +389,9 @@ export function LiveVisitorRadar({ initial }: { initial: Ping[] }) {
           >
             −
           </button>
-          <button
-            type="button"
-            onClick={resetView}
-            className="w-9 h-9 rounded-md border border-[#3a557c] bg-[#0a1429] text-[#cfd9ea] hover:bg-[#1c2a4a] text-[10px] font-bold uppercase"
-            aria-label="Reset view"
-          >
-            ⟲
-          </button>
         </div>
         <p className="absolute bottom-2 left-3 text-[9px] text-[#7c8aa6] font-mono uppercase tracking-wider z-10 select-none">
-          drag · +/− to zoom · click
+          U.S. first · world available · click a ping
         </p>
       </div>
 

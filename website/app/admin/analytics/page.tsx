@@ -226,6 +226,9 @@ export default async function AdminAnalyticsPage({
         is tucked into the collapsible sections below.
       </p>
 
+      {/* 0. MAX COMMAND CENTER — live operating read before the scorecards */}
+      <CommandCenter />
+
       {/* 1. ATTENTION SCOREBOARD — above the fold, the few numbers that matter */}
       <Scoreboard />
 
@@ -505,6 +508,315 @@ export default async function AdminAnalyticsPage({
 
 function channelId(channel: string): string {
   return channel.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
+// ---------------------------------------------------------------------------
+// 0. MAX COMMAND CENTER
+// ---------------------------------------------------------------------------
+
+type CommandViewRow = {
+  path: string | null;
+  country: string | null;
+  region: string | null;
+  city: string | null;
+  referrer_host: string | null;
+  device_kind: string | null;
+  started_at: string;
+  last_activity_at: string;
+  scroll_max: number | null;
+};
+
+type CommandEventRow = {
+  kind: string | null;
+  target: string | null;
+  path: string | null;
+};
+
+function topEntry(rows: Array<string | null | undefined>): { label: string; n: number } | null {
+  const counts = new Map<string, number>();
+  for (const row of rows) {
+    const key = row?.trim();
+    if (!key) continue;
+    counts.set(key, (counts.get(key) ?? 0) + 1);
+  }
+  const [label, n] = Array.from(counts.entries()).sort((a, b) => b[1] - a[1])[0] ?? [];
+  return label ? { label, n } : null;
+}
+
+function countCommandKinds(rows: CommandEventRow[], kinds: string[]): number {
+  const wanted = new Set(kinds);
+  return rows.reduce((sum, row) => sum + (row.kind && wanted.has(row.kind) ? 1 : 0), 0);
+}
+
+function commandTone(value: number, goodAt: number, watchAt: number): Tone {
+  if (value >= goodAt) return "healthy";
+  if (value >= watchAt) return "watch";
+  return "leak";
+}
+
+async function CommandCenter() {
+  const supabase = await getSupabaseServerClient();
+  const now = new Date();
+  const fiveMinAgo = new Date(now.getTime() - 5 * 60 * 1000).toISOString();
+  const sevenDaysAgo = subDays(now, 7).toISOString();
+  const thirtyDaysAgo = subDays(now, 30).toISOString();
+
+  const [
+    { count: liveNow },
+    { count: views7 },
+    { count: views30 },
+    { count: events7 },
+    { data: liveRowsRaw },
+    { data: views7Raw },
+    { data: events7Raw },
+  ] = await Promise.all([
+    supabase
+      .from("page_views")
+      .select("id", { count: "exact", head: true })
+      .gte("last_activity_at", fiveMinAgo),
+    supabase
+      .from("page_views")
+      .select("id", { count: "exact", head: true })
+      .gte("started_at", sevenDaysAgo),
+    supabase
+      .from("page_views")
+      .select("id", { count: "exact", head: true })
+      .gte("started_at", thirtyDaysAgo),
+    supabase
+      .from("page_events")
+      .select("id", { count: "exact", head: true })
+      .gte("at", sevenDaysAgo),
+    supabase
+      .from("page_views")
+      .select("path, country, region, city, referrer_host, device_kind, started_at, last_activity_at, scroll_max")
+      .gte("last_activity_at", fiveMinAgo)
+      .order("last_activity_at", { ascending: false })
+      .limit(50),
+    supabase
+      .from("page_views")
+      .select("path, country, region, city, referrer_host, device_kind, started_at, last_activity_at, scroll_max")
+      .gte("started_at", sevenDaysAgo)
+      .order("started_at", { ascending: false })
+      .limit(5000),
+    supabase
+      .from("page_events")
+      .select("kind, target, path")
+      .gte("at", sevenDaysAgo)
+      .order("at", { ascending: false })
+      .limit(5000),
+  ]);
+
+  const liveRows = (liveRowsRaw ?? []) as CommandViewRow[];
+  const viewRows = (views7Raw ?? []) as CommandViewRow[];
+  const eventRows = (events7Raw ?? []) as CommandEventRow[];
+  const viewSampleCount = viewRows.length;
+  const usViews = viewRows.filter((row) => row.country?.toUpperCase() === "US").length;
+  const mobileViews = viewRows.filter((row) => row.device_kind === "mobile").length;
+  const scrollRows = viewRows.filter((row) => typeof row.scroll_max === "number");
+  const avgScroll =
+    scrollRows.length > 0
+      ? Math.round(scrollRows.reduce((sum, row) => sum + (row.scroll_max ?? 0), 0) / scrollRows.length)
+      : 0;
+  const topPath = topEntry(viewRows.map((row) => row.path));
+  const topReferrer = topEntry(viewRows.map((row) => row.referrer_host));
+  const topCity = topEntry(
+    viewRows.map((row) =>
+      row.city
+        ? `${row.city}${row.region ? `, ${row.region}` : ""}${row.country ? ` · ${row.country}` : ""}`
+        : row.country,
+    ),
+  );
+  const livePath = topEntry(liveRows.map((row) => row.path));
+
+  const shares = countCommandKinds(eventRows, ["share_platform", "share_native", "share_copy"]);
+  const shareMenus = countCommandKinds(eventRows, ["share_menu_open"]);
+  const subscribeAttempts = countCommandKinds(eventRows, ["subscribe_attempt", "follow_capture_attempt"]);
+  const subscribeWins = countCommandKinds(eventRows, ["subscribe_success", "follow_capture_success"]);
+  const tipAttempts = countCommandKinds(eventRows, ["tip_submit_attempt"]);
+  const tipWins = countCommandKinds(eventRows, ["tip_submit_success"]);
+  const supportStarts = countCommandKinds(eventRows, ["support_intent_attempt"]);
+  const supportSaved = countCommandKinds(eventRows, ["support_intent_saved"]);
+  const donateClicks = countCommandKinds(eventRows, ["donate_click", "support_checkout_open"]);
+
+  const usPct = pctNum(usViews, viewSampleCount);
+  const mobilePct = pctNum(mobileViews, viewSampleCount);
+  const sharePct = pctNum(shares, shareMenus);
+  const subscribePct = pctNum(subscribeWins, subscribeAttempts);
+  const tipPct = pctNum(tipWins, tipAttempts);
+  const supportPct = pctNum(supportSaved, supportStarts);
+
+  const actionQueue = [
+    {
+      label: "Return path",
+      value: subscribePct,
+      text:
+        subscribeAttempts === 0
+          ? "No signup attempts in the sampled 7d stream. Push alerts harder on live/video pages."
+          : `${subscribePct}% signup conversion. ${fmt(subscribeWins)} wins from ${fmt(subscribeAttempts)} attempts.`,
+      href: "#recent-subscribers",
+    },
+    {
+      label: "Tip intake",
+      value: tipPct,
+      text:
+        tipAttempts === 0
+          ? "No tip starts in the sampled 7d stream. Move the tip lane higher on story pages."
+          : `${tipPct}% tip completion. ${fmt(tipWins)} submitted from ${fmt(tipAttempts)} starts.`,
+      href: "/admin/tips",
+    },
+    {
+      label: "Money path",
+      value: supportPct,
+      text:
+        supportStarts === 0
+          ? "No support-intent starts in the sampled 7d stream. Make funding asks more concrete."
+          : `${supportPct}% support save rate. ${fmt(donateClicks)} donation/checkout clicks.`,
+      href: "/support#support-mission",
+    },
+    {
+      label: "Distribution",
+      value: sharePct,
+      text:
+        shareMenus === 0
+          ? "No share menus opened in the sampled 7d stream. Add one receipt people can repost."
+          : `${sharePct}% share completion. ${fmt(shares)} shares from ${fmt(shareMenus)} opened menus.`,
+      href: "#top-content",
+    },
+  ].sort((a, b) => a.value - b.value);
+
+  return (
+    <section className="mt-6 overflow-hidden rounded-2xl border border-[#243452] bg-[#0b1428] text-[#fdf8ea]">
+      <div className="border-b border-white/10 px-4 py-3 sm:px-5">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+              Max analytics command center
+            </p>
+            <h2 className="mt-1 text-xl font-black tracking-tight">
+              Who is here, what they want, and where the leaks are.
+            </h2>
+          </div>
+          <Link
+            href="/the-map-room"
+            className="rounded-full border border-[#7fe3a9]/40 bg-[#7fe3a9]/10 px-4 py-2 text-xs font-black uppercase tracking-wider text-[#7fe3a9] transition hover:bg-[#7fe3a9] hover:text-[#0b1428]"
+          >
+            Open live radar
+          </Link>
+        </div>
+      </div>
+
+      <div className="grid gap-px bg-white/10 md:grid-cols-4">
+        <CommandMetric
+          label="Live pulse"
+          value={fmt(liveNow)}
+          sub={livePath ? `Hot now: ${livePath.label}` : "No active path yet"}
+          tone={(liveNow ?? 0) > 0 ? "healthy" : "neutral"}
+        />
+        <CommandMetric
+          label="U.S. center"
+          value={`${usPct}%`}
+          sub={`${fmt(usViews)} of ${fmt(viewSampleCount)} sampled views · ${topCity?.label ?? "geo pending"}`}
+          tone={commandTone(usPct, 70, 45)}
+        />
+        <CommandMetric
+          label="Mobile weight"
+          value={`${mobilePct}%`}
+          sub={`${fmt(mobileViews)} mobile views · average scroll ${avgScroll}%`}
+          tone={commandTone(mobilePct, 60, 40)}
+        />
+        <CommandMetric
+          label="7d / 30d views"
+          value={`${fmt(views7)} / ${fmt(views30)}`}
+          sub={`${fmt(events7)} events · ${topReferrer?.label ?? "direct / unknown"} leads referrals`}
+          tone="neutral"
+        />
+      </div>
+
+      <div className="grid gap-4 p-4 sm:p-5 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
+                Hottest path
+              </p>
+              <h3 className="mt-1 break-all font-mono text-sm font-black text-[#fdf8ea]">
+                {topPath?.label ?? "No path data yet"}
+              </h3>
+            </div>
+            <span className="rounded-full bg-[#7fe3a9] px-3 py-1 text-xs font-black text-[#0b1428]">
+              {fmt(topPath?.n ?? 0)} views
+            </span>
+          </div>
+          <p className="mt-3 text-sm leading-relaxed text-[#cfd9ea]">
+            Use the hottest path as the next post prompt. If people are already
+            opening it, publish a follow-up that sends them back there, asks one
+            clear question, and turns the page into a share target.
+          </p>
+        </div>
+
+        <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+          <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
+            Fix first
+          </p>
+          <div className="mt-3 grid gap-2">
+            {actionQueue.slice(0, 3).map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="block rounded-lg border border-white/10 bg-[#101a31] p-3 transition hover:border-[#7fe3a9]"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-sm font-black">{item.label}</span>
+                  <span className="font-mono text-xs font-black text-[#7fe3a9]">
+                    {item.value}%
+                  </span>
+                </div>
+                <p className="mt-1 text-xs leading-snug text-[#cfd9ea]">
+                  {item.text}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <p className="border-t border-white/10 px-4 py-3 text-xs text-[#a9b7d0] sm:px-5">
+        Max mode uses the first-party stream already collected here: page views,
+        dwell, scroll, clicks, outbound clicks, acquisition, shares, tips,
+        support intent, subscriptions, video and live events. No IPs are shown.
+      </p>
+    </section>
+  );
+}
+
+function CommandMetric({
+  label,
+  value,
+  sub,
+  tone,
+}: {
+  label: string;
+  value: string;
+  sub: string;
+  tone: Tone;
+}) {
+  const styles = TONE_STYLES[tone];
+  return (
+    <div className="bg-[#0b1428] p-4">
+      <div className="flex items-center justify-between gap-2">
+        <span className="text-[10px] font-black uppercase tracking-[0.18em] text-[#a9b7d0]">
+          {label}
+        </span>
+        <span className={`rounded-full px-2 py-0.5 text-[9px] font-black uppercase ${styles.chip}`}>
+          {tone === "healthy" ? "strong" : tone === "watch" ? "watch" : tone === "leak" ? "fix" : "read"}
+        </span>
+      </div>
+      <div className={`mt-2 text-3xl font-black tracking-tight tabular-nums ${tone === "neutral" ? "text-[#fdf8ea]" : styles.value}`}>
+        {value}
+      </div>
+      <p className="mt-1 text-xs leading-snug text-[#cfd9ea]">{sub}</p>
+    </div>
+  );
 }
 
 // ---------------------------------------------------------------------------
