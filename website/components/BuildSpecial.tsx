@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
 
 const VENMO = "https://venmo.com/u/TheRealRyanNichols";
 const CASHAPP = "https://cash.app/$TheRealRyanNichols";
@@ -95,6 +96,46 @@ function PayButtons() {
   );
 }
 
+type Pulse = { reading_now: number; today: number; week: number };
+
+function LiveViewers() {
+  const [p, setP] = useState<Pulse | null>(null);
+  useEffect(() => {
+    let alive = true;
+    const poll = async () => {
+      try {
+        const supabase = getSupabaseBrowserClient();
+        const { data } = await supabase.rpc("site_live_pulse");
+        if (alive && data) setP(data as Pulse);
+      } catch {
+        /* never break the page */
+      }
+    };
+    poll();
+    const t = setInterval(poll, 12000);
+    return () => {
+      alive = false;
+      clearInterval(t);
+    };
+  }, []);
+  if (!p) return null;
+  const headline =
+    p.reading_now >= 3
+      ? `${p.reading_now} people on this site right now`
+      : `${p.today.toLocaleString()} people here today`;
+  return (
+    <div className="mt-5 flex justify-center">
+      <span className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-white/[0.05] px-4 py-1.5 text-sm font-semibold text-slate-200">
+        <span className="relative flex h-2 w-2">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" />
+          <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
+        </span>
+        {headline} · {p.week.toLocaleString()} this week
+      </span>
+    </div>
+  );
+}
+
 export function BuildSpecial() {
   const countdown = useMidnightCountdown();
   return (
@@ -130,6 +171,8 @@ export function BuildSpecial() {
           <Stat label="Spots" value="6" sub="first come, first served" />
           <Stat label="Offer ends in" value={countdown ?? "today"} sub="midnight tonight" pulse />
         </div>
+
+        <LiveViewers />
 
         <div className="mt-12 text-center">
           <p className="text-xs uppercase tracking-[0.25em] text-slate-400 font-black">
@@ -203,6 +246,32 @@ export function BuildSpecial() {
           <li>✅ After 30 days it&apos;s <strong>yours</strong> — or we set up a simple plan to keep building.</li>
           <li>✅ <strong>Warranty:</strong> if something I built breaks in normal use, I fix it.</li>
         </ul>
+
+        {/* Investigations — second paid service */}
+        <h2 className="mt-16 text-center text-2xl sm:text-3xl font-black text-white">
+          Need something investigated? Hire me for that too.
+        </h2>
+        <p className="mt-3 text-center text-slate-300 max-w-2xl mx-auto">
+          I dig into matters that deserve daylight and publish thorough, sourced pieces. Straight up: I only put out what the evidence supports — real investigative work, not hit pieces.
+        </p>
+        <div className="mt-5 grid gap-3 sm:grid-cols-2">
+          <div className="rounded-2xl border border-slate-700 bg-white/[0.04] p-5">
+            <div className="font-black text-yellow-400">🔎 Full investigation + article — $997</div>
+            <p className="mt-1.5 text-sm text-slate-300">
+              Bring me a matter that deserves daylight. I investigate it, we get on the phone to work it through (about two hours across the project), and I write and publish a thorough, sourced piece.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-slate-700 bg-white/[0.04] p-5">
+            <div className="font-black text-yellow-400">⚡ Quick package &amp; publish — $197</div>
+            <p className="mt-1.5 text-sm text-slate-300">
+              You already have the evidence — documents, screenshots, links. You just need someone to assemble it into a clean, sourced article and put it out, fast.
+            </p>
+          </div>
+        </div>
+        <p className="mt-4 text-center text-xs text-slate-400">
+          Introductory pricing — it goes up as the site grows. To commission one,{" "}
+          <a className="text-yellow-400 underline" href={EMAIL}>email me</a> or pay via Venmo / Cash App with the details in the note.
+        </p>
 
         {/* Donate path for people who can't use a build but want to help */}
         <div className="mt-16 rounded-2xl border border-slate-700 bg-white/[0.04] p-6 text-center">
