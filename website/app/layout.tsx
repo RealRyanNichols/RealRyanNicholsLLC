@@ -63,7 +63,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd) }}
         />
         <Header />
-        <main className="flex-1 w-full pb-20 md:pb-0">{children}</main>
+        <main className="flex-1 w-full pb-20 lg:pb-0">{children}</main>
         <Footer />
         <MobileSupportBar />
         <Suspense fallback={null}>

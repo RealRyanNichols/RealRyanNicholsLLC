@@ -13,11 +13,18 @@ type Props = {
   isAdmin: boolean;
 };
 
-// Public nav. Condensed into a few top-level slots so it doesn't smoosh:
-// case-related views fold under "The Case", media folds under "Watch".
-// Donate is a permanent CTA chip; admin/+new/account append.
-type NavItem = { href: string; label: string };
-type NavGroup = { label: string; items: NavItem[] };
+type NavItem = {
+  href: string;
+  label: string;
+  desc?: string;
+  badge?: string;
+  tone?: "red" | "blue" | "green" | "ink";
+};
+type NavGroup = {
+  label: string;
+  deck: string;
+  items: NavItem[];
+};
 type NavEntry = NavItem | NavGroup;
 
 function isGroup(e: NavEntry): e is NavGroup {
@@ -29,38 +36,173 @@ function hrefPath(href: string): string {
   return href.split("?")[0];
 }
 
-// Four lean top-level slots so the desktop bar never smooshes against the
-// Donate / auth chips. Everything else folds into "The Case" and "More".
-// Submit-a-Tip stays prominent (it's the newsroom tip line) but lives under
-// More on desktop and gets its own row in the mobile drawer below.
+const DASHBOARD_LINKS: NavItem[] = [
+  {
+    href: "/case-review",
+    label: "Help Desk",
+    desc: "Ask, organize, route",
+    badge: "Start",
+    tone: "red",
+  },
+  {
+    href: "/submit",
+    label: "Tip Line",
+    desc: "Send records or leads",
+    badge: "Private",
+    tone: "blue",
+  },
+  {
+    href: "/the-map-room",
+    label: "Map Room",
+    desc: "Live case dashboard",
+    badge: "Data",
+    tone: "green",
+  },
+  {
+    href: "/store",
+    label: "Services",
+    desc: "Calls, audits, builds",
+    badge: "Hire",
+    tone: "ink",
+  },
+];
+
 const NAV: NavEntry[] = [
   { href: "/", label: "Feed" },
   {
-    label: "The Case",
+    label: "Case",
+    deck: "Records, defendants, filings, and the public map.",
     items: [
-      { href: "/case", label: "J6 Case overview" },
-      { href: "/case?view=people&filter=unclaimed", label: "All J6 defendants" },
-      { href: "/the-map-room", label: "The Map Room" },
-      { href: "/fights", label: "The Fights" },
+      {
+        href: "/case",
+        label: "Case Hub",
+        desc: "Timeline, grievances, documents, people.",
+        badge: "Start",
+        tone: "red",
+      },
+      {
+        href: "/case?view=people&filter=unclaimed",
+        label: "J6 Profiles",
+        desc: "Find defendants and claim profiles.",
+        badge: "1,500+",
+        tone: "blue",
+      },
+      {
+        href: "/the-map-room",
+        label: "Map Room",
+        desc: "Live dashboard for the public record.",
+        badge: "Live",
+        tone: "green",
+      },
+      {
+        href: "/fights",
+        label: "The Fights",
+        desc: "Active public-accountability lanes.",
+        badge: "Watch",
+        tone: "ink",
+      },
+    ],
+  },
+  {
+    label: "Help",
+    deck: "Send information, get clarity, or contact Ryan privately.",
+    items: [
+      {
+        href: "/case-review",
+        label: "Guided Help Desk",
+        desc: "Answer the first questions and save context.",
+        badge: "New",
+        tone: "red",
+      },
+      {
+        href: "/submit",
+        label: "Submit a Tip",
+        desc: "Send links, records, names, dates, proof.",
+        badge: "Tip",
+        tone: "blue",
+      },
+      {
+        href: "/contact",
+        label: "Private Contact",
+        desc: "Send sensitive details without posting publicly.",
+        badge: "Private",
+        tone: "ink",
+      },
+      {
+        href: "/store/strategy-call-30",
+        label: "Book Ryan",
+        desc: "Paid focused help when you need his time.",
+        badge: "$197",
+        tone: "green",
+      },
     ],
   },
   {
     label: "Watch",
+    deck: "Live video, posts, articles, and what is moving now.",
     items: [
-      { href: "/live", label: "Live now" },
-      { href: "/videos", label: "Videos" },
+      {
+        href: "/live",
+        label: "Live Now",
+        desc: "Streams and real-time discussion.",
+        badge: "On",
+        tone: "green",
+      },
+      {
+        href: "/videos",
+        label: "Videos",
+        desc: "Watch the latest public updates.",
+        badge: "Watch",
+        tone: "blue",
+      },
+      {
+        href: "/",
+        label: "Feed",
+        desc: "Posts, receipts, and newest updates.",
+        badge: "Read",
+        tone: "ink",
+      },
+      {
+        href: "/impact",
+        label: "Impact",
+        desc: "What the site is building and funding.",
+        badge: "Proof",
+        tone: "red",
+      },
     ],
   },
   {
-    label: "More",
+    label: "Work",
+    deck: "Services, store, support, and owned-platform tools.",
     items: [
-      { href: "/submit", label: "Submit a Tip" },
-      { href: "/contact", label: "Private Contact" },
-      { href: "/case-review", label: "Case Review" },
-      { href: "/services", label: "Services" },
-      { href: "/own-your-feed", label: "Own your feed" },
-      { href: "/store", label: "Services store" },
-      { href: "/about", label: "About" },
+      {
+        href: "/services",
+        label: "Services Dashboard",
+        desc: "Find the right paid help fast.",
+        badge: "Pick",
+        tone: "red",
+      },
+      {
+        href: "/store",
+        label: "Store",
+        desc: "Flat-fee calls, audits, and builds.",
+        badge: "Buy",
+        tone: "blue",
+      },
+      {
+        href: "/own-your-feed",
+        label: "Own Your Feed",
+        desc: "Bring the audience to your domain.",
+        badge: "Build",
+        tone: "green",
+      },
+      {
+        href: "/support",
+        label: "Support",
+        desc: "Fund the record and the site.",
+        badge: "Give",
+        tone: "ink",
+      },
     ],
   },
 ];
@@ -115,7 +257,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
           background so the chrome itself signals "this is a live
           system" before you even scroll. */}
       <HeaderStatusStrip />
-      <header className="border-b border-[var(--color-line)] bg-[var(--color-paper)]/85 backdrop-blur-xl sticky top-0 z-30">
+      <header className="border-b border-[var(--color-line)] bg-[var(--color-paper)]/90 backdrop-blur-xl sticky top-0 z-30">
         <div className="mx-auto max-w-5xl px-4 h-16 flex items-center justify-between gap-3">
           <Link
             href="/"
@@ -147,8 +289,8 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             </span>
           </Link>
 
-          {/* Desktop nav — visible at md+ */}
-          <nav data-desktop-nav className="hidden md:flex items-center gap-1 text-sm">
+          {/* Desktop nav — visible at lg+ so tablet stays touch-first. */}
+          <nav data-desktop-nav className="hidden lg:flex items-center gap-1 text-sm">
             {NAV.map((n) =>
               isGroup(n) ? (
                 <NavDropdown
@@ -207,8 +349,8 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             )}
           </nav>
 
-          {/* Mobile — Donate (always visible) + hamburger */}
-          <div className="flex md:hidden items-center gap-2">
+          {/* Touch/tablet — Donate (always visible) + hamburger */}
+          <div className="flex lg:hidden items-center gap-2">
             <Link
               href="/support"
               className="btn-accent inline-flex min-h-11 items-center rounded-full px-4 py-2 text-xs font-semibold"
@@ -228,6 +370,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             </button>
           </div>
         </div>
+        <SiteDashboardRail pathname={pathname} />
 
         {/* Mobile dropdown drawer — anchored to the header's OWN bottom edge
             (absolute top-full) so it tracks the header at any scroll position.
@@ -238,49 +381,57 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
           <div
             id="mobile-menu"
             role="menu"
-            className="md:hidden absolute top-full left-0 right-0 z-30 max-h-[calc(100dvh-4rem)] overflow-y-auto border-b border-[var(--color-line)] bg-[var(--color-paper)]/98 backdrop-blur-xl px-4 py-3 shadow-2xl"
+            className="lg:hidden absolute top-full left-0 right-0 z-30 max-h-[calc(100dvh-4rem)] overflow-y-auto border-b border-[var(--color-line)] bg-[#101a31]/98 px-4 py-3 text-[var(--color-paper)] shadow-2xl backdrop-blur-xl"
           >
-            <nav className="flex flex-col gap-1">
-              {/* Submit a Tip — kept prominent on mobile (it's the newsroom
-                  tip line) even though it folds under "More" on desktop. */}
-              <Link
-                href="/submit"
-                role="menuitem"
-                className="block min-h-12 rounded-lg border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-4 py-3 text-base font-bold text-[var(--color-accent)] transition hover:bg-[var(--color-accent)] hover:text-[var(--color-paper)]"
-              >
-                Submit a Tip
-              </Link>
-              <Link
-                href="/contact"
-                role="menuitem"
-                className="mt-2 block min-h-12 rounded-lg border border-[var(--color-blue)] bg-[var(--color-blue-soft)] px-4 py-3 text-base font-bold text-[var(--color-blue)] transition hover:bg-[var(--color-blue)] hover:text-[var(--color-paper)]"
-              >
-                Private Contact
-              </Link>
+            <nav className="flex flex-col gap-4">
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#7fe3a9]">
+                  Choose your lane
+                </p>
+                <div className="mt-2 grid grid-cols-2 gap-2">
+                  {DASHBOARD_LINKS.map((item) => (
+                    <DashboardTile
+                      key={item.href}
+                      item={item}
+                      active={pathname === hrefPath(item.href)}
+                      compact
+                    />
+                  ))}
+                </div>
+              </div>
               {NAV.map((n) =>
                 isGroup(n) ? (
-                  <div key={n.label} className="mt-1">
-                    <p className="px-4 pt-2 pb-1 text-[11px] uppercase tracking-[0.18em] text-[var(--color-muted)] font-bold">
+                  <div key={n.label}>
+                    <p className="px-1 text-[11px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
                       {n.label}
                     </p>
-                    {n.items
-                      // /submit and /contact already have prominent CTAs above on mobile.
-                      .filter((it) => !["/submit", "/contact"].includes(hrefPath(it.href)))
-                      .map((it) => (
+                    <div className="mt-2 grid gap-2">
+                      {n.items.map((it) => (
                         <Link
                           key={it.href}
                           href={it.href}
                           role="menuitem"
                           className={[
-                            "block rounded-lg px-4 py-3 text-base font-semibold transition",
+                            "block rounded-lg border px-3 py-3 transition",
                             pathname === hrefPath(it.href)
-                              ? "bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
-                              : "text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)]",
+                              ? "border-[#7fe3a9] bg-[#7fe3a9]/12 text-[#fdf8ea]"
+                              : "border-white/10 bg-white/5 text-[#fdf8ea] hover:border-[#d8c89e] hover:bg-white/10",
                           ].join(" ")}
                         >
-                          {it.label}
+                          <span className="flex items-center justify-between gap-3">
+                            <span className="font-black">{it.label}</span>
+                            {it.badge ? (
+                              <span className={badgeClass(it.tone)}>{it.badge}</span>
+                            ) : null}
+                          </span>
+                          {it.desc ? (
+                            <span className="mt-1 block text-xs leading-snug text-[#cfd9ea]">
+                              {it.desc}
+                            </span>
+                          ) : null}
                         </Link>
                       ))}
+                    </div>
                   </div>
                 ) : (
                   <Link
@@ -298,111 +449,30 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
                   </Link>
                 ),
               )}
-              <div className="my-2 border-t border-[var(--color-line)]" />
+              <div className="border-t border-white/15" />
               {isAdmin && (
-                <Link
-                  href="/admin"
-                  role="menuitem"
-                  className="block rounded-lg px-4 py-3 text-base font-bold text-[var(--color-accent)] hover:bg-[var(--color-accent-soft)] transition"
-                >
-                  Admin dashboard
-                </Link>
-              )}
-              {isAdmin && (
-                <Link
-                  href="/admin/posts"
-                  role="menuitem"
-                  className="block rounded-lg px-4 py-3 text-base font-semibold text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition"
-                >
-                  All posts (pin, edit, delete)
-                </Link>
-              )}
-              {isAdmin && (
-                <Link
-                  href="/admin/new"
-                  role="menuitem"
-                  className="block rounded-lg px-4 py-3 text-base font-semibold text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition"
-                >
-                  + New post
-                </Link>
-              )}
-              {isAdmin && (
-                <Link
-                  href="/admin/live"
-                  role="menuitem"
-                  className="block rounded-lg px-4 py-3 text-base font-semibold text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition"
-                >
-                  Live control room
-                </Link>
-              )}
-              {isAdmin && (
-                <Link
-                  href="/admin/users"
-                  role="menuitem"
-                  className="block rounded-lg px-4 py-3 text-base font-semibold text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition"
-                >
-                  User moderation
-                </Link>
-              )}
-              {isAdmin && (
-                <Link
-                  href="/admin/claims"
-                  role="menuitem"
-                  className="block rounded-lg px-4 py-3 text-base font-semibold text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition"
-                >
-                  J6 claims
-                </Link>
-              )}
-              {isAdmin && (
-                <Link
-                  href="/admin/tips"
-                  role="menuitem"
-                  className="block rounded-lg px-4 py-3 text-base font-semibold text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition"
-                >
-                  Tips
-                </Link>
-              )}
-              {isAdmin && (
-                <Link
-                  href="/admin/case"
-                  role="menuitem"
-                  className="block rounded-lg px-4 py-3 text-base font-semibold text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition"
-                >
-                  Upload case document
-                </Link>
-              )}
-              {isAdmin && (
-                <Link
-                  href="/admin/og-images"
-                  role="menuitem"
-                  className="block rounded-lg px-4 py-3 text-base font-semibold text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition"
-                >
-                  OG images
-                </Link>
-              )}
-              {isAdmin && (
-                <Link
-                  href="/admin/profile"
-                  role="menuitem"
-                  className="block rounded-lg px-4 py-3 text-base font-semibold text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition"
-                >
-                  Profile photos
-                </Link>
-              )}
-              {isAdmin && (
-                <Link
-                  href="/admin/analytics"
-                  role="menuitem"
-                  className="block rounded-lg px-4 py-3 text-base font-semibold text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition"
-                >
-                  Analytics
-                </Link>
+                <div>
+                  <p className="px-1 text-[11px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
+                    Admin
+                  </p>
+                  <div className="mt-2 grid gap-2">
+                    <MobileMenuLink href="/admin" label="Admin dashboard" />
+                    <MobileMenuLink href="/admin/posts" label="All posts" />
+                    <MobileMenuLink href="/admin/new" label="+ New post" />
+                    <MobileMenuLink href="/admin/live" label="Live control room" />
+                    <MobileMenuLink href="/admin/users" label="User moderation" />
+                    <MobileMenuLink href="/admin/claims" label="J6 claims" />
+                    <MobileMenuLink href="/admin/tips" label="Tips" />
+                    <MobileMenuLink href="/admin/case" label="Upload case document" />
+                    <MobileMenuLink href="/admin/analytics" label="Analytics" />
+                  </div>
+                </div>
               )}
               {signedIn ? (
                 <Link
                   href="/account"
                   role="menuitem"
-                  className="block rounded-lg px-4 py-3 text-base font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition"
+                  className="block rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-base font-semibold text-[#fdf8ea] transition hover:bg-white/10"
                 >
                   Account
                 </Link>
@@ -410,7 +480,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
                 <Link
                   href="/login"
                   role="menuitem"
-                  className="block rounded-lg px-4 py-3 text-base font-semibold text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)] transition"
+                  className="block rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-base font-semibold text-[#fdf8ea] transition hover:bg-white/10"
                 >
                   Sign in
                 </Link>
@@ -424,7 +494,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
           above the page and the support bar. */}
       {open && (
         <div
-          className="md:hidden fixed inset-0 z-20 bg-black/60 backdrop-blur-sm"
+          className="lg:hidden fixed inset-0 z-20 bg-black/60 backdrop-blur-sm"
           onClick={() => setOpen(false)}
           aria-hidden
         />
@@ -500,27 +570,125 @@ function NavDropdown({
       {open ? (
         <div
           role="menu"
-          className="absolute right-0 mt-1 min-w-52 rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)]/98 backdrop-blur-xl p-1 shadow-2xl"
+          className="absolute left-1/2 mt-2 w-[min(42rem,calc(100vw-2rem))] -translate-x-1/2 rounded-lg border border-[var(--color-line)] bg-[#101a31]/98 p-3 text-[var(--color-paper)] shadow-2xl backdrop-blur-xl"
         >
-          {group.items.map((it) => (
-            <Link
-              key={it.href}
-              href={it.href}
-              role="menuitem"
-              className={[
-                "block rounded-lg px-3 py-2 text-sm font-medium transition whitespace-nowrap",
-                pathname === hrefPath(it.href)
-                  ? "bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
-                  : "text-[var(--color-ink)] hover:bg-[var(--color-surface)] hover:text-[var(--color-accent)]",
-              ].join(" ")}
-            >
-              {it.label}
-            </Link>
-          ))}
+          <div className="mb-3 flex items-center justify-between gap-4 border-b border-white/10 pb-3">
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-[#7fe3a9]">
+                {group.label}
+              </p>
+              <p className="mt-1 max-w-md text-xs leading-relaxed text-[#cfd9ea]">
+                {group.deck}
+              </p>
+            </div>
+            <span className="hidden rounded-full border border-white/15 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-[#d8c89e] sm:inline-flex">
+              Dashboard
+            </span>
+          </div>
+          <div className="grid gap-2 sm:grid-cols-2">
+            {group.items.map((it) => (
+              <Link
+                key={it.href}
+                href={it.href}
+                role="menuitem"
+                className={[
+                  "block rounded-lg border px-3 py-3 transition",
+                  pathname === hrefPath(it.href)
+                    ? "border-[#7fe3a9] bg-[#7fe3a9]/12"
+                    : "border-white/10 bg-white/5 hover:border-[#d8c89e] hover:bg-white/10",
+                ].join(" ")}
+              >
+                <span className="flex items-center justify-between gap-3">
+                  <span className="font-black text-[#fdf8ea]">{it.label}</span>
+                  {it.badge ? (
+                    <span className={badgeClass(it.tone)}>{it.badge}</span>
+                  ) : null}
+                </span>
+                {it.desc ? (
+                  <span className="mt-1 block text-xs leading-snug text-[#cfd9ea]">
+                    {it.desc}
+                  </span>
+                ) : null}
+              </Link>
+            ))}
+          </div>
         </div>
       ) : null}
     </div>
   );
+}
+
+function SiteDashboardRail({ pathname }: { pathname: string }) {
+  return (
+    <div className="border-t border-[var(--color-line)] bg-[#101a31] text-[var(--color-paper)]">
+      <nav
+        aria-label="Site dashboard"
+        className="mx-auto flex max-w-5xl gap-2 overflow-x-auto px-4 py-2 [scrollbar-width:none] md:grid md:grid-cols-4"
+      >
+        {DASHBOARD_LINKS.map((item) => (
+          <DashboardTile
+            key={item.href}
+            item={item}
+            active={pathname === hrefPath(item.href)}
+          />
+        ))}
+      </nav>
+    </div>
+  );
+}
+
+function DashboardTile({
+  item,
+  active,
+  compact = false,
+}: {
+  item: NavItem;
+  active: boolean;
+  compact?: boolean;
+}) {
+  return (
+    <Link
+      href={item.href}
+      className={[
+        "min-w-[9.5rem] rounded-lg border px-3 py-2 transition md:min-w-0",
+        compact ? "min-h-20" : "min-h-16",
+        active
+          ? "border-[#7fe3a9] bg-[#7fe3a9]/12"
+          : "border-white/10 bg-white/5 hover:border-[#d8c89e] hover:bg-white/10",
+      ].join(" ")}
+    >
+      <span className="flex items-center justify-between gap-2">
+        <span className="text-sm font-black text-[#fdf8ea]">{item.label}</span>
+        {item.badge ? <span className={badgeClass(item.tone)}>{item.badge}</span> : null}
+      </span>
+      {item.desc ? (
+        <span className="mt-1 block text-[11px] font-semibold leading-snug text-[#cfd9ea]">
+          {item.desc}
+        </span>
+      ) : null}
+    </Link>
+  );
+}
+
+function MobileMenuLink({ href, label }: { href: string; label: string }) {
+  return (
+    <Link
+      href={href}
+      role="menuitem"
+      className="block rounded-lg border border-white/10 bg-white/5 px-3 py-3 text-sm font-semibold text-[#fdf8ea] transition hover:bg-white/10"
+    >
+      {label}
+    </Link>
+  );
+}
+
+function badgeClass(tone: NavItem["tone"] = "ink") {
+  const base =
+    "shrink-0 rounded-full px-2 py-0.5 text-[10px] font-black uppercase tracking-normal";
+  if (tone === "red") return `${base} bg-[var(--color-accent)] text-[#fdf8ea]`;
+  if (tone === "blue") return `${base} bg-[#d9e2f2] text-[#142a52]`;
+  if (tone === "green") return `${base} bg-[#7fe3a9] text-[#0e1a36]`;
+  return `${base} bg-[#d8c89e] text-[#1a1410]`;
 }
 
 function MenuIcon() {
