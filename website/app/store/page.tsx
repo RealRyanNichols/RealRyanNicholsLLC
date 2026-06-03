@@ -167,6 +167,28 @@ const processSteps = [
   },
 ];
 
+const heroSignals = [
+  ["Story", "What happened, in plain English."],
+  ["Proof", "Dates, records, links, screenshots."],
+  ["Privacy", "What must stay protected."],
+  ["Next move", "The smallest useful action."],
+];
+
+const recordFlow = [
+  {
+    label: "Bring the chaos",
+    body: "Screenshots, filings, videos, court links, texts, names, dates, public-records problems, or a site that is not working.",
+  },
+  {
+    label: "Build the record",
+    body: "Ryan separates facts, claims, proof, missing documents, people involved, and the safest public angle.",
+  },
+  {
+    label: "Pick the action",
+    body: "Case review, private tip, story draft, strategy call, site audit, build, support, or checkout.",
+  },
+];
+
 function ProductCard({ p }: { p: Product }) {
   const detail = PRODUCT_DETAILS[p.slug];
   const image = p.image_url
@@ -285,89 +307,126 @@ export default async function StorePage() {
         />
       ) : null}
 
-      <section className="border-b border-[var(--color-line)]">
-        <div className="rrn-hero-inner grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-accent)]">
-              Real Ryan Nichols LLC / Store
+      <section className="relative overflow-hidden border-b border-[var(--color-line)]">
+        <div className="absolute inset-0 opacity-[0.08]" aria-hidden="true">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/uploads/record-they-cant-bury-og-thumbnail.png"
+            alt=""
+            className="h-full w-full object-cover"
+          />
+        </div>
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--color-paper)_0%,rgba(246,239,223,0.96)_48%,rgba(246,239,223,0.88)_100%)]" />
+        <div className="rrn-hero-inner relative grid gap-6 lg:grid-cols-[1fr_0.92fr] lg:gap-8">
+          <div className="flex flex-col justify-center">
+            <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+              Store / Story / Record / Service
             </p>
             <h1 className="rrn-hero-title mt-3 max-w-3xl">
-              Pick the help you need. Get the record organized.
+              Bring the mess. Build the record.
             </h1>
             <p className="rrn-lead mt-4 max-w-2xl">
-              This is the paid-services and support counter for the work: case
-              direction, evidence organization, public-records strategy,
-              attention audits, owned-site builds, and direct support for the
-              record.
+              This is not just checkout. It is the path from scattered facts to
+              a clearer review, article angle, service order, or support flow.
             </p>
-            <div className="rrn-tap-row mt-5">
+            <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4">
+              {heroSignals.map(([title, body]) => (
+                <div
+                  key={title}
+                  className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-3"
+                >
+                  <p className="text-sm font-black text-[var(--color-ink)]">
+                    {title}
+                  </p>
+                  <p className="mt-1 text-xs leading-snug text-[var(--color-muted)]">
+                    {body}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <div className="rrn-tap-row mt-6">
+              <Link
+                href="#article-demo"
+                className="rrn-tap btn-accent inline-flex rounded-lg px-5 py-3 text-sm font-bold"
+              >
+                Try the article demo
+              </Link>
               <Link
                 href="#service-options"
-                className="rrn-tap btn-accent inline-flex rounded-lg px-5 py-3 text-sm font-bold"
+                className="rrn-tap inline-flex rounded-lg border-2 border-[var(--color-blue)] px-5 py-3 text-sm font-bold text-[var(--color-blue)] transition hover:bg-[var(--color-blue-soft)]"
               >
                 See paid services
               </Link>
               <Link
                 href="/case-review"
-                className="rrn-tap inline-flex rounded-lg border-2 border-[var(--color-blue)] px-5 py-3 text-sm font-bold text-[var(--color-blue)] transition hover:bg-[var(--color-blue-soft)]"
-              >
-                Start case review
-              </Link>
-              <Link
-                href="#article-demo"
                 className="rrn-tap inline-flex rounded-lg border-2 border-[var(--color-line)] px-5 py-3 text-sm font-bold text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:bg-[var(--color-surface)]"
               >
-                Try article demo
+                Start case review
               </Link>
             </div>
           </div>
 
-          <div className="rrn-card overflow-hidden shadow-lg">
-            <div className="relative h-36 bg-[var(--color-surface-2)] sm:h-44">
+          <div className="overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] shadow-xl">
+            <div className="relative h-48 bg-[var(--color-surface-2)] sm:h-56">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/social-cards/map-room.jpg"
-                alt="Ryan Nichols map room visual with records, documents, and public case work."
+                src="/uploads/master-exhibit-index-og-thumbnail.png"
+                alt="A visual of organized evidence and a master exhibit index."
                 className="h-full w-full object-cover"
               />
-              <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(26,20,16,0.74),rgba(26,20,16,0.12))]" />
+              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(20,42,82,0.06),rgba(20,42,82,0.82))]" />
               <div className="absolute bottom-4 left-4 right-4">
-                <p className="max-w-sm font-display text-xl font-bold leading-tight tracking-normal text-white sm:text-2xl">
-                  Case help, records work, and attention that leads somewhere.
+                <p className="text-xs font-black uppercase tracking-normal text-[#7fe3a9]">
+                  The useful path
+                </p>
+                <p className="mt-1 max-w-sm font-display text-2xl font-black leading-tight tracking-normal text-white sm:text-3xl">
+                  Chaos becomes a timeline, index, article, or next move.
                 </p>
               </div>
             </div>
             <div className="p-5">
-            <h2 className="font-display text-2xl font-bold tracking-normal">
-              Use the store when:
-            </h2>
-            <div className="mt-4 grid gap-3">
-              {[
-                "You need the next three moves, not vague encouragement.",
-                "You have records, screenshots, links, filings, or a timeline that needs structure.",
-                "You want a public page, feed, or service path that turns attention into action.",
-                "You want to support the records work directly.",
-              ].map((item) => (
-                <div
-                  key={item}
-                  className="border-l-4 border-[var(--color-accent)] bg-[var(--color-paper)] px-3 py-2"
-                >
-                  <p className="text-sm font-bold leading-relaxed text-[var(--color-ink)]">
-                    {item}
-                  </p>
-                </div>
-              ))}
-            </div>
-            <p className="mt-4 text-xs leading-relaxed text-[var(--color-muted)]">
-              Ryan is not a lawyer and Real Ryan Nichols LLC is not a law firm.
-              No legal advice, no outcome promises, no fake certainty.
-            </p>
+              <div className="grid gap-3">
+                {recordFlow.map((item, index) => (
+                  <div
+                    key={item.label}
+                    className="grid grid-cols-[2.25rem_1fr] gap-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-3"
+                  >
+                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-blue)] text-sm font-black text-[var(--color-paper)]">
+                      {index + 1}
+                    </span>
+                    <span>
+                      <strong className="block text-sm font-black text-[var(--color-ink)]">
+                        {item.label}
+                      </strong>
+                      <span className="mt-1 block text-xs leading-relaxed text-[var(--color-ink-soft)]">
+                        {item.body}
+                      </span>
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-4 text-xs leading-relaxed text-[var(--color-muted)]">
+                Ryan is not a lawyer and Real Ryan Nichols LLC is not a law
+                firm. No legal advice, no outcome promises, no fake certainty.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
       <section className="rrn-section">
+        <StoryProtectionDemo />
+      </section>
+
+      <section className="rrn-section pt-0">
+        <div className="mb-4">
+          <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+            Choose your lane
+          </p>
+          <h2 className="mt-2 font-display text-3xl font-black tracking-normal">
+            Do the thing that matches what you have.
+          </h2>
+        </div>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {decisionCards.map((card) => (
             <Link
@@ -387,10 +446,6 @@ export default async function StorePage() {
             </Link>
           ))}
         </div>
-      </section>
-
-      <section className="rrn-section">
-        <StoryProtectionDemo />
       </section>
 
       {products.length === 0 ? (
