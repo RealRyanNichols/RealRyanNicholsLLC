@@ -73,7 +73,56 @@ const DASHBOARD_LINKS: NavItem[] = [
     tone: "ink",
   },
 ];
-const DASHBOARD_PATHS = new Set(DASHBOARD_LINKS.map((item) => hrefPath(item.href)));
+const MOBILE_PRIMARY_LINKS: NavItem[] = [
+  {
+    href: "/tell-your-story",
+    label: "Tell Your Story",
+    desc: "Build the pattern",
+    badge: "Start",
+    tone: "green",
+  },
+  {
+    href: "/case-review",
+    label: "Help Desk",
+    desc: "Ask, organize, route",
+    badge: "Help",
+    tone: "red",
+  },
+  {
+    href: "/submit",
+    label: "Tip Line",
+    desc: "Send records privately",
+    badge: "Private",
+    tone: "blue",
+  },
+  {
+    href: "/the-map-room",
+    label: "Map Room",
+    desc: "Live public record",
+    badge: "Live",
+    tone: "green",
+  },
+];
+
+const MOBILE_BROWSE_LINKS: NavItem[] = [
+  { href: "/", label: "Feed", desc: "Latest posts and receipts" },
+  { href: "/case", label: "Case Hub", desc: "Timeline, documents, people" },
+  { href: "/case?view=people&filter=unclaimed", label: "J6 Profiles", desc: "Find and claim profiles" },
+  { href: "/fights", label: "The Fights", desc: "Active accountability lanes" },
+  { href: "/live", label: "Live", desc: "Streams and discussion" },
+  { href: "/videos", label: "Videos", desc: "Public updates" },
+  { href: "/store", label: "Services", desc: "Calls, audits, builds" },
+  { href: "/contact", label: "Private Contact", desc: "Send a message" },
+];
+
+const MOBILE_ADMIN_LINKS: NavItem[] = [
+  { href: "/admin", label: "Dashboard" },
+  { href: "/admin/messages", label: "Messages" },
+  { href: "/admin/tips", label: "Tips" },
+  { href: "/admin/analytics", label: "Analytics" },
+  { href: "/admin/new", label: "New Post" },
+  { href: "/admin/live", label: "Live Room" },
+];
 
 const NAV: NavEntry[] = [
   { href: "/", label: "Feed" },
@@ -256,12 +305,15 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
     document.addEventListener("keydown", onKey);
     if (open) {
       document.body.style.overflow = "hidden";
+      document.body.dataset.mobileMenuOpen = "true";
     } else {
       document.body.style.overflow = "";
+      delete document.body.dataset.mobileMenuOpen;
     }
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
+      delete document.body.dataset.mobileMenuOpen;
     };
   }, [open]);
 
@@ -395,17 +447,32 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
         {open && (
           <div
             id="mobile-menu"
-            role="menu"
+            role="dialog"
+            aria-label="Site menu"
             className="lg:hidden absolute top-full left-0 right-0 z-30 max-h-[calc(100dvh-4rem)] overflow-y-auto border-b border-[var(--color-line)] bg-[#101a31]/98 px-4 py-4 text-[var(--color-paper)] shadow-2xl backdrop-blur-xl"
           >
-            <nav className="mx-auto flex max-w-3xl flex-col gap-4">
+            <nav aria-label="Mobile navigation" className="mx-auto flex max-w-3xl flex-col gap-4">
+              <div className="flex items-start justify-between gap-3 border-b border-white/10 pb-3">
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#7fe3a9]">
+                    Menu
+                  </p>
+                  <p className="mt-1 text-sm font-semibold leading-snug text-[#cfd9ea]">
+                    Start fast, then browse the record.
+                  </p>
+                </div>
+                <Link
+                  href={signedIn ? "/account" : "/login"}
+                  className="shrink-0 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] font-black uppercase tracking-normal text-[#fdf8ea] transition hover:bg-white/10"
+                >
+                  {signedIn ? "Account" : "Sign in"}
+                </Link>
+              </div>
+
               <section aria-label="Start here">
-                <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#7fe3a9]">
-                  Start here
-                </p>
-                <div className="mt-2 grid grid-cols-2 gap-2">
-                  {DASHBOARD_LINKS.map((item) => (
-                    <MobileQuickAction
+                <div className="grid grid-cols-2 gap-2">
+                  {MOBILE_PRIMARY_LINKS.map((item) => (
+                    <MobilePrimaryLink
                       key={item.href}
                       item={item}
                       active={pathname === hrefPath(item.href)}
@@ -413,66 +480,45 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
                   ))}
                 </div>
               </section>
-              {NAV.map((n) =>
-                isGroup(n) ? (
-                  <MobileMenuGroup
-                    key={n.label}
-                    group={n}
-                    pathname={pathname}
-                    items={n.items.filter((it) => !DASHBOARD_PATHS.has(hrefPath(it.href)))}
-                  />
-                ) : (
-                  <Link
-                    key={n.href}
-                    href={n.href}
-                    role="menuitem"
-                    className={[
-                      "flex min-h-12 items-center rounded-lg border px-3 py-2.5 text-base font-black transition",
-                      pathname === n.href
-                        ? "border-[#7fe3a9] bg-[#7fe3a9]/12 text-[#fdf8ea]"
-                        : "border-white/10 bg-white/5 text-[#fdf8ea] hover:border-[#d8c89e] hover:bg-white/10",
-                    ].join(" ")}
-                  >
-                    {n.label}
-                  </Link>
-                ),
-              )}
-              <div className="border-t border-white/15" />
+
+              <section aria-label="Browse">
+                <p className="px-1 text-[10px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
+                  Browse
+                </p>
+                <div className="mt-2 grid gap-1.5">
+                  {MOBILE_BROWSE_LINKS.map((item) => (
+                    <MobileCompactLink
+                      key={item.href}
+                      item={item}
+                      active={pathname === hrefPath(item.href)}
+                    />
+                  ))}
+                </div>
+              </section>
+
               {isAdmin && (
-                <div>
-                  <p className="px-1 text-[11px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
+                <section aria-label="Admin">
+                  <p className="px-1 text-[10px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
                     Admin
                   </p>
-                  <div className="mt-2 grid gap-2">
-                    <MobileMenuLink href="/admin" label="Admin dashboard" />
-                    <MobileMenuLink href="/admin/posts" label="All posts" />
-                    <MobileMenuLink href="/admin/new" label="+ New post" />
-                    <MobileMenuLink href="/admin/live" label="Live control room" />
-                    <MobileMenuLink href="/admin/users" label="User moderation" />
-                    <MobileMenuLink href="/admin/claims" label="J6 claims" />
-                    <MobileMenuLink href="/admin/tips" label="Tips" />
-                    <MobileMenuLink href="/admin/case" label="Upload case document" />
-                    <MobileMenuLink href="/admin/analytics" label="Analytics" />
+                  <div className="mt-2 grid grid-cols-2 gap-1.5">
+                    {MOBILE_ADMIN_LINKS.map((item) => (
+                      <MobileAdminLink
+                        key={item.href}
+                        item={item}
+                        active={pathname === hrefPath(item.href)}
+                      />
+                    ))}
                   </div>
-                </div>
+                </section>
               )}
-              {signedIn ? (
-                <Link
-                  href="/account"
-                  role="menuitem"
-                  className="block rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-base font-semibold text-[#fdf8ea] transition hover:bg-white/10"
-                >
-                  Account
-                </Link>
-              ) : (
-                <Link
-                  href="/login"
-                  role="menuitem"
-                  className="block rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-base font-semibold text-[#fdf8ea] transition hover:bg-white/10"
-                >
-                  Sign in
-                </Link>
-              )}
+
+              <Link
+                href="/support"
+                className="flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-4 py-3 text-sm font-black text-[#fdf8ea] transition hover:bg-[var(--color-accent-strong)]"
+              >
+                Donate / Support the Work
+              </Link>
             </nav>
           </div>
         )}
@@ -668,7 +714,7 @@ function DashboardTile({
   );
 }
 
-function MobileQuickAction({
+function MobilePrimaryLink({
   item,
   active,
 }: {
@@ -678,9 +724,8 @@ function MobileQuickAction({
   return (
     <Link
       href={item.href}
-      role="menuitem"
       className={[
-        "min-h-14 rounded-lg border px-3 py-2.5 transition",
+        "min-h-[5.25rem] rounded-lg border px-3 py-3 transition",
         active
           ? "border-[#7fe3a9] bg-[#7fe3a9]/12"
           : "border-white/10 bg-white/5 hover:border-[#d8c89e] hover:bg-white/10",
@@ -693,7 +738,7 @@ function MobileQuickAction({
         {item.badge ? <span className={badgeClass(item.tone)}>{item.badge}</span> : null}
       </span>
       {item.desc ? (
-        <span className="mt-1 block text-[11px] font-semibold leading-snug text-[#cfd9ea]">
+        <span className="mt-1.5 block text-[11px] font-semibold leading-snug text-[#cfd9ea]">
           {item.desc}
         </span>
       ) : null}
@@ -701,67 +746,44 @@ function MobileQuickAction({
   );
 }
 
-function MobileMenuGroup({
-  group,
-  pathname,
-  items,
-}: {
-  group: NavGroup;
-  pathname: string;
-  items: NavItem[];
-}) {
-  if (items.length === 0) return null;
-  return (
-    <section aria-label={group.label}>
-      <p className="px-1 text-[11px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
-        {group.label}
-      </p>
-      <div className="mt-2 grid gap-1.5 sm:grid-cols-2">
-        {items.map((it) => (
-          <MobileNavItem
-            key={it.href}
-            item={it}
-            active={pathname === hrefPath(it.href)}
-          />
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function MobileNavItem({ item, active }: { item: NavItem; active: boolean }) {
+function MobileCompactLink({ item, active }: { item: NavItem; active: boolean }) {
   return (
     <Link
       href={item.href}
-      role="menuitem"
       className={[
-        "block min-h-12 rounded-lg border px-3 py-2.5 transition",
+        "grid min-h-11 grid-cols-[1fr_auto] items-center gap-x-3 rounded-lg border px-3 py-2 transition",
         active
           ? "border-[#7fe3a9] bg-[#7fe3a9]/12 text-[#fdf8ea]"
           : "border-white/10 bg-white/5 text-[#fdf8ea] hover:border-[#d8c89e] hover:bg-white/10",
       ].join(" ")}
     >
-      <span className="flex items-center justify-between gap-2">
-        <span className="text-sm font-black leading-tight">{item.label}</span>
-        {item.badge ? <span className={badgeClass(item.tone)}>{item.badge}</span> : null}
+      <span className="min-w-0">
+        <span className="block truncate text-sm font-black leading-tight">{item.label}</span>
+        {item.desc ? (
+          <span className="mt-0.5 block truncate text-[11px] font-semibold leading-snug text-[#cfd9ea]">
+            {item.desc}
+          </span>
+        ) : null}
       </span>
-      {item.desc ? (
-        <span className="mt-0.5 block text-[11px] font-semibold leading-snug text-[#cfd9ea]">
-          {item.desc}
-        </span>
-      ) : null}
+      <span className="text-lg leading-none text-[#7fe3a9]" aria-hidden>
+        →
+      </span>
     </Link>
   );
 }
 
-function MobileMenuLink({ href, label }: { href: string; label: string }) {
+function MobileAdminLink({ item, active }: { item: NavItem; active: boolean }) {
   return (
     <Link
-      href={href}
-      role="menuitem"
-      className="block rounded-lg border border-white/10 bg-white/5 px-3 py-3 text-sm font-semibold text-[#fdf8ea] transition hover:bg-white/10"
+      href={item.href}
+      className={[
+        "flex min-h-10 items-center justify-center rounded-lg border px-2 py-2 text-center text-xs font-black text-[#fdf8ea] transition",
+        active
+          ? "border-[#7fe3a9] bg-[#7fe3a9]/12"
+          : "border-white/10 bg-white/5 hover:border-[#d8c89e] hover:bg-white/10",
+      ].join(" ")}
     >
-      {label}
+      {item.label}
     </Link>
   );
 }
