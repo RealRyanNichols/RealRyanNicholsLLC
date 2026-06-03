@@ -163,7 +163,7 @@ export function ServicesHub() {
 
   return (
     <article className="overflow-hidden">
-      <section className="relative min-h-[72vh] border-b border-[var(--color-line)]">
+      <section className="relative min-h-[auto] border-b border-[var(--color-line)] lg:min-h-[72vh]">
         <Image
           src="/social-cards/map-room.jpg"
           alt=""
@@ -173,12 +173,12 @@ export function ServicesHub() {
           sizes="100vw"
         />
         <div className="absolute inset-0 bg-[#100805]/80" aria-hidden="true" />
-        <div className="relative mx-auto grid min-h-[72vh] max-w-6xl grid-cols-1 gap-6 px-4 py-10 text-[#fdf8ea] lg:grid-cols-[1.08fr_0.92fr] lg:items-end">
+        <div className="relative mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 py-8 text-[#fdf8ea] sm:px-6 lg:min-h-[72vh] lg:grid-cols-[1.08fr_0.92fr] lg:items-end lg:py-10">
           <div className="pb-2">
             <p className="text-xs font-black uppercase tracking-normal text-[#f1c15f]">
               Business services built around attention, proof, and checkout
             </p>
-            <h1 className="mt-3 max-w-3xl text-5xl font-black leading-[1.02] tracking-normal text-[#fdf8ea] sm:text-7xl">
+            <h1 className="mt-3 max-w-3xl text-4xl font-black leading-[1.04] tracking-normal text-[#fdf8ea] sm:text-5xl lg:text-7xl">
               Turn attention into action.
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#f6efdf] sm:text-lg">
@@ -186,16 +186,16 @@ export function ServicesHub() {
               services, records, and audience on a domain they control. Social
               media gets attention. The website captures it.
             </p>
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+            <div className="rrn-tap-row mt-6">
               <TrackerLink
                 service={SERVICES[2]}
                 label="Build my site"
-                className="btn-accent inline-flex items-center justify-center rounded-lg px-5 py-3 text-sm font-bold"
+                className="rrn-tap btn-accent inline-flex rounded-lg px-5 py-3 text-sm font-bold"
               />
               <TrackerLink
                 service={SERVICES[1]}
                 label="Audit what I have"
-                className="inline-flex items-center justify-center rounded-lg border border-[#d8c89e] bg-[#fdf8ea] px-5 py-3 text-sm font-bold text-[#142a52] transition hover:border-[#fdf8ea]"
+                className="rrn-tap inline-flex rounded-lg border border-[#d8c89e] bg-[#fdf8ea] px-5 py-3 text-sm font-bold text-[#142a52] transition hover:border-[#fdf8ea]"
               />
             </div>
           </div>
@@ -281,7 +281,7 @@ export function ServicesHub() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-6">
+      <section className="mx-auto max-w-6xl px-4 py-5 sm:px-6 sm:py-6">
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-4">
           {[
             ["Attention", "People see the thing fast."],
@@ -303,12 +303,12 @@ export function ServicesHub() {
       </section>
 
       <section className="border-y border-[var(--color-line)] bg-[var(--color-surface)]">
-        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 py-10 lg:grid-cols-[0.8fr_1.2fr]">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 py-8 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:gap-8 lg:py-10">
           <div>
             <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
               Services
             </p>
-            <h2 className="mt-2 text-3xl font-black leading-tight tracking-normal sm:text-5xl">
+            <h2 className="mt-2 text-3xl font-black leading-tight tracking-normal lg:text-5xl">
               Start with the work that creates the next click.
             </h2>
             <p className="mt-4 text-sm leading-relaxed text-[var(--color-ink-soft)]">
@@ -331,7 +331,7 @@ export function ServicesHub() {
                   });
                 }}
                 className={[
-                  "rounded-lg border bg-[var(--color-paper)] p-4 text-left transition",
+                  "min-h-36 rounded-lg border bg-[var(--color-paper)] p-4 text-left transition",
                   focused.slug === service.slug
                     ? "border-[var(--color-accent)] shadow-xl"
                     : "border-[var(--color-line)] hover:border-[var(--color-accent)]",
@@ -357,7 +357,7 @@ export function ServicesHub() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-10">
+      <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-10">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_0.9fr]">
           <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
@@ -395,7 +395,7 @@ export function ServicesHub() {
               <TrackerLink
                 service={focused}
                 label={`Open checkout page - ${focused.price}`}
-                className="btn-accent inline-flex items-center justify-center rounded-lg px-5 py-3 text-sm font-bold"
+                className="rrn-tap btn-accent inline-flex rounded-lg px-5 py-3 text-sm font-bold"
               />
             </div>
           </div>
@@ -430,12 +430,12 @@ export function ServicesHub() {
       </section>
 
       <section className="bg-[var(--color-ink)] text-[#fdf8ea]">
-        <div className="mx-auto max-w-6xl px-4 py-10">
+        <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-10">
           <div className="max-w-3xl">
             <p className="text-xs font-black uppercase tracking-normal text-[#d8c89e]">
               Build menu
             </p>
-            <h2 className="mt-2 text-3xl font-black tracking-normal text-[#fdf8ea] sm:text-5xl">
+            <h2 className="mt-2 text-3xl font-black leading-tight tracking-normal text-[#fdf8ea] lg:text-5xl">
               The site can become the tool, not just the brochure.
             </h2>
             <p className="mt-4 text-sm leading-relaxed text-[#f6efdf]">
@@ -462,7 +462,7 @@ export function ServicesHub() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-10">
+      <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-10">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
             <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
@@ -500,7 +500,7 @@ export function ServicesHub() {
       </section>
 
       <section className="border-t border-[var(--color-line)] bg-[var(--color-surface)]">
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-8 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-8 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h2 className="text-2xl font-black tracking-normal">
               Want the fastest useful move?
@@ -514,7 +514,7 @@ export function ServicesHub() {
           <TrackerLink
             service={pick}
             label={`Start with ${pick.name}`}
-            className="btn-accent inline-flex items-center justify-center rounded-lg px-5 py-3 text-sm font-bold"
+            className="rrn-tap btn-accent inline-flex rounded-lg px-5 py-3 text-sm font-bold"
           />
         </div>
       </section>

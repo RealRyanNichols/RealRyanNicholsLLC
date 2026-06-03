@@ -244,9 +244,16 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
               <Link
                 href="/submit"
                 role="menuitem"
-                className="block rounded-lg border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-4 py-3 text-base font-bold text-[var(--color-accent)] transition hover:bg-[var(--color-accent)] hover:text-[var(--color-paper)]"
+                className="block min-h-12 rounded-lg border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-4 py-3 text-base font-bold text-[var(--color-accent)] transition hover:bg-[var(--color-accent)] hover:text-[var(--color-paper)]"
               >
-                📨 Submit a Tip
+                Submit a Tip
+              </Link>
+              <Link
+                href="/contact"
+                role="menuitem"
+                className="mt-2 block min-h-12 rounded-lg border border-[var(--color-blue)] bg-[var(--color-blue-soft)] px-4 py-3 text-base font-bold text-[var(--color-blue)] transition hover:bg-[var(--color-blue)] hover:text-[var(--color-paper)]"
+              >
+                Private Contact
               </Link>
               {NAV.map((n) =>
                 isGroup(n) ? (
@@ -255,8 +262,8 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
                       {n.label}
                     </p>
                     {n.items
-                      // /submit already has the prominent CTA above on mobile.
-                      .filter((it) => hrefPath(it.href) !== "/submit")
+                      // /submit and /contact already have prominent CTAs above on mobile.
+                      .filter((it) => !["/submit", "/contact"].includes(hrefPath(it.href)))
                       .map((it) => (
                         <Link
                           key={it.href}
@@ -296,7 +303,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
                   role="menuitem"
                   className="block rounded-lg px-4 py-3 text-base font-bold text-[var(--color-accent)] hover:bg-[var(--color-accent-soft)] transition"
                 >
-                  ★ Admin dashboard
+                  Admin dashboard
                 </Link>
               )}
               {isAdmin && (

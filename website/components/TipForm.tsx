@@ -155,7 +155,7 @@ export function TipForm({
           What kind of tip is this?
           <span className="text-[var(--color-accent)] ml-1">*</span>
         </label>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           {CATEGORIES.map((c) => (
             <button
               key={c.value}
@@ -166,7 +166,7 @@ export function TipForm({
               }}
               aria-pressed={category === c.value}
               className={[
-                "rounded-lg border-2 px-3 py-2 text-sm font-bold transition text-left",
+                "min-h-12 rounded-lg border-2 px-3 py-2 text-left text-sm font-bold transition",
                 category === c.value
                   ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
                   : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)]",

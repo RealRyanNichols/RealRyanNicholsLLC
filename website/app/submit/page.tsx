@@ -95,8 +95,8 @@ export default async function SubmitPage({
   const subjectDefault = sp.about?.slice(0, 180);
 
   return (
-    <article className="bg-[var(--color-paper)]">
-      <section className="relative overflow-hidden border-b border-[var(--color-line)]">
+    <article className="rrn-page">
+      <section className="rrn-hero">
         <Image
           src="/uploads/record-they-cant-bury-og-thumbnail.png"
           alt=""
@@ -107,21 +107,21 @@ export default async function SubmitPage({
         />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--color-paper)_0%,rgba(247,243,235,0.94)_42%,rgba(247,243,235,0.78)_100%)]" />
 
-        <div className="relative mx-auto grid max-w-6xl gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:py-12">
+        <div className="rrn-hero-inner grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-8">
           <div className="flex flex-col justify-center">
             <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-accent)]">
-              Real Ryan Nichols LLC · Tip line
+              Real Ryan Nichols LLC / Tip line
             </p>
-            <h1 className="mt-3 max-w-2xl font-display text-4xl font-bold leading-tight tracking-normal text-[var(--color-ink)] sm:text-5xl">
+            <h1 className="rrn-hero-title mt-3 max-w-2xl">
               Send the record before it disappears.
             </h1>
-            <p className="mt-4 max-w-xl text-lg leading-relaxed text-[var(--color-ink-soft)]">
+            <p className="rrn-lead mt-4 max-w-xl">
               If you have screenshots, court links, videos, filings, names,
               dates, or a story people keep burying, send it here. The goal is
               simple: organize the truth into a form people can follow.
             </p>
 
-            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+            <div className="mt-5 grid gap-2 sm:grid-cols-3">
               {qualityChecks.slice(0, 3).map((item) => (
                 <div
                   key={item}
@@ -141,7 +141,7 @@ export default async function SubmitPage({
             </p>
           </div>
 
-          <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-xl sm:p-5">
+          <div className="rrn-card p-4 shadow-xl sm:p-5">
             <div className="mb-4 border-b border-[var(--color-line)] pb-4">
               <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-muted)]">
                 No account required
@@ -158,13 +158,13 @@ export default async function SubmitPage({
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-        <div className="grid gap-8 lg:grid-cols-[0.78fr_1.22fr]">
+      <section className="rrn-section">
+        <div className="grid gap-6 lg:grid-cols-[0.78fr_1.22fr] lg:gap-8">
           <div>
             <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-accent)]">
               What we do with tips
             </p>
-            <h2 className="mt-2 font-display text-3xl font-bold tracking-normal text-[var(--color-ink)]">
+            <h2 className="rrn-section-title mt-2">
               Tips become a cleaner record.
             </h2>
             <p className="mt-3 text-base leading-relaxed text-[var(--color-ink-soft)]">
@@ -175,7 +175,7 @@ export default async function SubmitPage({
             </p>
             <Link
               href="/case-review"
-              className="mt-5 inline-flex rounded-lg border-2 border-[var(--color-accent)] px-4 py-2 text-sm font-bold text-[var(--color-accent)] transition hover:bg-[var(--color-accent-soft)]"
+              className="rrn-tap mt-5 inline-flex rounded-lg border-2 border-[var(--color-accent)] px-4 py-2 text-sm font-bold text-[var(--color-accent)] transition hover:bg-[var(--color-accent-soft)]"
             >
               Need a private case review?
             </Link>
@@ -185,7 +185,7 @@ export default async function SubmitPage({
             {tipUses.map((item) => (
               <div
                 key={item.title}
-                className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4"
+                className="rrn-card p-4"
               >
                 <h3 className="font-display text-xl font-bold tracking-normal">
                   {item.title}
@@ -200,12 +200,12 @@ export default async function SubmitPage({
       </section>
 
       <section className="border-y border-[var(--color-line)] bg-[var(--color-surface)]">
-        <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="rrn-section grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8">
           <div>
             <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-accent)]">
               What to send
             </p>
-            <h2 className="mt-2 font-display text-3xl font-bold tracking-normal">
+            <h2 className="rrn-section-title mt-2">
               The best tip answers six questions fast.
             </h2>
             <div className="mt-5 grid gap-2 sm:grid-cols-2">
@@ -239,13 +239,13 @@ export default async function SubmitPage({
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-        <div className="grid gap-6 rounded-lg border border-[var(--color-line)] bg-[var(--color-ink)] p-5 text-white sm:p-6 lg:grid-cols-[1fr_auto] lg:items-center">
+      <section className="rrn-section">
+        <div className="grid gap-5 rounded-lg border border-[var(--color-line)] bg-[var(--color-ink)] p-5 text-white sm:p-6 lg:grid-cols-[1fr_auto] lg:items-center">
           <div>
             <p className="text-xs font-bold uppercase tracking-normal text-white/70">
               Ask for more
             </p>
-            <h2 className="mt-2 font-display text-3xl font-bold tracking-normal">
+            <h2 className="mt-2 font-display text-2xl font-bold leading-tight tracking-normal sm:text-3xl">
               Know someone sitting on receipts?
             </h2>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/80">
@@ -254,16 +254,16 @@ export default async function SubmitPage({
               timeline.
             </p>
           </div>
-          <div className="flex flex-wrap gap-3">
+          <div className="rrn-tap-row">
             <Link
               href="/submit"
-              className="rounded-lg bg-white px-4 py-2 text-sm font-bold text-[var(--color-ink)] transition hover:bg-[var(--color-paper)]"
+              className="rrn-tap rounded-lg bg-white px-4 py-2 text-sm font-bold text-[var(--color-ink)] transition hover:bg-[var(--color-paper)]"
             >
               Open tip line
             </Link>
             <Link
               href="/contact"
-              className="rounded-lg border border-white/40 px-4 py-2 text-sm font-bold text-white transition hover:bg-white/10"
+              className="rrn-tap rounded-lg border border-white/40 px-4 py-2 text-sm font-bold text-white transition hover:bg-white/10"
             >
               Contact Ryan
             </Link>

@@ -79,8 +79,8 @@ const routeCards = [
 
 export default function ContactPage() {
   return (
-    <article className="bg-[var(--color-paper)]">
-      <section className="relative overflow-hidden border-b border-[var(--color-line)]">
+    <article className="rrn-page">
+      <section className="rrn-hero">
         <Image
           src="/uploads/record-they-cant-bury-og-thumbnail.png"
           alt=""
@@ -90,22 +90,22 @@ export default function ContactPage() {
           className="object-cover opacity-[0.16]"
         />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--color-paper)_0%,rgba(246,239,223,0.96)_44%,rgba(246,239,223,0.78)_100%)]" />
-        <div className="relative mx-auto grid max-w-6xl gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[0.88fr_1.12fr] lg:py-12">
+        <div className="rrn-hero-inner grid gap-6 lg:grid-cols-[0.88fr_1.12fr] lg:gap-8">
           <div className="flex flex-col justify-center">
             <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-accent)]">
               Real Ryan Nichols LLC / Private contact
             </p>
-            <h1 className="mt-3 max-w-3xl font-display text-4xl font-bold leading-tight tracking-normal text-[var(--color-ink)] sm:text-5xl">
+            <h1 className="rrn-hero-title mt-3 max-w-3xl">
               Tell Ryan what happened without putting it in public.
             </h1>
-            <p className="mt-4 max-w-2xl text-lg leading-relaxed text-[var(--color-ink-soft)]">
+            <p className="rrn-lead mt-4 max-w-2xl">
               Use this page when the facts matter, but the details should not be
               posted in a comment thread. Send the private version here so Ryan
               can understand the record, protect source-identifying details, and
               decide what belongs in a safer public lane.
             </p>
 
-            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+            <div className="mt-5 grid gap-2 sm:grid-cols-3">
               {["Private inbox", "Source protection", "No public posting"].map(
                 (item) => (
                   <div
@@ -120,7 +120,7 @@ export default function ContactPage() {
               )}
             </div>
 
-            <p className="mt-5 max-w-xl text-sm leading-relaxed text-[var(--color-muted)]">
+            <p className="mt-4 max-w-xl text-sm leading-relaxed text-[var(--color-muted)]">
               This is not emergency services, legal representation, or a
               guarantee that Ryan will publish or investigate. It is a private
               way to get serious information into the review queue.
@@ -140,13 +140,13 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-        <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
+      <section className="rrn-section">
+        <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:gap-8">
           <div>
             <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-accent)]">
               When to use this page
             </p>
-            <h2 className="mt-2 font-display text-3xl font-bold tracking-normal text-[var(--color-ink)]">
+            <h2 className="rrn-section-title mt-2">
               Private first. Public only when the record is ready.
             </h2>
             <p className="mt-3 text-base leading-relaxed text-[var(--color-ink-soft)]">
@@ -159,7 +159,7 @@ export default function ContactPage() {
             {useCases.map((item) => (
               <div
                 key={item.title}
-                className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4"
+                className="rrn-card p-4"
               >
                 <h3 className="font-display text-xl font-bold tracking-normal">
                   {item.title}
@@ -174,19 +174,19 @@ export default function ContactPage() {
       </section>
 
       <section className="border-y border-[var(--color-line)] bg-[var(--color-surface)]">
-        <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="rrn-section grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8">
           <div>
             <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-accent)]">
               What makes a useful private message
             </p>
-            <h2 className="mt-2 font-display text-3xl font-bold tracking-normal text-[var(--color-ink)]">
+            <h2 className="rrn-section-title mt-2">
               Give Ryan the facts, the proof, and what needs to stay hidden.
             </h2>
             <div className="mt-5 grid gap-3 sm:grid-cols-2">
               {whatToSend.map((item) => (
                 <div
                   key={item}
-                  className="rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-4 text-sm font-medium leading-relaxed text-[var(--color-ink-soft)]"
+                  className="rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-3 text-sm font-medium leading-relaxed text-[var(--color-ink-soft)] sm:p-4"
                 >
                   {item}
                 </div>
@@ -217,12 +217,12 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+      <section className="rrn-section">
         <div className="grid gap-4 lg:grid-cols-3">
           {process.map((item) => (
             <div
               key={item.title}
-              className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
+              className="rrn-card p-4 sm:p-5"
             >
               <h2 className="font-display text-xl font-bold tracking-normal">
                 {item.title}
@@ -239,7 +239,7 @@ export default function ContactPage() {
             <Link
               key={item.title}
               href={item.href}
-              className="group rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-5 transition hover:border-[var(--color-accent)]"
+              className="rrn-card group block min-h-28 p-4 transition hover:border-[var(--color-accent)] sm:p-5"
             >
               <h2 className="font-display text-xl font-bold tracking-normal group-hover:text-[var(--color-accent)]">
                 {item.title}
@@ -270,7 +270,7 @@ export default function ContactPage() {
       </section>
 
       <section className="border-t border-[var(--color-line)] bg-[var(--color-ink)] text-[var(--color-paper)]">
-        <div className="mx-auto grid max-w-6xl gap-6 px-4 py-8 sm:px-6 lg:grid-cols-[1fr_auto] lg:items-center">
+        <div className="rrn-section grid gap-5 lg:grid-cols-[1fr_auto] lg:items-center">
           <div>
             <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-line)]">
               Direct contact
@@ -283,16 +283,16 @@ export default function ContactPage() {
               direct contact path, use Ryan&apos;s public business contact.
             </p>
           </div>
-          <div className="flex flex-wrap gap-3">
+          <div className="rrn-tap-row">
             <a
               href="mailto:Ryan@RealRyanNichols.com"
-              className="inline-flex rounded-lg border border-[var(--color-paper)] px-4 py-2 text-sm font-bold text-[var(--color-paper)] transition hover:bg-[var(--color-paper)] hover:text-[var(--color-ink)]"
+              className="rrn-tap inline-flex rounded-lg border border-[var(--color-paper)] px-4 py-2 text-sm font-bold text-[var(--color-paper)] transition hover:bg-[var(--color-paper)] hover:text-[var(--color-ink)]"
             >
               Ryan@RealRyanNichols.com
             </a>
             <a
               href="tel:+19033458990"
-              className="inline-flex rounded-lg border border-[var(--color-paper)] px-4 py-2 text-sm font-bold text-[var(--color-paper)] transition hover:bg-[var(--color-paper)] hover:text-[var(--color-ink)]"
+              className="rrn-tap inline-flex rounded-lg border border-[var(--color-paper)] px-4 py-2 text-sm font-bold text-[var(--color-paper)] transition hover:bg-[var(--color-paper)] hover:text-[var(--color-ink)]"
             >
               Call/Text (903) 345-8990
             </a>

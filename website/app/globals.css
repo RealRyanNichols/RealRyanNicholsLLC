@@ -232,6 +232,119 @@
   background: var(--color-blue-strong);
 }
 
+/* Mobile-first page primitives for the public conversion pages. Most traffic
+   is phone-first, so these defaults keep tap targets large, hero copy readable,
+   and sections tight before desktop layouts expand them. */
+.rrn-page {
+  background: var(--color-paper);
+}
+
+.rrn-hero {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.rrn-hero-inner {
+  position: relative;
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+.rrn-section {
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.rrn-hero-title {
+  font-family: var(--font-display);
+  font-size: 2.375rem;
+  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: 0;
+  color: var(--color-ink);
+}
+
+.rrn-section-title {
+  font-family: var(--font-display);
+  font-size: 1.875rem;
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: 0;
+  color: var(--color-ink);
+}
+
+.rrn-lead {
+  font-size: 1rem;
+  line-height: 1.58;
+  color: var(--color-ink-soft);
+}
+
+.rrn-card {
+  border: 1px solid var(--color-line);
+  border-radius: 8px;
+  background: var(--color-surface);
+}
+
+.rrn-tap-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.rrn-tap {
+  min-height: 2.75rem;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .rrn-hero-inner {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .rrn-section {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .rrn-tap-row {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .rrn-tap {
+    width: auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  .rrn-hero-inner {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .rrn-section {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .rrn-hero-title {
+    font-size: 3.25rem;
+  }
+
+  .rrn-section-title {
+    font-size: 2.25rem;
+  }
+}
+
 /* Share reward — a small, tasteful burst that fires the moment a visitor
    completes a share. Pure CSS so it costs nothing and never blocks the share
    itself. The point is positive reinforcement: spreading the word should feel

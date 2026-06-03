@@ -69,11 +69,11 @@ export default async function SupportPage() {
   const supporters = await getPublishedSupporters();
 
   return (
-    <article className="mx-auto max-w-3xl px-4 py-10">
+    <article className="mx-auto max-w-3xl px-4 py-8 sm:py-10">
       <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
         An honest ask
       </p>
-      <h1 className="mt-2 text-4xl sm:text-5xl font-bold tracking-tight leading-[1.05]">
+      <h1 className="rrn-hero-title mt-2">
         I&apos;m spending my last dime on this.
       </h1>
 
@@ -140,7 +140,7 @@ export default async function SupportPage() {
 
       <section
         id="support-mission"
-        className="mt-10 rounded-2xl border border-[var(--color-line)] bg-gradient-to-br from-[var(--color-surface-2)] to-[var(--color-surface)] p-6 sm:p-8 relative overflow-hidden scroll-mt-24"
+        className="relative mt-10 scroll-mt-24 overflow-hidden rounded-lg border border-[var(--color-line)] bg-gradient-to-br from-[var(--color-surface-2)] to-[var(--color-surface)] p-4 sm:p-8"
       >
         <p className="relative text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
           Support mission board
@@ -187,7 +187,7 @@ export default async function SupportPage() {
       <SupportersWall supporters={supporters} />
 
       {supporterUrl ? (
-        <section className="mt-10 rounded-2xl border-2 border-amber-700 p-6 bg-gradient-to-br from-amber-950/30 to-[var(--color-surface)] relative overflow-hidden">
+        <section className="relative mt-10 overflow-hidden rounded-lg border-2 border-amber-700 bg-gradient-to-br from-amber-950/30 to-[var(--color-surface)] p-4 sm:p-6">
           <div
             className="pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full blur-3xl bg-amber-500/20"
             aria-hidden
@@ -217,7 +217,7 @@ export default async function SupportPage() {
           donate / supporter blocks above; positioned as its own offer
           card with a clear price and warranty so nobody confuses it
           with the J6 case work, which stays free forever. */}
-      <section className="mt-10 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-6 sm:p-8 relative overflow-hidden">
+      <section className="relative mt-10 overflow-hidden rounded-lg border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-4 sm:p-8">
         <div
           className="pointer-events-none absolute -top-24 -left-24 h-56 w-56 rounded-full blur-3xl"
           style={{ background: "var(--color-blue-glow, rgba(59,130,246,0.25))" }}

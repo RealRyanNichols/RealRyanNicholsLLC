@@ -121,7 +121,7 @@ export function PrivateMessageBox({
   return (
     <section
       id="private-message"
-      className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
+      className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-5"
     >
       <div className="flex items-start justify-between gap-4">
         <div>
@@ -296,7 +296,7 @@ export function PrivateMessageBox({
           <button
             type="submit"
             disabled={state.kind === "submitting"}
-            className="rounded-full bg-[var(--color-accent)] px-4 py-2 text-sm font-black text-[var(--color-paper)] disabled:opacity-60"
+            className="min-h-11 rounded-full bg-[var(--color-accent)] px-4 py-2 text-sm font-black text-[var(--color-paper)] disabled:opacity-60"
           >
             {state.kind === "submitting" ? "Sending..." : submitLabel}
           </button>

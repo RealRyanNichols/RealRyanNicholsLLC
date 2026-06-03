@@ -277,7 +277,7 @@ export default async function StorePage() {
   };
 
   return (
-    <article className="bg-[var(--color-paper)]">
+    <article className="rrn-page">
       {products.length > 0 ? (
         <script
           type="application/ld+json"
@@ -286,44 +286,44 @@ export default async function StorePage() {
       ) : null}
 
       <section className="border-b border-[var(--color-line)]">
-        <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:py-14">
+        <div className="rrn-hero-inner grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8">
           <div>
             <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-accent)]">
-              Real Ryan Nichols LLC · Store
+              Real Ryan Nichols LLC / Store
             </p>
-            <h1 className="mt-3 max-w-3xl font-display text-4xl font-bold leading-tight tracking-normal text-[var(--color-ink)] sm:text-5xl">
+            <h1 className="rrn-hero-title mt-3 max-w-3xl">
               Pick the help you need. Get the record organized.
             </h1>
-            <p className="mt-4 max-w-2xl text-lg leading-relaxed text-[var(--color-ink-soft)]">
+            <p className="rrn-lead mt-4 max-w-2xl">
               This is the paid-services and support counter for the work: case
               direction, evidence organization, public-records strategy,
               attention audits, owned-site builds, and direct support for the
               record.
             </p>
-            <div className="mt-6 flex flex-wrap gap-3">
+            <div className="rrn-tap-row mt-5">
               <Link
                 href="#service-options"
-                className="btn-accent inline-flex items-center justify-center rounded-lg px-5 py-3 text-sm font-bold"
+                className="rrn-tap btn-accent inline-flex rounded-lg px-5 py-3 text-sm font-bold"
               >
                 See paid services
               </Link>
               <Link
                 href="/case-review"
-                className="inline-flex items-center justify-center rounded-lg border-2 border-[var(--color-blue)] px-5 py-3 text-sm font-bold text-[var(--color-blue)] transition hover:bg-[var(--color-blue-soft)]"
+                className="rrn-tap inline-flex rounded-lg border-2 border-[var(--color-blue)] px-5 py-3 text-sm font-bold text-[var(--color-blue)] transition hover:bg-[var(--color-blue-soft)]"
               >
                 Start case review
               </Link>
               <Link
                 href="#article-demo"
-                className="inline-flex items-center justify-center rounded-lg border-2 border-[var(--color-line)] px-5 py-3 text-sm font-bold text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:bg-[var(--color-surface)]"
+                className="rrn-tap inline-flex rounded-lg border-2 border-[var(--color-line)] px-5 py-3 text-sm font-bold text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:bg-[var(--color-surface)]"
               >
                 Try article demo
               </Link>
             </div>
           </div>
 
-          <div className="overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] shadow-lg">
-            <div className="relative h-44 bg-[var(--color-surface-2)]">
+          <div className="rrn-card overflow-hidden shadow-lg">
+            <div className="relative h-36 bg-[var(--color-surface-2)] sm:h-44">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/social-cards/map-room.jpg"
@@ -332,7 +332,7 @@ export default async function StorePage() {
               />
               <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(26,20,16,0.74),rgba(26,20,16,0.12))]" />
               <div className="absolute bottom-4 left-4 right-4">
-                <p className="max-w-sm font-display text-2xl font-bold leading-tight tracking-normal text-white">
+                <p className="max-w-sm font-display text-xl font-bold leading-tight tracking-normal text-white sm:text-2xl">
                   Case help, records work, and attention that leads somewhere.
                 </p>
               </div>
@@ -367,13 +367,13 @@ export default async function StorePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+      <section className="rrn-section">
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {decisionCards.map((card) => (
             <Link
               key={card.title}
               href={card.href}
-              className="group rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 transition hover:border-[var(--color-accent)]"
+              className="rrn-card group block min-h-32 p-4 transition hover:border-[var(--color-accent)]"
             >
               <h2 className="font-display text-xl font-bold tracking-normal group-hover:text-[var(--color-accent)]">
                 {card.title}
@@ -389,7 +389,7 @@ export default async function StorePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+      <section className="rrn-section">
         <StoryProtectionDemo />
       </section>
 
@@ -416,7 +416,7 @@ export default async function StorePage() {
       ) : (
         <div
           id="service-options"
-          className="mx-auto max-w-6xl space-y-10 px-4 py-8 sm:px-6"
+          className="mx-auto max-w-6xl space-y-8 px-4 py-8 sm:px-6 lg:space-y-10"
         >
           {groups.map((group) => (
             <section key={group.type}>
@@ -456,7 +456,7 @@ export default async function StorePage() {
             ))}
           </section>
 
-          <div className="flex flex-col gap-4 rounded-lg border border-[var(--color-line)] bg-[var(--color-ink)] p-6 text-white sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-4 rounded-lg border border-[var(--color-line)] bg-[var(--color-ink)] p-5 text-white sm:flex-row sm:items-center sm:justify-between sm:p-6">
             <div>
               <h2 className="font-display text-2xl font-bold tracking-normal text-white">
                 Not sure which one you need?
@@ -467,16 +467,16 @@ export default async function StorePage() {
                 without overbuying.
               </p>
             </div>
-            <div className="flex flex-none flex-col gap-2 sm:flex-row">
+            <div className="rrn-tap-row flex-none">
               <Link
                 href="/services"
-                className="inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 text-sm font-bold text-[var(--color-ink)] transition hover:bg-[var(--color-paper)]"
+                className="rrn-tap inline-flex rounded-lg bg-white px-5 py-3 text-sm font-bold text-[var(--color-ink)] transition hover:bg-[var(--color-paper)]"
               >
                 Services guide
               </Link>
               <Link
                 href="/store/strategy-call-30"
-                className="inline-flex items-center justify-center rounded-lg border border-white/40 px-5 py-3 text-sm font-bold text-white transition hover:bg-white/10"
+                className="rrn-tap inline-flex rounded-lg border border-white/40 px-5 py-3 text-sm font-bold text-white transition hover:bg-white/10"
               >
                 Book the call
               </Link>
