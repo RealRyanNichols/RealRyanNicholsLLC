@@ -3,13 +3,14 @@ import Stripe from "stripe";
 // Server-only Stripe client. Never import this from a client component.
 // API version is left at the account default so we don't pin to a literal the
 // installed SDK might not type; lock it explicitly in the dashboard if desired.
-export const stripe = process.env.STRIPE_SECRET_KEY
-  ? new Stripe(process.env.STRIPE_SECRET_KEY)
-  : (null as unknown as Stripe);
+let stripeClient: Stripe | null = null;
 
 export function requireStripe(): Stripe {
-  if (!stripe) throw new Error("STRIPE_SECRET_KEY is not set");
-  return stripe;
+  if (stripeClient) return stripeClient;
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) throw new Error("STRIPE_SECRET_KEY is not set");
+  stripeClient = new Stripe(key);
+  return stripeClient;
 }
 
 // Donation tiers are a server-side allowlist; custom amounts are clamped

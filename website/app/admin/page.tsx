@@ -121,16 +121,42 @@ export default async function AdminHomePage() {
       .limit(10),
   ]);
 
+  const { data: invoiceRows } = await supabase
+    .from("service_invoices")
+    .select("id, client_name, amount_cents, amount_paid_cents, status, due_at, stripe_hosted_invoice_url")
+    .in("status", ["draft", "open", "failed"])
+    .order("created_at", { ascending: false })
+    .limit(6);
+  const invoices = (invoiceRows ?? []) as {
+    id: string;
+    client_name: string;
+    amount_cents: number;
+    amount_paid_cents: number;
+    status: string;
+    due_at: string | null;
+    stripe_hosted_invoice_url: string | null;
+  }[];
+  const receivableCents = invoices
+    .filter((i) => i.status === "open" || i.status === "failed")
+    .reduce((sum, i) => sum + Math.max(0, i.amount_cents - i.amount_paid_cents), 0);
+  const inboxTotal =
+    (pendingTips ?? 0) +
+    (pendingClaims ?? 0) +
+    (pendingSubmissions ?? 0) +
+    (pendingComments ?? 0) +
+    (commentReports ?? 0);
+
   return (
-    <article className="mx-auto max-w-5xl px-4 py-10">
+    <article className="mx-auto max-w-6xl px-4 py-8">
       <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
-        Admin
+        Admin control room
       </p>
       <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">
-        Dashboard
+        What needs attention now
       </h1>
       <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
-        Site at a glance — visitors, pending review, recent activity. Drill in via the cards below.
+        Money to collect, people to answer, records to approve, and the live
+        public audience in one place.
       </p>
 
       {criticalIssues > 0 ? (
@@ -151,8 +177,58 @@ export default async function AdminHomePage() {
         </Link>
       ) : null}
 
+      <section className="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+        <ActionLane
+          href="/admin/invoices"
+          kicker="Collect"
+          title="Receivables"
+          value={usd(receivableCents)}
+          sub={`${invoices.length} active invoice${invoices.length === 1 ? "" : "s"}`}
+          hot={receivableCents > 0}
+        />
+        <ActionLane
+          href="/admin/messages"
+          kicker="Answer"
+          title="Inbox & submissions"
+          value={String(inboxTotal)}
+          sub="tips, messages, claims, uploads, comments"
+          hot={inboxTotal > 0}
+        />
+        <ActionLane
+          href="/admin/analytics"
+          kicker="Watch"
+          title="Live audience"
+          value={String(activeNow ?? 0)}
+          sub={`${views24h ?? 0} views in 24h`}
+          hot={(activeNow ?? 0) > 0}
+        />
+        <ActionLane
+          href="/admin/users?filter=pending"
+          kicker="Approve"
+          title="People"
+          value={String(pendingProfiles ?? 0)}
+          sub={`${activeProfiles ?? 0} active profiles`}
+          hot={(pendingProfiles ?? 0) > 0}
+        />
+        <ActionLane
+          href="/admin/posts"
+          kicker="Publish"
+          title="Posts & live"
+          value="+"
+          sub="posts, video, social share cards"
+        />
+        <ActionLane
+          href="/admin/health"
+          kicker="Fix"
+          title="Connections"
+          value={String(criticalIssues)}
+          sub="email, payments, database, video"
+          hot={criticalIssues > 0}
+        />
+      </section>
+
       {/* Top-line stats */}
-      <section className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <section className="mt-8 grid grid-cols-2 sm:grid-cols-5 gap-3">
         <StatCard
           href="#live"
           label="Active now"
@@ -179,7 +255,53 @@ export default async function AdminHomePage() {
           value={`+${subs7d ?? 0}`}
           sub="this week (confirmed)"
         />
+        <StatCard
+          href="/admin/invoices"
+          label="Receivable"
+          value={usd(receivableCents)}
+          sub="open invoices"
+          highlight={receivableCents > 0}
+        />
       </section>
+
+      {invoices.length > 0 ? (
+        <section className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="text-lg font-bold tracking-tight">
+              Money to follow up
+            </h2>
+            <Link
+              href="/admin/invoices"
+              className="text-xs font-semibold text-[var(--color-accent)] hover:underline"
+            >
+              Open invoices →
+            </Link>
+          </div>
+          <div className="mt-3 grid gap-2 md:grid-cols-2">
+            {invoices.slice(0, 4).map((invoice) => (
+              <Link
+                key={invoice.id}
+                href="/admin/invoices"
+                className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-3 transition hover:border-[var(--color-accent)]"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-bold">
+                      {invoice.client_name}
+                    </p>
+                    <p className="text-xs uppercase tracking-[0.12em] text-[var(--color-muted)]">
+                      {invoice.status}
+                    </p>
+                  </div>
+                  <p className="shrink-0 text-sm font-bold tabular-nums">
+                    {usd(Math.max(0, invoice.amount_cents - invoice.amount_paid_cents))}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       {/* Action items — pending verifications */}
       <section className="mt-8 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
@@ -387,6 +509,16 @@ export default async function AdminHomePage() {
         </h2>
         <div className="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-3">
           <SectionLink
+            href="/admin/invoices"
+            title="Invoices"
+            sub="Create payment links and track unpaid work"
+          />
+          <SectionLink
+            href="/admin/orders"
+            title="Orders"
+            sub="Service and store checkout"
+          />
+          <SectionLink
             href="/admin/health"
             title="Connections"
             sub="Email, payments, keys — what's on"
@@ -503,6 +635,47 @@ function StatCard({
   );
 }
 
+function ActionLane({
+  href,
+  kicker,
+  title,
+  value,
+  sub,
+  hot,
+}: {
+  href: string;
+  kicker: string;
+  title: string;
+  value: string;
+  sub: string;
+  hot?: boolean;
+}) {
+  return (
+    <Link
+      href={href}
+      className={[
+        "block rounded-2xl border p-4 transition hover:border-[var(--color-accent)]",
+        hot
+          ? "border-[var(--color-accent)] bg-[var(--color-accent)]/10"
+          : "border-[var(--color-line)] bg-[var(--color-surface)]",
+      ].join(" ")}
+    >
+      <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--color-muted)]">
+        {kicker}
+      </p>
+      <div className="mt-2 flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <h2 className="truncate text-lg font-bold tracking-tight">{title}</h2>
+          <p className="mt-1 text-xs text-[var(--color-ink-soft)]">{sub}</p>
+        </div>
+        <p className="shrink-0 text-2xl font-bold tracking-tight tabular-nums">
+          {value}
+        </p>
+      </div>
+    </Link>
+  );
+}
+
 function SectionLink({
   href,
   title,
@@ -521,6 +694,14 @@ function SectionLink({
       <div className="text-xs text-[var(--color-muted)] mt-0.5">{sub}</div>
     </Link>
   );
+}
+
+function usd(cents: number): string {
+  return (cents / 100).toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  });
 }
 
 function refDomain(ref: string | null | undefined): string {

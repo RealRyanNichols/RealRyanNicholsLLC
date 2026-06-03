@@ -7,7 +7,15 @@ import { usePathname } from "next/navigation";
 // (every section visible at once); on mobile it's a compact wrapping bar
 // (no horizontal scrolling, nothing hidden off-screen).
 const GROUPS: { label: string; items: { href: string; label: string }[] }[] = [
-  { label: "Money", items: [{ href: "/admin/donations", label: "Donations" }] },
+  {
+    label: "Money",
+    items: [
+      { href: "/admin/invoices", label: "Invoices" },
+      { href: "/admin/orders", label: "Orders" },
+      { href: "/admin/donations", label: "Donations" },
+      { href: "/admin/store", label: "Store" },
+    ],
+  },
   {
     label: "Audience",
     items: [

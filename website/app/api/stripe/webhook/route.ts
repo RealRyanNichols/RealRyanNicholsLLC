@@ -45,6 +45,12 @@ export async function POST(req: Request) {
       case "charge.refunded":
         await handleRefund(supabase, event);
         break;
+      case "invoice.paid":
+      case "invoice.payment_failed":
+      case "invoice.voided":
+      case "invoice.marked_uncollectible":
+        await handleServiceInvoiceChange(supabase, event);
+        break;
       // payment_intent.succeeded is intentionally a no-op —
       // checkout.session.completed is the canonical money event.
     }
@@ -194,4 +200,47 @@ async function handleRefund(supabase: SupabaseClient, event: Stripe.Event) {
     .from("orders")
     .update({ status: "refunded" })
     .eq("stripe_payment_intent", pi);
+}
+
+async function handleServiceInvoiceChange(
+  supabase: SupabaseClient,
+  event: Stripe.Event,
+) {
+  const invoice = event.data.object as Stripe.Invoice;
+  if (invoice.metadata?.kind !== "service_invoice") return;
+
+  const invoiceId = invoice.id;
+  const localId = invoice.metadata?.service_invoice_id;
+  const paidAt = invoice.status_transitions?.paid_at
+    ? new Date(invoice.status_transitions.paid_at * 1000).toISOString()
+    : event.type === "invoice.paid"
+      ? new Date().toISOString()
+      : null;
+
+  const status =
+    event.type === "invoice.paid"
+      ? "paid"
+      : event.type === "invoice.payment_failed"
+        ? "open"
+        : event.type === "invoice.voided"
+          ? "void"
+          : "uncollectible";
+
+  const update: Record<string, unknown> = {
+    updated_at: new Date().toISOString(),
+    status,
+    amount_paid_cents: invoice.amount_paid ?? 0,
+    stripe_hosted_invoice_url: invoice.hosted_invoice_url ?? null,
+    stripe_invoice_pdf: invoice.invoice_pdf ?? null,
+  };
+  if (paidAt) update.paid_at = paidAt;
+  if (event.type === "invoice.payment_failed") {
+    update.stripe_last_error = "Stripe reported a failed invoice payment.";
+  } else {
+    update.stripe_last_error = null;
+  }
+
+  let query = supabase.from("service_invoices").update(update);
+  query = localId ? query.eq("id", localId) : query.eq("stripe_invoice_id", invoiceId);
+  await query;
 }

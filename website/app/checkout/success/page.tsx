@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { stripe } from "@/lib/stripe";
+import { requireStripe } from "@/lib/stripe";
 import { recordDonationFromSession } from "@/lib/donations";
 import { PurchaseTracker } from "@/components/PurchaseTracker";
 
@@ -50,6 +50,7 @@ export default async function SuccessPage({
   let lineItems: { description: string; amount: number; qty: number }[] = [];
   if (sp.session_id && process.env.STRIPE_SECRET_KEY) {
     try {
+      const stripe = requireStripe();
       const session = await stripe.checkout.sessions.retrieve(sp.session_id, {
         expand: ["line_items"],
       });
