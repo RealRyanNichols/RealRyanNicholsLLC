@@ -41,7 +41,7 @@ export async function CommentList({ postId }: { postId: string }) {
   if (comments.length === 0) {
     return (
       <p className="text-sm text-[var(--color-muted)]">
-        No approved comments yet. Be the first to sign in and add one.
+        No approved comments yet. Create an account and put the first opinion on the record.
       </p>
     );
   }

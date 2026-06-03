@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type { CaseCommentableType } from "@/lib/case";
 import { trackEvent } from "@/lib/analytics";
 
@@ -21,21 +22,33 @@ export function CaseCommentForm({ type, slug, signedIn }: Props) {
   const [state, setState] = useState<State>({ kind: "idle" });
   const [body, setBody] = useState("");
   const started = useRef(false);
+  const pathname = usePathname();
+  const signupHref = `/login?mode=signup&next=${encodeURIComponent(pathname || "/account")}`;
 
   if (!signedIn) {
     return (
       <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 text-sm">
-        <p className="text-[var(--color-ink-soft)]">
-          Comments here are signed-only. No anonymous accounts.{" "}
-          <Link className="text-[var(--color-accent)] underline" href="/login">
-            Sign in to comment
-          </Link>
-          . Read the{" "}
-          <Link className="underline" href="/community-rules">
-            community rules
-          </Link>{" "}
-          first.
+        <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--color-accent)]">
+          Add to the record
         </p>
+        <h3 className="mt-2 text-xl font-bold tracking-tight text-[var(--color-ink)]">
+          Create an account to comment on this case.
+        </h3>
+        <p className="mt-2 leading-relaxed text-[var(--color-ink-soft)]">
+          Bring the opinion, question, or missing context that other platforms
+          bury. Comments are signed-only, moderated, and tied to one real profile.
+        </p>
+        <div className="mt-4 flex flex-wrap items-center gap-3">
+          <Link className="btn-accent rounded-lg px-4 py-2 text-xs font-bold" href={signupHref}>
+            Join and comment
+          </Link>
+          <Link className="text-xs font-semibold text-[var(--color-muted)] underline underline-offset-4" href="/login">
+            Already have an account?
+          </Link>
+          <Link className="text-xs font-semibold text-[var(--color-muted)] underline underline-offset-4" href="/community-rules">
+            community rules
+          </Link>
+        </div>
       </div>
     );
   }

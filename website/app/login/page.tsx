@@ -23,8 +23,13 @@ export default function LoginPage() {
 function LoginPageInner() {
   const router = useRouter();
   const params = useSearchParams();
-  const next = params.get("next") || "/account";
-  const [mode, setMode] = useState<Mode>("signin");
+  const next = sanitizeNext(params.get("next"));
+  const modeParam = params.get("mode");
+  const initialMode: Mode =
+    modeParam === "signup" || modeParam === "magic" || modeParam === "signin"
+      ? modeParam
+      : "signin";
+  const [mode, setMode] = useState<Mode>(initialMode);
   const [state, setState] = useState<State>({ kind: "idle" });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,9 +45,10 @@ function LoginPageInner() {
     e.preventDefault();
     setState({ kind: "submitting" });
     const supabase = getSupabaseBrowserClient();
+    const callbackPath = `/auth/callback?next=${encodeURIComponent(next)}`;
     const redirect =
       typeof window !== "undefined"
-        ? `${window.location.origin}/auth/callback`
+        ? `${window.location.origin}${callbackPath}`
         : undefined;
 
     try {
@@ -55,12 +61,12 @@ function LoginPageInner() {
           // Friendlier error copy than Supabase defaults.
           if (/email not confirmed/i.test(error.message)) {
             throw new Error(
-              "Your email isn't confirmed yet. Check your inbox for the confirmation link, or use Magic Link below to sign in directly.",
+              "Your email isn't confirmed yet. Check your inbox for the confirmation link, or use Email link below to sign in directly.",
             );
           }
           if (/invalid login credentials/i.test(error.message)) {
             throw new Error(
-              "Email or password is wrong. If you just created an account, try Magic Link below — we'll email you a sign-in link.",
+              "Email or password is wrong. If you just created an account, try Email link below and we'll send a sign-in link.",
             );
           }
           throw error;
@@ -91,9 +97,6 @@ function LoginPageInner() {
           },
         });
         if (error) throw error;
-        // Email confirmation is auto-handled server-side now (see the
-        // auto_confirm_user trigger). signUp returns an active session on
-        // success, so push the user straight into their account.
         if (data.session) {
           router.push(next);
           router.refresh();
@@ -109,7 +112,7 @@ function LoginPageInner() {
           setState({
             kind: "sent",
             message:
-              "Account created. Sign in with the email + password you just set.",
+              "Account created. Check your email if Supabase asks you to confirm, then sign in with the password you just set.",
           });
           return;
         }
@@ -123,7 +126,7 @@ function LoginPageInner() {
         options: { emailRedirectTo: redirect },
       });
       if (error) throw error;
-      setState({ kind: "sent", message: "Check your inbox for the sign-in link." });
+      setState({ kind: "sent", message: "Check your inbox for the sign-in link. It will bring you back here." });
     } catch (err) {
       const m = err instanceof Error ? err.message : "Something went wrong.";
       setState({ kind: "error", message: m });
@@ -131,37 +134,41 @@ function LoginPageInner() {
   }
 
   return (
-    <div className="mx-auto max-w-md px-4 py-12">
-      <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
-        {mode === "signup" ? "Create account" : "Sign in"}
-      </h1>
-      <p className="text-[var(--color-ink-soft)] mt-2 text-sm">
-        {mode === "signin"
-          ? "Use the email and password you set up here, or switch to a magic link."
-          : mode === "signup"
-            ? "Pick a password. You're signed in immediately — no email confirmation needed."
-            : "Email-only sign-in. We'll send a one-time link."}
-      </p>
+    <div className="mx-auto grid max-w-5xl gap-7 px-4 py-8 sm:py-12 lg:grid-cols-[minmax(0,1fr)_360px]">
+      <section>
+        <p className="text-xs font-black uppercase tracking-[0.18em] text-[var(--color-accent)]">
+          Join the record
+        </p>
+        <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+          {mode === "signup" ? "Create your account" : "Sign in"}
+        </h1>
+        <p className="mt-3 max-w-2xl text-base leading-relaxed text-[var(--color-ink-soft)]">
+          {mode === "signin"
+            ? "Use your account to comment, track your profile, and keep your voice tied to one real person."
+            : mode === "signup"
+              ? "Comment on the site, speak your mind, and bring the opinions other platforms bury. No paywall. Real account, real voice, public record."
+              : "Email-only sign-in. We send a one-time link that brings you back to the page you were trying to reach."}
+        </p>
 
-      <div
-        className="mt-5 inline-flex rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] p-1 text-xs"
-        role="tablist"
-      >
-        <Tab active={mode === "signin"} onClick={() => setMode("signin")}>
-          Sign in
-        </Tab>
-        <Tab active={mode === "signup"} onClick={() => setMode("signup")}>
-          Create account
-        </Tab>
-        <Tab active={mode === "magic"} onClick={() => setMode("magic")}>
-          Magic link
-        </Tab>
-      </div>
+        <div
+          className="mt-5 inline-flex rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] p-1 text-xs"
+          role="tablist"
+        >
+          <Tab active={mode === "signin"} onClick={() => setMode("signin")}>
+            Sign in
+          </Tab>
+          <Tab active={mode === "signup"} onClick={() => setMode("signup")}>
+            Create account
+          </Tab>
+          <Tab active={mode === "magic"} onClick={() => setMode("magic")}>
+            Email link
+          </Tab>
+        </div>
 
-      <form
-        onSubmit={onSubmit}
-        className="mt-5 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
-      >
+        <form
+          onSubmit={onSubmit}
+          className="mt-5 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
+        >
         {mode === "signup" ? (
           <>
             <label htmlFor="login-fullname" className="text-xs uppercase tracking-wider text-[var(--color-muted)] block mb-2">
@@ -252,7 +259,7 @@ function LoginPageInner() {
             />
             {mode === "signup" ? (
               <p className="mt-1.5 text-xs text-[var(--color-muted)]">
-                At least 8 characters.
+                At least 8 characters. If email confirmation is required, use the link we send; otherwise you can enter your account right away.
               </p>
             ) : null}
           </>
@@ -278,23 +285,53 @@ function LoginPageInner() {
         {state.kind === "error" ? (
           <p className="mt-3 text-sm text-[var(--color-accent)]">{state.message}</p>
         ) : null}
-      </form>
+        </form>
 
-      {mode === "signin" ? (
-        <p className="mt-4 text-xs text-[var(--color-muted)] text-center">
-          Forgot your password?{" "}
-          <button
-            type="button"
-            onClick={() => setMode("magic")}
-            className="text-[var(--color-accent)] underline underline-offset-4"
-          >
-            Use a magic link instead
-          </button>
-          .
+        {mode === "signin" ? (
+          <p className="mt-4 text-center text-xs text-[var(--color-muted)]">
+            Forgot your password?{" "}
+            <button
+              type="button"
+              onClick={() => setMode("magic")}
+              className="text-[var(--color-accent)] underline underline-offset-4"
+            >
+              Use an email link instead
+            </button>
+            .
+          </p>
+        ) : null}
+      </section>
+
+      <aside className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+        <p className="text-xs font-black uppercase tracking-[0.18em] text-[var(--color-muted)]">
+          Why make one?
         </p>
-      ) : null}
+        <ul className="mt-4 space-y-3 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+          <li>
+            <strong className="text-[var(--color-ink)]">Comment here.</strong>{" "}
+            Say what you think without feeding the platforms that cancel people.
+          </li>
+          <li>
+            <strong className="text-[var(--color-ink)]">Keep a public profile.</strong>{" "}
+            Your display name and username stay tied to your comments.
+          </li>
+          <li>
+            <strong className="text-[var(--color-ink)]">Help build the record.</strong>{" "}
+            Good comments, claims, tips, and receipts become easier to review.
+          </li>
+          <li>
+            <strong className="text-[var(--color-ink)]">No trick paywall.</strong>{" "}
+            Reading stays free. Accounts are for trust, comments, and continuity.
+          </li>
+        </ul>
+      </aside>
     </div>
   );
+}
+
+function sanitizeNext(value: string | null): string {
+  if (!value || !value.startsWith("/") || value.startsWith("//")) return "/account";
+  return value;
 }
 
 function Tab({

@@ -408,10 +408,10 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
               </Link>
             ) : (
               <Link
-                href="/login"
+                href="/login?mode=signup"
                 className="ml-1 inline-flex items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3.5 py-1.5 text-xs font-medium text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition"
               >
-                Sign in
+                Join
               </Link>
             )}
           </nav>
@@ -462,10 +462,10 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
                   </p>
                 </div>
                 <Link
-                  href={signedIn ? "/account" : "/login"}
+                  href={signedIn ? "/account" : "/login?mode=signup"}
                   className="shrink-0 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] font-black uppercase tracking-normal text-[#fdf8ea] transition hover:bg-white/10"
                 >
-                  {signedIn ? "Account" : "Sign in"}
+                  {signedIn ? "Account" : "Join"}
                 </Link>
               </div>
 

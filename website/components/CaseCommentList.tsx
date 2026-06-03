@@ -49,7 +49,7 @@ export async function CaseCommentList({
   if (comments.length === 0) {
     return (
       <p className="text-sm text-[var(--color-muted)]">
-        No approved comments yet. Sign in to add the first one.
+        No approved comments yet. Create an account and add the first case note.
       </p>
     );
   }
