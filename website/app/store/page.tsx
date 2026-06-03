@@ -74,8 +74,8 @@ const PRODUCT_DETAILS: Record<
     ],
     cta: "Book the call",
     image: {
-      src: "/uploads/master-exhibit-index-og-thumbnail.png",
-      alt: "A document index visual representing organized evidence and next steps.",
+      src: "/uploads/strategy-call-30-og.png",
+      alt: "30-minute strategy call thumbnail for Ryan Nichols.",
     },
   },
   "site-audit": {
