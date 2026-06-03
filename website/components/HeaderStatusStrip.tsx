@@ -50,7 +50,7 @@ export function HeaderStatusStrip() {
         </div>
         <Link
           href="/the-map-room"
-          className="inline-flex min-h-7 flex-shrink-0 items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-[var(--color-paper)] transition hover:text-[#7fe3a9]"
+          className="inline-flex min-h-11 flex-shrink-0 items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-[var(--color-paper)] transition hover:text-[#7fe3a9]"
         >
           map room <span aria-hidden>→</span>
         </Link>

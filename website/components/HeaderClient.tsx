@@ -118,7 +118,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
         <div className="mx-auto max-w-5xl px-4 h-16 flex items-center justify-between gap-3">
           <Link
             href="/"
-            className="flex items-center gap-2.5 group min-w-0"
+            className="group flex min-h-11 min-w-0 items-center gap-2.5"
             aria-label={`${SITE.name} — Home`}
             onClick={() => setOpen(false)}
           >
@@ -147,7 +147,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
           </Link>
 
           {/* Desktop nav — visible at md+ */}
-          <nav className="hidden md:flex items-center gap-1 text-sm">
+          <nav data-desktop-nav className="hidden md:flex items-center gap-1 text-sm">
             {NAV.map((n) =>
               isGroup(n) ? (
                 <NavDropdown
@@ -216,6 +216,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             </Link>
             <button
               type="button"
+              data-mobile-menu-button
               onClick={() => setOpen((v) => !v)}
               aria-label={open ? "Close menu" : "Open menu"}
               aria-expanded={open}
