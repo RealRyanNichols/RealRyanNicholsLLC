@@ -1,9 +1,8 @@
-import { createHash } from "crypto";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { z } from "zod";
 import { checkRateLimit, clientIp } from "@/lib/rate-limit";
-import { getSupabaseStaticClient } from "@/lib/supabase/static";
+import { getSupabaseServiceClient } from "@/lib/supabase/service";
 import { SITE } from "@/lib/site";
 import { visitorHash } from "@/lib/visitor-hash";
 
@@ -19,11 +18,6 @@ const schema = z.object({
 });
 
 export const runtime = "nodejs";
-
-function hashIp(ip: string): string {
-  const salt = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "private-message";
-  return createHash("sha256").update(`${salt}|${ip}`).digest("hex");
-}
 
 export async function POST(request: Request) {
   const rl = await checkRateLimit({
@@ -54,7 +48,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const supabase = getSupabaseStaticClient();
+  const supabase = getSupabaseServiceClient();
   const ip = clientIp(request);
   const insert = {
     display_name: parsed.data.display_name?.trim() || null,
@@ -64,7 +58,7 @@ export async function POST(request: Request) {
     message: parsed.data.message.trim(),
     source_path: parsed.data.source_path?.trim() || null,
     status: "new",
-    ip_hash: hashIp(ip),
+    ip_hash: rl.ipHash,
     session_id: parsed.data.session_id || null,
     visitor_hash: visitorHash(
       parsed.data.visitor_id || null,
