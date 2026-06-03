@@ -155,12 +155,12 @@ export function PrivateMessageBox({
         <form onSubmit={onSubmit} className="mt-4 grid gap-4">
           {expandedIntake ? (
             <div className="grid gap-3 sm:grid-cols-2">
-              <label className="grid gap-1 text-sm font-bold text-[var(--color-ink)]">
+              <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink)]">
                 What is this about?
                 <select
                   value={topic}
                   onChange={(event) => setTopic(event.target.value)}
-                  className="rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
+                  className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
                 >
                   <option>Sensitive records or evidence</option>
                   <option>Public corruption or misconduct tip</option>
@@ -170,24 +170,24 @@ export function PrivateMessageBox({
                   <option>Other private message</option>
                 </select>
               </label>
-              <label className="grid gap-1 text-sm font-bold text-[var(--color-ink)]">
+              <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink)]">
                 Timing
                 <select
                   value={urgency}
                   onChange={(event) => setUrgency(event.target.value)}
-                  className="rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
+                  className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
                 >
                   <option>Can wait for review</option>
                   <option>Time-sensitive this week</option>
                   <option>Urgent, but not an emergency</option>
                 </select>
               </label>
-              <label className="grid gap-1 text-sm font-bold text-[var(--color-ink)]">
+              <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink)]">
                 Source protection
                 <select
                   value={privacyNeed}
                   onChange={(event) => setPrivacyNeed(event.target.value)}
-                  className="rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
+                  className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
                 >
                   <option>Do not publish my name or identifying details</option>
                   <option>You may use my role, not my name</option>
@@ -195,12 +195,12 @@ export function PrivateMessageBox({
                   <option>I am willing to be on the record</option>
                 </select>
               </label>
-              <label className="grid gap-1 text-sm font-bold text-[var(--color-ink)]">
+              <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink)]">
                 Follow-up
                 <select
                   value={replyPreference}
                   onChange={(event) => setReplyPreference(event.target.value)}
-                  className="rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
+                  className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
                 >
                   <option>Email is best if I leave one</option>
                   <option>Text or phone is best if I leave a number</option>
@@ -211,7 +211,7 @@ export function PrivateMessageBox({
             </div>
           ) : null}
 
-          <label className="grid gap-1 text-sm font-bold text-[var(--color-ink)]">
+          <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink)]">
             Name
             <input
               value={displayName}
@@ -219,11 +219,11 @@ export function PrivateMessageBox({
               placeholder="Optional"
               aria-label="Name"
               autoComplete="name"
-              className="rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
+              className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
             />
           </label>
           <div className="grid gap-3 sm:grid-cols-2">
-            <label className="grid gap-1 text-sm font-bold text-[var(--color-ink)]">
+            <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink)]">
               Email
               <input
                 type="email"
@@ -232,10 +232,10 @@ export function PrivateMessageBox({
                 placeholder="Optional"
                 aria-label="Email"
                 autoComplete="email"
-                className="rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
+                className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
               />
             </label>
-            <label className="grid gap-1 text-sm font-bold text-[var(--color-ink)]">
+            <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink)]">
               Phone
               <input
                 type="tel"
@@ -244,21 +244,21 @@ export function PrivateMessageBox({
                 placeholder="Optional"
                 aria-label="Phone"
                 autoComplete="tel"
-                className="rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
+                className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
               />
             </label>
           </div>
-          <label className="grid gap-1 text-sm font-bold text-[var(--color-ink)]">
+          <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink)]">
             Subject
             <input
               value={subject}
               onChange={(event) => setSubject(event.target.value.slice(0, 160))}
               placeholder="Short title"
               aria-label="Subject"
-              className="rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
+              className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
             />
           </label>
-          <label className="grid gap-1 text-sm font-bold text-[var(--color-ink)]">
+          <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink)]">
             Private message
             <textarea
               required
@@ -273,7 +273,7 @@ export function PrivateMessageBox({
               }
               aria-label="Private message"
               rows={expandedIntake ? 8 : 5}
-              className="rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
+              className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
             />
           </label>
           {expandedIntake ? (
