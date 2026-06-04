@@ -142,6 +142,101 @@ export async function getPeople(): Promise<CasePerson[]> {
   return all;
 }
 
+export type J6PeoplePage = {
+  people: CasePerson[];
+  total: number;
+  page: number;
+  pageSize: number;
+};
+
+function cleanCaseSearch(q: string): string {
+  return q.replace(/[,%()]/g, " ").replace(/\s+/g, " ").trim();
+}
+
+export async function getJ6PeoplePage({
+  claimStatus,
+  q = "",
+  page = 1,
+  pageSize = 120,
+}: {
+  claimStatus: "unclaimed" | "verified" | "pending";
+  q?: string;
+  page?: number;
+  pageSize?: number;
+}): Promise<J6PeoplePage> {
+  const supabase = getSupabaseStaticClient();
+  const safePage = Number.isFinite(page) && page > 0 ? Math.floor(page) : 1;
+  const safePageSize = Math.min(180, Math.max(24, Math.floor(pageSize)));
+  const from = (safePage - 1) * safePageSize;
+  const to = from + safePageSize - 1;
+  const query = cleanCaseSearch(q);
+
+  let request = supabase
+    .from("case_people")
+    .select(PERSON_COLS, { count: "exact" })
+    .eq("visibility", "public")
+    .eq("is_j6_defendant", true)
+    .eq("claim_status", claimStatus)
+    .order("name", { ascending: true })
+    .range(from, to);
+
+  if (query) {
+    const like = `%${query}%`;
+    request = request.or(
+      `name.ilike.${like},case_number.ilike.${like},role.ilike.${like}`,
+    );
+  }
+
+  const { data, count } = await request;
+  return {
+    people: (data ?? []) as CasePerson[],
+    total: count ?? 0,
+    page: safePage,
+    pageSize: safePageSize,
+  };
+}
+
+export async function getJ6ClaimCounts(): Promise<{
+  total: number;
+  unclaimed: number;
+  verified: number;
+  pending: number;
+}> {
+  const supabase = getSupabaseStaticClient();
+  const [total, unclaimed, verified, pending] = await Promise.all([
+    supabase
+      .from("case_people")
+      .select("id", { count: "exact", head: true })
+      .eq("visibility", "public")
+      .eq("is_j6_defendant", true),
+    supabase
+      .from("case_people")
+      .select("id", { count: "exact", head: true })
+      .eq("visibility", "public")
+      .eq("is_j6_defendant", true)
+      .eq("claim_status", "unclaimed"),
+    supabase
+      .from("case_people")
+      .select("id", { count: "exact", head: true })
+      .eq("visibility", "public")
+      .eq("is_j6_defendant", true)
+      .eq("claim_status", "verified"),
+    supabase
+      .from("case_people")
+      .select("id", { count: "exact", head: true })
+      .eq("visibility", "public")
+      .eq("is_j6_defendant", true)
+      .eq("claim_status", "pending"),
+  ]);
+
+  return {
+    total: total.count ?? 0,
+    unclaimed: unclaimed.count ?? 0,
+    verified: verified.count ?? 0,
+    pending: pending.count ?? 0,
+  };
+}
+
 export async function getPersonBySlug(slug: string): Promise<CasePerson | null> {
   const supabase = getSupabaseStaticClient();
   const { data } = await supabase
@@ -341,15 +436,17 @@ export async function getCaseTotals(): Promise<{
   grievances: number;
   ryanFiledGrievances: number;
   documents: number;
+  people: number;
   facilities: number;
   corroborators: number;
   daysDetained: number;
   events: number;
 }> {
   const supabase = getSupabaseStaticClient();
-  const [grievances, documents, corroborators, events, ryanFiled] = await Promise.all([
+  const [grievances, documents, people, corroborators, events, ryanFiled] = await Promise.all([
     supabase.from("case_grievances").select("id", { count: "exact", head: true }).eq("visibility", "public"),
     supabase.from("case_documents").select("id", { count: "exact", head: true }).eq("visibility", "public").eq("archived", false),
+    supabase.from("case_people").select("id", { count: "exact", head: true }).eq("visibility", "public"),
     // Corroborating witnesses: detainees, co-defendants, named witnesses, regardless of which
     // facility's people record they sit under. Excludes facility staff explicitly named.
     supabase
@@ -377,6 +474,7 @@ export async function getCaseTotals(): Promise<{
     grievances: grievances.count ?? 0,
     ryanFiledGrievances: ryanFiled.count ?? 0,
     documents: documents.count ?? 0,
+    people: people.count ?? 0,
     facilities: 10, // Tyler/E.D.Tex., DC DOC CTF, Rappahannock, Northern Neck, FDC Houston,
                     // Florence, Oklahoma transit, Albany, NW3 quarantine, BOP post-sentence.
     corroborators: corroborators.count ?? 0,

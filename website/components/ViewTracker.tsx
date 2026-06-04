@@ -4,5 +4,6 @@
 // double-counted alongside the server. It's intentionally a no-op now; kept as
 // a stable mount point so existing imports don't break.
 export function ViewTracker(_props: { slug: string }) {
+  void _props;
   return null;
 }

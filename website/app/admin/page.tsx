@@ -15,6 +15,27 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
+type PathViewRow = {
+  path: string | null;
+};
+
+type EventRow = {
+  kind: string | null;
+  path: string | null;
+};
+
+type AttentionRow = {
+  path: string;
+  views: number;
+  money: number;
+  shares: number;
+  intake: number;
+  score: number;
+  href: string;
+  action: string;
+  tone: "money" | "share" | "intake" | "watch";
+};
+
 export default async function AdminHomePage() {
   const supabase = await getSupabaseServerClient();
   const { data: auth } = await supabase.auth.getUser();
@@ -53,6 +74,8 @@ export default async function AdminHomePage() {
     { data: pendingProfilesList },
     { data: recentSubs },
     { data: recentSessions },
+    { data: recentPathViews },
+    { data: recentActionEvents },
   ] = await Promise.all([
     supabase
       .from("page_views")
@@ -124,6 +147,18 @@ export default async function AdminHomePage() {
       .gte("last_activity_at", fiveMinAgo)
       .order("last_activity_at", { ascending: false })
       .limit(10),
+    supabase
+      .from("page_views")
+      .select("path")
+      .gte("started_at", oneDayAgo)
+      .order("started_at", { ascending: false })
+      .limit(1200),
+    supabase
+      .from("page_events")
+      .select("kind, path")
+      .gte("at", sevenDaysAgo)
+      .order("at", { ascending: false })
+      .limit(3000),
   ]);
 
   const { data: invoiceRows } = await supabase
@@ -158,6 +193,12 @@ export default async function AdminHomePage() {
         : (pendingSubmissions ?? 0) > 0
           ? "/admin/submissions?filter=pending"
           : "/admin";
+  const attentionRows = buildAttentionRows(
+    (recentPathViews ?? []) as PathViewRow[],
+    (recentActionEvents ?? []) as EventRow[],
+  );
+  const bestMoneyPath = attentionRows.find((row) => row.money > 0);
+  const hottestPath = attentionRows[0];
 
   return (
     <article className="mx-auto max-w-6xl px-4 py-8">
@@ -200,19 +241,19 @@ export default async function AdminHomePage() {
           hot={receivableCents > 0}
         />
         <ActionLane
-          href="/admin/messages"
+          href="/admin/messages?filter=new"
           kicker="Answer"
           title="Private messages"
           value={String(pendingPrivateMessages ?? 0)}
-          sub="contact form messages only"
+          sub="new contact form messages"
           hot={(pendingPrivateMessages ?? 0) > 0}
         />
         <ActionLane
           href={reviewQueueHref}
           kicker="Review"
-          title="Tips & submissions"
+          title={(pendingTips ?? 0) > 0 ? "Tips need review" : "Tips & submissions"}
           value={String(reviewQueueTotal)}
-          sub="tips, claims, uploads, comments"
+          sub={`${pendingTips ?? 0} tips · ${pendingClaims ?? 0} claims · ${pendingSubmissions ?? 0} uploads`}
           hot={reviewQueueTotal > 0}
         />
         <ActionLane
@@ -284,6 +325,51 @@ export default async function AdminHomePage() {
           highlight={receivableCents > 0}
         />
       </section>
+
+      {attentionRows.length > 0 ? (
+        <section className="mt-6 overflow-hidden rounded-2xl border border-[#233a62] bg-[#071123] text-[#fdf8ea] shadow-xl">
+          <div className="grid gap-px bg-white/10 lg:grid-cols-[0.9fr_1.1fr]">
+            <div className="bg-[#0d1a33] p-5">
+              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+                Attention magnet
+              </p>
+              <h2 className="mt-2 text-2xl font-black tracking-tight">
+                Where the site is pulling people right now.
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-[#cfd9ea]">
+                Score weights views, money clicks, shares, and intake actions.
+                Green means traffic is filling up. Gold means money path. Red
+                means the page has attention but needs a stronger action.
+              </p>
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                <MagnetMiniStat
+                  label="Hot path"
+                  value={hottestPath?.path ?? "none"}
+                  tone="green"
+                />
+                <MagnetMiniStat
+                  label="Money signal"
+                  value={bestMoneyPath ? bestMoneyPath.path : "not enough yet"}
+                  tone={bestMoneyPath ? "gold" : "red"}
+                />
+              </div>
+              <Link
+                href="/admin/analytics"
+                className="mt-4 inline-flex min-h-11 items-center rounded-full border border-[#7fa9e3]/50 bg-[#7fa9e3]/15 px-5 text-xs font-black uppercase tracking-wider text-[#dce8ff] transition hover:bg-[#7fa9e3] hover:text-[#071123]"
+              >
+                Open full analytics →
+              </Link>
+            </div>
+            <div className="bg-[#071123] p-4 sm:p-5">
+              <div className="grid gap-2">
+                {attentionRows.slice(0, 6).map((row, index) => (
+                  <AttentionMagnetRow key={row.path} row={row} rank={index + 1} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       {invoices.length > 0 ? (
         <section className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
@@ -660,6 +746,165 @@ function StatCard({
       {sub ? (
         <div className="text-xs text-[var(--color-ink-soft)] mt-1">{sub}</div>
       ) : null}
+    </Link>
+  );
+}
+
+function buildAttentionRows(
+  views: PathViewRow[],
+  events: EventRow[],
+): AttentionRow[] {
+  const rows = new Map<string, AttentionRow>();
+  const ensure = (path: string): AttentionRow => {
+    const clean = path || "/";
+    const existing = rows.get(clean);
+    if (existing) return existing;
+    const created: AttentionRow = {
+      path: clean,
+      href: clean.startsWith("/") ? clean : "/admin/analytics",
+      views: 0,
+      money: 0,
+      shares: 0,
+      intake: 0,
+      score: 0,
+      action: "Watch",
+      tone: "watch",
+    };
+    rows.set(clean, created);
+    return created;
+  };
+
+  for (const row of views) {
+    if (!row.path) continue;
+    ensure(row.path).views += 1;
+  }
+
+  const moneyKinds = new Set([
+    "checkout_start",
+    "donate_click",
+    "fund_cover_fully",
+    "fund_give_click",
+    "service_cta_click",
+    "support_checkout_open",
+    "support_intent_saved",
+    "supporter_click",
+  ]);
+  const shareKinds = new Set([
+    "share_copy",
+    "share_facebook",
+    "share_menu_open",
+    "share_native",
+    "share_platform",
+    "share_x",
+    "tip_line_share_click",
+  ]);
+  const intakeKinds = new Set([
+    "case_comment_submit_success",
+    "comment_submit_success",
+    "follow_capture_success",
+    "guided_help_submit_success",
+    "j6_free_claim",
+    "private_message_success",
+    "story_intake_submit_success",
+    "subscribe_success",
+    "tip_submit_success",
+  ]);
+
+  for (const event of events) {
+    if (!event.path || !event.kind) continue;
+    const row = ensure(event.path);
+    if (moneyKinds.has(event.kind)) row.money += 1;
+    if (shareKinds.has(event.kind)) row.shares += 1;
+    if (intakeKinds.has(event.kind)) row.intake += 1;
+  }
+
+  return Array.from(rows.values())
+    .map((row) => {
+      const score = row.views + row.money * 28 + row.shares * 12 + row.intake * 16;
+      const tone: AttentionRow["tone"] =
+        row.money > 0 ? "money" : row.shares > 0 ? "share" : row.intake > 0 ? "intake" : "watch";
+      const action =
+        row.money > 0
+          ? "Make this pay better"
+          : row.shares > 0
+            ? "Push the share loop"
+            : row.intake > 0
+              ? "Turn into follow-up"
+              : "Add a sharper CTA";
+      return { ...row, score, tone, action };
+    })
+    .filter((row) => row.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 12);
+}
+
+function MagnetMiniStat({
+  label,
+  value,
+  tone,
+}: {
+  label: string;
+  value: string;
+  tone: "green" | "gold" | "red";
+}) {
+  const toneClass =
+    tone === "green"
+      ? "border-[#7fe3a9]/40 bg-[#7fe3a9]/10 text-[#7fe3a9]"
+      : tone === "gold"
+        ? "border-[#e4c66a]/50 bg-[#e4c66a]/10 text-[#e4c66a]"
+        : "border-[#ef6f61]/50 bg-[#ef6f61]/10 text-[#ef6f61]";
+  return (
+    <div className={`min-w-0 rounded-xl border p-3 ${toneClass}`}>
+      <p className="text-[10px] font-black uppercase tracking-wider opacity-80">
+        {label}
+      </p>
+      <p className="mt-1 truncate font-mono text-xs font-black">{value}</p>
+    </div>
+  );
+}
+
+function AttentionMagnetRow({ row, rank }: { row: AttentionRow; rank: number }) {
+  const toneClass =
+    row.tone === "money"
+      ? "border-[#e4c66a]/50 bg-[#e4c66a]/10"
+      : row.tone === "share"
+        ? "border-[#7fa9e3]/50 bg-[#7fa9e3]/10"
+        : row.tone === "intake"
+          ? "border-[#7fe3a9]/50 bg-[#7fe3a9]/10"
+          : "border-[#ef6f61]/45 bg-[#ef6f61]/10";
+  const badge =
+    row.tone === "money"
+      ? "Money"
+      : row.tone === "share"
+        ? "Share"
+        : row.tone === "intake"
+          ? "Data"
+          : "Leak";
+  return (
+    <Link
+      href={row.href}
+      className={`grid grid-cols-[auto_1fr_auto] items-center gap-3 rounded-xl border p-3 transition hover:border-[#7fe3a9] ${toneClass}`}
+    >
+      <span className="grid h-9 w-9 place-items-center rounded-lg bg-white/10 font-mono text-xs font-black tabular-nums">
+        #{rank}
+      </span>
+      <span className="min-w-0">
+        <span className="block truncate font-mono text-sm font-black text-[#fdf8ea]">
+          {row.path}
+        </span>
+        <span className="mt-1 block text-xs text-[#cfd9ea]">
+          {row.views.toLocaleString()} views · {row.money.toLocaleString()} money ·{" "}
+          {row.shares.toLocaleString()} shares · {row.intake.toLocaleString()} data
+        </span>
+      </span>
+      <span className="hidden text-right sm:block">
+        <span className="block rounded-full bg-white/10 px-2 py-1 text-[10px] font-black uppercase text-[#fdf8ea]">
+          {badge}
+        </span>
+        <span className="mt-1 block text-[10px] font-bold text-[#9fb0ca]">
+          {row.action}
+        </span>
+      </span>
     </Link>
   );
 }

@@ -5,9 +5,12 @@ import { J6Banner } from "@/components/J6Banner";
 import {
   getGrievances,
   getPeople,
+  getPersonBySlug,
   getEvents,
   getDocuments,
   getCaseTotals,
+  getJ6ClaimCounts,
+  getJ6PeoplePage,
 } from "@/lib/case";
 import { getSiteSettings } from "@/lib/site-settings";
 import { getOgImage, canonicalPath } from "@/lib/og-images";
@@ -83,10 +86,11 @@ function matchesQuery(q: string, ...fields: (string | null | undefined)[]) {
 export default async function CasePage({
   searchParams,
 }: {
-  searchParams: Promise<{ view?: string; q?: string; filter?: string }>;
+  searchParams: Promise<{ view?: string; q?: string; filter?: string; page?: string }>;
 }) {
-  const { view, q: rawQ, filter: rawFilter } = await searchParams;
+  const { view, q: rawQ, filter: rawFilter, page: rawPage } = await searchParams;
   const q = (rawQ ?? "").trim();
+  const page = Math.max(1, Number.parseInt(rawPage ?? "1", 10) || 1);
   const tab: Tab =
     view === "timeline" || view === "people" || view === "documents"
       ? (view as Tab)
@@ -97,10 +101,102 @@ export default async function CasePage({
     rawFilter === "pending"
       ? rawFilter
       : "all";
+  const isJ6ClaimDirectory = tab === "people" && j6Filter !== "all";
+
+  if (isJ6ClaimDirectory) {
+    const [j6Page, j6Counts] = await Promise.all([
+      getJ6PeoplePage({ claimStatus: j6Filter, q, page, pageSize: 120 }),
+      getJ6ClaimCounts(),
+    ]);
+
+    const pageCount = Math.max(1, Math.ceil(j6Page.total / j6Page.pageSize));
+    const clampedPage = Math.min(j6Page.page, pageCount);
+
+    return (
+      <div className="mx-auto max-w-5xl px-4 py-10">
+        <header className="mb-10">
+          <J6ClaimDirectoryHero counts={j6Counts} activeFilter={j6Filter} />
+
+          <form
+            method="get"
+            action="/case"
+            className="mt-6 flex flex-col gap-2 sm:flex-row"
+          >
+            <input type="hidden" name="view" value="people" />
+            <input type="hidden" name="filter" value={j6Filter} />
+            <input
+              type="search"
+              name="q"
+              defaultValue={q}
+              placeholder="Search name, case number, or role..."
+              className="min-h-12 flex-1 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-4 text-sm"
+            />
+            <button
+              type="submit"
+              className="btn-accent min-h-12 rounded-xl px-5 text-sm font-black"
+            >
+              Search
+            </button>
+            {q ? (
+              <Link
+                href={`/case?view=people&filter=${j6Filter}`}
+                className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-4 text-sm font-bold text-[var(--color-ink-soft)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+              >
+                Clear
+              </Link>
+            ) : null}
+          </form>
+          {q ? (
+            <p className="mt-2 text-xs text-[var(--color-muted)]">
+              {j6Page.total.toLocaleString()} match
+              {j6Page.total === 1 ? "" : "es"} for &quot;{q}&quot; in this J6
+              profile bucket.
+            </p>
+          ) : null}
+        </header>
+
+        <div className="mb-8 flex flex-wrap items-end justify-between gap-3 border-b border-[var(--color-line)]">
+          <nav className="flex flex-wrap gap-1" aria-label="Case view">
+            <TabLink active={false} href="/case?view=grievances">
+              Grievances
+            </TabLink>
+            <TabLink active={false} href="/case?view=timeline">
+              Timeline
+            </TabLink>
+            <TabLink active href={`/case?view=people&filter=${j6Filter}`}>
+              People
+            </TabLink>
+            <TabLink active={false} href="/case?view=documents">
+              Documents
+            </TabLink>
+          </nav>
+          <div className="mb-1 flex items-center gap-2">
+            <Link
+              href="/case/nexus"
+              className="inline-flex items-center gap-1.5 rounded-full border-2 border-[#1f2f55] bg-[#0a1429] px-3.5 py-1.5 text-xs font-bold text-[#cfd9ea] transition hover:border-[#7fe3a9] hover:text-[#7fe3a9]"
+            >
+              <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[#7fe3a9]" aria-hidden />
+              View as graph
+              <span aria-hidden>→</span>
+            </Link>
+          </div>
+        </div>
+
+        <PeopleView
+          people={j6Page.people}
+          j6Filter={j6Filter}
+          q={q}
+          totalCount={j6Page.total}
+          page={clampedPage}
+          pageSize={j6Page.pageSize}
+        />
+      </div>
+    );
+  }
 
   const [grievances, people, events, documents, totals, siteSettings] = await Promise.all([
     getGrievances(),
-    getPeople(),
+    tab === "people" || q ? getPeople() : getPersonBySlug("ryan-nichols").then((p) => (p ? [p] : [])),
     getEvents(),
     getDocuments(),
     getCaseTotals(),
@@ -143,7 +239,6 @@ export default async function CasePage({
       filteredDocuments.length
     : 0;
   const j6People = people.filter((p) => p.is_j6_defendant);
-  const isJ6ClaimDirectory = tab === "people" && j6Filter !== "all";
   const j6Counts = {
     total: j6People.length,
     unclaimed: j6People.filter((p) => p.claim_status === "unclaimed").length,
@@ -204,7 +299,7 @@ export default async function CasePage({
 
         <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2 max-w-2xl">
           <SmallStat label="Events" value={q ? filteredEvents.length : events.length} />
-          <SmallStat label="People named" value={q ? filteredPeople.length : people.length} />
+          <SmallStat label="People named" value={q ? filteredPeople.length : totals.people} />
           <SmallStat label="Facilities" value={totals.facilities} />
           <SmallStat label="Federal officers on record (IGP broken)" value={2} />
         </div>
@@ -803,15 +898,30 @@ function PeopleView({
   people,
   j6Filter,
   q,
+  totalCount,
+  page,
+  pageSize,
 }: {
   people: Awaited<ReturnType<typeof getPeople>>;
   j6Filter: "all" | "unclaimed" | "verified" | "pending";
   q: string;
+  totalCount?: number;
+  page?: number;
+  pageSize?: number;
 }) {
   // J6 filter mode: flat alphabetical list, all J6 defendants matching the
   // selected claim status. Skips the agency-group treatment entirely.
   if (j6Filter !== "all") {
-    return <J6DefendantsView people={people} j6Filter={j6Filter} q={q} />;
+    return (
+      <J6DefendantsView
+        people={people}
+        j6Filter={j6Filter}
+        q={q}
+        totalCount={totalCount}
+        page={page}
+        pageSize={pageSize}
+      />
+    );
   }
 
   const assigned = new Set<string>();
@@ -896,17 +1006,27 @@ function J6DefendantsView({
   people,
   j6Filter,
   q,
+  totalCount,
+  page = 1,
+  pageSize = people.length || 1,
 }: {
   people: Awaited<ReturnType<typeof getPeople>>;
   j6Filter: "unclaimed" | "verified" | "pending";
   q: string;
+  totalCount?: number;
+  page?: number;
+  pageSize?: number;
 }) {
+  const shownTotal = totalCount ?? people.length;
+  const pageCount = Math.max(1, Math.ceil(shownTotal / pageSize));
+  const first = shownTotal === 0 ? 0 : (page - 1) * pageSize + 1;
+  const last = Math.min(shownTotal, first + people.length - 1);
   const heading =
     j6Filter === "unclaimed"
-      ? `${people.length.toLocaleString()} J6 defendant profiles waiting to be claimed`
+      ? `${shownTotal.toLocaleString()} J6 defendant profiles waiting to be claimed`
       : j6Filter === "verified"
-        ? `${people.length.toLocaleString()} J6 defendants verified`
-        : `${people.length.toLocaleString()} J6 claims pending review`;
+        ? `${shownTotal.toLocaleString()} J6 defendants verified`
+        : `${shownTotal.toLocaleString()} J6 claims pending review`;
   const lead =
     j6Filter === "unclaimed"
       ? "Profiles ready for the defendant to claim and build out. Every claim is checked against the DOJ docket and public record before approval."
@@ -973,6 +1093,19 @@ function J6DefendantsView({
           );
         })}
       </nav>
+
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-3">
+        <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-muted)]">
+          Showing {first.toLocaleString()}-{last.toLocaleString()} of{" "}
+          {shownTotal.toLocaleString()}
+        </p>
+        <PaginationControls
+          page={page}
+          pageCount={pageCount}
+          j6Filter={j6Filter}
+          q={q}
+        />
+      </div>
 
       {people.length === 0 ? (
         <p className="text-sm text-[var(--color-muted)] italic py-10 text-center">
@@ -1060,7 +1193,72 @@ function J6DefendantsView({
           })}
         </div>
       )}
+
+      {pageCount > 1 ? (
+        <div className="mt-6">
+          <PaginationControls
+            page={page}
+            pageCount={pageCount}
+            j6Filter={j6Filter}
+            q={q}
+          />
+        </div>
+      ) : null}
     </div>
+  );
+}
+
+function PaginationControls({
+  page,
+  pageCount,
+  j6Filter,
+  q,
+}: {
+  page: number;
+  pageCount: number;
+  j6Filter: "unclaimed" | "verified" | "pending";
+  q: string;
+}) {
+  const hrefFor = (nextPage: number) => {
+    const params = new URLSearchParams({
+      view: "people",
+      filter: j6Filter,
+      page: String(nextPage),
+    });
+    if (q) params.set("q", q);
+    return `/case?${params.toString()}`;
+  };
+
+  return (
+    <nav className="flex items-center gap-2" aria-label="J6 profile pages">
+      <Link
+        href={hrefFor(Math.max(1, page - 1))}
+        aria-disabled={page <= 1}
+        className={[
+          "inline-flex min-h-10 items-center rounded-lg border px-3 text-xs font-black uppercase",
+          page <= 1
+            ? "pointer-events-none border-[var(--color-line)] text-[var(--color-muted)] opacity-50"
+            : "border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]",
+        ].join(" ")}
+      >
+        Previous
+      </Link>
+      <span className="font-mono text-xs font-black tabular-nums text-[var(--color-muted)]">
+        {page.toLocaleString()} / {pageCount.toLocaleString()}
+      </span>
+      <Link
+        href={hrefFor(Math.min(pageCount, page + 1))}
+        aria-disabled={page >= pageCount}
+        className={[
+          "inline-flex min-h-10 items-center rounded-lg border px-3 text-xs font-black uppercase",
+          page >= pageCount
+            ? "pointer-events-none border-[var(--color-line)] text-[var(--color-muted)] opacity-50"
+            : "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-paper)]",
+        ].join(" ")}
+      >
+        Next
+      </Link>
+    </nav>
   );
 }
 

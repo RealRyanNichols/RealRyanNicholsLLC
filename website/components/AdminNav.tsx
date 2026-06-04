@@ -17,8 +17,8 @@ type AdminGroup = {
 
 const PRIMARY: AdminItem[] = [
   { href: "/admin", label: "Overview", short: "Home", sub: "Control room" },
-  { href: "/admin/tips", label: "Tips", short: "Tips", sub: "Pending leads" },
-  { href: "/admin/messages", label: "Messages", short: "Msgs", sub: "Private inbox" },
+  { href: "/admin/tips?filter=pending", label: "Tip queue", short: "Tips", sub: "Evidence leads" },
+  { href: "/admin/messages?filter=new", label: "Private mail", short: "Mail", sub: "Contact inbox" },
   { href: "/admin/invoices", label: "Invoices", short: "Pay", sub: "Collect money" },
   { href: "/admin/analytics", label: "Analytics", short: "Live", sub: "Traffic intel" },
 ];
@@ -53,10 +53,10 @@ const GROUPS: AdminGroup[] = [
   {
     label: "Inbox",
     items: [
-      { href: "/admin/tips", label: "Tips", sub: "Submitted leads" },
-      { href: "/admin/messages", label: "Messages", sub: "Private contact" },
-      { href: "/admin/submissions", label: "Submissions", sub: "Claimant uploads" },
-      { href: "/admin/claims", label: "J6 claims", sub: "Profile claims" },
+      { href: "/admin/tips?filter=pending", label: "Tip queue", sub: "Public leads to review" },
+      { href: "/admin/messages?filter=new", label: "Private mail", sub: "Contact form only" },
+      { href: "/admin/submissions?filter=pending", label: "Submissions", sub: "Claimant uploads" },
+      { href: "/admin/claims?filter=pending", label: "J6 claims", sub: "Profile claims" },
     ],
   },
   {
