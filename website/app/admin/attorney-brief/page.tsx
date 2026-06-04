@@ -469,6 +469,75 @@ const forensicMoneyRecords = [
   },
 ];
 
+const topProofNumbers = [
+  {
+    label: "J6 damages lane",
+    value: "$35M+",
+    tag: "claimed / source packet",
+    href: "#damages-map",
+    tone: "gold",
+    weight: "94%",
+    source: "/case/damages + J6 Drive folder",
+    body:
+      "Existing damages page lists this starting claim. Source exhibits still control what counsel can rely on.",
+  },
+  {
+    label: "Supported J6 range",
+    value: "$45-50M",
+    tag: "claimed range",
+    href: "#damages-map",
+    tone: "gold",
+    weight: "100%",
+    source: "/case/damages",
+    body:
+      "The public damages page frames this as the supported range for liberty, business, family, medical, and earning-capacity harm.",
+  },
+  {
+    label: "Missing WU funds",
+    value: "$750K-1.5M",
+    tag: "audit needed",
+    href: "#money-records",
+    tone: "red",
+    weight: "88%",
+    source: "MASTER_CASE_BRIEFING + MOTION_02",
+    body:
+      "Business-change motion and master briefing carry this allegation. Bank statements, ledgers, and audit work have to prove the number.",
+  },
+  {
+    label: "2023 WU 1099s",
+    value: "$411K",
+    tag: "QuickBooks summary",
+    href: "#money-records",
+    tone: "green",
+    weight: "78%",
+    source: "WU_Payroll_1099_Findings",
+    body:
+      "Drive forensic summary says the 2023 QuickBooks 1099 summary totals $411,501.15 across eight vendors.",
+  },
+  {
+    label: "Q3 payroll record",
+    value: "$231K",
+    tag: "TWC source lane",
+    href: "#money-records",
+    tone: "green",
+    weight: "62%",
+    source: "TWC Q3 2024 payroll summary",
+    body:
+      "Drive payroll summary lists $231,265.13 in Q3 wages, 39 employees, and Kyle Pope CPA filing confirmation #36262165.",
+  },
+  {
+    label: "Active charges",
+    value: "3",
+    tag: "packet needed",
+    href: "#charges",
+    tone: "red",
+    weight: "55%",
+    source: "current criminal-defense brief",
+    body:
+      "Two harassment counts and one deadly-conduct charge. Exact charging packets still need to be matched to the source evidence.",
+  },
+];
+
 const proofLegend = [
   {
     label: "Public record / public report",
@@ -610,7 +679,37 @@ export default async function AttorneyBriefPage() {
 
   return (
     <article className="mx-auto max-w-[86rem] px-4 py-6">
-      <section className="rounded-md border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-4">
+      <section
+        id="proof-numbers"
+        className="border border-[#203a64] bg-[#071126] p-3 text-[#fdf8ea] shadow-sm sm:p-4"
+      >
+        <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.24em] text-[#7fe3a9]">
+              Proof numbers
+            </p>
+            <h1 className="mt-1 font-sans text-3xl font-black leading-none text-[#fdf8ea] sm:text-5xl">
+              The numbers counsel needs to see first.
+            </h1>
+          </div>
+          <p className="max-w-lg text-xs font-semibold leading-5 text-[#cfd9ea]">
+            Every number below is clickable. Each one points to the source lane
+            behind it and stays labeled as claimed, audit-needed, source-backed,
+            or missing-packet.
+          </p>
+        </div>
+        <div className="mt-4 grid gap-2 md:grid-cols-2 xl:grid-cols-6">
+          {topProofNumbers.map((card, index) => (
+            <ProofNumberCard
+              key={card.label}
+              {...card}
+              priority={index < 3}
+            />
+          ))}
+        </div>
+      </section>
+
+      <section id="record-priority" className="mt-4 rounded-md border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-4">
         <div className="grid gap-4 lg:grid-cols-[0.35fr_1fr]">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
@@ -642,7 +741,7 @@ export default async function AttorneyBriefPage() {
       </section>
 
       <section className="mt-4 grid gap-4 xl:grid-cols-[1.05fr_0.95fr]">
-        <section className="rounded-md border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm">
+        <section id="receipts" className="rounded-md border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
@@ -675,7 +774,7 @@ export default async function AttorneyBriefPage() {
           </div>
         </section>
 
-        <section className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm">
+        <section id="value-story" className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm">
           <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
             Fact-backed value story
           </p>
@@ -723,7 +822,7 @@ export default async function AttorneyBriefPage() {
         </section>
       </section>
 
-      <section className="mt-4 rounded-md border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm">
+      <section id="drive-evidence" className="mt-4 rounded-md border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm">
         <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
@@ -765,7 +864,7 @@ export default async function AttorneyBriefPage() {
         </div>
       </section>
 
-      <section className="mt-4 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm">
+      <section id="money-records" className="mt-4 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm">
         <div className="grid gap-3 lg:grid-cols-[0.38fr_1fr]">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
@@ -800,7 +899,7 @@ export default async function AttorneyBriefPage() {
         </div>
       </section>
 
-      <section className="mt-4 grid gap-4 lg:grid-cols-[1.25fr_0.75fr]">
+      <section id="case-dashboard" className="mt-4 grid gap-4 lg:grid-cols-[1.25fr_0.75fr]">
         <div className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-sm">
           <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-accent)]">
             Attorney case dashboard
@@ -853,7 +952,7 @@ export default async function AttorneyBriefPage() {
         </aside>
       </section>
 
-      <section className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+      <section id="urgent-records" className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
         {immediateEmergency.map((item) => (
           <section
             key={item.label}
@@ -872,7 +971,7 @@ export default async function AttorneyBriefPage() {
         ))}
       </section>
 
-      <section className="mt-5 grid gap-3 lg:grid-cols-3">
+      <section id="charges" className="mt-5 grid gap-3 lg:grid-cols-3">
         {chargeCards.map((card) => (
           <ChargeCard key={card.title} {...card} />
         ))}
@@ -949,7 +1048,7 @@ export default async function AttorneyBriefPage() {
         </section>
       </section>
 
-      <section className="mt-5 rounded-md border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea]">
+      <section id="damages-map" className="mt-5 rounded-md border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea]">
         <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
           Damages / money map
         </p>
@@ -1180,6 +1279,93 @@ function Metric({
         {sub}
       </p>
     </div>
+  );
+}
+
+function ProofNumberCard({
+  label,
+  value,
+  tag,
+  href,
+  tone,
+  weight,
+  source,
+  body,
+  priority,
+}: {
+  label: string;
+  value: string;
+  tag: string;
+  href: string;
+  tone: string;
+  weight: string;
+  source: string;
+  body: string;
+  priority: boolean;
+}) {
+  const isRed = tone === "red";
+  const isGold = tone === "gold";
+  const stripeClass = isRed
+    ? "bg-[#c9251d]"
+    : isGold
+      ? "bg-[#d8b13f]"
+      : "bg-[#7fe3a9]";
+  const tagClass = isRed
+    ? "bg-[#c9251d] text-white"
+    : isGold
+      ? "bg-[#d8b13f] text-[#17110a]"
+      : "bg-[#7fe3a9] text-[#071126]";
+  const glowClass = isRed
+    ? "shadow-[0_0_0_1px_rgba(201,37,29,0.75),0_18px_45px_rgba(201,37,29,0.18)]"
+    : isGold
+      ? "shadow-[0_0_0_1px_rgba(216,177,63,0.75),0_18px_45px_rgba(216,177,63,0.14)]"
+      : "shadow-[0_0_0_1px_rgba(127,227,169,0.65),0_18px_45px_rgba(127,227,169,0.12)]";
+
+  return (
+    <a
+      href={href}
+      className={[
+        "group relative min-h-[13rem] overflow-hidden border border-white/10 bg-white/[0.055] p-3 transition hover:-translate-y-0.5 hover:bg-white/[0.09]",
+        priority ? "xl:col-span-2" : "",
+        glowClass,
+      ].join(" ")}
+    >
+      <span
+        className={[
+          "absolute left-0 top-0 h-full w-1.5 transition group-hover:w-2.5",
+          stripeClass,
+        ].join(" ")}
+      />
+      <span className="absolute right-3 top-3 rounded-sm border border-white/10 bg-white/5 px-2 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[#cfd9ea]">
+        Click
+      </span>
+      <span className="block pr-14 text-[10px] font-black uppercase tracking-[0.2em] text-[#cfd9ea]">
+        {label}
+      </span>
+      <span className="mt-2 block font-sans text-4xl font-black leading-none text-[#fdf8ea] sm:text-5xl">
+        {value}
+      </span>
+      <span
+        className={[
+          "mt-2 inline-flex min-h-7 items-center px-2 text-[10px] font-black uppercase tracking-[0.12em]",
+          tagClass,
+        ].join(" ")}
+      >
+        {tag}
+      </span>
+      <span className="mt-3 block h-2 border border-white/10 bg-black/25">
+        <span
+          className={["block h-full", stripeClass].join(" ")}
+          style={{ width: weight }}
+        />
+      </span>
+      <span className="mt-3 block text-[10px] font-black uppercase tracking-[0.16em] text-[#d8c89e]">
+        Source: {source}
+      </span>
+      <span className="mt-2 block text-xs font-semibold leading-5 text-[#cfd9ea]">
+        {body}
+      </span>
+    </a>
   );
 }
 
