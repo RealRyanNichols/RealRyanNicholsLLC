@@ -55,6 +55,8 @@ export default async function NewPostPage({
     body: string;
     category: string;
     sourceLabel: string;
+    sourceTipId: string;
+    sourceTipMode: "article" | "solution";
   } | null = null;
 
   if (editing) {
@@ -99,6 +101,8 @@ export default async function NewPostPage({
       prefill = {
         ...draft,
         sourceLabel: `tip ${tipRecord.id.slice(0, 8)} · ${plan.label} · ${tipDraftMode === "solution" ? "solution brief" : "article lead"}`,
+        sourceTipId: tipRecord.id,
+        sourceTipMode: tipDraftMode,
       };
     }
   }

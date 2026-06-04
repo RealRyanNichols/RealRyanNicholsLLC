@@ -3,6 +3,7 @@ import { z } from "zod";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { getMuxClient, isMuxConfigured } from "@/lib/mux";
 import { getVideoConfigStatus } from "@/lib/video-config";
+import { SITE } from "@/lib/site";
 
 const mediaItemSchema = z.object({
   url: z.string().url(),
@@ -25,6 +26,8 @@ const baseSchema = z.object({
   // Optional custom poster/thumbnail (e.g. for a video) — overrides the
   // Mux-generated frame on the feed, the player, and the social card.
   thumbnail_url: z.string().url().optional().nullable(),
+  source_tip_id: z.string().uuid().optional(),
+  source_tip_mode: z.enum(["article", "solution"]).optional(),
 });
 
 const schema = z.discriminatedUnion("type", [
@@ -223,9 +226,49 @@ export async function POST(request: Request) {
     );
   }
 
+  let sourceTipUpdated = false;
+  if (input.source_tip_id) {
+    const postUrl =
+      post.slug && input.status === "published"
+        ? `${SITE.url}/posts/${post.slug}`
+        : `${SITE.url}/admin/posts/${post.id}/preview`;
+    const outcomeStatus =
+      input.source_tip_mode === "solution"
+        ? "solution_brief"
+        : input.status === "published"
+          ? "article_published"
+          : "article_draft";
+    const { error: tipUpdateError } = await supabase
+      .from("case_tips")
+      .update({
+        status: "reviewed",
+        reviewed_by: auth.user.id,
+        reviewed_at: new Date().toISOString(),
+        outcome_status: outcomeStatus,
+        outcome_url: postUrl,
+        outcome_at: new Date().toISOString(),
+        outcome_notes:
+          input.source_tip_mode === "solution"
+            ? "Solution brief created from this tip."
+            : input.status === "published"
+              ? "Article published from this tip."
+              : "Article draft created from this tip.",
+      })
+      .eq("id", input.source_tip_id);
+    sourceTipUpdated = !tipUpdateError;
+    if (tipUpdateError) {
+      console.warn("source_tip_outcome_update_failed", {
+        tip_id: input.source_tip_id,
+        post_id: post.id,
+        error: tipUpdateError.message,
+      });
+    }
+  }
+
   return NextResponse.json({
     ok: true,
     post,
     mux_upload_url: muxUpload?.url ?? null,
+    source_tip_updated: sourceTipUpdated,
   });
 }

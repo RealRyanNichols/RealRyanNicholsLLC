@@ -37,6 +37,8 @@ export type ComposePrefill = {
   title: string;
   body: string;
   category?: string | null;
+  sourceTipId?: string | null;
+  sourceTipMode?: "article" | "solution";
 };
 
 export function ComposeForm({
@@ -232,7 +234,16 @@ function TextForm({
         router.push("/admin/posts");
         router.refresh();
       } else {
-        const { post } = await createPost({ type: "text", title, body, pinned, status, category: postCategory });
+        const { post } = await createPost({
+          type: "text",
+          title,
+          body,
+          pinned,
+          status,
+          category: postCategory,
+          source_tip_id: prefill?.sourceTipId ?? undefined,
+          source_tip_mode: prefill?.sourceTipMode ?? undefined,
+        });
         router.push(status === "published" ? `/posts/${post.slug}` : `/admin/posts/${post.id}/preview`);
       }
     } catch (err) {
