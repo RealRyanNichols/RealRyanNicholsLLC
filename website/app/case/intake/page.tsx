@@ -2,6 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { formatDistanceToNowStrict } from "date-fns";
 import { IntakeSignalForm } from "@/components/IntakeSignalForm";
+import {
+  buildIntakeRoutePlan,
+  type IntakeRouteKind,
+  type IntakeRoutePlan,
+} from "@/lib/intake-routing";
 import { getSupabaseServiceClient, isSupabaseServiceConfigured } from "@/lib/supabase/service";
 import { SITE } from "@/lib/site";
 
@@ -32,7 +37,7 @@ type IntakeItem = {
   last_action_at: string;
 };
 
-type Search = { filter?: string };
+type Search = { filter?: string; route?: string };
 
 const statusCopy: Record<IntakeItem["public_status"], { label: string; cls: string }> = {
   received: {
@@ -71,6 +76,45 @@ const filterOptions = [
   { value: "verified", label: "Verified" },
 ];
 
+const publicRouteCopy: Record<
+  IntakeRouteKind,
+  { label: string; helper: string; ask: string }
+> = {
+  case_map: {
+    label: "Connection map",
+    helper: "This lead is being treated like a clue that may connect to another case, person, agency, document, or timeline.",
+    ask: "Help by adding a date, name, agency, case number, or record link that connects it.",
+  },
+  verify: {
+    label: "Verification lane",
+    helper: "This lead needs source support before anyone should rely on it publicly.",
+    ask: "Help by adding native records, full screenshots, video, documents, or a correction.",
+  },
+  article: {
+    label: "Story lead",
+    helper: "This lead may become a public-safe explainer, update, or witness call once the record is checked.",
+    ask: "Help by adding the one fact, document, or witness detail that would make the story stronger.",
+  },
+  service: {
+    label: "Private follow-up",
+    helper: "This looks like it may require a direct reply, case review, or service path before anything public happens.",
+    ask: "Help by keeping private details private and sending clean contact information through the proper form.",
+  },
+  watch: {
+    label: "Watch file",
+    helper: "This has been received, but it needs one more concrete fact before it can move into a stronger lane.",
+    ask: "Help by adding a date, place, person, document, or link.",
+  },
+};
+
+const routeOrder: IntakeRouteKind[] = [
+  "case_map",
+  "verify",
+  "article",
+  "service",
+  "watch",
+];
+
 export default async function IntakeLedgerPage({
   searchParams,
 }: {
@@ -78,6 +122,7 @@ export default async function IntakeLedgerPage({
 }) {
   const sp = await searchParams;
   const filter = sp.filter ?? "all";
+  const routeFilter = isRouteKind(sp.route) ? sp.route : null;
 
   let items: IntakeItem[] = [];
   let counts = {
@@ -176,6 +221,32 @@ export default async function IntakeLedgerPage({
   } else {
     error = "Supabase is not configured.";
   }
+  const allRoutedItems = items.map((item) => ({
+    item,
+    plan: buildIntakeRoutePlan({
+      category: item.category,
+      subject: item.subject,
+      location: item.location,
+      narrative: item.public_summary,
+      urls: null,
+    }),
+  }));
+  const routeCounts = allRoutedItems.reduce(
+    (acc, row) => {
+      acc[row.plan.kind] = (acc[row.plan.kind] ?? 0) + 1;
+      return acc;
+    },
+    {
+      case_map: 0,
+      verify: 0,
+      article: 0,
+      service: 0,
+      watch: 0,
+    } as Record<IntakeRouteKind, number>,
+  );
+  const routedItems = routeFilter
+    ? allRoutedItems.filter((row) => row.plan.kind === routeFilter)
+    : allRoutedItems;
 
   return (
     <article className="rrn-page">
@@ -222,11 +293,73 @@ export default async function IntakeLedgerPage({
       </section>
 
       <section className="rrn-section">
+        <section className="mb-5 border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm">
+          <div className="grid gap-4 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+                Public action lanes
+              </p>
+              <h2 className="mt-1 font-sans text-2xl font-black text-[#fdf8ea]">
+                A receipt is not enough. It has to move.
+              </h2>
+              <p className="mt-2 text-sm font-semibold leading-6 text-[#cfd9ea]">
+                Each public-safe item gets a lane so people can see what kind of
+                help is needed next without exposing private details.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
+              <LaneStat
+                label="Map"
+                value={routeCounts.case_map}
+                href={intakeHref(filter, "case_map")}
+                active={routeFilter === "case_map"}
+              />
+              <LaneStat
+                label="Verify"
+                value={routeCounts.verify}
+                href={intakeHref(filter, "verify")}
+                active={routeFilter === "verify"}
+              />
+              <LaneStat
+                label="Story"
+                value={routeCounts.article}
+                href={intakeHref(filter, "article")}
+                active={routeFilter === "article"}
+              />
+              <LaneStat
+                label="Follow up"
+                value={routeCounts.service}
+                href={intakeHref(filter, "service")}
+                active={routeFilter === "service"}
+              />
+              <LaneStat
+                label="Watch"
+                value={routeCounts.watch}
+                href={intakeHref(filter, "watch")}
+                active={routeFilter === "watch"}
+              />
+            </div>
+          </div>
+          {routeFilter ? (
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border border-white/10 bg-white/[0.055] p-3">
+              <p className="text-sm font-bold leading-6 text-[#cfd9ea]">
+                Showing the {publicRouteCopy[routeFilter].label.toLowerCase()} lane.
+              </p>
+              <Link
+                href={intakeHref(filter, null)}
+                className="border border-[#7fe3a9]/50 px-3 py-2 text-xs font-black uppercase tracking-normal text-[#7fe3a9] transition hover:bg-[#7fe3a9]/15"
+              >
+                Show all lanes
+              </Link>
+            </div>
+          ) : null}
+        </section>
+
         <nav className="flex gap-2 overflow-x-auto border-b border-[var(--color-line)] pb-3">
           {filterOptions.map((option) => (
             <Link
               key={option.value}
-              href={option.value === "all" ? "/case/intake" : `/case/intake?filter=${option.value}`}
+              href={intakeHref(option.value, routeFilter)}
               className={[
                 "rrn-tap whitespace-nowrap rounded-full border px-4 py-2 text-sm font-bold transition",
                 filter === option.value || (filter === "all" && option.value === "all")
@@ -254,8 +387,17 @@ export default async function IntakeLedgerPage({
                   Submit a tip and the ledger will show a receipt immediately.
                 </p>
               </div>
+            ) : routedItems.length === 0 ? (
+              <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+                <p className="font-bold">No public-safe items in this lane yet.</p>
+                <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
+                  Switch lanes or submit a new lead with a date, place, name, or source file.
+                </p>
+              </div>
             ) : (
-              items.map((item) => <IntakeCard key={item.id} item={item} />)
+              routedItems.map(({ item, plan }) => (
+                <IntakeCard key={item.id} item={item} plan={plan} />
+              ))
             )}
           </div>
 
@@ -298,9 +440,16 @@ export default async function IntakeLedgerPage({
   );
 }
 
-function IntakeCard({ item }: { item: IntakeItem }) {
+function IntakeCard({
+  item,
+  plan,
+}: {
+  item: IntakeItem;
+  plan: IntakeRoutePlan;
+}) {
   const status = statusCopy[item.public_status] ?? statusCopy.received;
   const tags = (item.clue_tags ?? []).filter(Boolean).slice(0, 5);
+  const route = publicRouteCopy[plan.kind];
   return (
     <article className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -332,6 +481,38 @@ function IntakeCard({ item }: { item: IntakeItem }) {
         {item.public_summary}
       </p>
 
+      <section className="mt-3 border border-[var(--color-line)] bg-[var(--color-paper)] p-3">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-muted)]">
+              Moving toward
+            </p>
+            <h3 className="mt-1 font-sans text-lg font-black">
+              {route.label}
+            </h3>
+          </div>
+          <span className={routeBadgeClass(plan.urgency)}>
+            {plan.urgency}
+          </span>
+        </div>
+        <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+          {route.helper}
+        </p>
+        <p className="mt-2 border-l-4 border-[var(--color-support)] pl-3 text-xs font-bold leading-5 text-[var(--color-ink-soft)]">
+          {route.ask}
+        </p>
+        <div className="mt-3 grid gap-2 sm:grid-cols-2">
+          {plan.nextActions.slice(0, 2).map((action) => (
+            <p
+              key={action}
+              className="border border-[var(--color-line)] bg-[var(--color-surface)] p-2 text-xs font-semibold leading-5 text-[var(--color-ink-soft)]"
+            >
+              {action}
+            </p>
+          ))}
+        </div>
+      </section>
+
       <div className="mt-3 grid grid-cols-3 gap-2">
         <MiniStat label="Verified" value={item.verify_count} tone="green" />
         <MiniStat label="Disputed" value={item.dispute_count} tone="red" />
@@ -354,6 +535,44 @@ function IntakeCard({ item }: { item: IntakeItem }) {
       <IntakeSignalForm itemId={item.id} publicRef={item.public_ref} />
     </article>
   );
+}
+
+function LaneStat({
+  label,
+  value,
+  href,
+  active,
+}: {
+  label: string;
+  value: number;
+  href: string;
+  active: boolean;
+}) {
+  return (
+    <Link
+      href={href}
+      className={[
+        "border p-3 transition",
+        active
+          ? "border-[#7fe3a9] bg-[#7fe3a9]/15"
+          : "border-white/10 bg-white/[0.055] hover:border-[#7fe3a9]/50 hover:bg-[#7fe3a9]/10",
+      ].join(" ")}
+    >
+      <p className="font-sans text-2xl font-black text-[#fdf8ea]">
+        {value}
+      </p>
+      <p className="mt-1 text-[10px] font-black uppercase tracking-[0.14em] text-[#cfd9ea]">
+        {label}
+      </p>
+    </Link>
+  );
+}
+
+function routeBadgeClass(urgency: IntakeRoutePlan["urgency"]) {
+  const base = "px-2 py-1 text-[10px] font-black uppercase tracking-normal";
+  if (urgency === "hot") return `${base} bg-[var(--color-accent)] text-white`;
+  if (urgency === "next") return `${base} bg-[var(--color-support)] text-[#1a1410]`;
+  return `${base} bg-[var(--color-surface-2)] text-[var(--color-ink-soft)]`;
 }
 
 function Stat({
@@ -411,4 +630,16 @@ function humanize(value: string) {
   if (value === "private_message") return "Private Receipt";
   if (value === "service_question") return "Service Question";
   return value.replace(/[_-]/g, " ").replace(/\b\w/g, (m) => m.toUpperCase());
+}
+
+function isRouteKind(value: string | undefined): value is IntakeRouteKind {
+  return routeOrder.includes(value as IntakeRouteKind);
+}
+
+function intakeHref(filter: string, route: IntakeRouteKind | null) {
+  const params = new URLSearchParams();
+  if (filter !== "all") params.set("filter", filter);
+  if (route) params.set("route", route);
+  const query = params.toString();
+  return query ? `/case/intake?${query}` : "/case/intake";
 }
