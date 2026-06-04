@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
-import { AdminNav } from "@/components/AdminNav";
+import { AdminShell } from "@/components/AdminShell";
 
 // Shared chrome for every /admin page: one persistent, grouped nav bar so
 // the dashboard is actually navigable, plus a single admin gate. Pages
@@ -27,12 +27,5 @@ export default async function AdminLayout({
     );
   }
 
-  return (
-    <div className="lg:flex lg:gap-6">
-      <aside className="lg:w-56 lg:flex-shrink-0 lg:border-r lg:border-[var(--color-line)] lg:px-4 lg:pt-6 lg:min-h-[calc(100vh-4rem)]">
-        <AdminNav />
-      </aside>
-      <div className="flex-1 min-w-0">{children}</div>
-    </div>
-  );
+  return <AdminShell>{children}</AdminShell>;
 }

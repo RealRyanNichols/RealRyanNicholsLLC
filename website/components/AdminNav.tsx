@@ -76,7 +76,13 @@ const GROUPS: AdminGroup[] = [
   },
 ];
 
-export function AdminNav() {
+export function AdminNav({
+  collapsed = false,
+  onCollapsedChange,
+}: {
+  collapsed?: boolean;
+  onCollapsedChange?: (collapsed: boolean) => void;
+}) {
   const pathname = usePathname();
   const activePrimary = PRIMARY.find((item) => isActivePath(pathname, item.href));
 
@@ -123,31 +129,100 @@ export function AdminNav() {
         </details>
       </div>
 
-      <nav className="hidden lg:block lg:sticky lg:top-20 text-sm">
-        <div className="rounded-xl border border-[#203a64] bg-[#071126] p-3 text-[#fdf8ea] shadow-xl">
-          <p className="px-2 text-[10px] font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
-            Command
-          </p>
-          <div className="mt-3 space-y-1">
+      <nav
+        className={[
+          "hidden text-sm lg:sticky lg:top-20 lg:block",
+          collapsed ? "lg:w-[4.25rem]" : "lg:w-full",
+        ].join(" ")}
+        aria-label="Admin desktop navigation"
+      >
+        <div
+          className={[
+            "rounded-2xl border border-[#203a64] bg-[#071126] text-[#fdf8ea] shadow-xl shadow-[#071126]/15",
+            collapsed ? "p-2" : "p-4",
+          ].join(" ")}
+        >
+          <div
+            className={[
+              "flex items-center gap-2",
+              collapsed ? "justify-center" : "justify-between",
+            ].join(" ")}
+          >
+            {collapsed ? null : (
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+                  Command
+                </p>
+                <p className="mt-1 text-xs font-bold text-[#a9b7d0]">
+                  Fast actions
+                </p>
+              </div>
+            )}
+            <button
+              type="button"
+              onClick={() => onCollapsedChange?.(!collapsed)}
+              className={[
+                "grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-white/5 text-sm font-black text-[#fdf8ea] transition hover:border-[#7fe3a9] hover:bg-[#7fe3a9]/15 hover:text-[#7fe3a9]",
+                collapsed ? "mx-auto" : "",
+              ].join(" ")}
+              aria-label={collapsed ? "Expand admin sidebar" : "Collapse admin sidebar"}
+              title={collapsed ? "Expand admin sidebar" : "Collapse admin sidebar"}
+            >
+              {collapsed ? ">" : "<"}
+            </button>
+          </div>
+
+          <div className={collapsed ? "mt-3 space-y-2" : "mt-4 grid gap-2"}>
             {PRIMARY.map((item) => (
               <DesktopPrimaryLink
                 key={item.href}
                 item={item}
                 active={isActivePath(pathname, item.href)}
+                collapsed={collapsed}
               />
             ))}
           </div>
           <Link
             href="/admin/new"
-            className="mt-3 flex min-h-10 items-center justify-center rounded-lg border border-[#7fe3a9]/50 bg-[#7fe3a9]/15 px-3 text-xs font-black uppercase tracking-normal text-[#7fe3a9] transition hover:bg-[#7fe3a9]/25"
+            className={[
+              "mt-3 flex min-h-11 items-center justify-center rounded-xl border border-[#7fe3a9]/50 bg-[#7fe3a9]/15 text-xs font-black uppercase tracking-normal text-[#7fe3a9] transition hover:bg-[#7fe3a9]/25",
+              collapsed ? "px-1" : "px-3",
+            ].join(" ")}
+            title="New post"
           >
-            New post
+            {collapsed ? "+" : "New post"}
           </Link>
         </div>
 
-        <div className="mt-4 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-3">
-          <GroupedToolGrid pathname={pathname} />
-        </div>
+        {collapsed ? (
+          <div className="mt-4 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-2 text-center">
+            <button
+              type="button"
+              onClick={() => onCollapsedChange?.(false)}
+              className="mx-auto grid h-10 w-10 place-items-center rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] text-xs font-black text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+              aria-label="Open full admin menu"
+              title="Open full admin menu"
+            >
+              All
+            </button>
+          </div>
+        ) : (
+          <div className="mt-4 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm">
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-muted)]">
+                Full admin map
+              </p>
+              <button
+                type="button"
+                onClick={() => onCollapsedChange?.(true)}
+                className="rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-1 text-[10px] font-black uppercase text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+              >
+                Close rail
+              </button>
+            </div>
+            <GroupedToolGrid pathname={pathname} />
+          </div>
+        )}
       </nav>
     </>
   );
@@ -213,29 +288,57 @@ function MobilePrimaryLink({
 function DesktopPrimaryLink({
   item,
   active,
+  collapsed,
 }: {
   item: AdminItem;
   active: boolean;
+  collapsed: boolean;
 }) {
   return (
     <Link
       href={item.href}
       className={[
-        "block rounded-lg border px-3 py-2.5 transition",
+        "group relative overflow-hidden rounded-xl border transition",
+        collapsed
+          ? "grid min-h-12 place-items-center px-1 py-2 text-center"
+          : "grid min-h-16 grid-cols-[1fr_auto] items-center gap-3 px-4 py-3",
         active
-          ? "border-[#7fe3a9] bg-[#7fe3a9] text-[#071126]"
+          ? "border-[#7fe3a9] bg-[#7fe3a9] text-[#071126] shadow-lg shadow-[#7fe3a9]/10"
           : "border-white/10 bg-white/5 text-[#fdf8ea] hover:border-[#d8c89e] hover:bg-white/10",
       ].join(" ")}
+      title={item.label}
     >
-      <span className="block text-sm font-black leading-tight">{item.label}</span>
-      {item.sub ? (
+      <span className="min-w-0">
         <span
           className={[
-            "mt-0.5 block text-[11px] font-semibold leading-snug",
-            active ? "text-[#13223f]" : "text-[#cfd9ea]",
+            "block font-black leading-tight",
+            collapsed ? "text-[11px]" : "text-base",
           ].join(" ")}
         >
-          {item.sub}
+          {collapsed ? item.short ?? item.label.slice(0, 3) : item.label}
+        </span>
+        {!collapsed && item.sub ? (
+          <span
+            className={[
+              "mt-1 block text-xs font-semibold leading-snug",
+              active ? "text-[#13223f]" : "text-[#cfd9ea]",
+            ].join(" ")}
+          >
+            {item.sub}
+          </span>
+        ) : null}
+      </span>
+      {!collapsed ? (
+        <span
+          className={[
+            "grid h-9 w-9 place-items-center rounded-lg border text-xs font-black",
+            active
+              ? "border-[#13223f]/15 bg-[#13223f]/10 text-[#13223f]"
+              : "border-white/10 bg-white/5 text-[#7fe3a9] group-hover:border-[#7fe3a9]/50",
+          ].join(" ")}
+          aria-hidden
+        >
+          {item.short ?? item.label.slice(0, 1)}
         </span>
       ) : null}
     </Link>
