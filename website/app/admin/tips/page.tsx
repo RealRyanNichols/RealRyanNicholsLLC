@@ -22,7 +22,7 @@ type Status = "pending" | "reviewed" | "merged" | "rejected" | "all";
 export default async function AdminTipsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ filter?: string }>;
+  searchParams: Promise<{ filter?: string; route?: string; urgency?: string }>;
 }) {
   const supabase = await getSupabaseServerClient();
   const { data: auth } = await supabase.auth.getUser();
@@ -38,7 +38,7 @@ export default async function AdminTipsPage({
     );
   }
 
-  const { filter } = await searchParams;
+  const { filter, route, urgency } = await searchParams;
   const view: Status =
     filter === "reviewed" ||
     filter === "merged" ||
@@ -46,6 +46,8 @@ export default async function AdminTipsPage({
     filter === "all"
       ? (filter as Status)
       : "pending";
+  const routeView = isRouteKind(route) ? route : null;
+  const urgencyView = isUrgency(urgency) ? urgency : null;
 
   let query = supabase
     .from("case_tips")
@@ -97,6 +99,11 @@ export default async function AdminTipsPage({
     } as Record<IntakeRouteKind, number>,
   );
   const hotTipCount = routedTips.filter((item) => item.plan.urgency === "hot").length;
+  const visibleTips = routedTips.filter((item) => {
+    if (routeView && item.plan.kind !== routeView) return false;
+    if (urgencyView && item.plan.urgency !== urgencyView) return false;
+    return true;
+  });
 
   return (
     <article className="mx-auto max-w-5xl px-4 py-8 sm:py-10">
@@ -127,30 +134,76 @@ export default async function AdminTipsPage({
             </p>
           </div>
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-            <RadarStat label="Hot" value={hotTipCount} tone="red" />
-            <RadarStat label="Verify" value={routeCounts.verify} />
-            <RadarStat label="Map" value={routeCounts.case_map} />
-            <RadarStat label="Article" value={routeCounts.article} />
-            <RadarStat label="Follow up" value={routeCounts.service} />
-            <RadarStat label="Watch" value={routeCounts.watch} />
+            <RadarStat
+              label="Hot"
+              value={hotTipCount}
+              href={tipsHref({ filter: view, urgency: "hot" })}
+              active={urgencyView === "hot"}
+              tone="red"
+            />
+            <RadarStat
+              label="Verify"
+              value={routeCounts.verify}
+              href={tipsHref({ filter: view, route: "verify", urgency: urgencyView })}
+              active={routeView === "verify"}
+            />
+            <RadarStat
+              label="Map"
+              value={routeCounts.case_map}
+              href={tipsHref({ filter: view, route: "case_map", urgency: urgencyView })}
+              active={routeView === "case_map"}
+            />
+            <RadarStat
+              label="Article"
+              value={routeCounts.article}
+              href={tipsHref({ filter: view, route: "article", urgency: urgencyView })}
+              active={routeView === "article"}
+            />
+            <RadarStat
+              label="Follow up"
+              value={routeCounts.service}
+              href={tipsHref({ filter: view, route: "service", urgency: urgencyView })}
+              active={routeView === "service"}
+            />
+            <RadarStat
+              label="Watch"
+              value={routeCounts.watch}
+              href={tipsHref({ filter: view, route: "watch", urgency: urgencyView })}
+              active={routeView === "watch"}
+            />
           </div>
         </div>
+        {routeView || urgencyView ? (
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border border-white/10 bg-white/[0.055] p-3">
+            <p className="text-sm font-bold leading-6 text-[#cfd9ea]">
+              Showing {visibleTips.length} of {routedTips.length} tips
+              {urgencyView ? ` in the ${urgencyView} lane` : ""}
+              {routeView ? ` routed to ${routeLabel(routeView).toLowerCase()}` : ""}.
+            </p>
+            <Link
+              href={tipsHref({ filter: view })}
+              className="border border-[#7fe3a9]/50 px-3 py-2 text-xs font-black uppercase tracking-normal text-[#7fe3a9] transition hover:bg-[#7fe3a9]/15"
+            >
+              Clear radar
+            </Link>
+          </div>
+        ) : null}
       </section>
 
       <nav className="mt-6 flex flex-wrap gap-1 border-b border-[var(--color-line)]">
-        <TabLink active={view === "pending"} href="/admin/tips?filter=pending">
+        <TabLink active={view === "pending"} href={tipsHref({ filter: "pending", route: routeView, urgency: urgencyView })}>
           Pending ({pendingCount ?? 0})
         </TabLink>
-        <TabLink active={view === "reviewed"} href="/admin/tips?filter=reviewed">
+        <TabLink active={view === "reviewed"} href={tipsHref({ filter: "reviewed", route: routeView, urgency: urgencyView })}>
           Reviewed ({reviewedCount ?? 0})
         </TabLink>
-        <TabLink active={view === "merged"} href="/admin/tips?filter=merged">
+        <TabLink active={view === "merged"} href={tipsHref({ filter: "merged", route: routeView, urgency: urgencyView })}>
           Merged ({mergedCount ?? 0})
         </TabLink>
-        <TabLink active={view === "rejected"} href="/admin/tips?filter=rejected">
+        <TabLink active={view === "rejected"} href={tipsHref({ filter: "rejected", route: routeView, urgency: urgencyView })}>
           Rejected ({rejectedCount ?? 0})
         </TabLink>
-        <TabLink active={view === "all"} href="/admin/tips?filter=all">
+        <TabLink active={view === "all"} href={tipsHref({ filter: "all", route: routeView, urgency: urgencyView })}>
           All
         </TabLink>
       </nav>
@@ -164,8 +217,15 @@ export default async function AdminTipsPage({
           <p className="text-sm text-[var(--color-muted)] italic">
             No tips in this bucket.
           </p>
+        ) : visibleTips.length === 0 ? (
+          <div className="border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+            <p className="font-bold">No tips in this radar lane.</p>
+            <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
+              Clear the radar or switch lanes to keep working the queue.
+            </p>
+          </div>
         ) : (
-          routedTips.map(({ tip: t, urls, plan }) => {
+          visibleTips.map(({ tip: t, urls, plan }) => {
             return (
               <article
                 key={t.id}
@@ -266,16 +326,22 @@ export default async function AdminTipsPage({
 function RadarStat({
   label,
   value,
+  href,
+  active,
   tone = "green",
 }: {
   label: string;
   value: number;
+  href: string;
+  active: boolean;
   tone?: "green" | "red";
 }) {
   return (
-    <div
+    <Link
+      href={href}
       className={[
-        "border p-3",
+        "border p-3 transition",
+        active ? "ring-2 ring-[#7fe3a9]" : "hover:border-[#7fe3a9]",
         tone === "red"
           ? "border-[#e0362c]/70 bg-[#e0362c]/15"
           : "border-[#7fe3a9]/40 bg-white/[0.055]",
@@ -287,7 +353,7 @@ function RadarStat({
       <p className="mt-1 text-[10px] font-black uppercase tracking-[0.16em] text-[#cfd9ea]">
         {label}
       </p>
-    </div>
+    </Link>
   );
 }
 
@@ -394,6 +460,47 @@ function TabLink({
       {children}
     </Link>
   );
+}
+
+function isRouteKind(value?: string | null): value is IntakeRouteKind {
+  return (
+    value === "case_map" ||
+    value === "verify" ||
+    value === "article" ||
+    value === "service" ||
+    value === "watch"
+  );
+}
+
+function isUrgency(value?: string | null): value is IntakeRoutePlan["urgency"] {
+  return value === "hot" || value === "next" || value === "watch";
+}
+
+function routeLabel(route: IntakeRouteKind) {
+  const labels: Record<IntakeRouteKind, string> = {
+    case_map: "Map this clue",
+    verify: "Verify evidence",
+    article: "Article lead",
+    service: "Follow up",
+    watch: "Watch file",
+  };
+  return labels[route];
+}
+
+function tipsHref({
+  filter,
+  route,
+  urgency,
+}: {
+  filter: Status;
+  route?: IntakeRouteKind | null;
+  urgency?: IntakeRoutePlan["urgency"] | null;
+}) {
+  const params = new URLSearchParams();
+  params.set("filter", filter);
+  if (route) params.set("route", route);
+  if (urgency) params.set("urgency", urgency);
+  return `/admin/tips?${params.toString()}`;
 }
 
 function CategoryChip({ category }: { category?: string | null }) {
