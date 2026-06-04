@@ -63,6 +63,68 @@ const chargeCards = [
   },
 ];
 
+const firstOpenPackets = [
+  {
+    step: "1",
+    title: "Charging packets",
+    body:
+      "Exact complaints, probable-cause affidavits, cause numbers, named complainants, dates, and statutory subsections.",
+    href: "#charges",
+    tone: "red",
+  },
+  {
+    step: "2",
+    title: "Bond / speech order",
+    body:
+      "Any written bond condition, revocation or modification order, hearing transcript, and prohibited-contact language.",
+    href: "#open-questions",
+    tone: "gold",
+  },
+  {
+    step: "3",
+    title: "Bodycam and source files",
+    body:
+      "Bodycam, dashcam, CAD, dispatch audio, offense reports, witness statements, church video, and native message exports.",
+    href: "#source-doors",
+    tone: "green",
+  },
+  {
+    step: "4",
+    title: "Proof map",
+    body:
+      "A clean claim-to-source trail that separates public reporting, Ryan statements, authenticated evidence, and missing records.",
+    href: "#packet-drawers",
+    tone: "blue",
+  },
+];
+
+const packetDrawers = [
+  {
+    label: "Value",
+    title: "Proof numbers and money lanes",
+    body: "Large numbers stay clickable but out of the first read until counsel wants the damages lane.",
+    href: "#numbers",
+  },
+  {
+    label: "Law",
+    title: "Claim map and authority shelf",
+    body: "Claim, evidence lane, law lane, status, and open item in one controlled packet.",
+    href: "#claim-map",
+  },
+  {
+    label: "Archive",
+    title: "Full supporting record",
+    body: "People, chronology, damages, political context, and longer source-chain notes live below the cover sheet.",
+    href: "#full-record",
+  },
+  {
+    label: "Audit",
+    title: "Local files and record signals",
+    body: "The behind-the-scenes file audit remains available without making the page feel like a warehouse.",
+    href: "#file-audit",
+  },
+];
+
 const sourceChain = [
   {
     step: "Official baseline",
@@ -914,12 +976,12 @@ export default async function AttorneyBriefPage() {
   }
 
   return (
-    <article className="mx-auto w-full max-w-[58rem] px-4 py-4 sm:px-5 lg:px-6">
+    <article className="mx-auto w-full max-w-[62rem] px-4 py-4 sm:px-5 lg:px-6">
       <nav
         aria-label="Attorney brief navigation"
         className="sticky top-16 z-20 -mx-4 mb-4 border-y border-[var(--color-line)] bg-[var(--color-surface)]/95 px-4 py-2 shadow-sm backdrop-blur sm:-mx-5 sm:px-5 lg:-mx-6 lg:top-20 lg:px-6"
       >
-        <div className="mx-auto flex max-w-[58rem] items-center gap-2 overflow-x-auto">
+        <div className="mx-auto flex max-w-[62rem] items-center gap-2 overflow-x-auto">
           <Link
             href="/admin"
             className="shrink-0 border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-[11px] font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
@@ -933,16 +995,22 @@ export default async function AttorneyBriefPage() {
             Start
           </a>
           <a
+            href="#source-doors"
+            className="shrink-0 border border-[var(--color-line)] bg-white/45 px-3 py-2 text-[11px] font-black uppercase tracking-normal text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          >
+            Records
+          </a>
+          <a
             href="#charges"
             className="shrink-0 border border-[var(--color-line)] bg-white/45 px-3 py-2 text-[11px] font-black uppercase tracking-normal text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
           >
             Charges
           </a>
           <a
-            href="#receipts"
+            href="#packet-drawers"
             className="shrink-0 border border-[var(--color-line)] bg-white/45 px-3 py-2 text-[11px] font-black uppercase tracking-normal text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
           >
-            Sources
+            Packets
           </a>
           <a
             href="#open-questions"
@@ -953,85 +1021,114 @@ export default async function AttorneyBriefPage() {
         </div>
       </nav>
 
-      <section id="first-look" className="border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm sm:p-5 lg:p-6">
-        <div className="grid gap-5 lg:grid-cols-[1fr_17rem] lg:items-start">
+      <section
+        id="first-look"
+        className="border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm sm:p-5 lg:p-6"
+      >
+        <div className="grid gap-5 lg:grid-cols-[1fr_19rem] lg:items-start">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.24em] text-[#7fe3a9]">
-              Start here
+              Attorney cover sheet
             </p>
-            <h1 className="mt-2 max-w-3xl text-3xl font-black leading-[0.98] text-[#fdf8ea] sm:text-5xl">
-              Three charges. One proof path.
+            <h1 className="mt-2 max-w-3xl text-3xl font-black leading-[0.98] text-[#fdf8ea] sm:text-5xl lg:text-6xl">
+              Three misdemeanors. One clean record.
             </h1>
             <p className="mt-4 max-w-3xl text-base font-semibold leading-7 text-[#cfd9ea]">
-              The full record is here, but the first screen now says only what
-              a lawyer needs first: the live criminal lane, the disputed fact,
-              the missing source records, and where to open the packet.
+              This brief does not need to show every file first. It shows the
+              live criminal problem, the disputed fact, the missing records,
+              and the fastest path into the proof.
             </p>
           </div>
           <aside className="border border-white/10 bg-white/[0.055] p-4">
             <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
-              90-second read
+              Dallas meeting
             </p>
             <h2 className="mt-2 font-sans text-xl font-black text-[#fdf8ea]">
-              Counsel can scan this without digging.
+              {meeting.firm}
             </h2>
-            <p className="mt-3 text-sm font-semibold leading-6 text-[#cfd9ea]">
-              Deep records stay below the fold. The first view is the cover
-              sheet, not the warehouse.
-            </p>
+            <dl className="mt-3 grid gap-3">
+              <InfoRow label="When" value={meeting.when} dark />
+              <InfoRow label="Where" value={meeting.where} dark />
+            </dl>
+            <a
+              href={meeting.website}
+              className="mt-4 inline-flex min-h-10 items-center border border-[#7fe3a9]/50 bg-[#7fe3a9]/15 px-3 text-sm font-black text-[#7fe3a9] transition hover:bg-[#7fe3a9]/25"
+            >
+              Open firm site
+            </a>
           </aside>
         </div>
 
         <div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-          <Metric label="Charges" value="3" sub="2 harassment / 1 deadly conduct" hot />
-          <Metric label="Representation" value="None" sub="Ryan reports no counsel" hot />
-          <Metric label="Setting" value="June 9" sub="verify docket and cause no." />
-          <Metric label="Discovery" value="Open" sub="bodycam / CAD / statements" />
+          <Metric
+            label="Charges"
+            value="3"
+            sub="2 harassment / 1 deadly conduct"
+            hot
+          />
+          <Metric
+            label="Representation"
+            value="None"
+            sub="Ryan reports no counsel"
+            hot
+          />
+          <Metric
+            label="Disputed fact"
+            value="Gun"
+            sub="displayed vs pulled / pointed / fired"
+          />
+          <Metric
+            label="Proof status"
+            value="Open"
+            sub="charging packet and discovery needed"
+          />
         </div>
 
-        <div className="mt-5 grid gap-3 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="mt-5 grid gap-3 lg:grid-cols-[1.15fr_0.85fr]">
           <section className="border border-[#7fe3a9]/55 bg-[#7fe3a9]/10 p-4">
             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#7fe3a9]">
-              Core dispute
+              The one sentence
             </p>
             <h2 className="mt-2 font-sans text-2xl font-black leading-tight text-[#fdf8ea]">
-              Public allegation: displayed / hand on grip. Ryan disputes
+              Public allegation says displayed / hand on grip. Ryan disputes
               pulling, pointing, brandishing, firing, or threatening.
             </h2>
           </section>
           <section className="border border-[#d8c89e]/60 bg-[#d8c89e]/12 p-4">
             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#d8c89e]">
-              Open first
+              Reader path
             </p>
-            <ol className="mt-2 space-y-2 text-sm font-semibold leading-6 text-[#cfd9ea]">
-              <li>1. Charging instruments and probable-cause affidavits.</li>
-              <li>2. Bond order and exact condition language.</li>
-              <li>3. Bodycam, CAD, dispatch, witness statements.</li>
-            </ol>
+            <p className="mt-2 text-sm font-semibold leading-6 text-[#cfd9ea]">
+              Cover sheet first. Source doors second. Long record only when
+              counsel chooses to open it.
+            </p>
           </section>
         </div>
       </section>
 
-      <section className="mt-4 grid gap-3 border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm md:grid-cols-[1fr_auto] md:items-center">
-        <div>
-          <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
-            Meeting target
+      <section
+        id="source-doors"
+        className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5"
+      >
+        <div className="grid gap-3 lg:grid-cols-[0.32fr_1fr] lg:items-end">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+              Open first
+            </p>
+            <h2 className="mt-1 font-sans text-3xl font-black leading-tight">
+              Four records control the first read.
+            </h2>
+          </div>
+          <p className="text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+            This is the human route through the page. It lets counsel see the
+            depth without being forced to read every paragraph at once.
           </p>
-          <h2 className="mt-1 font-sans text-2xl font-black">
-            {meeting.firm}
-          </h2>
-          <dl className="mt-3 grid gap-3 text-sm sm:grid-cols-3">
-            <InfoRow label="Attorney" value={meeting.attorney} />
-            <InfoRow label="When" value={meeting.when} />
-            <InfoRow label="Where" value={meeting.where} />
-          </dl>
         </div>
-        <a
-          href={meeting.website}
-          className="inline-flex min-h-11 items-center justify-center border border-[var(--color-support-strong)] bg-[var(--color-support)] px-4 text-sm font-black uppercase tracking-normal text-[#17110a] transition hover:brightness-95"
-        >
-          Firm site
-        </a>
+        <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+          {firstOpenPackets.map((packet) => (
+            <FirstOpenCard key={packet.title} {...packet} />
+          ))}
+        </div>
       </section>
 
       <details id="numbers" className="mt-4 border border-[#203a64] bg-[#071126] text-[#fdf8ea] shadow-sm">
@@ -1047,6 +1144,37 @@ export default async function AttorneyBriefPage() {
           ))}
         </div>
       </details>
+
+      <section
+        id="packet-drawers"
+        className="mt-4 border border-[var(--color-line)] bg-[var(--color-paper)] p-4 shadow-sm"
+      >
+        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+          Deep packets
+        </p>
+        <h2 className="mt-2 font-sans text-2xl font-black">
+          Everything is still here, just not all in their face.
+        </h2>
+        <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+          {packetDrawers.map((packet) => (
+            <a
+              key={packet.href}
+              href={packet.href}
+              className="border border-[var(--color-line)] bg-[var(--color-surface)] p-3 transition hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-soft)]"
+            >
+              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-muted)]">
+                {packet.label}
+              </p>
+              <h3 className="mt-2 font-sans text-lg font-black leading-tight">
+                {packet.title}
+              </h3>
+              <p className="mt-2 text-xs font-semibold leading-5 text-[var(--color-ink-soft)]">
+                {packet.body}
+              </p>
+            </a>
+          ))}
+        </div>
+      </section>
 
       <section id="charges" className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5">
         <div className="grid gap-3 lg:grid-cols-[0.34fr_1fr] lg:items-end">
@@ -1071,7 +1199,14 @@ export default async function AttorneyBriefPage() {
         </div>
       </section>
 
-      <section id="receipts" className="mt-4 grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
+      <details id="receipts" className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] shadow-sm">
+        <summary className="flex cursor-pointer items-center justify-between gap-3 p-4 text-sm font-black uppercase tracking-normal marker:content-['']">
+          <span>Open source doors and proof legend</span>
+          <span className="border border-[var(--color-line)] px-2 py-1 text-[10px] text-[var(--color-accent)]">
+            Sources
+          </span>
+        </summary>
+        <div className="grid gap-4 border-t border-[var(--color-line)] p-4 lg:grid-cols-[0.9fr_1.1fr]">
         <section className="border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm sm:p-5">
           <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
             Open first
@@ -1139,9 +1274,17 @@ export default async function AttorneyBriefPage() {
             ))}
           </div>
         </section>
-      </section>
+        </div>
+      </details>
 
-      <section id="drive-evidence" className="mt-4 border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm sm:p-5">
+      <details id="drive-evidence" className="mt-4 border border-[#203a64] bg-[#071126] text-[#fdf8ea] shadow-sm">
+        <summary className="flex cursor-pointer items-center justify-between gap-3 p-4 text-sm font-black uppercase tracking-normal marker:content-[''] sm:p-5">
+          <span>Open Google Drive source folders</span>
+          <span className="border border-[#7fe3a9]/50 px-2 py-1 text-[10px] text-[#7fe3a9]">
+            4 folders
+          </span>
+        </summary>
+        <div className="border-t border-white/10 p-4 sm:p-5">
         <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
@@ -1177,7 +1320,8 @@ export default async function AttorneyBriefPage() {
             </a>
           ))}
         </div>
-      </section>
+        </div>
+      </details>
 
       <details id="claim-map" className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] shadow-sm">
         <summary className="flex cursor-pointer items-center justify-between gap-3 p-4 text-sm font-black uppercase tracking-normal text-[var(--color-ink)] marker:content-['']">
@@ -1507,7 +1651,7 @@ export default async function AttorneyBriefPage() {
         </div>
       </section>
 
-      <details className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] shadow-sm">
+      <details id="file-audit" className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] shadow-sm">
         <summary className="flex cursor-pointer items-center justify-between gap-3 p-4 text-sm font-black uppercase tracking-normal text-[var(--color-ink)] marker:content-['']">
           <span>Open local file audit and remaining record signals</span>
           <span className="border border-[var(--color-line)] px-2 py-1 text-[10px] text-[var(--color-accent)]">
@@ -1592,6 +1736,56 @@ function Metric({
         {sub}
       </p>
     </div>
+  );
+}
+
+function FirstOpenCard({
+  step,
+  title,
+  body,
+  href,
+  tone,
+}: {
+  step: string;
+  title: string;
+  body: string;
+  href: string;
+  tone: string;
+}) {
+  const toneClass =
+    tone === "red"
+      ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)]"
+      : tone === "green"
+        ? "border-[var(--color-success)] bg-[var(--color-success-soft)]"
+        : tone === "blue"
+          ? "border-[#203a64] bg-[#dfe9fb]"
+          : "border-[var(--color-support)] bg-[var(--color-support-soft)]";
+
+  return (
+    <a
+      href={href}
+      className={[
+        "group flex min-h-[10rem] flex-col justify-between border p-4 transition hover:-translate-y-0.5 hover:shadow-sm",
+        toneClass,
+      ].join(" ")}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <span className="inline-flex h-9 w-9 items-center justify-center border border-black/10 bg-white/55 font-sans text-xl font-black text-[var(--color-ink)]">
+          {step}
+        </span>
+        <span className="text-[10px] font-black uppercase tracking-normal text-[var(--color-accent)] transition group-hover:translate-x-0.5">
+          Open
+        </span>
+      </div>
+      <div>
+        <h3 className="font-sans text-xl font-black leading-tight text-[var(--color-ink)]">
+          {title}
+        </h3>
+        <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+          {body}
+        </p>
+      </div>
+    </a>
   );
 }
 
@@ -1799,13 +1993,33 @@ function ClaimSupportRow({
   );
 }
 
-function InfoRow({ label, value }: { label: string; value: string }) {
+function InfoRow({
+  label,
+  value,
+  dark = false,
+}: {
+  label: string;
+  value: string;
+  dark?: boolean;
+}) {
   return (
     <div>
-      <dt className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-muted)]">
+      <dt
+        className={[
+          "text-[10px] font-black uppercase tracking-[0.2em]",
+          dark ? "text-[#d8c89e]" : "text-[var(--color-muted)]",
+        ].join(" ")}
+      >
         {label}
       </dt>
-      <dd className="mt-1 font-semibold leading-6 text-[var(--color-ink)]">{value}</dd>
+      <dd
+        className={[
+          "mt-1 font-semibold leading-6",
+          dark ? "text-[#fdf8ea]" : "text-[var(--color-ink)]",
+        ].join(" ")}
+      >
+        {value}
+      </dd>
     </div>
   );
 }
