@@ -6,10 +6,15 @@ type CreatedInvoice = {
   id: string;
   status: string;
   stripe_hosted_invoice_url: string | null;
+  payment_mode?: "full" | "plan";
+  down_payment_cents?: number;
+  installment_cents?: number | null;
+  installment_interval?: "week" | "month" | null;
+  installment_count?: number | null;
 };
 
 type InvoiceResponse =
-  | { ok: true; invoice: CreatedInvoice }
+  | { ok: true; invoice: CreatedInvoice; email_sent?: boolean }
   | { error: string };
 
 const quickDraft = {
@@ -27,6 +32,12 @@ export function AdminInvoiceForm() {
   const [title, setTitle] = useState("Real Ryan Nichols LLC service invoice");
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
+  const [paymentPlan, setPaymentPlan] = useState(false);
+  const [downPayment, setDownPayment] = useState("250");
+  const [installmentInterval, setInstallmentInterval] = useState<"week" | "month">(
+    "month",
+  );
+  const [installmentCount, setInstallmentCount] = useState("4");
   const [dueDays, setDueDays] = useState("14");
   const [memo, setMemo] = useState("");
   const [delivery, setDelivery] = useState<"local_draft" | "stripe_link" | "stripe_send">(
@@ -34,13 +45,26 @@ export function AdminInvoiceForm() {
   );
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<CreatedInvoice | null>(null);
+  const [emailSent, setEmailSent] = useState<boolean | null>(null);
   const [error, setError] = useState("");
+
+  const amountCents = toCents(amount);
+  const downPaymentCents = paymentPlan ? toCents(downPayment) : 0;
+  const installments = Number.parseInt(installmentCount, 10);
+  const remainingCents = Math.max(0, amountCents - downPaymentCents);
+  const installmentCents =
+    paymentPlan && installments > 0 && remainingCents % installments === 0
+      ? remainingCents / installments
+      : null;
+  const planHasRoundingIssue =
+    paymentPlan && installments > 0 && remainingCents > 0 && installmentCents == null;
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setBusy(true);
     setError("");
     setResult(null);
+    setEmailSent(null);
 
     try {
       const res = await fetch("/api/admin/invoices", {
@@ -53,6 +77,10 @@ export function AdminInvoiceForm() {
           title,
           description,
           amount_dollars: Number(amount),
+          payment_plan: paymentPlan,
+          down_payment_dollars: Number(downPayment),
+          installment_interval: installmentInterval,
+          installment_count: Number(installmentCount),
           due_days: Number(dueDays),
           memo,
           delivery,
@@ -64,6 +92,7 @@ export function AdminInvoiceForm() {
         return;
       }
       setResult(json.invoice);
+      setEmailSent(json.email_sent ?? null);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not create invoice.");
     } finally {
@@ -76,6 +105,10 @@ export function AdminInvoiceForm() {
     setAmount(quickDraft.amount);
     setTitle(quickDraft.title);
     setDescription(quickDraft.description);
+    setPaymentPlan(true);
+    setDownPayment("250");
+    setInstallmentInterval("month");
+    setInstallmentCount("3");
     setDelivery("local_draft");
   }
 
@@ -93,10 +126,9 @@ export function AdminInvoiceForm() {
             Send a payable service invoice
           </h2>
           <p className="mt-1 text-sm text-[var(--color-muted)]">
-            Save a private receivable, create a Stripe payment link, or have
-            Stripe email it after you confirm the client email. Stripe can show
-            card, Link, Affirm, Klarna, and other eligible financing options on
-            the hosted payment page.
+            Save a private receivable, create a Stripe payment page, email it,
+            or turn the balance into a down-payment plan with automatic weekly
+            or monthly installments.
           </p>
         </div>
         <button
@@ -151,6 +183,85 @@ export function AdminInvoiceForm() {
         </label>
       </div>
 
+      <section className="mt-5 rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4">
+        <label className="flex items-start gap-3">
+          <input
+            type="checkbox"
+            checked={paymentPlan}
+            onChange={(e) => setPaymentPlan(e.target.checked)}
+            className="mt-1 h-5 w-5 accent-[var(--color-accent)]"
+          />
+          <span>
+            <span className="block text-sm font-bold">Create a payment plan</span>
+            <span className="mt-1 block text-sm text-[var(--color-muted)]">
+              Collect a down payment now, then let Stripe charge the rest
+              automatically on a weekly or monthly schedule.
+            </span>
+          </span>
+        </label>
+
+        {paymentPlan ? (
+          <div className="mt-4 grid gap-3 md:grid-cols-3">
+            <label className="block text-sm font-semibold">
+              Down payment
+              <input
+                value={downPayment}
+                onChange={(e) => setDownPayment(e.target.value)}
+                required={paymentPlan}
+                inputMode="decimal"
+                className="mt-1 w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm outline-none focus:border-[var(--color-accent)]"
+                placeholder="250"
+              />
+            </label>
+            <label className="block text-sm font-semibold">
+              Schedule
+              <select
+                value={installmentInterval}
+                onChange={(e) =>
+                  setInstallmentInterval(e.target.value as typeof installmentInterval)
+                }
+                className="mt-1 w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm outline-none focus:border-[var(--color-accent)]"
+              >
+                <option value="week">Weekly</option>
+                <option value="month">Monthly</option>
+              </select>
+            </label>
+            <label className="block text-sm font-semibold">
+              Number of payments
+              <input
+                value={installmentCount}
+                onChange={(e) => setInstallmentCount(e.target.value)}
+                required={paymentPlan}
+                type="number"
+                min="2"
+                max="60"
+                className="mt-1 w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm outline-none focus:border-[var(--color-accent)]"
+              />
+            </label>
+            <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-3 text-sm md:col-span-3">
+              <p className="font-bold">Plan preview</p>
+              <p className="mt-1 text-[var(--color-muted)]">
+                {amountCents > 0 && installmentCents != null ? (
+                  <>
+                    {usd(downPaymentCents)} down, then {installments}{" "}
+                    {installmentInterval === "week" ? "weekly" : "monthly"}{" "}
+                    payments of {usd(installmentCents)}.
+                  </>
+                ) : (
+                  "Enter the amount, down payment, and payment count to preview the plan."
+                )}
+              </p>
+              {planHasRoundingIssue ? (
+                <p className="mt-2 text-xs font-semibold text-red-700">
+                  The remaining balance has to divide cleanly by the number of
+                  payments. Change the down payment or payment count.
+                </p>
+              ) : null}
+            </div>
+          </div>
+        ) : null}
+      </section>
+
       <label className="mt-4 block text-sm font-semibold">
         Invoice title
         <input
@@ -201,8 +312,12 @@ export function AdminInvoiceForm() {
         <div className="mt-2 grid gap-2 md:grid-cols-3">
           {[
             ["local_draft", "Save draft", "Private record only."],
-            ["stripe_link", "Create pay link", "Stripe invoice URL, no email sent."],
-            ["stripe_send", "Email through Stripe", "Requires client email."],
+            ["stripe_link", "Create pay link", "Stripe URL, no email sent."],
+            [
+              "stripe_send",
+              paymentPlan ? "Email plan link" : "Email through Stripe",
+              "Requires client email.",
+            ],
           ].map(([value, label, sub]) => (
             <label
               key={value}
@@ -254,8 +369,18 @@ export function AdminInvoiceForm() {
           )}
           {result.stripe_hosted_invoice_url ? (
             <p className="mt-2 text-xs font-semibold text-[var(--color-muted)]">
-              Financing displays only when Stripe approves the account, amount,
-              customer location, and payment method.
+              {result.payment_mode === "plan"
+                ? "Payment plans collect the down payment and then bill automatic installments after approval."
+                : "Financing displays only when Stripe approves the account, amount, customer location, and payment method."}
+            </p>
+          ) : null}
+          {emailSent === true ? (
+            <p className="mt-2 text-xs font-semibold text-[var(--color-muted)]">
+              Email sent to the client.
+            </p>
+          ) : emailSent === false ? (
+            <p className="mt-2 text-xs font-semibold text-[var(--color-muted)]">
+              Payment page created. Email was not sent, so copy the link above.
             </p>
           ) : null}
         </div>
@@ -270,4 +395,17 @@ export function AdminInvoiceForm() {
       </button>
     </form>
   );
+}
+
+function toCents(value: string): number {
+  const n = Number(value);
+  if (!Number.isFinite(n) || n <= 0) return 0;
+  return Math.round(n * 100);
+}
+
+function usd(cents: number): string {
+  return (cents / 100).toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
 }

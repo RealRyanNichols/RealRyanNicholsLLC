@@ -78,6 +78,11 @@ async function handleCheckoutCompleted(
   const kind = session.metadata?.kind;
 
   if (session.mode === "subscription") {
+    if (kind === "service_payment_plan") {
+      await handleServicePaymentPlanCheckout(stripe, supabase, session);
+      return;
+    }
+
     // Link the subscription to the signed-in profile captured at checkout.
     const userId = session.client_reference_id;
     const customerId =
@@ -163,11 +168,57 @@ async function handleCheckoutCompleted(
   }
 }
 
+async function handleServicePaymentPlanCheckout(
+  stripe: Stripe,
+  supabase: SupabaseClient,
+  session: Stripe.Checkout.Session,
+) {
+  const localId = session.metadata?.service_invoice_id;
+  if (!localId) return;
+  const customerId =
+    typeof session.customer === "string" ? session.customer : session.customer?.id ?? null;
+  const subId =
+    typeof session.subscription === "string"
+      ? session.subscription
+      : session.subscription?.id ?? null;
+  const cancelAfter = session.metadata?.cancel_after_timestamp;
+
+  if (subId) {
+    const sub = await stripe.subscriptions.retrieve(subId);
+    const metadata = sub.metadata ?? {};
+    const cancelAt = Number(metadata.cancel_after_timestamp ?? cancelAfter);
+    if (Number.isFinite(cancelAt) && cancelAt > Math.floor(Date.now() / 1000)) {
+      await stripe.subscriptions.update(subId, {
+        cancel_at: Math.floor(cancelAt),
+        metadata: {
+          ...metadata,
+          service_invoice_id: localId,
+          kind: "service_payment_plan",
+        },
+      });
+    }
+  }
+
+  await supabase
+    .from("service_invoices")
+    .update({
+      updated_at: new Date().toISOString(),
+      status: "open",
+      stripe_customer_id: customerId,
+      stripe_subscription_id: subId,
+      stripe_checkout_session_id: session.id,
+      stripe_last_error: null,
+    })
+    .eq("id", localId);
+}
+
 async function handleSubscriptionChange(
   supabase: SupabaseClient,
   event: Stripe.Event,
 ) {
   const sub = event.data.object as Stripe.Subscription;
+  if (sub.metadata?.kind === "service_payment_plan") return;
+
   const customerId =
     typeof sub.customer === "string" ? sub.customer : sub.customer?.id ?? null;
   if (!customerId) return;
@@ -207,10 +258,24 @@ async function handleServiceInvoiceChange(
   event: Stripe.Event,
 ) {
   const invoice = event.data.object as Stripe.Invoice;
-  if (invoice.metadata?.kind !== "service_invoice") return;
+  const metadata =
+    invoice.metadata?.kind === "service_invoice" ||
+    invoice.metadata?.kind === "service_payment_plan"
+      ? invoice.metadata
+      : invoice.parent?.subscription_details?.metadata ?? null;
+  if (
+    metadata?.kind !== "service_invoice" &&
+    metadata?.kind !== "service_payment_plan"
+  ) {
+    return;
+  }
 
   const invoiceId = invoice.id;
-  const localId = invoice.metadata?.service_invoice_id;
+  const localId = metadata?.service_invoice_id;
+  const subscriptionId =
+    typeof invoice.parent?.subscription_details?.subscription === "string"
+      ? invoice.parent.subscription_details.subscription
+      : invoice.parent?.subscription_details?.subscription?.id ?? null;
   const paidAt = invoice.status_transitions?.paid_at
     ? new Date(invoice.status_transitions.paid_at * 1000).toISOString()
     : event.type === "invoice.paid"
@@ -229,11 +294,36 @@ async function handleServiceInvoiceChange(
   const update: Record<string, unknown> = {
     updated_at: new Date().toISOString(),
     status,
-    amount_paid_cents: invoice.amount_paid ?? 0,
     stripe_hosted_invoice_url: invoice.hosted_invoice_url ?? null,
     stripe_invoice_pdf: invoice.invoice_pdf ?? null,
   };
-  if (paidAt) update.paid_at = paidAt;
+  if (metadata.kind === "service_invoice") {
+    update.amount_paid_cents = invoice.amount_paid ?? 0;
+  } else if (event.type === "invoice.paid") {
+    let currentPaid = 0;
+    let totalCents = Number(metadata.total_cents ?? 0);
+    const query = localId
+      ? supabase
+          .from("service_invoices")
+          .select("amount_cents, amount_paid_cents")
+          .eq("id", localId)
+      : supabase
+          .from("service_invoices")
+          .select("amount_cents, amount_paid_cents")
+          .eq("stripe_subscription_id", subscriptionId);
+    const { data: local } = await query.maybeSingle();
+    currentPaid = Number(local?.amount_paid_cents ?? 0);
+    totalCents = Number(local?.amount_cents ?? totalCents);
+    const nextPaid = currentPaid + (invoice.amount_paid ?? 0);
+    update.amount_paid_cents = totalCents > 0 ? Math.min(totalCents, nextPaid) : nextPaid;
+    if (totalCents > 0 && nextPaid >= totalCents) {
+      update.status = "paid";
+      update.paid_at = paidAt ?? new Date().toISOString();
+    } else {
+      update.status = "open";
+    }
+  }
+  if (metadata.kind === "service_invoice" && paidAt) update.paid_at = paidAt;
   if (event.type === "invoice.payment_failed") {
     update.stripe_last_error = "Stripe reported a failed invoice payment.";
   } else {
@@ -241,6 +331,10 @@ async function handleServiceInvoiceChange(
   }
 
   let query = supabase.from("service_invoices").update(update);
-  query = localId ? query.eq("id", localId) : query.eq("stripe_invoice_id", invoiceId);
+  query = localId
+    ? query.eq("id", localId)
+    : subscriptionId
+      ? query.eq("stripe_subscription_id", subscriptionId)
+      : query.eq("stripe_invoice_id", invoiceId);
   await query;
 }

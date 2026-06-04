@@ -21,6 +21,11 @@ type ServiceInvoice = {
   description: string;
   amount_cents: number;
   amount_paid_cents: number;
+  payment_mode: "full" | "plan";
+  down_payment_cents: number;
+  installment_cents: number | null;
+  installment_interval: "week" | "month" | null;
+  installment_count: number | null;
   status: "draft" | "open" | "paid" | "void" | "uncollectible" | "failed";
   due_at: string | null;
   sent_at: string | null;
@@ -72,15 +77,15 @@ export default async function AdminInvoicesPage() {
   const { data, error } = await svc
     .from("service_invoices")
     .select(
-      "id, created_at, client_name, client_email, title, description, amount_cents, amount_paid_cents, status, due_at, sent_at, paid_at, stripe_hosted_invoice_url, stripe_invoice_pdf, stripe_last_error",
+      "id, created_at, client_name, client_email, title, description, amount_cents, amount_paid_cents, payment_mode, down_payment_cents, installment_cents, installment_interval, installment_count, status, due_at, sent_at, paid_at, stripe_hosted_invoice_url, stripe_invoice_pdf, stripe_last_error",
     )
     .order("created_at", { ascending: false })
     .limit(200);
 
   const invoices = !error ? ((data ?? []) as ServiceInvoice[]) : [];
   const openInvoices = invoices.filter((i) => i.status === "open" || i.status === "failed");
-  const draftInvoices = invoices.filter((i) => i.status === "draft");
   const paidInvoices = invoices.filter((i) => i.status === "paid");
+  const planInvoices = invoices.filter((i) => i.payment_mode === "plan");
   const receivableCents = openInvoices.reduce(
     (sum, i) => sum + Math.max(0, i.amount_cents - i.amount_paid_cents),
     0,
@@ -116,7 +121,7 @@ export default async function AdminInvoicesPage() {
           <p className="font-bold">Invoice table is not available yet.</p>
           <p className="mt-1">
             Apply the latest Supabase migration, then refresh this page:
-            <span className="font-mono"> 20260604003000_create_service_invoices.sql</span>
+            <span className="font-mono"> 20260604021500_invoice_payment_plans.sql</span>
           </p>
         </div>
       ) : null}
@@ -124,7 +129,7 @@ export default async function AdminInvoicesPage() {
       <section className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
         <MoneyCard label="Collect now" value={usd(receivableCents)} sub={`${openInvoices.length} open`} hot={receivableCents > 0} />
         <MoneyCard label="Overdue" value={String(overdue.length)} sub="needs action" hot={overdue.length > 0} />
-        <MoneyCard label="Drafts" value={String(draftInvoices.length)} sub="not sent" />
+        <MoneyCard label="Payment plans" value={String(planInvoices.length)} sub="structured collections" />
         <MoneyCard label="Paid" value={usd(paidCents)} sub={`${paidInvoices.length} closed`} />
       </section>
 
@@ -160,6 +165,16 @@ export default async function AdminInvoicesPage() {
                           {invoice.client_name}
                         </h3>
                         <span
+                          className={[
+                            "rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em]",
+                            invoice.payment_mode === "plan"
+                              ? "border-emerald-300 bg-emerald-50 text-emerald-800"
+                              : "border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink-soft)]",
+                          ].join(" ")}
+                        >
+                          {invoice.payment_mode === "plan" ? "plan" : "invoice"}
+                        </span>
+                        <span
                           className={`rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] ${statusClass(invoice.status)}`}
                         >
                           {invoice.status}
@@ -175,6 +190,17 @@ export default async function AdminInvoicesPage() {
                           addSuffix: true,
                         })}
                       </p>
+                      {invoice.payment_mode === "plan" &&
+                      invoice.installment_cents &&
+                      invoice.installment_interval &&
+                      invoice.installment_count ? (
+                        <p className="mt-2 rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-xs font-semibold text-[var(--color-ink-soft)]">
+                          {usd(invoice.down_payment_cents)} down ·{" "}
+                          {invoice.installment_count}{" "}
+                          {invoice.installment_interval === "week" ? "weekly" : "monthly"}{" "}
+                          payments of {usd(invoice.installment_cents)}
+                        </p>
+                      ) : null}
                     </div>
                     <div className="shrink-0 text-left md:text-right">
                       <p className="text-2xl font-bold tabular-nums">
@@ -182,6 +208,9 @@ export default async function AdminInvoicesPage() {
                       </p>
                       <p className="text-xs uppercase tracking-[0.14em] text-[var(--color-muted)]">
                         balance
+                      </p>
+                      <p className="mt-1 text-xs text-[var(--color-ink-soft)]">
+                        {usd(invoice.amount_paid_cents)} paid of {usd(invoice.amount_cents)}
                       </p>
                       {invoice.due_at ? (
                         <p className="mt-1 text-xs text-[var(--color-ink-soft)]">
