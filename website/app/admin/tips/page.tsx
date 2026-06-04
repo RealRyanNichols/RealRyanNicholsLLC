@@ -425,7 +425,13 @@ function TipRoutePanel({
           href={`/admin/new?tip=${tipId}`}
           className="border border-[var(--color-accent)] bg-[var(--color-accent)] px-3 py-2 text-xs font-black uppercase tracking-normal text-white transition hover:bg-[var(--color-accent-strong)]"
         >
-          Start draft
+          Article draft
+        </Link>
+        <Link
+          href={`/admin/new?tip=${tipId}&mode=solution`}
+          className="border border-[#7fe3a9]/60 bg-[#7fe3a9]/15 px-3 py-2 text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:bg-[#7fe3a9]/25"
+        >
+          Solution brief
         </Link>
         <Link
           href={`/case/intake?route=${plan.kind}`}

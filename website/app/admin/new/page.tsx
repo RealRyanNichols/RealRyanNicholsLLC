@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default async function NewPostPage({
   searchParams,
 }: {
-  searchParams: Promise<{ id?: string; tip?: string }>;
+  searchParams: Promise<{ id?: string; tip?: string; mode?: string }>;
 }) {
   const supabase = await getSupabaseServerClient();
   const { data: auth } = await supabase.auth.getUser();
@@ -36,9 +36,10 @@ export default async function NewPostPage({
     );
   }
 
-  const { id, tip } = await searchParams;
+  const { id, tip, mode } = await searchParams;
   const editing = id && /^[0-9a-f-]{36}$/i.test(id) ? id : null;
   const tipId = !editing && tip && /^[0-9a-f-]{36}$/i.test(tip) ? tip : null;
+  const tipDraftMode = mode === "solution" ? "solution" : "article";
 
   let initial: {
     id: string;
@@ -93,10 +94,11 @@ export default async function NewPostPage({
           created_at: tipRecord.created_at,
         },
         plan,
+        tipDraftMode,
       );
       prefill = {
         ...draft,
-        sourceLabel: `tip ${tipRecord.id.slice(0, 8)} · ${plan.label}`,
+        sourceLabel: `tip ${tipRecord.id.slice(0, 8)} · ${plan.label} · ${tipDraftMode === "solution" ? "solution brief" : "article lead"}`,
       };
     }
   }
