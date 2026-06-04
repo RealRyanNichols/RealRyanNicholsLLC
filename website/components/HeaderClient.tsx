@@ -276,6 +276,8 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const pathname = usePathname();
   const isAdminPath = pathname.startsWith("/admin");
+  const officeHref = isAdmin ? "/admin" : "/account";
+  const officeLabel = isAdmin ? "Admin Office" : "My Office";
 
   // Close menus on route change
   useEffect(() => {
@@ -382,15 +384,20 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             >
               Donate
             </Link>
-            {isAdmin && (
+            {signedIn ? (
               <Link
-                href="/admin"
-                className="ml-1 inline-flex items-center rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-3.5 py-1.5 text-xs font-bold text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-paper)] transition"
-                aria-label="Admin dashboard"
+                href={officeHref}
+                className={[
+                  "ml-1 inline-flex items-center rounded-full px-3.5 py-1.5 text-xs font-black transition",
+                  isAdmin
+                    ? "border-2 border-[#7fe3a9] bg-[#071126] text-[#7fe3a9] hover:bg-[#7fe3a9] hover:text-[#071126]"
+                    : "border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]",
+                ].join(" ")}
+                aria-label={officeLabel}
               >
-                Admin
+                {officeLabel}
               </Link>
-            )}
+            ) : null}
             {isAdmin && (
               <Link
                 href="/admin/new"
@@ -400,14 +407,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
                 + New
               </Link>
             )}
-            {signedIn ? (
-              <Link
-                href="/account"
-                className="ml-1 inline-flex items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3.5 py-1.5 text-xs font-medium text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition"
-              >
-                Account
-              </Link>
-            ) : (
+            {!signedIn && (
               <Link
                 href="/login?mode=signup"
                 className="ml-1 inline-flex items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3.5 py-1.5 text-xs font-medium text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition"
@@ -419,6 +419,19 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
 
           {/* Touch/tablet — Donate (always visible) + hamburger */}
           <div className="flex lg:hidden items-center gap-2">
+            {signedIn ? (
+              <Link
+                href={officeHref}
+                className={[
+                  "inline-flex min-h-11 items-center rounded-full px-3 py-2 text-[11px] font-black uppercase tracking-normal transition",
+                  isAdmin
+                    ? "border border-[#7fe3a9] bg-[#071126] text-[#7fe3a9]"
+                    : "border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink)]",
+                ].join(" ")}
+              >
+                Office
+              </Link>
+            ) : null}
             <Link
               href="/support"
               className="btn-support inline-flex min-h-11 items-center rounded-full px-4 py-2 text-xs font-semibold"
@@ -439,7 +452,12 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
           </div>
         </div>
         {!isAdminPath ? (
-          <SiteDashboardRail pathname={pathname} menuOpen={open} />
+          <SiteDashboardRail
+            pathname={pathname}
+            menuOpen={open}
+            signedIn={signedIn}
+            isAdmin={isAdmin}
+          />
         ) : null}
 
         {/* Mobile dropdown drawer — anchored to the header's OWN bottom edge
@@ -465,10 +483,10 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
                   </p>
                 </div>
                 <Link
-                  href={signedIn ? "/account" : "/login?mode=signup"}
+                  href={signedIn ? officeHref : "/login?mode=signup"}
                   className="shrink-0 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] font-black uppercase tracking-normal text-[#fdf8ea] transition hover:bg-white/10"
                 >
-                  {signedIn ? "Account" : "Join"}
+                  {signedIn ? "Office" : "Join"}
                 </Link>
               </div>
 
@@ -658,10 +676,27 @@ function NavDropdown({
 function SiteDashboardRail({
   pathname,
   menuOpen,
+  signedIn,
+  isAdmin,
 }: {
   pathname: string;
   menuOpen: boolean;
+  signedIn: boolean;
+  isAdmin: boolean;
 }) {
+  const links = signedIn
+    ? [
+        {
+          href: isAdmin ? "/admin" : "/account",
+          label: isAdmin ? "Admin Office" : "My Office",
+          desc: isAdmin ? "Control room" : "Your workspace",
+          badge: isAdmin ? "Open" : "You",
+          tone: isAdmin ? "green" : "blue",
+        } satisfies NavItem,
+        ...DASHBOARD_LINKS,
+      ]
+    : DASHBOARD_LINKS;
+
   return (
     <div
       className={[
@@ -671,9 +706,12 @@ function SiteDashboardRail({
     >
       <nav
         aria-label="Site dashboard"
-        className="mx-auto flex max-w-5xl gap-2.5 overflow-x-auto px-4 py-3 [scrollbar-width:none] md:grid md:grid-cols-5"
+        className={[
+          "mx-auto flex max-w-5xl gap-2.5 overflow-x-auto px-4 py-3 [scrollbar-width:none] md:grid",
+          signedIn ? "md:grid-cols-6" : "md:grid-cols-5",
+        ].join(" ")}
       >
-        {DASHBOARD_LINKS.map((item) => (
+        {links.map((item) => (
           <DashboardTile
             key={item.href}
             item={item}

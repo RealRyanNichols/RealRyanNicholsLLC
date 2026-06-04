@@ -18,6 +18,10 @@ export default async function AccountPage() {
   const supabase = await getSupabaseServerClient();
   const { data } = await supabase.auth.getUser();
   if (!data.user) redirect("/login");
+  const { data: adminCheck } = await supabase.rpc("is_admin", {
+    uid: data.user.id,
+  });
+  const isAdmin = adminCheck === true;
 
   const [
     { data: profile },
@@ -89,11 +93,13 @@ export default async function AccountPage() {
   const pendingComments = (myComments ?? []).filter((c) => c.status === "pending").length;
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-10">
+    <div className="mx-auto max-w-4xl px-4 py-10">
       <h1 className="text-4xl font-bold tracking-tight">Your account</h1>
       <p className="text-[var(--color-ink-soft)] mt-2 text-sm">
         Signed in as <span className="font-mono">{data.user.email}</span>.
       </p>
+
+      {isAdmin ? <AdminOfficeCard /> : null}
 
       {myJ6Profile ? (
         <div className="mt-6">
@@ -238,6 +244,58 @@ export default async function AccountPage() {
         <SignOutButton />
       </div>
     </div>
+  );
+}
+
+function AdminOfficeCard() {
+  const links = [
+    { href: "/admin", label: "Control Room", sub: "What needs attention now" },
+    { href: "/admin/messages", label: "Messages", sub: "Private inbox" },
+    { href: "/admin/tips", label: "Tips", sub: "Leads and evidence" },
+    { href: "/admin/invoices", label: "Invoices", sub: "Collect money" },
+    { href: "/admin/analytics", label: "Analytics", sub: "Traffic and behavior" },
+    { href: "/admin/new", label: "New Post", sub: "Publish a draft" },
+  ];
+
+  return (
+    <section className="mt-6 overflow-hidden rounded-2xl border-2 border-[#203a64] bg-[#071126] text-[#fdf8ea] shadow-xl">
+      <div className="border-b border-white/10 p-4 sm:flex sm:items-center sm:justify-between sm:gap-4">
+        <div>
+          <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+            Admin Office
+          </p>
+          <h2 className="mt-1 text-2xl font-black tracking-tight">
+            Your backend is one click away.
+          </h2>
+          <p className="mt-1 max-w-2xl text-sm leading-relaxed text-[#cfd9ea]">
+            Money, messages, tips, posts, and analytics are grouped here so you
+            do not have to dig through the public site.
+          </p>
+        </div>
+        <Link
+          href="/admin"
+          className="mt-4 inline-flex min-h-11 items-center justify-center rounded-full bg-[#7fe3a9] px-5 text-sm font-black uppercase tracking-normal text-[#071126] transition hover:bg-[#a7efc4] sm:mt-0"
+        >
+          Open Office
+        </Link>
+      </div>
+      <div className="grid gap-px bg-white/10 sm:grid-cols-2 lg:grid-cols-3">
+        {links.map((link) => (
+          <Link
+            key={link.href}
+            href={link.href}
+            className="block bg-[#101a31] p-4 transition hover:bg-[#142447]"
+          >
+            <span className="block text-sm font-black text-[#fdf8ea]">
+              {link.label}
+            </span>
+            <span className="mt-1 block text-xs font-semibold text-[#cfd9ea]">
+              {link.sub}
+            </span>
+          </Link>
+        ))}
+      </div>
+    </section>
   );
 }
 
