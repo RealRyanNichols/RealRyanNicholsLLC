@@ -30,51 +30,6 @@ const urgentAsks = [
   "Publication split visible: public record, private discovery, family-sensitive material, and attorney-work-product categories.",
 ];
 
-const immediateEmergency = [
-  {
-    label: "Top priority",
-    value: "3 misdemeanors",
-    note:
-      "Criminal defense is the immediate court lane. The civil, business, J6, and political-context lanes stay visible because they explain pressure, motive, damages, and witness credibility.",
-  },
-  {
-    label: "Court setting",
-    value: "June 9, 2026",
-    note:
-      "Google Drive attorney map lists arraignment in Harrison County; exact case number and docket entry still need verification.",
-  },
-  {
-    label: "Possible case no.",
-    value: "2026-0226",
-    note:
-      "Marked VERIFY in the Drive case map. It remains a lead until matched against the charging instrument or court portal.",
-  },
-  {
-    label: "Bond issue",
-    value: "Speech / social media",
-    note:
-      "Drive case map says bond was revoked for social-media conduct. Written revocation basis and condition wording belong in the packet.",
-  },
-  {
-    label: "Discovery lane",
-    value: "Art. 39.14 + Brady",
-    note:
-      "The current bodycam fight belongs in the criminal-case record, not only in open-records correspondence while the case is active.",
-  },
-  {
-    label: "Representation",
-    value: "Not represented",
-    note:
-      "Ryan reports he is not represented by anyone. Appearance status needs docket confirmation across each active matter.",
-  },
-  {
-    label: "Civil leverage",
-    value: "WU / J6 / divorce",
-    note:
-      "Business control, alleged loan/debt exposure, J6 damages, and divorce records belong in the same attorney map without distracting from the criminal defense packet.",
-  },
-];
-
 const chargeCards = [
   {
     label: "Charge 1",
@@ -621,7 +576,7 @@ const topProofNumbers = [
     label: "J6 damages lane",
     value: "$35M+",
     tag: "claimed / source packet",
-    href: "#value-story",
+    href: "#full-record",
     tone: "gold",
     weight: "94%",
     source: "/case/damages + J6 Drive folder",
@@ -632,7 +587,7 @@ const topProofNumbers = [
     label: "Supported J6 range",
     value: "$45-50M",
     tag: "claimed range",
-    href: "#value-story",
+    href: "#full-record",
     tone: "gold",
     weight: "100%",
     source: "/case/damages",
@@ -643,7 +598,7 @@ const topProofNumbers = [
     label: "Missing WU funds",
     value: "$750K-1.5M",
     tag: "audit needed",
-    href: "#money-records",
+    href: "#full-record",
     tone: "red",
     weight: "88%",
     source: "MASTER_CASE_BRIEFING + MOTION_02",
@@ -654,7 +609,7 @@ const topProofNumbers = [
     label: "2023 WU 1099s",
     value: "$411K",
     tag: "QuickBooks summary",
-    href: "#money-records",
+    href: "#full-record",
     tone: "green",
     weight: "78%",
     source: "WU_Payroll_1099_Findings",
@@ -665,7 +620,7 @@ const topProofNumbers = [
     label: "Q3 payroll record",
     value: "$231K",
     tag: "TWC source lane",
-    href: "#money-records",
+    href: "#full-record",
     tone: "green",
     weight: "62%",
     source: "TWC Q3 2024 payroll summary",
@@ -959,12 +914,12 @@ export default async function AttorneyBriefPage() {
   }
 
   return (
-    <article className="mx-auto w-full max-w-[64rem] px-4 py-4 sm:px-5 lg:px-6">
+    <article className="mx-auto w-full max-w-[58rem] px-4 py-4 sm:px-5 lg:px-6">
       <nav
         aria-label="Attorney brief navigation"
         className="sticky top-16 z-20 -mx-4 mb-4 border-y border-[var(--color-line)] bg-[var(--color-surface)]/95 px-4 py-2 shadow-sm backdrop-blur sm:-mx-5 sm:px-5 lg:-mx-6 lg:top-20 lg:px-6"
       >
-        <div className="mx-auto flex max-w-[64rem] items-center gap-2 overflow-x-auto">
+        <div className="mx-auto flex max-w-[58rem] items-center gap-2 overflow-x-auto">
           <Link
             href="/admin"
             className="shrink-0 border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-[11px] font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
@@ -975,7 +930,7 @@ export default async function AttorneyBriefPage() {
             href="#first-look"
             className="shrink-0 border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-3 py-2 text-[11px] font-black uppercase tracking-normal text-[var(--color-accent)]"
           >
-            First screen
+            Start
           </a>
           <a
             href="#charges"
@@ -987,108 +942,111 @@ export default async function AttorneyBriefPage() {
             href="#receipts"
             className="shrink-0 border border-[var(--color-line)] bg-white/45 px-3 py-2 text-[11px] font-black uppercase tracking-normal text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
           >
-            Receipts
+            Sources
           </a>
           <a
-            href="#full-record"
-            className="shrink-0 border border-[#7fe3a9]/60 bg-[#071126] px-3 py-2 text-[11px] font-black uppercase tracking-normal text-[#7fe3a9] transition hover:bg-[#102826]"
+            href="#open-questions"
+            className="shrink-0 border border-[var(--color-line)] bg-white/45 px-3 py-2 text-[11px] font-black uppercase tracking-normal text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
           >
-            Full packet
+            Next
           </a>
         </div>
       </nav>
 
       <section id="first-look" className="border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm sm:p-5 lg:p-6">
-        <div className="grid gap-5 lg:grid-cols-[1fr_18rem] lg:items-start">
+        <div className="grid gap-5 lg:grid-cols-[1fr_17rem] lg:items-start">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.24em] text-[#7fe3a9]">
-              Counsel first screen
+              Start here
             </p>
             <h1 className="mt-2 max-w-3xl text-3xl font-black leading-[0.98] text-[#fdf8ea] sm:text-5xl">
-              Three charges. One record. Show the proof path first.
+              Three charges. One proof path.
             </h1>
             <p className="mt-4 max-w-3xl text-base font-semibold leading-7 text-[#cfd9ea]">
-              This brief now opens like a human briefing, not a document dump:
-              what is urgent, what Ryan disputes, what must be opened, and
-              where the larger money and source lanes live.
+              The full record is here, but the first screen now says only what
+              a lawyer needs first: the live criminal lane, the disputed fact,
+              the missing source records, and where to open the packet.
             </p>
           </div>
           <aside className="border border-white/10 bg-white/[0.055] p-4">
             <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
-              Meeting
+              90-second read
             </p>
             <h2 className="mt-2 font-sans text-xl font-black text-[#fdf8ea]">
-              {meeting.firm}
+              Counsel can scan this without digging.
             </h2>
-            <dl className="mt-4 space-y-3 text-sm">
-              <InfoRow label="When" value={meeting.when} />
-              <InfoRow label="Where" value={meeting.where} />
-            </dl>
+            <p className="mt-3 text-sm font-semibold leading-6 text-[#cfd9ea]">
+              Deep records stay below the fold. The first view is the cover
+              sheet, not the warehouse.
+            </p>
           </aside>
         </div>
 
         <div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            immediateEmergency[0],
-            immediateEmergency[5],
-            immediateEmergency[1],
-            immediateEmergency[4],
-          ].map((item, index) => (
-            <Metric
-              key={item.label}
-              label={item.label}
-              value={item.value}
-              sub={index === 0 ? "criminal lane first" : item.note}
-              hot={index < 2}
-            />
+          <Metric label="Charges" value="3" sub="2 harassment / 1 deadly conduct" hot />
+          <Metric label="Representation" value="None" sub="Ryan reports no counsel" hot />
+          <Metric label="Setting" value="June 9" sub="verify docket and cause no." />
+          <Metric label="Discovery" value="Open" sub="bodycam / CAD / statements" />
+        </div>
+
+        <div className="mt-5 grid gap-3 lg:grid-cols-[1.1fr_0.9fr]">
+          <section className="border border-[#7fe3a9]/55 bg-[#7fe3a9]/10 p-4">
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#7fe3a9]">
+              Core dispute
+            </p>
+            <h2 className="mt-2 font-sans text-2xl font-black leading-tight text-[#fdf8ea]">
+              Public allegation: displayed / hand on grip. Ryan disputes
+              pulling, pointing, brandishing, firing, or threatening.
+            </h2>
+          </section>
+          <section className="border border-[#d8c89e]/60 bg-[#d8c89e]/12 p-4">
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#d8c89e]">
+              Open first
+            </p>
+            <ol className="mt-2 space-y-2 text-sm font-semibold leading-6 text-[#cfd9ea]">
+              <li>1. Charging instruments and probable-cause affidavits.</li>
+              <li>2. Bond order and exact condition language.</li>
+              <li>3. Bodycam, CAD, dispatch, witness statements.</li>
+            </ol>
+          </section>
+        </div>
+      </section>
+
+      <section className="mt-4 grid gap-3 border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm md:grid-cols-[1fr_auto] md:items-center">
+        <div>
+          <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+            Meeting target
+          </p>
+          <h2 className="mt-1 font-sans text-2xl font-black">
+            {meeting.firm}
+          </h2>
+          <dl className="mt-3 grid gap-3 text-sm sm:grid-cols-3">
+            <InfoRow label="Attorney" value={meeting.attorney} />
+            <InfoRow label="When" value={meeting.when} />
+            <InfoRow label="Where" value={meeting.where} />
+          </dl>
+        </div>
+        <a
+          href={meeting.website}
+          className="inline-flex min-h-11 items-center justify-center border border-[var(--color-support-strong)] bg-[var(--color-support)] px-4 text-sm font-black uppercase tracking-normal text-[#17110a] transition hover:brightness-95"
+        >
+          Firm site
+        </a>
+      </section>
+
+      <details id="numbers" className="mt-4 border border-[#203a64] bg-[#071126] text-[#fdf8ea] shadow-sm">
+        <summary className="flex cursor-pointer items-center justify-between gap-3 p-4 text-sm font-black uppercase tracking-normal marker:content-['']">
+          <span>Open proof numbers and value lanes</span>
+          <span className="border border-[#7fe3a9]/50 px-2 py-1 text-[10px] text-[#7fe3a9]">
+            Click
+          </span>
+        </summary>
+        <div className="grid gap-3 border-t border-white/10 p-4 md:grid-cols-2 xl:grid-cols-3">
+          {topProofNumbers.map((card) => (
+            <ProofNumberCard key={card.label} {...card} />
           ))}
         </div>
-
-        <div className="mt-5 grid gap-3 lg:grid-cols-3">
-          <section className="border border-[#c9251d]/70 bg-[#c9251d]/12 p-4">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#ffb9ad]">
-              State/public allegation lane
-            </p>
-            <h2 className="mt-2 font-sans text-xl font-black text-[#fdf8ea]">
-              Displayed firearm / hand on grip.
-            </h2>
-            <p className="mt-2 text-sm font-semibold leading-6 text-[#cfd9ea]">
-              That is the baseline allegation the packet must test against the
-              exact charging language, not public retellings.
-            </p>
-          </section>
-          <section className="border border-[#7fe3a9]/70 bg-[#7fe3a9]/12 p-4">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#7fe3a9]">
-              Ryan-stated defense lane
-            </p>
-            <h2 className="mt-2 font-sans text-xl font-black text-[#fdf8ea]">
-              No pulling, pointing, firing, or brandishing.
-            </h2>
-            <p className="mt-2 text-sm font-semibold leading-6 text-[#cfd9ea]">
-              Keep Ryan&apos;s denial beside the native video, reports,
-              statements, and original message records that can test it.
-            </p>
-          </section>
-          <section className="border border-[#d8c89e]/70 bg-[#d8c89e]/12 p-4">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#d8c89e]">
-              Missing control lane
-            </p>
-            <h2 className="mt-2 font-sans text-xl font-black text-[#fdf8ea]">
-              Charging packet, bond order, discovery.
-            </h2>
-            <p className="mt-2 text-sm font-semibold leading-6 text-[#cfd9ea]">
-              Counsel should see immediately what is attached, what is claimed,
-              and what still has to be pulled from the source record.
-            </p>
-          </section>
-        </div>
-      </section>
-
-      <section id="numbers" className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-        {topProofNumbers.slice(0, 4).map((card) => (
-          <ProofNumberCard key={card.label} {...card} />
-        ))}
-      </section>
+      </details>
 
       <section id="charges" className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5">
         <div className="grid gap-3 lg:grid-cols-[0.34fr_1fr] lg:items-end">
@@ -1844,10 +1802,10 @@ function ClaimSupportRow({
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <dt className="text-[10px] font-black uppercase tracking-[0.2em] text-[#d8c89e]">
+      <dt className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-muted)]">
         {label}
       </dt>
-      <dd className="mt-1 font-semibold leading-6 text-[#fdf8ea]">{value}</dd>
+      <dd className="mt-1 font-semibold leading-6 text-[var(--color-ink)]">{value}</dd>
     </div>
   );
 }
