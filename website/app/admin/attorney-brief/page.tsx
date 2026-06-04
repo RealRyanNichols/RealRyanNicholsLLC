@@ -968,6 +968,53 @@ const falseGunPattern = [
   },
 ];
 
+const civilThroughline = {
+  anchors: [
+    {
+      label: "Same county, same judge",
+      body: "The divorce — Nichols v. Nichols, Cause No. 25-0847, 71st Judicial District Court, Harrison County, before Judge Brad Morin — runs in the same county and court system as the criminal charges. The civil and criminal pressure share a venue.",
+    },
+    {
+      label: "Materially false testimony vs. the record",
+      body: "Bonnie's hearing testimony is contradicted by contemporaneous police evidence in Longview PD case 260630230 — the same pattern as the false gun claims: stated under oath, treated as credible, disproved by the record.",
+    },
+    {
+      label: "Fraud on the community",
+      body: "Instruments signed while Ryan was incarcerated — an SBA/EIDL note of $1,776,900 (Oct. 21, 2021) and a BancorpSouth $250,000 note — plus disputed signatures, missing 2023 bank statements, and roughly $410,000 in Poshmark sales under Bonnie's name. Pled as fraud-on-the-community (TFC § 3.102), not criminal language.",
+    },
+    {
+      label: "A pled federal financial scheme",
+      body: "Bonnie is named with Quantum Ecommerce LLC and Troy Marchand as the 'Quantum-Wholesale Partnership Defendants' in the federal case David Hough et al. v. Ryan Carroll et al. (the Wealth Assistants matter) — a public-docket scheme running concurrent with the marriage.",
+    },
+    {
+      label: "No counsel, after a due-process violation",
+      body: "Ryan's prior attorney withdrew after admitting a due-process violation on the record. He has been pro se since — the same inability to retain counsel that is now crippling the criminal defense.",
+    },
+  ],
+  exhibits: [
+    {
+      label: "Divorce motions — Temporary Orders, gag, children",
+      href: "https://drive.google.com/drive/folders/1uRzesul3mnPomWYyR_LmZ4FqMN-m5EpA",
+      note: "Motion for Temporary Orders (Final), Respondent's Counter-Motion (revised), Motion for Gag Order, Motion to Interview Children in Chambers.",
+    },
+    {
+      label: "Filed into court — business receiver",
+      href: "https://drive.google.com/drive/folders/1EgDmGyfGLreWsDiJkNUVbJBCVLX2L-eV",
+      note: "Business-receiver proposed order and exhibits — receivership over Wholesale Universe (CPRC § 64.001).",
+    },
+    {
+      label: "Wholesale Universe forensic packet",
+      href: "https://drive.google.com/drive/folders/12T-W0pZsNyh7hOrkpQZN7-6WU_yclG1h",
+      note: "Payroll / 1099 findings, DA packages, subpoena and witness charts, evidence index.",
+    },
+    {
+      label: "July 13 — James Chatham bodycam",
+      href: "https://drive.google.com/drive/folders/1HylS3UUPk5gyBjfhARP_dCIhzENoq3Nv",
+      note: "Lt. England / Capt. Clayton bodycam and report — the 'not a threat' standard the church charge ignores.",
+    },
+  ],
+};
+
 const matters: Matter[] = [
   {
     id: "matter-deadly-conduct",
@@ -1220,6 +1267,12 @@ export function AttorneyBriefBody({
             className="inline-flex min-h-10 items-center border border-[#b32419] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[#8d1b13] transition hover:bg-[var(--color-accent-soft)]"
           >
             The pattern
+          </a>
+          <a
+            href="#civil-throughline"
+            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          >
+            Throughline
           </a>
           <a
             href="#source-doors"
@@ -1514,6 +1567,69 @@ export function AttorneyBriefBody({
             </li>
           ))}
         </ol>
+      </section>
+
+      <section
+        id="civil-throughline"
+        className="mt-4 border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm sm:p-5"
+      >
+        <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+          The civil throughline
+        </p>
+        <h2 className="mt-1 font-sans text-2xl font-black leading-tight text-[#fdf8ea] sm:text-3xl">
+          Bo Rogers, Bonnie, and Wholesale Universe all run back to Harrison
+          County.
+        </h2>
+        <p className="mt-2 max-w-3xl text-sm font-semibold leading-6 text-[#cfd9ea]">
+          The divorce, the business fraud, and the criminal charges are not
+          separate stories. They share a county, a judge, and a pattern: a false
+          claim treated as credible, the record that disproves it ignored, and
+          Ryan left without counsel.
+        </p>
+        <div className="mt-4 grid gap-2 sm:grid-cols-2">
+          {civilThroughline.anchors.map((item) => (
+            <div
+              key={item.label}
+              className="border border-white/10 bg-white/5 p-3"
+            >
+              <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#d8c89e]">
+                {item.label}
+              </p>
+              <p className="mt-1 text-sm font-semibold leading-6 text-[#cfd9ea]">
+                {item.body}
+              </p>
+            </div>
+          ))}
+        </div>
+        <p className="mt-3 text-[10px] font-bold uppercase tracking-[0.16em] text-[#d8c89e]">
+          Reported concerns and supporting context — not court findings.
+        </p>
+        <div className="mt-4 border-t border-white/10 pt-4">
+          <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#7fe3a9]">
+            Filed exhibits — open these
+          </p>
+          <div className="mt-3 grid gap-2 md:grid-cols-2">
+            {civilThroughline.exhibits.map((ex) => (
+              <a
+                key={ex.href}
+                href={ex.href}
+                className="group border border-white/10 bg-white/5 p-3 transition hover:border-[#7fe3a9]/50 hover:bg-[#7fe3a9]/10"
+              >
+                <span className="flex items-center justify-between gap-2">
+                  <span className="text-sm font-black text-[#fdf8ea]">
+                    {ex.label}
+                  </span>
+                  <span className="shrink-0 text-[10px] font-black uppercase tracking-[0.08em] text-[#7fe3a9]">
+                    Open
+                  </span>
+                </span>
+                <span className="mt-1 block text-xs font-semibold leading-5 text-[#cfd9ea]">
+                  {ex.note}
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
       </section>
 
       <section
