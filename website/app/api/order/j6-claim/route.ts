@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { Resend } from "resend";
+import { sendAdminAlert } from "@/lib/admin-email-alerts";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { getSupabaseServiceClient } from "@/lib/supabase/service";
 import { buildJ6ClaimEmails } from "@/lib/email";
@@ -85,33 +86,31 @@ export async function POST(request: Request) {
   // Best-effort emails — the claim still succeeds if email isn't configured.
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.RESEND_FROM_EMAIL;
-  if (apiKey && from) {
-    const { admin, user } = buildJ6ClaimEmails({
-      productName: product.name,
-      claimantEmail: auth.user.email ?? "(unknown)",
-      orderId: order.id,
-      shipping: parsed.data.shipping,
-      notes: parsed.data.notes,
-    });
-    const resend = new Resend(apiKey);
-    const adminTo = process.env.ADMIN_NOTIFY_EMAIL ?? from;
+  const { admin, user } = buildJ6ClaimEmails({
+    productName: product.name,
+    claimantEmail: auth.user.email ?? "(unknown)",
+    orderId: order.id,
+    shipping: parsed.data.shipping,
+    notes: parsed.data.notes,
+  });
+  const adminAlert = await sendAdminAlert({
+    subject: admin.subject,
+    html: admin.html,
+    text: admin.text,
+  });
+  if (!adminAlert.sent) {
+    console.warn("j6_claim_admin_alert_failed", adminAlert);
+  }
+  if (apiKey && from && auth.user.email) {
     try {
+      const resend = new Resend(apiKey);
       await resend.emails.send({
         from,
-        to: adminTo,
-        subject: admin.subject,
-        html: admin.html,
-        text: admin.text,
+        to: auth.user.email,
+        subject: user.subject,
+        html: user.html,
+        text: user.text,
       });
-      if (auth.user.email) {
-        await resend.emails.send({
-          from,
-          to: auth.user.email,
-          subject: user.subject,
-          html: user.html,
-          text: user.text,
-        });
-      }
     } catch {
       /* non-blocking */
     }

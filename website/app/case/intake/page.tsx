@@ -17,7 +17,7 @@ export const dynamic = "force-dynamic";
 type IntakeItem = {
   id: string;
   public_ref: string;
-  source_type: "tip" | "submission" | "tool";
+  source_type: "tip" | "submission" | "tool" | "private_message";
   category: string;
   subject: string | null;
   location: string | null;
@@ -66,6 +66,7 @@ const filterOptions = [
   { value: "tip", label: "Tips" },
   { value: "submission", label: "Submissions" },
   { value: "tool", label: "Tools" },
+  { value: "private_message", label: "Private receipts" },
   { value: "needs_verification", label: "Needs verification" },
   { value: "verified", label: "Verified" },
 ];
@@ -84,6 +85,7 @@ export default async function IntakeLedgerPage({
     tips: 0,
     submissions: 0,
     tools: 0,
+    privateMessages: 0,
     open: 0,
     signals: 0,
   };
@@ -101,7 +103,7 @@ export default async function IntakeLedgerPage({
       .order("last_action_at", { ascending: false })
       .limit(80);
 
-    if (filter === "tip" || filter === "submission" || filter === "tool") {
+    if (filter === "tip" || filter === "submission" || filter === "tool" || filter === "private_message") {
       query = query.eq("source_type", filter);
     } else if (filter !== "all" && filterOptions.some((o) => o.value === filter)) {
       query = query.eq("public_status", filter);
@@ -119,6 +121,7 @@ export default async function IntakeLedgerPage({
       { count: tips },
       { count: submissions },
       { count: tools },
+      { count: privateMessages },
       { count: open },
     ] =
       await Promise.all([
@@ -149,6 +152,12 @@ export default async function IntakeLedgerPage({
           .from("intake_items")
           .select("id", { count: "exact", head: true })
           .eq("visibility", "public")
+          .neq("public_status", "rejected")
+          .eq("source_type", "private_message"),
+        supabase
+          .from("intake_items")
+          .select("id", { count: "exact", head: true })
+          .eq("visibility", "public")
           .in("public_status", ["received", "needs_verification", "triage"]),
       ]);
 
@@ -157,6 +166,7 @@ export default async function IntakeLedgerPage({
       tips: tips ?? 0,
       submissions: submissions ?? 0,
       tools: tools ?? 0,
+      privateMessages: privateMessages ?? 0,
       open: open ?? 0,
       signals: items.reduce(
         (sum, item) => sum + item.verify_count + item.dispute_count + item.context_count,
@@ -206,6 +216,7 @@ export default async function IntakeLedgerPage({
             <Stat label="Tips" value={counts.tips} />
             <Stat label="Submissions" value={counts.submissions} />
             <Stat label="Tools" value={counts.tools} />
+            <Stat label="Private receipts" value={counts.privateMessages} />
           </div>
         </div>
       </section>
@@ -397,5 +408,7 @@ function MiniStat({
 }
 
 function humanize(value: string) {
+  if (value === "private_message") return "Private Receipt";
+  if (value === "service_question") return "Service Question";
   return value.replace(/[_-]/g, " ").replace(/\b\w/g, (m) => m.toUpperCase());
 }

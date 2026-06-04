@@ -8,7 +8,7 @@ type State =
   | { kind: "idle" }
   | { kind: "open" }
   | { kind: "submitting" }
-  | { kind: "success"; message: string }
+  | { kind: "success"; message: string; publicRef?: string | null; ledgerUrl?: string | null }
   | { kind: "error"; message: string };
 
 export function PrivateMessageBox({
@@ -96,7 +96,11 @@ export function PrivateMessageBox({
           visitor_id: getVisitorId() || undefined,
         }),
       });
-      const json = await response.json().catch(() => ({}));
+      const json = (await response.json().catch(() => ({}))) as {
+        error?: string;
+        public_ref?: string | null;
+        ledger_url?: string | null;
+      };
       if (!response.ok) {
         trackEvent("private_message_failed", { source, reason: "api" });
         setState({
@@ -111,7 +115,12 @@ export function PrivateMessageBox({
       setPhone("");
       setMessage("");
       setAcknowledged(!expandedIntake);
-      setState({ kind: "success", message: "Private message received." });
+      setState({
+        kind: "success",
+        message: "Private message received.",
+        publicRef: json.public_ref ?? null,
+        ledgerUrl: json.ledger_url ?? "/case/intake",
+      });
     } catch {
       trackEvent("private_message_failed", { source, reason: "network" });
       setState({ kind: "error", message: "Network error. Try again." });
@@ -304,7 +313,24 @@ export function PrivateMessageBox({
       ) : null}
 
       {state.kind === "success" ? (
-        <p className="mt-3 text-sm text-emerald-700">{state.message}</p>
+        <div className="mt-3 border border-[var(--color-success)] bg-[var(--color-success-soft)] p-3 text-sm text-[var(--color-ink)]">
+          <p className="font-bold text-emerald-800">{state.message}</p>
+          {state.publicRef ? (
+            <p className="mt-1 font-mono text-xs font-black uppercase tracking-normal text-[var(--color-muted)]">
+              Public-safe receipt: {state.publicRef}
+            </p>
+          ) : null}
+          <p className="mt-1 text-xs leading-relaxed text-[var(--color-ink-soft)]">
+            The body and contact details stayed private. The public ledger can
+            show that a safe receipt was created after the message came in.
+          </p>
+          <a
+            href={state.ledgerUrl ?? "/case/intake"}
+            className="mt-2 inline-flex min-h-10 items-center border border-[var(--color-success)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-success)]"
+          >
+            Open intake ledger
+          </a>
+        </div>
       ) : null}
       {state.kind === "error" ? (
         <p className="mt-3 text-sm text-red-700">{state.message}</p>

@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
 import { getSessionId, getVisitorId } from "@/lib/client-ids";
+import { VoiceStoryRecorder } from "@/components/VoiceStoryRecorder";
 
 type Status =
   | { kind: "idle" }
@@ -74,6 +75,8 @@ function buildSignalScore(input: {
 
 export function StoryIntakeForm({ source = "tell-your-story" }: { source?: string }) {
   const [status, setStatus] = useState<Status>({ kind: "idle" });
+  const [audioStatus, setAudioStatus] = useState<Status>({ kind: "idle" });
+  const [audioFile, setAudioFile] = useState<File | null>(null);
   const [storyType, setStoryType] = useState<(typeof STORY_TYPES)[number]>(STORY_TYPES[0]);
   const [privacy, setPrivacy] = useState<(typeof PRIVACY_OPTIONS)[number]>(PRIVACY_OPTIONS[0]);
   const [followUp, setFollowUp] = useState<(typeof FOLLOW_UP_OPTIONS)[number]>(FOLLOW_UP_OPTIONS[0]);
@@ -90,6 +93,7 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
   const [missing, setMissing] = useState("");
   const [safeVersion, setSafeVersion] = useState("");
   const [ack, setAck] = useState(false);
+  const [receipt, setReceipt] = useState<{ publicRef: string | null; ledgerUrl: string } | null>(null);
 
   const signalScore = useMemo(
     () => buildSignalScore({ story, proof, witnesses, people, dates, tags }),
@@ -122,6 +126,55 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
         ? current.filter((item) => item !== tag)
         : [...current, tag].slice(0, 6),
     );
+  }
+
+  function appendStoryText(text: string) {
+    setStory((current) => {
+      const next = [current.trim(), text.trim()].filter(Boolean).join("\n\n");
+      return next.slice(0, 1500);
+    });
+  }
+
+  async function transcribeAudio() {
+    if (!audioFile) {
+      setAudioStatus({ kind: "error", message: "Choose an audio file first." });
+      return;
+    }
+    setAudioStatus({ kind: "submitting" });
+    trackEvent("story_audio_transcribe_attempt", {
+      source,
+      file_size: audioFile.size,
+      file_type: audioFile.type || "unknown",
+    });
+    try {
+      const body = new FormData();
+      body.append("audio", audioFile);
+      const response = await fetch("/api/transcribe-audio", {
+        method: "POST",
+        body,
+      });
+      const json = (await response.json().catch(() => ({}))) as {
+        text?: string;
+        error?: string;
+      };
+      if (!response.ok || !json.text) {
+        setAudioStatus({
+          kind: "error",
+          message: json.error ?? "Could not transcribe that audio.",
+        });
+        trackEvent("story_audio_transcribe_failed", { source, reason: "api" });
+        return;
+      }
+      appendStoryText(json.text);
+      setAudioStatus({ kind: "success" });
+      trackEvent("story_audio_transcribe_success", {
+        source,
+        chars: json.text.length,
+      });
+    } catch {
+      setAudioStatus({ kind: "error", message: "Network error. Try again." });
+      trackEvent("story_audio_transcribe_failed", { source, reason: "network" });
+    }
   }
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
@@ -205,12 +258,20 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
           visitor_id: getVisitorId() || undefined,
         }),
       });
-      const json = await response.json().catch(() => ({}));
+      const json = (await response.json().catch(() => ({}))) as {
+        error?: string;
+        public_ref?: string | null;
+        ledger_url?: string | null;
+      };
       if (!response.ok) {
         setStatus({ kind: "error", message: json.error ?? "Could not save your story yet." });
         trackEvent("story_intake_submit_failed", { source, reason: "api" });
         return;
       }
+      setReceipt({
+        publicRef: json.public_ref ?? null,
+        ledgerUrl: json.ledger_url ?? "/case/intake",
+      });
       setStatus({ kind: "success" });
       trackEvent("story_intake_submit_success", {
         source,
@@ -237,11 +298,24 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
           Ryan can compare it against other leads, pattern tags, people, agencies,
           dates, and records. Nothing is public just because you submitted it.
         </p>
+        <div className="mt-4 border border-[var(--color-success)] bg-[var(--color-success-soft)] p-3">
+          <p className="text-xs font-black uppercase tracking-normal text-[var(--color-muted)]">
+            Public-safe receipt
+          </p>
+          <p className="mt-1 font-mono text-2xl font-black text-[var(--color-ink)]">
+            {receipt?.publicRef ?? "Private queue"}
+          </p>
+          <p className="mt-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+            The receipt can show action happened. Your private story, contact
+            details, and identifying facts stay in the admin review queue.
+          </p>
+        </div>
         <div className="mt-5 grid gap-3 sm:grid-cols-3">
           <button
             type="button"
             onClick={() => {
               setStatus({ kind: "idle" });
+              setReceipt(null);
               setHeadline("");
               setStory("");
               setProof("");
@@ -255,16 +329,16 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
             Send another story
           </button>
           <a
-            href="/submit"
+            href={receipt?.ledgerUrl ?? "/case/intake"}
             className="min-h-11 rounded-lg border border-[var(--color-line)] px-4 py-2 text-center text-sm font-black text-[var(--color-accent)]"
           >
-            Send a hard tip
+            See the ledger
           </a>
           <a
-            href="/the-map-room"
+            href="/submit"
             className="min-h-11 rounded-lg border border-[var(--color-line)] px-4 py-2 text-center text-sm font-black text-[var(--color-ink)]"
           >
-            View the map room
+            Send a hard tip
           </a>
         </div>
       </section>
@@ -342,6 +416,75 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
             placeholder="Tell it in order. Start with the plain-English version, then add dates, actions, contradictions, and what made you realize the story did not add up."
             maxLength={1500}
           />
+
+          <div className="rounded-lg border-2 border-[var(--color-accent)] bg-[var(--color-paper)] p-3 sm:p-4">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+                  Talk it out
+                </p>
+                <h3 className="font-display text-2xl font-black tracking-normal">
+                  Say the story. Then clean it up.
+                </h3>
+                <p className="mt-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+                  Use the mic for live talk-to-text, or upload an audio note and
+                  drop the transcript into the story box.
+                </p>
+              </div>
+              <span className="rounded-full border border-[var(--color-line)] px-3 py-1 text-xs font-black text-[var(--color-muted)]">
+                {story.length.toLocaleString()} / 1,500
+              </span>
+            </div>
+
+            <div className="mt-3">
+              <VoiceStoryRecorder onAppendText={appendStoryText} />
+            </div>
+
+            <div className="mt-3 rounded-lg border border-[var(--color-line)] bg-white p-3">
+              <label className="grid gap-1 text-sm font-bold">
+                Transcribe an audio file
+                <input
+                  type="file"
+                  accept="audio/mpeg,audio/mp3,audio/mp4,audio/mpga,audio/m4a,audio/wav,audio/webm,video/mp4"
+                  onChange={(event) => {
+                    setAudioFile(event.target.files?.[0] ?? null);
+                    setAudioStatus({ kind: "idle" });
+                  }}
+                  className="min-h-11 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm font-normal"
+                />
+              </label>
+              <div className="mt-3 flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  onClick={transcribeAudio}
+                  disabled={!audioFile || audioStatus.kind === "submitting"}
+                  className="min-h-10 rounded-lg border-2 border-[var(--color-blue)] bg-[var(--color-blue)] px-4 py-2 text-sm font-black text-white transition hover:bg-[var(--color-blue-strong)] disabled:opacity-50"
+                >
+                  {audioStatus.kind === "submitting"
+                    ? "Transcribing..."
+                    : "Transcribe audio"}
+                </button>
+                {audioFile ? (
+                  <span className="text-xs text-[var(--color-muted)]">
+                    {audioFile.name} · {(audioFile.size / 1024 / 1024).toFixed(1)} MB
+                  </span>
+                ) : null}
+              </div>
+              {audioStatus.kind === "success" ? (
+                <p className="mt-2 text-xs font-bold text-[var(--color-blue)]">
+                  Transcript added. Read it once, fix names and dates, then send.
+                </p>
+              ) : audioStatus.kind === "error" ? (
+                <p className="mt-2 text-xs font-bold text-[var(--color-accent)]">
+                  {audioStatus.message}
+                </p>
+              ) : (
+                <p className="mt-2 text-xs text-[var(--color-muted)]">
+                  Audio is transcribed server-side and is not saved by this form.
+                </p>
+              )}
+            </div>
+          </div>
 
           <TextField
             label="What proof exists?"

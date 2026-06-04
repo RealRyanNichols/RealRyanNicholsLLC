@@ -44,6 +44,7 @@ export function getIntegrationHealth(): IntegrationGroup[] {
 
   const resendKey = present(e.RESEND_API_KEY);
   const resendFrom = present(e.RESEND_FROM_EMAIL);
+  const emailReady = resendKey && resendFrom;
   const mailing = present(e.SITE_MAILING_ADDRESS);
   const adminNotify = present(e.ADMIN_NOTIFY_EMAIL);
 
@@ -105,18 +106,22 @@ export function getIntegrationHealth(): IntegrationGroup[] {
         },
         {
           id: "admin-notify",
-          label: "Where alerts go",
-          status: adminNotify || resendFrom ? "ok" : "off",
+          label: "Admin alert inbox",
+          status: emailReady ? "ok" : rollup([resendKey, resendFrom]),
           critical: false,
-          summary: adminNotify
-            ? "Tip and claim alerts go to ADMIN_NOTIFY_EMAIL."
-            : resendFrom
-              ? "Alerts fall back to your RESEND_FROM_EMAIL address (fine)."
-              : "No alert destination yet — set email sending first.",
-          unlocks: "The inbox that receives new-tip and free-claim notifications.",
-          missing: [],
+          summary: emailReady
+            ? adminNotify
+              ? "Private-message, tip, and claim alerts go to ADMIN_NOTIFY_EMAIL."
+              : "Private-message, tip, and claim alerts fall back to RESEND_FROM_EMAIL."
+            : "Admin alerts cannot send until Resend is fully connected.",
+          unlocks:
+            "The office alarm for private messages, new tips, free J6 claims, and the admin email-test button.",
+          missing: missing([
+            [resendKey, "RESEND_API_KEY"],
+            [resendFrom, "RESEND_FROM_EMAIL"],
+          ]),
           where:
-            "Optional. Set ADMIN_NOTIFY_EMAIL in Vercel to route alerts somewhere other than the From address.",
+            "Optional. Set ADMIN_NOTIFY_EMAIL in Vercel to route alerts somewhere other than the From address. Multiple recipients can be separated by commas.",
         },
       ],
     },

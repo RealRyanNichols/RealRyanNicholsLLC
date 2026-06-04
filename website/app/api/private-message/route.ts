@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
 import { z } from "zod";
+import { sendAdminAlert } from "@/lib/admin-email-alerts";
 import { checkRateLimit, clientIp } from "@/lib/rate-limit";
 import { getSupabaseServiceClient } from "@/lib/supabase/service";
 import { SITE } from "@/lib/site";
@@ -67,71 +67,98 @@ export async function POST(request: Request) {
     ),
   };
 
-  const { error } = await supabase.from("private_messages").insert(insert);
+  let messageId: string | null = null;
+  const { data: savedMessage, error } = await supabase
+    .from("private_messages")
+    .insert(insert)
+    .select("id")
+    .single();
+  messageId = savedMessage?.id ?? null;
   if (error && /session_id|visitor_hash|column/i.test(error.message)) {
-    const { error: retryError } = await supabase.from("private_messages").insert({
-      display_name: insert.display_name,
-      email: insert.email,
-      phone: insert.phone,
-      subject: insert.subject,
-      message: insert.message,
-      source_path: insert.source_path,
-      status: insert.status,
-      ip_hash: insert.ip_hash,
-    });
-    if (!retryError) return NextResponse.json({ ok: true });
-  }
-
-  if (error) {
+    const { data: retryMessage, error: retryError } = await supabase
+      .from("private_messages")
+      .insert({
+        display_name: insert.display_name,
+        email: insert.email,
+        phone: insert.phone,
+        subject: insert.subject,
+        message: insert.message,
+        source_path: insert.source_path,
+        status: insert.status,
+        ip_hash: insert.ip_hash,
+      })
+      .select("id")
+      .single();
+    if (retryError) {
+      return NextResponse.json(
+        { error: "Private message intake is not available yet." },
+        { status: 500 },
+      );
+    }
+    messageId = retryMessage?.id ?? null;
+  } else if (error) {
     return NextResponse.json(
       { error: "Private message intake is not available yet." },
       { status: 500 },
     );
   }
 
-  // Best-effort admin alert. Do not email the full private message body;
-  // sensitive details should stay in the admin inbox instead of spreading
-  // through email storage.
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.RESEND_FROM_EMAIL;
-  if (apiKey && from) {
-    const adminTo = process.env.ADMIN_NOTIFY_EMAIL ?? from;
-    const subject = insert.subject || "Private message";
-    const contact = [
-      insert.display_name ? `Name: ${insert.display_name}` : "Name: (not given)",
-      insert.email ? `Email: ${insert.email}` : "Email: (not given)",
-      insert.phone ? `Phone: ${insert.phone}` : "Phone: (not given)",
-      insert.source_path ? `Source: ${insert.source_path}` : null,
-    ].filter(Boolean);
-    const text = [
-      `New private message on ${SITE.url}`,
-      "",
-      `Subject: ${subject}`,
-      ...contact,
-      "",
-      `Review in admin: ${SITE.url}/admin/messages`,
-    ].join("\n");
-    const esc = (s: string) =>
-      s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    const html =
-      `<p style="font-family:sans-serif"><strong>New private message</strong></p>` +
-      `<p style="font-family:sans-serif">Subject: ${esc(subject)}</p>` +
-      `<pre style="font-family:ui-monospace,monospace;white-space:pre-wrap;font-size:14px;line-height:1.5">${esc(contact.join("\n"))}</pre>` +
-      `<p><a href="${SITE.url}/admin/messages">Review in admin →</a></p>`;
+  let publicRef: string | null = null;
+  if (messageId) {
     try {
-      const resend = new Resend(apiKey);
-      await resend.emails.send({
-        from,
-        to: adminTo,
-        subject: `New private message: ${subject}`,
-        html,
-        text,
-        ...(insert.email ? { replyTo: insert.email } : {}),
-      });
+      const { data: ledgerItem } = await supabase
+        .from("intake_items")
+        .select("public_ref")
+        .eq("source_type", "private_message")
+        .eq("source_id", messageId)
+        .maybeSingle();
+      publicRef = ledgerItem?.public_ref ?? null;
     } catch {
-      /* non-blocking — message is saved regardless */
+      publicRef = null;
     }
   }
 
-  return NextResponse.json({ ok: true });
+  // Best-effort admin alert. Do not email the full private message body;
+  // sensitive details should stay in the admin inbox instead of spreading
+  // through email storage.
+  const subject = insert.subject || "Private message";
+  const contact = [
+    insert.display_name ? `Name: ${insert.display_name}` : "Name: (not given)",
+    insert.email ? `Email: ${insert.email}` : "Email: (not given)",
+    insert.phone ? `Phone: ${insert.phone}` : "Phone: (not given)",
+    insert.source_path ? `Source: ${insert.source_path}` : null,
+  ].filter(Boolean);
+  const text = [
+    `New private message on ${SITE.url}`,
+    "",
+    `Subject: ${subject}`,
+    ...contact,
+    "",
+    "The private message body is not emailed. Open the admin inbox to read it.",
+    `Review in admin: ${SITE.url}/admin/messages?filter=new`,
+  ].join("\n");
+  const esc = (s: string) =>
+    s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const html =
+    `<p style="font-family:sans-serif"><strong>New private message</strong></p>` +
+    `<p style="font-family:sans-serif">Subject: ${esc(subject)}</p>` +
+    `<pre style="font-family:ui-monospace,monospace;white-space:pre-wrap;font-size:14px;line-height:1.5">${esc(contact.join("\n"))}</pre>` +
+    `<p style="font-family:sans-serif;color:#555">The private message body is not emailed. Open the admin inbox to read it.</p>` +
+    `<p><a href="${SITE.url}/admin/messages?filter=new">Review in admin →</a></p>`;
+
+  const alert = await sendAdminAlert({
+    subject: `New private message: ${subject}`,
+    html,
+    text,
+    replyTo: insert.email,
+  });
+  if (!alert.sent) {
+    console.warn("private_message_admin_alert_failed", alert);
+  }
+
+  return NextResponse.json({
+    ok: true,
+    public_ref: publicRef,
+    ledger_url: `${SITE.url}/case/intake`,
+  });
 }

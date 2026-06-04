@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { formatDistanceToNowStrict } from "date-fns";
+import { AdminEmailTestButton } from "@/components/AdminEmailTestButton";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import {
   getSupabaseServiceClient,
@@ -324,6 +325,7 @@ export default async function AdminHealthPage() {
           <div className="text-xs text-[var(--color-muted)]">
             Values are never shown here. Only presence and operational effect.
           </div>
+          <AdminEmailTestButton />
         </div>
 
         <div className="mt-5 grid gap-4 xl:grid-cols-2">
@@ -459,7 +461,12 @@ async function getOperationalHealth(
     eventCount(["support_intent_saved"], "Support intents saved"),
     eventCount(["tip_submit_success"], "Successful tips"),
     eventCount(
-      ["support_intent_failed", "tip_submit_failed", "subscribe_failed"],
+      [
+        "support_intent_failed",
+        "tip_submit_failed",
+        "subscribe_failed",
+        "private_message_failed",
+      ],
       "Tracked failures",
     ),
     safeCount(
@@ -758,7 +765,10 @@ function buildDiagnostics(
     });
   }
 
-  if (countOrZero(ops.newMessages) > 0 && checkById.get("resend")?.status !== "ok") {
+  if (
+    countOrZero(ops.newMessages) > 0 &&
+    checkById.get("admin-notify")?.status !== "ok"
+  ) {
     diagnostics.push({
       id: "messages-email-alerts",
       severity: "critical",
@@ -767,6 +777,21 @@ function buildDiagnostics(
       fix: "Open the inbox now, then finish Resend so new private messages alert the team instead of hiding in admin.",
       href: "/admin/messages?filter=new",
       metric: `${metricText(ops.newMessages)} new`,
+    });
+  }
+
+  if (
+    countOrZero(ops.pendingTips) > 0 &&
+    checkById.get("admin-notify")?.status !== "ok"
+  ) {
+    diagnostics.push({
+      id: "tips-email-alerts",
+      severity: "critical",
+      label: "Tips are waiting while admin email alerts are not fully on",
+      finding: `${metricText(ops.pendingTips)} pending tips need review.`,
+      fix: "Open the tip queue now, then finish Resend/admin-alert wiring so new tips reach the office immediately.",
+      href: "/admin/tips?filter=pending",
+      metric: `${metricText(ops.pendingTips)} pending`,
     });
   }
 

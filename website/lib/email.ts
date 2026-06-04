@@ -265,11 +265,6 @@ export function buildJ6ClaimEmails(opts: {
   shipping?: unknown;
   notes?: string | null;
 }): { admin: EmailEnvelope; user: EmailEnvelope } {
-  const shippingStr =
-    opts.shipping && typeof opts.shipping === "object"
-      ? JSON.stringify(opts.shipping, null, 2)
-      : "(none provided)";
-
   const admin: EmailEnvelope = {
     subject: `[J6 Free Claim] ${opts.productName} — ${opts.claimantEmail}`,
     text: `A verified J6 defendant claimed a free product.
@@ -277,10 +272,9 @@ export function buildJ6ClaimEmails(opts: {
 Product: ${opts.productName}
 Claimant: ${opts.claimantEmail}
 Order: ${opts.orderId}
-Notes: ${opts.notes || "(none)"}
-Shipping:
-${shippingStr}
+Notes/shipping: stored in admin order record
 
+Review: ${SITE.url}/admin/orders
 Deliver, then mark the order fulfilled in /admin/orders.`,
     html: `
       <div style="${FONT}color:#1a1a1a;max-width:560px;margin:0 auto;padding:24px 16px;">
@@ -288,8 +282,8 @@ Deliver, then mark the order fulfilled in /admin/orders.`,
         <p style="font-size:14px;color:#333;margin:0 0 6px;"><strong>Product:</strong> ${esc(opts.productName)}</p>
         <p style="font-size:14px;color:#333;margin:0 0 6px;"><strong>Claimant:</strong> ${esc(opts.claimantEmail)}</p>
         <p style="font-size:14px;color:#333;margin:0 0 6px;"><strong>Order:</strong> ${esc(opts.orderId)}</p>
-        <p style="font-size:14px;color:#333;margin:0 0 6px;"><strong>Notes:</strong> ${esc(opts.notes || "(none)")}</p>
-        <pre style="font-size:12px;background:#f5f5f5;padding:12px;border-radius:8px;white-space:pre-wrap;">${esc(shippingStr)}</pre>
+        <p style="font-size:14px;color:#333;margin:0 0 14px;">Notes and shipping stay in the admin order record instead of email storage.</p>
+        <p style="margin:0 0 16px;"><a href="${SITE.url}/admin/orders" style="background:#1a1a1a;color:#fff;text-decoration:none;padding:10px 14px;border-radius:8px;display:inline-block;font-weight:700;">Open orders</a></p>
         <p style="font-size:13px;color:#666;">Deliver, then mark fulfilled in /admin/orders.</p>
       </div>`,
   };
