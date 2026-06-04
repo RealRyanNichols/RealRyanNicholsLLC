@@ -4,6 +4,11 @@ import Link from "next/link";
 import { format, formatDistanceToNowStrict } from "date-fns";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { TipActions } from "@/components/TipActions";
+import {
+  buildIntakeRoutePlan,
+  type IntakeRouteKind,
+  type IntakeRoutePlan,
+} from "@/lib/intake-routing";
 
 export const metadata: Metadata = {
   title: "Tips",
@@ -64,9 +69,37 @@ export default async function AdminTipsPage({
     supabase.from("case_tips").select("id", { count: "exact", head: true }).eq("status", "merged"),
     supabase.from("case_tips").select("id", { count: "exact", head: true }).eq("status", "rejected"),
   ]);
+  const routedTips = (tips ?? []).map((tip) => {
+    const urls = Array.isArray(tip.urls) ? (tip.urls as string[]) : [];
+    return {
+      tip,
+      urls,
+      plan: buildIntakeRoutePlan({
+        category: tip.category,
+        subject: tip.defendant_name,
+        location: tip.location,
+        narrative: tip.narrative,
+        urls,
+      }),
+    };
+  });
+  const routeCounts = routedTips.reduce(
+    (acc, item) => {
+      acc[item.plan.kind] = (acc[item.plan.kind] ?? 0) + 1;
+      return acc;
+    },
+    {
+      case_map: 0,
+      verify: 0,
+      article: 0,
+      service: 0,
+      watch: 0,
+    } as Record<IntakeRouteKind, number>,
+  );
+  const hotTipCount = routedTips.filter((item) => item.plan.urgency === "hot").length;
 
   return (
-    <article className="mx-auto max-w-4xl px-4 py-10">
+    <article className="mx-auto max-w-5xl px-4 py-8 sm:py-10">
       <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
         Admin · tip line
       </p>
@@ -74,11 +107,35 @@ export default async function AdminTipsPage({
         Tips
       </h1>
       <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
-        Public submissions from <code>/submit</code>. Read, then act:
-        <em> merged</em> if you added it to a case_people row,{" "}
-        <em>reviewed</em> if seen but no action needed,{" "}
-        <em>rejected</em> if spam.
+        Every tip gets an immediate route: map it, verify it, turn it into an
+        article, follow up privately, or hold it in the watch file. Nothing
+        should sit here without a next move.
       </p>
+
+      <section className="mt-6 border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm">
+        <div className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+              Tip action radar
+            </p>
+            <h2 className="mt-1 font-sans text-2xl font-black text-[#fdf8ea]">
+              Route it before it gets forgotten.
+            </h2>
+            <p className="mt-2 text-sm font-semibold leading-6 text-[#cfd9ea]">
+              This queue now turns each tip into a specific admin action. Hot
+              leads are tips with source, map, or verification signals.
+            </p>
+          </div>
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+            <RadarStat label="Hot" value={hotTipCount} tone="red" />
+            <RadarStat label="Verify" value={routeCounts.verify} />
+            <RadarStat label="Map" value={routeCounts.case_map} />
+            <RadarStat label="Article" value={routeCounts.article} />
+            <RadarStat label="Follow up" value={routeCounts.service} />
+            <RadarStat label="Watch" value={routeCounts.watch} />
+          </div>
+        </div>
+      </section>
 
       <nav className="mt-6 flex flex-wrap gap-1 border-b border-[var(--color-line)]">
         <TabLink active={view === "pending"} href="/admin/tips?filter=pending">
@@ -108,14 +165,11 @@ export default async function AdminTipsPage({
             No tips in this bucket.
           </p>
         ) : (
-          tips.map((t) => {
-            const urls = Array.isArray(t.urls)
-              ? (t.urls as string[])
-              : [];
+          routedTips.map(({ tip: t, urls, plan }) => {
             return (
               <article
                 key={t.id}
-                className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
+                className="border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5"
               >
                 <header className="flex flex-wrap items-baseline justify-between gap-3">
                   <div>
@@ -123,7 +177,7 @@ export default async function AdminTipsPage({
                       <CategoryChip category={t.category} />
                       {t.location ? (
                         <span className="text-[11px] text-[var(--color-muted)] font-mono">
-                          📍 {t.location}
+                          {t.location}
                         </span>
                       ) : null}
                     </div>
@@ -159,6 +213,8 @@ export default async function AdminTipsPage({
                   </div>
                   <StatusBadge status={t.status} />
                 </header>
+
+                <TipRoutePanel plan={plan} />
 
                 <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-[var(--color-ink-soft)]">
                   {t.narrative}
@@ -204,6 +260,95 @@ export default async function AdminTipsPage({
         </Link>
       </p>
     </article>
+  );
+}
+
+function RadarStat({
+  label,
+  value,
+  tone = "green",
+}: {
+  label: string;
+  value: number;
+  tone?: "green" | "red";
+}) {
+  return (
+    <div
+      className={[
+        "border p-3",
+        tone === "red"
+          ? "border-[#e0362c]/70 bg-[#e0362c]/15"
+          : "border-[#7fe3a9]/40 bg-white/[0.055]",
+      ].join(" ")}
+    >
+      <p className="font-sans text-2xl font-black text-[#fdf8ea]">
+        {value}
+      </p>
+      <p className="mt-1 text-[10px] font-black uppercase tracking-[0.16em] text-[#cfd9ea]">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+function TipRoutePanel({ plan }: { plan: IntakeRoutePlan }) {
+  const tone =
+    plan.urgency === "hot"
+      ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)]"
+      : plan.urgency === "next"
+        ? "border-[var(--color-support)] bg-[var(--color-support-soft)]"
+        : "border-[var(--color-line)] bg-[var(--color-paper)]";
+  const labelTone =
+    plan.urgency === "hot"
+      ? "bg-[var(--color-accent)] text-white"
+      : plan.urgency === "next"
+        ? "bg-[var(--color-support)] text-[#1a1410]"
+        : "bg-[var(--color-surface-2)] text-[var(--color-ink-soft)]";
+
+  return (
+    <section className={`mt-4 border p-3 ${tone}`}>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-muted)]">
+            Auto route
+          </p>
+          <h3 className="mt-1 font-sans text-xl font-black">
+            {plan.label}
+          </h3>
+        </div>
+        <span className={`px-2 py-1 text-[10px] font-black uppercase tracking-normal ${labelTone}`}>
+          {plan.urgency} · {plan.score}
+        </span>
+      </div>
+      <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+        {plan.reason}
+      </p>
+      <ol className="mt-3 grid gap-2 md:grid-cols-3">
+        {plan.nextActions.map((action, index) => (
+          <li
+            key={action}
+            className="border border-black/10 bg-white/45 p-2 text-xs font-semibold leading-5 text-[var(--color-ink-soft)]"
+          >
+            <span className="mr-1 font-black text-[var(--color-accent)]">
+              {index + 1}.
+            </span>
+            {action}
+          </li>
+        ))}
+      </ol>
+      {plan.tags.length > 0 ? (
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {plan.tags.map((tag) => (
+            <span
+              key={tag}
+              className="border border-black/10 bg-white/55 px-2 py-1 text-[10px] font-black uppercase tracking-normal text-[var(--color-muted)]"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      ) : null}
+    </section>
   );
 }
 
