@@ -13,6 +13,13 @@ import { getSupabaseServiceClient } from "@/lib/supabase/service";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+type StripeCheckoutSessionCreateParams = NonNullable<
+  Parameters<Stripe["checkout"]["sessions"]["create"]>[0]
+>;
+type StripeCheckoutLineItem = NonNullable<
+  StripeCheckoutSessionCreateParams["line_items"]
+>[number];
+
 const invoiceSchema = z.object({
   client_name: z.string().trim().min(1).max(200),
   client_email: z
@@ -303,7 +310,7 @@ export async function POST(request: Request) {
         installment_cents: String(installmentCents),
         total_cents: String(amountCents),
       };
-      const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
+      const lineItems: StripeCheckoutLineItem[] = [];
       if (downPaymentCents > 0) {
         lineItems.push({
           quantity: 1,
