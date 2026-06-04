@@ -538,6 +538,151 @@ const topProofNumbers = [
   },
 ];
 
+const briefPath = [
+  { label: "Numbers", href: "#proof-numbers" },
+  { label: "Civil / criminal", href: "#matter-split" },
+  { label: "Claim map", href: "#claim-map" },
+  { label: "Receipts", href: "#receipts" },
+  { label: "Money", href: "#money-records" },
+  { label: "Charges", href: "#charges" },
+  { label: "Timeline", href: "#chronology" },
+  { label: "Open items", href: "#open-questions" },
+];
+
+const matterSplit = [
+  {
+    label: "Criminal",
+    title: "Current misdemeanor defense lane",
+    status: "Immediate Dallas meeting priority",
+    tone: "red",
+    items: [
+      "Two harassment counts and one deadly-conduct charge.",
+      "Needs charging packets, probable-cause affidavits, bond paperwork, discovery, bodycam, CAD, dispatch, witness statements, and native message/video files.",
+      "This is the lane counsel should be able to scan first for court dates, cause numbers, exact complainants, statutory elements, and missing production.",
+    ],
+  },
+  {
+    label: "Civil",
+    title: "Divorce, Wholesale Universe, and J6 damages lane",
+    status: "Value / damages / background",
+    tone: "gold",
+    items: [
+      "Divorce and business records: Wholesale Universe value, alleged missing funds, payroll/1099 summaries, bank records, ledgers, debts, AT&T/phone harm, Robinhood, and litigation pressure.",
+      "J6 damages/history: federal case, pardon/dismissal lane, business destruction, family harm, liberty lost, medical/mental-health harm, and public damages page.",
+      "This should support value, motive, damages, and background without cluttering the misdemeanor defense record unless it directly touches the criminal issues.",
+    ],
+  },
+];
+
+const claimSupportMatrix = [
+  {
+    claim: "The deadly-conduct allegation must be tested against the exact statutory elements, not against public retellings.",
+    evidence:
+      "Charging instrument, probable-cause affidavit, bodycam, dashcam, CAD, dispatch audio, witness statements, and church video.",
+    law: "Texas Penal Code Sec. 22.05; counsel should match each alleged act to recklessness, imminent danger, firearm-pointing, and any statutory presumption actually charged.",
+    status: "Packet needed",
+    href: "#charges",
+    tone: "red",
+  },
+  {
+    claim: "The harassment counts need native message records, exact complainants, exact dates, and exact statutory subsection before anyone can judge them.",
+    evidence:
+      "Complete platform exports, screenshots police relied on, Ryan's May 12 report/call record, and full thread context.",
+    law: "Texas Penal Code Sec. 42.07; counsel should review the charged subsection, intent element, repeated electronic-communication theory, and any public-concern or threat framing.",
+    status: "Packet needed",
+    href: "#charges",
+    tone: "red",
+  },
+  {
+    claim: "Discovery is the control point because public-records responses are not a substitute for criminal discovery.",
+    evidence:
+      "Open-records correspondence, call-sheet-only response, second written request, missing bodycam/source files, and counsel-copied request chain.",
+    law: "Texas Code of Criminal Procedure Art. 39.14 and Brady v. Maryland; counsel can separate statutory production, constitutional disclosure, and preservation issues.",
+    status: "Source lane",
+    href: "#receipts",
+    tone: "green",
+  },
+  {
+    claim: "Any bond/speech restriction needs the written order, exact condition language, and the act allegedly violating it.",
+    evidence:
+      "Bond paperwork, magistrate warnings, revocation/modification order, hearing transcript, screenshots/posts, and prohibited-contact proof if alleged.",
+    law: "Texas Code of Criminal Procedure Art. 17.40 plus First Amendment/true-threat review where speech is the alleged violation.",
+    status: "Order needed",
+    href: "#urgent-records",
+    tone: "gold",
+  },
+  {
+    claim: "If the case turns on social-media threats, the record must distinguish protected speech, public concern, harassment conduct, and true threats.",
+    evidence:
+      "Native posts/messages, full thread context, recipient identity, dates, prior contact history, report history, and any law-enforcement interpretation.",
+    law: "Counterman v. Colorado for true-threat mens rea; Ex parte Barton / Sanders / Scott line for Texas electronic-harassment review. Counsel should verify current Texas treatment.",
+    status: "Research lane",
+    href: "#legal-authority",
+    tone: "gold",
+  },
+  {
+    claim: "A recusal/disclosure issue only becomes useful if the assignment and relationship/screenshot evidence verify cleanly.",
+    evidence:
+      "Court portal entry, Judicial Officer Joe Black assignment, story-view/reaction screenshots, prior-contact facts, and any filed/draft recusal packet.",
+    law: "Texas Rule of Civil Procedure 18b and related criminal-trial recusal procedure for counsel review.",
+    status: "Verify first",
+    href: "#source-chain",
+    tone: "gold",
+  },
+  {
+    claim: "The damages numbers are attention-getting, but they only matter if each number is tied to a source packet.",
+    evidence:
+      "J6 damages page, J6 Drive folder, WU ledgers, payroll/1099 summaries, TWC records, bank statements, tax returns, debt letters, and audit trails.",
+    law: "Civil damages, business valuation, community-property, and restitution/compensation theories belong in counsel's damages lane after source review.",
+    status: "Evidence controls",
+    href: "#damages-map",
+    tone: "green",
+  },
+];
+
+const legalAuthorityLinks = [
+  {
+    label: "Tex. Penal Code 22.05",
+    href: "https://statutes.capitol.texas.gov/Docs/PE/htm/PE.22.htm#22.05",
+    note: "Deadly conduct statute. Match the exact charged theory to the exact record.",
+  },
+  {
+    label: "Tex. Penal Code 42.07",
+    href: "https://statutes.capitol.texas.gov/Docs/PE/htm/PE.42.htm#42.07",
+    note: "Harassment statute. Charged subsection and full message context matter.",
+  },
+  {
+    label: "Tex. Code Crim. Proc. 39.14",
+    href: "https://statutes.capitol.texas.gov/Docs/CR/htm/CR.39.htm#39.14",
+    note: "Texas criminal discovery / Michael Morton Act lane.",
+  },
+  {
+    label: "Tex. Code Crim. Proc. 17.40",
+    href: "https://statutes.capitol.texas.gov/Docs/CR/htm/CR.17.htm#17.40",
+    note: "Bond conditions related to victim or community safety.",
+  },
+  {
+    label: "Brady v. Maryland",
+    href: "https://www.loc.gov/item/usrep373083/",
+    note: "Due-process disclosure lane for favorable material evidence.",
+  },
+  {
+    label: "Counterman v. Colorado",
+    href: "https://www.law.cornell.edu/supremecourt/text/22-138",
+    note: "True-threat mens rea lane when speech is charged or punished.",
+  },
+  {
+    label: "Ex parte Barton",
+    href: "https://caselaw.findlaw.com/court/tx-court-of-criminal-appeals/1924884.html",
+    note: "Texas electronic-harassment First Amendment research lane.",
+  },
+  {
+    label: "Texas Rule 18b",
+    href: "https://www.txcourts.gov/media/1446498/trcp-all-updated-with-amendments-effective-may-1-2020.pdf",
+    note: "Recusal/disqualification grounds for counsel review.",
+  },
+];
+
 const proofLegend = [
   {
     label: "Public record / public report",
@@ -678,39 +823,143 @@ export default async function AttorneyBriefPage() {
   }
 
   return (
-    <article className="mx-auto max-w-[86rem] px-4 py-6">
+    <article className="mx-auto w-full max-w-[78rem] px-4 py-5 sm:px-5 lg:px-6">
+      <nav
+        aria-label="Attorney brief navigation"
+        className="sticky top-16 z-20 -mx-4 mb-4 border-y border-[var(--color-line)] bg-[var(--color-surface)]/95 px-4 py-2 shadow-sm backdrop-blur sm:-mx-5 sm:px-5 lg:-mx-6 lg:top-20 lg:px-6"
+      >
+        <div className="mx-auto flex max-w-[78rem] items-center gap-2 overflow-x-auto">
+          <Link
+            href="/admin"
+            className="shrink-0 border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          >
+            Back: admin
+          </Link>
+          <Link
+            href="/admin/case"
+            className="shrink-0 border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          >
+            Case docs
+          </Link>
+          <span className="h-8 w-px shrink-0 bg-[var(--color-line)]" aria-hidden />
+          {briefPath.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className="shrink-0 border border-[var(--color-line)] bg-white/45 px-3 py-2 text-xs font-black uppercase tracking-normal text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-soft)] hover:text-[var(--color-accent)]"
+            >
+              {item.label}
+            </a>
+          ))}
+          <a
+            href="#value-story"
+            className="shrink-0 border border-[#7fe3a9]/60 bg-[#071126] px-3 py-2 text-xs font-black uppercase tracking-normal text-[#7fe3a9] transition hover:bg-[#102826]"
+          >
+            Next →
+          </a>
+        </div>
+      </nav>
+
       <section
         id="proof-numbers"
-        className="border border-[#203a64] bg-[#071126] p-3 text-[#fdf8ea] shadow-sm sm:p-4"
+        className="border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm sm:p-5"
       >
-        <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+        <div className="grid gap-3 md:grid-cols-[1fr_0.42fr] md:items-end">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.24em] text-[#7fe3a9]">
               Proof numbers
             </p>
-            <h1 className="mt-1 font-sans text-3xl font-black leading-none text-[#fdf8ea] sm:text-5xl">
+            <h1 className="mt-1 font-sans text-3xl font-black leading-[0.98] text-[#fdf8ea] sm:text-5xl">
               The numbers that jump off the record.
             </h1>
           </div>
-          <p className="max-w-lg text-xs font-semibold leading-5 text-[#cfd9ea]">
+          <p className="text-xs font-semibold leading-5 text-[#cfd9ea]">
             Every number below is clickable. Each one points to the source lane
             behind it and stays labeled as claimed, audit-needed, source-backed,
             or missing-packet.
           </p>
         </div>
-        <div className="mt-4 grid gap-2 md:grid-cols-2 xl:grid-cols-6">
-          {topProofNumbers.map((card, index) => (
-            <ProofNumberCard
-              key={card.label}
-              {...card}
-              priority={index < 3}
-            />
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          {topProofNumbers.map((card) => (
+            <ProofNumberCard key={card.label} {...card} />
+          ))}
+        </div>
+      </section>
+
+      <section id="matter-split" className="mt-4 grid gap-3 md:grid-cols-2">
+        {matterSplit.map((matter) => (
+          <MatterSplitCard key={matter.label} {...matter} />
+        ))}
+      </section>
+
+      <section id="claim-map" className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5">
+        <div className="grid gap-3 lg:grid-cols-[0.36fr_1fr] lg:items-end">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+              Linear claim map
+            </p>
+            <h2 className="mt-1 font-sans text-2xl font-black sm:text-3xl">
+              Claim → proof → law → missing item.
+            </h2>
+          </div>
+          <p className="text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+            Counsel should be able to scan one row and know exactly what the
+            claim is, what evidence supports or tests it, what legal authority
+            controls the lane, and what still has to be attached.
+          </p>
+        </div>
+        <div className="mt-4 overflow-x-auto">
+          <div className="min-w-[62rem] border border-[var(--color-line)]">
+            <div className="grid grid-cols-[1.1fr_1.2fr_1.15fr_8rem_5.5rem] border-b border-[var(--color-line)] bg-[var(--color-paper)] text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-muted)]">
+              <div className="border-r border-[var(--color-line)] p-3">Claim</div>
+              <div className="border-r border-[var(--color-line)] p-3">Evidence lane</div>
+              <div className="border-r border-[var(--color-line)] p-3">Law / case-law lane</div>
+              <div className="border-r border-[var(--color-line)] p-3">Status</div>
+              <div className="p-3">Click</div>
+            </div>
+            {claimSupportMatrix.map((row) => (
+              <ClaimSupportRow key={row.claim} {...row} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="legal-authority" className="mt-4 border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm sm:p-5">
+        <div className="grid gap-3 md:grid-cols-[0.34fr_1fr] md:items-end">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+              Law shelf
+            </p>
+            <h2 className="mt-1 font-sans text-2xl font-black text-[#fdf8ea]">
+              Authority for counsel review.
+            </h2>
+          </div>
+          <p className="text-xs font-semibold leading-5 text-[#cfd9ea]">
+            These are not instructions to counsel. They are the authority lanes
+            this brief keeps pointing back to so every factual claim has a
+            legal place to land.
+          </p>
+        </div>
+        <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+          {legalAuthorityLinks.map((authority) => (
+            <a
+              key={authority.href}
+              href={authority.href}
+              className="border border-white/10 bg-white/[0.055] p-3 transition hover:border-[#7fe3a9]/50 hover:bg-[#7fe3a9]/10"
+            >
+              <span className="block text-sm font-black text-[#fdf8ea]">
+                {authority.label}
+              </span>
+              <span className="mt-1 block text-xs font-semibold leading-5 text-[#cfd9ea]">
+                {authority.note}
+              </span>
+            </a>
           ))}
         </div>
       </section>
 
       <section className="mt-4 grid gap-4 xl:grid-cols-[1.05fr_0.95fr]">
-        <section id="receipts" className="rounded-md border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm">
+        <section id="receipts" className="border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
@@ -970,7 +1219,7 @@ export default async function AttorneyBriefPage() {
       </section>
 
       <section className="mt-5 grid gap-4 xl:grid-cols-[0.82fr_1.18fr]">
-        <section className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+        <section id="chronology" className="border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
           <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
             Working defense theory
           </p>
@@ -1057,7 +1306,7 @@ export default async function AttorneyBriefPage() {
       </section>
 
       <section className="mt-5 grid gap-4 xl:grid-cols-[0.92fr_1.08fr]">
-        <div className="rounded-md border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea]">
+        <div id="source-chain" className="border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea]">
           <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
             Source chain
           </p>
@@ -1156,7 +1405,7 @@ export default async function AttorneyBriefPage() {
         ))}
       </section>
 
-      <section className="mt-5 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+      <section id="open-questions" className="mt-5 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
         <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
           Open questions
         </p>
@@ -1282,6 +1531,62 @@ function Metric({
   );
 }
 
+function MatterSplitCard({
+  label,
+  title,
+  status,
+  tone,
+  items,
+}: {
+  label: string;
+  title: string;
+  status: string;
+  tone: string;
+  items: string[];
+}) {
+  const urgent = tone === "red";
+  return (
+    <section
+      className={[
+        "border p-4 shadow-sm",
+        urgent
+          ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)]"
+          : "border-[var(--color-support)] bg-[var(--color-support-soft)]",
+      ].join(" ")}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-muted)]">
+          {label}
+        </p>
+        <span
+          className={[
+            "px-2 py-1 text-[10px] font-black uppercase tracking-normal",
+            urgent
+              ? "bg-[var(--color-accent)] text-white"
+              : "bg-[var(--color-support)] text-[#1a1410]",
+          ].join(" ")}
+        >
+          {status}
+        </span>
+      </div>
+      <h2 className="mt-2 font-sans text-2xl font-black">{title}</h2>
+      <ul className="mt-3 grid gap-2">
+        {items.map((item) => (
+          <li key={item} className="flex gap-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+            <span
+              className={[
+                "mt-2 h-2 w-2 shrink-0",
+                urgent ? "bg-[var(--color-accent)]" : "bg-[var(--color-support-strong)]",
+              ].join(" ")}
+            />
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 function ProofNumberCard({
   label,
   value,
@@ -1291,7 +1596,6 @@ function ProofNumberCard({
   weight,
   source,
   body,
-  priority,
 }: {
   label: string;
   value: string;
@@ -1301,7 +1605,6 @@ function ProofNumberCard({
   weight: string;
   source: string;
   body: string;
-  priority: boolean;
 }) {
   const isRed = tone === "red";
   const isGold = tone === "gold";
@@ -1326,7 +1629,6 @@ function ProofNumberCard({
       href={href}
       className={[
         "group relative min-h-[13rem] overflow-hidden border border-white/10 bg-white/[0.055] p-3 transition hover:-translate-y-0.5 hover:bg-white/[0.09]",
-        priority ? "xl:col-span-2" : "",
         glowClass,
       ].join(" ")}
     >
@@ -1366,6 +1668,72 @@ function ProofNumberCard({
         {body}
       </span>
     </a>
+  );
+}
+
+function ClaimSupportRow({
+  claim,
+  evidence,
+  law,
+  status,
+  href,
+  tone,
+}: {
+  claim: string;
+  evidence: string;
+  law: string;
+  status: string;
+  href: string;
+  tone: string;
+}) {
+  const toneClass =
+    tone === "red"
+      ? "border-l-[var(--color-accent)]"
+      : tone === "green"
+        ? "border-l-[var(--color-success)]"
+        : "border-l-[var(--color-support)]";
+  const badgeClass =
+    tone === "red"
+      ? "bg-[var(--color-accent)] text-white"
+      : tone === "green"
+        ? "bg-[var(--color-success-soft)] text-[var(--color-success)]"
+        : "bg-[var(--color-support-soft)] text-[var(--color-support-strong)]";
+
+  return (
+    <div
+      className={[
+        "grid grid-cols-[1.1fr_1.2fr_1.15fr_8rem_5.5rem] border-b border-[var(--color-line)] border-l-4 bg-white/35 text-sm last:border-b-0",
+        toneClass,
+      ].join(" ")}
+    >
+      <div className="border-r border-[var(--color-line)] p-3 font-bold leading-6">
+        {claim}
+      </div>
+      <div className="border-r border-[var(--color-line)] p-3 leading-6 text-[var(--color-ink-soft)]">
+        {evidence}
+      </div>
+      <div className="border-r border-[var(--color-line)] p-3 leading-6 text-[var(--color-ink-soft)]">
+        {law}
+      </div>
+      <div className="border-r border-[var(--color-line)] p-3">
+        <span
+          className={[
+            "inline-flex min-h-7 items-center px-2 text-[10px] font-black uppercase tracking-normal",
+            badgeClass,
+          ].join(" ")}
+        >
+          {status}
+        </span>
+      </div>
+      <div className="p-3">
+        <a
+          href={href}
+          className="inline-flex min-h-8 items-center border border-[var(--color-line)] bg-[var(--color-paper)] px-2 text-[10px] font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+        >
+          Open
+        </a>
+      </div>
+    </div>
   );
 }
 

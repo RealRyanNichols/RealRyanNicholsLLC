@@ -33,6 +33,24 @@ type ToolRun = {
   status: string;
 };
 
+type ToolWish = {
+  id: string;
+  created_at: string;
+  public_ref: string;
+  tool_name: string;
+  problem: string;
+  who_it_helps: string | null;
+  desired_output: string | null;
+  current_workaround: string | null;
+  urgency: string;
+  contact_email: string | null;
+  free_slot_number: number | null;
+  pricing_status: string;
+  estimated_starting_price_cents: number;
+  status: string;
+  clue_tags: string[] | null;
+};
+
 const toolLabels: Record<string, string> = {
   "records-request": "Records requests",
   "timeline-builder": "Timelines",
@@ -61,11 +79,22 @@ export default async function AdminToolsPage() {
     )
     .order("created_at", { ascending: false })
     .limit(80);
+  const { data: wishData, error: wishError } = await supabase
+    .from("tool_wishes")
+    .select(
+      "id, created_at, public_ref, tool_name, problem, who_it_helps, desired_output, current_workaround, urgency, contact_email, free_slot_number, pricing_status, estimated_starting_price_cents, status, clue_tags",
+    )
+    .order("created_at", { ascending: false })
+    .limit(80);
   const runs = (data ?? []) as ToolRun[];
+  const wishes = (wishData ?? []) as ToolWish[];
   const counts = runs.reduce<Record<string, number>>((acc, run) => {
     acc[run.tool_slug] = (acc[run.tool_slug] ?? 0) + 1;
     return acc;
   }, {});
+  const paidWishCount = wishes.filter(
+    (wish) => wish.pricing_status !== "free_request",
+  ).length;
 
   return (
     <article className="mx-auto max-w-6xl px-4 py-8">
@@ -91,7 +120,7 @@ export default async function AdminToolsPage() {
         </Link>
       </div>
 
-      <section className="mt-6 grid gap-3 sm:grid-cols-3">
+      <section className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {Object.entries(toolLabels).map(([slug, label]) => (
           <div
             key={slug}
@@ -105,6 +134,17 @@ export default async function AdminToolsPage() {
             </p>
           </div>
         ))}
+        <div className="rounded-lg border-2 border-[var(--color-support)] bg-[var(--color-support-soft)] p-4">
+          <p className="text-[10px] font-black uppercase tracking-normal text-[var(--color-support-strong)]">
+            Tool wishes
+          </p>
+          <p className="mt-2 text-4xl font-black tabular-nums">
+            {wishes.length}
+          </p>
+          <p className="mt-1 text-xs font-bold text-[var(--color-ink-soft)]">
+            {paidWishCount} paid/quote lane
+          </p>
+        </div>
       </section>
 
       {error ? (
@@ -112,6 +152,96 @@ export default async function AdminToolsPage() {
           Could not read free tool runs: {error.message}
         </p>
       ) : null}
+      {wishError ? (
+        <p className="mt-6 rounded-lg border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-4 text-sm font-bold text-[var(--color-accent)]">
+          Could not read tool wishes: {wishError.message}
+        </p>
+      ) : null}
+
+      <section className="mt-6">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <p className="text-xs font-black uppercase tracking-normal text-[var(--color-support-strong)]">
+              Tool builder wish queue
+            </p>
+            <h2 className="mt-1 text-2xl font-black tracking-tight">
+              Requests people want Ryan to build
+            </h2>
+          </div>
+          <Link
+            href="/tools#tool-wish"
+            className="rounded-lg border-2 border-[var(--color-support)] bg-[var(--color-support)] px-4 py-2 text-sm font-black text-[var(--color-ink)] transition hover:bg-[var(--color-support-soft)]"
+          >
+            Open wish form
+          </Link>
+        </div>
+        <div className="mt-3 grid gap-3">
+          {wishes.length === 0 && !wishError ? (
+            <p className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-5 text-sm text-[var(--color-muted)]">
+              No tool wishes yet.
+            </p>
+          ) : null}
+          {wishes.map((wish) => (
+            <article
+              key={wish.id}
+              className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4"
+            >
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-normal text-[var(--color-support-strong)]">
+                    {wish.public_ref} · {wish.urgency} · {wish.status}
+                  </p>
+                  <h3 className="mt-1 text-xl font-black tracking-tight">
+                    {wish.tool_name}
+                  </h3>
+                  <p className="mt-1 text-xs text-[var(--color-muted)]">
+                    {formatDistanceToNowStrict(new Date(wish.created_at), {
+                      addSuffix: true,
+                    })}
+                  </p>
+                </div>
+                <div className="rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-xs font-black uppercase text-[var(--color-muted)]">
+                  {wish.free_slot_number
+                    ? `Free ${wish.free_slot_number}/3`
+                    : `$${(wish.estimated_starting_price_cents / 100).toFixed(2)}+ quote`}
+                </div>
+              </div>
+              <div className="mt-3 grid gap-3 md:grid-cols-2">
+                <InfoBlock
+                  label="Problem"
+                  lines={[
+                    wish.problem,
+                    wish.who_it_helps ? `Who it helps: ${wish.who_it_helps}` : null,
+                    wish.contact_email ? `Contact: ${wish.contact_email}` : null,
+                  ]}
+                />
+                <InfoBlock
+                  label="Build direction"
+                  lines={[
+                    wish.desired_output ? `Output: ${wish.desired_output}` : null,
+                    wish.current_workaround
+                      ? `Current workaround: ${wish.current_workaround}`
+                      : null,
+                    `Pricing: ${wish.pricing_status}`,
+                  ]}
+                />
+              </div>
+              {wish.clue_tags && wish.clue_tags.length > 0 ? (
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {wish.clue_tags.slice(0, 12).map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] px-2 py-0.5 text-[10px] font-bold text-[var(--color-muted)]"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              ) : null}
+            </article>
+          ))}
+        </div>
+      </section>
 
       <section className="mt-6 grid gap-3">
         {runs.length === 0 && !error ? (

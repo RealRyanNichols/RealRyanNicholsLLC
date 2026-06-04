@@ -43,6 +43,25 @@ type ApiResponse =
   | { ok: true; saved: boolean; public_ref: string; result: ToolResult }
   | { error?: string };
 
+type WishStatus = {
+  used: number;
+  free_limit: number;
+  free_remaining: number;
+  next_price_cents: number;
+};
+
+type WishResponse =
+  | {
+      ok: true;
+      public_ref: string;
+      free_slot_number: number | null;
+      free_remaining: number;
+      pricing_status: "free_request" | "paid_quote_required";
+      next_price_cents: number;
+      message: string;
+    }
+  | { error?: string };
+
 function isToolSuccess(response: ApiResponse): response is Extract<ApiResponse, { ok: true }> {
   return "ok" in response && response.ok === true;
 }
@@ -104,8 +123,12 @@ export function FreeToolsHub() {
   const [publicSummary, setPublicSummary] = useState(true);
   const [busy, setBusy] = useState(false);
   const [payBusy, setPayBusy] = useState(false);
+  const [wishBusy, setWishBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [payError, setPayError] = useState<string | null>(null);
+  const [wishError, setWishError] = useState<string | null>(null);
+  const [wishSuccess, setWishSuccess] = useState<string | null>(null);
+  const [wishStatus, setWishStatus] = useState<WishStatus | null>(null);
   const [usage, setUsage] = useState<Record<ToolSlug, number>>({
     "records-request": 0,
     "timeline-builder": 0,
@@ -139,6 +162,15 @@ export function FreeToolsHub() {
     proof: "",
     goal: "",
   });
+  const [wish, setWish] = useState({
+    tool_name: "",
+    problem: "",
+    who_it_helps: "",
+    desired_output: "",
+    current_workaround: "",
+    urgency: "normal",
+    contact_email: "",
+  });
 
   const activeTool = useMemo(
     () => TOOLS.find((tool) => tool.slug === active) ?? TOOLS[0],
@@ -153,6 +185,32 @@ export function FreeToolsHub() {
       "timeline-builder": readUsage("timeline-builder"),
       "next-three-moves": readUsage("next-three-moves"),
     });
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function loadWishStatus() {
+      try {
+        const response = await fetch("/api/tool-wishes");
+        const json = (await response.json().catch(() => ({}))) as
+          | ({ ok: true } & WishStatus)
+          | { error?: string };
+        if (!cancelled && response.ok && "ok" in json && json.ok === true) {
+          setWishStatus({
+            used: json.used,
+            free_limit: json.free_limit,
+            free_remaining: json.free_remaining,
+            next_price_cents: json.next_price_cents,
+          });
+        }
+      } catch {
+        // Logged-out users will see the sign-in prompt when they submit.
+      }
+    }
+    loadWishStatus();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
@@ -268,6 +326,57 @@ export function FreeToolsHub() {
     }
   }
 
+  async function submitWish(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (wishBusy) return;
+    setWishBusy(true);
+    setWishError(null);
+    setWishSuccess(null);
+    trackEvent("tool_wish_attempt", { urgency: wish.urgency });
+    try {
+      const response = await fetch("/api/tool-wishes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(wish),
+      });
+      const json = (await response.json().catch(() => ({}))) as WishResponse;
+      if (!response.ok || !("ok" in json && json.ok === true)) {
+        const message =
+          "error" in json && json.error
+            ? json.error
+            : "Could not save the tool wish.";
+        setWishError(message);
+        trackEvent("tool_wish_failed", { reason: response.status });
+        return;
+      }
+      setWishSuccess(`${json.message} Ref: ${json.public_ref}`);
+      setWishStatus((current) => ({
+        used: current ? current.used + 1 : json.free_slot_number ?? 4,
+        free_limit: current?.free_limit ?? USE_WISH_LIMIT,
+        free_remaining: json.free_remaining,
+        next_price_cents: json.next_price_cents,
+      }));
+      setWish({
+        tool_name: "",
+        problem: "",
+        who_it_helps: "",
+        desired_output: "",
+        current_workaround: "",
+        urgency: "normal",
+        contact_email: "",
+      });
+      trackEvent("tool_wish_success", {
+        pricing_status: json.pricing_status,
+        free_slot_number: json.free_slot_number ?? "paid",
+      });
+    } catch {
+      setWishError("Network error. Try again.");
+      trackEvent("tool_wish_failed", { reason: "network" });
+    } finally {
+      setWishBusy(false);
+    }
+  }
+
   return (
     <div className="grid gap-3 lg:grid-cols-[18rem_minmax(0,1fr)] lg:items-start">
       <aside className="min-w-0 lg:sticky lg:top-24">
@@ -315,8 +424,16 @@ export function FreeToolsHub() {
             turning any tool into a tiny paid pass.
           </p>
         </div>
+        <a
+          href="#tool-wish"
+          onClick={() => trackEvent("tool_wish_button_click")}
+          className="mt-2 grid min-h-12 place-items-center rounded-md border-2 border-[var(--color-support)] bg-[var(--color-support)] px-3 py-2 text-center text-sm font-black text-[#1a1410] transition hover:bg-[var(--color-support-soft)]"
+        >
+          Wish for a tool
+        </a>
       </aside>
 
+      <div className="grid min-w-0 gap-3">
       <section className="min-w-0 overflow-hidden rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] shadow-sm">
         <div className="border-b border-[var(--color-line)] p-4 sm:p-5">
           <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
@@ -540,6 +657,139 @@ export function FreeToolsHub() {
           </section>
         ) : null}
       </section>
+      <section
+        id="tool-wish"
+        className="rounded-md border-2 border-[var(--color-support)] bg-[var(--color-support-soft)] p-4 shadow-sm sm:p-5"
+      >
+        <div className="grid gap-3 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
+          <div>
+            <p className="text-xs font-black uppercase tracking-normal text-[var(--color-support-strong)]">
+              Tool builder wish
+            </p>
+            <h2 className="mt-1 font-display text-2xl font-bold leading-tight tracking-normal sm:text-3xl">
+              Ask for the tool you wish existed.
+            </h2>
+            <p className="mt-2 text-sm font-semibold leading-relaxed text-[var(--color-ink-soft)]">
+              Logged-in accounts get 3 free tool buildout asks. After that,
+              custom tool requests start at $9.99 and go up when the build
+              needs more time, tokens, integrations, ongoing maintenance, or
+              private workflow work.
+            </p>
+            <div className="mt-3 grid grid-cols-3 gap-2">
+              <WishStat label="Used" value={String(wishStatus?.used ?? "—")} />
+              <WishStat
+                label="Free left"
+                value={String(wishStatus?.free_remaining ?? "3")}
+              />
+              <WishStat label="After" value="$9.99+" />
+            </div>
+            <p className="mt-3 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-3 text-xs font-semibold leading-relaxed text-[var(--color-ink-soft)]">
+              Best requests describe the exact pain, who needs it, what the
+              output should look like, and what you are doing manually today.
+            </p>
+          </div>
+
+          <form onSubmit={submitWish} className="grid gap-3 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-3">
+            <Field label="Tool name / wish" required>
+              <input
+                required
+                value={wish.tool_name}
+                onChange={(event) => setWish({ ...wish, tool_name: event.target.value })}
+                maxLength={160}
+                placeholder="Example: FOIA deadline tracker"
+                className={input}
+              />
+            </Field>
+            <Field label="What problem should it solve?" required>
+              <textarea
+                required
+                value={wish.problem}
+                onChange={(event) => setWish({ ...wish, problem: event.target.value })}
+                rows={4}
+                maxLength={2500}
+                placeholder="What are you trying to do, what keeps slowing you down, and why would this tool matter?"
+                className={input}
+              />
+            </Field>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <Field label="Who would use it?">
+                <textarea
+                  value={wish.who_it_helps}
+                  onChange={(event) => setWish({ ...wish, who_it_helps: event.target.value })}
+                  rows={3}
+                  maxLength={800}
+                  placeholder="Parents, J6 families, small businesses, pro se litigants..."
+                  className={input}
+                />
+              </Field>
+              <Field label="What should it output?">
+                <textarea
+                  value={wish.desired_output}
+                  onChange={(event) => setWish({ ...wish, desired_output: event.target.value })}
+                  rows={3}
+                  maxLength={1200}
+                  placeholder="Checklist, draft letter, dashboard, PDF, calendar, score..."
+                  className={input}
+                />
+              </Field>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <Field label="Current workaround">
+                <input
+                  value={wish.current_workaround}
+                  onChange={(event) => setWish({ ...wish, current_workaround: event.target.value })}
+                  maxLength={1200}
+                  placeholder="Spreadsheet, notes app, nothing..."
+                  className={input}
+                />
+              </Field>
+              <Field label="Priority">
+                <select
+                  value={wish.urgency}
+                  onChange={(event) => setWish({ ...wish, urgency: event.target.value })}
+                  className={input}
+                >
+                  <option value="normal">Normal</option>
+                  <option value="urgent">Urgent</option>
+                  <option value="community">Helps a community</option>
+                </select>
+              </Field>
+              <Field label="Contact email">
+                <input
+                  type="email"
+                  value={wish.contact_email}
+                  onChange={(event) => setWish({ ...wish, contact_email: event.target.value })}
+                  placeholder="optional if account email works"
+                  className={input}
+                />
+              </Field>
+            </div>
+            <button
+              type="submit"
+              disabled={wishBusy}
+              className="min-h-12 rounded-md border-2 border-[var(--color-ink)] bg-[var(--color-ink)] px-4 py-3 text-sm font-black text-[var(--color-paper)] transition hover:bg-[var(--color-ink-soft)] disabled:opacity-60"
+            >
+              {wishBusy ? "Saving wish..." : "Submit tool wish"}
+            </button>
+            {wishError ? (
+              <p className="rounded-md border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-3 text-sm font-bold text-[var(--color-accent)]">
+                {wishError}{" "}
+                {wishError.toLowerCase().includes("sign in") ? (
+                  <Link href="/login?next=/tools" className="underline">
+                    Sign in here.
+                  </Link>
+                ) : null}
+              </p>
+            ) : null}
+            {wishSuccess ? (
+              <p className="rounded-md border border-[var(--color-success)] bg-[var(--color-success-soft)] p-3 text-sm font-bold text-[var(--color-success)]">
+                {wishSuccess}
+              </p>
+            ) : null}
+          </form>
+        </div>
+      </section>
+      </div>
     </div>
   );
 }
@@ -747,5 +997,20 @@ function Field({
       </span>
       {children}
     </label>
+  );
+}
+
+const USE_WISH_LIMIT = 3;
+
+function WishStat({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-2 text-center">
+      <p className="font-mono text-lg font-black text-[var(--color-ink)]">
+        {value}
+      </p>
+      <p className="mt-0.5 text-[10px] font-black uppercase tracking-normal text-[var(--color-muted)]">
+        {label}
+      </p>
+    </div>
   );
 }
