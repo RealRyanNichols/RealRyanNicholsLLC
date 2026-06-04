@@ -98,33 +98,6 @@ const firstOpenPackets = [
   },
 ];
 
-const packetDrawers = [
-  {
-    label: "Value",
-    title: "Proof numbers and money lanes",
-    body: "Large numbers stay clickable but out of the first read until counsel wants the damages lane.",
-    href: "#numbers",
-  },
-  {
-    label: "Law",
-    title: "Claim map and authority shelf",
-    body: "Claim, evidence lane, law lane, status, and open item in one controlled packet.",
-    href: "#claim-map",
-  },
-  {
-    label: "Archive",
-    title: "Full supporting record",
-    body: "People, chronology, damages, political context, and longer source-chain notes live below the cover sheet.",
-    href: "#full-record",
-  },
-  {
-    label: "Audit",
-    title: "Local files and record signals",
-    body: "The behind-the-scenes file audit remains available without making the page feel like a warehouse.",
-    href: "#file-audit",
-  },
-];
-
 const sourceChain = [
   {
     step: "Official baseline",
@@ -633,75 +606,6 @@ const forensicMoneyRecords = [
   },
 ];
 
-const topProofNumbers = [
-  {
-    label: "J6 damages lane",
-    value: "$35M+",
-    tag: "claimed / source packet",
-    href: "#full-record",
-    tone: "gold",
-    weight: "94%",
-    source: "/case/damages + J6 Drive folder",
-    body:
-      "Existing damages page lists this starting claim. Source exhibits still control what counsel can rely on.",
-  },
-  {
-    label: "Supported J6 range",
-    value: "$45-50M",
-    tag: "claimed range",
-    href: "#full-record",
-    tone: "gold",
-    weight: "100%",
-    source: "/case/damages",
-    body:
-      "The public damages page frames this as the supported range for liberty, business, family, medical, and earning-capacity harm.",
-  },
-  {
-    label: "Missing WU funds",
-    value: "$750K-1.5M",
-    tag: "audit needed",
-    href: "#full-record",
-    tone: "red",
-    weight: "88%",
-    source: "MASTER_CASE_BRIEFING + MOTION_02",
-    body:
-      "Business-change motion and master briefing carry this allegation. Bank statements, ledgers, and audit work have to prove the number.",
-  },
-  {
-    label: "2023 WU 1099s",
-    value: "$411K",
-    tag: "QuickBooks summary",
-    href: "#full-record",
-    tone: "green",
-    weight: "78%",
-    source: "WU_Payroll_1099_Findings",
-    body:
-      "Drive forensic summary says the 2023 QuickBooks 1099 summary totals $411,501.15 across eight vendors.",
-  },
-  {
-    label: "Q3 payroll record",
-    value: "$231K",
-    tag: "TWC source lane",
-    href: "#full-record",
-    tone: "green",
-    weight: "62%",
-    source: "TWC Q3 2024 payroll summary",
-    body:
-      "Drive payroll summary lists $231,265.13 in Q3 wages, 39 employees, and Kyle Pope CPA filing confirmation #36262165.",
-  },
-  {
-    label: "Active charges",
-    value: "3",
-    tag: "packet needed",
-    href: "#charges",
-    tone: "red",
-    weight: "55%",
-    source: "current criminal-defense brief",
-    body:
-      "Two harassment counts and one deadly-conduct charge. Exact charging packets still need to be matched to the source evidence.",
-  },
-];
-
 const matterSplit = [
   {
     label: "Criminal",
@@ -976,47 +880,29 @@ export default async function AttorneyBriefPage() {
   }
 
   return (
-    <article className="mx-auto w-full max-w-[62rem] px-4 py-4 sm:px-5 lg:px-6">
+    <article className="mx-auto w-full max-w-[58rem] px-4 py-5 sm:px-5 lg:px-6">
       <nav
-        aria-label="Attorney brief navigation"
-        className="sticky top-16 z-20 -mx-4 mb-4 border-y border-[var(--color-line)] bg-[var(--color-surface)]/95 px-4 py-2 shadow-sm backdrop-blur sm:-mx-5 sm:px-5 lg:-mx-6 lg:top-20 lg:px-6"
+        aria-label="Attorney brief shortcuts"
+        className="mb-4 flex flex-wrap items-center justify-between gap-2"
       >
-        <div className="mx-auto flex max-w-[62rem] items-center gap-2 overflow-x-auto">
-          <Link
-            href="/admin"
-            className="shrink-0 border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-[11px] font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
-          >
-            Back
-          </Link>
-          <a
-            href="#first-look"
-            className="shrink-0 border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-3 py-2 text-[11px] font-black uppercase tracking-normal text-[var(--color-accent)]"
-          >
-            Start
-          </a>
+        <Link
+          href="/admin"
+          className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+        >
+          Back to admin
+        </Link>
+        <div className="flex flex-wrap gap-2">
           <a
             href="#source-doors"
-            className="shrink-0 border border-[var(--color-line)] bg-white/45 px-3 py-2 text-[11px] font-black uppercase tracking-normal text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
           >
-            Records
-          </a>
-          <a
-            href="#charges"
-            className="shrink-0 border border-[var(--color-line)] bg-white/45 px-3 py-2 text-[11px] font-black uppercase tracking-normal text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
-          >
-            Charges
-          </a>
-          <a
-            href="#packet-drawers"
-            className="shrink-0 border border-[var(--color-line)] bg-white/45 px-3 py-2 text-[11px] font-black uppercase tracking-normal text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
-          >
-            Packets
+            Source folders
           </a>
           <a
             href="#open-questions"
-            className="shrink-0 border border-[var(--color-line)] bg-white/45 px-3 py-2 text-[11px] font-black uppercase tracking-normal text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="inline-flex min-h-10 items-center border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-accent)]"
           >
-            Next
+            Open items
           </a>
         </div>
       </nav>
@@ -1110,69 +996,48 @@ export default async function AttorneyBriefPage() {
         id="source-doors"
         className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5"
       >
-        <div className="grid gap-3 lg:grid-cols-[0.32fr_1fr] lg:items-end">
+        <div className="grid gap-3 lg:grid-cols-[0.36fr_1fr] lg:items-end">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
               Open first
             </p>
-            <h2 className="mt-1 font-sans text-3xl font-black leading-tight">
-              Four records control the first read.
+            <h2 className="mt-1 font-sans text-2xl font-black leading-tight sm:text-3xl">
+              Four source doors. Nothing else until they ask.
             </h2>
           </div>
           <p className="text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
-            This is the human route through the page. It lets counsel see the
-            depth without being forced to read every paragraph at once.
+            A first-time reader should feel the whole packet is controlled. These
+            four doors tell counsel where the real proof lives without making the
+            screen look like a document dump.
           </p>
         </div>
-        <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-4 grid gap-3 md:grid-cols-2">
           {firstOpenPackets.map((packet) => (
             <FirstOpenCard key={packet.title} {...packet} />
           ))}
         </div>
       </section>
 
-      <details id="numbers" className="mt-4 border border-[#203a64] bg-[#071126] text-[#fdf8ea] shadow-sm">
-        <summary className="flex cursor-pointer items-center justify-between gap-3 p-4 text-sm font-black uppercase tracking-normal marker:content-['']">
-          <span>Open proof numbers and value lanes</span>
-          <span className="border border-[#7fe3a9]/50 px-2 py-1 text-[10px] text-[#7fe3a9]">
-            Click
-          </span>
-        </summary>
-        <div className="grid gap-3 border-t border-white/10 p-4 md:grid-cols-2 xl:grid-cols-3">
-          {topProofNumbers.map((card) => (
-            <ProofNumberCard key={card.label} {...card} />
-          ))}
-        </div>
-      </details>
-
       <section
         id="packet-drawers"
-        className="mt-4 border border-[var(--color-line)] bg-[var(--color-paper)] p-4 shadow-sm"
+        className="mt-4 border border-[var(--color-line)] bg-[var(--color-paper)] p-4 shadow-sm sm:p-5"
       >
         <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
-          Deep packets
+          Proof packets
         </p>
         <h2 className="mt-2 font-sans text-2xl font-black">
-          Everything is still here, just not all in their face.
+          Let them choose the depth.
         </h2>
-        <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-          {packetDrawers.map((packet) => (
-            <a
-              key={packet.href}
-              href={packet.href}
-              className="border border-[var(--color-line)] bg-[var(--color-surface)] p-3 transition hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-soft)]"
-            >
-              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-muted)]">
-                {packet.label}
-              </p>
-              <h3 className="mt-2 font-sans text-lg font-black leading-tight">
-                {packet.title}
-              </h3>
-              <p className="mt-2 text-xs font-semibold leading-5 text-[var(--color-ink-soft)]">
-                {packet.body}
-              </p>
-            </a>
-          ))}
+        <p className="mt-2 max-w-3xl text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+          The page has the full archive, but the first view only needs to prove
+          discipline: criminal issue, disputed fact, missing records, and source
+          path. Everything below opens on purpose.
+        </p>
+        <div className="mt-4 grid gap-3 md:grid-cols-2">
+          <PacketJump href="#charges" label="Criminal" title="Three charges" body="Deadly conduct plus two harassment counts, with missing proof called out." />
+          <PacketJump href="#receipts" label="Sources" title="Receipts first" body="Public links, Drive folders, and proof labels without exposing every private detail." />
+          <PacketJump href="#claim-map" label="Proof law" title="Claim to proof to law" body="A clean matrix for statutory lanes, source files, and open items." />
+          <PacketJump href="#full-record" label="Archive" title="Full support record" body="Money, people, chronology, public pressure, and file audit stay below the fold." />
         </div>
       </section>
 
@@ -1789,6 +1654,40 @@ function FirstOpenCard({
   );
 }
 
+function PacketJump({
+  href,
+  label,
+  title,
+  body,
+}: {
+  href: string;
+  label: string;
+  title: string;
+  body: string;
+}) {
+  return (
+    <a
+      href={href}
+      className="group border border-[var(--color-line)] bg-[var(--color-surface)] p-4 transition hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-soft)]"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-muted)]">
+          {label}
+        </p>
+        <span className="text-[10px] font-black uppercase tracking-normal text-[var(--color-accent)] transition group-hover:translate-x-0.5">
+          Open
+        </span>
+      </div>
+      <h3 className="mt-2 font-sans text-xl font-black leading-tight">
+        {title}
+      </h3>
+      <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+        {body}
+      </p>
+    </a>
+  );
+}
+
 function MatterSplitCard({
   label,
   title,
@@ -1842,88 +1741,6 @@ function MatterSplitCard({
         ))}
       </ul>
     </section>
-  );
-}
-
-function ProofNumberCard({
-  label,
-  value,
-  tag,
-  href,
-  tone,
-  weight,
-  source,
-  body,
-}: {
-  label: string;
-  value: string;
-  tag: string;
-  href: string;
-  tone: string;
-  weight: string;
-  source: string;
-  body: string;
-}) {
-  const isRed = tone === "red";
-  const isGold = tone === "gold";
-  const stripeClass = isRed
-    ? "bg-[#c9251d]"
-    : isGold
-      ? "bg-[#d8b13f]"
-      : "bg-[#7fe3a9]";
-  const tagClass = isRed
-    ? "bg-[#c9251d] text-white"
-    : isGold
-      ? "bg-[#d8b13f] text-[#17110a]"
-      : "bg-[#7fe3a9] text-[#071126]";
-  const glowClass = isRed
-    ? "shadow-[0_0_0_1px_rgba(201,37,29,0.75),0_18px_45px_rgba(201,37,29,0.18)]"
-    : isGold
-      ? "shadow-[0_0_0_1px_rgba(216,177,63,0.75),0_18px_45px_rgba(216,177,63,0.14)]"
-      : "shadow-[0_0_0_1px_rgba(127,227,169,0.65),0_18px_45px_rgba(127,227,169,0.12)]";
-
-  return (
-    <a
-      href={href}
-      className={[
-        "group relative min-h-[9.5rem] overflow-hidden border border-white/10 bg-white/[0.055] p-3 transition hover:-translate-y-0.5 hover:bg-white/[0.09]",
-        glowClass,
-      ].join(" ")}
-      aria-label={`${label}: ${value}. ${tag}. Source: ${source}. ${body}`}
-    >
-      <span
-        className={[
-          "absolute left-0 top-0 h-full w-1.5 transition group-hover:w-2.5",
-          stripeClass,
-        ].join(" ")}
-      />
-      <span className="absolute right-3 top-3 border border-white/10 bg-white/5 px-2 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-[#cfd9ea]">
-        Click
-      </span>
-      <span className="block pr-14 text-[10px] font-black uppercase tracking-[0.2em] text-[#cfd9ea]">
-        {label}
-      </span>
-      <span className="mt-2 block font-sans text-3xl font-black leading-none text-[#fdf8ea] sm:text-4xl">
-        {value}
-      </span>
-      <span
-        className={[
-          "mt-2 inline-flex min-h-7 items-center px-2 text-[10px] font-black uppercase tracking-[0.12em]",
-          tagClass,
-        ].join(" ")}
-      >
-        {tag}
-      </span>
-      <span className="mt-3 block h-2 border border-white/10 bg-black/25">
-        <span
-          className={["block h-full", stripeClass].join(" ")}
-          style={{ width: weight }}
-        />
-      </span>
-      <span className="mt-3 block text-[10px] font-black uppercase tracking-[0.16em] text-[#d8c89e]">
-        Source: {source}
-      </span>
-    </a>
   );
 }
 
