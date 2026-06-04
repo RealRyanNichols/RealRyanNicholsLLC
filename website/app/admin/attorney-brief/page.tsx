@@ -621,7 +621,7 @@ const topProofNumbers = [
     label: "J6 damages lane",
     value: "$35M+",
     tag: "claimed / source packet",
-    href: "#damages-map",
+    href: "#value-story",
     tone: "gold",
     weight: "94%",
     source: "/case/damages + J6 Drive folder",
@@ -632,7 +632,7 @@ const topProofNumbers = [
     label: "Supported J6 range",
     value: "$45-50M",
     tag: "claimed range",
-    href: "#damages-map",
+    href: "#value-story",
     tone: "gold",
     weight: "100%",
     source: "/case/damages",
@@ -709,7 +709,7 @@ const firstLook = [
     title: "Source files over public retellings",
     body:
       "The packet separates HCSO's baseline wording, later public escalation, Ryan's denial, and the missing native video/bodycam/message files.",
-    href: "#source-chain",
+    href: "#full-record",
     tone: "green",
   },
   {
@@ -717,7 +717,7 @@ const firstLook = [
     title: "Civil, WU, divorce, and J6 lanes",
     body:
       "The money lanes stay visible, but they do not clutter the criminal defense unless they prove motive, pressure, credibility, or damages.",
-    href: "#damages-map",
+    href: "#full-record",
     tone: "gold",
   },
   {
@@ -807,7 +807,7 @@ const claimSupportMatrix = [
       "Court portal entry, Judicial Officer Joe Black assignment, story-view/reaction screenshots, prior-contact facts, and any filed/draft recusal packet.",
     law: "Texas Rule of Civil Procedure 18b and related criminal-trial recusal procedure for counsel review.",
     status: "Verify first",
-    href: "#source-chain",
+    href: "#full-record",
     tone: "gold",
   },
   {
@@ -816,7 +816,7 @@ const claimSupportMatrix = [
       "J6 damages page, J6 Drive folder, WU ledgers, payroll/1099 summaries, TWC records, bank statements, tax returns, debt letters, and audit trails.",
     law: "Civil damages, business valuation, community-property, and restitution/compensation theories belong in counsel's damages lane after source review.",
     status: "Evidence controls",
-    href: "#damages-map",
+    href: "#full-record",
     tone: "green",
   },
 ];
