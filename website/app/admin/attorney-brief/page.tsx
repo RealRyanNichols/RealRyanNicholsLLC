@@ -2,6 +2,16 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import {
+  BriefTimeline,
+  ChargeStatusList,
+  ChartCard,
+  KpiStat,
+  MoneyBars,
+  ReadinessDonut,
+  type BarItem,
+  type Tone,
+} from "@/components/AttorneyVisuals";
 
 export const metadata: Metadata = {
   title: "Attorney Brief",
@@ -936,6 +946,32 @@ export default async function AttorneyBriefPage() {
     );
   }
 
+  const arraignment = Date.parse("2026-06-09T00:00:00-05:00");
+  const daysToArraignment = Math.max(
+    0,
+    Math.ceil((arraignment - Date.now()) / 86_400_000),
+  );
+  const damageBars: BarItem[] = financialImpact.map((item) => ({
+    label: item.label,
+    valueText: item.value,
+    tone: /documented/i.test(item.sub)
+      ? "green"
+      : /^J6/.test(item.label)
+        ? "navy"
+        : "gold",
+  }));
+  const forensicBars: BarItem[] = forensicMoneyRecords.map((item) => ({
+    label: item.label,
+    valueText: item.value,
+    tone: /lead|missing/i.test(`${item.label} ${item.value}`) ? "red" : "gold",
+  }));
+  const chargeStatus: { title: string; status: string; tone: Tone }[] =
+    chargeCards.map((item) => ({
+      title: item.title,
+      status: item.status,
+      tone: item.tone as Tone,
+    }));
+
   return (
     <article className="mx-auto w-full max-w-[60rem] px-4 py-5 sm:px-5 lg:px-6">
       <nav
@@ -960,6 +996,12 @@ export default async function AttorneyBriefPage() {
             className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
           >
             Open first
+          </a>
+          <a
+            href="#visuals"
+            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          >
+            Charts
           </a>
           <a
             href="#packet-drawers"
@@ -1133,6 +1175,103 @@ export default async function AttorneyBriefPage() {
           {drawerMap.map((drawer) => (
             <PacketJump key={drawer.href} {...drawer} />
           ))}
+        </div>
+      </section>
+
+      <section
+        id="visuals"
+        className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5"
+      >
+        <div className="grid gap-3 lg:grid-cols-[0.4fr_1fr] lg:items-end">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+              At a glance
+            </p>
+            <h2 className="mt-1 font-sans text-2xl font-black leading-tight sm:text-3xl">
+              The case in charts.
+            </h2>
+          </div>
+          <p className="text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+            The same record, in pictures. Bars are scaled for comparison and
+            every label carries the exact figure. Each lane stays marked
+            claimed, audit-needed, or source-backed so nothing reads as proven
+            before the packet is pulled.
+          </p>
+        </div>
+
+        <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+          <KpiStat
+            tone="gold"
+            value="$45-50M+"
+            label="Total claimed exposure across the J6, business, and civil lanes"
+          />
+          <KpiStat
+            tone="red"
+            value="3"
+            label="Active charges: two harassment counts and one deadly conduct"
+          />
+          <KpiStat
+            tone="red"
+            value={String(daysToArraignment)}
+            label="Days to the June 9, 2026 arraignment setting"
+          />
+          <KpiStat
+            tone="navy"
+            value="None"
+            label="Counsel of record: Ryan reports he is unrepresented"
+          />
+        </div>
+
+        <div className="mt-4 grid gap-3 lg:grid-cols-2">
+          <ChartCard
+            eyebrow="Damages / value map"
+            title="Claimed exposure by lane"
+            hint="Log scale so every lane stays visible — read the figure on each bar. A striped bar means the valuation is still pending."
+          >
+            <MoneyBars scale="log" items={damageBars} />
+          </ChartCard>
+          <ChartCard
+            eyebrow="Record readiness"
+            title="Where the seven core claims stand"
+            hint="Most of the case still needs production pulled into the packet before any number is relied on."
+          >
+            <ReadinessDonut
+              centerValue="7"
+              centerLabel="CORE CLAIMS"
+              segments={[
+                { label: "need production", value: 2, tone: "red" },
+                { label: "verify / order / research", value: 3, tone: "gold" },
+                { label: "source already in hand", value: 2, tone: "green" },
+              ]}
+            />
+          </ChartCard>
+        </div>
+
+        <div className="mt-3 grid gap-3 lg:grid-cols-2">
+          <ChartCard
+            eyebrow="Wholesale Universe money records"
+            title="Figures flagged for forensic audit"
+            hint="From Drive payroll and 1099 summaries. Bank statements and ledgers still control the final number."
+          >
+            <MoneyBars scale="linear" items={forensicBars} />
+          </ChartCard>
+          <ChartCard
+            eyebrow="Charges at a glance"
+            title="Three counts, one disputed story"
+            hint="Red is the active deadly-conduct matter; gold counts still need their charging packets."
+          >
+            <ChargeStatusList items={chargeStatus} />
+          </ChartCard>
+        </div>
+
+        <div className="mt-3">
+          <ChartCard
+            eyebrow="Sequence"
+            title="Timeline of the record"
+            hint="Red marks the disputed church allegation and the next court setting; the rest is background and source-request history."
+          >
+            <BriefTimeline items={chronology} />
+          </ChartCard>
         </div>
       </section>
 
