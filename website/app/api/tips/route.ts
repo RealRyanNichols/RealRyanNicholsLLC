@@ -106,6 +106,12 @@ export async function POST(request: Request) {
       urls: parsed.data.urls ?? [],
       ip_hash: ipHash,
       status: "pending",
+      route_kind: routePlan.kind,
+      route_urgency: routePlan.urgency,
+      route_score: routePlan.score,
+      route_label: routePlan.label,
+      route_reason: routePlan.reason,
+      outcome_status: "unworked",
     })
     .select("id")
     .single();

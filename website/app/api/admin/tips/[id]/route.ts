@@ -5,6 +5,23 @@ import { getSupabaseServerClient } from "@/lib/supabase/server";
 const schema = z.object({
   status: z.enum(["pending", "reviewed", "merged", "rejected"]),
   reviewed_notes: z.string().max(4000).nullable().optional(),
+  outcome_status: z
+    .enum([
+      "unworked",
+      "article_draft",
+      "article_published",
+      "solution_brief",
+      "case_mapped",
+      "evidence_verified",
+      "private_reply",
+      "service_lead",
+      "invoice_sent",
+      "watch_file",
+      "closed",
+    ])
+    .optional(),
+  outcome_url: z.string().url().max(1000).nullable().optional().or(z.literal("")),
+  outcome_notes: z.string().max(2000).nullable().optional(),
 });
 
 export async function PATCH(
@@ -42,6 +59,10 @@ export async function PATCH(
     return NextResponse.json({ error: "Forbidden." }, { status: 403 });
   }
 
+  const outcomeStatus = parsed.data.outcome_status;
+  const outcomeUrl =
+    parsed.data.outcome_url === "" ? null : parsed.data.outcome_url;
+  const outcomeChanged = outcomeStatus !== undefined;
   const { error } = await supabase
     .from("case_tips")
     .update({
@@ -50,6 +71,13 @@ export async function PATCH(
         parsed.data.reviewed_notes === undefined
           ? undefined
           : parsed.data.reviewed_notes,
+      outcome_status: outcomeStatus,
+      outcome_url: outcomeUrl,
+      outcome_notes:
+        parsed.data.outcome_notes === undefined
+          ? undefined
+          : parsed.data.outcome_notes,
+      outcome_at: outcomeChanged ? new Date().toISOString() : undefined,
       reviewed_by: auth.user.id,
       reviewed_at: new Date().toISOString(),
     })

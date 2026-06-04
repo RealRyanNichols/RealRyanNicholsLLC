@@ -18,11 +18,23 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 type Status = "pending" | "reviewed" | "merged" | "rejected" | "all";
+type OutcomeStatus =
+  | "unworked"
+  | "article_draft"
+  | "article_published"
+  | "solution_brief"
+  | "case_mapped"
+  | "evidence_verified"
+  | "private_reply"
+  | "service_lead"
+  | "invoice_sent"
+  | "watch_file"
+  | "closed";
 
 export default async function AdminTipsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ filter?: string; route?: string; urgency?: string }>;
+  searchParams: Promise<{ filter?: string; route?: string; urgency?: string; outcome?: string }>;
 }) {
   const supabase = await getSupabaseServerClient();
   const { data: auth } = await supabase.auth.getUser();
@@ -38,7 +50,7 @@ export default async function AdminTipsPage({
     );
   }
 
-  const { filter, route, urgency } = await searchParams;
+  const { filter, route, urgency, outcome } = await searchParams;
   const view: Status =
     filter === "reviewed" ||
     filter === "merged" ||
@@ -48,11 +60,12 @@ export default async function AdminTipsPage({
       : "pending";
   const routeView = isRouteKind(route) ? route : null;
   const urgencyView = isUrgency(urgency) ? urgency : null;
+  const outcomeView = isOutcomeStatus(outcome) ? outcome : null;
 
   let query = supabase
     .from("case_tips")
     .select(
-      "id, category, location, submitter_name, submitter_email, defendant_name, narrative, urls, status, reviewed_at, reviewed_notes, created_at"
+      "id, category, location, submitter_name, submitter_email, defendant_name, narrative, urls, status, reviewed_at, reviewed_notes, created_at, route_kind, route_urgency, route_score, route_label, route_reason, outcome_status, outcome_url, outcome_at, outcome_notes"
     )
     .order("created_at", { ascending: false });
   if (view !== "all") {
@@ -73,16 +86,35 @@ export default async function AdminTipsPage({
   ]);
   const routedTips = (tips ?? []).map((tip) => {
     const urls = Array.isArray(tip.urls) ? (tip.urls as string[]) : [];
+    const computedPlan = buildIntakeRoutePlan({
+      category: tip.category,
+      subject: tip.defendant_name,
+      location: tip.location,
+      narrative: tip.narrative,
+      urls,
+    });
+    const persistedKind = isRouteKind(tip.route_kind) ? tip.route_kind : null;
+    const persistedUrgency = isUrgency(tip.route_urgency) ? tip.route_urgency : null;
     return {
       tip,
       urls,
-      plan: buildIntakeRoutePlan({
-        category: tip.category,
-        subject: tip.defendant_name,
-        location: tip.location,
-        narrative: tip.narrative,
-        urls,
-      }),
+      plan: {
+        ...computedPlan,
+        kind: persistedKind ?? computedPlan.kind,
+        urgency: persistedUrgency ?? computedPlan.urgency,
+        score:
+          typeof tip.route_score === "number"
+            ? tip.route_score
+            : computedPlan.score,
+        label:
+          typeof tip.route_label === "string" && tip.route_label.trim()
+            ? tip.route_label
+            : computedPlan.label,
+        reason:
+          typeof tip.route_reason === "string" && tip.route_reason.trim()
+            ? tip.route_reason
+            : computedPlan.reason,
+      } satisfies IntakeRoutePlan,
     };
   });
   const routeCounts = routedTips.reduce(
@@ -99,9 +131,13 @@ export default async function AdminTipsPage({
     } as Record<IntakeRouteKind, number>,
   );
   const hotTipCount = routedTips.filter((item) => item.plan.urgency === "hot").length;
+  const noOutcomeCount = routedTips.filter(
+    (item) => !item.tip.outcome_status || item.tip.outcome_status === "unworked",
+  ).length;
   const visibleTips = routedTips.filter((item) => {
     if (routeView && item.plan.kind !== routeView) return false;
     if (urgencyView && item.plan.urgency !== urgencyView) return false;
+    if (outcomeView && item.tip.outcome_status !== outcomeView) return false;
     return true;
   });
 
@@ -133,52 +169,60 @@ export default async function AdminTipsPage({
               leads are tips with source, map, or verification signals.
             </p>
           </div>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
             <RadarStat
               label="Hot"
               value={hotTipCount}
-              href={tipsHref({ filter: view, urgency: "hot" })}
+              href={tipsHref({ filter: view, urgency: "hot", outcome: outcomeView })}
               active={urgencyView === "hot"}
               tone="red"
             />
             <RadarStat
               label="Verify"
               value={routeCounts.verify}
-              href={tipsHref({ filter: view, route: "verify", urgency: urgencyView })}
+              href={tipsHref({ filter: view, route: "verify", urgency: urgencyView, outcome: outcomeView })}
               active={routeView === "verify"}
             />
             <RadarStat
               label="Map"
               value={routeCounts.case_map}
-              href={tipsHref({ filter: view, route: "case_map", urgency: urgencyView })}
+              href={tipsHref({ filter: view, route: "case_map", urgency: urgencyView, outcome: outcomeView })}
               active={routeView === "case_map"}
             />
             <RadarStat
               label="Article"
               value={routeCounts.article}
-              href={tipsHref({ filter: view, route: "article", urgency: urgencyView })}
+              href={tipsHref({ filter: view, route: "article", urgency: urgencyView, outcome: outcomeView })}
               active={routeView === "article"}
             />
             <RadarStat
               label="Follow up"
               value={routeCounts.service}
-              href={tipsHref({ filter: view, route: "service", urgency: urgencyView })}
+              href={tipsHref({ filter: view, route: "service", urgency: urgencyView, outcome: outcomeView })}
               active={routeView === "service"}
             />
             <RadarStat
               label="Watch"
               value={routeCounts.watch}
-              href={tipsHref({ filter: view, route: "watch", urgency: urgencyView })}
+              href={tipsHref({ filter: view, route: "watch", urgency: urgencyView, outcome: outcomeView })}
               active={routeView === "watch"}
+            />
+            <RadarStat
+              label="No result"
+              value={noOutcomeCount}
+              href={tipsHref({ filter: view, route: routeView, urgency: urgencyView, outcome: "unworked" })}
+              active={outcomeView === "unworked"}
+              tone="red"
             />
           </div>
         </div>
-        {routeView || urgencyView ? (
+        {routeView || urgencyView || outcomeView ? (
           <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border border-white/10 bg-white/[0.055] p-3">
             <p className="text-sm font-bold leading-6 text-[#cfd9ea]">
               Showing {visibleTips.length} of {routedTips.length} tips
               {urgencyView ? ` in the ${urgencyView} lane` : ""}
               {routeView ? ` routed to ${routeLabel(routeView).toLowerCase()}` : ""}.
+              {outcomeView ? ` Outcome: ${outcomeLabel(outcomeView)}.` : ""}
             </p>
             <Link
               href={tipsHref({ filter: view })}
@@ -191,19 +235,19 @@ export default async function AdminTipsPage({
       </section>
 
       <nav className="mt-6 flex flex-wrap gap-1 border-b border-[var(--color-line)]">
-        <TabLink active={view === "pending"} href={tipsHref({ filter: "pending", route: routeView, urgency: urgencyView })}>
+        <TabLink active={view === "pending"} href={tipsHref({ filter: "pending", route: routeView, urgency: urgencyView, outcome: outcomeView })}>
           Pending ({pendingCount ?? 0})
         </TabLink>
-        <TabLink active={view === "reviewed"} href={tipsHref({ filter: "reviewed", route: routeView, urgency: urgencyView })}>
+        <TabLink active={view === "reviewed"} href={tipsHref({ filter: "reviewed", route: routeView, urgency: urgencyView, outcome: outcomeView })}>
           Reviewed ({reviewedCount ?? 0})
         </TabLink>
-        <TabLink active={view === "merged"} href={tipsHref({ filter: "merged", route: routeView, urgency: urgencyView })}>
+        <TabLink active={view === "merged"} href={tipsHref({ filter: "merged", route: routeView, urgency: urgencyView, outcome: outcomeView })}>
           Merged ({mergedCount ?? 0})
         </TabLink>
-        <TabLink active={view === "rejected"} href={tipsHref({ filter: "rejected", route: routeView, urgency: urgencyView })}>
+        <TabLink active={view === "rejected"} href={tipsHref({ filter: "rejected", route: routeView, urgency: urgencyView, outcome: outcomeView })}>
           Rejected ({rejectedCount ?? 0})
         </TabLink>
-        <TabLink active={view === "all"} href={tipsHref({ filter: "all", route: routeView, urgency: urgencyView })}>
+        <TabLink active={view === "all"} href={tipsHref({ filter: "all", route: routeView, urgency: urgencyView, outcome: outcomeView })}>
           All
         </TabLink>
       </nav>
@@ -272,6 +316,13 @@ export default async function AdminTipsPage({
                     </p>
                   </div>
                   <StatusBadge status={t.status} />
+                  <OutcomeBadge
+                    status={
+                      typeof t.outcome_status === "string"
+                        ? t.outcome_status
+                        : "unworked"
+                    }
+                  />
                 </header>
 
                 <TipRoutePanel plan={plan} tipId={t.id} />
@@ -307,6 +358,17 @@ export default async function AdminTipsPage({
                   id={t.id}
                   currentStatus={t.status}
                   currentNotes={t.reviewed_notes}
+                  currentOutcomeStatus={
+                    typeof t.outcome_status === "string"
+                      ? t.outcome_status
+                      : "unworked"
+                  }
+                  currentOutcomeUrl={
+                    typeof t.outcome_url === "string" ? t.outcome_url : null
+                  }
+                  currentOutcomeNotes={
+                    typeof t.outcome_notes === "string" ? t.outcome_notes : null
+                  }
                 />
               </article>
             );
@@ -497,16 +559,52 @@ function tipsHref({
   filter,
   route,
   urgency,
+  outcome,
 }: {
   filter: Status;
   route?: IntakeRouteKind | null;
   urgency?: IntakeRoutePlan["urgency"] | null;
+  outcome?: OutcomeStatus | null;
 }) {
   const params = new URLSearchParams();
   params.set("filter", filter);
   if (route) params.set("route", route);
   if (urgency) params.set("urgency", urgency);
+  if (outcome) params.set("outcome", outcome);
   return `/admin/tips?${params.toString()}`;
+}
+
+function isOutcomeStatus(value?: string | null): value is OutcomeStatus {
+  return (
+    value === "unworked" ||
+    value === "article_draft" ||
+    value === "article_published" ||
+    value === "solution_brief" ||
+    value === "case_mapped" ||
+    value === "evidence_verified" ||
+    value === "private_reply" ||
+    value === "service_lead" ||
+    value === "invoice_sent" ||
+    value === "watch_file" ||
+    value === "closed"
+  );
+}
+
+function outcomeLabel(value?: string | null) {
+  const labels: Record<OutcomeStatus, string> = {
+    unworked: "No outcome yet",
+    article_draft: "Article draft",
+    article_published: "Article published",
+    solution_brief: "Solution brief",
+    case_mapped: "Case mapped",
+    evidence_verified: "Evidence verified",
+    private_reply: "Private reply",
+    service_lead: "Service lead",
+    invoice_sent: "Invoice sent",
+    watch_file: "Watch file",
+    closed: "Closed",
+  };
+  return isOutcomeStatus(value) ? labels[value] : "No outcome yet";
 }
 
 function CategoryChip({ category }: { category?: string | null }) {
@@ -539,6 +637,22 @@ function StatusBadge({ status }: { status: string }) {
       }`}
     >
       {status}
+    </span>
+  );
+}
+
+function OutcomeBadge({ status }: { status: string }) {
+  const worked = status !== "unworked";
+  return (
+    <span
+      className={[
+        "rounded-full px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider",
+        worked
+          ? "bg-[#7fe3a9]/25 text-[#0f3d2a]"
+          : "bg-[#e0362c]/15 text-[var(--color-accent)]",
+      ].join(" ")}
+    >
+      {outcomeLabel(status)}
     </span>
   );
 }
