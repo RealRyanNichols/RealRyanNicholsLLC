@@ -19,6 +19,7 @@ const meeting = {
 };
 
 const urgentAsks = [
+  "Confirm Ryan is not represented by anyone in the active criminal matter, divorce/business matter, or J6 damages/compensation lane unless an attorney has formally appeared.",
   "Confirm whether bond was revoked, the exact stated reason, and whether the State is treating social-media speech as the violation.",
   "Confirm the next setting: arraignment on June 9, 2026, possible Case No. 2026-0226, Harrison County.",
   "Get the charging instruments for both harassment counts and the deadly conduct charge.",
@@ -53,6 +54,12 @@ const immediateEmergency = [
     value: "Art. 39.14 + Brady",
     note:
       "The current bodycam fight should move through the criminal case, not depend only on open-records release while the case is active.",
+  },
+  {
+    label: "Representation",
+    value: "Not represented",
+    note:
+      "Ryan reports he is not represented by anyone. Counsel should confirm no attorney has appeared in each active matter before strategy.",
   },
 ];
 
@@ -141,6 +148,89 @@ const caseTheory = [
   "The Treece thread matters only if the harassment charges rely on speech, threats, contact history, or unequal enforcement around online statements.",
   "The July 13 / James Chatham file is background-pattern evidence, not the church charge itself, unless the State uses old gun allegations or character framing.",
   "The safest attorney posture is source-first: charging packets, bodycam, dispatch, CAD, original witness statements, native videos, complete message exports.",
+];
+
+const financialImpact = [
+  {
+    label: "J6 compensation claim",
+    value: "$35M",
+    sub: "starting claim",
+    body:
+      "Existing /case/damages page lists a $35,000,000 starting claim for liberty lost, business destruction, family damage, medical injury, mental-health harm, and career destruction.",
+  },
+  {
+    label: "J6 supported range",
+    value: "$45-50M",
+    sub: "claimed range",
+    body:
+      "The existing damages page says this range includes consequential damages, lost lifetime earning capacity, long-term medical care, and destruction of Wholesale Universe and family stability.",
+  },
+  {
+    label: "Wholesale Universe",
+    value: "multi-million",
+    sub: "enterprise value",
+    body:
+      "Existing case pages describe Wholesale Universe, Inc. as a multi-million-dollar wholesale/retail company. Counsel should request ledgers, tax returns, bank records, inventory records, and valuation proof.",
+  },
+  {
+    label: "Missing WU funds",
+    value: "$750K-1.5M",
+    sub: "claimed / audit needed",
+    body:
+      "Master case briefing and prompt package describe alleged missing funds in this range. Treat as a forensic-audit target until bank statements and ledgers prove the number.",
+  },
+  {
+    label: "Unauthorized debt",
+    value: "$44K-49K",
+    sub: "claimed debt exposure",
+    body:
+      "Prompt package lists a box-truck debt around $22K-27K plus Landstar shipping demand of $22,226.61 after POA-revocation issues. Counsel should verify creditor records and DocuSign audit trails.",
+  },
+  {
+    label: "Phone/AT&T harm",
+    value: "$1,663.90+",
+    sub: "documented lane",
+    body:
+      "AT&T materials list $950 accelerated device balance plus $713.90 account balance, with additional new-service and access damages to verify.",
+  },
+];
+
+const divorceBusinessLanes = [
+  {
+    title: "Business control and valuation",
+    items: [
+      "Wholesale Universe, Inc. formation documents showing Ryan as founder",
+      "Wholesale Universe Inc. dissolution records and Wholesale Universe LLC formation records",
+      "Tax returns, profit/loss, bank statements, ledgers, inventory, Amazon/FBA records, loan files, and merchant records",
+      "Independent valuation of Wholesale Universe before detention, during divorce, and after transfer/control changes",
+      "Whether the company was a community asset, separate property asset, or mixed asset under Texas law",
+    ],
+  },
+  {
+    title: "Divorce / business damages counsel should quantify",
+    items: [
+      "$750K-$1.5M alleged missing funds from Master Case Briefing; forensic audit needed",
+      "Unauthorized box-truck debt around $22K-$27K; verify creditor, date, signature, and DocuSign audit trail",
+      "Landstar Transportation demand letter for $22,226.61; verify liability and signatory authority",
+      "AT&T/phone harm: $950 + $713.90 = $1,663.90 plus communication and business-access damage",
+      "Robinhood account breach allegation and any emptied investment-account balance",
+      "Lost income, lost company access, homelessness, inability to work, litigation costs, and pro se time",
+    ],
+  },
+];
+
+const j6DamageLanes = [
+  {
+    title: "January 6 federal case damages",
+    items: [
+      "$35,000,000 starting claim listed on /case/damages",
+      "$45-$50M supported range listed on /case/damages",
+      "Liberty lost from January 18, 2021 arrest through January 20, 2025 pardon; charges later dismissed with prejudice",
+      "Business destroyed: Wholesale Universe, Inc. described as multi-million-dollar enterprise",
+      "Marriage/family damage, children daily-presence damage, career trajectory loss, medical injury, and mental-health harm",
+      "Use the damages page as a summary; demand source exhibits before relying on dollar amounts",
+    ],
+  },
 ];
 
 const chronology = [
@@ -266,6 +356,8 @@ const evidenceLanes = [
       "Williams TRO false-testimony motion draft",
       "AT&T phone-line contempt transcript and date correction",
       "Wholesale Universe / Robinhood / DocuSign context only if it explains motive, pressure, or credibility",
+      "Divorce/business damages: company valuation, alleged missing funds, unauthorized debt, phone/account lockout, litigation cost, and lost access to work",
+      "January 6 damages: $35M starting claim and $45-$50M supported range from the public damages page, source exhibits still required",
       "Prior J6/pardon/public figure context only if the State or media uses it",
       "Proof of public threats against Ryan after the church-gun story spread",
       "Harkrider separate file only if the State opens the door to Ryan's prior J6/community context",
@@ -300,6 +392,11 @@ const sourceLinks = [
     href: meeting.website,
     note: "Meeting firm website.",
   },
+  {
+    label: "J6 damages page",
+    href: "/case/damages",
+    note: "Existing public damages summary: $35M starting claim and $45-$50M supported range.",
+  },
 ];
 
 const sourceFiles = [
@@ -327,9 +424,22 @@ const sourceFiles = [
     note:
       "Source for divorce/business background, Ryan Baker background mention, and broader names counsel may hear.",
   },
+  {
+    label: "J6 damages page",
+    path: "website/app/case/damages/page.tsx",
+    note:
+      "Source for public J6 damages framing, $35M starting claim, $45-$50M supported range, and Wholesale Universe enterprise-value language.",
+  },
+  {
+    label: "ChatGPT prompt package",
+    path: "Real Ryan Nichols LLC/CHATGPT_PROMPT_PACKAGE.md",
+    note:
+      "Source for AT&T damages, unauthorized debt range, Wholesale Universe bank-account bridge, and motion-plan dollar figures.",
+  },
 ];
 
 const questionsForRyan = [
+  "Has any attorney formally appeared for Ryan in the criminal case, divorce/business matter, J6 compensation/damages matter, or related civil matters?",
   "Is bond currently revoked, modified, or only threatened? Get the exact written order and bond condition.",
   "Is the June 9, 2026 setting confirmed as arraignment, and is Case No. 2026-0226 correct?",
   "What are the exact cause numbers / complaint numbers for the two harassment charges and deadly conduct charge?",
@@ -339,6 +449,8 @@ const questionsForRyan = [
   "Do you have the bond paperwork, magistrate warnings, probable-cause affidavit, or booking sheet?",
   "Which raw videos/screenshots are native files versus edited public receipts?",
   "Who can authenticate the Messenger thread, public comments, church video, and records requests?",
+  "What is the best current evidence for Wholesale Universe's value: tax returns, bank statements, inventory records, Amazon/FBA records, ledgers, loan files, or CPA records?",
+  "What exact damages are already supported by documents versus only estimated: J6 claim, missing WU funds, unauthorized debt, phone harm, Robinhood, and lost income?",
   "What direct record ties Jeremy Oni/Oney, Ryan Baker, Craig Evers, or Oak Grove Baptist Church to the current charges, if any?",
   "What must be kept private because it includes minors, addresses, phone numbers, medical/cannabis-card data, or family-court sensitive material?",
 ];
@@ -376,7 +488,7 @@ export default async function AttorneyBriefPage() {
           <div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
             <Metric label="Charges" value="3" sub="2 harassment / 1 deadly conduct" />
             <Metric label="Meeting" value="11:30" sub="Friday, June 5" />
-            <Metric label="Key fight" value="Bodycam" sub="source footage first" />
+            <Metric label="Representation" value="None" sub="Ryan reports no counsel" hot />
             <Metric label="Risk" value="High" sub="public narrative escalation" hot />
           </div>
         </div>
@@ -450,6 +562,29 @@ export default async function AttorneyBriefPage() {
         ))}
       </section>
 
+      <section className="mt-5 rounded-md border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-4">
+        <div className="grid gap-4 lg:grid-cols-[0.38fr_1fr]">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+              Representation status
+            </p>
+            <h2 className="mt-1 font-sans text-2xl font-black">
+              Ryan is not represented by anyone.
+            </h2>
+          </div>
+          <div className="rounded-sm border border-[var(--color-accent)]/40 bg-white/45 p-4">
+            <p className="text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+              As reported for this brief, Ryan is operating without counsel.
+              The attorneys should verify whether anyone has formally appeared
+              in the criminal case, divorce/business case, J6 compensation
+              lane, or related civil matters. Until a lawyer appears, treat
+              every urgent deadline, discovery demand, bond issue, and recusal
+              issue as needing immediate triage.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section className="mt-5 grid gap-4 xl:grid-cols-[0.82fr_1.18fr]">
         <section className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
           <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
@@ -496,6 +631,45 @@ export default async function AttorneyBriefPage() {
             ))}
           </div>
         </section>
+      </section>
+
+      <section className="mt-5 rounded-md border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea]">
+        <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+          Damages / money map
+        </p>
+        <h2 className="mt-2 font-sans text-2xl font-black text-[#fdf8ea]">
+          What this has cost Ryan
+        </h2>
+        <p className="mt-2 max-w-4xl text-sm font-semibold leading-6 text-[#cfd9ea]">
+          These are claimed or estimated lanes pulled from the existing site
+          damages page and Google Drive case materials. Counsel should separate
+          documented amounts from estimates, then decide what belongs in the
+          criminal defense, divorce/business case, civil damages claim, or a
+          separate compensation package.
+        </p>
+        <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+          {financialImpact.map((item) => (
+            <section
+              key={item.label}
+              className="rounded-md border border-white/10 bg-white/5 p-4"
+            >
+              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
+                {item.label}
+              </p>
+              <div className="mt-2 flex items-baseline gap-2">
+                <p className="font-sans text-3xl font-black text-[#fdf8ea]">
+                  {item.value}
+                </p>
+                <p className="text-xs font-black uppercase tracking-[0.16em] text-[#7fe3a9]">
+                  {item.sub}
+                </p>
+              </div>
+              <p className="mt-2 text-xs font-semibold leading-5 text-[#cfd9ea]">
+                {item.body}
+              </p>
+            </section>
+          ))}
+        </div>
       </section>
 
       <section className="mt-5 grid gap-4 xl:grid-cols-[0.92fr_1.08fr]">
@@ -552,6 +726,44 @@ export default async function AttorneyBriefPage() {
               {lane.items.map((item) => (
                 <li key={item} className="flex gap-2 text-sm leading-6 text-[var(--color-ink-soft)]">
                   <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[var(--color-support)]" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </section>
+
+      <section className="mt-5 grid gap-4 lg:grid-cols-2">
+        {divorceBusinessLanes.map((lane) => (
+          <section
+            key={lane.title}
+            className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4"
+          >
+            <h2 className="font-sans text-xl font-black">{lane.title}</h2>
+            <ul className="mt-3 space-y-2">
+              {lane.items.map((item) => (
+                <li key={item} className="flex gap-2 text-sm leading-6 text-[var(--color-ink-soft)]">
+                  <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[var(--color-support)]" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </section>
+
+      <section className="mt-5 grid gap-4 lg:grid-cols-1">
+        {j6DamageLanes.map((lane) => (
+          <section
+            key={lane.title}
+            className="rounded-md border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-4"
+          >
+            <h2 className="font-sans text-xl font-black">{lane.title}</h2>
+            <ul className="mt-3 grid gap-2 md:grid-cols-2">
+              {lane.items.map((item) => (
+                <li key={item} className="flex gap-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+                  <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[var(--color-accent)]" />
                   <span>{item}</span>
                 </li>
               ))}
