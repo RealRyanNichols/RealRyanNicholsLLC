@@ -142,10 +142,22 @@ export default async function CasePage({
       filteredEvents.length +
       filteredDocuments.length
     : 0;
+  const j6People = people.filter((p) => p.is_j6_defendant);
+  const isJ6ClaimDirectory = tab === "people" && j6Filter !== "all";
+  const j6Counts = {
+    total: j6People.length,
+    unclaimed: j6People.filter((p) => p.claim_status === "unclaimed").length,
+    verified: j6People.filter((p) => p.claim_status === "verified").length,
+    pending: j6People.filter((p) => p.claim_status === "pending").length,
+  };
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
       <header className="mb-10">
+        {isJ6ClaimDirectory ? (
+          <J6ClaimDirectoryHero counts={j6Counts} activeFilter={j6Filter} />
+        ) : (
+          <>
         <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
           The case · United States v. Nichols
         </p>
@@ -319,6 +331,8 @@ export default async function CasePage({
             />
           </div>
         </section>
+          </>
+        )}
 
         {/* Search */}
         <form
@@ -423,6 +437,125 @@ function SmallStat({ label, value }: { label: string; value: number | string }) 
     <div className="rounded-lg border border-[var(--color-line)] px-2.5 py-1.5 text-[var(--color-ink-soft)]">
       <span className="text-sm font-bold text-[var(--color-ink)] mr-1.5">{value}</span>
       <span className="text-[10px] uppercase tracking-wider">{label}</span>
+    </div>
+  );
+}
+
+function J6ClaimDirectoryHero({
+  counts,
+  activeFilter,
+}: {
+  counts: { total: number; unclaimed: number; verified: number; pending: number };
+  activeFilter: "unclaimed" | "verified" | "pending";
+}) {
+  const isUnclaimed = activeFilter === "unclaimed";
+  const kicker =
+    activeFilter === "verified"
+      ? "Verified defendants"
+      : activeFilter === "pending"
+        ? "Claims under review"
+        : "J6 defendants · get in here";
+  const title =
+    activeFilter === "verified"
+      ? "These J6 defendants are already building their public record."
+      : activeFilter === "pending"
+        ? "These claims are waiting on verification."
+        : "If you have the facts and evidence, build your case here.";
+  const lead =
+    activeFilter === "verified"
+      ? "A verified profile becomes a living case file: testimony, court documents, photos, videos, links, dates, witnesses, and updates in one place."
+      : activeFilter === "pending"
+        ? "Claims do not go public until Ryan verifies the person against the docket and public record. That protects the defendants and keeps the archive credible."
+        : "Every J6 defendant should have a place to organize what happened in plain English. Find your name, claim your profile, and start turning scattered facts into a record people can inspect.";
+
+  return (
+    <section className="overflow-hidden rounded-2xl border-2 border-[#1f2f55] bg-[#071123] text-[#fdf8ea] shadow-2xl">
+      <div className="grid gap-px bg-white/10 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="bg-[#071123] p-5 sm:p-7">
+          <p className="text-[11px] font-black uppercase tracking-[0.24em] text-[#7fe3a9]">
+            {kicker}
+          </p>
+          <h1 className="mt-3 text-3xl font-black leading-[1.02] tracking-tight text-[#fdf8ea] sm:text-5xl">
+            {title}
+          </h1>
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-[#cfd9ea] sm:text-lg">
+            {lead}
+          </p>
+
+          {isUnclaimed ? (
+            <div className="mt-5 rounded-xl border border-[#7fe3a9]/30 bg-[#7fe3a9]/10 p-4">
+              <p className="text-sm font-black uppercase tracking-wider text-[#7fe3a9]">
+                What you can add after verification
+              </p>
+              <div className="mt-3 grid gap-2 text-sm text-[#fdf8ea] sm:grid-cols-2">
+                {[
+                  "Your timeline",
+                  "Court filings",
+                  "Photos and videos",
+                  "Witness statements",
+                  "Jail / medical records",
+                  "Missing evidence requests",
+                ].map((item) => (
+                  <div key={item} className="flex items-center gap-2">
+                    <span className="h-2 w-2 rounded-full bg-[#7fe3a9]" aria-hidden />
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
+
+          <div className="mt-6 flex flex-col gap-2 sm:flex-row">
+            <Link
+              href="#j6-profile-list"
+              className="inline-flex min-h-12 items-center justify-center rounded-xl bg-[#7fe3a9] px-5 py-3 text-sm font-black uppercase tracking-wider text-[#071123] transition hover:bg-[#a7efc4]"
+            >
+              Find your name
+            </Link>
+            <Link
+              href="/submit?type=j6"
+              className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#7fa9e3]/60 bg-[#7fa9e3]/10 px-5 py-3 text-sm font-black uppercase tracking-wider text-[#dce8ff] transition hover:bg-[#7fa9e3] hover:text-[#071123]"
+            >
+              Send evidence or a lead
+            </Link>
+          </div>
+          <p className="mt-3 text-xs leading-relaxed text-[#9fb0ca]">
+            This is not a law firm and not legal advice. It is an evidence-first
+            public-record and case-organization system. Private details stay
+            private until they are safe and approved to publish.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 gap-px bg-white/10 sm:grid-cols-4 lg:grid-cols-2">
+          <J6HeroStat label="Total J6 profiles" value={counts.total} tone="blue" />
+          <J6HeroStat label="Ready to claim" value={counts.unclaimed} tone="gold" />
+          <J6HeroStat label="Verified" value={counts.verified} tone="green" />
+          <J6HeroStat label="Under review" value={counts.pending} tone="blue" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function J6HeroStat({
+  label,
+  value,
+  tone,
+}: {
+  label: string;
+  value: number;
+  tone: "green" | "gold" | "blue";
+}) {
+  const color =
+    tone === "green" ? "text-[#7fe3a9]" : tone === "gold" ? "text-[#e4c66a]" : "text-[#7fa9e3]";
+  return (
+    <div className="bg-[#0d1a33] p-4 sm:p-5">
+      <div className={`font-mono text-3xl font-black leading-none tabular-nums ${color}`}>
+        {value.toLocaleString()}
+      </div>
+      <div className="mt-2 text-[10px] font-black uppercase tracking-[0.18em] text-[#cfd9ea]">
+        {label}
+      </div>
     </div>
   );
 }
@@ -776,22 +909,36 @@ function J6DefendantsView({
         : `${people.length.toLocaleString()} J6 claims pending review`;
   const lead =
     j6Filter === "unclaimed"
-      ? "Profiles ready for the defendant to claim and build out. Anyone can claim — Ryan personally verifies every one against the DOJ docket before approval."
+      ? "Profiles ready for the defendant to claim and build out. Every claim is checked against the DOJ docket and public record before approval."
       : j6Filter === "verified"
         ? "Defendants who have claimed and verified their profile. Their case archive is theirs."
         : "Claims submitted and awaiting Ryan's review.";
   return (
-    <div>
-      <div className="border-l-2 border-[var(--color-accent)] pl-4 mb-5">
-        <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
-          Anti-Weaponization Case Builder
-        </p>
-        <h2 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight">
-          {heading}
-        </h2>
-        <p className="mt-2 text-sm text-[var(--color-ink-soft)] leading-relaxed max-w-2xl">
-          {lead}
-        </p>
+    <div id="j6-profile-list" className="scroll-mt-24">
+      <div className="mb-5 overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)]">
+        <div className="grid gap-px bg-[var(--color-line)] md:grid-cols-[1fr_0.8fr]">
+          <div className="bg-[var(--color-surface)] p-5">
+            <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+              Anti-Weaponization Case Builder
+            </p>
+            <h2 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight">
+              {heading}
+            </h2>
+            <p className="mt-2 text-sm text-[var(--color-ink-soft)] leading-relaxed max-w-2xl">
+              {lead}
+            </p>
+          </div>
+          <div className="bg-[var(--color-paper)] p-5">
+            <p className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-black">
+              The build path
+            </p>
+            <ol className="mt-3 grid gap-2 text-sm text-[var(--color-ink-soft)]">
+              <li><strong className="text-[var(--color-ink)]">1.</strong> Find your name.</li>
+              <li><strong className="text-[var(--color-ink)]">2.</strong> Claim the profile with proof it is you.</li>
+              <li><strong className="text-[var(--color-ink)]">3.</strong> Build your page with facts, documents, media, and testimony.</li>
+            </ol>
+          </div>
+        </div>
       </div>
 
       {/* Sub-filter pills */}
@@ -839,12 +986,12 @@ function J6DefendantsView({
                 ? { label: "Verified", bg: "var(--color-success)" }
                 : p.claim_status === "pending"
                   ? { label: "Claim pending", bg: "var(--color-blue)" }
-                  : { label: "Unclaimed", bg: "var(--color-accent)" };
+                  : { label: "Ready to claim", bg: "var(--color-support)" };
+            const claimHref = `/case/people/${p.slug}/claim`;
             return (
-              <Link
+              <article
                 key={p.id}
-                href={`/case/people/${p.slug}`}
-                className="block rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 hover:border-[var(--color-accent)] transition"
+                className="flex min-h-[210px] flex-col rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 transition hover:border-[var(--color-blue)]"
               >
                 <div className="flex items-start justify-between gap-2">
                   <h3 className="text-base font-bold tracking-tight leading-tight">
@@ -862,7 +1009,53 @@ function J6DefendantsView({
                     {p.role}
                   </p>
                 ) : null}
-              </Link>
+                <div className="mt-3 grid grid-cols-2 gap-2 text-[11px] text-[var(--color-muted)]">
+                  <span className="rounded-md border border-[var(--color-line-soft)] bg-[var(--color-paper)] px-2 py-1">
+                    {p.case_number ?? "Case # needed"}
+                  </span>
+                  <span className="rounded-md border border-[var(--color-line-soft)] bg-[var(--color-paper)] px-2 py-1 text-right">
+                    {p.views_count.toLocaleString()} views
+                  </span>
+                </div>
+                <div className="mt-auto pt-4">
+                  {p.claim_status === "unclaimed" ? (
+                    <Link
+                      href={claimHref}
+                      className="block rounded-lg bg-[var(--color-blue)] px-3 py-2.5 text-center text-sm font-black text-[var(--color-paper)] transition hover:bg-[var(--color-blue-strong)]"
+                    >
+                      Claim + build case →
+                    </Link>
+                  ) : p.claim_status === "pending" ? (
+                    <Link
+                      href={`/case/people/${p.slug}`}
+                      className="block rounded-lg bg-[var(--color-blue-soft)] px-3 py-2.5 text-center text-sm font-black text-[var(--color-blue)] transition hover:bg-[var(--color-blue)] hover:text-[var(--color-paper)]"
+                    >
+                      View pending profile →
+                    </Link>
+                  ) : (
+                    <Link
+                      href={`/case/people/${p.slug}`}
+                      className="block rounded-lg bg-[var(--color-success)] px-3 py-2.5 text-center text-sm font-black text-[var(--color-paper)] transition hover:opacity-90"
+                    >
+                      Open verified file →
+                    </Link>
+                  )}
+                  <div className="mt-2 grid grid-cols-2 gap-2">
+                    <Link
+                      href={`/case/people/${p.slug}`}
+                      className="rounded-lg border border-[var(--color-line)] px-3 py-2 text-center text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                    >
+                      Profile
+                    </Link>
+                    <Link
+                      href={`/submit?type=j6&about=${encodeURIComponent(p.name)}`}
+                      className="rounded-lg border border-[var(--color-line)] px-3 py-2 text-center text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                    >
+                      Tip
+                    </Link>
+                  </div>
+                </div>
+              </article>
             );
           })}
         </div>
