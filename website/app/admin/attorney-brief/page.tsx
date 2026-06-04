@@ -880,10 +880,10 @@ export default async function AttorneyBriefPage() {
   }
 
   return (
-    <article className="mx-auto w-full max-w-[58rem] px-4 py-5 sm:px-5 lg:px-6">
+    <article className="mx-auto w-full max-w-[64rem] px-4 py-5 sm:px-5 lg:px-6">
       <nav
         aria-label="Attorney brief shortcuts"
-        className="mb-4 flex flex-wrap items-center justify-between gap-2"
+        className="sticky top-0 z-20 mb-4 flex flex-wrap items-center justify-between gap-2 border border-[var(--color-line)] bg-[var(--color-paper)]/95 p-2 shadow-sm backdrop-blur"
       >
         <Link
           href="/admin"
@@ -909,23 +909,23 @@ export default async function AttorneyBriefPage() {
 
       <section
         id="first-look"
-        className="border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm sm:p-5 lg:p-6"
+        className="border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5 lg:p-6"
       >
         <div className="grid gap-5 lg:grid-cols-[1fr_19rem] lg:items-start">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.24em] text-[#7fe3a9]">
-              Attorney cover sheet
+            <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-accent)]">
+              Counsel first read
             </p>
-            <h1 className="mt-2 max-w-3xl text-3xl font-black leading-[0.98] text-[#fdf8ea] sm:text-5xl lg:text-6xl">
-              Three misdemeanors. One clean record.
+            <h1 className="mt-2 max-w-3xl text-3xl font-black leading-[0.98] text-[var(--color-ink)] sm:text-5xl lg:text-6xl">
+              Three misdemeanors. One proof path.
             </h1>
-            <p className="mt-4 max-w-3xl text-base font-semibold leading-7 text-[#cfd9ea]">
-              This brief does not need to show every file first. It shows the
-              live criminal problem, the disputed fact, the missing records,
-              and the fastest path into the proof.
+            <p className="mt-4 max-w-3xl text-base font-semibold leading-7 text-[var(--color-ink-soft)]">
+              Start here: what is charged, what Ryan disputes, what record is
+              missing, and where the proof folders live. The full archive stays
+              below, but it does not control the first impression.
             </p>
           </div>
-          <aside className="border border-white/10 bg-white/[0.055] p-4">
+          <aside className="border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea]">
             <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
               Dallas meeting
             </p>
@@ -971,22 +971,22 @@ export default async function AttorneyBriefPage() {
         </div>
 
         <div className="mt-5 grid gap-3 lg:grid-cols-[1.15fr_0.85fr]">
-          <section className="border border-[#7fe3a9]/55 bg-[#7fe3a9]/10 p-4">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#7fe3a9]">
-              The one sentence
+          <section className="border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-4">
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
+              Core dispute
             </p>
-            <h2 className="mt-2 font-sans text-2xl font-black leading-tight text-[#fdf8ea]">
+            <h2 className="mt-2 font-sans text-2xl font-black leading-tight text-[var(--color-ink)]">
               Public allegation says displayed / hand on grip. Ryan disputes
               pulling, pointing, brandishing, firing, or threatening.
             </h2>
           </section>
-          <section className="border border-[#d8c89e]/60 bg-[#d8c89e]/12 p-4">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#d8c89e]">
-              Reader path
+          <section className="border border-[var(--color-support)] bg-[var(--color-support-soft)] p-4">
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-support-strong)]">
+              How to read it
             </p>
-            <p className="mt-2 text-sm font-semibold leading-6 text-[#cfd9ea]">
-              Cover sheet first. Source doors second. Long record only when
-              counsel chooses to open it.
+            <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+              The screen is intentionally short. If counsel wants depth, every
+              proof lane is below in expandable packets.
             </p>
           </section>
         </div>
@@ -1020,18 +1020,18 @@ export default async function AttorneyBriefPage() {
 
       <section
         id="packet-drawers"
-        className="mt-4 border border-[var(--color-line)] bg-[var(--color-paper)] p-4 shadow-sm sm:p-5"
+        className="mt-4 border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm sm:p-5"
       >
-        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
-          Proof packets
+        <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+          Depth is filed below
         </p>
-        <h2 className="mt-2 font-sans text-2xl font-black">
-          Let them choose the depth.
+        <h2 className="mt-2 font-sans text-2xl font-black text-[#fdf8ea]">
+          Show control, then let them open only what they need.
         </h2>
-        <p className="mt-2 max-w-3xl text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
-          The page has the full archive, but the first view only needs to prove
-          discipline: criminal issue, disputed fact, missing records, and source
-          path. Everything below opens on purpose.
+        <p className="mt-2 max-w-3xl text-sm font-semibold leading-6 text-[#cfd9ea]">
+          This is the difference between a brief and a document dump. The page
+          signals that the archive exists without making the attorney fight the
+          archive on first read.
         </p>
         <div className="mt-4 grid gap-3 md:grid-cols-2">
           <PacketJump href="#charges" label="Criminal" title="Three charges" body="Deadly conduct plus two harassment counts, with missing proof called out." />
@@ -1500,21 +1500,29 @@ export default async function AttorneyBriefPage() {
         </div>
       </details>
 
-      <section id="open-questions" className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm">
-        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
-          Open items
-        </p>
-        <h2 className="mt-2 font-sans text-2xl font-black">
-          The next packet should answer these.
-        </h2>
-        <div className="mt-4 grid gap-2 md:grid-cols-2">
-          {questionsForRyan.slice(0, 8).map((question) => (
-            <div key={question} className="border border-[var(--color-line)] bg-[var(--color-paper)] p-3 text-sm font-semibold leading-6">
-              {question}
-            </div>
-          ))}
+      <details id="open-questions" className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] shadow-sm">
+        <summary className="flex cursor-pointer items-center justify-between gap-3 p-4 text-sm font-black uppercase tracking-normal marker:content-['']">
+          <span>Open unanswered questions</span>
+          <span className="border border-[var(--color-line)] px-2 py-1 text-[10px] text-[var(--color-accent)]">
+            Fill before meeting
+          </span>
+        </summary>
+        <div className="border-t border-[var(--color-line)] p-4">
+          <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+            Open items
+          </p>
+          <h2 className="mt-2 font-sans text-2xl font-black">
+            The next packet should answer these.
+          </h2>
+          <div className="mt-4 grid gap-2 md:grid-cols-2">
+            {questionsForRyan.slice(0, 8).map((question) => (
+              <div key={question} className="border border-[var(--color-line)] bg-[var(--color-paper)] p-3 text-sm font-semibold leading-6">
+                {question}
+              </div>
+            ))}
+          </div>
         </div>
-      </section>
+      </details>
 
       <details id="file-audit" className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] shadow-sm">
         <summary className="flex cursor-pointer items-center justify-between gap-3 p-4 text-sm font-black uppercase tracking-normal text-[var(--color-ink)] marker:content-['']">
@@ -1630,7 +1638,7 @@ function FirstOpenCard({
     <a
       href={href}
       className={[
-        "group flex min-h-[10rem] flex-col justify-between border p-4 transition hover:-translate-y-0.5 hover:shadow-sm",
+        "group flex min-h-[8.5rem] flex-col justify-between border p-4 transition hover:-translate-y-0.5 hover:shadow-sm",
         toneClass,
       ].join(" ")}
     >
@@ -1668,20 +1676,20 @@ function PacketJump({
   return (
     <a
       href={href}
-      className="group border border-[var(--color-line)] bg-[var(--color-surface)] p-4 transition hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-soft)]"
+      className="group border border-white/10 bg-white/[0.055] p-4 text-[#fdf8ea] transition hover:border-[#7fe3a9]/50 hover:bg-[#7fe3a9]/10"
     >
       <div className="flex items-start justify-between gap-3">
-        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-muted)]">
+        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
           {label}
         </p>
-        <span className="text-[10px] font-black uppercase tracking-normal text-[var(--color-accent)] transition group-hover:translate-x-0.5">
+        <span className="text-[10px] font-black uppercase tracking-normal text-[#7fe3a9] transition group-hover:translate-x-0.5">
           Open
         </span>
       </div>
       <h3 className="mt-2 font-sans text-xl font-black leading-tight">
         {title}
       </h3>
-      <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+      <p className="mt-2 text-sm font-semibold leading-6 text-[#cfd9ea]">
         {body}
       </p>
     </a>
