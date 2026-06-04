@@ -689,7 +689,7 @@ export default async function AttorneyBriefPage() {
               Proof numbers
             </p>
             <h1 className="mt-1 font-sans text-3xl font-black leading-none text-[#fdf8ea] sm:text-5xl">
-              The numbers counsel needs to see first.
+              The numbers that jump off the record.
             </h1>
           </div>
           <p className="max-w-lg text-xs font-semibold leading-5 text-[#cfd9ea]">
@@ -706,37 +706,6 @@ export default async function AttorneyBriefPage() {
               priority={index < 3}
             />
           ))}
-        </div>
-      </section>
-
-      <section id="record-priority" className="mt-4 rounded-md border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-4">
-        <div className="grid gap-4 lg:grid-cols-[0.35fr_1fr]">
-          <div>
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
-              Record first
-            </p>
-            <h1 className="mt-1 font-sans text-2xl font-black sm:text-3xl">
-              What needs to be seen first.
-            </h1>
-            <p className="mt-3 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
-              The first screen is the records, risks, and verification lanes.
-              Every claim has to be backed by a link, a source file, a Ryan
-              statement, or a clear missing-record marker.
-            </p>
-          </div>
-          <ol className="grid gap-2 sm:grid-cols-2">
-            {urgentAsks.map((ask, index) => (
-              <li
-                key={ask}
-                className="rounded-sm border border-[var(--color-accent)]/30 bg-white/40 p-3 text-sm font-semibold leading-6"
-              >
-                <span className="mr-2 font-black text-[var(--color-accent)]">
-                  {index + 1}.
-                </span>
-                {ask}
-              </li>
-            ))}
-          </ol>
         </div>
       </section>
 
@@ -1225,6 +1194,37 @@ export default async function AttorneyBriefPage() {
               </p>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section id="record-priority" className="mt-5 rounded-md border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-4">
+        <div className="grid gap-4 lg:grid-cols-[0.35fr_1fr]">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+              Record signals
+            </p>
+            <h2 className="mt-1 font-sans text-2xl font-black sm:text-3xl">
+              What the evidence keeps pointing back to.
+            </h2>
+            <p className="mt-3 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+              This sits at the bottom on purpose. It reinforces what the
+              numbers, files, and source links already show instead of trying
+              to tell counsel how to think.
+            </p>
+          </div>
+          <ol className="grid gap-2 sm:grid-cols-2">
+            {urgentAsks.map((ask, index) => (
+              <li
+                key={ask}
+                className="rounded-sm border border-[var(--color-accent)]/30 bg-white/40 p-3 text-sm font-semibold leading-6"
+              >
+                <span className="mr-2 font-black text-[var(--color-accent)]">
+                  {index + 1}.
+                </span>
+                {ask}
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 
