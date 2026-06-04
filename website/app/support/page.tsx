@@ -11,7 +11,7 @@ import { getPublishedSupporters } from "@/lib/supporters";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 
 const DEFAULT_DESCRIPTION =
-  "I'm spending my last dime building this so I — and every other J6 defendant — can get on our feet. If the work matters to you, here's how to help me keep going.";
+  "I'm under a level of lawfare and financial pressure I cannot carry alone. If this record matters to you, here's how to help me keep going.";
 
 export async function generateMetadata(): Promise<Metadata> {
   const override = await getOgImage("/support");
@@ -74,8 +74,14 @@ export default async function SupportPage() {
         An honest ask
       </p>
       <h1 className="rrn-hero-title mt-2">
-        I&apos;m spending my last dime on this.
+        I need help right now.
       </h1>
+      <p className="mt-4 max-w-2xl text-lg leading-relaxed text-[var(--color-ink-soft)]">
+        I do not like asking for money. I would rather work, build, publish,
+        investigate, and earn it. But the truth is simple: I am under more legal
+        pressure than one person can carry, and it has reached the point where I
+        did not make enough to cover basic bills and rent.
+      </p>
 
       <div className="mt-8">
         <FundTheTruth />
@@ -94,6 +100,17 @@ export default async function SupportPage() {
 
       <section className="prose-body mt-10 space-y-4">
         <p>
+          I wrote more plainly about this in{" "}
+          <Link
+            href="/posts/ive-never-asked-for-help-im-asking-now"
+            className="font-bold text-[var(--color-accent)] underline underline-offset-4"
+          >
+            I&apos;ve never asked for help before. I&apos;m asking now
+          </Link>.
+          This page is where the ask becomes practical: what I&apos;m facing,
+          what the money keeps alive, and why the public record matters.
+        </p>
+        <p>
           I&apos;m putting everything I have left into this site so that I —
           and every other January 6 defendant — can get paid for what was
           done to us. Not handouts. A platform. A record. Profiles every
@@ -102,6 +119,21 @@ export default async function SupportPage() {
         </p>
         <p>
           I need help sustaining right now.
+        </p>
+        <p>
+          I have multiple civil matters and attorney-office fights tied to
+          Wholesale Universe and the fallout around it. I&apos;ve been through a
+          divorce that also touches the company side of my life. On top of that,
+          I&apos;m fighting criminal accusations that I believe are frivolous. In
+          one of those matters, I believe I was arrested when I should not have
+          been, and I have video evidence that I say proves what happened.
+        </p>
+        <p>
+          That is the part people do not always understand. Lawfare does not
+          just happen in a courtroom. It follows you home. It hits your bank
+          account, your sleep, your ability to work, your family, your inbox,
+          your rent, your food, your vehicle, and your ability to think clearly
+          long enough to build your way out.
         </p>
         <p>
           Prison messed me up. My brain does not function the same way it
@@ -121,6 +153,13 @@ export default async function SupportPage() {
           coming.
         </p>
         <p>
+          I&apos;m not asking you to take my word for everything. I&apos;m building
+          the record so people can see the documents, the dates, the videos, the
+          filings, the screenshots, the gaps, and the pattern. That is why this
+          site matters. If the facts are public, organized, and hard to bury,
+          they are harder to ignore.
+        </p>
+        <p>
           I just need some help from supporters who want to see this
           continue. Every dollar goes directly to me. There&apos;s no
           organization, no middleman, no overhead. It pays for:
@@ -128,10 +167,18 @@ export default async function SupportPage() {
         <ul>
           <li><strong>Rent</strong> and basic living expenses while I rebuild</li>
           <li><strong>Food</strong> for me and my family</li>
+          <li><strong>Bills</strong> that keep piling up while I fight several fronts at once</li>
+          <li><strong>Legal defense pressure</strong> and the cost of keeping records organized</li>
           <li><strong>Mental healthcare</strong> I need after pretrial detention</li>
           <li><strong>Medical care</strong> I can&apos;t afford without insurance</li>
           <li><strong>Hosting + tooling</strong> to keep the archive online and growing</li>
         </ul>
+        <p>
+          If you cannot give, read and share the record. If you can give, it
+          helps me keep a roof over my head, keep the lights on, and keep
+          building the one place where this story cannot be quietly throttled,
+          memory-holed, or buried.
+        </p>
         <p>
           Thank you. I appreciate every bit of help I can get, and I will
           keep showing up here as long as you do.
