@@ -322,10 +322,12 @@ export type Matter = {
   tone: Tone;
   statute: string;
   headline: string;
+  firstMove: string;
   whatItIs: string;
   disputed: string;
   evidence: string[];
   people: string[];
+  redFlags?: string[];
   money?: MatterMoney[];
   exposure: string;
   href: string;
@@ -394,6 +396,23 @@ export function MatterDossier({ matter }: { matter: Matter }) {
         <p className="mt-1 text-sm font-bold" style={{ color: text }}>
           {matter.headline}
         </p>
+        <div
+          className="mt-3 flex flex-col gap-0.5 p-2.5 sm:flex-row sm:items-baseline sm:gap-2"
+          style={{ backgroundColor: fill }}
+        >
+          <span
+            className="text-[10px] font-black uppercase tracking-[0.16em]"
+            style={{ color: onBand, opacity: 0.85 }}
+          >
+            Start here
+          </span>
+          <span
+            className="text-sm font-bold leading-5"
+            style={{ color: onBand }}
+          >
+            {matter.firstMove}
+          </span>
+        </div>
         <p className="mt-3 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
           {matter.whatItIs}
         </p>
@@ -409,6 +428,25 @@ export function MatterDossier({ matter }: { matter: Matter }) {
             {matter.disputed}
           </p>
         </div>
+
+        {matter.redFlags && matter.redFlags.length > 0 ? (
+          <div className="mt-3 border-l-4 border-[#b32419] bg-[#f6dad2] p-3">
+            <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#8d1b13]">
+              Rights / red flags
+            </p>
+            <ul className="mt-1 grid gap-1">
+              {matter.redFlags.map((flag) => (
+                <li
+                  key={flag}
+                  className="flex gap-2 text-sm font-bold leading-5 text-[#8d1b13]"
+                >
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-[#b32419]" />
+                  <span>{flag}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
 
         {matter.money ? (
           <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
