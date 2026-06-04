@@ -103,9 +103,9 @@ type SimNode = SimulationNodeDatum & {
 type SimLink = SimulationLinkDatum<SimNode> & { kind: RawEdge["kind"] };
 
 // ─── Constants ─────────────────────────────────────────────────────────
-const W = 1280;
-const H = 760;
-const MAP_PADDING = 72;
+const W = 1180;
+const H = 620;
+const MAP_PADDING = 56;
 
 // Node radius / color by type. Bigger = more important visually.
 function nodeRadius(n: RawNode): number {
@@ -303,10 +303,10 @@ function radialCaseCenter(index: number, count: number): { x: number; y: number 
       ? firstRingCount
       : Math.min(26, Math.max(1, count - firstRingCount - (ring - 1) * 26));
   const angle = (ringIndex / Math.max(1, countOnRing)) * Math.PI * 2 - Math.PI / 2;
-  const radius = 215 + ring * 124;
+  const radius = 178 + ring * 92;
   return {
     x: W / 2 + Math.cos(angle) * radius,
-    y: H / 2 + Math.sin(angle) * Math.min(radius * 0.72, 302),
+    y: H / 2 + Math.sin(angle) * Math.min(radius * 0.7, 238),
   };
 }
 
@@ -347,9 +347,9 @@ function applyReadableLayout(nodes: SimNode[], links: SimLink[]) {
     const ring = Math.floor(index / 14);
     const countOnRing = Math.min(14, Math.max(1, outerConnectors.length - ring * 14));
     const angle = ((index % 14) / countOnRing) * Math.PI * 2 - Math.PI / 2;
-    const radius = 250 + ring * 76;
+    const radius = 208 + ring * 58;
     node.targetX = W / 2 + Math.cos(angle) * radius;
-    node.targetY = H / 2 + Math.sin(angle) * Math.min(radius * 0.72, 260);
+    node.targetY = H / 2 + Math.sin(angle) * Math.min(radius * 0.68, 198);
   });
 
   const caseNodes = nodes
@@ -409,7 +409,7 @@ function applyReadableLayout(nodes: SimNode[], links: SimLink[]) {
         const ring = Math.floor(index / 16);
         const countOnRing = Math.min(16, Math.max(1, members.length - ring * 16));
         const angle = ((index % 16) / countOnRing) * Math.PI * 2 + ring * 0.38;
-        const radius = 58 + ring * 34;
+        const radius = 44 + ring * 24;
         node.targetX = center.x + Math.cos(angle) * radius;
         node.targetY = center.y + Math.sin(angle) * radius;
       });
@@ -696,7 +696,7 @@ export function CaseNexus({
     );
     const width = Math.max(1, bounds.maxX - bounds.minX);
     const height = Math.max(1, bounds.maxY - bounds.minY);
-    const scale = Math.max(0.34, Math.min(3.2, Math.min(W / width, H / height) * 0.86));
+    const scale = Math.max(0.4, Math.min(3.2, Math.min(W / width, H / height) * 0.92));
     const centerX = bounds.minX + width / 2;
     const centerY = bounds.minY + height / 2;
     r.z.transform(
@@ -885,13 +885,13 @@ export function CaseNexus({
 
   return (
     <div className="relative">
-      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_22rem]">
+      <div className="grid gap-3 xl:grid-cols-[minmax(0,1fr)_20rem] 2xl:grid-cols-[minmax(0,1fr)_21rem]">
         <div className="relative min-w-0 overflow-hidden rounded-xl border-2 border-[var(--color-blue)] bg-[#071126]">
           <div className="min-w-0 overflow-hidden">
             <svg
               ref={svgRef}
               viewBox={`0 0 ${W} ${H}`}
-              className="block h-[430px] w-full max-w-full cursor-grab select-none active:cursor-grabbing sm:h-[64vh] sm:min-h-[560px] sm:max-h-[800px]"
+              className="block h-[320px] w-full max-w-full cursor-grab select-none active:cursor-grabbing sm:h-[44vh] sm:min-h-[320px] sm:max-h-[480px] xl:h-[min(44vh,480px)] 2xl:h-[min(48vh,520px)]"
               style={{ touchAction: "pan-y" }}
               role="img"
               aria-label="Interactive evidence graph of January 6 cases, defendants, documents, and visible connections."
@@ -983,7 +983,7 @@ export function CaseNexus({
             </div>
           </div>
 
-          <div className="absolute bottom-20 right-3 z-10 flex items-end gap-1.5 sm:bottom-3">
+          <div className="absolute bottom-16 right-3 z-10 flex items-end gap-1.5 sm:bottom-3">
             <div className="flex gap-1.5">
               <MapActionButton label="Fit whole map" onClick={() => fitMap()}>
                 Fit
@@ -1030,7 +1030,7 @@ export function CaseNexus({
           ) : null}
         </div>
 
-        <aside className="rounded-xl border-2 border-[#203a64] bg-[#0e1a36] p-4 text-[#cfd9ea]">
+        <aside className="rounded-xl border-2 border-[#203a64] bg-[#0e1a36] p-3 text-[#cfd9ea] sm:p-4 xl:max-h-[min(44vh,480px)] xl:overflow-auto 2xl:max-h-[min(48vh,520px)]">
           <div className="relative">
             <label
               htmlFor="case-nexus-search"
@@ -1102,7 +1102,7 @@ export function CaseNexus({
             ) : null}
           </div>
 
-          <div className="mt-4 border-t border-[#203a64] pt-4">
+          <div className="mt-3 border-t border-[#203a64] pt-3">
             {selectedNode ? (
               <div>
                 <div className="flex items-start justify-between gap-3">
@@ -1235,7 +1235,7 @@ export function CaseNexus({
             </div>
           ) : null}
 
-          <div className="mt-4 border-t border-[#203a64] pt-4">
+          <div className="mt-3 border-t border-[#203a64] pt-3">
             <div className="mb-2 flex items-baseline justify-between gap-3">
               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#7fe3a9]">
                 Case clusters
@@ -1248,7 +1248,7 @@ export function CaseNexus({
                 Fit all
               </button>
             </div>
-            <div className="max-h-[26rem] space-y-1 overflow-auto pr-1">
+            <div className="max-h-[16rem] space-y-1 overflow-auto pr-1 xl:max-h-[13rem] 2xl:max-h-[16rem]">
               {visibleCases.map((caseNode) => {
                 const active = selectedId === caseNode.node.id;
                 return (
@@ -1274,7 +1274,7 @@ export function CaseNexus({
             </div>
           </div>
 
-          <div className="mt-4 border-t border-[#203a64] pt-4 text-[10px] font-mono text-[#7c8aa6]">
+          <div className="mt-3 border-t border-[#203a64] pt-3 text-[10px] font-mono text-[#7c8aa6]">
             <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#7fe3a9]">
               What the lines mean
             </p>

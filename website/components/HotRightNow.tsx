@@ -30,26 +30,27 @@ export function HotRightNow({ initial }: { initial: Row[] }) {
   }, []);
 
   if (rows.length === 0) return null;
+  const visibleRows = rows.slice(0, 5);
 
   return (
-    <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2">
-      <div className="flex flex-wrap items-center gap-2 sm:flex-nowrap sm:gap-3 sm:overflow-x-auto">
-        <span className="flex-shrink-0 inline-flex items-center gap-1.5 text-[10px] uppercase tracking-wider font-bold text-[var(--color-accent)]">
-          <span className="inline-block w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] animate-pulse" />
+    <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-2.5 py-1.5 sm:rounded-xl sm:px-3 sm:py-2">
+      <div className="flex min-w-0 items-center gap-2 overflow-hidden">
+        <span className="inline-flex shrink-0 items-center gap-1.5 text-[9px] uppercase tracking-wider font-black text-[var(--color-accent)] sm:text-[10px]">
+          <span className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-accent)] animate-pulse" />
           Hot now
         </span>
-        <ul className="flex min-w-0 flex-wrap gap-2 sm:flex-nowrap">
-          {rows.map((r) => (
+        <ul className="flex min-w-0 flex-1 snap-x gap-1.5 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:gap-2">
+          {visibleRows.map((r) => (
             <li
               key={r.path}
-              className="min-w-0 max-w-full rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-2.5 py-1 flex items-center gap-1.5 sm:flex-shrink-0"
+              className="flex max-w-[12rem] shrink-0 snap-start items-center gap-1.5 rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-2 py-0.5 sm:max-w-[16rem] sm:px-2.5 sm:py-1"
             >
-              <span className="text-[10px] font-bold tabular-nums text-[var(--color-accent)]">
+              <span className="text-[10px] font-black tabular-nums text-[var(--color-accent)]">
                 {Number(r.viewers)}
               </span>
               <Link
                 href={r.path}
-                className="min-w-0 max-w-[70vw] truncate text-xs font-mono text-[var(--color-ink)] hover:text-[var(--color-accent)] sm:max-w-[220px]"
+                className="min-w-0 truncate text-[11px] font-mono text-[var(--color-ink)] hover:text-[var(--color-accent)] sm:text-xs"
                 title={r.path}
               >
                 {r.path}
@@ -57,6 +58,11 @@ export function HotRightNow({ initial }: { initial: Row[] }) {
             </li>
           ))}
         </ul>
+        {rows.length > visibleRows.length ? (
+          <span className="shrink-0 text-[10px] font-bold tabular-nums text-[var(--color-muted)]">
+            +{rows.length - visibleRows.length}
+          </span>
+        ) : null}
       </div>
     </div>
   );

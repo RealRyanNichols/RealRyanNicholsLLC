@@ -82,67 +82,38 @@ export default async function CaseNexusPage() {
       });
 
   return (
-    <article className="mx-auto max-w-[96rem] px-4 py-6 sm:py-8">
-      <header className="mb-5 grid gap-5 lg:grid-cols-[minmax(0,1fr)_26rem] lg:items-end">
-        <div className="max-w-4xl">
+    <article className="mx-auto max-w-[92rem] px-3 py-3 sm:px-4 sm:py-5">
+      <header className="mb-3">
+        <div className="max-w-3xl">
           <p className="text-xs font-black uppercase tracking-normal text-[#7fe3a9]">
             The Case Nexus · connect every clue
           </p>
-          <h1 className="mt-2 font-display text-4xl font-black leading-[1.02] tracking-normal sm:text-6xl">
-            This is where the cases start connecting.
+          <h1 className="mt-1 font-display text-3xl font-black leading-[1.02] tracking-normal sm:text-4xl">
+            Every case. Every clue. One nexus.
           </h1>
-          <p className="mt-4 max-w-3xl text-base leading-relaxed text-[var(--color-ink-soft)] sm:text-xl">
-            One case by itself can look isolated. A document, witness statement,
-            court filing, video, picture, date, officer, prosecutor, agency, or
-            repeated detail can connect it to another case. The Nexus is where
-            those links become visible.
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--color-ink-soft)] sm:text-base">
+            Start with a case, name, document, witness, video, photo, date, or
+            officer. The graph shows what it touches and where the missing clue
+            belongs.
           </p>
-          <div className="mt-5 flex flex-wrap gap-2">
+          <div className="mt-3 flex flex-wrap items-center gap-1.5">
             {["Case", "Person", "Document", "Witness", "Video", "Photo", "Clue"].map((label) => (
               <span
                 key={label}
-                className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1 text-xs font-black uppercase tracking-normal text-[var(--color-ink)]"
+                className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-2.5 py-0.5 text-[11px] font-black uppercase tracking-normal text-[var(--color-ink)]"
               >
                 {label}
               </span>
             ))}
-          </div>
-          <div className="mt-4 grid grid-cols-2 gap-2 lg:hidden">
             <Link
               href="/submit"
-              className="rounded-lg border border-[#7fe3a9] bg-[#7fe3a9] px-3 py-2 text-center text-xs font-black uppercase tracking-normal text-[#071126] transition hover:bg-[#9df0c0]"
+              className="rounded-full border border-[#7fe3a9] bg-[#7fe3a9] px-3 py-1 text-center text-xs font-black uppercase tracking-normal text-[#071126] transition hover:bg-[#9df0c0]"
             >
               Add a clue
             </Link>
             <Link
               href="/tell-your-story"
-              className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-center text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[#7fe3a9] hover:text-[var(--color-accent)]"
-            >
-              Tell story
-            </Link>
-          </div>
-        </div>
-        <div className="hidden rounded-lg border-2 border-[#203a64] bg-[#0e1a36] p-4 text-[#cfd9ea] shadow-xl lg:block">
-          <p className="text-xs font-black uppercase tracking-normal text-[#7fe3a9]">
-            Public record target
-          </p>
-          <p className="mt-2 font-display text-2xl font-black leading-tight tracking-normal text-white">
-            If a pattern exists, the record should show the links.
-          </p>
-          <p className="mt-2 text-sm leading-relaxed text-[#a9b7d0]">
-            Start with the live graph. Then send the missing clue that connects
-            one person, document, video, photo, or statement to another.
-          </p>
-          <div className="mt-4 grid grid-cols-2 gap-2">
-            <Link
-              href="/submit"
-              className="rounded-lg border border-[#7fe3a9] bg-[#7fe3a9] px-3 py-2 text-center text-xs font-black uppercase tracking-normal text-[#071126] transition hover:bg-[#9df0c0]"
-            >
-              Add a clue
-            </Link>
-            <Link
-              href="/tell-your-story"
-              className="rounded-lg border border-[#3a557c] bg-[#071126] px-3 py-2 text-center text-xs font-black uppercase tracking-normal text-[#cfd9ea] transition hover:border-[#7fe3a9] hover:text-[#7fe3a9]"
+              className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1 text-center text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[#7fe3a9] hover:text-[var(--color-accent)]"
             >
               Tell story
             </Link>

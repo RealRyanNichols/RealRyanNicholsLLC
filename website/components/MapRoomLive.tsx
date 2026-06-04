@@ -54,14 +54,9 @@ export function MapRoomLive({
           PII (city-level geo only, session ids hashed). */}
       <LiveVisitorRadar initial={[]} />
 
-      {/* Hot now ticker — what's on screens RIGHT NOW. Polls every
-          15s, sits directly below the radar so the visitor sees the
-          map → "here's what people are looking at" in one glance. */}
-      <HotRightNow initial={[]} />
-
       {/* The permanent four — counters that don't move much but anchor
           the page's weight. Big, confident, tabular. */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
         <BigCounter
           value={totals.defendants}
           label="J6 defendants"
@@ -81,7 +76,7 @@ export function MapRoomLive({
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-2 sm:gap-3">
         <DayCounter
           value={totals.days_since_pardon}
           label="Days since the pardon"
@@ -93,6 +88,10 @@ export function MapRoomLive({
           sub="USAO Edward R. Martin Jr."
         />
       </div>
+
+      {/* Hot now ticker — useful, but secondary on mobile. The map should
+          hand straight into the numbers before this live path strip. */}
+      <HotRightNow initial={[]} />
     </div>
   );
 }
@@ -107,15 +106,15 @@ function BigCounter({
   sub?: string;
 }) {
   return (
-    <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] px-4 py-3">
-      <div className="text-3xl sm:text-4xl font-bold tabular-nums tracking-tight leading-none text-[var(--color-ink)]">
+    <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2.5 sm:rounded-xl sm:px-4 sm:py-3">
+      <div className="text-2xl font-bold tabular-nums tracking-tight leading-none text-[var(--color-ink)] sm:text-4xl">
         {value.toLocaleString()}
       </div>
-      <div className="mt-2 text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
+      <div className="mt-1.5 text-[9px] uppercase tracking-wider text-[var(--color-muted)] font-bold sm:mt-2 sm:text-[10px]">
         {label}
       </div>
       {sub ? (
-        <div className="mt-0.5 text-[11px] text-[var(--color-ink-soft)]">
+        <div className="mt-0.5 text-[10px] text-[var(--color-ink-soft)] sm:text-[11px]">
           {sub}
         </div>
       ) : null}
@@ -133,14 +132,14 @@ function DayCounter({
   sub: string;
 }) {
   return (
-    <div className="rounded-xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] px-4 py-3">
-      <div className="text-3xl sm:text-4xl font-bold tabular-nums tracking-tight leading-none text-[var(--color-blue)]">
+    <div className="rounded-lg border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] px-3 py-2.5 sm:rounded-xl sm:px-4 sm:py-3">
+      <div className="text-2xl font-bold tabular-nums tracking-tight leading-none text-[var(--color-blue)] sm:text-4xl">
         {value.toLocaleString()}
       </div>
-      <div className="mt-2 text-[10px] uppercase tracking-wider text-[var(--color-blue)] font-bold">
+      <div className="mt-1.5 text-[9px] uppercase tracking-wider text-[var(--color-blue)] font-bold sm:mt-2 sm:text-[10px]">
         {label}
       </div>
-      <div className="mt-0.5 text-[11px] text-[var(--color-ink-soft)]">
+      <div className="mt-0.5 text-[10px] text-[var(--color-ink-soft)] sm:text-[11px]">
         {sub}
       </div>
     </div>
