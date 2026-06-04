@@ -36,6 +36,18 @@ type AttentionRow = {
   tone: "money" | "share" | "intake" | "watch";
 };
 
+type UnworkedTipRow = {
+  id: string;
+  category: string | null;
+  defendant_name: string | null;
+  location: string | null;
+  route_label: string | null;
+  route_kind: string | null;
+  route_urgency: string | null;
+  route_score: number | null;
+  created_at: string;
+};
+
 export default async function AdminHomePage() {
   const supabase = await getSupabaseServerClient();
   const { data: auth } = await supabase.auth.getUser();
@@ -69,9 +81,12 @@ export default async function AdminHomePage() {
     { count: subs7d },
     { count: commentReports },
     { count: pendingTips },
+    { count: unworkedTips },
+    { count: hotUnworkedTips },
     { count: pendingClaims },
     { count: pendingSubmissions },
     { data: pendingProfilesList },
+    { data: unworkedTipList },
     { data: recentSubs },
     { data: recentSessions },
     { data: recentPathViews },
@@ -120,6 +135,15 @@ export default async function AdminHomePage() {
       .select("id", { count: "exact", head: true })
       .eq("status", "pending"),
     supabase
+      .from("case_tips")
+      .select("id", { count: "exact", head: true })
+      .eq("outcome_status", "unworked"),
+    supabase
+      .from("case_tips")
+      .select("id", { count: "exact", head: true })
+      .eq("outcome_status", "unworked")
+      .eq("route_urgency", "hot"),
+    supabase
       .from("case_person_claims")
       .select("id", { count: "exact", head: true })
       .eq("status", "pending"),
@@ -132,6 +156,12 @@ export default async function AdminHomePage() {
       .from("profiles")
       .select("id, display_name, full_name, username, created_at")
       .eq("status", "pending")
+      .order("created_at", { ascending: false })
+      .limit(5),
+    supabase
+      .from("case_tips")
+      .select("id, category, defendant_name, location, route_label, route_kind, route_urgency, route_score, created_at")
+      .eq("outcome_status", "unworked")
       .order("created_at", { ascending: false })
       .limit(5),
     supabase
@@ -186,8 +216,10 @@ export default async function AdminHomePage() {
     (pendingComments ?? 0) +
     (commentReports ?? 0);
   const reviewQueueHref =
-    (pendingTips ?? 0) > 0
-      ? "/admin/tips?filter=pending"
+    (unworkedTips ?? 0) > 0
+      ? "/admin/tips?filter=all&outcome=unworked"
+      : (pendingTips ?? 0) > 0
+        ? "/admin/tips?filter=pending"
       : (pendingClaims ?? 0) > 0
         ? "/admin/claims?filter=pending"
         : (pendingSubmissions ?? 0) > 0
@@ -250,11 +282,11 @@ export default async function AdminHomePage() {
         />
         <ActionLane
           href={reviewQueueHref}
-          kicker="Review"
-          title={(pendingTips ?? 0) > 0 ? "Tips need review" : "Tips & submissions"}
-          value={String(reviewQueueTotal)}
-          sub={`${pendingTips ?? 0} tips · ${pendingClaims ?? 0} claims · ${pendingSubmissions ?? 0} uploads`}
-          hot={reviewQueueTotal > 0}
+          kicker="Outcome"
+          title={(unworkedTips ?? 0) > 0 ? "Tips need results" : "Tips & submissions"}
+          value={String((unworkedTips ?? 0) > 0 ? (unworkedTips ?? 0) : reviewQueueTotal)}
+          sub={`${hotUnworkedTips ?? 0} hot · ${pendingTips ?? 0} pending · ${reviewQueueTotal} review items`}
+          hot={(unworkedTips ?? 0) > 0 || reviewQueueTotal > 0}
         />
         <ActionLane
           href="/admin/analytics"
@@ -290,7 +322,7 @@ export default async function AdminHomePage() {
       </section>
 
       {/* Top-line stats */}
-      <section className="mt-8 grid grid-cols-2 sm:grid-cols-5 gap-3">
+      <section className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
         <StatCard
           href="#live"
           label="Active now"
@@ -316,6 +348,13 @@ export default async function AdminHomePage() {
           label="Subscribers"
           value={`+${subs7d ?? 0}`}
           sub="this week (confirmed)"
+        />
+        <StatCard
+          href="/admin/tips?filter=all&outcome=unworked"
+          label="Tip outcomes"
+          value={String(unworkedTips ?? 0)}
+          sub={`${hotUnworkedTips ?? 0} hot no-result`}
+          highlight={(unworkedTips ?? 0) > 0}
         />
         <StatCard
           href="/admin/invoices"
@@ -364,6 +403,74 @@ export default async function AdminHomePage() {
               <div className="grid gap-2">
                 {attentionRows.slice(0, 6).map((row, index) => (
                   <AttentionMagnetRow key={row.path} row={row} rank={index + 1} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      {(unworkedTips ?? 0) > 0 ? (
+        <section className="mt-6 overflow-hidden rounded-md border border-[#d8ad43] bg-[#fff8df] shadow-sm">
+          <div className="grid gap-px bg-[#d8ad43]/35 lg:grid-cols-[0.8fr_1.2fr]">
+            <div className="bg-[#fff8df] p-5">
+              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+                Tip outcome queue
+              </p>
+              <h2 className="mt-2 text-2xl font-black tracking-tight">
+                These people gave us data. Show what happened next.
+              </h2>
+              <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+                A tip is not done when it is read. It needs an outcome: article,
+                solution brief, case map, verified source, private reply, invoice,
+                or watch file.
+              </p>
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                <MiniQueueStat label="No result" value={unworkedTips ?? 0} />
+                <MiniQueueStat label="Hot" value={hotUnworkedTips ?? 0} />
+              </div>
+              <Link
+                href="/admin/tips?filter=all&outcome=unworked"
+                className="mt-4 inline-flex min-h-10 items-center rounded-md border border-[var(--color-accent)] bg-[var(--color-accent)] px-4 text-xs font-black uppercase tracking-wider text-white transition hover:bg-[var(--color-accent-strong)]"
+              >
+                Work no-result tips →
+              </Link>
+            </div>
+            <div className="bg-[var(--color-surface)] p-4 sm:p-5">
+              <div className="grid gap-2">
+                {((unworkedTipList ?? []) as UnworkedTipRow[]).map((tip) => (
+                  <Link
+                    key={tip.id}
+                    href="/admin/tips?filter=all&outcome=unworked"
+                    className="grid gap-2 rounded-sm border border-[var(--color-line)] bg-[var(--color-paper)] p-3 transition hover:border-[var(--color-accent)] sm:grid-cols-[1fr_auto] sm:items-center"
+                  >
+                    <span className="min-w-0">
+                      <span className="block truncate text-sm font-black">
+                        {tip.defendant_name || tip.location || `${tip.category ?? "tip"} tip`}
+                      </span>
+                      <span className="mt-1 block text-xs font-semibold text-[var(--color-ink-soft)]">
+                        {tip.route_label || routeFallbackLabel(tip.route_kind)} ·{" "}
+                        {formatDistanceToNowStrict(new Date(tip.created_at), {
+                          addSuffix: true,
+                        })}
+                      </span>
+                    </span>
+                    <span className="flex items-center gap-2 sm:justify-end">
+                      <span
+                        className={[
+                          "rounded-sm px-2 py-1 text-[10px] font-black uppercase tracking-wider",
+                          tip.route_urgency === "hot"
+                            ? "bg-[var(--color-accent)] text-white"
+                            : "bg-[#d8ad43]/25 text-[var(--color-ink)]",
+                        ].join(" ")}
+                      >
+                        {tip.route_urgency || "next"}
+                      </span>
+                      <span className="font-mono text-xs font-black tabular-nums text-[var(--color-muted)]">
+                        {tip.route_score ?? "?"}
+                      </span>
+                    </span>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -595,6 +702,14 @@ export default async function AdminHomePage() {
               </Link>
               <span className="font-bold tabular-nums">
                 {pendingTips ?? 0}
+              </span>
+            </li>
+            <li className="flex items-center justify-between gap-3">
+              <Link href="/admin/tips?filter=all&outcome=unworked" className="hover:text-[var(--color-accent)]">
+                Tips without an outcome
+              </Link>
+              <span className="font-bold tabular-nums">
+                {unworkedTips ?? 0}
               </span>
             </li>
             <li className="flex items-center justify-between gap-3">
@@ -861,6 +976,30 @@ function MagnetMiniStat({
       <p className="mt-1 truncate font-mono text-xs font-black">{value}</p>
     </div>
   );
+}
+
+function MiniQueueStat({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="rounded-sm border border-[#d8ad43]/60 bg-white/55 p-3">
+      <p className="text-[10px] font-black uppercase tracking-wider text-[var(--color-muted)]">
+        {label}
+      </p>
+      <p className="mt-1 font-mono text-2xl font-black tabular-nums">
+        {value.toLocaleString()}
+      </p>
+    </div>
+  );
+}
+
+function routeFallbackLabel(kind: string | null) {
+  const labels: Record<string, string> = {
+    case_map: "Map this clue",
+    verify: "Verify evidence",
+    article: "Article lead",
+    service: "Follow up",
+    watch: "Watch file",
+  };
+  return kind ? labels[kind] ?? "Route needed" : "Route needed";
 }
 
 function AttentionMagnetRow({ row, rank }: { row: AttentionRow; rank: number }) {

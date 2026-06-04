@@ -937,7 +937,7 @@ export default async function AttorneyBriefPage() {
   }
 
   return (
-    <article className="mx-auto w-full max-w-[60rem] px-4 py-5 sm:px-5 lg:px-6">
+    <article className="mx-auto w-full max-w-[64rem] px-4 py-5 sm:px-5 lg:px-6">
       <nav
         aria-label="Attorney brief shortcuts"
         className="sticky top-0 z-20 mb-4 flex flex-wrap items-center justify-between gap-2 border border-[var(--color-line)] bg-[var(--color-paper)]/95 p-2 shadow-sm backdrop-blur"
@@ -946,7 +946,7 @@ export default async function AttorneyBriefPage() {
           href="/admin"
           className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
         >
-          Back
+          Back to admin
         </Link>
         <div className="flex flex-wrap gap-2">
           <a
@@ -960,6 +960,12 @@ export default async function AttorneyBriefPage() {
             className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
           >
             Open first
+          </a>
+          <a
+            href="#charges"
+            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          >
+            Charges
           </a>
           <a
             href="#packet-drawers"
@@ -980,26 +986,26 @@ export default async function AttorneyBriefPage() {
               Attorney cover sheet
             </p>
             <h1 className="mt-2 max-w-3xl text-3xl font-black leading-[0.98] text-[#fdf8ea] sm:text-5xl lg:text-6xl">
-              Three charges. One disputed story. Four records to open first.
+              Counsel should understand the case in 60 seconds.
             </h1>
             <p className="mt-4 max-w-3xl text-base font-semibold leading-7 text-[#cfd9ea]">
-              This brief should not feel like a database on first contact.
-              Counsel gets the clean path first: the live criminal matter, the
-              disputed fact, the missing record packet, and the source doors.
-              The larger archive stays filed below until someone needs it.
+              The first read is intentionally short: what is charged, what Ryan
+              disputes, what proof controls it, and which records to open
+              first. The full archive is still here, but it stays filed until
+              counsel needs a specific drawer.
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
               <a
                 href="#source-doors"
                 className="inline-flex min-h-11 items-center border border-[#7fe3a9]/60 bg-[#7fe3a9]/15 px-4 text-sm font-black text-[#7fe3a9] transition hover:bg-[#7fe3a9]/25"
               >
-                Open the first four records
+                Open the proof doors
               </a>
               <a
-                href="#packet-drawers"
+                href="#charges"
                 className="inline-flex min-h-11 items-center border border-white/15 bg-white/[0.055] px-4 text-sm font-black text-[#fdf8ea] transition hover:bg-white/10"
               >
-                Show the deeper file
+                See the three charges
               </a>
             </div>
           </div>
@@ -1031,15 +1037,15 @@ export default async function AttorneyBriefPage() {
             hot
           />
           <Metric
+            label="Court setting"
+            value="June 9"
+            sub="arraignment lead needs docket match"
+          />
+          <Metric
             label="Representation"
             value="None"
             sub="Ryan reports no counsel"
             hot
-          />
-          <Metric
-            label="Disputed fact"
-            value="Gun"
-            sub="displayed vs pulled / pointed / fired"
           />
           <Metric
             label="Proof status"
@@ -1095,43 +1101,17 @@ export default async function AttorneyBriefPage() {
               Open first
             </p>
             <h2 className="mt-1 font-sans text-2xl font-black leading-tight sm:text-3xl">
-              Four proof doors. Open these first.
+              Four proof doors. Start here.
             </h2>
           </div>
           <p className="text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
             A first-time reader does not need the whole warehouse. They need the
-            front doors that prove the warehouse is organized and source-led.
+            four doors that show the record is organized and source-led.
           </p>
         </div>
         <div className="mt-4 grid gap-3 md:grid-cols-2">
           {firstOpenPackets.map((packet) => (
             <FirstOpenCard key={packet.title} {...packet} />
-          ))}
-        </div>
-      </section>
-
-      <section
-        id="packet-drawers"
-        className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5"
-      >
-        <div className="grid gap-3 lg:grid-cols-[0.36fr_1fr] lg:items-end">
-          <div>
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
-              Filed drawers
-            </p>
-            <h2 className="mt-1 font-sans text-2xl font-black leading-tight sm:text-3xl">
-              The depth is visible without being loud.
-            </h2>
-          </div>
-          <p className="text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
-            This is the we-have-it signal. The attorney can choose a lane
-            without scrolling through every fact, name, number, and source on
-            the first pass.
-          </p>
-        </div>
-        <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
-          {drawerMap.map((drawer) => (
-            <PacketJump key={drawer.href} {...drawer} />
           ))}
         </div>
       </section>
@@ -1158,6 +1138,40 @@ export default async function AttorneyBriefPage() {
           ))}
         </div>
       </section>
+
+      <details
+        id="packet-drawers"
+        className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] shadow-sm"
+      >
+        <summary className="flex cursor-pointer items-center justify-between gap-3 p-4 text-sm font-black uppercase tracking-normal marker:content-[''] sm:p-5">
+          <span>Open the filed drawers</span>
+          <span className="border border-[var(--color-line)] px-2 py-1 text-[10px] text-[var(--color-accent)]">
+            Deep file
+          </span>
+        </summary>
+        <div className="border-t border-[var(--color-line)] p-4 sm:p-5">
+          <div className="grid gap-3 lg:grid-cols-[0.36fr_1fr] lg:items-end">
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+                Filed drawers
+              </p>
+              <h2 className="mt-1 font-sans text-2xl font-black leading-tight sm:text-3xl">
+                The depth is visible without being loud.
+              </h2>
+            </div>
+            <p className="text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+              This is the we-have-it signal. The attorney can choose a lane
+              without scrolling through every fact, name, number, and source on
+              the first pass.
+            </p>
+          </div>
+          <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
+            {drawerMap.map((drawer) => (
+              <PacketJump key={drawer.href} {...drawer} />
+            ))}
+          </div>
+        </div>
+      </details>
 
       <details id="receipts" className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] shadow-sm">
         <summary className="flex cursor-pointer items-center justify-between gap-3 p-4 text-sm font-black uppercase tracking-normal marker:content-['']">
