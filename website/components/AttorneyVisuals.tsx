@@ -64,7 +64,7 @@ export function ChartCard({
         {title}
       </h3>
       {hint ? (
-        <p className="mt-1 text-[11px] font-semibold leading-5 text-[var(--color-muted)]">
+        <p className="mt-1 text-[11px] font-semibold leading-5 text-[var(--color-ink-soft)]">
           {hint}
         </p>
       ) : null}
@@ -311,5 +311,177 @@ export function BriefTimeline({
         );
       })}
     </ol>
+  );
+}
+
+export type MatterMoney = { label: string; value: string };
+export type Matter = {
+  id: string;
+  name: string;
+  kind: string;
+  tone: Tone;
+  statute: string;
+  headline: string;
+  whatItIs: string;
+  disputed: string;
+  evidence: string[];
+  people: string[];
+  money?: MatterMoney[];
+  exposure: string;
+  href: string;
+};
+
+// A row of color-coded chips that jump to each matter block.
+export function MatterNav({ matters }: { matters: Matter[] }) {
+  return (
+    <div className="flex flex-wrap gap-2">
+      {matters.map((m) => (
+        <a
+          key={m.id}
+          href={`#${m.id}`}
+          className="inline-flex items-center gap-2 border bg-[var(--color-surface)] px-3 py-1.5 text-xs font-black uppercase tracking-[0.06em] transition hover:bg-[var(--color-paper)]"
+          style={{ borderColor: TONE_HEX[m.tone], color: TONE_TEXT_HEX[m.tone] }}
+        >
+          <span
+            className="h-2 w-2 rounded-full"
+            style={{ backgroundColor: TONE_HEX[m.tone] }}
+          />
+          {m.name}
+        </a>
+      ))}
+    </div>
+  );
+}
+
+// One self-contained matter: a color-banded dossier the attorney can read on
+// its own — what it is, what is disputed, the packet to pull, the people, and
+// the dollar exposure.
+export function MatterDossier({ matter }: { matter: Matter }) {
+  const fill = TONE_HEX[matter.tone];
+  const text = TONE_TEXT_HEX[matter.tone];
+  const onBand = matter.tone === "gold" ? "#1a1410" : "#ffffff";
+  return (
+    <section
+      id={matter.id}
+      className="scroll-mt-24 overflow-hidden border border-[var(--color-line)] bg-[var(--color-surface)] shadow-sm"
+      style={{ borderTop: `4px solid ${fill}` }}
+    >
+      <div
+        className="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5"
+        style={{ backgroundColor: fill }}
+      >
+        <span
+          className="text-[10px] font-black uppercase tracking-[0.16em]"
+          style={{ color: onBand }}
+        >
+          {matter.kind}
+        </span>
+        <span
+          className="border px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.06em]"
+          style={{
+            color: onBand,
+            borderColor:
+              onBand === "#ffffff" ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.3)",
+          }}
+        >
+          {matter.statute}
+        </span>
+      </div>
+      <div className="p-4 sm:p-5">
+        <h3 className="font-sans text-2xl font-black leading-tight text-[var(--color-ink)] sm:text-3xl">
+          {matter.name}
+        </h3>
+        <p className="mt-1 text-sm font-bold" style={{ color: text }}>
+          {matter.headline}
+        </p>
+        <p className="mt-3 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+          {matter.whatItIs}
+        </p>
+
+        <div
+          className="mt-3 border-l-4 bg-[var(--color-paper)] p-3"
+          style={{ borderColor: fill }}
+        >
+          <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--color-ink-soft)]">
+            The fight
+          </p>
+          <p className="mt-1 text-sm font-semibold leading-6 text-[var(--color-ink)]">
+            {matter.disputed}
+          </p>
+        </div>
+
+        {matter.money ? (
+          <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+            {matter.money.map((m) => (
+              <div
+                key={m.label}
+                className="border border-[var(--color-line)] bg-[var(--color-paper)] p-2.5"
+              >
+                <p
+                  className="font-sans text-lg font-black tabular-nums"
+                  style={{ color: text }}
+                >
+                  {m.value}
+                </p>
+                <p className="mt-0.5 text-[10px] font-bold uppercase tracking-[0.1em] text-[var(--color-ink-soft)]">
+                  {m.label}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : null}
+
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <div>
+            <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--color-ink-soft)]">
+              Packet to pull
+            </p>
+            <ul className="mt-2 grid gap-1.5">
+              {matter.evidence.map((e) => (
+                <li
+                  key={e}
+                  className="flex gap-2 text-xs font-semibold leading-5 text-[var(--color-ink-soft)]"
+                >
+                  <span
+                    className="mt-1.5 h-1.5 w-1.5 shrink-0"
+                    style={{ backgroundColor: fill }}
+                  />
+                  <span>{e}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--color-ink-soft)]">
+              Key people
+            </p>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {matter.people.map((p) => (
+                <span
+                  key={p}
+                  className="border border-[var(--color-line)] bg-[var(--color-paper)] px-2 py-1 text-[11px] font-bold text-[var(--color-ink-soft)]"
+                >
+                  {p}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-[var(--color-line)] pt-3">
+          <p className="text-xs font-bold leading-5 text-[var(--color-ink)]">
+            <span className="text-[var(--color-ink-soft)]">Exposure: </span>
+            {matter.exposure}
+          </p>
+          <a
+            href={matter.href}
+            className="text-[11px] font-black uppercase tracking-[0.08em]"
+            style={{ color: text }}
+          >
+            Full detail
+          </a>
+        </div>
+      </div>
+    </section>
   );
 }
