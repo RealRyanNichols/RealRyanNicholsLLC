@@ -8,6 +8,14 @@ import { WorldMap } from "@/components/WorldMap";
 import { flagFor, nameFor } from "@/lib/country-coords";
 import { normalizeVideoChannel } from "@/lib/video-channels";
 import { ReachBySource } from "@/components/ReachBySource";
+import {
+  AdminVisualAnalytics,
+  type VisualContentPoint,
+  type VisualDailyPoint,
+  type VisualFunnelStep,
+  type VisualSlice,
+  type VisualSystemLine,
+} from "@/components/AdminVisualAnalytics";
 
 export const metadata: Metadata = {
   title: "Analytics",
@@ -231,6 +239,9 @@ export default async function AdminAnalyticsPage({
 
       {/* 1. ATTENTION SCOREBOARD — above the fold, the few numbers that matter */}
       <Scoreboard />
+
+      {/* 1b. VISUAL INTELLIGENCE WALL — charts for pattern recognition */}
+      <VisualIntelligenceWall excludeSelf={excludeSelf} />
 
       {/* 2. 14-DAY TREND — one clear series: daily page views */}
       <TrendBars />
@@ -508,6 +519,326 @@ export default async function AdminAnalyticsPage({
 
 function channelId(channel: string): string {
   return channel.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
+// ---------------------------------------------------------------------------
+// 1b. VISUAL INTELLIGENCE WALL
+// ---------------------------------------------------------------------------
+
+type ArrivalOverview = {
+  total?: number;
+  by_class?: Record<string, number>;
+  by_day?: {
+    day: string;
+    human: number;
+    ai: number;
+    search: number;
+    social: number;
+    uptime: number;
+    unknown: number;
+    total: number;
+  }[];
+};
+
+type AnalyticsSummary = {
+  views_total?: number;
+  top_pages?: { path: string; views: number }[];
+  devices?: Record<string, number>;
+};
+
+type DailyViewRow = {
+  day: string;
+  views: number;
+};
+
+function shortPath(path: string): string {
+  const clean = path.replace(/^\/posts\//, "").replace(/^\/case\//, "case/");
+  if (clean === "/" || clean === "") return "home";
+  if (clean.length <= 18) return clean;
+  return `${clean.slice(0, 16)}...`;
+}
+
+function colorBySource(key: string): string {
+  const map: Record<string, string> = {
+    human: "#7fe3a9",
+    "search-bot": "#7fa9e3",
+    "ai-bot": "#c8a3ff",
+    "social-bot": "#e4c66a",
+    "uptime-bot": "#9fb0ca",
+    unknown: "#6f7f99",
+  };
+  return map[key] ?? "#9fb0ca";
+}
+
+function sourceLabel(key: string): string {
+  const map: Record<string, string> = {
+    human: "Humans",
+    "search-bot": "Search",
+    "ai-bot": "AI agents",
+    "social-bot": "Social previews",
+    "uptime-bot": "Tools / uptime",
+    unknown: "Unknown",
+  };
+  return map[key] ?? key;
+}
+
+function deviceColor(key: string): string {
+  const map: Record<string, string> = {
+    mobile: "#7fe3a9",
+    desktop: "#7fa9e3",
+    tablet: "#e4c66a",
+    bot: "#c8a3ff",
+    unknown: "#6f7f99",
+  };
+  return map[key] ?? "#9fb0ca";
+}
+
+async function VisualIntelligenceWall({ excludeSelf }: { excludeSelf: boolean }) {
+  const supabase = await getSupabaseServerClient();
+  const sevenDaysAgo = subDays(new Date(), 7).toISOString();
+
+  const eventCount = (kinds: string[]) =>
+    supabase
+      .from("page_events")
+      .select("id", { count: "exact", head: true })
+      .gte("at", sevenDaysAgo)
+      .in("kind", kinds);
+
+  const [
+    { data: dailyRaw },
+    { data: arrivalsRaw },
+    { data: summaryRaw },
+    { count: views7 },
+    { count: scroll50 },
+    { count: shareMenus },
+    { count: shares },
+    { count: comments },
+    { count: subscribeWins },
+    { count: tipWins },
+    { count: supportSaved },
+    { count: checkoutOpen },
+    { count: knownFailures },
+    { data: eventPathRows },
+    { data: invoiceRows },
+    { count: supportIntents30 },
+  ] = await Promise.all([
+    supabase.rpc("analytics_daily_views", { p_days: 14 }),
+    supabase.rpc("arrivals_overview", {
+      p_days: 14,
+      p_exclude_self: excludeSelf,
+    }),
+    supabase.rpc("analytics_summary", { days: 7 }),
+    supabase
+      .from("page_views")
+      .select("id", { count: "exact", head: true })
+      .gte("started_at", sevenDaysAgo),
+    eventCount(["scroll_50"]),
+    eventCount(["share_menu_open"]),
+    eventCount(["share_platform", "share_native", "share_copy"]),
+    eventCount(["comment_submit_success", "case_comment_submit_success", "reaction_toggle"]),
+    eventCount(["subscribe_success", "follow_capture_success"]),
+    eventCount(["tip_submit_success"]),
+    eventCount(["support_intent_saved"]),
+    eventCount(["support_checkout_open", "donate_click"]),
+    eventCount(["support_intent_failed", "tip_submit_failed", "subscribe_failed", "follow_capture_failed"]),
+    supabase
+      .from("page_events")
+      .select("kind, path")
+      .gte("at", sevenDaysAgo)
+      .order("at", { ascending: false })
+      .limit(5000),
+    supabase
+      .from("service_invoices")
+      .select("amount_cents, amount_paid_cents, status")
+      .in("status", ["open", "failed"])
+      .limit(50),
+    supabase
+      .from("support_intents")
+      .select("id", { count: "exact", head: true })
+      .gte("created_at", subDays(new Date(), 30).toISOString()),
+  ]);
+
+  const dailyRows = (Array.isArray(dailyRaw) ? dailyRaw : []) as DailyViewRow[];
+  const arrivals = (arrivalsRaw ?? {}) as ArrivalOverview;
+  const summary = (summaryRaw ?? {}) as AnalyticsSummary;
+  const arrivalByDay = new Map(
+    (arrivals.by_day ?? []).map((row) => [String(row.day).slice(0, 10), row.total ?? 0]),
+  );
+  const daily: VisualDailyPoint[] = dailyRows.map((row) => ({
+    label: format(new Date(`${row.day}T12:00:00`), "M/d"),
+    views: row.views ?? 0,
+    reach: arrivalByDay.get(row.day) ?? row.views ?? 0,
+  }));
+
+  const sourceMix: VisualSlice[] = Object.entries(arrivals.by_class ?? {})
+    .map(([key, value]) => ({
+      name: sourceLabel(key),
+      value: Number(value ?? 0),
+      color: colorBySource(key),
+    }))
+    .filter((slice) => slice.value > 0)
+    .sort((a, b) => b.value - a.value);
+
+  const deviceMix: VisualSlice[] = Object.entries(summary.devices ?? {})
+    .map(([key, value]) => ({
+      name: key.charAt(0).toUpperCase() + key.slice(1),
+      value: Number(value ?? 0),
+      color: deviceColor(key),
+    }))
+    .filter((slice) => slice.value > 0)
+    .sort((a, b) => b.value - a.value);
+
+  const funnel: VisualFunnelStep[] = [
+    {
+      name: "Views",
+      value: views7 ?? 0,
+      fill: "#7fa9e3",
+      hint: "Raw page attention in the last 7 days.",
+    },
+    {
+      name: "Read halfway",
+      value: scroll50 ?? 0,
+      fill: "#7fe3a9",
+      hint: "People who stayed long enough to hit 50% scroll.",
+    },
+    {
+      name: "Shared / copied",
+      value: shares ?? 0,
+      fill: "#7fa9e3",
+      hint: `${fmt(shareMenus)} share menus opened.`,
+    },
+    {
+      name: "Commented / reacted",
+      value: comments ?? 0,
+      fill: "#e4c66a",
+      hint: "Public proof that turns readers into participants.",
+    },
+    {
+      name: "Joined alerts",
+      value: subscribeWins ?? 0,
+      fill: "#7fe3a9",
+      hint: "Return traffic captured by email/SMS events.",
+    },
+    {
+      name: "Sent a tip",
+      value: tipWins ?? 0,
+      fill: "#7fe3a9",
+      hint: "Story/data intake completed.",
+    },
+    {
+      name: "Support saved",
+      value: supportSaved ?? 0,
+      fill: "#e4c66a",
+      hint: `${fmt(supportIntents30)} support intents in the last 30 days.`,
+    },
+    {
+      name: "Checkout / donate",
+      value: checkoutOpen ?? 0,
+      fill: "#e4c66a",
+      hint: "Money-path clicks. Gold means funding action.",
+    },
+    {
+      name: "Known failures",
+      value: knownFailures ?? 0,
+      fill: "#ef6f61",
+      hint: "Red is reserved for leaks, failures, or incomplete flow.",
+    },
+  ];
+
+  const actionKinds = new Set([
+    "share_platform",
+    "share_native",
+    "share_copy",
+    "comment_submit_success",
+    "case_comment_submit_success",
+    "reaction_toggle",
+    "subscribe_success",
+    "follow_capture_success",
+    "tip_submit_success",
+    "support_intent_saved",
+    "support_checkout_open",
+    "donate_click",
+  ]);
+  const actionsByPath = new Map<string, number>();
+  for (const row of (eventPathRows ?? []) as { kind: string | null; path: string | null }[]) {
+    if (!row.path || !row.kind || !actionKinds.has(row.kind)) continue;
+    actionsByPath.set(row.path, (actionsByPath.get(row.path) ?? 0) + 1);
+  }
+  const content: VisualContentPoint[] = (summary.top_pages ?? [])
+    .slice(0, 8)
+    .map((row) => ({
+      name: shortPath(row.path),
+      views: row.views ?? 0,
+      actions: actionsByPath.get(row.path) ?? 0,
+    }));
+
+  const receivableCents = ((invoiceRows ?? []) as {
+    amount_cents: number | null;
+    amount_paid_cents: number | null;
+  }[]).reduce(
+    (sum, row) => sum + Math.max(0, (row.amount_cents ?? 0) - (row.amount_paid_cents ?? 0)),
+    0,
+  );
+
+  const commit = process.env.VERCEL_GIT_COMMIT_SHA;
+  const branch = process.env.VERCEL_GIT_COMMIT_REF;
+  const vercelEnv = process.env.VERCEL_ENV;
+  const deploymentUrl = process.env.VERCEL_URL;
+  const systems: VisualSystemLine[] = [
+    {
+      name: "Supabase",
+      value: fmt(views7),
+      detail: `${fmt(arrivals.total)} edge arrivals over 14d; ${fmt(views7)} browser views over 7d.`,
+      tone: (views7 ?? 0) > 0 ? "good" : "watch",
+    },
+    {
+      name: "Vercel",
+      value: vercelEnv ? vercelEnv.toUpperCase() : "LOCAL",
+      detail: deploymentUrl
+        ? `Geo/request headers and deployment metadata are live on ${deploymentUrl}.`
+        : "Local build. Production exposes request geo and deployment metadata through Vercel.",
+      tone: deploymentUrl ? "good" : "neutral",
+    },
+    {
+      name: "GitHub",
+      value: commit ? commit.slice(0, 7) : "not exposed",
+      detail: branch
+        ? `Current deployed branch: ${branch}. Use this as the release marker for analytics changes.`
+        : "Vercel Git metadata is not present in this environment; runtime GitHub API history still needs a token/webhook.",
+      tone: commit ? "good" : "watch",
+    },
+    {
+      name: "Receivables",
+      value: `$${Math.round(receivableCents / 100).toLocaleString()}`,
+      detail: "Open/failed invoices that still need collection. This is the money Ryan can act on.",
+      tone: receivableCents > 0 ? "watch" : "good",
+    },
+  ];
+
+  const sourceTop = sourceMix[0];
+  const deviceTop = deviceMix[0];
+  const supportText =
+    (checkoutOpen ?? 0) > 0
+      ? `${fmt(checkoutOpen)} checkout/donation clicks are moving through the money path.`
+      : "The money path needs a stronger prompt: tell people exactly what their support funds.";
+  const insight =
+    `${fmt(arrivals.total)} total reach over 14 days. ${
+      sourceTop ? `${sourceTop.name} is the largest source` : "Source mix is still filling in"
+    }${
+      deviceTop ? ` and ${deviceTop.name.toLowerCase()} leads device traffic` : ""
+    }. ${supportText}`;
+
+  return (
+    <AdminVisualAnalytics
+      daily={daily}
+      sourceMix={sourceMix.length ? sourceMix : [{ name: "No source data", value: 1, color: "#6f7f99" }]}
+      deviceMix={deviceMix.length ? deviceMix : [{ name: "No device data", value: 1, color: "#6f7f99" }]}
+      funnel={funnel}
+      content={content.length ? content : [{ name: "No paths", views: 0, actions: 0 }]}
+      systems={systems}
+      insight={insight}
+    />
+  );
 }
 
 // ---------------------------------------------------------------------------

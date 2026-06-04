@@ -378,7 +378,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             )}
             <Link
               href="/support"
-              className="btn-accent ml-1 inline-flex items-center rounded-full px-3.5 py-1.5 text-xs font-semibold"
+              className="btn-support ml-1 inline-flex items-center rounded-full px-3.5 py-1.5 text-xs font-semibold"
             >
               Donate
             </Link>
@@ -421,7 +421,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
           <div className="flex lg:hidden items-center gap-2">
             <Link
               href="/support"
-              className="btn-accent inline-flex min-h-11 items-center rounded-full px-4 py-2 text-xs font-semibold"
+              className="btn-support inline-flex min-h-11 items-center rounded-full px-4 py-2 text-xs font-semibold"
             >
               Donate
             </Link>
@@ -518,7 +518,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
 
               <Link
                 href="/support"
-                className="flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-4 py-3 text-sm font-black text-[#fdf8ea] transition hover:bg-[var(--color-accent-strong)]"
+                className="btn-support flex min-h-12 items-center justify-center rounded-lg px-4 py-3 text-sm font-black transition"
               >
                 Donate / Support the Work
               </Link>

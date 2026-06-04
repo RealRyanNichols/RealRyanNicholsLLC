@@ -20,6 +20,13 @@
   --color-accent-soft: #f6dad2;
   --color-accent-glow: rgba(179, 36, 25, 0.18);
 
+  /* Support / money path. Red is reserved for danger, leaks, and failures;
+     support uses gold/green so funding the work reads as constructive action. */
+  --color-support: #c89b2f;
+  --color-support-strong: #8f6b16;
+  --color-support-soft: #f4e6bd;
+  --color-support-glow: rgba(200, 155, 47, 0.28);
+
   /* Navy blue — the second American color. Use for institutional context,
      procedural tags, secondary CTAs. */
   --color-blue: #1d3a6b;
@@ -220,6 +227,17 @@
 }
 .btn-accent:hover {
   background: var(--color-accent-strong);
+}
+
+.btn-support {
+  background: linear-gradient(135deg, var(--color-support), #e1bd5b);
+  color: #17110a;
+  font-weight: 800;
+  box-shadow: 0 0 26px var(--color-support-glow);
+}
+.btn-support:hover {
+  background: linear-gradient(135deg, var(--color-support-strong), var(--color-support));
+  color: #fff8e6;
 }
 
 /* Secondary CTA using the navy blue — pairs with red on the page. */
