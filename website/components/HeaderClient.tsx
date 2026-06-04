@@ -73,10 +73,10 @@ const DASHBOARD_LINKS: NavItem[] = [
     tone: "green",
   },
   {
-    href: "/store",
+    href: "/services",
     label: "Services",
-    desc: "Calls, audits, builds",
-    badge: "Hire",
+    desc: "Find the right help",
+    badge: "Pick",
     tone: "ink",
   },
 ];
@@ -103,10 +103,10 @@ const MOBILE_PRIMARY_LINKS: NavItem[] = [
     tone: "green",
   },
   {
-    href: "/store",
-    label: "Hire Ryan",
-    desc: "Calls, audits, builds",
-    badge: "Work",
+    href: "/services",
+    label: "Services",
+    desc: "Find the right help",
+    badge: "Pick",
     tone: "ink",
   },
 ];
