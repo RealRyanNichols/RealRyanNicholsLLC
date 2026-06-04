@@ -64,11 +64,53 @@
     overflow-x: hidden;
   }
 
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
   main {
     min-width: 0;
     max-width: 100%;
     overflow-x: hidden;
   }
+
+  :where(header, footer, nav, main, section, article, aside, div, ul, ol, li) {
+    min-width: 0;
+  }
+
+  :where(img, picture, video, canvas, svg, iframe) {
+    max-width: 100%;
+  }
+
+  :where(input, textarea, select, button) {
+    max-width: 100%;
+  }
+
+  :where(h1, h2, h3, h4, p, li, blockquote, figcaption, a) {
+    overflow-wrap: anywhere;
+  }
+
+  :where([class*="overflow-x-auto"]) {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-inline: contain;
+  }
+
+  :where([data-ratio-frame]) {
+    contain: layout paint;
+  }
+
+  :where([data-ratio-frame] > img,
+  [data-ratio-frame] > video,
+  [data-ratio-frame] > iframe,
+  [data-ratio-frame] > canvas,
+  [data-ratio-frame] > svg) {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
 
   ::selection {
     background: var(--color-accent);
@@ -260,6 +302,7 @@
 .rrn-hero {
   position: relative;
   overflow: hidden;
+  isolation: isolate;
   border-bottom: 1px solid var(--color-line);
 }
 
@@ -306,6 +349,7 @@
   border: 1px solid var(--color-line);
   border-radius: 8px;
   background: var(--color-surface);
+  min-width: 0;
 }
 
 .rrn-tap-row {

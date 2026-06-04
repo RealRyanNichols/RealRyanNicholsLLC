@@ -328,7 +328,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
           system" before you even scroll. */}
       {!isAdminPath ? <HeaderStatusStrip /> : null}
       <header className="border-b border-[var(--color-line)] bg-[var(--color-paper)]/90 backdrop-blur-xl sticky top-0 z-30">
-        <div className="mx-auto max-w-5xl px-4 h-16 flex items-center justify-between gap-3">
+        <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-2 px-3 sm:gap-3 sm:px-4">
           <Link
             href="/"
             className="group flex min-h-11 min-w-0 items-center gap-2.5"
@@ -354,7 +354,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
                 RN
               </span>
             )}
-            <span className="font-bold tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-accent)] transition truncate">
+            <span className="truncate text-sm font-bold tracking-tight text-[var(--color-ink)] transition group-hover:text-[var(--color-accent)] min-[360px]:text-base">
               Ryan Nichols
             </span>
           </Link>
@@ -418,12 +418,12 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
           </nav>
 
           {/* Touch/tablet — Donate (always visible) + hamburger */}
-          <div className="flex lg:hidden items-center gap-2">
+          <div className="flex shrink-0 items-center gap-1.5 min-[360px]:gap-2 lg:hidden">
             {signedIn ? (
               <Link
                 href={officeHref}
                 className={[
-                  "inline-flex min-h-11 items-center rounded-full px-3 py-2 text-[11px] font-black uppercase tracking-normal transition",
+                  "inline-flex min-h-11 items-center rounded-full px-2.5 py-2 text-[11px] font-black uppercase tracking-normal transition min-[360px]:px-3",
                   isAdmin
                     ? "border border-[#7fe3a9] bg-[#071126] text-[#7fe3a9]"
                     : "border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink)]",
@@ -434,7 +434,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             ) : null}
             <Link
               href="/support"
-              className="btn-support inline-flex min-h-11 items-center rounded-full px-4 py-2 text-xs font-semibold"
+              className="btn-support inline-flex min-h-11 items-center rounded-full px-3 py-2 text-xs font-semibold min-[360px]:px-4"
             >
               Donate
             </Link>

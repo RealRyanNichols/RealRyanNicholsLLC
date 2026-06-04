@@ -251,11 +251,14 @@ export function LiveVisitorRadar({ initial }: { initial: Ping[] }) {
   return (
     <div className="relative">
       {/* Map surface */}
-      <div className="relative rounded-2xl overflow-hidden border-2 border-[var(--color-blue)] bg-[#0e1a36]">
+      <div
+        data-ratio-frame
+        className="relative min-h-[240px] overflow-hidden rounded-2xl border-2 border-[var(--color-blue)] bg-[#0e1a36] aspect-[4/3] sm:min-h-0 sm:aspect-[16/9] lg:aspect-[2/1]"
+      >
         <svg
           ref={svgRef}
           viewBox={`0 0 ${W} ${H}`}
-          className="block w-full h-auto select-none touch-pan-y"
+          className="absolute inset-0 block h-full w-full select-none touch-pan-y"
           style={{ cursor: dragRef.current?.active ? "grabbing" : "grab" }}
           onWheel={onWheel}
           onPointerDown={onPointerDown}
