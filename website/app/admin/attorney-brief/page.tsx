@@ -19,11 +19,41 @@ const meeting = {
 };
 
 const urgentAsks = [
+  "Confirm whether bond was revoked, the exact stated reason, and whether the State is treating social-media speech as the violation.",
+  "Confirm the next setting: arraignment on June 9, 2026, possible Case No. 2026-0226, Harrison County.",
   "Get the charging instruments for both harassment counts and the deadly conduct charge.",
-  "Demand preservation and production of bodycam, dashcam, CAD, dispatch audio, witness statements, church video, jail-hallway bodycam, and all source statements.",
+  "Serve Article 39.14 / Michael Morton, Brady, and preservation demands for bodycam, dashcam, CAD, dispatch audio, witness statements, church video, jail-hallway bodycam, and all source statements.",
   "Compare the official allegation wording against the later public story that Ryan pulled or pointed a gun.",
   "Evaluate whether statements made while Ryan was in custody should be suppressed or limited.",
+  "Evaluate a recusal issue if Judicial Officer Joe Black is assigned and the story-view / reaction screenshots create a reasonable impartiality concern.",
   "Decide what should be public, what should stay private, and what belongs only in discovery or attorney work product.",
+];
+
+const immediateEmergency = [
+  {
+    label: "Court setting",
+    value: "June 9, 2026",
+    note:
+      "Google Drive attorney map lists arraignment in Harrison County; exact case number and docket entry still need counsel verification.",
+  },
+  {
+    label: "Possible case no.",
+    value: "2026-0226",
+    note:
+      "Marked VERIFY in the Drive case map. Treat as a lead until matched against the charging instrument or court portal.",
+  },
+  {
+    label: "Bond issue",
+    value: "Speech / social media",
+    note:
+      "Drive case map says bond was revoked for social-media conduct. Counsel should get the written revocation basis and condition wording.",
+  },
+  {
+    label: "Discovery lane",
+    value: "Art. 39.14 + Brady",
+    note:
+      "The current bodycam fight should move through the criminal case, not depend only on open-records release while the case is active.",
+  },
 ];
 
 const chargeCards = [
@@ -88,6 +118,68 @@ const sourceChain = [
       "Ryan requested bodycam/source records. Site records say the current church case response was active-case / call-sheet-only, followed by a second written request.",
     use: "Discovery and preservation requests should be immediate.",
   },
+  {
+    step: "Bond / speech",
+    title: "Social-media condition and revocation issue",
+    body:
+      "The Google Drive attorney map says bond was revoked for social-media conduct and flags a possible overbreadth / First Amendment issue. The page treats that as a lead until counsel gets the bond condition and revocation order.",
+    use: "Counsel should separate public advocacy from prohibited contact or case-specific witness issues.",
+  },
+  {
+    step: "Recusal lane",
+    title: "Judicial Officer Joe Black",
+    body:
+      "The Drive map says the court portal showed Judicial Officer Black, Joe for the June 9 setting and that Ryan has story-view / reaction screenshots involving the name Joe Black.",
+    use: "Counsel should decide whether this supports a recusal motion or only a disclosure question.",
+  },
+];
+
+const caseTheory = [
+  "The official baseline allegation matters: display / hand-on-grip is not the same as pulled, pointed, fired, or threatened with a gun.",
+  "The defense should force every witness version back to native source files, not screenshots, headlines, or summaries.",
+  "The Costello public video/comment lane matters because it may show how the public story escalated after the alleged church incident.",
+  "The Treece thread matters only if the harassment charges rely on speech, threats, contact history, or unequal enforcement around online statements.",
+  "The July 13 / James Chatham file is background-pattern evidence, not the church charge itself, unless the State uses old gun allegations or character framing.",
+  "The safest attorney posture is source-first: charging packets, bodycam, dispatch, CAD, original witness statements, native videos, complete message exports.",
+];
+
+const chronology = [
+  {
+    date: "July 13, 2025",
+    title: "Separate James Chatham / firearm incident",
+    body:
+      "Drive motions say Ryan called law enforcement, Lt. Ron England responded, and Ryan maintains James Chatham grabbed a firearm while Ryan did not shoot, discharge, or fire a gun.",
+  },
+  {
+    date: "After July 13, 2025",
+    title: "Bodycam request through Cindy Black",
+    body:
+      "Drive motions and the site exhibit index say Cindy Black was the records contact for July 13 bodycam/source footage. Keep this file separate from the later church case.",
+  },
+  {
+    date: "Williams TRO hearing",
+    title: "False-testimony allegation",
+    body:
+      "Drive motions say Bonnie Nichols testified Ryan shot a gun on July 13. Ryan disputes that and says police records/video contradict it. Counsel should verify from transcript and actual records.",
+  },
+  {
+    date: "May 2026",
+    title: "Church-parking-lot allegation",
+    body:
+      "Public reporting attributed to HCSO says Ryan displayed a firearm and placed his hand on the grip. Ryan disputes drawing, pointing, brandishing, threatening, or firing.",
+  },
+  {
+    date: "May 18-19, 2026",
+    title: "Church bodycam requests",
+    body:
+      "Site records say Cindy Black responded active-case / call-sheet-only on the church case, and Ryan sent a second written request with counsel copied in the private source chain.",
+  },
+  {
+    date: "June 9, 2026",
+    title: "Arraignment / immediate setting",
+    body:
+      "Google Drive attorney map lists arraignment and flags bond, recusal, discovery, Brady, and speech-condition issues for counsel.",
+  },
 ];
 
 const people = [
@@ -100,17 +192,22 @@ const people = [
   ["B.J. Fletcher", "Harrison County Sheriff quoted in public reporting and tied to HCSO public allegation language."],
   ["Cindy Black", "Records custodian contact in bodycam/source-record request history."],
   ["Lt. Ron England", "Separate July 13, 2025 file/bodycam history; important to keep separate from current church case."],
+  ["James Chatham", "July 13, 2025 background file; Drive motions say Ryan alleges Chatham grabbed a firearm and Ryan called law enforcement."],
+  ["Judge / Judicial Officer Joe Black", "Drive attorney map flags a June 9 court-portal assignment and story-view / reaction screenshots; counsel must verify and decide recusal strategy."],
   ["Bonnie Nichols", "Family-court / testimony / background context. Do not merge her issues into the criminal defense unless counsel says it helps."],
   ["Bo Rogers", "Former attorney / background context; relevant only if counsel needs broader litigation context."],
   ["Kelly Hydekamp / Scott Carlisle", "Family-court counsel context; not a substitute for proof in criminal case."],
-  ["Alex Harkrider", "J6/context witness lane mentioned by Ryan; needs a specific fact before use."],
+  ["Alex Harkrider", "Drive attorney map describes a separate harassment/theft context involving a rescue boat and belongings after a mental-health crisis; verify before use."],
   ["Nathaniel Moran", "Political/congress context mentioned by Ryan; needs a specific fact before use."],
+  ["Ryan Baker", "Only found locally as a background potential-misconduct name; do not use as a criminal-defense fact without a direct source tie."],
+  ["Craig Evers / Oak Grove Baptist Church", "Search found a corrected RepWatchr note separating Kevin Evers from Bro. Craig Evers. Treat as church/community context only unless counsel has a direct record."],
 ];
 
 const evidenceLanes = [
   {
     title: "Church incident source records",
     items: [
+      "Bond paperwork, bond-condition text, and any revocation order or hearing transcript",
       "Charging instruments and probable-cause affidavits",
       "HCSO offense report and supplement reports",
       "Bodycam, dashcam, CAD, dispatch audio, call sheet",
@@ -142,6 +239,27 @@ const evidenceLanes = [
     ],
   },
   {
+    title: "Recusal / court-control file",
+    items: [
+      "Court portal entry showing Judicial Officer Black, Joe and June 9 setting",
+      "Story-view / reaction screenshots involving Joe Black",
+      "Any prior personal-contact history Ryan says may affect impartiality",
+      "Filed or draft recusal motion and visual exhibit packet from the Costello/harassment Drive folder",
+      "Counsel decision: recusal motion, disclosure request, or hold",
+    ],
+  },
+  {
+    title: "July 13 / James Chatham background file",
+    items: [
+      "July 13, 2025 Part 1 and Part 2 videos in Google Drive",
+      "Lt. Ron England bodycam and police report",
+      "Cindy Black bodycam correspondence and fee/processing screenshots",
+      "Bonnie Nichols Williams TRO transcript or recording",
+      "Any 192-page exhibit or public exhibit page counsel can verify",
+      "Use only to rebut old gun-character claims unless counsel connects it to the current charges",
+    ],
+  },
+  {
     title: "Background context counsel may need",
     items: [
       "Nichols v. Nichols master briefing",
@@ -150,6 +268,8 @@ const evidenceLanes = [
       "Wholesale Universe / Robinhood / DocuSign context only if it explains motive, pressure, or credibility",
       "Prior J6/pardon/public figure context only if the State or media uses it",
       "Proof of public threats against Ryan after the church-gun story spread",
+      "Harkrider separate file only if the State opens the door to Ryan's prior J6/community context",
+      "Ryan Baker, Jeremy Oni/Oney, Craig Evers, and Oak Grove references need direct-source matching before use",
     ],
   },
 ];
@@ -182,7 +302,36 @@ const sourceLinks = [
   },
 ];
 
+const sourceFiles = [
+  {
+    label: "Google Drive attorney map",
+    path: "Kacie Jon Costello & Harassment Harrison County/Motions/Case_Map_for_Attorney_DRAFT.md",
+    note:
+      "Source for June 9 arraignment lead, possible 2026-0226 case number, bond revocation lead, recusal lane, and Art. 39.14 / Brady priority.",
+  },
+  {
+    label: "Master exhibit index article",
+    path: "website/content/articles/2026-06-01_master-exhibit-index.md",
+    note:
+      "Source for exhibit numbering, Costello video receipt, Treece thread, July 13 separation note, and church bodycam request chain.",
+  },
+  {
+    label: "July 13 motion draft",
+    path: "Real Ryan Nichols LLC/MOTION_03_JULY13_INCIDENT.md",
+    note:
+      "Source for July 13 / James Chatham background allegations, Lt. Ron England, Cindy Black, and Williams TRO false-testimony issue.",
+  },
+  {
+    label: "Master case briefing",
+    path: "Real Ryan Nichols LLC/MASTER_CASE_BRIEFING.md",
+    note:
+      "Source for divorce/business background, Ryan Baker background mention, and broader names counsel may hear.",
+  },
+];
+
 const questionsForRyan = [
+  "Is bond currently revoked, modified, or only threatened? Get the exact written order and bond condition.",
+  "Is the June 9, 2026 setting confirmed as arraignment, and is Case No. 2026-0226 correct?",
   "What are the exact cause numbers / complaint numbers for the two harassment charges and deadly conduct charge?",
   "Who are the named complainants on each harassment count?",
   "What exact statements, posts, or messages did law enforcement say make up each harassment charge?",
@@ -190,6 +339,7 @@ const questionsForRyan = [
   "Do you have the bond paperwork, magistrate warnings, probable-cause affidavit, or booking sheet?",
   "Which raw videos/screenshots are native files versus edited public receipts?",
   "Who can authenticate the Messenger thread, public comments, church video, and records requests?",
+  "What direct record ties Jeremy Oni/Oney, Ryan Baker, Craig Evers, or Oak Grove Baptist Church to the current charges, if any?",
   "What must be kept private because it includes minors, addresses, phone numbers, medical/cannabis-card data, or family-court sensitive material?",
 ];
 
@@ -275,10 +425,77 @@ export default async function AttorneyBriefPage() {
         </div>
       </section>
 
+      <section className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        {immediateEmergency.map((item) => (
+          <section
+            key={item.label}
+            className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4"
+          >
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-muted)]">
+              {item.label}
+            </p>
+            <h2 className="mt-2 font-sans text-2xl font-black">
+              {item.value}
+            </h2>
+            <p className="mt-2 text-xs font-semibold leading-5 text-[var(--color-ink-soft)]">
+              {item.note}
+            </p>
+          </section>
+        ))}
+      </section>
+
       <section className="mt-5 grid gap-3 lg:grid-cols-3">
         {chargeCards.map((card) => (
           <ChargeCard key={card.title} {...card} />
         ))}
+      </section>
+
+      <section className="mt-5 grid gap-4 xl:grid-cols-[0.82fr_1.18fr]">
+        <section className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+          <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+            Working defense theory
+          </p>
+          <h2 className="mt-2 font-sans text-2xl font-black">
+            Pull every claim back to source.
+          </h2>
+          <ul className="mt-4 space-y-2">
+            {caseTheory.map((item) => (
+              <li key={item} className="flex gap-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+                <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[var(--color-support)]" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+          <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+            Chronology
+          </p>
+          <h2 className="mt-2 font-sans text-2xl font-black">
+            What touches what
+          </h2>
+          <div className="mt-4 grid gap-2">
+            {chronology.map((event) => (
+              <div
+                key={`${event.date}-${event.title}`}
+                className="grid gap-2 rounded-sm border border-[var(--color-line)] bg-[var(--color-paper)] p-3 sm:grid-cols-[9rem_1fr]"
+              >
+                <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--color-muted)]">
+                  {event.date}
+                </p>
+                <div>
+                  <h3 className="font-sans text-base font-black">
+                    {event.title}
+                  </h3>
+                  <p className="mt-1 text-xs font-semibold leading-5 text-[var(--color-ink-soft)]">
+                    {event.body}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
       </section>
 
       <section className="mt-5 grid gap-4 xl:grid-cols-[0.92fr_1.08fr]">
@@ -377,6 +594,31 @@ export default async function AttorneyBriefPage() {
                 {source.note}
               </span>
             </a>
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-5 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+          Local source files checked
+        </p>
+        <h2 className="mt-2 font-sans text-2xl font-black">
+          Pull these before counsel if needed
+        </h2>
+        <div className="mt-4 grid gap-2 md:grid-cols-2">
+          {sourceFiles.map((file) => (
+            <div
+              key={file.path}
+              className="rounded-sm border border-[var(--color-line)] bg-[var(--color-paper)] p-3"
+            >
+              <p className="text-sm font-black">{file.label}</p>
+              <p className="mt-1 break-words font-mono text-[11px] font-semibold text-[var(--color-muted)]">
+                {file.path}
+              </p>
+              <p className="mt-2 text-xs font-semibold leading-5 text-[var(--color-ink-soft)]">
+                {file.note}
+              </p>
+            </div>
           ))}
         </div>
       </section>
