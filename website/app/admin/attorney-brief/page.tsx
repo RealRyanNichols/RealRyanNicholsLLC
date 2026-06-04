@@ -32,6 +32,12 @@ const urgentAsks = [
 
 const immediateEmergency = [
   {
+    label: "Top priority",
+    value: "3 misdemeanors",
+    note:
+      "Criminal defense is the immediate court lane. The civil, business, J6, and political-context lanes stay visible because they explain pressure, motive, damages, and witness credibility.",
+  },
+  {
     label: "Court setting",
     value: "June 9, 2026",
     note:
@@ -60,6 +66,12 @@ const immediateEmergency = [
     value: "Not represented",
     note:
       "Ryan reports he is not represented by anyone. Appearance status needs docket confirmation across each active matter.",
+  },
+  {
+    label: "Civil leverage",
+    value: "WU / J6 / divorce",
+    note:
+      "Business control, alleged loan/debt exposure, J6 damages, and divorce records belong in the same attorney map without distracting from the criminal defense packet.",
   },
 ];
 
@@ -119,6 +131,13 @@ const sourceChain = [
     use: "Footage, reports, and original statements are the center of the record.",
   },
   {
+    step: "Church-parking-lot source dispute",
+    title: "Peaceful-contact version versus fear-based version",
+    body:
+      "Ryan states he came peacefully to talk, that the other side became aggressive, and that later text/video/comment receipts may show changed or softened versions of the story. Those records need native files, timestamps, and witness authentication.",
+    use: "This keeps the issue on proof: what was said first, what changed later, and what the video/audio actually shows.",
+  },
+  {
     step: "Missing record",
     title: "Bodycam and source files",
     body:
@@ -139,6 +158,13 @@ const sourceChain = [
       "The Drive map says the court portal showed Judicial Officer Black, Joe for the June 9 setting and that Ryan has story-view / reaction screenshots involving the name Joe Black.",
     use: "This supports a recusal/disclosure issue only if the assignment and screenshots verify cleanly.",
   },
+  {
+    step: "Local pressure lane",
+    title: "Politics, counsel history, and public-record pressure",
+    body:
+      "Ryan reports that local political activity, running for Congress, speaking against officials, and public reporting pressure overlapped with attorney withdrawal, police inaction on reports, and public escalation. This lane needs receipts before counsel uses it.",
+    use: "It explains why the defense packet cannot look at the misdemeanor charges in isolation.",
+  },
 ];
 
 const caseTheory = [
@@ -148,6 +174,7 @@ const caseTheory = [
   "The Treece thread matters only if the harassment charges rely on speech, threats, contact history, or unequal enforcement around online statements.",
   "The July 13 / James Chatham file is background-pattern evidence, not the church charge itself, unless the State uses old gun allegations or character framing.",
   "Source-first packet: charging packets, bodycam, dispatch, CAD, original witness statements, native videos, complete message exports.",
+  "Criminal, civil, J6, business, and political-pressure issues are separate lanes, but they are running at the same time and should be visible in one dashboard.",
 ];
 
 const financialImpact = [
@@ -181,10 +208,10 @@ const financialImpact = [
   },
   {
     label: "Unauthorized debt",
-    value: "$44K-49K",
+    value: "$44K-49K+",
     sub: "claimed debt exposure",
     body:
-      "Prompt package lists a box-truck debt around $22K-27K plus Landstar shipping demand of $22,226.61 after POA-revocation issues. Creditor records and DocuSign audit trails are the verification lane.",
+      "Prompt package lists a box-truck debt around $22K-27K plus Landstar shipping demand of $22,226.61 after POA-revocation issues. Ryan also reports broader loan/debt exposure in his name after asking for money in September 2025. Creditor records, Chase records, loan files, and DocuSign audit trails are the verification lane.",
   },
   {
     label: "Phone/AT&T harm",
@@ -192,6 +219,125 @@ const financialImpact = [
     sub: "documented lane",
     body:
       "AT&T materials list $950 accelerated device balance plus $713.90 account balance, with additional new-service and access damages to verify.",
+  },
+];
+
+const simultaneousLanes = [
+  {
+    label: "Criminal",
+    title: "Immediate defense lane",
+    priority: "Pressing now",
+    body:
+      "Two harassment counts and one deadly-conduct misdemeanor. This lane needs charging instruments, exact complainants, bond paperwork, discovery, bodycam, CAD, dispatch, witness statements, and native message/video files.",
+    proof:
+      "The cleanest criminal packet is allegation wording, statute, source file, missing item, and defense response in one row.",
+  },
+  {
+    label: "Civil",
+    title: "Divorce and business-control lane",
+    priority: "Leverage / damages",
+    body:
+      "Ryan reports Wholesale Universe, divorce, alleged missing money, alleged unauthorized loans/debt, and transfer/control issues are still active pressure points.",
+    proof:
+      "Bank records, Chase payout stubs, corporate records, tax returns, payroll/1099 summaries, loan files, DocuSign logs, court filings, and police-report follow-ups.",
+  },
+  {
+    label: "J6",
+    title: "Federal damages and due-process lane",
+    priority: "Value story",
+    body:
+      "Ryan's public record includes J6 detention, pardon/dismissal context, claimed due-process violations, business destruction, homelessness, family damage, and a damages lane already framed on the site.",
+    proof:
+      "Federal case record, pardon/dismissal documents, damages page, habeas filings, confinement records, business records, medical records, and source exhibits.",
+  },
+  {
+    label: "Public pressure",
+    title: "Politics, reporting, and local-government context",
+    priority: "Motive / credibility context",
+    body:
+      "Ryan reports he ran for Congress, spoke against local officials, was removed from a political event despite having a ticket, and plans to run locally for transparency. Use only with receipts.",
+    proof:
+      "Event video, ticket/entry records, social posts, attorney-withdrawal timing, witness statement from Don Nichols, and any public official communications.",
+  },
+];
+
+const attorneyValueStory = [
+  {
+    label: "Who Ryan is",
+    title: "Marine veteran, search-and-rescue background, business builder",
+    body:
+      "Ryan wants counsel to see the full person: Marine veteran, search-and-rescue specialist, founder/operator, public-record organizer, father, and independent investigative journalist.",
+    proof:
+      "Service/background records, Ellen DeGeneres appearance materials if relevant, business records, public site archive, and family context.",
+  },
+  {
+    label: "Why this case can matter",
+    title: "The defense is bigger than three misdemeanor labels",
+    body:
+      "Ryan's position is that the misdemeanor charges sit inside a broader pressure pattern involving local politics, public speech, prior J6 public status, and ignored reports. Counsel should see it, but source files control it.",
+    proof:
+      "Timeline, public reports, police follow-ups, video receipts, attorney-withdrawal timing, court filings, and native source files.",
+  },
+  {
+    label: "What Ryan can bring",
+    title: "A source-backed story, public attention, and a prepared record",
+    body:
+      "Ryan is asking for help from counsel that can handle a high-attention case without losing the disciplined proof path. The pitch is not noise. It is a prepared record with receipts.",
+    proof:
+      "Public website, case dashboard, Google Drive evidence folders, damages map, and a source-chain packet counsel can audit.",
+  },
+  {
+    label: "Representation ask",
+    title: "Help him defend the charges and preserve the larger record",
+    body:
+      "Ryan reports limited cash but meaningful civil/business/J6 value lanes. Any agreement should be reviewed by counsel and documented carefully; this page only shows the record and value lanes.",
+    proof:
+      "Fee agreement, contingency/fee review where lawful, asset/damages packet, company valuation, and current financial records.",
+  },
+];
+
+const politicalContextLanes = [
+  {
+    title: "Bo Rogers / counsel-withdrawal context",
+    body:
+      "Ryan states Bo Rogers told him he was friends with Congressman Nathaniel Moran during the first meeting, with Don Nichols present as a witness. Ryan says he paid Rogers the last $10,000 he had from Wholesale Universe, marked for attorney fees, and later fought for a continuance after Rogers withdrew.",
+    needs:
+      "Don Nichols statement, Chase payout stub, bank record, fee agreement, withdrawal filing, hearing transcript, Ryan's motions/exhibits, and the order granting continuance.",
+  },
+  {
+    title: "Due-process record in East Texas",
+    body:
+      "Ryan states Judge Moran made Bo Rogers acknowledge a due-process violation on the record before granting Ryan a continuance. This is powerful only if the transcript/audio/order is attached.",
+    needs:
+      "Hearing transcript or audio, order, docket entry, motion packet, proposed order, and exhibit list.",
+  },
+  {
+    title: "Political-event removal",
+    body:
+      "Ryan reports he was removed from a Governor Abbott event at Leon's Steakhouse despite having tickets, after speaking out against Rep. Jay Dean, and that videos went viral shortly before attorney withdrawal communications.",
+    needs:
+      "Ticket proof, event video, social links, timestamps, removal witness names, attorney call records, and withdrawal timing.",
+  },
+  {
+    title: "Ryan Baker / material-witness lane",
+    body:
+      "Ryan states he helped report matters involving federal game warden Ryan Baker with victims, was later kept away from the case, and believes he is a material witness. This stays a verification lane until the indictment/case record and witness communications are attached.",
+    needs:
+      "Indictment/case number, agency records, report receipts, victim statements, prosecutor/witness contact history, and public-source links.",
+  },
+  {
+    title: "Longview police / divorce-business reports",
+    body:
+      "Ryan reports he reported alleged Wholesale Universe/divorce-related fraud to Longview Police Department and followed up multiple times without action.",
+    needs:
+      "Police report numbers, officer names, follow-up emails/calls, evidence packets submitted, bank/loan records, and court filings.",
+  },
+  {
+    title: "Planned local run / public-interest reporting",
+    body:
+      "Ryan states he plans to run locally on truth, transparency, and giving East Texas residents a voice. The legal packet should separate political speech and public reporting from case-specific witness/contact restrictions.",
+    needs:
+      "Campaign timeline, public announcement draft, prior congressional campaign records, social posts, and bond-condition language.",
   },
 ];
 
@@ -275,6 +421,7 @@ const chronology = [
 const people = [
   ["Ryan Nichols", "Defendant; Marine veteran; J6 pardoned defendant; site owner; denies pulling/pointing/firing a gun."],
   ["Amanda Williams", "Ryan's partner; present in background family/court context; part of Treece Messenger thread according to preserved article records."],
+  ["Don Nichols", "Ryan's father; Ryan identifies him as a witness to the first Bo Rogers meeting and related attorney-history context."],
   ["Trey Treece", "Public comment / Messenger thread source in preserved site records; exact role in any harassment charge needs charging packet confirmation."],
   ["Jessica Treece", "Messenger thread participant shown in preserved site records; exact role needs charging packet confirmation."],
   ["Jon Costello", "Church-dispute public video/source-chain figure in site records; exact complainant status needs official records."],
@@ -285,11 +432,11 @@ const people = [
   ["James Chatham", "July 13, 2025 background file; Drive motions say Ryan alleges Chatham grabbed a firearm and Ryan called law enforcement."],
   ["Judge / Judicial Officer Joe Black", "Drive attorney map flags a June 9 court-portal assignment and story-view / reaction screenshots; assignment and screenshots need verification before any recusal/disclosure use."],
   ["Bonnie Nichols", "Family-court / testimony / background context. Criminal-defense record only with a direct evidentiary tie."],
-  ["Bo Rogers", "Former attorney / background context; relevant only if broader litigation context becomes part of the record."],
+  ["Bo Rogers", "Former attorney / background context; Ryan reports Moran-friend statement, $10,000 attorney-fee payment, withdrawal timing, and a due-process hearing issue. Needs transcript, fee records, and bank records."],
   ["Kelly Hydekamp / Scott Carlisle", "Family-court attorney context; not a substitute for proof in the criminal case."],
   ["Alex Harkrider", "Drive attorney map describes a separate harassment/theft context involving a rescue boat and belongings after a mental-health crisis; requires verification before placement in the record."],
-  ["Nathaniel Moran", "Political/congress context mentioned by Ryan; needs a specific fact before use."],
-  ["Ryan Baker", "Only found locally as a background potential-misconduct name; criminal-defense relevance requires a direct source tie."],
+  ["Nathaniel Moran", "Political/congress context mentioned by Ryan and tied to Ryan's stated Bo Rogers first-meeting account; needs a direct, admissible fact before use."],
+  ["Ryan Baker", "Ryan reports he helped report Baker-related misconduct with victims and believes he is a material witness. Requires indictment/case record and witness-contact proof before use."],
   ["Craig Evers / Oak Grove Baptist Church", "Search found a corrected RepWatchr note separating Kevin Evers from Bro. Craig Evers. Church/community context only with a direct record tie."],
 ];
 
@@ -892,6 +1039,51 @@ export default async function AttorneyBriefPage() {
         ))}
       </section>
 
+      <section className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5">
+        <div className="grid gap-3 lg:grid-cols-[0.34fr_1fr] lg:items-end">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+              All lanes active
+            </p>
+            <h2 className="mt-1 font-sans text-2xl font-black sm:text-3xl">
+              Criminal is urgent. Everything else explains the pressure.
+            </h2>
+          </div>
+          <p className="text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+            The attorney should not have to choose one story and ignore the
+            rest. This dashboard keeps each lane separate, labeled, and
+            source-driven so the criminal defense, civil leverage, J6 damages,
+            and public-pressure context can be handled at the same time.
+          </p>
+        </div>
+        <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+          {simultaneousLanes.map((lane) => (
+            <section
+              key={lane.label}
+              className="border border-[var(--color-line)] bg-[var(--color-paper)] p-3"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-muted)]">
+                  {lane.label}
+                </p>
+                <span className="border border-[var(--color-line)] bg-white/50 px-2 py-1 text-[10px] font-black uppercase tracking-normal text-[var(--color-accent)]">
+                  {lane.priority}
+                </span>
+              </div>
+              <h3 className="mt-2 font-sans text-lg font-black leading-tight">
+                {lane.title}
+              </h3>
+              <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+                {lane.body}
+              </p>
+              <p className="mt-3 border-t border-[var(--color-line)] pt-3 text-xs font-bold leading-5 text-[var(--color-muted)]">
+                Proof path: {lane.proof}
+              </p>
+            </section>
+          ))}
+        </div>
+      </section>
+
       <section id="claim-map" className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5">
         <div className="grid gap-3 lg:grid-cols-[0.36fr_1fr] lg:items-end">
           <div>
@@ -1170,7 +1362,7 @@ export default async function AttorneyBriefPage() {
         </aside>
       </section>
 
-      <section id="urgent-records" className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+      <section id="urgent-records" className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
         {immediateEmergency.map((item) => (
           <section
             key={item.label}
@@ -1187,6 +1379,46 @@ export default async function AttorneyBriefPage() {
             </p>
           </section>
         ))}
+      </section>
+
+      <section className="mt-5 border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm sm:p-5">
+        <div className="grid gap-3 lg:grid-cols-[0.38fr_1fr] lg:items-end">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+              Why take Ryan
+            </p>
+            <h2 className="mt-1 font-sans text-2xl font-black text-[#fdf8ea] sm:text-3xl">
+              A high-attention case with a record that can be organized.
+            </h2>
+          </div>
+          <p className="text-sm font-semibold leading-6 text-[#cfd9ea]">
+            This is not written as legal advice or a demand. It is the case
+            value story: Ryan is asking for disciplined representation, a
+            source-backed defense, and a lawyer who can keep the whole picture
+            organized under pressure.
+          </p>
+        </div>
+        <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+          {attorneyValueStory.map((item) => (
+            <section
+              key={item.title}
+              className="border border-white/10 bg-white/[0.055] p-3"
+            >
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#d8c89e]">
+                {item.label}
+              </p>
+              <h3 className="mt-2 font-sans text-lg font-black leading-tight text-[#fdf8ea]">
+                {item.title}
+              </h3>
+              <p className="mt-2 text-sm font-semibold leading-6 text-[#cfd9ea]">
+                {item.body}
+              </p>
+              <p className="mt-3 border-t border-white/10 pt-3 text-xs font-bold leading-5 text-[#7fe3a9]">
+                Proof path: {item.proof}
+              </p>
+            </section>
+          ))}
+        </div>
       </section>
 
       <section id="charges" className="mt-5 grid gap-3 lg:grid-cols-3">
@@ -1215,6 +1447,43 @@ export default async function AttorneyBriefPage() {
               visible on this page.
             </p>
           </div>
+        </div>
+      </section>
+
+      <section className="mt-5 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm">
+        <div className="grid gap-3 lg:grid-cols-[0.34fr_1fr] lg:items-end">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+              Political / public-pressure context
+            </p>
+            <h2 className="mt-1 font-sans text-2xl font-black sm:text-3xl">
+              Use only what can be proven.
+            </h2>
+          </div>
+          <p className="text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+            These items explain Ryan&apos;s view of why local pressure matters. They
+            are counsel-facing leads until the record packet backs them up with
+            transcripts, videos, filings, bank records, witness statements, or
+            public-source links.
+          </p>
+        </div>
+        <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+          {politicalContextLanes.map((lane) => (
+            <section
+              key={lane.title}
+              className="border border-[var(--color-line)] bg-[var(--color-paper)] p-3"
+            >
+              <h3 className="font-sans text-lg font-black leading-tight">
+                {lane.title}
+              </h3>
+              <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+                {lane.body}
+              </p>
+              <p className="mt-3 border-t border-[var(--color-line)] pt-3 text-xs font-bold leading-5 text-[var(--color-accent)]">
+                Needs: {lane.needs}
+              </p>
+            </section>
+          ))}
         </div>
       </section>
 
