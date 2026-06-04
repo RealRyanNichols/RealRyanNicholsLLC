@@ -7,9 +7,12 @@ import {
   ChargeStatusList,
   ChartCard,
   KpiStat,
+  MatterDossier,
+  MatterNav,
   MoneyBars,
   ReadinessDonut,
   type BarItem,
+  type Matter,
   type Tone,
 } from "@/components/AttorneyVisuals";
 
@@ -931,6 +934,122 @@ const questionsForRyan = [
   "What has to stay private because it includes minors, addresses, phone numbers, medical/cannabis-card data, or family-court sensitive material?",
 ];
 
+const matters: Matter[] = [
+  {
+    id: "matter-deadly-conduct",
+    name: "Deadly Conduct",
+    kind: "Criminal · Charge 1",
+    tone: "red",
+    statute: "Tex. Penal Code 22.05",
+    headline: "The church-parking-lot firearm-display allegation.",
+    whatItIs:
+      "Public reporting attributed to HCSO says Ryan displayed a firearm and put his hand on the grip after a church service dispute. Charged as misdemeanor deadly conduct.",
+    disputed:
+      "Display / hand-on-grip is the official baseline. Ryan disputes pulling, pointing, brandishing, firing, or threatening. The entire fight is that exact distinction.",
+    evidence: [
+      "Charging instrument and probable-cause affidavit",
+      "HCSO offense report, bodycam, dashcam, CAD, dispatch audio",
+      "Church security or member-recorded video",
+      "Witness statements and the public press-release source",
+    ],
+    people: [
+      "Jon & Kacie Costello",
+      "Sheriff B.J. Fletcher / HCSO",
+      "Cindy Black (records)",
+      "J.O. Joe Black (recusal lane)",
+    ],
+    exposure:
+      "Misdemeanor exposure plus the public-narrative escalation risk as pulled / pointed / fired versions spread.",
+    href: "#charges",
+  },
+  {
+    id: "matter-harassment",
+    name: "Harassment (two counts)",
+    kind: "Criminal · Charges 2 & 3",
+    tone: "gold",
+    statute: "Tex. Penal Code 42.07",
+    headline: "Two electronic-harassment counts — charging packets still needed.",
+    whatItIs:
+      "Two harassment counts tied to online communications. Records preserve a Treece public comment and Messenger thread, plus Ryan's own May 12 report and call to Harrison County. Exact complainants, dates, and the charged subsection are not yet confirmed.",
+    disputed:
+      "Whether the charged conduct is protected speech and public concern or a true threat — and whether the same standard was applied to the reports Ryan filed.",
+    evidence: [
+      "Both complaints and probable-cause affidavits",
+      "Complete platform / Messenger exports, not crops",
+      "Dates, timestamps, URLs, message IDs, account metadata",
+      "Ryan's May 12 Harrison County report and call record",
+    ],
+    people: [
+      "Trey Treece",
+      "Jessica Treece",
+      "Amanda Williams (thread context)",
+      "Harrison County (Ryan's report)",
+    ],
+    exposure:
+      "Two misdemeanor counts; turns on native records and the true-threat standard in Counterman v. Colorado.",
+    href: "#charges",
+  },
+  {
+    id: "matter-wholesale-universe",
+    name: "Wholesale Universe",
+    kind: "Civil · Business & divorce",
+    tone: "navy",
+    statute: "Forensic-audit + community-property lane",
+    headline: "Business control, valuation, and alleged missing money.",
+    whatItIs:
+      "Wholesale Universe, Inc. — described as a multi-million-dollar wholesale/retail company — sits at the center of the divorce and business fight: control changes, alleged missing funds, unauthorized debt, and payroll / 1099 anomalies.",
+    disputed:
+      "Whether the company was community or separate property, where the money went, and who authorized debt and transfers after the power-of-attorney issues.",
+    evidence: [
+      "Bank statements, ledgers, tax returns, inventory, Amazon/FBA",
+      "Payroll and 1099 summaries (TWC, QuickBooks)",
+      "Independent valuation before, during, and after the transfer",
+      "Loan files, DocuSign audit trails, creditor records",
+    ],
+    people: [
+      "Bonnie Nichols",
+      "Kyle Pope, CPA",
+      "Prosperity / Quantum (related-party flags)",
+      "Bo Rogers (prior counsel)",
+    ],
+    money: [
+      { label: "Missing WU funds", value: "$750K-1.5M" },
+      { label: "2023 1099 summary", value: "$411,501.15" },
+      { label: "Q3 2024 payroll", value: "$231,265.13" },
+      { label: "Unauthorized debt", value: "$44K-49K+" },
+    ],
+    exposure:
+      "Multi-million enterprise value plus $750K-1.5M alleged missing and added debt — a forensic audit controls the final number.",
+    href: "#money-records",
+  },
+  {
+    id: "matter-j6",
+    name: "January 6",
+    kind: "Federal · Damages / value story",
+    tone: "green",
+    statute: "Pardoned & dismissed — compensation lane",
+    headline: "The federal case is over; this is the damages narrative.",
+    whatItIs:
+      "Detention from the January 18, 2021 arrest through the January 20, 2025 pardon, charges later dismissed. The public damages page frames the harm: liberty lost, business destroyed, family and medical damage.",
+    disputed:
+      "Not a live charge — this is the consequential-damages and due-process story that frames the whole picture and Ryan's value as a client.",
+    evidence: [
+      "Federal case record, pardon and dismissal documents",
+      "Confinement, medical, and mental-health records",
+      "Wholesale Universe business-destruction records",
+      "/case/damages source exhibits",
+    ],
+    people: ["Ryan Nichols (pardoned)", "Don Nichols (witness / background)"],
+    money: [
+      { label: "Starting claim", value: "$35M" },
+      { label: "Supported range", value: "$45-50M" },
+    ],
+    exposure:
+      "$35M starting and $45-50M supported — source exhibits still control what counsel can rely on.",
+    href: "#damages-map",
+  },
+];
+
 export default async function AttorneyBriefPage() {
   const supabase = await getSupabaseServerClient();
   const { data: auth } = await supabase.auth.getUser();
@@ -1007,6 +1126,12 @@ export function AttorneyBriefBody({
             className="inline-flex min-h-10 items-center border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-accent)]"
           >
             Top
+          </a>
+          <a
+            href="#matters"
+            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          >
+            By matter
           </a>
           <a
             href="#source-doors"
@@ -1191,6 +1316,36 @@ export function AttorneyBriefBody({
         <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
           {drawerMap.map((drawer) => (
             <PacketJump key={drawer.href} {...drawer} />
+          ))}
+        </div>
+      </section>
+
+      <section
+        id="matters"
+        className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5"
+      >
+        <div className="grid gap-3 lg:grid-cols-[0.4fr_1fr] lg:items-end">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+              Sorted by matter
+            </p>
+            <h2 className="mt-1 font-sans text-2xl font-black leading-tight text-[var(--color-ink)] sm:text-3xl">
+              Each fight on its own — then the through-line.
+            </h2>
+          </div>
+          <p className="text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+            Deadly conduct, harassment, and the Wholesale Universe money are
+            separate fights with separate records. Each one stands alone here —
+            what it is, what is disputed, the packet to pull, and who is in it —
+            before they line up into one pattern.
+          </p>
+        </div>
+        <div className="mt-4">
+          <MatterNav matters={matters} />
+        </div>
+        <div className="mt-4 grid gap-4">
+          {matters.map((matter) => (
+            <MatterDossier key={matter.id} matter={matter} />
           ))}
         </div>
       </section>
