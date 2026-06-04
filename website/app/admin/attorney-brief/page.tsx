@@ -399,6 +399,76 @@ const sourceLinks = [
   },
 ];
 
+const driveEvidenceFolders = [
+  {
+    label: "DA / WU forensic packet",
+    href: "https://drive.google.com/drive/folders/13bUr-S9RN7_IoBiPdcKESdtg_4EUG98U?usp=sharing",
+    status: "money + source records",
+    body:
+      "Contains the July 13 / James Chatham lane, WU payroll and 1099 findings, DA packages, subpoena/witness/hearing matrices, RICO-Track, motions, and evidence folders.",
+  },
+  {
+    label: "Real Ryan evidence workspace",
+    href: "https://drive.google.com/drive/folders/1stzZrhqFtkmEeQ3PiGatgL4bF3KhjYE4?usp=sharing",
+    status: "divorce / business / tips",
+    body:
+      "Contains pictures, videos, death-threat receipts, BJ Fletcher, Alex Harkrider, Messenger tips, MASTER_CASE_BRIEFING, and motion drafts covering phone, business, Robinhood, receiver, and Bo Rogers issues.",
+  },
+  {
+    label: "Costello / harassment file",
+    href: "https://drive.google.com/drive/folders/1hzEz8vOISWNrVbhV9ua6SptaU8we9XCp?usp=drive_link",
+    status: "criminal-defense source chain",
+    body:
+      "Contains Joe and Cindy Black materials, motions, images, and videos tied to the Kacie/Jon Costello, harassment, church, and source-record lane.",
+  },
+  {
+    label: "J6 dismissal / damages record",
+    href: "https://drive.google.com/drive/folders/1xCQRGp46Ppmje2Vd9po-4UXnNPilIQpV?usp=drive_link",
+    status: "federal-case damages lane",
+    body:
+      "Contains J6 folder materials, dismissal-as-moot PDF, and statement-of-reasons PDF. This is the source lane for J6 dismissal, pardon, and damages context.",
+  },
+];
+
+const forensicMoneyRecords = [
+  {
+    label: "2023 1099 summary",
+    value: "$411,501.15",
+    proof:
+      "WU_Payroll_1099_Findings says this QuickBooks summary covers eight vendors. It flags Prosperity Operations LLC at $282,161 and Quantum Leadership LLC at $32,020.",
+  },
+  {
+    label: "Quantum-affiliated subtotal",
+    value: "$314,181.00",
+    proof:
+      "Drive forensic summary says Prosperity and Quantum share a Noblesville address and should be treated as a related-party audit lane until original records verify the relationship.",
+  },
+  {
+    label: "Family-orbit 1099 subtotal",
+    value: "$404,281.00",
+    proof:
+      "Drive forensic summary labels this as a Bonnie/family-orbit subtotal. Use as an audit flag, not a final legal conclusion, until bank statements and ledgers are attached.",
+  },
+  {
+    label: "Q3 2024 payroll report",
+    value: "$231,265.13",
+    proof:
+      "TWC source summary lists 39 employees and says Kyle Pope, CPA filed it on Oct. 22, 2024, confirmation #36262165.",
+  },
+  {
+    label: "Aug-Nov payroll cost",
+    value: "$322,910.30",
+    proof:
+      "Drive payroll summary says this was total payroll cost over about three months, with $299,458.79 gross wages and roughly $1.29M annualized pace.",
+  },
+  {
+    label: "Missing Chase page",
+    value: "$10,300 lead",
+    proof:
+      "Drive summary says the Jan. 2025 Chase 5952 file name references $10,300, but only page 7 was visible. Full 26-page statement is needed before using the number.",
+  },
+];
+
 const proofLegend = [
   {
     label: "Public record / public report",
@@ -443,6 +513,16 @@ const valueHighlights = [
     value: "$750K+",
     status: "audit lane",
   },
+  {
+    label: "2023 1099 summary",
+    value: "$411K",
+    status: "QuickBooks source lane",
+  },
+  {
+    label: "Q3 payroll report",
+    value: "$231K",
+    status: "TWC source lane",
+  },
 ];
 
 const sourceFiles = [
@@ -481,6 +561,18 @@ const sourceFiles = [
     path: "Real Ryan Nichols LLC/CHATGPT_PROMPT_PACKAGE.md",
     note:
       "Source for AT&T damages, unauthorized debt range, Wholesale Universe bank-account bridge, and motion-plan dollar figures.",
+  },
+  {
+    label: "WU payroll / 1099 findings",
+    path: "Google Drive/WU_Payroll_1099_Findings_2026-04-27.md",
+    note:
+      "Source for 2022-2024 payroll and 1099 numbers, Prosperity/Quantum audit flags, TWC Q3 payroll record, and the missing full Chase-statement page.",
+  },
+  {
+    label: "Business changes motion",
+    path: "Google Drive/MOTION_02_BUSINESS_CHANGES.md",
+    note:
+      "Source for Wholesale Universe Inc. / LLC change allegations, $750K-$1.5M missing-funds claim, 2023 bank-statement issue, Rick McMinn, Kyle Pope, Troy Marchand, and general-ledger exhibits.",
   },
 ];
 
@@ -629,6 +721,83 @@ export default async function AttorneyBriefPage() {
             ))}
           </div>
         </section>
+      </section>
+
+      <section className="mt-4 rounded-md border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm">
+        <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+              Google Drive evidence now attached
+            </p>
+            <h2 className="mt-1 font-sans text-2xl font-black text-[#fdf8ea]">
+              Four source folders counsel can open fast.
+            </h2>
+          </div>
+          <p className="max-w-md text-xs font-semibold leading-5 text-[#cfd9ea]">
+            These are folder-level entry points. Sensitive identifiers stay out
+            of the page; counsel gets the source lanes without exposing private
+            details in the browser.
+          </p>
+        </div>
+        <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+          {driveEvidenceFolders.map((folder) => (
+            <a
+              key={folder.href}
+              href={folder.href}
+              className="rounded-md border border-white/10 bg-white/5 p-3 transition hover:border-[#7fe3a9]/50 hover:bg-[#7fe3a9]/10"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <span className="text-sm font-black text-[#fdf8ea]">
+                  {folder.label}
+                </span>
+                <span className="rounded-sm bg-[#7fe3a9]/15 px-2 py-1 text-[10px] font-black uppercase tracking-[0.08em] text-[#7fe3a9]">
+                  Open
+                </span>
+              </div>
+              <span className="mt-2 block text-[10px] font-black uppercase tracking-[0.16em] text-[#d8c89e]">
+                {folder.status}
+              </span>
+              <span className="mt-2 block text-xs font-semibold leading-5 text-[#cfd9ea]">
+                {folder.body}
+              </span>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-4 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm">
+        <div className="grid gap-3 lg:grid-cols-[0.38fr_1fr]">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+              Wholesale Universe / divorce money records
+            </p>
+            <h2 className="mt-1 font-sans text-2xl font-black">
+              Money records that need forensic attention.
+            </h2>
+            <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+              These numbers come from Drive source summaries and motion drafts.
+              They show where to look first, not final findings.
+            </p>
+          </div>
+          <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
+            {forensicMoneyRecords.map((record) => (
+              <section
+                key={record.label}
+                className="rounded-sm border border-[var(--color-line)] bg-[var(--color-paper)] p-3"
+              >
+                <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--color-muted)]">
+                  {record.label}
+                </p>
+                <p className="mt-1 font-sans text-2xl font-black">
+                  {record.value}
+                </p>
+                <p className="mt-2 text-xs font-semibold leading-5 text-[var(--color-ink-soft)]">
+                  {record.proof}
+                </p>
+              </section>
+            ))}
+          </div>
+        </div>
       </section>
 
       <section className="mt-4 grid gap-4 lg:grid-cols-[1.25fr_0.75fr]">
