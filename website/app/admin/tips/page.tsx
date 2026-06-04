@@ -214,7 +214,7 @@ export default async function AdminTipsPage({
                   <StatusBadge status={t.status} />
                 </header>
 
-                <TipRoutePanel plan={plan} />
+                <TipRoutePanel plan={plan} tipId={t.id} />
 
                 <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-[var(--color-ink-soft)]">
                   {t.narrative}
@@ -291,7 +291,13 @@ function RadarStat({
   );
 }
 
-function TipRoutePanel({ plan }: { plan: IntakeRoutePlan }) {
+function TipRoutePanel({
+  plan,
+  tipId,
+}: {
+  plan: IntakeRoutePlan;
+  tipId: string;
+}) {
   const tone =
     plan.urgency === "hot"
       ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)]"
@@ -348,6 +354,20 @@ function TipRoutePanel({ plan }: { plan: IntakeRoutePlan }) {
           ))}
         </div>
       ) : null}
+      <div className="mt-3 flex flex-wrap gap-2 border-t border-black/10 pt-3">
+        <Link
+          href={`/admin/new?tip=${tipId}`}
+          className="border border-[var(--color-accent)] bg-[var(--color-accent)] px-3 py-2 text-xs font-black uppercase tracking-normal text-white transition hover:bg-[var(--color-accent-strong)]"
+        >
+          Start draft
+        </Link>
+        <Link
+          href={`/case/intake?route=${plan.kind}`}
+          className="border border-black/10 bg-white/45 px-3 py-2 text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-accent)]"
+        >
+          Public lane
+        </Link>
+      </div>
     </section>
   );
 }

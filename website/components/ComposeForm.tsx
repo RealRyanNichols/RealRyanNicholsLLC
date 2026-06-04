@@ -33,12 +33,20 @@ export type ComposeInitial = {
   category: string | null;
 };
 
+export type ComposePrefill = {
+  title: string;
+  body: string;
+  category?: string | null;
+};
+
 export function ComposeForm({
   videoConfig,
   initial,
+  prefill,
 }: {
   videoConfig: VideoConfigStatus;
   initial?: ComposeInitial | null;
+  prefill?: ComposePrefill | null;
 }) {
   const [tab, setTab] = useState<Tab>("text");
 
@@ -83,7 +91,7 @@ export function ComposeForm({
           Video
         </TabButton>
       </div>
-      {tab === "text" && <TextForm />}
+      {tab === "text" && <TextForm prefill={prefill ?? undefined} />}
       {tab === "note" && <NoteForm />}
       {tab === "photo" && <PhotoForm />}
       {tab === "video" && <VideoForm videoConfig={videoConfig} />}
@@ -192,14 +200,23 @@ async function createPost(body: Record<string, unknown>) {
   };
 }
 
-function TextForm({ initial }: { initial?: ComposeInitial } = {}) {
+function TextForm({
+  initial,
+  prefill,
+}: {
+  initial?: ComposeInitial;
+  prefill?: ComposePrefill;
+} = {}) {
   const router = useRouter();
   const editing = !!initial;
   const [state, setState] = useState<State>({ kind: "idle" });
-  const [title, setTitle] = useState(initial?.title ?? "");
-  const [body, setBody] = useState(initial?.body ?? "");
+  const [title, setTitle] = useState(initial?.title ?? prefill?.title ?? "");
+  const [body, setBody] = useState(initial?.body ?? prefill?.body ?? "");
+  const [category, setCategory] = useState(initial?.category ?? prefill?.category ?? "");
   const [pinned, setPinned] = useState(initial?.pinned ?? false);
-  const [saveAsDraft, setSaveAsDraft] = useState(initial?.status === "draft");
+  const [saveAsDraft, setSaveAsDraft] = useState(
+    initial?.status === "draft" || Boolean(prefill),
+  );
   const [deadmanApproved, setDeadmanApproved] = useState(
     initial?.category === DEADMAN_QUEUE_CATEGORY,
   );
@@ -208,14 +225,14 @@ function TextForm({ initial }: { initial?: ComposeInitial } = {}) {
     e.preventDefault();
     setState({ kind: "submitting", label: editing ? "Saving…" : "Publishing…" });
     const status = saveAsDraft || deadmanApproved ? "draft" : "published";
-    const category = deadmanApproved ? DEADMAN_QUEUE_CATEGORY : null;
+    const postCategory = deadmanApproved ? DEADMAN_QUEUE_CATEGORY : category.trim() || null;
     try {
       if (editing && initial) {
-        await patchPost(initial.id, { title, body, pinned, status, category });
+        await patchPost(initial.id, { title, body, pinned, status, category: postCategory });
         router.push("/admin/posts");
         router.refresh();
       } else {
-        const { post } = await createPost({ type: "text", title, body, pinned, status, category });
+        const { post } = await createPost({ type: "text", title, body, pinned, status, category: postCategory });
         router.push(status === "published" ? `/posts/${post.slug}` : `/admin/posts/${post.id}/preview`);
       }
     } catch (err) {
@@ -242,6 +259,17 @@ function TextForm({ initial }: { initial?: ComposeInitial } = {}) {
           rows={14}
           className="w-full rounded-md border border-[var(--color-line)] px-3 py-2 text-sm font-mono focus:outline-none focus:border-[var(--color-accent)]"
           placeholder="# Heading&#10;&#10;Write the post here."
+        />
+      </Field>
+      <Field
+        label="Category"
+        hint="Use tip-lead for tip-based drafts. Leave blank for a normal post."
+      >
+        <input
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="w-full rounded-md border border-[var(--color-line)] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-accent)]"
+          placeholder="tip-lead"
         />
       </Field>
       <label className="flex items-center gap-2 text-sm mb-4">

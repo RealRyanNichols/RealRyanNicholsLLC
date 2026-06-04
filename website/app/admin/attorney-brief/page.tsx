@@ -100,19 +100,19 @@ const firstOpenPackets = [
 
 const firstReadFlow = [
   {
-    label: "Matter",
-    title: "3 live charges",
-    body: "Two harassment counts and one deadly-conduct charge stay separated from the civil/J6 background.",
+    label: "Start",
+    title: "3 charges",
+    body: "Two harassment counts and one deadly-conduct charge. Keep the criminal packet first.",
   },
   {
     label: "Dispute",
-    title: "One gun narrative",
-    body: "Displayed / hand on grip is not the same allegation as pulled, pointed, brandished, fired, or threatened.",
+    title: "1 story to test",
+    body: "Displayed / hand on grip is not the same story as pulled, pointed, brandished, fired, or threatened.",
   },
   {
     label: "Control",
-    title: "Source files decide",
-    body: "Charging packets, discovery, native messages, video, CAD, dispatch, and witness statements control the read.",
+    title: "Proof decides",
+    body: "Charging packets, discovery, video, CAD, dispatch, native messages, and witness statements control the read.",
   },
 ];
 
@@ -953,19 +953,19 @@ export default async function AttorneyBriefPage() {
             href="#first-look"
             className="inline-flex min-h-10 items-center border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-accent)]"
           >
-            First read
+            Top
           </a>
           <a
             href="#source-doors"
             className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
           >
-            Sources
+            Open first
           </a>
           <a
             href="#packet-drawers"
             className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
           >
-            Drawers
+            Deep file
           </a>
         </div>
       </nav>
@@ -980,20 +980,35 @@ export default async function AttorneyBriefPage() {
               Attorney cover sheet
             </p>
             <h1 className="mt-2 max-w-3xl text-3xl font-black leading-[0.98] text-[#fdf8ea] sm:text-5xl lg:text-6xl">
-              Let counsel see the case in sixty seconds.
+              Three charges. One disputed story. Four records to open first.
             </h1>
             <p className="mt-4 max-w-3xl text-base font-semibold leading-7 text-[#cfd9ea]">
-              This page should feel simple first and deep second. Counsel sees
-              the charges, the disputed fact, the missing record, and four proof
-              doors. The archive stays filed below until someone asks for it.
+              This brief should not feel like a database on first contact.
+              Counsel gets the clean path first: the live criminal matter, the
+              disputed fact, the missing record packet, and the source doors.
+              The larger archive stays filed below until someone needs it.
             </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <a
+                href="#source-doors"
+                className="inline-flex min-h-11 items-center border border-[#7fe3a9]/60 bg-[#7fe3a9]/15 px-4 text-sm font-black text-[#7fe3a9] transition hover:bg-[#7fe3a9]/25"
+              >
+                Open the first four records
+              </a>
+              <a
+                href="#packet-drawers"
+                className="inline-flex min-h-11 items-center border border-white/15 bg-white/[0.055] px-4 text-sm font-black text-[#fdf8ea] transition hover:bg-white/10"
+              >
+                Show the deeper file
+              </a>
+            </div>
           </div>
           <aside className="border border-white/10 bg-white/[0.055] p-4">
             <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
               Dallas meeting
             </p>
             <h2 className="mt-2 font-sans text-xl font-black text-[#fdf8ea]">
-              {meeting.firm}
+              Dallas criminal-defense meeting
             </h2>
             <dl className="mt-3 grid gap-3">
               <InfoRow label="When" value={meeting.when} dark />
@@ -1063,6 +1078,10 @@ export default async function AttorneyBriefPage() {
             Public allegation says displayed / hand on grip. Ryan disputes
             pulling, pointing, brandishing, firing, or threatening.
           </h2>
+          <p className="mt-3 max-w-4xl text-sm font-semibold leading-6 text-[#ffd2cc]">
+            The page should keep repeating that simple distinction. Everything
+            else supports, tests, or explains that record.
+          </p>
         </div>
       </section>
 
@@ -1080,8 +1099,8 @@ export default async function AttorneyBriefPage() {
             </h2>
           </div>
           <p className="text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
-            The first-time reader does not need the whole warehouse. They need
-            the front doors that prove the warehouse is organized.
+            A first-time reader does not need the whole warehouse. They need the
+            front doors that prove the warehouse is organized and source-led.
           </p>
         </div>
         <div className="mt-4 grid gap-3 md:grid-cols-2">
@@ -1639,10 +1658,10 @@ export default async function AttorneyBriefPage() {
           Operator note
         </p>
         <p className="mt-2 max-w-4xl text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
-          The page now shows the command view first and keeps the long archive
-          behind expandable packets. The fastest way to make the brief stronger
-          is still to attach the exact charging instruments, probable-cause
-          affidavits, report numbers, and native source files.
+          The page intentionally gives counsel a clean first read, then hides
+          the deeper file behind expandable packets. The fastest way to make the
+          brief stronger is still to attach the exact charging instruments,
+          probable-cause affidavits, report numbers, and native source files.
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
           <Link href="/admin/case" className="border border-[var(--color-line)] px-3 py-2 text-sm font-black hover:border-[var(--color-accent)]">

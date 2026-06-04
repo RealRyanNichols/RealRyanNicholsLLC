@@ -4,6 +4,8 @@ import Link from "next/link";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { ComposeForm } from "@/components/ComposeForm";
 import { getVideoConfigStatus } from "@/lib/video-config";
+import { buildIntakeRoutePlan } from "@/lib/intake-routing";
+import { buildTipDraft } from "@/lib/tip-draft";
 
 export const metadata: Metadata = {
   title: "New post",
@@ -13,7 +15,7 @@ export const metadata: Metadata = {
 export default async function NewPostPage({
   searchParams,
 }: {
-  searchParams: Promise<{ id?: string }>;
+  searchParams: Promise<{ id?: string; tip?: string }>;
 }) {
   const supabase = await getSupabaseServerClient();
   const { data: auth } = await supabase.auth.getUser();
@@ -34,8 +36,9 @@ export default async function NewPostPage({
     );
   }
 
-  const { id } = await searchParams;
+  const { id, tip } = await searchParams;
   const editing = id && /^[0-9a-f-]{36}$/i.test(id) ? id : null;
+  const tipId = !editing && tip && /^[0-9a-f-]{36}$/i.test(tip) ? tip : null;
 
   let initial: {
     id: string;
@@ -45,6 +48,12 @@ export default async function NewPostPage({
     pinned: boolean;
     status: string;
     category: string | null;
+  } | null = null;
+  let prefill: {
+    title: string;
+    body: string;
+    category: string;
+    sourceLabel: string;
   } | null = null;
 
   if (editing) {
@@ -57,6 +66,39 @@ export default async function NewPostPage({
       redirect("/admin/posts");
     }
     initial = post;
+  }
+  if (tipId) {
+    const { data: tipRecord } = await supabase
+      .from("case_tips")
+      .select("id, category, location, defendant_name, narrative, urls, created_at")
+      .eq("id", tipId)
+      .maybeSingle();
+
+    if (tipRecord) {
+      const urls = Array.isArray(tipRecord.urls) ? (tipRecord.urls as string[]) : [];
+      const plan = buildIntakeRoutePlan({
+        category: tipRecord.category,
+        subject: tipRecord.defendant_name,
+        location: tipRecord.location,
+        narrative: tipRecord.narrative,
+        urls,
+      });
+      const draft = buildTipDraft(
+        {
+          id: tipRecord.id,
+          category: tipRecord.category,
+          location: tipRecord.location,
+          defendant_name: tipRecord.defendant_name,
+          urls,
+          created_at: tipRecord.created_at,
+        },
+        plan,
+      );
+      prefill = {
+        ...draft,
+        sourceLabel: `tip ${tipRecord.id.slice(0, 8)} · ${plan.label}`,
+      };
+    }
   }
 
   return (
@@ -75,6 +117,17 @@ export default async function NewPostPage({
               ← Back to posts
             </Link>
           </>
+        ) : prefill ? (
+          <>
+            Draft starter loaded from {prefill.sourceLabel}. It is saved as a
+            draft by default; verify and redact before publishing.{" "}
+            <Link
+              href="/admin/tips"
+              className="text-[var(--color-accent)] hover:underline"
+            >
+              Back to tips
+            </Link>
+          </>
         ) : (
           <>
             Pick a type, write or upload, hit publish. The feed at <code>/</code>{" "}
@@ -83,7 +136,11 @@ export default async function NewPostPage({
         )}
       </p>
       <div className="mt-8">
-        <ComposeForm videoConfig={getVideoConfigStatus()} initial={initial} />
+        <ComposeForm
+          videoConfig={getVideoConfigStatus()}
+          initial={initial}
+          prefill={prefill}
+        />
       </div>
     </article>
   );
