@@ -16,11 +16,11 @@ type AdminGroup = {
 };
 
 const PRIMARY: AdminItem[] = [
-  { href: "/admin", label: "Overview", short: "Home", sub: "Control room" },
-  { href: "/admin/tips?filter=pending", label: "Tip queue", short: "Tips", sub: "Evidence leads" },
-  { href: "/admin/messages?filter=new", label: "Private mail", short: "Mail", sub: "Contact inbox" },
+  { href: "/admin", label: "Overview", short: "Hub", sub: "Control room" },
+  { href: "/admin/tips?filter=pending", label: "Tip queue", short: "Tip", sub: "Evidence leads" },
+  { href: "/admin/messages?filter=new", label: "Private mail", short: "Msg", sub: "Contact inbox" },
   { href: "/admin/invoices", label: "Invoices", short: "Pay", sub: "Collect money" },
-  { href: "/admin/analytics", label: "Analytics", short: "Live", sub: "Traffic intel" },
+  { href: "/admin/analytics", label: "Analytics", short: "Data", sub: "Traffic intel" },
 ];
 
 const GROUPS: AdminGroup[] = [
@@ -138,8 +138,8 @@ export function AdminNav({
       >
         <div
           className={[
-            "rounded-2xl border border-[#203a64] bg-[#071126] text-[#fdf8ea] shadow-xl shadow-[#071126]/15",
-            collapsed ? "p-2" : "p-4",
+            "rounded-md border border-[#203a64] bg-[#071126] text-[#fdf8ea] shadow-sm shadow-[#071126]/15",
+            collapsed ? "p-1.5" : "p-3",
           ].join(" ")}
         >
           <div
@@ -162,7 +162,7 @@ export function AdminNav({
               type="button"
               onClick={() => onCollapsedChange?.(!collapsed)}
               className={[
-                "grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-white/5 text-sm font-black text-[#fdf8ea] transition hover:border-[#7fe3a9] hover:bg-[#7fe3a9]/15 hover:text-[#7fe3a9]",
+                "grid h-9 w-9 place-items-center rounded-md border border-white/10 bg-white/5 text-sm font-black text-[#fdf8ea] transition hover:border-[#7fe3a9] hover:bg-[#7fe3a9]/15 hover:text-[#7fe3a9]",
                 collapsed ? "mx-auto" : "",
               ].join(" ")}
               aria-label={collapsed ? "Expand admin sidebar" : "Collapse admin sidebar"}
@@ -185,7 +185,7 @@ export function AdminNav({
           <Link
             href="/admin/new"
             className={[
-              "mt-3 flex min-h-11 items-center justify-center rounded-xl border border-[#7fe3a9]/50 bg-[#7fe3a9]/15 text-xs font-black uppercase tracking-normal text-[#7fe3a9] transition hover:bg-[#7fe3a9]/25",
+              "mt-3 flex min-h-10 items-center justify-center rounded-md border border-[#7fe3a9]/50 bg-[#7fe3a9]/15 text-xs font-black uppercase tracking-normal text-[#7fe3a9] transition hover:bg-[#7fe3a9]/25",
               collapsed ? "px-1" : "px-3",
             ].join(" ")}
             title="New post"
@@ -195,11 +195,11 @@ export function AdminNav({
         </div>
 
         {collapsed ? (
-          <div className="mt-4 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-2 text-center">
+          <div className="mt-3 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-1.5 text-center">
             <button
               type="button"
               onClick={() => onCollapsedChange?.(false)}
-              className="mx-auto grid h-10 w-10 place-items-center rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] text-xs font-black text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+              className="mx-auto grid h-9 w-9 place-items-center rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] text-[10px] font-black text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
               aria-label="Open full admin menu"
               title="Open full admin menu"
             >
@@ -207,7 +207,7 @@ export function AdminNav({
             </button>
           </div>
         ) : (
-          <div className="mt-4 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm">
+          <div className="mt-3 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-3 shadow-sm">
             <div className="mb-3 flex items-center justify-between gap-3">
               <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-muted)]">
                 Full admin map
@@ -215,12 +215,14 @@ export function AdminNav({
               <button
                 type="button"
                 onClick={() => onCollapsedChange?.(true)}
-                className="rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-1 text-[10px] font-black uppercase text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                className="rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] px-2.5 py-1 text-[10px] font-black uppercase text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
               >
                 Close rail
               </button>
             </div>
-            <GroupedToolGrid pathname={pathname} />
+            <div className="max-h-[42vh] overflow-y-auto pr-1">
+              <GroupedToolGrid pathname={pathname} />
+            </div>
           </div>
         )}
       </nav>
@@ -298,12 +300,12 @@ function DesktopPrimaryLink({
     <Link
       href={item.href}
       className={[
-        "group relative overflow-hidden rounded-xl border transition",
+        "group relative overflow-hidden rounded-md border transition",
         collapsed
-          ? "grid min-h-12 place-items-center px-1 py-2 text-center"
-          : "grid min-h-16 grid-cols-[1fr_auto] items-center gap-3 px-4 py-3",
+          ? "grid min-h-11 place-items-center px-1 py-2 text-center"
+          : "grid min-h-[3.6rem] grid-cols-[1fr_auto] items-center gap-2 px-3 py-2.5",
         active
-          ? "border-[#7fe3a9] bg-[#7fe3a9] text-[#071126] shadow-lg shadow-[#7fe3a9]/10"
+          ? "border-[#7fe3a9]/80 bg-[#102826] text-[#fdf8ea]"
           : "border-white/10 bg-white/5 text-[#fdf8ea] hover:border-[#d8c89e] hover:bg-white/10",
       ].join(" ")}
       title={item.label}
@@ -312,7 +314,7 @@ function DesktopPrimaryLink({
         <span
           className={[
             "block font-black leading-tight",
-            collapsed ? "text-[11px]" : "text-base",
+            collapsed ? "text-[10px]" : "text-[0.95rem]",
           ].join(" ")}
         >
           {collapsed ? item.short ?? item.label.slice(0, 3) : item.label}
@@ -321,7 +323,7 @@ function DesktopPrimaryLink({
           <span
             className={[
               "mt-1 block text-xs font-semibold leading-snug",
-              active ? "text-[#13223f]" : "text-[#cfd9ea]",
+              active ? "text-[#bdeccd]" : "text-[#cfd9ea]",
             ].join(" ")}
           >
             {item.sub}
@@ -331,9 +333,9 @@ function DesktopPrimaryLink({
       {!collapsed ? (
         <span
           className={[
-            "grid h-9 w-9 place-items-center rounded-lg border text-xs font-black",
+            "grid h-7 min-w-9 place-items-center whitespace-nowrap rounded-sm border px-2 text-[10px] font-black uppercase tracking-normal",
             active
-              ? "border-[#13223f]/15 bg-[#13223f]/10 text-[#13223f]"
+              ? "border-[#7fe3a9]/25 bg-[#7fe3a9]/10 text-[#7fe3a9]"
               : "border-white/10 bg-white/5 text-[#7fe3a9] group-hover:border-[#7fe3a9]/50",
           ].join(" ")}
           aria-hidden
@@ -358,7 +360,7 @@ function ToolLink({
     <Link
       href={item.href}
       className={[
-        "grid min-h-10 grid-cols-[1fr_auto] items-center gap-2 rounded-lg border px-3 py-2 transition",
+        "grid min-h-9 grid-cols-[1fr_auto] items-center gap-2 rounded-sm border px-2.5 py-1.5 transition",
         compact
           ? active
             ? "border-[#7fe3a9] bg-[#7fe3a9]/15 text-[#fdf8ea]"
@@ -391,5 +393,6 @@ function ToolLink({
 }
 
 function isActivePath(pathname: string, href: string) {
-  return href === "/admin" ? pathname === "/admin" : pathname.startsWith(href);
+  const hrefPath = href.split("?")[0] || href;
+  return hrefPath === "/admin" ? pathname === "/admin" : pathname.startsWith(hrefPath);
 }

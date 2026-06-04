@@ -201,7 +201,7 @@ export default async function AdminHomePage() {
   const hottestPath = attentionRows[0];
 
   return (
-    <article className="mx-auto max-w-6xl px-4 py-8">
+    <article className="mx-auto max-w-[78rem] px-4 py-7">
       <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
         Admin control room
       </p>
@@ -216,7 +216,7 @@ export default async function AdminHomePage() {
       {criticalIssues > 0 ? (
         <Link
           href="/admin/health"
-          className="mt-5 flex items-center justify-between gap-3 rounded-2xl border border-[var(--color-accent)] bg-[var(--color-accent)]/10 px-4 py-3 transition hover:bg-[var(--color-accent)]/15"
+          className="mt-5 flex items-center justify-between gap-3 rounded-md border border-[var(--color-accent)] bg-[var(--color-accent)]/10 px-4 py-3 transition hover:bg-[var(--color-accent)]/15"
         >
           <span className="text-sm">
             <span className="font-bold">
@@ -327,7 +327,7 @@ export default async function AdminHomePage() {
       </section>
 
       {attentionRows.length > 0 ? (
-        <section className="mt-6 overflow-hidden rounded-2xl border border-[#233a62] bg-[#071123] text-[#fdf8ea] shadow-xl">
+        <section className="mt-6 overflow-hidden rounded-md border border-[#233a62] bg-[#071123] text-[#fdf8ea] shadow-md">
           <div className="grid gap-px bg-white/10 lg:grid-cols-[0.9fr_1.1fr]">
             <div className="bg-[#0d1a33] p-5">
               <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
@@ -355,7 +355,7 @@ export default async function AdminHomePage() {
               </div>
               <Link
                 href="/admin/analytics"
-                className="mt-4 inline-flex min-h-11 items-center rounded-full border border-[#7fa9e3]/50 bg-[#7fa9e3]/15 px-5 text-xs font-black uppercase tracking-wider text-[#dce8ff] transition hover:bg-[#7fa9e3] hover:text-[#071123]"
+                className="mt-4 inline-flex min-h-10 items-center rounded-md border border-[#7fa9e3]/50 bg-[#7fa9e3]/15 px-4 text-xs font-black uppercase tracking-wider text-[#dce8ff] transition hover:bg-[#7fa9e3] hover:text-[#071123]"
               >
                 Open full analytics →
               </Link>
@@ -372,7 +372,7 @@ export default async function AdminHomePage() {
       ) : null}
 
       {invoices.length > 0 ? (
-        <section className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+        <section className="mt-6 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
           <div className="flex items-center justify-between gap-3">
             <h2 className="text-lg font-bold tracking-tight">
               Money to follow up
@@ -389,7 +389,7 @@ export default async function AdminHomePage() {
               <Link
                 key={invoice.id}
                 href="/admin/invoices"
-                className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-3 transition hover:border-[var(--color-accent)]"
+                className="rounded-sm border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-3 transition hover:border-[var(--color-accent)]"
               >
                 <div className="flex items-center justify-between gap-3">
                   <div className="min-w-0">
@@ -411,7 +411,7 @@ export default async function AdminHomePage() {
       ) : null}
 
       {/* Action items — pending verifications */}
-      <section className="mt-8 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+      <section className="mt-8 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
         <div className="flex items-center justify-between gap-3">
           <h2 className="text-lg font-bold tracking-tight">
             Pending verification
@@ -465,7 +465,7 @@ export default async function AdminHomePage() {
       {/* Live now */}
       <section
         id="live"
-        className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
+        className="mt-6 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
       >
         <div className="flex items-center justify-between gap-3">
           <h2 className="text-lg font-bold tracking-tight">
@@ -534,7 +534,7 @@ export default async function AdminHomePage() {
 
       {/* Recent signups */}
       <section className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+        <div className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
           <h2 className="text-lg font-bold tracking-tight">Newest subscribers</h2>
           <ul className="mt-3 space-y-2">
             {!recentSubs || recentSubs.length === 0 ? (
@@ -560,7 +560,7 @@ export default async function AdminHomePage() {
           </ul>
         </div>
 
-        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+        <div className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
           <h2 className="text-lg font-bold tracking-tight">Moderation queue</h2>
           <ul className="mt-3 space-y-2 text-sm">
             <li className="flex items-center justify-between gap-3">
@@ -731,7 +731,7 @@ function StatCard({
     <Link
       href={href}
       className={[
-        "block rounded-xl border px-4 py-3 transition hover:border-[var(--color-accent)]",
+        "block rounded-md border px-4 py-3 transition hover:border-[var(--color-accent)]",
         highlight
           ? "border-[var(--color-accent)] bg-[var(--color-accent)]/5"
           : "border-[var(--color-line)] bg-[var(--color-surface)]",
@@ -854,7 +854,7 @@ function MagnetMiniStat({
         ? "border-[#e4c66a]/50 bg-[#e4c66a]/10 text-[#e4c66a]"
         : "border-[#ef6f61]/50 bg-[#ef6f61]/10 text-[#ef6f61]";
   return (
-    <div className={`min-w-0 rounded-xl border p-3 ${toneClass}`}>
+    <div className={`min-w-0 rounded-sm border p-3 ${toneClass}`}>
       <p className="text-[10px] font-black uppercase tracking-wider opacity-80">
         {label}
       </p>
@@ -883,9 +883,9 @@ function AttentionMagnetRow({ row, rank }: { row: AttentionRow; rank: number }) 
   return (
     <Link
       href={row.href}
-      className={`grid grid-cols-[auto_1fr_auto] items-center gap-3 rounded-xl border p-3 transition hover:border-[#7fe3a9] ${toneClass}`}
+      className={`grid grid-cols-[auto_1fr_auto] items-center gap-3 rounded-sm border p-3 transition hover:border-[#7fe3a9] ${toneClass}`}
     >
-      <span className="grid h-9 w-9 place-items-center rounded-lg bg-white/10 font-mono text-xs font-black tabular-nums">
+      <span className="grid h-9 w-9 place-items-center rounded-sm bg-white/10 font-mono text-xs font-black tabular-nums">
         #{rank}
       </span>
       <span className="min-w-0">
@@ -898,7 +898,7 @@ function AttentionMagnetRow({ row, rank }: { row: AttentionRow; rank: number }) 
         </span>
       </span>
       <span className="hidden text-right sm:block">
-        <span className="block rounded-full bg-white/10 px-2 py-1 text-[10px] font-black uppercase text-[#fdf8ea]">
+        <span className="block rounded-sm bg-white/10 px-2 py-1 text-[10px] font-black uppercase text-[#fdf8ea]">
           {badge}
         </span>
         <span className="mt-1 block text-[10px] font-bold text-[#9fb0ca]">
@@ -928,7 +928,7 @@ function ActionLane({
     <Link
       href={href}
       className={[
-        "block rounded-2xl border p-4 transition hover:border-[var(--color-accent)]",
+        "block rounded-md border p-4 transition hover:border-[var(--color-accent)]",
         hot
           ? "border-[var(--color-accent)] bg-[var(--color-accent)]/10"
           : "border-[var(--color-line)] bg-[var(--color-surface)]",
@@ -962,7 +962,7 @@ function SectionLink({
   return (
     <Link
       href={href}
-      className="block rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-3 transition hover:border-[var(--color-accent)]"
+      className="block rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-3 transition hover:border-[var(--color-accent)]"
     >
       <div className="font-bold tracking-tight">{title}</div>
       <div className="text-xs text-[var(--color-muted)] mt-0.5">{sub}</div>
