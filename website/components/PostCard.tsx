@@ -64,6 +64,25 @@ export function PostCard({
   );
 }
 
+function feedExcerpt(body: string, maxLength: number): string {
+  const cleaned = body
+    // Media/interactive blocks belong in the full post, not the feed excerpt.
+    .replace(/!\[[^\]]*]\([^)]*\)/g, " ")
+    .replace(/^\s*\{\{[\s\S]*?}}\s*$/gm, " ")
+    // Keep linked words, remove Markdown mechanics.
+    .replace(/\[([^\]]+)]\([^)]*\)/g, "$1")
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/^>\s+/gm, "")
+    .replace(/[*_~`]+/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (cleaned.length <= maxLength) return cleaned;
+  const truncated = cleaned.slice(0, maxLength).trimEnd();
+  const lastSpace = truncated.lastIndexOf(" ");
+  return `${lastSpace > 160 ? truncated.slice(0, lastSpace) : truncated}…`;
+}
+
 function PostCardBody({ post, truncate }: { post: Post; truncate: boolean }) {
   if (post.type === "note") {
     return (
@@ -90,7 +109,7 @@ function PostCardBody({ post, truncate }: { post: Post; truncate: boolean }) {
         </Link>
         {post.body ? (
           <p className="mt-3 text-[var(--color-ink-soft)] leading-relaxed whitespace-pre-wrap">
-            {truncate && post.body.length > 280 ? post.body.slice(0, 280) + "…" : post.body}
+            {truncate ? feedExcerpt(post.body, 280) : post.body}
           </p>
         ) : null}
       </>
@@ -145,7 +164,7 @@ function PostCardBody({ post, truncate }: { post: Post; truncate: boolean }) {
         </Link>
         {post.body ? (
           <p className="mt-3 text-[var(--color-ink-soft)] leading-relaxed whitespace-pre-wrap">
-            {truncate && post.body.length > 280 ? post.body.slice(0, 280) + "…" : post.body}
+            {truncate ? feedExcerpt(post.body, 280) : post.body}
           </p>
         ) : null}
       </>
