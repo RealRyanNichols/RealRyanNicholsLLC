@@ -15,6 +15,15 @@ const TONE_HEX: Record<Tone, string> = {
   navy: "#1d3a6b",
 };
 
+// Tone colors tuned for TEXT on light backgrounds. Gold is darkened so it
+// stays legible on the cream surface; use TONE_HEX for fills/bars/bands.
+const TONE_TEXT_HEX: Record<Tone, string> = {
+  red: "#b32419",
+  gold: "#8f6b16",
+  green: "#2d6a4f",
+  navy: "#1d3a6b",
+};
+
 const INK = "#1a1410";
 const MUTED = "#7a6a52";
 
@@ -77,7 +86,7 @@ export function KpiStat({
     <div className="border border-[var(--color-line)] bg-[var(--color-paper)] p-3">
       <p
         className="font-sans text-2xl font-black leading-none sm:text-3xl"
-        style={{ color: TONE_HEX[tone] }}
+        style={{ color: TONE_TEXT_HEX[tone] }}
       >
         {value}
       </p>
@@ -129,7 +138,7 @@ export function MoneyBars({
               </span>
               <span
                 className="font-sans text-sm font-black tabular-nums"
-                style={{ color: TONE_HEX[tone] }}
+                style={{ color: TONE_TEXT_HEX[tone] }}
               >
                 {item.valueText}
               </span>
@@ -288,7 +297,7 @@ export function BriefTimeline({
             />
             <p
               className="text-[11px] font-black uppercase tracking-[0.14em]"
-              style={{ color: TONE_HEX[tone] }}
+              style={{ color: TONE_TEXT_HEX[tone] }}
             >
               {item.date}
             </p>
