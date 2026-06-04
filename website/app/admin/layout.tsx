@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { AdminShell } from "@/components/AdminShell";
 
@@ -10,9 +11,13 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const headerStore = await headers();
+  const nextPath = headerStore.get("x-rrn-current-path") || "/admin";
   const supabase = await getSupabaseServerClient();
   const { data: auth } = await supabase.auth.getUser();
-  if (!auth.user) redirect("/login?next=/admin");
+  if (!auth.user) {
+    redirect(`/login?${new URLSearchParams({ next: nextPath }).toString()}`);
+  }
   const { data: adminCheck } = await supabase.rpc("is_admin", {
     uid: auth.user.id,
   });
