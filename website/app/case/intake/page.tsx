@@ -17,7 +17,7 @@ export const dynamic = "force-dynamic";
 type IntakeItem = {
   id: string;
   public_ref: string;
-  source_type: "tip" | "submission";
+  source_type: "tip" | "submission" | "tool";
   category: string;
   subject: string | null;
   location: string | null;
@@ -65,6 +65,7 @@ const filterOptions = [
   { value: "all", label: "All" },
   { value: "tip", label: "Tips" },
   { value: "submission", label: "Submissions" },
+  { value: "tool", label: "Tools" },
   { value: "needs_verification", label: "Needs verification" },
   { value: "verified", label: "Verified" },
 ];
@@ -82,6 +83,7 @@ export default async function IntakeLedgerPage({
     total: 0,
     tips: 0,
     submissions: 0,
+    tools: 0,
     open: 0,
     signals: 0,
   };
@@ -99,7 +101,7 @@ export default async function IntakeLedgerPage({
       .order("last_action_at", { ascending: false })
       .limit(80);
 
-    if (filter === "tip" || filter === "submission") {
+    if (filter === "tip" || filter === "submission" || filter === "tool") {
       query = query.eq("source_type", filter);
     } else if (filter !== "all" && filterOptions.some((o) => o.value === filter)) {
       query = query.eq("public_status", filter);
@@ -112,7 +114,13 @@ export default async function IntakeLedgerPage({
       items = (data ?? []) as IntakeItem[];
     }
 
-    const [{ count: total }, { count: tips }, { count: submissions }, { count: open }] =
+    const [
+      { count: total },
+      { count: tips },
+      { count: submissions },
+      { count: tools },
+      { count: open },
+    ] =
       await Promise.all([
         supabase
           .from("intake_items")
@@ -135,6 +143,12 @@ export default async function IntakeLedgerPage({
           .from("intake_items")
           .select("id", { count: "exact", head: true })
           .eq("visibility", "public")
+          .neq("public_status", "rejected")
+          .eq("source_type", "tool"),
+        supabase
+          .from("intake_items")
+          .select("id", { count: "exact", head: true })
+          .eq("visibility", "public")
           .in("public_status", ["received", "needs_verification", "triage"]),
       ]);
 
@@ -142,6 +156,7 @@ export default async function IntakeLedgerPage({
       total: total ?? 0,
       tips: tips ?? 0,
       submissions: submissions ?? 0,
+      tools: tools ?? 0,
       open: open ?? 0,
       signals: items.reduce(
         (sum, item) => sum + item.verify_count + item.dispute_count + item.context_count,
@@ -190,6 +205,7 @@ export default async function IntakeLedgerPage({
             <Stat label="Open leads" value={counts.open} tone="red" />
             <Stat label="Tips" value={counts.tips} />
             <Stat label="Submissions" value={counts.submissions} />
+            <Stat label="Tools" value={counts.tools} />
           </div>
         </div>
       </section>

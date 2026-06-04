@@ -45,11 +45,11 @@ const DASHBOARD_LINKS: NavItem[] = [
     tone: "green",
   },
   {
-    href: "/case-review",
-    label: "Help Desk",
-    desc: "Ask, organize, route",
-    badge: "Start",
-    tone: "red",
+    href: "/tools",
+    label: "Free Tools",
+    desc: "Requests, timelines, moves",
+    badge: "Free",
+    tone: "green",
   },
   {
     href: "/submit",
@@ -83,51 +83,48 @@ const DASHBOARD_LINKS: NavItem[] = [
 const MOBILE_PRIMARY_LINKS: NavItem[] = [
   {
     href: "/tell-your-story",
-    label: "Tell Your Story",
-    desc: "Build the pattern",
+    label: "Tell my story",
+    desc: "Give Ryan the facts",
     badge: "Start",
     tone: "green",
   },
   {
-    href: "/case-review",
-    label: "Help Desk",
-    desc: "Ask, organize, route",
-    badge: "Help",
-    tone: "red",
-  },
-  {
     href: "/submit",
-    label: "Tip Line",
-    desc: "Send records privately",
+    label: "Send a tip",
+    desc: "Records, names, links",
     badge: "Private",
     tone: "blue",
   },
   {
-    href: "/case/intake",
-    label: "Ledger",
-    desc: "Verify public-safe leads",
-    badge: "Live",
+    href: "/tools",
+    label: "Free tools",
+    desc: "Requests, timelines, moves",
+    badge: "Free",
     tone: "green",
   },
   {
-    href: "/the-map-room",
-    label: "Map Room",
-    desc: "Live public record",
-    badge: "Live",
-    tone: "green",
+    href: "/store",
+    label: "Hire Ryan",
+    desc: "Calls, audits, builds",
+    badge: "Work",
+    tone: "ink",
   },
 ];
 
-const MOBILE_BROWSE_LINKS: NavItem[] = [
-  { href: "/", label: "Feed", desc: "Latest posts and receipts" },
-  { href: "/case", label: "Case Hub", desc: "Timeline, documents, people" },
-  { href: "/case/intake", label: "Intake Ledger", desc: "Verify, dispute, connect leads" },
-  { href: "/case?view=people&filter=unclaimed", label: "J6 Profiles", desc: "Find and claim profiles" },
-  { href: "/fights", label: "The Fights", desc: "Active accountability lanes" },
+const MOBILE_QUICK_LINKS: NavItem[] = [
+  { href: "/", label: "Feed" },
+  { href: "/the-map-room", label: "Map" },
+  { href: "/case", label: "Case" },
+  { href: "/contact", label: "Contact" },
+];
+
+const MOBILE_MORE_LINKS: NavItem[] = [
+  { href: "/case-review", label: "Help Desk", desc: "Ask, organize, route" },
+  { href: "/case/intake", label: "Intake Ledger", desc: "Verify and connect leads" },
   { href: "/live", label: "Live", desc: "Streams and discussion" },
   { href: "/videos", label: "Videos", desc: "Public updates" },
-  { href: "/store", label: "Services", desc: "Calls, audits, builds" },
-  { href: "/contact", label: "Private Contact", desc: "Send a message" },
+  { href: "/fights", label: "The Fights", desc: "Accountability lanes" },
+  { href: "/support", label: "Support", desc: "Fund the work" },
 ];
 
 const MOBILE_ADMIN_LINKS: NavItem[] = [
@@ -186,6 +183,13 @@ const NAV: NavEntry[] = [
     label: "Help",
     deck: "Send information, get clarity, or contact Ryan privately.",
     items: [
+      {
+        href: "/tools",
+        label: "Free Tools",
+        desc: "Records request, timeline, and next moves.",
+        badge: "Free",
+        tone: "green",
+      },
       {
         href: "/tell-your-story",
         label: "Tell Your Story",
@@ -484,8 +488,6 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
           <SiteDashboardRail
             pathname={pathname}
             menuOpen={open}
-            signedIn={signedIn}
-            isAdmin={isAdmin}
           />
         ) : null}
 
@@ -505,10 +507,10 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
               <div className="flex items-start justify-between gap-3 border-b border-white/10 pb-3">
                 <div>
                   <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#7fe3a9]">
-                    Menu
+                    Choose one lane
                   </p>
                   <p className="mt-1 text-sm font-semibold leading-snug text-[#cfd9ea]">
-                    Start fast, then browse the record.
+                    Four doors. No maze.
                   </p>
                 </div>
                 <Link
@@ -519,7 +521,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
                 </Link>
               </div>
 
-              <section aria-label="Start here">
+              <section aria-label="Main actions">
                 <div className="grid grid-cols-2 gap-2">
                   {MOBILE_PRIMARY_LINKS.map((item) => (
                     <MobilePrimaryLink
@@ -531,13 +533,10 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
                 </div>
               </section>
 
-              <section aria-label="Browse">
-                <p className="px-1 text-[10px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
-                  Browse
-                </p>
-                <div className="mt-2 grid gap-1.5">
-                  {MOBILE_BROWSE_LINKS.map((item) => (
-                    <MobileCompactLink
+              <section aria-label="Quick links">
+                <div className="grid grid-cols-4 gap-1.5">
+                  {MOBILE_QUICK_LINKS.map((item) => (
+                    <MobilePillLink
                       key={item.href}
                       item={item}
                       active={pathname === hrefPath(item.href)}
@@ -546,12 +545,33 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
                 </div>
               </section>
 
-              {isAdmin && (
-                <section aria-label="Admin">
-                  <p className="px-1 text-[10px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
-                    Admin
-                  </p>
-                  <div className="mt-2 grid grid-cols-2 gap-1.5">
+              <details className="rounded-lg border border-white/10 bg-white/5">
+                <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between px-3 py-2 text-sm font-black text-[#fdf8ea] [&::-webkit-details-marker]:hidden">
+                  More pages
+                  <span className="text-[#7fe3a9]" aria-hidden>
+                    +
+                  </span>
+                </summary>
+                <div className="grid gap-1.5 border-t border-white/10 p-2">
+                  {MOBILE_MORE_LINKS.map((item) => (
+                    <MobileCompactLink
+                      key={item.href}
+                      item={item}
+                      active={pathname === hrefPath(item.href)}
+                    />
+                  ))}
+                </div>
+              </details>
+
+              {isAdmin ? (
+                <details className="rounded-lg border border-[#7fe3a9]/30 bg-[#7fe3a9]/10">
+                  <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between px-3 py-2 text-sm font-black text-[#fdf8ea] [&::-webkit-details-marker]:hidden">
+                    Admin shortcuts
+                    <span className="text-[#7fe3a9]" aria-hidden>
+                      +
+                    </span>
+                  </summary>
+                  <div className="grid grid-cols-2 gap-1.5 border-t border-[#7fe3a9]/20 p-2">
                     {MOBILE_ADMIN_LINKS.map((item) => (
                       <MobileAdminLink
                         key={item.href}
@@ -560,8 +580,8 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
                       />
                     ))}
                   </div>
-                </section>
-              )}
+                </details>
+              ) : null}
 
               <Link
                 href="/support"
@@ -705,26 +725,11 @@ function NavDropdown({
 function SiteDashboardRail({
   pathname,
   menuOpen,
-  signedIn,
-  isAdmin,
 }: {
   pathname: string;
   menuOpen: boolean;
-  signedIn: boolean;
-  isAdmin: boolean;
 }) {
-  const links = signedIn
-    ? [
-        {
-          href: isAdmin ? "/admin" : "/account",
-          label: isAdmin ? "Admin Office" : "My Office",
-          desc: isAdmin ? "Control room" : "Your workspace",
-          badge: isAdmin ? "Open" : "You",
-          tone: isAdmin ? "green" : "blue",
-        } satisfies NavItem,
-        ...DASHBOARD_LINKS,
-      ]
-    : DASHBOARD_LINKS;
+  const links = DASHBOARD_LINKS;
 
   return (
     <div
@@ -735,16 +740,16 @@ function SiteDashboardRail({
     >
       <nav
         aria-label="Site dashboard"
-        className={[
-          "mx-auto flex max-w-5xl gap-2.5 overflow-x-auto px-4 py-3 [scrollbar-width:none] md:grid",
-          signedIn ? "md:grid-cols-6" : "md:grid-cols-5",
-        ].join(" ")}
+        className="mx-auto flex max-w-5xl gap-2 overflow-x-auto px-4 py-3 [scrollbar-width:none] md:grid md:grid-cols-6 md:overflow-visible lg:gap-2.5"
       >
         {links.map((item) => (
           <DashboardTile
             key={item.href}
             item={item}
             active={pathname === hrefPath(item.href)}
+            mobileSecondary={
+              item.href === "/case-review" || item.href === "/case/intake"
+            }
           />
         ))}
       </nav>
@@ -755,15 +760,18 @@ function SiteDashboardRail({
 function DashboardTile({
   item,
   active,
+  mobileSecondary,
 }: {
   item: NavItem;
   active: boolean;
+  mobileSecondary?: boolean;
 }) {
   return (
     <Link
       href={item.href}
       className={[
         "min-w-[8.75rem] rounded-lg border px-3 py-3 transition sm:min-w-[10rem] md:min-w-0",
+        mobileSecondary ? "hidden md:block" : "",
         active
           ? "border-[#7fe3a9] bg-[#142447]"
           : "border-[#243452] bg-[#101a31] hover:border-[#d8c89e] hover:bg-[#142447]",
@@ -838,6 +846,22 @@ function MobileCompactLink({ item, active }: { item: NavItem; active: boolean })
       <span className="text-lg leading-none text-[#7fe3a9]" aria-hidden>
         →
       </span>
+    </Link>
+  );
+}
+
+function MobilePillLink({ item, active }: { item: NavItem; active: boolean }) {
+  return (
+    <Link
+      href={item.href}
+      className={[
+        "flex min-h-10 items-center justify-center rounded-lg border px-1.5 text-center text-[11px] font-black leading-tight text-[#fdf8ea] transition",
+        active
+          ? "border-[#7fe3a9] bg-[#7fe3a9]/12"
+          : "border-white/10 bg-white/5 hover:border-[#d8c89e] hover:bg-white/10",
+      ].join(" ")}
+    >
+      {item.label}
     </Link>
   );
 }
