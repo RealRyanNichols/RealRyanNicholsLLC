@@ -946,6 +946,14 @@ export default async function AttorneyBriefPage() {
     );
   }
 
+  return <AttorneyBriefBody mode="admin" />;
+}
+
+export function AttorneyBriefBody({
+  mode = "admin",
+}: {
+  mode?: "admin" | "counsel";
+}) {
   const arraignment = Date.parse("2026-06-09T00:00:00-05:00");
   const daysToArraignment = Math.max(
     0,
@@ -978,12 +986,21 @@ export default async function AttorneyBriefPage() {
         aria-label="Attorney brief shortcuts"
         className="sticky top-0 z-20 mb-4 flex flex-wrap items-center justify-between gap-2 border border-[var(--color-line)] bg-[var(--color-paper)]/95 p-2 shadow-sm backdrop-blur"
       >
-        <Link
-          href="/admin"
-          className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
-        >
-          Back
-        </Link>
+        {mode === "counsel" ? (
+          <a
+            href="/counsel/logout"
+            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          >
+            Log out
+          </a>
+        ) : (
+          <Link
+            href="/admin"
+            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          >
+            Back
+          </Link>
+        )}
         <div className="flex flex-wrap gap-2">
           <a
             href="#first-look"
@@ -1802,14 +1819,22 @@ export default async function AttorneyBriefPage() {
           brief stronger is still to attach the exact charging instruments,
           probable-cause affidavits, report numbers, and native source files.
         </p>
-        <div className="mt-4 flex flex-wrap gap-2">
-          <Link href="/admin/case" className="border border-[var(--color-line)] px-3 py-2 text-sm font-black hover:border-[var(--color-accent)]">
-            Upload case docs
-          </Link>
-          <Link href="/admin" className="border border-[var(--color-line)] px-3 py-2 text-sm font-black hover:border-[var(--color-accent)]">
-            Back to admin
-          </Link>
-        </div>
+        {mode === "admin" ? (
+          <div className="mt-4 flex flex-wrap gap-2">
+            <Link href="/admin/case" className="border border-[var(--color-line)] px-3 py-2 text-sm font-black hover:border-[var(--color-accent)]">
+              Upload case docs
+            </Link>
+            <Link href="/admin" className="border border-[var(--color-line)] px-3 py-2 text-sm font-black hover:border-[var(--color-accent)]">
+              Back to admin
+            </Link>
+          </div>
+        ) : (
+          <div className="mt-4 flex flex-wrap gap-2">
+            <a href="/counsel/logout" className="border border-[var(--color-line)] px-3 py-2 text-sm font-black hover:border-[var(--color-accent)]">
+              Log out
+            </a>
+          </div>
+        )}
       </section>
     </article>
   );
