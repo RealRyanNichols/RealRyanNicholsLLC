@@ -198,19 +198,54 @@ function StrategyCallPage({
     },
   };
 
+  const fastMoves = [
+    {
+      title: "I need people to pay me",
+      body: "Offer, checkout, invoice, client portal, follow-up, and the page that makes the price make sense.",
+      color: "bg-[#fff5d6] border-[#d8ad43]",
+    },
+    {
+      title: "I need a dashboard",
+      body: "Admin view, client view, analytics board, intake queue, project tracker, or operator command center.",
+      color: "bg-[#e9f2ff] border-[#8eabd7]",
+    },
+    {
+      title: "I need automation",
+      body: "Forms, emails, APIs, Supabase, Stripe, OpenAI, webhooks, reminders, and repeatable workflows.",
+      color: "bg-[#e8f7ed] border-[#7cc997]",
+    },
+    {
+      title: "I need attention",
+      body: "Landing page, funnel, ad angle, story hook, content system, lead magnet, or proof-first sales page.",
+      color: "bg-[#ffe8df] border-[#e28b71]",
+    },
+  ];
+
   const outcomes = [
-    "A direct diagnosis of what is costing you attention, leads, trust, money, or time.",
-    "A clear strategy for the next build: dashboard, funnel, website, automation, tool, ad, offer, or API integration.",
-    "A recorded call Ryan can replay while building your plan, quote, dashboard, software, or next action list.",
+    {
+      label: "Diagnosis",
+      title: "What is actually broken",
+      body: "Ryan looks for the friction: unclear offer, weak proof, bad checkout path, missing automation, bad data flow, or the wrong first build.",
+    },
+    {
+      label: "Map",
+      title: "What should be built first",
+      body: "You leave with a plain-English build map for the dashboard, funnel, tool, API integration, automation, ad, or service page.",
+    },
+    {
+      label: "Recording",
+      title: "A replayable source of truth",
+      body: "The call is recorded so the details can be replayed while Ryan builds your strategy, quote, software plan, or next action list.",
+    },
   ];
 
   const buildOptions = [
-    ["Dashboards", "Client portals, admin views, analytics rooms, lead boards, intake queues, and operator control rooms."],
-    ["Tools and software", "Internal tools, public tools, calculators, forms, workflow apps, AI helpers, and custom business software."],
-    ["Payments and clients", "Checkout paths, service offers, subscriptions, invoices, paid calls, client onboarding, and fulfillment workflows."],
-    ["APIs and automations", "Supabase, Stripe, Vercel, OpenAI, email, CRM, webhooks, scheduled jobs, and business process automation."],
-    ["Ads and funnels", "Landing pages, lead magnets, ad angles, email capture, retargeting paths, offer copy, and conversion tracking."],
-    ["Content and attention", "Owned-feed strategy, article structure, story hooks, social clips, proof pages, and shareable public receipts."],
+    ["Dashboards", "Client portals, admin views, analytics rooms, lead boards, intake queues, and operator control rooms.", "bg-[#e9f2ff]"],
+    ["Tools and software", "Internal tools, public tools, calculators, forms, workflow apps, AI helpers, and custom business software.", "bg-[#f7eafd]"],
+    ["Payments and clients", "Checkout paths, service offers, subscriptions, invoices, paid calls, client onboarding, and fulfillment workflows.", "bg-[#fff5d6]"],
+    ["APIs and automations", "Supabase, Stripe, Vercel, OpenAI, email, CRM, webhooks, scheduled jobs, and business process automation.", "bg-[#e8f7ed]"],
+    ["Ads and funnels", "Landing pages, lead magnets, ad angles, email capture, retargeting paths, offer copy, and conversion tracking.", "bg-[#ffe8df]"],
+    ["Content and attention", "Owned-feed strategy, article structure, story hooks, social clips, proof pages, and shareable public receipts.", "bg-[#f0eee4]"],
   ];
 
   const callFlow = [
@@ -228,78 +263,109 @@ function StrategyCallPage({
     },
   ];
 
+  const samplePlan = [
+    ["Input", "Your idea, site, customer problem, screenshots, current process, links, and what you want people to do."],
+    ["Pattern", "Ryan finds the money path, attention hook, missing proof, broken step, tech stack, and smallest useful build."],
+    ["Build plan", "You get the dashboard, tool, funnel, automation, checkout, or API path that should be built first."],
+  ];
+
   return (
-    <article className="rrn-page">
+    <article className="rrn-page bg-[#f8f0df]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productLd) }}
       />
 
-      <section className="relative overflow-hidden border-b border-[var(--color-line)] bg-[#100805] text-[#fdf8ea]">
-        <div className="absolute inset-0" aria-hidden="true">
+      <section className="relative overflow-hidden border-b border-[#d8c89e] bg-[linear-gradient(135deg,#fff9e8_0%,#f5ead2_48%,#e8f3ff_100%)]">
+        <div className="absolute inset-y-0 right-0 hidden w-[44%] opacity-20 lg:block" aria-hidden="true">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={STRATEGY_CALL_IMAGE}
             alt=""
-            className="h-full w-full object-cover opacity-60"
+            className="h-full w-full object-cover"
           />
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(16,8,5,0.96)_0%,rgba(16,8,5,0.84)_42%,rgba(16,8,5,0.22)_100%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,#f8f0df_0%,rgba(248,240,223,0.2)_70%)]" />
         </div>
-        <div className="relative mx-auto grid max-w-6xl gap-7 px-4 py-8 sm:px-6 sm:py-10 lg:min-h-[76vh] lg:grid-cols-[minmax(0,0.98fr)_minmax(320px,0.72fr)] lg:items-end">
-          <div className="max-w-3xl">
-            <nav className="mb-5 text-sm text-[#d8c89e]">
+        <div className="relative mx-auto grid max-w-6xl gap-5 px-4 py-7 sm:px-6 sm:py-9 lg:min-h-[72vh] lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.48fr)] lg:items-center">
+          <div className="max-w-4xl">
+            <nav className="mb-4 text-sm font-bold text-[var(--color-blue)]">
               <Link href="/store" className="hover:underline">
                 &lt;- Store
               </Link>
             </nav>
-            <p className="inline-flex rounded-full border border-[#d8c89e]/50 bg-[#fdf8ea]/10 px-3 py-1 text-xs font-black uppercase tracking-normal text-[#f1c15f]">
-              Recorded 30-minute strategy call
+            <p className="inline-flex rounded-full border border-[#d8ad43] bg-[#fff4c7] px-3 py-1 text-xs font-black uppercase tracking-normal text-[#7a5100]">
+              Recorded strategy call / quick build map / real next step
             </p>
-            <h1 className="mt-4 max-w-3xl font-display text-4xl font-black leading-[1.02] tracking-normal text-[#fdf8ea] sm:text-5xl lg:text-7xl">
-              Stop guessing what to build next.
+            <h1 className="mt-4 max-w-4xl font-display text-4xl font-black leading-[1.02] tracking-normal text-[var(--color-ink)] sm:text-5xl lg:text-7xl">
+              Bring one messy business problem. Leave with the build plan.
             </h1>
-            <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#f6efdf] sm:text-xl">
-              Get on a focused call with Ryan and turn the problem into a real
-              strategy: what to build, what to sell, what to automate, what to
-              charge for, and what should happen next.
+            <p className="mt-5 max-w-3xl text-base leading-relaxed text-[var(--color-ink-soft)] sm:text-xl">
+              Tell Ryan what you are trying to build, sell, automate, fix, or
+              explain. He will turn it into a practical strategy for the page,
+              dashboard, software, API, funnel, checkout, or tool that should
+              come next.
             </p>
-            <div className="mt-6 grid gap-2 sm:grid-cols-3">
-              {[
-                ["Recorded", "So the strategy can be replayed and used."],
-                ["Direct", "No corporate fog. Plain next moves."],
-                ["Build-minded", "Dashboard, software, funnels, automations."],
-              ].map(([title, body]) => (
-                <div key={title} className="rounded-lg border border-[#d8c89e]/30 bg-[#fdf8ea]/10 p-3">
-                  <p className="font-black text-[#fdf8ea]">{title}</p>
-                  <p className="mt-1 text-xs leading-relaxed text-[#f6efdf]/80">
-                    {body}
+            <div className="rrn-tap-row mt-6">
+              <a
+                href="#book"
+                className="rrn-tap inline-flex rounded-lg bg-[var(--color-support)] px-5 py-3 text-sm font-black text-[#1a1410] shadow-[0_10px_24px_rgba(200,155,47,0.3)] transition hover:bg-[#e1b94e]"
+              >
+                Book the call - {price}
+              </a>
+              <a
+                href="#quick-board"
+                className="rrn-tap inline-flex rounded-lg border-2 border-[var(--color-blue)] bg-white/70 px-5 py-3 text-sm font-black text-[var(--color-blue)] transition hover:bg-[var(--color-blue-soft)]"
+              >
+                See what gets built
+              </a>
+            </div>
+            <div id="pick-problem" className="mt-6 grid gap-3 sm:grid-cols-2">
+              {fastMoves.map((move) => (
+                <div key={move.title} className={`rounded-lg border-2 ${move.color} p-4`}>
+                  <p className="font-display text-xl font-black tracking-normal text-[var(--color-ink)]">
+                    {move.title}
+                  </p>
+                  <p className="mt-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+                    {move.body}
                   </p>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="rounded-lg border border-[#d8c89e]/50 bg-[#fdf8ea] p-5 text-[var(--color-ink)] shadow-2xl">
-            <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+          <aside
+            id="book"
+            className="rounded-lg border-2 border-[#d8ad43] bg-[#fffdf4] p-5 text-[var(--color-ink)] shadow-[0_22px_60px_rgba(74,62,48,0.16)] lg:sticky lg:top-28"
+          >
+            <div className="relative aspect-[16/9] overflow-hidden rounded-lg border border-[#e1c775] bg-[#fff5d6]" data-ratio-frame>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={STRATEGY_CALL_IMAGE}
+                alt="30-minute strategy call thumbnail for Ryan Nichols."
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <p className="mt-4 text-xs font-black uppercase tracking-normal text-[var(--color-support-strong)]">
               Book the call
             </p>
             <div className="mt-2 flex items-end justify-between gap-4">
-              <h2 className="font-display text-3xl font-black tracking-normal">
-                {product.name}
+              <h2 className="font-display text-2xl font-black leading-tight tracking-normal sm:text-3xl">
+                30-Minute Strategy Call
               </h2>
-              <p className="shrink-0 text-4xl font-black text-[var(--color-accent)]">
+              <p className="shrink-0 text-4xl font-black text-[var(--color-support-strong)]">
                 {price}
               </p>
             </div>
             <p className="mt-3 text-sm leading-relaxed text-[var(--color-ink-soft)]">
               The call will be recorded. That recording is used to help build
-              your strategy, capture the details, and keep the next steps clear.
+              your strategy, quote, dashboard, automation, software plan, funnel,
+              or next action list.
             </p>
             <div className="mt-5">
               <BuyButton
                 slug={product.slug}
                 label={`Book the call - ${price}`}
-                className="btn-accent w-full rounded-lg px-6 py-4 text-base font-black transition disabled:opacity-60"
+                className="w-full rounded-lg bg-[var(--color-support)] px-6 py-4 text-base font-black text-[#1a1410] shadow-[0_12px_28px_rgba(200,155,47,0.35)] transition hover:bg-[#e1b94e] disabled:opacity-60"
               />
               {j6Eligible ? (
                 <J6ClaimButton slug={product.slug} />
@@ -313,45 +379,49 @@ function StrategyCallPage({
                 </p>
               )}
             </div>
-            <div className="mt-5 border-t border-[var(--color-line)] pt-4">
-              <p className="text-xs font-black uppercase tracking-normal text-[var(--color-muted)]">
-                Best for
-              </p>
-              <p className="mt-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-                Business owners, creators, service providers, advocates, and
-                operators who need a real plan before spending money on a bigger
-                build.
-              </p>
+            <div className="mt-5 grid grid-cols-3 gap-2 border-t border-[#e1c775] pt-4 text-center text-xs">
+              {[
+                ["30 min", "focused"],
+                ["Recorded", "replayable"],
+                ["Stripe", "secure"],
+              ].map(([top, bottom]) => (
+                <div key={top} className="rounded-lg bg-white p-2">
+                  <p className="font-black text-[var(--color-ink)]">{top}</p>
+                  <p className="mt-0.5 text-[var(--color-muted)]">{bottom}</p>
+                </div>
+              ))}
             </div>
-          </div>
+          </aside>
         </div>
       </section>
 
       <section className="rrn-section">
-        <div className="grid gap-5 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
+        <div className="grid gap-5 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
           <div>
             <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
-              What this call is
+              What this call does
             </p>
             <h2 className="mt-2 font-display text-3xl font-black tracking-normal sm:text-4xl">
-              A recorded strategy session for the business you are trying to
-              build.
+              It turns vague ideas into something you can actually build, sell,
+              or fix.
             </h2>
             <p className="mt-4 text-base leading-relaxed text-[var(--color-ink-soft)]">
               You do not need a perfect brief. You need to explain what you are
-              trying to accomplish, what is broken, what you want people to do,
-              and where the money should flow. Ryan turns that into a buildable
-              strategy.
+              trying to accomplish, what is broken, who the customer is, what
+              they should do next, and where the money should flow.
             </p>
           </div>
           <div className="grid gap-3 sm:grid-cols-3">
-            {outcomes.map((item, index) => (
-              <div key={item} className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
-                <p className="text-sm font-black uppercase tracking-normal text-[var(--color-accent)]">
-                  Outcome {index + 1}
+            {outcomes.map((item) => (
+              <div key={item.label} className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm">
+                <p className="text-xs font-black uppercase tracking-normal text-[var(--color-support-strong)]">
+                  {item.label}
                 </p>
+                <h3 className="mt-2 font-display text-xl font-black tracking-normal">
+                  {item.title}
+                </h3>
                 <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-                  {item}
+                  {item.body}
                 </p>
               </div>
             ))}
@@ -359,22 +429,58 @@ function StrategyCallPage({
         </div>
       </section>
 
+      <section id="quick-board" className="mx-auto max-w-6xl px-4 pb-8 sm:px-6">
+        <div className="overflow-hidden rounded-lg border-2 border-[var(--color-blue)] bg-[#f7fbff] shadow-[0_18px_45px_rgba(29,58,107,0.12)]">
+          <div className="grid gap-0 lg:grid-cols-[0.9fr_1.1fr]">
+            <div className="border-b border-[#b8c9e6] bg-[#e9f2ff] p-5 sm:p-6 lg:border-b-0 lg:border-r">
+              <p className="text-xs font-black uppercase tracking-normal text-[var(--color-blue)]">
+                Sample strategy board
+              </p>
+              <h2 className="mt-2 font-display text-3xl font-black tracking-normal sm:text-4xl">
+                The call becomes a build map.
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+                This is the kind of structure Ryan is listening for. Your
+                details become inputs, patterns, and a concrete first build.
+              </p>
+            </div>
+            <div className="grid gap-3 p-5 sm:p-6">
+              {samplePlan.map(([label, body], index) => (
+                <div key={label} className="grid gap-3 rounded-lg border border-[#b8c9e6] bg-white p-4 sm:grid-cols-[2.5rem_1fr]">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-blue)] text-sm font-black text-white">
+                    {index + 1}
+                  </span>
+                  <span>
+                    <strong className="block text-base font-black text-[var(--color-ink)]">
+                      {label}
+                    </strong>
+                    <span className="mt-1 block text-sm leading-relaxed text-[var(--color-ink-soft)]">
+                      {body}
+                    </span>
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="mx-auto max-w-6xl px-4 pb-8 sm:px-6">
-        <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-ink)] p-5 text-white sm:p-7">
-          <p className="text-xs font-black uppercase tracking-normal text-[#7fe3a9]">
+        <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-7">
+          <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
             What Ryan can help you build
           </p>
-          <h2 className="mt-2 max-w-3xl font-display text-3xl font-black tracking-normal text-white sm:text-4xl">
+          <h2 className="mt-2 max-w-4xl font-display text-3xl font-black tracking-normal sm:text-4xl">
             Dashboards, tools, software, APIs, automations, ads, funnels, and
             the system your business needs to charge clients.
           </h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {buildOptions.map(([title, body]) => (
-              <div key={title} className="rounded-lg border border-white/15 bg-white/6 p-4">
-                <h3 className="font-display text-xl font-black tracking-normal text-white">
+            {buildOptions.map(([title, body, color]) => (
+              <div key={title} className={`rounded-lg border border-[var(--color-line)] ${color} p-4`}>
+                <h3 className="font-display text-xl font-black tracking-normal text-[var(--color-ink)]">
                   {title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-white/75">
+                <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
                   {body}
                 </p>
               </div>
@@ -386,7 +492,7 @@ function StrategyCallPage({
       <section className="rrn-section pt-2">
         <div className="grid gap-4 lg:grid-cols-3">
           {callFlow.map((step) => (
-            <div key={step.title} className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+            <div key={step.title} className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-sm">
               <h2 className="font-display text-2xl font-black tracking-normal">
                 {step.title}
               </h2>
@@ -399,9 +505,9 @@ function StrategyCallPage({
       </section>
 
       <section className="mx-auto max-w-6xl px-4 pb-10 sm:px-6">
-        <div className="grid gap-4 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6 lg:grid-cols-[1fr_0.78fr] lg:items-center">
+        <div className="grid gap-4 rounded-lg border-2 border-[#d8ad43] bg-[#fff8e1] p-5 sm:p-6 lg:grid-cols-[1fr_0.78fr] lg:items-center">
           <div>
-            <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+            <p className="text-xs font-black uppercase tracking-normal text-[var(--color-support-strong)]">
               Good fit if
             </p>
             <h2 className="mt-2 font-display text-3xl font-black tracking-normal">
@@ -423,8 +529,8 @@ function StrategyCallPage({
               ))}
             </ul>
           </div>
-          <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-5">
-            <p className="text-5xl font-black tracking-tight text-[var(--color-accent)]">
+          <div className="rounded-lg border border-[#d8ad43] bg-white p-5 shadow-sm">
+            <p className="text-5xl font-black tracking-tight text-[var(--color-support-strong)]">
               30
             </p>
             <p className="mt-1 text-sm font-black uppercase tracking-normal text-[var(--color-muted)]">
@@ -440,7 +546,7 @@ function StrategyCallPage({
               <BuyButton
                 slug={product.slug}
                 label={`Book the strategy call - ${price}`}
-                className="btn-accent w-full rounded-lg px-6 py-4 text-base font-black transition disabled:opacity-60"
+                className="w-full rounded-lg bg-[var(--color-support)] px-6 py-4 text-base font-black text-[#1a1410] shadow-[0_12px_28px_rgba(200,155,47,0.3)] transition hover:bg-[#e1b94e] disabled:opacity-60"
               />
             </div>
           </div>
