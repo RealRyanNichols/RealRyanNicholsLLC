@@ -149,15 +149,21 @@ declare
   v_subject text;
   v_category text;
   v_location text;
+  v_public_status text;
+  v_public_subject text;
+  v_public_location text;
   v_summary text;
 begin
   v_subject := nullif(trim(coalesce(new.defendant_name, '')), '');
   v_category := nullif(trim(coalesce(new.category, 'other')), '');
   v_location := nullif(trim(coalesce(new.location, '')), '');
+  v_public_status := private.intake_status_from_tip(coalesce(new.status, 'pending'));
+  v_public_subject := case when v_public_status = 'received' then null else v_subject end;
+  v_public_location := case when v_public_status = 'received' then null else v_location end;
   v_summary :=
     case
-      when v_subject is not null then
-        'A ' || coalesce(v_category, 'other') || ' tip was received about ' || v_subject || '.'
+      when v_public_subject is not null then
+        'A ' || coalesce(v_category, 'other') || ' tip was received about ' || v_public_subject || '.'
       else
         'A ' || coalesce(v_category, 'other') || ' tip was received.'
     end ||
@@ -181,12 +187,12 @@ begin
     new.id,
     private.intake_public_ref(new.id, 'TIP'),
     coalesce(v_category, 'other'),
-    v_subject,
-    v_location,
+    v_public_subject,
+    v_public_location,
     v_summary,
     coalesce(new.status, 'pending'),
-    private.intake_status_from_tip(coalesce(new.status, 'pending')),
-    private.intake_tags('tip', coalesce(v_category, 'other'), v_subject, v_location),
+    v_public_status,
+    private.intake_tags('tip', coalesce(v_category, 'other'), v_public_subject, v_public_location),
     now()
   )
   on conflict (source_type, source_id)
@@ -303,10 +309,17 @@ select
   t.id,
   private.intake_public_ref(t.id, 'TIP'),
   coalesce(nullif(trim(coalesce(t.category, 'other')), ''), 'other'),
-  nullif(trim(coalesce(t.defendant_name, '')), ''),
-  nullif(trim(coalesce(t.location, '')), ''),
   case
-    when nullif(trim(coalesce(t.defendant_name, '')), '') is not null then
+    when private.intake_status_from_tip(coalesce(t.status, 'pending')) = 'received' then null
+    else nullif(trim(coalesce(t.defendant_name, '')), '')
+  end,
+  case
+    when private.intake_status_from_tip(coalesce(t.status, 'pending')) = 'received' then null
+    else nullif(trim(coalesce(t.location, '')), '')
+  end,
+  case
+    when private.intake_status_from_tip(coalesce(t.status, 'pending')) <> 'received'
+      and nullif(trim(coalesce(t.defendant_name, '')), '') is not null then
       'A ' || coalesce(nullif(trim(coalesce(t.category, 'other')), ''), 'other') ||
       ' tip was received about ' || nullif(trim(coalesce(t.defendant_name, '')), '') || '.'
     else
@@ -317,8 +330,14 @@ select
   private.intake_tags(
     'tip',
     coalesce(nullif(trim(coalesce(t.category, 'other')), ''), 'other'),
-    nullif(trim(coalesce(t.defendant_name, '')), ''),
-    nullif(trim(coalesce(t.location, '')), '')
+    case
+      when private.intake_status_from_tip(coalesce(t.status, 'pending')) = 'received' then null
+      else nullif(trim(coalesce(t.defendant_name, '')), '')
+    end,
+    case
+      when private.intake_status_from_tip(coalesce(t.status, 'pending')) = 'received' then null
+      else nullif(trim(coalesce(t.location, '')), '')
+    end
   ),
   t.created_at,
   coalesce(t.reviewed_at, t.created_at)
