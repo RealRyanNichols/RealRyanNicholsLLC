@@ -1338,6 +1338,12 @@ export function AttorneyBriefBody({
             Top
           </a>
           <a
+            href="#exec-summary"
+            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          >
+            Summary
+          </a>
+          <a
             href="#matters"
             className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
           >
@@ -1494,6 +1500,45 @@ export function AttorneyBriefBody({
             The page should keep repeating that simple distinction. Everything
             else supports, tests, or explains that record.
           </p>
+        </div>
+      </section>
+
+      <section
+        id="exec-summary"
+        className="mt-4 border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-4 shadow-sm sm:p-5"
+      >
+        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+          Executive summary
+        </p>
+        <h2 className="mt-1 font-sans text-2xl font-black leading-tight text-[var(--color-ink)] sm:text-3xl">
+          The whole case, in one breath.
+        </h2>
+        <p className="mt-3 max-w-4xl text-base font-semibold leading-7 text-[var(--color-ink)]">
+          Ryan Nichols — Marine veteran and pardoned January 6 defendant —
+          faces three Harrison County misdemeanors: a deadly-conduct charge from
+          a church parking lot and two harassment counts, all built on a false
+          narrative that he pulled a gun, which the bodycam disproves. One
+          harassment count followed custodial questioning about a Facebook post
+          with no Miranda warning, and he was charged minutes later. The same
+          county and the same judge run a divorce in which testimony against him
+          is contradicted by police records (Longview PD 260630230), while a
+          multi-million-dollar Wholesale Universe fraud sits unaddressed. He is
+          unrepresented, has already filed his own motions, and his ask is
+          simple: pull the bodycams and source records before any setting.
+        </p>
+        <div className="mt-4 grid gap-2 sm:grid-cols-3">
+          {[
+            "Three misdemeanors, each with a rights problem flagged, and no bodycam produced.",
+            "A civil and fraud throughline that runs back to the same county and judge.",
+            "Unrepresented, asking only that the record be pulled before he is brought back to court.",
+          ].map((point) => (
+            <div
+              key={point}
+              className="border border-[var(--color-accent)]/30 bg-[var(--color-surface)] p-3 text-sm font-bold leading-6 text-[var(--color-ink)]"
+            >
+              {point}
+            </div>
+          ))}
         </div>
       </section>
 
