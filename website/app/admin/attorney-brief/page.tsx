@@ -934,59 +934,137 @@ const questionsForRyan = [
   "What has to stay private because it includes minors, addresses, phone numbers, medical/cannabis-card data, or family-court sensitive material?",
 ];
 
+const falseGunPattern = [
+  {
+    when: "July 13, 2025 — the James Chatham call",
+    claim:
+      "No gun claim against Ryan: Ryan called the police because James Chatham grabbed a firearm.",
+    truth:
+      "Lt. Ron England and Capt. Clayton of Harrison County said on bodycam that what James did was not a threat.",
+    proof: "The Lt. England / Capt. Clayton bodycam Ryan posted.",
+    consequence:
+      "Sets the county's own standard — a hand on a weapon is not, by itself, a threat or deadly conduct.",
+  },
+  {
+    when: "The Williams TRO hearing — Judge Morin",
+    claim:
+      "Bonnie Nichols testified that on July 13 Ryan fired a gun in the air, heard by neighborhood witnesses.",
+    truth:
+      "It never happened — no shot was fired. The July 13 bodycam and police report show it.",
+    proof: "The same July 13 bodycam and police report: no discharge, no shooting.",
+    consequence:
+      "Judge Morin treated it as credible without asking Ryan, and Amanda's children were removed — on the record.",
+  },
+  {
+    when: "May 2026 — the church parking lot",
+    claim:
+      "Ryan displayed a firearm; online it became pulled, pointed, and fired a gun.",
+    truth:
+      "Ryan put a hand on the grip only after Jon Costello turned and got violent — the way police do at a car. The texts show Costello escalated first; Kacie Costello admits the turn in her Facebook comment.",
+    proof:
+      "The church bodycam and security cameras — which the county has not produced.",
+    consequence:
+      "Charged with deadly conduct instead of, at most, a mutual public-disturbance or no-contact resolution.",
+  },
+];
+
 const matters: Matter[] = [
   {
     id: "matter-deadly-conduct",
     name: "Deadly Conduct",
-    kind: "Criminal · Charge 1",
+    kind: "Criminal · The church case",
     tone: "red",
-    statute: "Tex. Penal Code 22.05",
-    headline: "The church-parking-lot firearm-display allegation.",
+    statute: "Tex. Penal Code 22.05 (misdemeanor)",
+    headline:
+      "The church-parking-lot case — keep this charge clean and tied to the actual report.",
+    firstMove:
+      "Enter an appearance and file the Article 39.14 / Brady demand for the church bodycam, dashcam, CAD, dispatch, and witness statements now. Ryan's position: no setting goes forward until that footage is produced.",
     whatItIs:
-      "Public reporting attributed to HCSO says Ryan displayed a firearm and put his hand on the grip after a church service dispute. Charged as misdemeanor deadly conduct.",
+      "After a church service in Harrison County, the Sheriff's Office alleged Ryan displayed a firearm and put his hand on the grip during a parking-lot dispute. Ryan's account: he put a hand on the grip only after Jon Costello turned and got violent — the same way an officer rests a hand on a holstered pistol walking up to a car. The texts show Costello escalated first, and Kacie Costello admits the turn in her own Facebook comment.",
     disputed:
-      "Display / hand-on-grip is the official baseline. Ryan disputes pulling, pointing, brandishing, firing, or threatening. The entire fight is that exact distinction.",
+      "A hand on a grip is not pulling, pointing, brandishing, or firing. On July 13, Harrison County officers themselves said on bodycam that a man grabbing a gun was 'not a threat' — so the same hand-on-weapon cannot be deadly conduct here. On Ryan's account and the other side's own words, this was at most a mutual public disturbance, not a gun charge.",
+    redFlags: [
+      "Church bodycam and security-camera footage have not been produced — Ryan's position is that no setting should go forward until they are",
+      "Selective prosecution: the same hand-on-weapon Harrison County called 'not a threat' on July 13 is charged as deadly conduct here",
+      "The online 'pulled / pointed / fired a gun' narrative escalated far beyond the charged conduct and taints the witnesses and jury pool",
+    ],
     evidence: [
       "Charging instrument and probable-cause affidavit",
-      "HCSO offense report, bodycam, dashcam, CAD, dispatch audio",
+      "Church bodycam, dashcam, CAD, dispatch audio, offense report",
       "Church security or member-recorded video",
-      "Witness statements and the public press-release source",
+      "Witness statements, and the HCSO press-release source",
     ],
     people: [
       "Jon & Kacie Costello",
       "Sheriff B.J. Fletcher / HCSO",
-      "Cindy Black (records)",
+      "Cindy Black (records custodian)",
       "J.O. Joe Black (recusal lane)",
     ],
     exposure:
-      "Misdemeanor exposure plus the public-narrative escalation risk as pulled / pointed / fired versions spread.",
+      "Charged as deadly conduct when, on Ryan's account and the other side's own words, it was at most a public disturbance — and the footage that would show it is being withheld.",
     href: "#charges",
   },
   {
-    id: "matter-harassment",
-    name: "Harassment (two counts)",
-    kind: "Criminal · Charges 2 & 3",
+    id: "matter-harassment-1",
+    name: "Harassment — Count One",
+    kind: "Criminal · Panola County",
     tone: "gold",
     statute: "Tex. Penal Code 42.07",
-    headline: "Two electronic-harassment counts — charging packets still needed.",
+    headline: "The Panola County harassment count.",
+    firstMove:
+      "Pull the Panola County complaint and probable-cause affidavit to lock down the exact complainant, dates, and charged subsection, then demand the complete native message records — not screenshots.",
     whatItIs:
-      "Two harassment counts tied to online communications. Records preserve a Treece public comment and Messenger thread, plus Ryan's own May 12 report and call to Harrison County. Exact complainants, dates, and the charged subsection are not yet confirmed.",
+      "A harassment count out of Panola County built on electronic communications. The exact complainant, date range, and charged subsection still have to come from the charging instrument before the count can be judged.",
     disputed:
-      "Whether the charged conduct is protected speech and public concern or a true threat — and whether the same standard was applied to the reports Ryan filed.",
+      "Whether the charged messages are protected speech and public concern or harassment under the statute — and whether the same standard was applied to the reports Ryan himself filed about the same parties.",
+    redFlags: [
+      "Speech-based charge — First Amendment and the true-threat standard (Counterman v. Colorado) have to be reviewed",
+    ],
     evidence: [
-      "Both complaints and probable-cause affidavits",
-      "Complete platform / Messenger exports, not crops",
-      "Dates, timestamps, URLs, message IDs, account metadata",
-      "Ryan's May 12 Harrison County report and call record",
+      "Panola County complaint and probable-cause affidavit",
+      "Complete native message exports with dates, IDs, and metadata",
+      "The full thread context police relied on, not crops",
+      "Ryan's own report and call records about the same parties",
     ],
     people: [
-      "Trey Treece",
-      "Jessica Treece",
-      "Amanda Williams (thread context)",
-      "Harrison County (Ryan's report)",
+      "Panola County complainant (confirm from the charging packet)",
+      "Panola County charging authority",
     ],
     exposure:
-      "Two misdemeanor counts; turns on native records and the true-threat standard in Counterman v. Colorado.",
+      "Misdemeanor count; rises or falls on the native records and whether the speech is protected.",
+    href: "#charges",
+  },
+  {
+    id: "matter-harassment-2",
+    name: "Harassment — Count Two",
+    kind: "Criminal · Miranda / custodial questioning",
+    tone: "gold",
+    statute: "Tex. Penal Code 42.07 — with a Fifth/Sixth Amendment problem",
+    headline:
+      "Charged minutes after custodial questioning about a Facebook post — with no Miranda warning.",
+    firstMove:
+      "Pull the jail, booking, and hallway bodycam and the questioning audio. A custodial interrogation about a Facebook post — no Miranda, no counsel, charged minutes later — is a suppression fight to win before any setting.",
+    whatItIs:
+      "Ryan's account: he was in custody and believed he was being bonded out. Instead, an officer began questioning him about a Facebook post — without reading him his Miranda rights and before he was ever advised of or asked about a lawyer. Minutes later, he was charged with this second harassment count.",
+    disputed:
+      "This count grew directly out of a custodial interrogation with no Miranda warning and no lawyer. Ryan's position is that his rights were violated before the charge ever existed — the statements and anything derived from them should be tested for suppression.",
+    redFlags: [
+      "Custodial questioning with no Miranda warning",
+      "Interrogation about protected First Amendment activity (a Facebook post)",
+      "Charged minutes after the questioning, before counsel was ever raised",
+    ],
+    evidence: [
+      "Jail / booking / hallway bodycam and the questioning audio",
+      "Booking and magistrate-warning records with timestamps",
+      "The exact Facebook post and the charge timeline (questioning then charge)",
+      "Any rights-waiver form — or proof none was given",
+    ],
+    people: [
+      "The questioning officer (identify from the bodycam)",
+      "Booking / jail staff",
+    ],
+    exposure:
+      "Misdemeanor count, but the constitutional violation is the headline: if this was custodial interrogation without Miranda, the count is exposed to suppression.",
     href: "#charges",
   },
   {
@@ -996,6 +1074,8 @@ const matters: Matter[] = [
     tone: "navy",
     statute: "Forensic-audit + community-property lane",
     headline: "Business control, valuation, and alleged missing money.",
+    firstMove:
+      "Subpoena the bank statements, ledgers, and TWC payroll records, and order an independent valuation to test the $750K-1.5M missing-funds claim.",
     whatItIs:
       "Wholesale Universe, Inc. — described as a multi-million-dollar wholesale/retail company — sits at the center of the divorce and business fight: control changes, alleged missing funds, unauthorized debt, and payroll / 1099 anomalies.",
     disputed:
@@ -1029,6 +1109,8 @@ const matters: Matter[] = [
     tone: "green",
     statute: "Pardoned & dismissed — compensation lane",
     headline: "The federal case is over; this is the damages narrative.",
+    firstMove:
+      "Attach the pardon and dismissal documents and the /case/damages exhibits to anchor the compensation lane before relying on any dollar figure.",
     whatItIs:
       "Detention from the January 18, 2021 arrest through the January 20, 2025 pardon, charges later dismissed. The public damages page frames the harm: liberty lost, business destroyed, family and medical damage.",
     disputed:
@@ -1132,6 +1214,12 @@ export function AttorneyBriefBody({
             className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
           >
             By matter
+          </a>
+          <a
+            href="#false-gun-pattern"
+            className="inline-flex min-h-10 items-center border border-[#b32419] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[#8d1b13] transition hover:bg-[var(--color-accent-soft)]"
+          >
+            The pattern
           </a>
           <a
             href="#source-doors"
@@ -1340,6 +1428,19 @@ export function AttorneyBriefBody({
             before they line up into one pattern.
           </p>
         </div>
+        <div className="mt-4 border-l-4 border-[#b32419] bg-[#f6dad2] p-4">
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#8d1b13]">
+            Criminal posture — Ryan&apos;s position
+          </p>
+          <p className="mt-1 text-sm font-bold leading-6 text-[var(--color-ink)]">
+            Ryan is currently without counsel and has filed his own motions. His
+            position: no setting should go forward until the bodycams and source
+            footage are produced. His bond was revoked after he spoke on social
+            media — a First Amendment issue — while the credible threats to his
+            life that he reported to Marion County (which he attributes to
+            parties in Harrison County, including Trey Treece) went unaddressed.
+          </p>
+        </div>
         <div className="mt-4">
           <MatterNav matters={matters} />
         </div>
@@ -1348,6 +1449,71 @@ export function AttorneyBriefBody({
             <MatterDossier key={matter.id} matter={matter} />
           ))}
         </div>
+      </section>
+
+      <section
+        id="false-gun-pattern"
+        className="mt-4 border-2 border-[#b32419] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5"
+      >
+        <div>
+          <p className="text-xs font-black uppercase tracking-[0.22em] text-[#8d1b13]">
+            The pattern — line by line
+          </p>
+          <h2 className="mt-1 font-sans text-2xl font-black leading-tight text-[var(--color-ink)] sm:text-3xl">
+            Three times the claim is &ldquo;Nichols had a gun.&rdquo; Three times
+            the record says no.
+          </h2>
+          <p className="mt-2 max-w-3xl text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+            The same false claim keeps getting treated as credible — and each
+            time Ryan brings the bodycam and the police report that disprove it,
+            nothing is done. Claim against record, side by side.
+          </p>
+        </div>
+        <ol className="mt-4 grid gap-3">
+          {falseGunPattern.map((item, index) => (
+            <li
+              key={item.when}
+              className="border border-[var(--color-line)] bg-[var(--color-paper)] p-4"
+            >
+              <div className="flex items-center gap-2">
+                <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center bg-[#b32419] font-sans text-sm font-black text-white">
+                  {index + 1}
+                </span>
+                <p className="font-sans text-base font-black text-[var(--color-ink)]">
+                  {item.when}
+                </p>
+              </div>
+              <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                <div className="border-l-4 border-[#b32419] pl-3">
+                  <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#8d1b13]">
+                    The claim
+                  </p>
+                  <p className="mt-0.5 text-sm font-semibold leading-5 text-[var(--color-ink)]">
+                    {item.claim}
+                  </p>
+                </div>
+                <div className="border-l-4 border-[#2d6a4f] pl-3">
+                  <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#2d6a4f]">
+                    The record
+                  </p>
+                  <p className="mt-0.5 text-sm font-semibold leading-5 text-[var(--color-ink)]">
+                    {item.truth}
+                  </p>
+                </div>
+              </div>
+              <p className="mt-3 text-xs font-semibold leading-5 text-[var(--color-ink-soft)]">
+                <span className="font-black text-[#2d6a4f]">Proof: </span>
+                {item.proof}
+              </p>
+              <p className="mt-1 text-xs font-semibold leading-5 text-[var(--color-ink-soft)]">
+                <span className="font-black text-[#8d1b13]">
+                  What happened anyway:{" "}
+                </span>
+                {item.consequence}
+              </p>
+            </li>
+          ))}
+        </ol>
       </section>
 
       <section
