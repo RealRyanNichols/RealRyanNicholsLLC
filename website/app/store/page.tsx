@@ -159,7 +159,7 @@ const processSteps = [
   },
   {
     title: "2. Checkout or submit",
-    body: "Paid services go through Stripe. Tips and case-review paths collect the facts first.",
+    body: "Paid services go through Stripe, with cards, Link, Klarna, Affirm, Afterpay/Clearpay, and other eligible options shown when Stripe supports them. Tips and case-review paths collect the facts first.",
   },
   {
     title: "3. Ryan reviews the record",

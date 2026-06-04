@@ -94,7 +94,9 @@ export function AdminInvoiceForm() {
           </h2>
           <p className="mt-1 text-sm text-[var(--color-muted)]">
             Save a private receivable, create a Stripe payment link, or have
-            Stripe email it after you confirm the client email.
+            Stripe email it after you confirm the client email. Stripe can show
+            card, Link, Affirm, Klarna, and other eligible financing options on
+            the hosted payment page.
           </p>
         </div>
         <button
@@ -250,6 +252,12 @@ export function AdminInvoiceForm() {
               Add an email and create a Stripe link when you are ready to send.
             </p>
           )}
+          {result.stripe_hosted_invoice_url ? (
+            <p className="mt-2 text-xs font-semibold text-[var(--color-muted)]">
+              Financing displays only when Stripe approves the account, amount,
+              customer location, and payment method.
+            </p>
+          ) : null}
         </div>
       ) : null}
 

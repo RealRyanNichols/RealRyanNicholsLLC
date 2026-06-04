@@ -156,7 +156,8 @@ export function DonateBox({ donateUrl }: { donateUrl?: string }) {
             : `Donate ${amountCents === -1 ? "" : "$" + dollars(effectiveCents) + " "}to the goal →`}
       </button>
       <p className="mt-2 text-xs text-[var(--color-muted)] text-center">
-        Secure checkout by Stripe. You choose what it&apos;s for and whether it&apos;s public.
+        Secure checkout by Stripe. Card, Link, Klarna, Affirm, Afterpay/Clearpay,
+        and other options can appear when eligible.
       </p>
     </div>
   );

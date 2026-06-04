@@ -26,3 +26,10 @@ export function isValidDonationAmount(cents: number): boolean {
   if ((DONATION_TIERS_CENTS as readonly number[]).includes(cents)) return true;
   return cents >= DONATION_MIN_CENTS && cents <= DONATION_MAX_CENTS;
 }
+
+// Checkout uses Stripe dynamic payment methods when payment_method_types is not
+// hardcoded. For service invoices, request the invoice-supported financing rails
+// explicitly while letting Stripe hide anything not eligible for that customer,
+// country, currency, amount, or Dashboard configuration.
+export const STRIPE_INVOICE_PAYMENT_METHOD_TYPES: Stripe.InvoiceCreateParams.PaymentSettings.PaymentMethodType[] =
+  ["card", "link", "affirm", "klarna"];

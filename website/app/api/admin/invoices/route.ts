@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAdmin } from "@/lib/admin-auth";
-import { requireStripe } from "@/lib/stripe";
+import {
+  STRIPE_INVOICE_PAYMENT_METHOD_TYPES,
+  requireStripe,
+} from "@/lib/stripe";
 import { getSupabaseServiceClient } from "@/lib/supabase/service";
 
 export const runtime = "nodejs";
@@ -165,10 +168,14 @@ export async function POST(request: Request) {
       collection_method: "send_invoice",
       days_until_due: input.due_days,
       description: input.title,
+      payment_settings: {
+        payment_method_types: STRIPE_INVOICE_PAYMENT_METHOD_TYPES,
+      },
       metadata: {
         kind: "service_invoice",
         service_invoice_id: invoice.id,
         client_name: input.client_name,
+        payment_options: "card,link,affirm,klarna",
       },
       auto_advance: false,
     });

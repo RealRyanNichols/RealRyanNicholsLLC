@@ -453,7 +453,8 @@ export function FundTheTruth() {
           : `Give ${amount === -1 ? "" : money(effectiveCents) + " "}to ${targetLabel} →`}
       </button>
       <p className="mt-2 text-xs text-[var(--color-muted)] text-center">
-        Secure checkout by Stripe. Straight to me — no organization, no middleman — and onto the meter above.
+        Secure checkout by Stripe. Card, Link, Klarna, Affirm,
+        Afterpay/Clearpay, and other options can appear when eligible.
       </p>
     </div>
   );
