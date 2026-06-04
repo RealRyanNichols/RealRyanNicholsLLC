@@ -5,6 +5,15 @@ import { trackEvent } from "@/lib/analytics";
 
 type Status = "idle" | "submitting" | "ok" | "error";
 type Category = "j6" | "national" | "local" | "other";
+type TipReceiptRoute = {
+  kind: string;
+  label: string;
+  urgency: "hot" | "next" | "watch";
+  score: number;
+  reason: string;
+  next_action: string;
+  tags: string[];
+};
 
 const CATEGORIES: { value: Category; label: string; blurb: string }[] = [
   { value: "j6", label: "J6 case", blurb: "A January 6 defendant, case, or detention story." },
@@ -21,7 +30,11 @@ export function TipForm({
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [category, setCategory] = useState<Category>(defaultCategory);
   const [shareStatus, setShareStatus] = useState<"idle" | "copied">("idle");
-  const [receipt, setReceipt] = useState<{ publicRef: string | null; ledgerUrl: string } | null>(null);
+  const [receipt, setReceipt] = useState<{
+    publicRef: string | null;
+    ledgerUrl: string;
+    route: TipReceiptRoute | null;
+  } | null>(null);
 
   async function shareTipLine() {
     const url =
@@ -87,6 +100,7 @@ export function TipForm({
         error?: string;
         public_ref?: string | null;
         ledger_url?: string;
+        route?: TipReceiptRoute;
       };
       if (!res.ok) {
         trackEvent("tip_submit_failed", { category, reason: "api" });
@@ -98,10 +112,13 @@ export function TipForm({
         category,
         has_email: payload.submitter_email.length > 0,
         url_count: urls.length,
+        route: json.route?.kind ?? "unknown",
+        urgency: json.route?.urgency ?? "unknown",
       });
       setReceipt({
         publicRef: json.public_ref ?? null,
         ledgerUrl: json.ledger_url ?? "/case/intake",
+        route: json.route ?? null,
       });
       setStatus("ok");
       form.reset();
@@ -132,6 +149,50 @@ export function TipForm({
             <p className="mt-1 font-mono text-2xl font-black text-[var(--color-ink)]">
               {receipt.publicRef}
             </p>
+          </div>
+        ) : null}
+        {receipt?.route ? (
+          <div className="mt-4 border-2 border-[var(--color-line)] bg-[var(--color-paper)] p-4">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-success)]">
+                  Instant route
+                </p>
+                <h3 className="mt-1 font-sans text-xl font-black text-[var(--color-ink)]">
+                  {receipt.route.label}
+                </h3>
+              </div>
+              <span
+                className={[
+                  "rounded-full px-3 py-1 text-xs font-black uppercase tracking-normal",
+                  receipt.route.urgency === "hot"
+                    ? "bg-[var(--color-accent)] text-white"
+                    : receipt.route.urgency === "next"
+                      ? "bg-[var(--color-support)] text-[#17120e]"
+                      : "bg-[var(--color-surface-2)] text-[var(--color-ink-soft)]",
+                ].join(" ")}
+              >
+                {receipt.route.urgency} · {receipt.route.score}
+              </span>
+            </div>
+            <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+              {receipt.route.reason}
+            </p>
+            <p className="mt-3 border-l-4 border-[var(--color-support)] pl-3 text-sm font-bold leading-6 text-[var(--color-ink)]">
+              Next: {receipt.route.next_action}
+            </p>
+            {receipt.route.tags.length > 0 ? (
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                {receipt.route.tags.slice(0, 6).map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-2 py-1 text-[10px] font-black uppercase tracking-normal text-[var(--color-muted)]"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            ) : null}
           </div>
         ) : null}
         <div className="mt-4 grid gap-2 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-3 text-sm text-[var(--color-ink-soft)]">
@@ -179,7 +240,7 @@ export function TipForm({
     : "e.g. a name, an agency, a company, a headline";
 
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
+    <form action="/api/tips" method="post" onSubmit={onSubmit} className="space-y-4">
       {/* What kind of tip — turns the J6 line into a full newsroom intake. */}
       <div>
         <label className="block text-sm font-semibold mb-1.5">

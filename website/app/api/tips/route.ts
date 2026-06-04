@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createHash } from "crypto";
 import { sendAdminAlert } from "@/lib/admin-email-alerts";
+import { buildIntakeRoutePlan } from "@/lib/intake-routing";
 import { getSupabaseServiceClient } from "@/lib/supabase/service";
 import { SITE } from "@/lib/site";
 
@@ -85,6 +86,13 @@ export async function POST(request: Request) {
     parsed.data.submitter_email && parsed.data.submitter_email.length > 0
       ? parsed.data.submitter_email
       : null;
+  const routePlan = buildIntakeRoutePlan({
+    category: parsed.data.category,
+    subject: parsed.data.defendant_name,
+    location: parsed.data.location,
+    narrative: parsed.data.narrative,
+    urls: parsed.data.urls ?? [],
+  });
 
   const { data: savedTip, error } = await supabase
     .from("case_tips")
@@ -134,6 +142,7 @@ export async function POST(request: Request) {
     emailIn ? `Reply-to: ${emailIn.trim()}` : "Reply-to: (none given)",
     d.urls && d.urls.length ? `Links submitted: ${d.urls.length}` : "Links submitted: 0",
     publicRef ? `Public intake ref: ${publicRef}` : null,
+    `Auto route: ${routePlan.label} (${routePlan.urgency}, ${routePlan.score})`,
   ].filter(Boolean) as string[];
   const body = lines.join("\n");
   const text = [
@@ -162,6 +171,15 @@ export async function POST(request: Request) {
   return NextResponse.json({
     ok: true,
     public_ref: publicRef,
-    ledger_url: `${SITE.url}/case/intake`,
+    ledger_url: `${SITE.url}/case/intake?route=${routePlan.kind}`,
+    route: {
+      kind: routePlan.kind,
+      label: routePlan.label,
+      urgency: routePlan.urgency,
+      score: routePlan.score,
+      reason: routePlan.reason,
+      next_action: routePlan.nextActions[0] ?? "Ryan will review the receipt and route it to the right lane.",
+      tags: routePlan.tags,
+    },
   });
 }
