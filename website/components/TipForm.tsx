@@ -61,6 +61,37 @@ export function TipForm({
     }
   }
 
+  async function shareReceipt() {
+    if (!receipt) return;
+    const url =
+      typeof window !== "undefined"
+        ? new URL(receipt.ledgerUrl, window.location.origin).toString()
+        : receipt.ledgerUrl;
+    trackEvent("tip_receipt_share_click", {
+      route: receipt.route?.kind ?? "unknown",
+      urgency: receipt.route?.urgency ?? "unknown",
+    });
+
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: receipt.publicRef
+            ? `Public intake receipt ${receipt.publicRef}`
+            : "Public intake receipt",
+          text: "This tip was logged into the Real Ryan Nichols public-safe intake ledger.",
+          url,
+        });
+        return;
+      }
+
+      await navigator.clipboard.writeText(url);
+      setShareStatus("copied");
+      window.setTimeout(() => setShareStatus("idle"), 2400);
+    } catch {
+      setShareStatus("idle");
+    }
+  }
+
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (status === "submitting") return;
@@ -216,8 +247,15 @@ export function TipForm({
             href={receipt?.ledgerUrl ?? "/case/intake"}
             className="rounded-lg border border-[var(--color-line)] px-4 py-2 text-sm font-bold text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
           >
-            See the ledger
+            See my receipt
           </a>
+          <button
+            type="button"
+            onClick={shareReceipt}
+            className="rounded-lg border border-[var(--color-line)] px-4 py-2 text-sm font-bold text-[var(--color-ink)] transition hover:border-[var(--color-success)] hover:text-[var(--color-success)]"
+          >
+            {shareStatus === "copied" ? "Link copied" : "Share receipt"}
+          </button>
           <button
             type="button"
             onClick={shareTipLine}

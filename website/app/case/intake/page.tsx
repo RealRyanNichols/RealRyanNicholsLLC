@@ -456,7 +456,10 @@ function IntakeCard({
   const tags = (item.clue_tags ?? []).filter(Boolean).slice(0, 5);
   const route = publicRouteCopy[plan.kind];
   return (
-    <article className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5">
+    <article
+      id={`receipt-${item.public_ref}`}
+      className="scroll-mt-28 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm target:border-[var(--color-success)] target:ring-2 target:ring-[var(--color-success)] sm:p-5"
+    >
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">

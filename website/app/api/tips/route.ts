@@ -168,10 +168,15 @@ export async function POST(request: Request) {
     console.warn("tip_admin_alert_failed", alert);
   }
 
+  const receiptAnchor = publicRef
+    ? `#receipt-${encodeURIComponent(publicRef)}`
+    : "";
+  const ledgerUrl = `${SITE.url}/case/intake?route=${routePlan.kind}${receiptAnchor}`;
+
   return NextResponse.json({
     ok: true,
     public_ref: publicRef,
-    ledger_url: `${SITE.url}/case/intake?route=${routePlan.kind}`,
+    ledger_url: ledgerUrl,
     route: {
       kind: routePlan.kind,
       label: routePlan.label,
