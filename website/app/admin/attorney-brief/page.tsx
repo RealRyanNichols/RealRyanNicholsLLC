@@ -472,14 +472,45 @@ export default async function AttorneyBriefPage() {
 
   return (
     <article className="mx-auto max-w-[86rem] px-4 py-6">
-      <section className="grid gap-4 lg:grid-cols-[1.25fr_0.75fr]">
+      <section className="rounded-md border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-4">
+        <div className="grid gap-4 lg:grid-cols-[0.35fr_1fr]">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+              Record first
+            </p>
+            <h1 className="mt-1 font-sans text-2xl font-black sm:text-3xl">
+              What needs to be seen first.
+            </h1>
+            <p className="mt-3 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+              The first screen is the records, risks, and verification lanes.
+              The meeting details and broader background sit underneath this
+              packet.
+            </p>
+          </div>
+          <ol className="grid gap-2 sm:grid-cols-2">
+            {urgentAsks.map((ask, index) => (
+              <li
+                key={ask}
+                className="rounded-sm border border-[var(--color-accent)]/30 bg-white/40 p-3 text-sm font-semibold leading-6"
+              >
+                <span className="mr-2 font-black text-[var(--color-accent)]">
+                  {index + 1}.
+                </span>
+                {ask}
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section className="mt-4 grid gap-4 lg:grid-cols-[1.25fr_0.75fr]">
         <div className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-sm">
           <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-accent)]">
             Attorney case dashboard
           </p>
-          <h1 className="mt-2 max-w-4xl text-3xl font-black leading-[0.98] sm:text-5xl">
+          <h2 className="mt-2 max-w-4xl text-3xl font-black leading-[0.98] sm:text-5xl">
             Three charges. One source-record fight.
-          </h1>
+          </h2>
           <p className="mt-4 max-w-3xl text-base leading-7 text-[var(--color-ink-soft)]">
             Built for the Dallas criminal-defense meeting. The goal is simple:
             put the clean record in one place, isolate the missing proof, and
@@ -512,29 +543,6 @@ export default async function AttorneyBriefPage() {
             Open firm site
           </a>
         </aside>
-      </section>
-
-      <section className="mt-4 rounded-md border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-4">
-        <div className="grid gap-4 lg:grid-cols-[0.35fr_1fr]">
-          <div>
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
-              Record first
-            </p>
-            <h2 className="mt-1 font-sans text-xl font-black">
-              What needs to be seen first.
-            </h2>
-          </div>
-          <ol className="grid gap-2 sm:grid-cols-2">
-            {urgentAsks.map((ask, index) => (
-              <li key={ask} className="rounded-sm border border-[var(--color-accent)]/30 bg-white/40 p-3 text-sm font-semibold leading-6">
-                <span className="mr-2 font-black text-[var(--color-accent)]">
-                  {index + 1}.
-                </span>
-                {ask}
-              </li>
-            ))}
-          </ol>
-        </div>
       </section>
 
       <section className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
