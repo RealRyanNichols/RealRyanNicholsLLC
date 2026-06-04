@@ -399,6 +399,52 @@ const sourceLinks = [
   },
 ];
 
+const proofLegend = [
+  {
+    label: "Public record / public report",
+    body:
+      "Linked article, public page, or public report visible from the brief.",
+  },
+  {
+    label: "Ryan statement",
+    body:
+      "Ryan's position preserved beside the source files that can prove or disprove it.",
+  },
+  {
+    label: "Claimed / estimated damages",
+    body:
+      "Dollar lane exists, but source exhibits still control what can be relied on.",
+  },
+  {
+    label: "Missing record",
+    body:
+      "Charging packet, bodycam, bond order, docket entry, or native source file still needs to be attached.",
+  },
+];
+
+const valueHighlights = [
+  {
+    label: "J6 damages lane",
+    value: "$35M+",
+    status: "claimed / source packet needed",
+  },
+  {
+    label: "Supported damages range",
+    value: "$45-50M",
+    status: "claimed on damages page",
+  },
+  {
+    label: "Wholesale Universe",
+    value: "multi-million",
+    status: "valuation records needed",
+  },
+  {
+    label: "Business / debt exposure",
+    value: "$750K+",
+    status: "audit lane",
+  },
+];
+
 const sourceFiles = [
   {
     label: "Google Drive attorney map",
@@ -483,8 +529,8 @@ export default async function AttorneyBriefPage() {
             </h1>
             <p className="mt-3 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
               The first screen is the records, risks, and verification lanes.
-              The meeting details and broader background sit underneath this
-              packet.
+              Every claim has to be backed by a link, a source file, a Ryan
+              statement, or a clear missing-record marker.
             </p>
           </div>
           <ol className="grid gap-2 sm:grid-cols-2">
@@ -501,6 +547,88 @@ export default async function AttorneyBriefPage() {
             ))}
           </ol>
         </div>
+      </section>
+
+      <section className="mt-4 grid gap-4 xl:grid-cols-[1.05fr_0.95fr]">
+        <section className="rounded-md border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+                Evidence tray
+              </p>
+              <h2 className="mt-1 font-sans text-2xl font-black text-[#fdf8ea]">
+                Clickable receipts first.
+              </h2>
+            </div>
+            <p className="max-w-sm text-xs font-semibold leading-5 text-[#cfd9ea]">
+              Public links, source pages, and the damages page sit at the top
+              so the record is not just argued. It is served.
+            </p>
+          </div>
+          <div className="mt-4 grid gap-2 sm:grid-cols-2">
+            {sourceLinks.map((source) => (
+              <a
+                key={source.href}
+                href={source.href}
+                className="rounded-md border border-white/10 bg-white/5 p-3 transition hover:border-[#7fe3a9]/50 hover:bg-[#7fe3a9]/10"
+              >
+                <span className="block text-sm font-black text-[#fdf8ea]">
+                  {source.label}
+                </span>
+                <span className="mt-1 block text-xs font-semibold leading-5 text-[#cfd9ea]">
+                  {source.note}
+                </span>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <section className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm">
+          <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+            Fact-backed value story
+          </p>
+          <h2 className="mt-1 font-sans text-2xl font-black">
+            The money is visible, but the proof controls it.
+          </h2>
+          <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+            This packet frames the case value without overstating it: documented
+            records, claimed damages, missing source exhibits, and open
+            verification lanes are separated on purpose.
+          </p>
+          <div className="mt-4 grid gap-2 sm:grid-cols-2">
+            {valueHighlights.map((item) => (
+              <div
+                key={item.label}
+                className="rounded-sm border border-[var(--color-line)] bg-[var(--color-paper)] p-3"
+              >
+                <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--color-muted)]">
+                  {item.label}
+                </p>
+                <p className="mt-1 font-sans text-2xl font-black">
+                  {item.value}
+                </p>
+                <p className="mt-1 text-xs font-bold leading-5 text-[var(--color-accent)]">
+                  {item.status}
+                </p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-4 grid gap-2">
+            {proofLegend.map((item) => (
+              <div
+                key={item.label}
+                className="rounded-sm border border-[var(--color-line)] bg-white/35 p-3"
+              >
+                <p className="text-xs font-black uppercase tracking-[0.14em] text-[var(--color-muted)]">
+                  {item.label}
+                </p>
+                <p className="mt-1 text-xs font-semibold leading-5 text-[var(--color-ink-soft)]">
+                  {item.body}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
       </section>
 
       <section className="mt-4 grid gap-4 lg:grid-cols-[1.25fr_0.75fr]">
@@ -536,6 +664,17 @@ export default async function AttorneyBriefPage() {
             <InfoRow label="When" value={meeting.when} />
             <InfoRow label="Where" value={meeting.where} />
           </dl>
+          <div className="mt-4 rounded-sm border border-white/10 bg-white/5 p-3">
+            <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
+              Ryan-stated ask
+            </p>
+            <p className="mt-2 text-sm font-semibold leading-6 text-[#cfd9ea]">
+              Ryan is asking for serious Texas criminal-defense help, a
+              source-backed record, and room to report the news, raise his
+              family, and stop being pulled back into unsupported public
+              narratives.
+            </p>
+          </div>
           <a
             href={meeting.website}
             className="mt-5 inline-flex min-h-10 items-center justify-center rounded-md border border-[#7fe3a9]/50 bg-[#7fe3a9]/15 px-4 text-sm font-black text-[#7fe3a9] transition hover:bg-[#7fe3a9]/25"
@@ -792,28 +931,6 @@ export default async function AttorneyBriefPage() {
             <div key={question} className="rounded-sm border border-[var(--color-line)] bg-[var(--color-paper)] p-3 text-sm font-semibold leading-6">
               {question}
             </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="mt-5 rounded-md border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea]">
-        <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
-          Source links
-        </p>
-        <div className="mt-3 grid gap-2 md:grid-cols-2">
-          {sourceLinks.map((source) => (
-            <a
-              key={source.href}
-              href={source.href}
-              className="rounded-md border border-white/10 bg-white/5 p-3 transition hover:border-[#7fe3a9]/50 hover:bg-[#7fe3a9]/10"
-            >
-              <span className="block text-sm font-black text-[#fdf8ea]">
-                {source.label}
-              </span>
-              <span className="mt-1 block text-xs font-semibold leading-5 text-[#cfd9ea]">
-                {source.note}
-              </span>
-            </a>
           ))}
         </div>
       </section>
