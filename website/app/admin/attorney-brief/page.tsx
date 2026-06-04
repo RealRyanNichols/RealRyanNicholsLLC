@@ -686,14 +686,48 @@ const topProofNumbers = [
 ];
 
 const briefPath = [
+  { label: "First look", href: "#first-look" },
   { label: "Numbers", href: "#proof-numbers" },
-  { label: "Civil / criminal", href: "#matter-split" },
-  { label: "Claim map", href: "#claim-map" },
-  { label: "Receipts", href: "#receipts" },
-  { label: "Money", href: "#money-records" },
   { label: "Charges", href: "#charges" },
-  { label: "Timeline", href: "#chronology" },
+  { label: "Receipts", href: "#receipts" },
+  { label: "Claim map", href: "#claim-map" },
+  { label: "Full record", href: "#full-record" },
   { label: "Open items", href: "#open-questions" },
+];
+
+const firstLook = [
+  {
+    label: "What matters first",
+    title: "3 active misdemeanor charges",
+    body:
+      "Deadly conduct plus two harassment counts. Charging instruments, exact complainants, bond paperwork, and discovery are the first control points.",
+    href: "#charges",
+    tone: "red",
+  },
+  {
+    label: "What changes the case",
+    title: "Source files over public retellings",
+    body:
+      "The packet separates HCSO's baseline wording, later public escalation, Ryan's denial, and the missing native video/bodycam/message files.",
+    href: "#source-chain",
+    tone: "green",
+  },
+  {
+    label: "Where the value lives",
+    title: "Civil, WU, divorce, and J6 lanes",
+    body:
+      "The money lanes stay visible, but they do not clutter the criminal defense unless they prove motive, pressure, credibility, or damages.",
+    href: "#damages-map",
+    tone: "gold",
+  },
+  {
+    label: "What counsel can open",
+    title: "Four source folders plus case docs",
+    body:
+      "The brief gives folder-level entry points and public receipts without exposing sensitive private identifiers in the browser.",
+    href: "#drive-evidence",
+    tone: "blue",
+  },
 ];
 
 const matterSplit = [
@@ -970,21 +1004,21 @@ export default async function AttorneyBriefPage() {
   }
 
   return (
-    <article className="mx-auto w-full max-w-[78rem] px-4 py-5 sm:px-5 lg:px-6">
+    <article className="mx-auto w-full max-w-[72rem] px-4 py-5 sm:px-5 lg:px-6">
       <nav
         aria-label="Attorney brief navigation"
         className="sticky top-16 z-20 -mx-4 mb-4 border-y border-[var(--color-line)] bg-[var(--color-surface)]/95 px-4 py-2 shadow-sm backdrop-blur sm:-mx-5 sm:px-5 lg:-mx-6 lg:top-20 lg:px-6"
       >
-        <div className="mx-auto flex max-w-[78rem] items-center gap-2 overflow-x-auto">
+        <div className="mx-auto flex max-w-[72rem] items-center gap-2 overflow-x-auto">
           <Link
             href="/admin"
-            className="shrink-0 border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="shrink-0 border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-[11px] font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
           >
-            Back: admin
+            Back
           </Link>
           <Link
             href="/admin/case"
-            className="shrink-0 border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="shrink-0 border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-[11px] font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
           >
             Case docs
           </Link>
@@ -993,37 +1027,95 @@ export default async function AttorneyBriefPage() {
             <a
               key={item.href}
               href={item.href}
-              className="shrink-0 border border-[var(--color-line)] bg-white/45 px-3 py-2 text-xs font-black uppercase tracking-normal text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-soft)] hover:text-[var(--color-accent)]"
+              className="shrink-0 border border-[var(--color-line)] bg-white/45 px-3 py-2 text-[11px] font-black uppercase tracking-normal text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-soft)] hover:text-[var(--color-accent)]"
             >
               {item.label}
             </a>
           ))}
           <a
             href="#value-story"
-            className="shrink-0 border border-[#7fe3a9]/60 bg-[#071126] px-3 py-2 text-xs font-black uppercase tracking-normal text-[#7fe3a9] transition hover:bg-[#102826]"
+            className="shrink-0 border border-[#7fe3a9]/60 bg-[#071126] px-3 py-2 text-[11px] font-black uppercase tracking-normal text-[#7fe3a9] transition hover:bg-[#102826]"
           >
-            Next →
+            Value
           </a>
         </div>
       </nav>
 
+      <section id="case-dashboard" className="grid gap-4 lg:grid-cols-[1.12fr_0.88fr]">
+        <div className="border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5">
+          <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-accent)]">
+            Attorney case dashboard
+          </p>
+          <h1 className="mt-2 max-w-4xl text-3xl font-black leading-[0.98] sm:text-5xl">
+            Three charges. One clean source record.
+          </h1>
+          <p className="mt-4 max-w-3xl text-base font-semibold leading-7 text-[var(--color-ink-soft)]">
+            Built for the Dallas criminal-defense meeting: show what is urgent,
+            what is claimed, what is source-backed, and what is still missing
+            without forcing counsel to read the entire archive first.
+          </p>
+          <div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+            <Metric label="Charges" value="3" sub="2 harassment / 1 deadly conduct" hot />
+            <Metric label="Meeting" value="11:30" sub="Friday, June 5" />
+            <Metric label="Representation" value="None" sub="Ryan reports no counsel" hot />
+            <Metric label="Risk" value="High" sub="public narrative escalation" hot />
+          </div>
+        </div>
+
+        <aside className="border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm sm:p-5">
+          <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+            Meeting
+          </p>
+          <h2 className="mt-2 font-sans text-2xl font-black text-[#fdf8ea]">
+            {meeting.firm}
+          </h2>
+          <dl className="mt-4 space-y-3 text-sm">
+            <InfoRow label="Attorney" value={meeting.attorney} />
+            <InfoRow label="When" value={meeting.when} />
+            <InfoRow label="Where" value={meeting.where} />
+          </dl>
+          <div className="mt-4 border border-white/10 bg-white/5 p-3">
+            <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
+              Ryan-stated ask
+            </p>
+            <p className="mt-2 text-sm font-semibold leading-6 text-[#cfd9ea]">
+              Serious Texas criminal-defense help, a source-backed record, and
+              room to report the news, raise his family, and stop unsupported
+              public narratives from driving the case.
+            </p>
+          </div>
+          <a
+            href={meeting.website}
+            className="mt-5 inline-flex min-h-10 items-center justify-center border border-[#7fe3a9]/50 bg-[#7fe3a9]/15 px-4 text-sm font-black text-[#7fe3a9] transition hover:bg-[#7fe3a9]/25"
+          >
+            Open firm site
+          </a>
+        </aside>
+      </section>
+
+      <section id="first-look" className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        {firstLook.map((item) => (
+          <FirstLookCard key={item.label} {...item} />
+        ))}
+      </section>
+
       <section
         id="proof-numbers"
-        className="border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm sm:p-5"
+        className="mt-4 border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm sm:p-5"
       >
-        <div className="grid gap-3 md:grid-cols-[1fr_0.42fr] md:items-end">
+        <div className="grid gap-3 md:grid-cols-[0.5fr_1fr] md:items-end">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.24em] text-[#7fe3a9]">
               Proof numbers
             </p>
-            <h1 className="mt-1 font-sans text-3xl font-black leading-[0.98] text-[#fdf8ea] sm:text-5xl">
-              The numbers that jump off the record.
-            </h1>
+            <h2 className="mt-1 font-sans text-3xl font-black leading-[0.98] text-[#fdf8ea]">
+              Big numbers, labeled.
+            </h2>
           </div>
           <p className="text-xs font-semibold leading-5 text-[#cfd9ea]">
-            Every number below is clickable. Each one points to the source lane
-            behind it and stays labeled as claimed, audit-needed, source-backed,
-            or missing-packet.
+            These are not all presented as proven damages. The label tells a
+            human what each number is: claimed, audit-needed, source-backed, or
+            missing-packet.
           </p>
         </div>
         <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
@@ -1033,11 +1125,44 @@ export default async function AttorneyBriefPage() {
         </div>
       </section>
 
-      <section id="matter-split" className="mt-4 grid gap-3 md:grid-cols-2">
-        {matterSplit.map((matter) => (
-          <MatterSplitCard key={matter.label} {...matter} />
+      <section id="charges" className="mt-4 grid gap-3 lg:grid-cols-3">
+        {chargeCards.map((card) => (
+          <ChargeCard key={card.title} {...card} />
         ))}
       </section>
+
+      <section id="urgent-records" className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+        {immediateEmergency.slice(1).map((item) => (
+          <section
+            key={item.label}
+            className="border border-[var(--color-line)] bg-[var(--color-surface)] p-4"
+          >
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-muted)]">
+              {item.label}
+            </p>
+            <h2 className="mt-2 font-sans text-2xl font-black">
+              {item.value}
+            </h2>
+            <p className="mt-2 text-xs font-semibold leading-5 text-[var(--color-ink-soft)]">
+              {item.note}
+            </p>
+          </section>
+        ))}
+      </section>
+
+      <details id="claim-map" className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] shadow-sm">
+        <summary className="flex cursor-pointer items-center justify-between gap-3 p-4 text-sm font-black uppercase tracking-normal text-[var(--color-ink)] marker:content-['']">
+          <span>Open the deeper claim map, law shelf, and lane split</span>
+          <span className="border border-[var(--color-line)] px-2 py-1 text-[10px] text-[var(--color-accent)]">
+            Detail
+          </span>
+        </summary>
+        <div className="border-t border-[var(--color-line)] p-4 sm:p-5">
+          <div id="matter-split" className="grid gap-3 md:grid-cols-2">
+            {matterSplit.map((matter) => (
+              <MatterSplitCard key={matter.label} {...matter} />
+            ))}
+          </div>
 
       <section className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5">
         <div className="grid gap-3 lg:grid-cols-[0.34fr_1fr] lg:items-end">
@@ -1084,7 +1209,7 @@ export default async function AttorneyBriefPage() {
         </div>
       </section>
 
-      <section id="claim-map" className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5">
+      <section id="claim-map-table" className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5">
         <div className="grid gap-3 lg:grid-cols-[0.36fr_1fr] lg:items-end">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
@@ -1149,6 +1274,8 @@ export default async function AttorneyBriefPage() {
           ))}
         </div>
       </section>
+        </div>
+      </details>
 
       <section className="mt-4 grid gap-4 xl:grid-cols-[1.05fr_0.95fr]">
         <section id="receipts" className="border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm">
@@ -1309,78 +1436,14 @@ export default async function AttorneyBriefPage() {
         </div>
       </section>
 
-      <section id="case-dashboard" className="mt-4 grid gap-4 lg:grid-cols-[1.25fr_0.75fr]">
-        <div className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-sm">
-          <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-accent)]">
-            Attorney case dashboard
-          </p>
-          <h2 className="mt-2 max-w-4xl text-3xl font-black leading-[0.98] sm:text-5xl">
-            Three charges. One source-record fight.
-          </h2>
-          <p className="mt-4 max-w-3xl text-base leading-7 text-[var(--color-ink-soft)]">
-            Built for the Dallas criminal-defense meeting. The goal is simple:
-            put the clean record in one place, isolate the missing proof, and
-            keep the public narrative separate from authenticated evidence.
-          </p>
-          <div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-            <Metric label="Charges" value="3" sub="2 harassment / 1 deadly conduct" />
-            <Metric label="Meeting" value="11:30" sub="Friday, June 5" />
-            <Metric label="Representation" value="None" sub="Ryan reports no counsel" hot />
-            <Metric label="Risk" value="High" sub="public narrative escalation" hot />
-          </div>
-        </div>
-
-        <aside className="rounded-md border border-[#203a64] bg-[#071126] p-5 text-[#fdf8ea] shadow-sm">
-          <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
-            Meeting
-          </p>
-          <h2 className="mt-2 font-sans text-2xl font-black text-[#fdf8ea]">
-            {meeting.firm}
-          </h2>
-          <dl className="mt-4 space-y-3 text-sm">
-            <InfoRow label="Attorney" value={meeting.attorney} />
-            <InfoRow label="When" value={meeting.when} />
-            <InfoRow label="Where" value={meeting.where} />
-          </dl>
-          <div className="mt-4 rounded-sm border border-white/10 bg-white/5 p-3">
-            <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
-              Ryan-stated ask
-            </p>
-            <p className="mt-2 text-sm font-semibold leading-6 text-[#cfd9ea]">
-              Ryan is asking for serious Texas criminal-defense help, a
-              source-backed record, and room to report the news, raise his
-              family, and stop being pulled back into unsupported public
-              narratives.
-            </p>
-          </div>
-          <a
-            href={meeting.website}
-            className="mt-5 inline-flex min-h-10 items-center justify-center rounded-md border border-[#7fe3a9]/50 bg-[#7fe3a9]/15 px-4 text-sm font-black text-[#7fe3a9] transition hover:bg-[#7fe3a9]/25"
-          >
-            Open firm site
-          </a>
-        </aside>
-      </section>
-
-      <section id="urgent-records" className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-        {immediateEmergency.map((item) => (
-          <section
-            key={item.label}
-            className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4"
-          >
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-muted)]">
-              {item.label}
-            </p>
-            <h2 className="mt-2 font-sans text-2xl font-black">
-              {item.value}
-            </h2>
-            <p className="mt-2 text-xs font-semibold leading-5 text-[var(--color-ink-soft)]">
-              {item.note}
-            </p>
-          </section>
-        ))}
-      </section>
-
+      <details id="full-record" className="mt-5 border border-[#203a64] bg-[#071126] shadow-sm">
+        <summary className="flex cursor-pointer items-center justify-between gap-3 p-4 text-sm font-black uppercase tracking-normal text-[#fdf8ea] marker:content-[''] sm:p-5">
+          <span>Open full supporting record, timeline, people map, and source files</span>
+          <span className="border border-[#7fe3a9]/50 px-2 py-1 text-[10px] text-[#7fe3a9]">
+            Complete archive
+          </span>
+        </summary>
+        <div className="border-t border-white/10 bg-[var(--color-paper)] p-4 text-[var(--color-ink)] sm:p-5">
       <section className="mt-5 border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm sm:p-5">
         <div className="grid gap-3 lg:grid-cols-[0.38fr_1fr] lg:items-end">
           <div>
@@ -1419,12 +1482,6 @@ export default async function AttorneyBriefPage() {
             </section>
           ))}
         </div>
-      </section>
-
-      <section id="charges" className="mt-5 grid gap-3 lg:grid-cols-3">
-        {chargeCards.map((card) => (
-          <ChargeCard key={card.title} {...card} />
-        ))}
       </section>
 
       <section className="mt-5 rounded-md border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-4">
@@ -1745,6 +1802,8 @@ export default async function AttorneyBriefPage() {
           </ol>
         </div>
       </section>
+        </div>
+      </details>
 
       <section className="mt-5 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
         <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-muted)]">
@@ -1797,6 +1856,75 @@ function Metric({
         {sub}
       </p>
     </div>
+  );
+}
+
+function FirstLookCard({
+  label,
+  title,
+  body,
+  href,
+  tone,
+}: {
+  label: string;
+  title: string;
+  body: string;
+  href: string;
+  tone: string;
+}) {
+  const toneClass =
+    tone === "red"
+      ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)]"
+      : tone === "green"
+        ? "border-[var(--color-success)] bg-[var(--color-success-soft)]"
+        : tone === "gold"
+          ? "border-[var(--color-support)] bg-[var(--color-support-soft)]"
+          : "border-[#203a64] bg-[#071126] text-[#fdf8ea]";
+  const labelClass = tone === "blue" ? "text-[#7fe3a9]" : "text-[var(--color-muted)]";
+  const bodyClass = tone === "blue" ? "text-[#cfd9ea]" : "text-[var(--color-ink-soft)]";
+  const linkClass =
+    tone === "blue"
+      ? "border-[#7fe3a9]/40 text-[#7fe3a9] hover:bg-[#7fe3a9]/10"
+      : "border-[var(--color-line)] text-[var(--color-accent)] hover:bg-white/50";
+
+  return (
+    <a
+      href={href}
+      className={[
+        "group flex min-h-[12rem] flex-col justify-between border p-4 shadow-sm transition hover:-translate-y-0.5",
+        toneClass,
+      ].join(" ")}
+    >
+      <span>
+        <span
+          className={[
+            "block text-[10px] font-black uppercase tracking-[0.2em]",
+            labelClass,
+          ].join(" ")}
+        >
+          {label}
+        </span>
+        <span className="mt-2 block font-sans text-xl font-black leading-tight">
+          {title}
+        </span>
+        <span
+          className={[
+            "mt-2 block text-sm font-semibold leading-6",
+            bodyClass,
+          ].join(" ")}
+        >
+          {body}
+        </span>
+      </span>
+      <span
+        className={[
+          "mt-4 inline-flex min-h-9 w-fit items-center border px-3 text-xs font-black uppercase tracking-normal transition",
+          linkClass,
+        ].join(" ")}
+      >
+        Open lane
+      </span>
+    </a>
   );
 }
 
@@ -1897,9 +2025,10 @@ function ProofNumberCard({
     <a
       href={href}
       className={[
-        "group relative min-h-[13rem] overflow-hidden border border-white/10 bg-white/[0.055] p-3 transition hover:-translate-y-0.5 hover:bg-white/[0.09]",
+        "group relative min-h-[9.5rem] overflow-hidden border border-white/10 bg-white/[0.055] p-3 transition hover:-translate-y-0.5 hover:bg-white/[0.09]",
         glowClass,
       ].join(" ")}
+      aria-label={`${label}: ${value}. ${tag}. Source: ${source}. ${body}`}
     >
       <span
         className={[
@@ -1913,7 +2042,7 @@ function ProofNumberCard({
       <span className="block pr-14 text-[10px] font-black uppercase tracking-[0.2em] text-[#cfd9ea]">
         {label}
       </span>
-      <span className="mt-2 block font-sans text-4xl font-black leading-none text-[#fdf8ea] sm:text-5xl">
+      <span className="mt-2 block font-sans text-3xl font-black leading-none text-[#fdf8ea] sm:text-4xl">
         {value}
       </span>
       <span
@@ -1932,9 +2061,6 @@ function ProofNumberCard({
       </span>
       <span className="mt-3 block text-[10px] font-black uppercase tracking-[0.16em] text-[#d8c89e]">
         Source: {source}
-      </span>
-      <span className="mt-2 block text-xs font-semibold leading-5 text-[#cfd9ea]">
-        {body}
       </span>
     </a>
   );
