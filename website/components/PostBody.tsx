@@ -2,6 +2,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import type { ReactNode } from "react";
 import { TweetEmbed } from "./TweetEmbed";
+import { FacebookEmbed } from "./FacebookEmbed";
 import { DonateBox } from "./DonateBox";
 import { FundTheTruth } from "./FundTheTruth";
 import { ReactionBar } from "./ReactionBar";
@@ -10,6 +11,8 @@ import { DemandAction } from "./DemandAction";
 import { ShareRow } from "./ShareRow";
 
 const TWEET_RE = /^https?:\/\/(x\.com|twitter\.com)\/[^/]+\/status\/\d+/i;
+const FB_POST_RE =
+  /^https?:\/\/(?:www\.|m\.|web\.)?facebook\.com\/(?:[^/?#]+\/posts\/[\w.-]+|share\/p\/[\w-]+|permalink\.php\?\S+|story\.php\?\S+)/i;
 // A paragraph that is only {{donate}} / {{report}} / {{poll: prompt}} /
 // {{demand}} becomes a live interactive block. Authors (and Codex) drop these
 // tokens into the markdown; they render as real components on the article page,
@@ -30,6 +33,15 @@ function soleTweetHref(node: HastNode | undefined): string | null {
   if (only?.tagName !== "a") return null;
   const href = only.properties?.href;
   return typeof href === "string" && TWEET_RE.test(href) ? href : null;
+}
+
+function soleFacebookHref(node: HastNode | undefined): string | null {
+  const kids = node?.children ?? [];
+  if (kids.length !== 1) return null;
+  const only = kids[0];
+  if (only?.tagName !== "a") return null;
+  const href = only.properties?.href;
+  return typeof href === "string" && FB_POST_RE.test(href) ? href : null;
 }
 
 function nodeText(node: HastNode | undefined): string {
@@ -327,6 +339,8 @@ export function PostBody({
             const n = node as HastNode | undefined;
             const href = soleTweetHref(n);
             if (href) return <TweetEmbed url={href} />;
+            const fbHref = soleFacebookHref(n);
+            if (fbHref) return interactive ? <FacebookEmbed url={fbHref} /> : null;
             const m = nodeText(n).trim().match(SHORTCODE_RE);
             if (m) {
               // Hide the token entirely in feed cards / previews.
