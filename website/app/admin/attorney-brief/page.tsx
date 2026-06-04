@@ -19,15 +19,15 @@ const meeting = {
 };
 
 const urgentAsks = [
-  "Confirm Ryan is not represented by anyone in the active criminal matter, divorce/business matter, or J6 damages/compensation lane unless an attorney has formally appeared.",
-  "Confirm whether bond was revoked, the exact stated reason, and whether the State is treating social-media speech as the violation.",
-  "Confirm the next setting: arraignment on June 9, 2026, possible Case No. 2026-0226, Harrison County.",
-  "Get the charging instruments for both harassment counts and the deadly conduct charge.",
-  "Serve Article 39.14 / Michael Morton, Brady, and preservation demands for bodycam, dashcam, CAD, dispatch audio, witness statements, church video, jail-hallway bodycam, and all source statements.",
-  "Compare the official allegation wording against the later public story that Ryan pulled or pointed a gun.",
-  "Evaluate whether statements made while Ryan was in custody should be suppressed or limited.",
-  "Evaluate a recusal issue if Judicial Officer Joe Black is assigned and the story-view / reaction screenshots create a reasonable impartiality concern.",
-  "Decide what should be public, what should stay private, and what belongs only in discovery or attorney work product.",
+  "Representation status visible: Ryan reports no attorney has formally appeared in the active criminal matter, divorce/business matter, or J6 damages/compensation lane.",
+  "Bond issue visible: possible revocation or modification tied to social-media conduct; written order and exact condition language belong in the packet.",
+  "Court setting visible: June 9, 2026 arraignment lead, possible Case No. 2026-0226, Harrison County.",
+  "Charging packets needed: both harassment counts and the deadly conduct charge.",
+  "Discovery record needed: Article 39.14 / Michael Morton, Brady, bodycam, dashcam, CAD, dispatch audio, witness statements, church video, jail-hallway bodycam, and all source statements.",
+  "Narrative comparison needed: official allegation wording versus later public claims that Ryan pulled or pointed a gun.",
+  "Custody-questioning issue visible: any jail or custodial statements tied to video, social posts, or separate allegations.",
+  "Recusal issue visible: Judicial Officer Joe Black assignment plus story-view / reaction screenshots need verification and placement in the record.",
+  "Publication split visible: public record, private discovery, family-sensitive material, and attorney-work-product categories.",
 ];
 
 const immediateEmergency = [
@@ -35,31 +35,31 @@ const immediateEmergency = [
     label: "Court setting",
     value: "June 9, 2026",
     note:
-      "Google Drive attorney map lists arraignment in Harrison County; exact case number and docket entry still need counsel verification.",
+      "Google Drive attorney map lists arraignment in Harrison County; exact case number and docket entry still need verification.",
   },
   {
     label: "Possible case no.",
     value: "2026-0226",
     note:
-      "Marked VERIFY in the Drive case map. Treat as a lead until matched against the charging instrument or court portal.",
+      "Marked VERIFY in the Drive case map. It remains a lead until matched against the charging instrument or court portal.",
   },
   {
     label: "Bond issue",
     value: "Speech / social media",
     note:
-      "Drive case map says bond was revoked for social-media conduct. Counsel should get the written revocation basis and condition wording.",
+      "Drive case map says bond was revoked for social-media conduct. Written revocation basis and condition wording belong in the packet.",
   },
   {
     label: "Discovery lane",
     value: "Art. 39.14 + Brady",
     note:
-      "The current bodycam fight should move through the criminal case, not depend only on open-records release while the case is active.",
+      "The current bodycam fight belongs in the criminal-case record, not only in open-records correspondence while the case is active.",
   },
   {
     label: "Representation",
     value: "Not represented",
     note:
-      "Ryan reports he is not represented by anyone. Counsel should confirm no attorney has appeared in each active matter before strategy.",
+      "Ryan reports he is not represented by anyone. Appearance status needs docket confirmation across each active matter.",
   },
 ];
 
@@ -72,7 +72,7 @@ const chargeCards = [
     summary:
       "Public reporting says Harrison County alleged Ryan displayed a firearm during a church-parking-lot dispute after service. Ryan disputes pulling, pointing, brandishing, or firing a gun.",
     proof:
-      "Need charging instrument, offense report, bodycam, dashcam, dispatch/CAD, witness statements, church video, and any public press-release source file.",
+      "Record packet: charging instrument, offense report, bodycam, dashcam, dispatch/CAD, witness statements, church video, and any public press-release source file.",
   },
   {
     label: "Charge 2",
@@ -82,7 +82,7 @@ const chargeCards = [
     summary:
       "Current site records preserve a Treece public comment, Messenger thread, and Ryan's report/call to Harrison County. Exact complainant, date range, and alleged messages need confirmation from the charging instrument.",
     proof:
-      "Need complaint, probable-cause affidavit, screenshots police relied on, complete thread export, call logs, and report number.",
+      "Record packet: complaint, probable-cause affidavit, screenshots police relied on, complete thread export, call logs, and report number.",
   },
   {
     label: "Charge 3",
@@ -90,9 +90,9 @@ const chargeCards = [
     status: "Needs exact charge packet",
     tone: "gold",
     summary:
-      "The second harassment count is not fully identified in the current repo/Drive pass. Treat it as unknown until the attorneys compare the actual complaint to the preserved evidence.",
+      "The second harassment count is not fully identified in the current repo/Drive pass. It remains unknown until the actual complaint is matched to the preserved evidence.",
     proof:
-      "Need charging document, named complainant, alleged platform, alleged dates, screenshots, and officer narrative.",
+      "Record packet: charging document, named complainant, alleged platform, alleged dates, screenshots, and officer narrative.",
   },
 ];
 
@@ -102,7 +102,7 @@ const sourceChain = [
     title: "HCSO public allegation",
     body:
       "Site records preserve the public allegation wording: Ryan allegedly raised his shirt to display a firearm and placed his hand on the grip.",
-    use: "This is the baseline before later public versions escalated the story.",
+    use: "This anchors the baseline before later public versions escalated the story.",
   },
   {
     step: "Public escalation",
@@ -115,39 +115,39 @@ const sourceChain = [
     step: "Defense position",
     title: "Ryan denies the escalated version",
     body:
-      "Ryan denies drawing, pulling, pointing, brandishing, or firing a gun. The dashboard does not ask counsel to rely on Ryan's word alone; it asks for source footage and authenticated records.",
-    use: "Attorneys should force the case back to footage, reports, and original statements.",
+      "Ryan denies drawing, pulling, pointing, brandishing, or firing a gun. This dashboard keeps Ryan's statement beside the source footage and authenticated records that can test it.",
+    use: "Footage, reports, and original statements are the center of the record.",
   },
   {
     step: "Missing record",
     title: "Bodycam and source files",
     body:
       "Ryan requested bodycam/source records. Site records say the current church case response was active-case / call-sheet-only, followed by a second written request.",
-    use: "Discovery and preservation requests should be immediate.",
+    use: "Discovery and preservation status is a live issue.",
   },
   {
     step: "Bond / speech",
     title: "Social-media condition and revocation issue",
     body:
-      "The Google Drive attorney map says bond was revoked for social-media conduct and flags a possible overbreadth / First Amendment issue. The page treats that as a lead until counsel gets the bond condition and revocation order.",
-    use: "Counsel should separate public advocacy from prohibited contact or case-specific witness issues.",
+      "The Google Drive attorney map says bond was revoked for social-media conduct and flags a possible overbreadth / First Amendment issue. This remains a lead until the bond condition and revocation order are in the packet.",
+    use: "The record needs to separate public advocacy from prohibited contact or case-specific witness issues.",
   },
   {
     step: "Recusal lane",
     title: "Judicial Officer Joe Black",
     body:
       "The Drive map says the court portal showed Judicial Officer Black, Joe for the June 9 setting and that Ryan has story-view / reaction screenshots involving the name Joe Black.",
-    use: "Counsel should decide whether this supports a recusal motion or only a disclosure question.",
+    use: "This supports a recusal/disclosure issue only if the assignment and screenshots verify cleanly.",
   },
 ];
 
 const caseTheory = [
   "The official baseline allegation matters: display / hand-on-grip is not the same as pulled, pointed, fired, or threatened with a gun.",
-  "The defense should force every witness version back to native source files, not screenshots, headlines, or summaries.",
+  "Every witness version needs to trace back to native source files, not screenshots, headlines, or summaries.",
   "The Costello public video/comment lane matters because it may show how the public story escalated after the alleged church incident.",
   "The Treece thread matters only if the harassment charges rely on speech, threats, contact history, or unequal enforcement around online statements.",
   "The July 13 / James Chatham file is background-pattern evidence, not the church charge itself, unless the State uses old gun allegations or character framing.",
-  "The safest attorney posture is source-first: charging packets, bodycam, dispatch, CAD, original witness statements, native videos, complete message exports.",
+  "Source-first packet: charging packets, bodycam, dispatch, CAD, original witness statements, native videos, complete message exports.",
 ];
 
 const financialImpact = [
@@ -170,21 +170,21 @@ const financialImpact = [
     value: "multi-million",
     sub: "enterprise value",
     body:
-      "Existing case pages describe Wholesale Universe, Inc. as a multi-million-dollar wholesale/retail company. Counsel should request ledgers, tax returns, bank records, inventory records, and valuation proof.",
+      "Existing case pages describe Wholesale Universe, Inc. as a multi-million-dollar wholesale/retail company. Valuation proof includes ledgers, tax returns, bank records, inventory records, and related business records.",
   },
   {
     label: "Missing WU funds",
     value: "$750K-1.5M",
     sub: "claimed / audit needed",
     body:
-      "Master case briefing and prompt package describe alleged missing funds in this range. Treat as a forensic-audit target until bank statements and ledgers prove the number.",
+      "Master case briefing and prompt package describe alleged missing funds in this range. This is a forensic-audit lane until bank statements and ledgers prove the number.",
   },
   {
     label: "Unauthorized debt",
     value: "$44K-49K",
     sub: "claimed debt exposure",
     body:
-      "Prompt package lists a box-truck debt around $22K-27K plus Landstar shipping demand of $22,226.61 after POA-revocation issues. Counsel should verify creditor records and DocuSign audit trails.",
+      "Prompt package lists a box-truck debt around $22K-27K plus Landstar shipping demand of $22,226.61 after POA-revocation issues. Creditor records and DocuSign audit trails are the verification lane.",
   },
   {
     label: "Phone/AT&T harm",
@@ -207,11 +207,11 @@ const divorceBusinessLanes = [
     ],
   },
   {
-    title: "Divorce / business damages counsel should quantify",
+    title: "Divorce / business damages to quantify",
     items: [
       "$750K-$1.5M alleged missing funds from Master Case Briefing; forensic audit needed",
-      "Unauthorized box-truck debt around $22K-$27K; verify creditor, date, signature, and DocuSign audit trail",
-      "Landstar Transportation demand letter for $22,226.61; verify liability and signatory authority",
+      "Unauthorized box-truck debt around $22K-$27K; creditor, date, signature, and DocuSign audit trail",
+      "Landstar Transportation demand letter for $22,226.61; liability and signatory-authority records",
       "AT&T/phone harm: $950 + $713.90 = $1,663.90 plus communication and business-access damage",
       "Robinhood account breach allegation and any emptied investment-account balance",
       "Lost income, lost company access, homelessness, inability to work, litigation costs, and pro se time",
@@ -228,7 +228,7 @@ const j6DamageLanes = [
       "Liberty lost from January 18, 2021 arrest through January 20, 2025 pardon; charges later dismissed with prejudice",
       "Business destroyed: Wholesale Universe, Inc. described as multi-million-dollar enterprise",
       "Marriage/family damage, children daily-presence damage, career trajectory loss, medical injury, and mental-health harm",
-      "Use the damages page as a summary; demand source exhibits before relying on dollar amounts",
+      "Damages page summary; source exhibits need to be attached before relying on dollar amounts",
     ],
   },
 ];
@@ -250,7 +250,7 @@ const chronology = [
     date: "Williams TRO hearing",
     title: "False-testimony allegation",
     body:
-      "Drive motions say Bonnie Nichols testified Ryan shot a gun on July 13. Ryan disputes that and says police records/video contradict it. Counsel should verify from transcript and actual records.",
+      "Drive motions say Bonnie Nichols testified Ryan shot a gun on July 13. Ryan disputes that and says police records/video contradict it. Transcript and actual records are needed to verify the issue.",
   },
   {
     date: "May 2026",
@@ -268,7 +268,7 @@ const chronology = [
     date: "June 9, 2026",
     title: "Arraignment / immediate setting",
     body:
-      "Google Drive attorney map lists arraignment and flags bond, recusal, discovery, Brady, and speech-condition issues for counsel.",
+      "Google Drive attorney map lists arraignment and flags bond, recusal, discovery, Brady, and speech-condition issues.",
   },
 ];
 
@@ -283,14 +283,14 @@ const people = [
   ["Cindy Black", "Records custodian contact in bodycam/source-record request history."],
   ["Lt. Ron England", "Separate July 13, 2025 file/bodycam history; important to keep separate from current church case."],
   ["James Chatham", "July 13, 2025 background file; Drive motions say Ryan alleges Chatham grabbed a firearm and Ryan called law enforcement."],
-  ["Judge / Judicial Officer Joe Black", "Drive attorney map flags a June 9 court-portal assignment and story-view / reaction screenshots; counsel must verify and decide recusal strategy."],
-  ["Bonnie Nichols", "Family-court / testimony / background context. Do not merge her issues into the criminal defense unless counsel says it helps."],
-  ["Bo Rogers", "Former attorney / background context; relevant only if counsel needs broader litigation context."],
-  ["Kelly Hydekamp / Scott Carlisle", "Family-court counsel context; not a substitute for proof in criminal case."],
-  ["Alex Harkrider", "Drive attorney map describes a separate harassment/theft context involving a rescue boat and belongings after a mental-health crisis; verify before use."],
+  ["Judge / Judicial Officer Joe Black", "Drive attorney map flags a June 9 court-portal assignment and story-view / reaction screenshots; assignment and screenshots need verification before any recusal/disclosure use."],
+  ["Bonnie Nichols", "Family-court / testimony / background context. Criminal-defense record only with a direct evidentiary tie."],
+  ["Bo Rogers", "Former attorney / background context; relevant only if broader litigation context becomes part of the record."],
+  ["Kelly Hydekamp / Scott Carlisle", "Family-court attorney context; not a substitute for proof in the criminal case."],
+  ["Alex Harkrider", "Drive attorney map describes a separate harassment/theft context involving a rescue boat and belongings after a mental-health crisis; requires verification before placement in the record."],
   ["Nathaniel Moran", "Political/congress context mentioned by Ryan; needs a specific fact before use."],
-  ["Ryan Baker", "Only found locally as a background potential-misconduct name; do not use as a criminal-defense fact without a direct source tie."],
-  ["Craig Evers / Oak Grove Baptist Church", "Search found a corrected RepWatchr note separating Kevin Evers from Bro. Craig Evers. Treat as church/community context only unless counsel has a direct record."],
+  ["Ryan Baker", "Only found locally as a background potential-misconduct name; criminal-defense relevance requires a direct source tie."],
+  ["Craig Evers / Oak Grove Baptist Church", "Search found a corrected RepWatchr note separating Kevin Evers from Bro. Craig Evers. Church/community context only with a direct record tie."],
 ];
 
 const evidenceLanes = [
@@ -335,7 +335,7 @@ const evidenceLanes = [
       "Story-view / reaction screenshots involving Joe Black",
       "Any prior personal-contact history Ryan says may affect impartiality",
       "Filed or draft recusal motion and visual exhibit packet from the Costello/harassment Drive folder",
-      "Counsel decision: recusal motion, disclosure request, or hold",
+      "Status marker: recusal motion, disclosure request, or hold",
     ],
   },
   {
@@ -345,12 +345,12 @@ const evidenceLanes = [
       "Lt. Ron England bodycam and police report",
       "Cindy Black bodycam correspondence and fee/processing screenshots",
       "Bonnie Nichols Williams TRO transcript or recording",
-      "Any 192-page exhibit or public exhibit page counsel can verify",
-      "Use only to rebut old gun-character claims unless counsel connects it to the current charges",
+      "Any 192-page exhibit or public exhibit page available for verification",
+      "Rebuttal value only with a record tie to the current charges",
     ],
   },
   {
-    title: "Background context counsel may need",
+    title: "Background context in the record",
     items: [
       "Nichols v. Nichols master briefing",
       "Williams TRO false-testimony motion draft",
@@ -422,7 +422,7 @@ const sourceFiles = [
     label: "Master case briefing",
     path: "Real Ryan Nichols LLC/MASTER_CASE_BRIEFING.md",
     note:
-      "Source for divorce/business background, Ryan Baker background mention, and broader names counsel may hear.",
+      "Source for divorce/business background, Ryan Baker background mention, and broader names in local case materials.",
   },
   {
     label: "J6 damages page",
@@ -440,7 +440,7 @@ const sourceFiles = [
 
 const questionsForRyan = [
   "Has any attorney formally appeared for Ryan in the criminal case, divorce/business matter, J6 compensation/damages matter, or related civil matters?",
-  "Is bond currently revoked, modified, or only threatened? Get the exact written order and bond condition.",
+  "Is bond currently revoked, modified, or only threatened? Exact written order and bond condition.",
   "Is the June 9, 2026 setting confirmed as arraignment, and is Case No. 2026-0226 correct?",
   "What are the exact cause numbers / complaint numbers for the two harassment charges and deadly conduct charge?",
   "Who are the named complainants on each harassment count?",
@@ -452,7 +452,7 @@ const questionsForRyan = [
   "What is the best current evidence for Wholesale Universe's value: tax returns, bank statements, inventory records, Amazon/FBA records, ledgers, loan files, or CPA records?",
   "What exact damages are already supported by documents versus only estimated: J6 claim, missing WU funds, unauthorized debt, phone harm, Robinhood, and lost income?",
   "What direct record ties Jeremy Oni/Oney, Ryan Baker, Craig Evers, or Oak Grove Baptist Church to the current charges, if any?",
-  "What must be kept private because it includes minors, addresses, phone numbers, medical/cannabis-card data, or family-court sensitive material?",
+  "What has to stay private because it includes minors, addresses, phone numbers, medical/cannabis-card data, or family-court sensitive material?",
 ];
 
 export default async function AttorneyBriefPage() {
@@ -482,8 +482,8 @@ export default async function AttorneyBriefPage() {
           </h1>
           <p className="mt-4 max-w-3xl text-base leading-7 text-[var(--color-ink-soft)]">
             Built for the Dallas criminal-defense meeting. The goal is simple:
-            give counsel the clean record, isolate the missing proof, and keep
-            the public narrative separate from authenticated evidence.
+            put the clean record in one place, isolate the missing proof, and
+            keep the public narrative separate from authenticated evidence.
           </p>
           <div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
             <Metric label="Charges" value="3" sub="2 harassment / 1 deadly conduct" />
@@ -518,10 +518,10 @@ export default async function AttorneyBriefPage() {
         <div className="grid gap-4 lg:grid-cols-[0.35fr_1fr]">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
-              Counsel first
+              Record first
             </p>
             <h2 className="mt-1 font-sans text-xl font-black">
-              Do this before strategy.
+              What needs to be seen first.
             </h2>
           </div>
           <ol className="grid gap-2 sm:grid-cols-2">
@@ -575,11 +575,11 @@ export default async function AttorneyBriefPage() {
           <div className="rounded-sm border border-[var(--color-accent)]/40 bg-white/45 p-4">
             <p className="text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
               As reported for this brief, Ryan is operating without counsel.
-              The attorneys should verify whether anyone has formally appeared
-              in the criminal case, divorce/business case, J6 compensation
-              lane, or related civil matters. Until a lawyer appears, treat
-              every urgent deadline, discovery demand, bond issue, and recusal
-              issue as needing immediate triage.
+              Appearance status matters in the criminal case,
+              divorce/business case, J6 compensation lane, and related civil
+              matters. Until the docket shows a lawyer of record, every urgent
+              deadline, discovery demand, bond issue, and recusal issue remains
+              visible on this page.
             </p>
           </div>
         </div>
@@ -642,10 +642,10 @@ export default async function AttorneyBriefPage() {
         </h2>
         <p className="mt-2 max-w-4xl text-sm font-semibold leading-6 text-[#cfd9ea]">
           These are claimed or estimated lanes pulled from the existing site
-          damages page and Google Drive case materials. Counsel should separate
-          documented amounts from estimates, then decide what belongs in the
-          criminal defense, divorce/business case, civil damages claim, or a
-          separate compensation package.
+          damages page and Google Drive case materials. The packet separates
+          documented amounts from estimates and keeps each lane visible:
+          criminal defense, divorce/business case, civil damages claim, and
+          compensation package.
         </p>
         <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
           {financialImpact.map((item) => (
@@ -678,7 +678,7 @@ export default async function AttorneyBriefPage() {
             Source chain
           </p>
           <h2 className="mt-2 font-sans text-2xl font-black text-[#fdf8ea]">
-            What an attorney needs to see plainly
+            What needs to be seen plainly
           </h2>
           <div className="mt-4 grid gap-3">
             {sourceChain.map((item) => (
@@ -691,7 +691,7 @@ export default async function AttorneyBriefPage() {
                 </h3>
                 <p className="mt-1 text-sm leading-6 text-[#cfd9ea]">{item.body}</p>
                 <p className="mt-2 text-xs font-bold leading-5 text-[#7fe3a9]">
-                  Use: {item.use}
+                  Why it matters: {item.use}
                 </p>
               </div>
             ))}
@@ -703,7 +703,7 @@ export default async function AttorneyBriefPage() {
             People map
           </p>
           <h2 className="mt-2 font-sans text-2xl font-black">
-            Names counsel may hear
+            Names in the record
           </h2>
           <div className="mt-4 grid gap-2 md:grid-cols-2">
             {people.map(([name, role]) => (
@@ -815,7 +815,7 @@ export default async function AttorneyBriefPage() {
           Local source files checked
         </p>
         <h2 className="mt-2 font-sans text-2xl font-black">
-          Pull these before counsel if needed
+          Local files behind this brief
         </h2>
         <div className="mt-4 grid gap-2 md:grid-cols-2">
           {sourceFiles.map((file) => (
