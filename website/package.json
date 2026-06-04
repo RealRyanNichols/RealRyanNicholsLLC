@@ -4,12 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:codex": "sh -c 'set -a; if [ -f .env.local ]; then . ./.env.local; elif [ -f .env.production ]; then . ./.env.production; fi; set +a; exec ${CODEX_NODE:-/Users/ryannichols/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node} node_modules/.bin/next dev \"$@\"' --",
     "build": "next build",
+    "build:codex": "sh -c 'set -a; if [ -f .env.local ]; then . ./.env.local; elif [ -f .env.production ]; then . ./.env.production; fi; set +a; exec ${CODEX_NODE:-/Users/ryannichols/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node} node_modules/.bin/next build \"$@\"' --",
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "import:cl": "tsx scripts/import-from-courtlistener.ts",
-    "enrich:doj": "tsx scripts/enrich-from-doj.ts"
+    "enrich:doj": "tsx scripts/enrich-from-doj.ts",
+    "import:npr-j6": "tsx scripts/import-from-npr-j6-archive.ts"
   },
   "dependencies": {
     "@mux/mux-node": "^14.1.0",
