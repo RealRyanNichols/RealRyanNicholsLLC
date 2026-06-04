@@ -45,6 +45,7 @@ export function PostAdminRow({
   const videoReady =
     isVideo && ((muxStatus === "ready" && !!muxPlaybackId) || !!directVideoUrl);
   const canPublish = !isVideo || videoReady;
+  const deadmanQueued = category === "deadman-release";
   const inspectHref =
     status === "published" ? `/posts/${slug}` : `/admin/posts/${id}/preview`;
 
@@ -107,6 +108,11 @@ export function PostAdminRow({
             {status === "draft" ? (
               <span className="rounded-full bg-[var(--color-tag-procedural)] text-[var(--color-paper)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
                 DRAFT
+              </span>
+            ) : null}
+            {deadmanQueued ? (
+              <span className="rounded-full bg-[#d8ad43] text-[#1a1410] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
+                DEADMAN READY
               </span>
             ) : null}
             {isVideo ? (
@@ -179,6 +185,30 @@ export function PostAdminRow({
               {videoReady ? "Publish video" : "Publish"}
             </button>
           )}
+          {status === "draft" ? (
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() =>
+                patch({
+                  category: deadmanQueued ? null : "deadman-release",
+                })
+              }
+              className={[
+                "rounded-md px-3 py-1.5 text-xs font-bold transition disabled:opacity-50",
+                deadmanQueued
+                  ? "border border-[#d8ad43] text-[#7a5100] hover:bg-[#fff5d6]"
+                  : "bg-[#d8ad43] text-[#1a1410] hover:bg-[#e1b94e]",
+              ].join(" ")}
+              title={
+                deadmanQueued
+                  ? "Remove from deadman release queue"
+                  : "Approve this draft for deadman release"
+              }
+            >
+              {deadmanQueued ? "Unqueue" : "Safe release"}
+            </button>
+          ) : null}
           <Link
             href={`/admin/posts/${id}/preview`}
             className="rounded-md border border-[var(--color-line)] hover:border-[var(--color-accent)] px-3 py-1.5 text-xs font-semibold text-center"

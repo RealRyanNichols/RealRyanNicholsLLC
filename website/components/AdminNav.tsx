@@ -46,6 +46,7 @@ const GROUPS: AdminGroup[] = [
     items: [
       { href: "/admin/posts", label: "Posts", sub: "Articles and updates" },
       { href: "/admin/new", label: "New post", sub: "Write now" },
+      { href: "/admin/deadman", label: "Deadman", sub: "Emergency release queue" },
       { href: "/admin/live", label: "Live", sub: "Streams and comments" },
     ],
   },

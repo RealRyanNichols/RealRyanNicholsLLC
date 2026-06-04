@@ -43,12 +43,14 @@ export default async function NewPostPage({
     title: string | null;
     body: string | null;
     pinned: boolean;
+    status: string;
+    category: string | null;
   } | null = null;
 
   if (editing) {
     const { data: post } = await supabase
       .from("posts")
-      .select("id, type, title, body, pinned")
+      .select("id, type, title, body, pinned, status, category")
       .eq("id", editing)
       .maybeSingle();
     if (!post) {

@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/deadman-release",
+      "schedule": "*/15 * * * *"
+    }
+  ]
+}

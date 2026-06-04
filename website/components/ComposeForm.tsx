@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
 import { POST_VIDEO_BUCKET, POST_VIDEO_MAX_BYTES, formatBytes } from "@/lib/direct-video";
+import { DEADMAN_QUEUE_CATEGORY } from "@/lib/deadman-constants";
 import { VIDEO_CHANNELS } from "@/lib/video-channels";
 import type { VideoConfigStatus } from "@/lib/video-config";
 
@@ -28,6 +29,8 @@ export type ComposeInitial = {
   title: string | null;
   body: string | null;
   pinned: boolean;
+  status: string;
+  category: string | null;
 };
 
 export function ComposeForm({
@@ -196,18 +199,24 @@ function TextForm({ initial }: { initial?: ComposeInitial } = {}) {
   const [title, setTitle] = useState(initial?.title ?? "");
   const [body, setBody] = useState(initial?.body ?? "");
   const [pinned, setPinned] = useState(initial?.pinned ?? false);
+  const [saveAsDraft, setSaveAsDraft] = useState(initial?.status === "draft");
+  const [deadmanApproved, setDeadmanApproved] = useState(
+    initial?.category === DEADMAN_QUEUE_CATEGORY,
+  );
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setState({ kind: "submitting", label: editing ? "Saving…" : "Publishing…" });
+    const status = saveAsDraft || deadmanApproved ? "draft" : "published";
+    const category = deadmanApproved ? DEADMAN_QUEUE_CATEGORY : null;
     try {
       if (editing && initial) {
-        await patchPost(initial.id, { title, body, pinned });
+        await patchPost(initial.id, { title, body, pinned, status, category });
         router.push("/admin/posts");
         router.refresh();
       } else {
-        const { post } = await createPost({ type: "text", title, body, pinned });
-        router.push(`/posts/${post.slug}`);
+        const { post } = await createPost({ type: "text", title, body, pinned, status, category });
+        router.push(status === "published" ? `/posts/${post.slug}` : `/admin/posts/${post.id}/preview`);
       }
     } catch (err) {
       setState({ kind: "error", message: err instanceof Error ? err.message : "Failed." });
@@ -243,8 +252,41 @@ function TextForm({ initial }: { initial?: ComposeInitial } = {}) {
         />
         Pin to top of feed
       </label>
+      <label className="flex items-start gap-2 text-sm mb-4">
+        <input
+          type="checkbox"
+          checked={saveAsDraft}
+          onChange={(e) => setSaveAsDraft(e.target.checked)}
+          className="mt-1"
+        />
+        <span>
+          Save as draft
+          <span className="block text-xs text-[var(--color-muted)]">
+            Drafts are hidden from the public feed until published.
+          </span>
+        </span>
+      </label>
+      <label className="flex items-start gap-2 text-sm mb-4 rounded-md border border-[#d8ad43] bg-[#fff5d6] p-3">
+        <input
+          type="checkbox"
+          checked={deadmanApproved}
+          onChange={(e) => {
+            setDeadmanApproved(e.target.checked);
+            if (e.target.checked) setSaveAsDraft(true);
+          }}
+          className="mt-1"
+        />
+        <span>
+          Public-release approved for deadman switch
+          <span className="block text-xs text-[var(--color-muted)]">
+            This marks the post category as <code>{DEADMAN_QUEUE_CATEGORY}</code>.
+            Do not use this for private tips, messages, contact info, uploads,
+            or unreviewed allegations.
+          </span>
+        </span>
+      </label>
       <SubmitButton state={state}>
-        {editing ? "Save changes" : "Publish essay"}
+        {editing ? "Save changes" : statusLabel(saveAsDraft || deadmanApproved, "essay")}
       </SubmitButton>
       <ErrorBanner state={state} />
       <ProgressBar state={state} />
@@ -257,18 +299,24 @@ function NoteForm({ initial }: { initial?: ComposeInitial } = {}) {
   const editing = !!initial;
   const [state, setState] = useState<State>({ kind: "idle" });
   const [body, setBody] = useState(initial?.body ?? "");
+  const [saveAsDraft, setSaveAsDraft] = useState(initial?.status === "draft");
+  const [deadmanApproved, setDeadmanApproved] = useState(
+    initial?.category === DEADMAN_QUEUE_CATEGORY,
+  );
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setState({ kind: "submitting", label: editing ? "Saving…" : "Posting…" });
+    const status = saveAsDraft || deadmanApproved ? "draft" : "published";
+    const category = deadmanApproved ? DEADMAN_QUEUE_CATEGORY : null;
     try {
       if (editing && initial) {
-        await patchPost(initial.id, { body });
+        await patchPost(initial.id, { body, status, category });
         router.push("/admin/posts");
         router.refresh();
       } else {
-        const { post } = await createPost({ type: "note", body });
-        router.push(`/posts/${post.slug}`);
+        const { post } = await createPost({ type: "note", body, status, category });
+        router.push(status === "published" ? `/posts/${post.slug}` : `/admin/posts/${post.id}/preview`);
       }
     } catch (err) {
       setState({ kind: "error", message: err instanceof Error ? err.message : "Failed." });
@@ -287,13 +335,49 @@ function NoteForm({ initial }: { initial?: ComposeInitial } = {}) {
           placeholder="A quick thought — shows up in the timeline without a headline."
         />
       </Field>
+      <label className="flex items-start gap-2 text-sm mb-4">
+        <input
+          type="checkbox"
+          checked={saveAsDraft}
+          onChange={(e) => setSaveAsDraft(e.target.checked)}
+          className="mt-1"
+        />
+        <span>
+          Save as draft
+          <span className="block text-xs text-[var(--color-muted)]">
+            Drafts are hidden from the public feed until published.
+          </span>
+        </span>
+      </label>
+      <label className="flex items-start gap-2 text-sm mb-4 rounded-md border border-[#d8ad43] bg-[#fff5d6] p-3">
+        <input
+          type="checkbox"
+          checked={deadmanApproved}
+          onChange={(e) => {
+            setDeadmanApproved(e.target.checked);
+            if (e.target.checked) setSaveAsDraft(true);
+          }}
+          className="mt-1"
+        />
+        <span>
+          Public-release approved for deadman switch
+          <span className="block text-xs text-[var(--color-muted)]">
+            This marks the post category as <code>{DEADMAN_QUEUE_CATEGORY}</code>.
+            Keep private and unreviewed material out of this queue.
+          </span>
+        </span>
+      </label>
       <SubmitButton state={state}>
-        {editing ? "Save changes" : "Post note"}
+        {editing ? "Save changes" : statusLabel(saveAsDraft || deadmanApproved, "note")}
       </SubmitButton>
       <ErrorBanner state={state} />
       <ProgressBar state={state} />
     </form>
   );
+}
+
+function statusLabel(draft: boolean, type: string) {
+  return draft ? `Save ${type} draft` : `Publish ${type}`;
 }
 
 function PhotoForm() {
