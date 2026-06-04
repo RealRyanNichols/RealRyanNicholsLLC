@@ -22,6 +22,7 @@ import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { SITE } from "@/lib/site";
 import { muxThumbnailUrl } from "@/lib/mux";
 import { getOgImage } from "@/lib/og-images";
+import type { Post, MediaItem } from "@/lib/types";
 
 export const revalidate = 60;
 
@@ -36,6 +37,33 @@ function deriveExcerpt(body: string, title: string | null): string {
     .replace(/\s+/g, " ")
     .trim() || title || "";
   return base.slice(0, 200).replace(/\s+/g, " ").trim();
+}
+
+function absoluteUrl(url: string): string {
+  if (/^https?:\/\//i.test(url)) return url;
+  return new URL(url, SITE.url).toString();
+}
+
+function firstMarkdownImage(body: string): string | null {
+  const match = body.match(/!\[[^\]]*]\((?<url>[^)\s]+)(?:\s+["'][^"']*["'])?\)/);
+  return match?.groups?.url ?? null;
+}
+
+function looksLikeVideoUrl(url: string): boolean {
+  return /\.(mp4|mov|m4v|webm)(?:\?|#|$)/i.test(url);
+}
+
+function firstMediaImage(media: MediaItem[] | null): string | null {
+  return media?.find((item) => item.url && !looksLikeVideoUrl(item.url))?.url ?? null;
+}
+
+function firstPostShareImage(post: Post): string | null {
+  return (
+    post.thumbnail_url ||
+    post.image_urls?.find(Boolean) ||
+    firstMediaImage(post.media) ||
+    firstMarkdownImage(post.body)
+  );
 }
 
 export async function generateMetadata(props: {
@@ -56,21 +84,22 @@ export async function generateMetadata(props: {
   let ogImage: string;
   let ogWidth = 1200;
   let ogHeight = 630;
+  const postShareImage = firstPostShareImage(post);
   if (override?.image_url) {
-    ogImage = override.image_url;
+    ogImage = absoluteUrl(override.image_url);
     ogWidth = override.width ?? 1200;
     ogHeight = override.height ?? 630;
-  } else if (post.type === "video" && post.thumbnail_url) {
-    // A custom thumbnail the author chose at upload wins over the Mux frame.
-    ogImage = post.thumbnail_url;
+  } else if (postShareImage) {
+    // The selected article thumbnail should be the social thumbnail too.
+    // This covers text articles, photos, videos with custom thumbnails,
+    // admin-uploaded image_urls, and first markdown images in the body.
+    ogImage = absoluteUrl(postShareImage);
   } else if (post.type === "video" && post.mux_playback_id) {
     // Same frame (time: 1) as the video thumbnail shown in the feed/player, so
     // the social share image matches the video's thumbnail.
     ogImage = muxThumbnailUrl(post.mux_playback_id, { width: 1200, height: 630, fitMode: "smartcrop", time: 1 });
-  } else if (post.type === "photo" && post.media && post.media[0]) {
-    ogImage = post.media[0].url;
   } else {
-    ogImage = `/og/${post.slug}`;
+    ogImage = absoluteUrl(`/og/${post.slug}`);
   }
 
   const metaTitle = override?.title ?? post.seo_title ?? displayTitle;
@@ -130,13 +159,14 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
 
   const displayTitle = post.title ?? (deriveExcerpt(post.body, null).slice(0, 80) || "Note");
   const postUrl = `${SITE.url}/posts/${post.slug}`;
+  const postShareImage = firstPostShareImage(post);
   const ldImage = ldOg?.image_url
-    ? ldOg.image_url.startsWith("http")
-      ? ldOg.image_url
-      : `${SITE.url}${ldOg.image_url}`
-    : post.type === "video" && post.mux_playback_id
-      ? muxThumbnailUrl(post.mux_playback_id, { width: 1200, time: 1 })
-      : null;
+    ? absoluteUrl(ldOg.image_url)
+    : postShareImage
+      ? absoluteUrl(postShareImage)
+      : post.type === "video" && post.mux_playback_id
+        ? muxThumbnailUrl(post.mux_playback_id, { width: 1200, time: 1 })
+        : null;
   const articleLd = {
     "@context": "https://schema.org",
     "@type":
