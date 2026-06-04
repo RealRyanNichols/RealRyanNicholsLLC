@@ -1376,7 +1376,7 @@ export function AttorneyBriefBody({
           </div>
           <div className="mt-4 grid gap-2 sm:grid-cols-2">
             {valueHighlights.slice(0, 4).map((item) => (
-              <div key={item.label} className="border border-[var(--color-line)] bg-white/35 p-3">
+              <div key={item.label} className="border border-[var(--color-line)] bg-[var(--color-paper)] p-3">
                 <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[var(--color-muted)]">
                   {item.label}
                 </p>
@@ -1902,7 +1902,7 @@ function FirstOpenCard({
       ].join(" ")}
     >
       <div className="flex items-start justify-between gap-3">
-        <span className="inline-flex h-9 w-9 items-center justify-center border border-black/10 bg-white/55 font-sans text-xl font-black text-[var(--color-ink)]">
+        <span className="inline-flex h-9 w-9 items-center justify-center border border-black/10 bg-[var(--color-paper)] font-sans text-xl font-black text-[var(--color-ink)]">
           {step}
         </span>
         <span className="text-[10px] font-black uppercase tracking-normal text-[var(--color-accent)] transition group-hover:translate-x-0.5">
@@ -2042,7 +2042,7 @@ function ClaimSupportRow({
   return (
     <div
       className={[
-        "grid grid-cols-[1.1fr_1.2fr_1.15fr_8rem_5.5rem] border-b border-[var(--color-line)] border-l-4 bg-white/35 text-sm last:border-b-0",
+        "grid grid-cols-[1.1fr_1.2fr_1.15fr_8rem_5.5rem] border-b border-[var(--color-line)] border-l-4 bg-[var(--color-paper)] text-sm last:border-b-0",
         toneClass,
       ].join(" ")}
     >
@@ -2152,7 +2152,7 @@ function ChargeCard({
       <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
         {summary}
       </p>
-      <div className="mt-3 border border-[var(--color-line)] bg-white/45 p-3">
+      <div className="mt-3 border border-[var(--color-line)] bg-[var(--color-paper)] p-3">
         <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-muted)]">
           Missing proof
         </p>
