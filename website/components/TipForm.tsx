@@ -137,7 +137,7 @@ export function TipForm({
         <div className="mt-4 grid gap-2 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-3 text-sm text-[var(--color-ink-soft)]">
           <p className="font-bold text-[var(--color-ink)]">What happens now:</p>
           <p>The tip gets sorted into the intake ledger immediately.</p>
-          <p>Other people can help verify, dispute, or add related context.</p>
+          <p>Other people can help verify, connect, dispute, or add related context.</p>
           <p>Useful public information can support timelines, records requests, case files, or the nexus map.</p>
         </div>
         <div className="mt-5 flex flex-wrap gap-3">

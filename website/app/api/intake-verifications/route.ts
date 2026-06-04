@@ -5,7 +5,7 @@ import { getSupabaseServiceClient } from "@/lib/supabase/service";
 
 const schema = z.object({
   intake_item_id: z.string().uuid(),
-  action: z.enum(["verify", "dispute", "context"]),
+  action: z.enum(["verify", "connection", "dispute", "context"]),
   note: z.string().max(2000).nullable().optional(),
   display_name: z.string().max(120).nullable().optional(),
   email: z.string().email().max(254).nullable().optional().or(z.literal("")),
@@ -100,13 +100,15 @@ export async function POST(request: Request) {
   const incrementColumn =
     parsed.data.action === "verify"
       ? "verify_count"
+      : parsed.data.action === "connection"
+        ? "connection_count"
       : parsed.data.action === "dispute"
         ? "dispute_count"
         : "context_count";
 
   const { data: current } = await supabase
     .from("intake_items")
-    .select("verify_count, dispute_count, context_count, public_status")
+    .select("verify_count, connection_count, dispute_count, context_count, public_status")
     .eq("id", parsed.data.intake_item_id)
     .single();
 

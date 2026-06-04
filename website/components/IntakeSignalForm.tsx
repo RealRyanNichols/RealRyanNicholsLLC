@@ -3,13 +3,18 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
-type Signal = "verify" | "dispute" | "context";
+type Signal = "verify" | "connection" | "dispute" | "context";
 
 const COPY: Record<Signal, { label: string; title: string; placeholder: string }> = {
   verify: {
     label: "Verify",
     title: "I can help verify this",
     placeholder: "What can you confirm? Add a date, record link, witness detail, or how you know.",
+  },
+  connection: {
+    label: "Connect",
+    title: "This connects to another record",
+    placeholder: "What does this connect to? Add a person, case number, agency, document, video, date, location, or public link.",
   },
   dispute: {
     label: "Dispute",
@@ -72,7 +77,7 @@ export function IntakeSignalForm({
 
   return (
     <div className="mt-4 border-t border-[var(--color-line)] pt-3">
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
         {(Object.keys(COPY) as Signal[]).map((action) => (
           <button
             key={action}

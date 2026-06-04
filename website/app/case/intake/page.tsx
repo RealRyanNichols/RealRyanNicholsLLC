@@ -214,7 +214,12 @@ export default async function IntakeLedgerPage({
       privateMessages: privateMessages ?? 0,
       open: open ?? 0,
       signals: items.reduce(
-        (sum, item) => sum + item.verify_count + item.dispute_count + item.context_count,
+        (sum, item) =>
+          sum +
+          item.verify_count +
+          item.connection_count +
+          item.dispute_count +
+          item.context_count,
         0,
       ),
     };
@@ -262,7 +267,7 @@ export default async function IntakeLedgerPage({
             <p className="mt-3 max-w-2xl text-base leading-relaxed text-[var(--color-ink-soft)]">
               This is the public-safe master list of tips and submissions that
               came into the site. Private details stay private. The public can
-              help verify, dispute, or connect the lead to another case,
+              help verify, connect, dispute, or add context to another case,
               document, witness, agency, or timeline.
             </p>
             <div className="rrn-tap-row mt-5">
@@ -412,8 +417,8 @@ export default async function IntakeLedgerPage({
                   the site logs a public-safe receipt.
                 </li>
                 <li>
-                  <strong className="text-[var(--color-ink)]">2. Verified:</strong>{" "}
-                  people add documents, dates, links, or corrections.
+                  <strong className="text-[var(--color-ink)]">2. Connected:</strong>{" "}
+                  people add documents, dates, links, corrections, and related records.
                 </li>
                 <li>
                   <strong className="text-[var(--color-ink)]">3. Mapped:</strong>{" "}
@@ -513,8 +518,9 @@ function IntakeCard({
         </div>
       </section>
 
-      <div className="mt-3 grid grid-cols-3 gap-2">
+      <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
         <MiniStat label="Verified" value={item.verify_count} tone="green" />
+        <MiniStat label="Connected" value={item.connection_count} tone="gold" />
         <MiniStat label="Disputed" value={item.dispute_count} tone="red" />
         <MiniStat label="Context" value={item.context_count} tone="blue" />
       </div>
@@ -608,11 +614,13 @@ function MiniStat({
 }: {
   label: string;
   value: number;
-  tone: "green" | "red" | "blue";
+  tone: "green" | "gold" | "red" | "blue";
 }) {
   const cls =
     tone === "green"
       ? "border-[var(--color-success)] bg-[var(--color-success-soft)]"
+      : tone === "gold"
+        ? "border-[var(--color-support)] bg-[var(--color-support-soft)]"
       : tone === "red"
         ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)]"
         : "border-[var(--color-blue)] bg-[var(--color-blue-soft)]";
