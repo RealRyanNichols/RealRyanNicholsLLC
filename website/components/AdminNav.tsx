@@ -17,6 +17,7 @@ type AdminGroup = {
 
 const PRIMARY: AdminItem[] = [
   { href: "/admin", label: "Overview", short: "Hub", sub: "Control room" },
+  { href: "/admin/attorney-brief", label: "Attorney brief", short: "Atty", sub: "Dallas prep" },
   { href: "/admin/tips?filter=pending", label: "Tip queue", short: "Tip", sub: "Evidence leads" },
   { href: "/admin/messages?filter=new", label: "Private mail", short: "Msg", sub: "Contact inbox" },
   { href: "/admin/invoices", label: "Invoices", short: "Pay", sub: "Collect money" },
@@ -39,6 +40,7 @@ const GROUPS: AdminGroup[] = [
       { href: "/admin", label: "Overview", sub: "What needs attention" },
       { href: "/admin/analytics", label: "Analytics", sub: "Traffic and behavior" },
       { href: "/admin/audience", label: "Audience intel", sub: "Profiles and signals" },
+      { href: "/admin/tools", label: "Free tools", sub: "Tool runs and needs" },
     ],
   },
   {
@@ -62,6 +64,7 @@ const GROUPS: AdminGroup[] = [
   {
     label: "Cases",
     items: [
+      { href: "/admin/attorney-brief", label: "Attorney brief", sub: "Dallas criminal-defense prep" },
       { href: "/admin/users", label: "Users", sub: "Accounts and approvals" },
       { href: "/admin/case", label: "Case docs", sub: "Documents on file" },
       { href: "/admin/imports", label: "Imports", sub: "Review staged data" },
@@ -106,7 +109,7 @@ export function AdminNav({
           </Link>
         </div>
 
-        <nav aria-label="Admin priority tools" className="mt-3 grid grid-cols-5 gap-1.5">
+        <nav aria-label="Admin priority tools" className="mt-3 grid grid-cols-6 gap-1.5">
           {PRIMARY.map((item) => (
             <MobilePrimaryLink
               key={item.href}
