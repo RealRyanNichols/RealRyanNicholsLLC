@@ -98,6 +98,63 @@ const firstOpenPackets = [
   },
 ];
 
+const firstReadFlow = [
+  {
+    label: "Matter",
+    title: "3 live charges",
+    body: "Two harassment counts and one deadly-conduct charge stay separated from the civil/J6 background.",
+  },
+  {
+    label: "Dispute",
+    title: "One gun narrative",
+    body: "Displayed / hand on grip is not the same allegation as pulled, pointed, brandished, fired, or threatened.",
+  },
+  {
+    label: "Control",
+    title: "Source files decide",
+    body: "Charging packets, discovery, native messages, video, CAD, dispatch, and witness statements control the read.",
+  },
+];
+
+const drawerMap = [
+  {
+    href: "#charges",
+    label: "Criminal",
+    title: "Three charges",
+    body: "The urgent defense lane stays first and clean.",
+  },
+  {
+    href: "#receipts",
+    label: "Receipts",
+    title: "Proof legend",
+    body: "Public record, Ryan statement, claimed number, or missing file.",
+  },
+  {
+    href: "#drive-evidence",
+    label: "Drive",
+    title: "Source folders",
+    body: "Four folder doors without exposing private material on the page.",
+  },
+  {
+    href: "#claim-map",
+    label: "Law",
+    title: "Claim map",
+    body: "Claim, evidence lane, authority lane, and status.",
+  },
+  {
+    href: "#full-record",
+    label: "Archive",
+    title: "Full record",
+    body: "Money, people, chronology, pressure, and background.",
+  },
+  {
+    href: "#open-questions",
+    label: "Open",
+    title: "Still needed",
+    body: "A short list of records that would make the packet stronger.",
+  },
+];
+
 const sourceChain = [
   {
     step: "Official baseline",
@@ -880,7 +937,7 @@ export default async function AttorneyBriefPage() {
   }
 
   return (
-    <article className="mx-auto w-full max-w-[64rem] px-4 py-5 sm:px-5 lg:px-6">
+    <article className="mx-auto w-full max-w-[60rem] px-4 py-5 sm:px-5 lg:px-6">
       <nav
         aria-label="Attorney brief shortcuts"
         className="sticky top-0 z-20 mb-4 flex flex-wrap items-center justify-between gap-2 border border-[var(--color-line)] bg-[var(--color-paper)]/95 p-2 shadow-sm backdrop-blur"
@@ -889,43 +946,49 @@ export default async function AttorneyBriefPage() {
           href="/admin"
           className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
         >
-          Back to admin
+          Back
         </Link>
         <div className="flex flex-wrap gap-2">
+          <a
+            href="#first-look"
+            className="inline-flex min-h-10 items-center border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-accent)]"
+          >
+            First read
+          </a>
           <a
             href="#source-doors"
             className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
           >
-            Source folders
+            Sources
           </a>
           <a
-            href="#open-questions"
-            className="inline-flex min-h-10 items-center border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-accent)]"
+            href="#packet-drawers"
+            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
           >
-            Open items
+            Drawers
           </a>
         </div>
       </nav>
 
       <section
         id="first-look"
-        className="border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5 lg:p-6"
+        className="border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm sm:p-5 lg:p-6"
       >
-        <div className="grid gap-5 lg:grid-cols-[1fr_19rem] lg:items-start">
+        <div className="grid gap-5 lg:grid-cols-[1fr_18rem] lg:items-start">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-accent)]">
-              Counsel first read
+            <p className="text-xs font-black uppercase tracking-[0.24em] text-[#7fe3a9]">
+              Attorney cover sheet
             </p>
-            <h1 className="mt-2 max-w-3xl text-3xl font-black leading-[0.98] text-[var(--color-ink)] sm:text-5xl lg:text-6xl">
-              Three misdemeanors. One proof path.
+            <h1 className="mt-2 max-w-3xl text-3xl font-black leading-[0.98] text-[#fdf8ea] sm:text-5xl lg:text-6xl">
+              Let counsel see the case in sixty seconds.
             </h1>
-            <p className="mt-4 max-w-3xl text-base font-semibold leading-7 text-[var(--color-ink-soft)]">
-              Start here: what is charged, what Ryan disputes, what record is
-              missing, and where the proof folders live. The full archive stays
-              below, but it does not control the first impression.
+            <p className="mt-4 max-w-3xl text-base font-semibold leading-7 text-[#cfd9ea]">
+              This page should feel simple first and deep second. Counsel sees
+              the charges, the disputed fact, the missing record, and four proof
+              doors. The archive stays filed below until someone asks for it.
             </p>
           </div>
-          <aside className="border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea]">
+          <aside className="border border-white/10 bg-white/[0.055] p-4">
             <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
               Dallas meeting
             </p>
@@ -970,25 +1033,36 @@ export default async function AttorneyBriefPage() {
           />
         </div>
 
-        <div className="mt-5 grid gap-3 lg:grid-cols-[1.15fr_0.85fr]">
-          <section className="border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-4">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
-              Core dispute
-            </p>
-            <h2 className="mt-2 font-sans text-2xl font-black leading-tight text-[var(--color-ink)]">
-              Public allegation says displayed / hand on grip. Ryan disputes
-              pulling, pointing, brandishing, firing, or threatening.
-            </h2>
-          </section>
-          <section className="border border-[var(--color-support)] bg-[var(--color-support-soft)] p-4">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-support-strong)]">
-              How to read it
-            </p>
-            <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
-              The screen is intentionally short. If counsel wants depth, every
-              proof lane is below in expandable packets.
-            </p>
-          </section>
+        <div className="mt-5 grid gap-3 lg:grid-cols-3">
+          {firstReadFlow.map((item, index) => (
+            <section
+              key={item.title}
+              className="border border-white/10 bg-white/[0.055] p-4"
+            >
+              <p className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
+                <span className="inline-flex h-6 w-6 items-center justify-center border border-[#d8c89e]/40 text-xs">
+                  {index + 1}
+                </span>
+                {item.label}
+              </p>
+              <h2 className="mt-3 font-sans text-xl font-black leading-tight text-[#fdf8ea]">
+                {item.title}
+              </h2>
+              <p className="mt-2 text-sm font-semibold leading-6 text-[#cfd9ea]">
+                {item.body}
+              </p>
+            </section>
+          ))}
+        </div>
+
+        <div className="mt-5 border border-[#e02a1d]/50 bg-[#e02a1d]/15 p-4">
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#ffb0a8]">
+            Core disputed fact
+          </p>
+          <h2 className="mt-2 font-sans text-xl font-black leading-tight text-[#fdf8ea] sm:text-2xl">
+            Public allegation says displayed / hand on grip. Ryan disputes
+            pulling, pointing, brandishing, firing, or threatening.
+          </h2>
         </div>
       </section>
 
@@ -1002,13 +1076,12 @@ export default async function AttorneyBriefPage() {
               Open first
             </p>
             <h2 className="mt-1 font-sans text-2xl font-black leading-tight sm:text-3xl">
-              Four source doors. Nothing else until they ask.
+              Four proof doors. Open these first.
             </h2>
           </div>
           <p className="text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
-            A first-time reader should feel the whole packet is controlled. These
-            four doors tell counsel where the real proof lives without making the
-            screen look like a document dump.
+            The first-time reader does not need the whole warehouse. They need
+            the front doors that prove the warehouse is organized.
           </p>
         </div>
         <div className="mt-4 grid gap-3 md:grid-cols-2">
@@ -1020,24 +1093,27 @@ export default async function AttorneyBriefPage() {
 
       <section
         id="packet-drawers"
-        className="mt-4 border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm sm:p-5"
+        className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5"
       >
-        <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
-          Depth is filed below
-        </p>
-        <h2 className="mt-2 font-sans text-2xl font-black text-[#fdf8ea]">
-          Show control, then let them open only what they need.
-        </h2>
-        <p className="mt-2 max-w-3xl text-sm font-semibold leading-6 text-[#cfd9ea]">
-          This is the difference between a brief and a document dump. The page
-          signals that the archive exists without making the attorney fight the
-          archive on first read.
-        </p>
-        <div className="mt-4 grid gap-3 md:grid-cols-2">
-          <PacketJump href="#charges" label="Criminal" title="Three charges" body="Deadly conduct plus two harassment counts, with missing proof called out." />
-          <PacketJump href="#receipts" label="Sources" title="Receipts first" body="Public links, Drive folders, and proof labels without exposing every private detail." />
-          <PacketJump href="#claim-map" label="Proof law" title="Claim to proof to law" body="A clean matrix for statutory lanes, source files, and open items." />
-          <PacketJump href="#full-record" label="Archive" title="Full support record" body="Money, people, chronology, public pressure, and file audit stay below the fold." />
+        <div className="grid gap-3 lg:grid-cols-[0.36fr_1fr] lg:items-end">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+              Filed drawers
+            </p>
+            <h2 className="mt-1 font-sans text-2xl font-black leading-tight sm:text-3xl">
+              The depth is visible without being loud.
+            </h2>
+          </div>
+          <p className="text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+            This is the we-have-it signal. The attorney can choose a lane
+            without scrolling through every fact, name, number, and source on
+            the first pass.
+          </p>
+        </div>
+        <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
+          {drawerMap.map((drawer) => (
+            <PacketJump key={drawer.href} {...drawer} />
+          ))}
         </div>
       </section>
 
