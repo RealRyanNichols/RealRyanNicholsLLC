@@ -38,8 +38,11 @@
   --color-tag-procedural: #b8741c;
   --color-tag-institutional: #1d3a6b;
   --color-tag-resolved: #2d6a4f;
+  --color-gold: #c89b2f;
+  --color-gold-soft: #f4e6bd;
 
   --color-success: #2d6a4f;
+  --color-success-soft: #dcebdc;
   --color-danger: #b32419;
 
   --font-display: "Source Serif 4", "Iowan Old Style", "Charter", "Georgia", serif;

@@ -139,6 +139,14 @@ export default async function SubmitPage({
               guaranteed investigation. It is a structured way to get serious
               information into Ryan&apos;s review queue.
             </p>
+            <div className="rrn-tap-row mt-4">
+              <Link
+                href="/case/intake"
+                className="rrn-tap rounded-lg border-2 border-[var(--color-success)] bg-[var(--color-success-soft)] px-4 py-2 text-sm font-bold text-[var(--color-ink)] transition hover:bg-[var(--color-surface)]"
+              >
+                View public intake ledger
+              </Link>
+            </div>
           </div>
 
           <div className="rrn-card p-4 shadow-xl sm:p-5">
@@ -168,16 +176,17 @@ export default async function SubmitPage({
               Tips become a cleaner record.
             </h2>
             <p className="mt-3 text-base leading-relaxed text-[var(--color-ink-soft)]">
-              A tip is not just a message in an inbox. The useful ones can help
-              build timelines, identify missing records, connect similar
+              A tip is not just a message in an inbox. Every saved tip gets a
+              public-safe receipt in the intake ledger. The useful ones can
+              help build timelines, identify missing records, connect similar
               complaints, support public case files, or create the next records
               request.
             </p>
             <Link
-              href="/case-review"
+              href="/case/intake"
               className="rrn-tap mt-5 inline-flex rounded-lg border-2 border-[var(--color-accent)] px-4 py-2 text-sm font-bold text-[var(--color-accent)] transition hover:bg-[var(--color-accent-soft)]"
             >
-              Need a private case review?
+              See what has come in
             </Link>
           </div>
 

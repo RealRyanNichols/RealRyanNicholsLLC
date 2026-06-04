@@ -59,6 +59,13 @@ const DASHBOARD_LINKS: NavItem[] = [
     tone: "blue",
   },
   {
+    href: "/case/intake",
+    label: "Ledger",
+    desc: "Verify incoming leads",
+    badge: "Live",
+    tone: "green",
+  },
+  {
     href: "/the-map-room",
     label: "Map Room",
     desc: "Live case dashboard",
@@ -96,6 +103,13 @@ const MOBILE_PRIMARY_LINKS: NavItem[] = [
     tone: "blue",
   },
   {
+    href: "/case/intake",
+    label: "Ledger",
+    desc: "Verify public-safe leads",
+    badge: "Live",
+    tone: "green",
+  },
+  {
     href: "/the-map-room",
     label: "Map Room",
     desc: "Live public record",
@@ -107,6 +121,7 @@ const MOBILE_PRIMARY_LINKS: NavItem[] = [
 const MOBILE_BROWSE_LINKS: NavItem[] = [
   { href: "/", label: "Feed", desc: "Latest posts and receipts" },
   { href: "/case", label: "Case Hub", desc: "Timeline, documents, people" },
+  { href: "/case/intake", label: "Intake Ledger", desc: "Verify, dispute, connect leads" },
   { href: "/case?view=people&filter=unclaimed", label: "J6 Profiles", desc: "Find and claim profiles" },
   { href: "/fights", label: "The Fights", desc: "Active accountability lanes" },
   { href: "/live", label: "Live", desc: "Streams and discussion" },
@@ -136,6 +151,13 @@ const NAV: NavEntry[] = [
         desc: "Timeline, grievances, documents, people.",
         badge: "Start",
         tone: "red",
+      },
+      {
+        href: "/case/intake",
+        label: "Intake Ledger",
+        desc: "Tips and submissions people can verify.",
+        badge: "Live",
+        tone: "green",
       },
       {
         href: "/case?view=people&filter=unclaimed",
@@ -184,6 +206,13 @@ const NAV: NavEntry[] = [
         desc: "Send links, records, names, dates, proof.",
         badge: "Tip",
         tone: "blue",
+      },
+      {
+        href: "/case/intake",
+        label: "Public Ledger",
+        desc: "See incoming leads and add verification.",
+        badge: "Verify",
+        tone: "green",
       },
       {
         href: "/contact",

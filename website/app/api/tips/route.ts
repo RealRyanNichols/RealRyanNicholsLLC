@@ -86,23 +86,38 @@ export async function POST(request: Request) {
       ? parsed.data.submitter_email
       : null;
 
-  const { error } = await supabase.from("case_tips").insert({
-    category: parsed.data.category,
-    location: parsed.data.location?.trim() || null,
-    submitter_name: parsed.data.submitter_name?.trim() || null,
-    submitter_email: emailIn?.trim() ?? null,
-    defendant_name: parsed.data.defendant_name?.trim() || null,
-    narrative: parsed.data.narrative.trim(),
-    urls: parsed.data.urls ?? [],
-    ip_hash: ipHash,
-    status: "pending",
-  });
+  const { data: savedTip, error } = await supabase
+    .from("case_tips")
+    .insert({
+      category: parsed.data.category,
+      location: parsed.data.location?.trim() || null,
+      submitter_name: parsed.data.submitter_name?.trim() || null,
+      submitter_email: emailIn?.trim() ?? null,
+      defendant_name: parsed.data.defendant_name?.trim() || null,
+      narrative: parsed.data.narrative.trim(),
+      urls: parsed.data.urls ?? [],
+      ip_hash: ipHash,
+      status: "pending",
+    })
+    .select("id")
+    .single();
 
   if (error) {
     return NextResponse.json(
       { error: "Could not save your tip. Try again in a moment." },
       { status: 500 }
     );
+  }
+
+  let publicRef: string | null = null;
+  if (savedTip?.id) {
+    const { data: ledgerItem } = await supabase
+      .from("intake_items")
+      .select("public_ref")
+      .eq("source_type", "tip")
+      .eq("source_id", savedTip.id)
+      .maybeSingle();
+    publicRef = ledgerItem?.public_ref ?? null;
   }
 
   // Best-effort admin notification so a new tip doesn't sit unseen in /admin/tips.
@@ -145,5 +160,9 @@ export async function POST(request: Request) {
     }
   }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({
+    ok: true,
+    public_ref: publicRef,
+    ledger_url: `${SITE.url}/case/intake`,
+  });
 }

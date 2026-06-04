@@ -21,6 +21,7 @@ export function TipForm({
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [category, setCategory] = useState<Category>(defaultCategory);
   const [shareStatus, setShareStatus] = useState<"idle" | "copied">("idle");
+  const [receipt, setReceipt] = useState<{ publicRef: string | null; ledgerUrl: string } | null>(null);
 
   async function shareTipLine() {
     const url =
@@ -82,7 +83,11 @@ export function TipForm({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      const json = (await res.json().catch(() => ({}))) as { error?: string };
+      const json = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        public_ref?: string | null;
+        ledger_url?: string;
+      };
       if (!res.ok) {
         trackEvent("tip_submit_failed", { category, reason: "api" });
         setStatus("error");
@@ -93,6 +98,10 @@ export function TipForm({
         category,
         has_email: payload.submitter_email.length > 0,
         url_count: urls.length,
+      });
+      setReceipt({
+        publicRef: json.public_ref ?? null,
+        ledgerUrl: json.ledger_url ?? "/case/intake",
       });
       setStatus("ok");
       form.reset();
@@ -107,25 +116,47 @@ export function TipForm({
     return (
       <div className="rounded-lg border-2 border-[var(--color-accent)] bg-[var(--color-surface)] p-6">
         <h2 className="font-display text-2xl font-bold tracking-normal">
-          Tip received.
+          Tip received and logged.
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-          It is now in Ryan&apos;s review queue. If you left contact information
-          and the record needs another detail, Ryan can follow up.
+          It is now in Ryan&apos;s review queue and on the public-safe intake
+          ledger. Private details stay private, but the record shows that the
+          lead came in and can be verified, disputed, or connected to another
+          case.
         </p>
+        {receipt?.publicRef ? (
+          <div className="mt-4 rounded-lg border border-[var(--color-success)] bg-[var(--color-success-soft)] p-3">
+            <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-muted)]">
+              Public receipt
+            </p>
+            <p className="mt-1 font-mono text-2xl font-black text-[var(--color-ink)]">
+              {receipt.publicRef}
+            </p>
+          </div>
+        ) : null}
         <div className="mt-4 grid gap-2 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-3 text-sm text-[var(--color-ink-soft)]">
           <p className="font-bold text-[var(--color-ink)]">What happens now:</p>
-          <p>The tip gets reviewed, sorted, and checked against other leads.</p>
-          <p>Useful public information can support timelines, records requests, or case documentation.</p>
+          <p>The tip gets sorted into the intake ledger immediately.</p>
+          <p>Other people can help verify, dispute, or add related context.</p>
+          <p>Useful public information can support timelines, records requests, case files, or the nexus map.</p>
         </div>
         <div className="mt-5 flex flex-wrap gap-3">
           <button
             type="button"
-            onClick={() => setStatus("idle")}
+            onClick={() => {
+              setReceipt(null);
+              setStatus("idle");
+            }}
             className="rounded-lg border-2 border-[var(--color-accent)] bg-[var(--color-accent)] px-4 py-2 text-sm font-bold text-white transition hover:bg-[var(--color-accent-strong)]"
           >
             Send another
           </button>
+          <a
+            href={receipt?.ledgerUrl ?? "/case/intake"}
+            className="rounded-lg border border-[var(--color-line)] px-4 py-2 text-sm font-bold text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          >
+            See the ledger
+          </a>
           <button
             type="button"
             onClick={shareTipLine}
