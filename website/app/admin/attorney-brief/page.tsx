@@ -1010,19 +1010,19 @@ export function AttorneyBriefBody({
           </a>
           <a
             href="#source-doors"
-            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
           >
             Open first
           </a>
           <a
             href="#visuals"
-            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
           >
             Charts
           </a>
           <a
             href="#packet-drawers"
-            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
           >
             Deep file
           </a>
@@ -1365,7 +1365,7 @@ export function AttorneyBriefBody({
                 key={item.label}
                 className="border border-[var(--color-line)] bg-[var(--color-paper)] p-3"
               >
-                <p className="text-xs font-black uppercase tracking-[0.14em] text-[var(--color-muted)]">
+                <p className="text-xs font-black uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
                   {item.label}
                 </p>
                 <p className="mt-1 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
@@ -1377,7 +1377,7 @@ export function AttorneyBriefBody({
           <div className="mt-4 grid gap-2 sm:grid-cols-2">
             {valueHighlights.slice(0, 4).map((item) => (
               <div key={item.label} className="border border-[var(--color-line)] bg-[var(--color-paper)] p-3">
-                <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[var(--color-muted)]">
+                <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
                   {item.label}
                 </p>
                 <p className="mt-1 font-sans text-2xl font-black">
@@ -1455,7 +1455,7 @@ export function AttorneyBriefBody({
           <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
             {simultaneousLanes.map((lane) => (
               <section key={lane.label} className="border border-[var(--color-line)] bg-[var(--color-paper)] p-3">
-                <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-muted)]">
+                <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-ink-soft)]">
                   {lane.label}
                 </p>
                 <h3 className="mt-2 font-sans text-lg font-black leading-tight">
@@ -1469,7 +1469,7 @@ export function AttorneyBriefBody({
           </div>
           <div className="mt-4 overflow-x-auto">
             <div className="min-w-[62rem] border border-[var(--color-line)]">
-              <div className="grid grid-cols-[1.1fr_1.2fr_1.15fr_8rem_5.5rem] border-b border-[var(--color-line)] bg-[var(--color-paper)] text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-muted)]">
+              <div className="grid grid-cols-[1.1fr_1.2fr_1.15fr_8rem_5.5rem] border-b border-[var(--color-line)] bg-[var(--color-paper)] text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-ink-soft)]">
                 <div className="border-r border-[var(--color-line)] p-3">Claim</div>
                 <div className="border-r border-[var(--color-line)] p-3">Evidence lane</div>
                 <div className="border-r border-[var(--color-line)] p-3">Law / case-law lane</div>
@@ -1575,7 +1575,7 @@ export function AttorneyBriefBody({
                     key={`${event.date}-${event.title}`}
                     className="grid gap-2 border border-[var(--color-line)] bg-[var(--color-paper)] p-3 sm:grid-cols-[9rem_1fr]"
                   >
-                    <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--color-muted)]">
+                    <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--color-ink-soft)]">
                       {event.date}
                     </p>
                     <div>
@@ -1787,7 +1787,7 @@ export function AttorneyBriefBody({
             {sourceFiles.map((file) => (
               <div key={file.path} className="border border-[var(--color-line)] bg-[var(--color-paper)] p-3">
                 <p className="text-sm font-black">{file.label}</p>
-                <p className="mt-1 break-words font-mono text-[11px] font-semibold text-[var(--color-muted)]">
+                <p className="mt-1 break-words font-mono text-[11px] font-semibold text-[var(--color-ink-soft)]">
                   {file.path}
                 </p>
                 <p className="mt-2 text-xs font-semibold leading-5 text-[var(--color-ink-soft)]">
@@ -1810,7 +1810,7 @@ export function AttorneyBriefBody({
       </details>
 
       <section className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
-        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-muted)]">
+        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-ink-soft)]">
           Operator note
         </p>
         <p className="mt-2 max-w-4xl text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
@@ -1861,7 +1861,7 @@ function Metric({
       ].join(" ")}
     >
       <p className="text-2xl font-black">{value}</p>
-      <p className="mt-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-muted)]">
+      <p className="mt-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-ink-soft)]">
         {label}
       </p>
       <p className="mt-1 text-xs font-semibold text-[var(--color-ink-soft)]">
@@ -1932,23 +1932,36 @@ function PacketJump({
   title: string;
   body: string;
 }) {
+  const tone =
+    label === "Criminal"
+      ? "#b32419"
+      : label === "Receipts"
+        ? "#2d6a4f"
+        : label === "Law"
+          ? "#8f6b16"
+          : "#1d3a6b";
+
   return (
     <a
       href={href}
-      className="group border border-white/10 bg-white/[0.055] p-4 text-[#fdf8ea] transition hover:border-[#7fe3a9]/50 hover:bg-[#7fe3a9]/10"
+      className="group border border-[var(--color-line)] bg-[var(--color-paper)] p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+      style={{ borderLeft: `4px solid ${tone}` }}
     >
       <div className="flex items-start justify-between gap-3">
-        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
+        <p
+          className="text-[10px] font-black uppercase tracking-[0.18em]"
+          style={{ color: tone }}
+        >
           {label}
         </p>
-        <span className="text-[10px] font-black uppercase tracking-normal text-[#7fe3a9] transition group-hover:translate-x-0.5">
+        <span className="text-[10px] font-black uppercase tracking-normal text-[var(--color-accent)] transition group-hover:translate-x-0.5">
           Open
         </span>
       </div>
-      <h3 className="mt-2 font-sans text-xl font-black leading-tight">
+      <h3 className="mt-2 font-sans text-xl font-black leading-tight text-[var(--color-ink)]">
         {title}
       </h3>
-      <p className="mt-2 text-sm font-semibold leading-6 text-[#cfd9ea]">
+      <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
         {body}
       </p>
     </a>
@@ -1979,7 +1992,7 @@ function MatterSplitCard({
       ].join(" ")}
     >
       <div className="flex items-start justify-between gap-3">
-        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-muted)]">
+        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-ink-soft)]">
           {label}
         </p>
         <span
@@ -2091,7 +2104,7 @@ function InfoRow({
       <dt
         className={[
           "text-[10px] font-black uppercase tracking-[0.2em]",
-          dark ? "text-[#d8c89e]" : "text-[var(--color-muted)]",
+          dark ? "text-[#d8c89e]" : "text-[var(--color-ink-soft)]",
         ].join(" ")}
       >
         {label}
@@ -2134,7 +2147,7 @@ function ChargeCard({
       ].join(" ")}
     >
       <div className="flex items-start justify-between gap-3">
-        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-muted)]">
+        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-ink-soft)]">
           {label}
         </p>
         <span
@@ -2153,7 +2166,7 @@ function ChargeCard({
         {summary}
       </p>
       <div className="mt-3 border border-[var(--color-line)] bg-[var(--color-paper)] p-3">
-        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-muted)]">
+        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-ink-soft)]">
           Missing proof
         </p>
         <p className="mt-1 text-xs font-semibold leading-5 text-[var(--color-ink-soft)]">
