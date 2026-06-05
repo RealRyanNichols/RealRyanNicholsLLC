@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BookWaitlist } from "@/components/BookWaitlist";
+import { BookDashboard } from "@/components/BookDashboard";
 import { SITE } from "@/lib/site";
 
 const title = "The Book — Coming Soon | Ryan Nichols";
@@ -75,8 +76,8 @@ export default function BookPage() {
     <article className="rrn-page">
       {/* Hero */}
       <section className="border-b border-[#203a64] bg-[#071126] text-[#fdf8ea]">
-        <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:py-16">
-          <div>
+        <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:py-16">
+          <div className="max-w-3xl">
             <p className="text-xs font-black uppercase tracking-[0.24em] text-[#7fe3a9]">
               Coming soon · The book
             </p>
@@ -86,39 +87,9 @@ export default function BookPage() {
             <p className="mt-5 max-w-2xl text-base font-semibold leading-7 text-[#cfd9ea] sm:text-lg">
               {heroSub}
             </p>
-            <div className="mt-7 rounded-xl border border-white/10 bg-white/[0.06] p-4 sm:p-5">
-              <p className="mb-3 text-sm font-black uppercase tracking-[0.16em] text-[#7fe3a9]">
-                Join the waitlist
-              </p>
-              <BookWaitlist source="book_hero" tone="dark" />
-            </div>
           </div>
-
-          {/* Cover placeholder */}
-          <div className="flex justify-center lg:justify-end">
-            <div className="relative w-full max-w-[20rem]">
-              <div className="aspect-[2/3] overflow-hidden rounded-r-lg rounded-l-sm border border-white/15 bg-gradient-to-br from-[#142a52] to-[#0a1730] shadow-2xl">
-                <div className="flex h-full flex-col items-center justify-center p-6 text-center">
-                  <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#7fe3a9]">
-                    Cover reveal
-                  </span>
-                  <span className="mt-3 font-display text-2xl font-black leading-tight text-[#fdf8ea]">
-                    Coming soon
-                  </span>
-                  <span className="mt-3 h-px w-12 bg-white/20" aria-hidden />
-                  <span className="mt-3 text-xs font-semibold leading-relaxed text-[#cfd9ea]">
-                    The list sees the cover and title first.
-                  </span>
-                  <span className="mt-6 text-sm font-black uppercase tracking-[0.18em] text-[#d8c89e]">
-                    Ryan Nichols
-                  </span>
-                </div>
-              </div>
-              <div
-                className="absolute -bottom-3 left-3 right-3 h-3 rounded-b-lg bg-black/40 blur-md"
-                aria-hidden
-              />
-            </div>
+          <div className="mt-8">
+            <BookDashboard />
           </div>
         </div>
       </section>
