@@ -5,7 +5,7 @@ import { SITE } from "@/lib/site";
 
 const title = "Free Tools | Real Ryan Nichols";
 const description =
-  "Free tools to draft public-records requests, build timeline cards, and organize your next three moves while helping Real Ryan Nichols spot public patterns.";
+  "Free tools to build your case file, learn your rights, and draft public-records requests, pro se motions, timeline cards, and a next-three-moves plan — while helping Real Ryan Nichols spot public patterns.";
 
 export const metadata: Metadata = {
   title,
