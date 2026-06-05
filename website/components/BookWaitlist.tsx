@@ -9,9 +9,11 @@ const inputClass =
 export function BookWaitlist({
   source = "book_page",
   tone = "light",
+  onSuccess,
 }: {
   source?: string;
   tone?: "light" | "dark";
+  onSuccess?: () => void;
 }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -44,6 +46,7 @@ export function BookWaitlist({
       }
       trackEvent("book_waitlist_success", { source });
       setDone({ position: json.position ?? null });
+      onSuccess?.();
     } catch {
       trackEvent("book_waitlist_failed", { source, reason: "network" });
       setError("Network error. Try again.");

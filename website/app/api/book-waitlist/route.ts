@@ -82,3 +82,26 @@ export async function POST(request: Request) {
 
   return NextResponse.json({ ok: true, position: count ?? null });
 }
+
+export async function GET() {
+  if (!isSupabaseServiceConfigured()) {
+    return NextResponse.json(
+      { count: 0, today: 0 },
+      { headers: { "Cache-Control": "no-store" } },
+    );
+  }
+  const supabase = getSupabaseServiceClient();
+  const { count } = await supabase
+    .from("book_waitlist")
+    .select("*", { count: "exact", head: true });
+  const since = new Date();
+  since.setUTCHours(0, 0, 0, 0);
+  const { count: today } = await supabase
+    .from("book_waitlist")
+    .select("*", { count: "exact", head: true })
+    .gte("created_at", since.toISOString());
+  return NextResponse.json(
+    { count: count ?? 0, today: today ?? 0 },
+    { headers: { "Cache-Control": "no-store" } },
+  );
+}
