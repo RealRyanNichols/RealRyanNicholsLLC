@@ -65,8 +65,9 @@ export function BookWaitlist({
           {done.position ? `You're #${done.position} in line.` : "You're on the list."}
         </h3>
         <p className="mt-2 text-sm font-semibold leading-relaxed text-[var(--color-ink-soft)]">
-          Watch your email and phone — the list sees the cover, the title, and
-          the release date first, before anyone else. Thank you for being early.
+          Watch your email and phone — the list learns the release date first
+          and gets first chance to own Fighting Shadows. Thank you for being
+          early.
         </p>
       </div>
     );
@@ -136,7 +137,7 @@ export function BookWaitlist({
             : "text-center text-[11px] font-semibold text-[var(--color-muted)]"
         }
       >
-        No spam. The list gets the cover, title, and release date first.
+        No spam. The list gets the release date and first chance to buy.
       </p>
     </form>
   );
