@@ -4,7 +4,13 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { trackEvent } from "@/lib/analytics";
 
-type ToolSlug = "records-request" | "timeline-builder" | "next-three-moves";
+type ToolSlug =
+  | "records-request"
+  | "timeline-builder"
+  | "next-three-moves"
+  | "case-builder"
+  | "know-your-rights"
+  | "pro-se-motion";
 
 type RecordsInput = {
   agency: string;
@@ -29,6 +35,28 @@ type MovesInput = {
   deadline: string;
   proof: string;
   goal: string;
+};
+
+type CaseInput = {
+  summary: string;
+  parties: string;
+  events: string;
+  evidence: string;
+  missing: string;
+  goal: string;
+};
+
+type RightsInput = {
+  scenario: string;
+  state: string;
+};
+
+type MotionInput = {
+  motion_type: string;
+  court: string;
+  party: string;
+  relief: string;
+  facts: string;
 };
 
 type ToolResult = {
@@ -98,6 +126,30 @@ const TOOLS: {
     body: "Get a simple evidence-first checklist for what to do next.",
     button: "Get moves",
   },
+  {
+    slug: "case-builder",
+    label: "Case Builder",
+    short: "Case",
+    eyebrow: "Build your case",
+    body: "Turn your facts into one organized case file: parties, timeline, evidence, and next moves.",
+    button: "Build case file",
+  },
+  {
+    slug: "know-your-rights",
+    label: "Know Your Rights",
+    short: "Rights",
+    eyebrow: "Know what to say",
+    body: "A plain-English rights card and the exact words to say for your situation.",
+    button: "Get my rights card",
+  },
+  {
+    slug: "pro-se-motion",
+    label: "Pro Se Motion Starter",
+    short: "Motion",
+    eyebrow: "Represent yourself",
+    body: "Generate a clean motion skeleton plus a file-it checklist.",
+    button: "Draft motion",
+  },
 ];
 
 const input =
@@ -133,6 +185,9 @@ export function FreeToolsHub() {
     "records-request": 0,
     "timeline-builder": 0,
     "next-three-moves": 0,
+    "case-builder": 0,
+    "know-your-rights": 0,
+    "pro-se-motion": 0,
   });
   const [result, setResult] = useState<{
     publicRef: string;
@@ -162,6 +217,25 @@ export function FreeToolsHub() {
     proof: "",
     goal: "",
   });
+  const [caseFile, setCaseFile] = useState({
+    summary: "",
+    parties: "",
+    events: "",
+    evidence: "",
+    missing: "",
+    goal: "",
+  });
+  const [rights, setRights] = useState({
+    scenario: "police stop",
+    state: "Texas",
+  });
+  const [motion, setMotion] = useState({
+    motion_type: "Motion for Continuance",
+    court: "",
+    party: "",
+    relief: "",
+    facts: "",
+  });
   const [wish, setWish] = useState({
     tool_name: "",
     problem: "",
@@ -184,6 +258,9 @@ export function FreeToolsHub() {
       "records-request": readUsage("records-request"),
       "timeline-builder": readUsage("timeline-builder"),
       "next-three-moves": readUsage("next-three-moves"),
+      "case-builder": readUsage("case-builder"),
+      "know-your-rights": readUsage("know-your-rights"),
+      "pro-se-motion": readUsage("pro-se-motion"),
     });
   }, []);
 
@@ -224,7 +301,13 @@ export function FreeToolsHub() {
         ? records
         : active === "timeline-builder"
           ? timeline
-          : moves;
+          : active === "next-three-moves"
+            ? moves
+            : active === "case-builder"
+              ? caseFile
+              : active === "know-your-rights"
+                ? rights
+                : motion;
     trackEvent("free_tool_attempt", { tool: active });
 
     try {
@@ -464,8 +547,14 @@ export function FreeToolsHub() {
             <RecordsFields value={records} onChange={setRecords} />
           ) : active === "timeline-builder" ? (
             <TimelineFields value={timeline} onChange={setTimeline} />
-          ) : (
+          ) : active === "next-three-moves" ? (
             <MovesFields value={moves} onChange={setMoves} />
+          ) : active === "case-builder" ? (
+            <CaseFields value={caseFile} onChange={setCaseFile} />
+          ) : active === "know-your-rights" ? (
+            <RightsFields value={rights} onChange={setRights} />
+          ) : (
+            <MotionFields value={motion} onChange={setMotion} />
           )}
 
           <details className="rounded-md border border-[var(--color-line)] bg-[var(--color-paper)]">
@@ -973,6 +1062,174 @@ function MovesFields({
           onChange={(event) => onChange({ ...value, proof: event.target.value })}
           rows={5}
           placeholder="List the first documents, links, screenshots, videos, dates, or messages."
+          className={input}
+        />
+      </Field>
+    </div>
+  );
+}
+
+function CaseFields({
+  value,
+  onChange,
+}: {
+  value: CaseInput;
+  onChange: (value: CaseInput) => void;
+}) {
+  return (
+    <div className="grid gap-3">
+      <Field label="What is this case about?" required>
+        <textarea
+          required
+          value={value.summary}
+          onChange={(event) => onChange({ ...value, summary: event.target.value })}
+          rows={3}
+          placeholder="One or two sentences: what happened and what is at stake."
+          className={input}
+        />
+      </Field>
+      <Field label="Who is involved / on the other side?">
+        <input
+          value={value.parties}
+          onChange={(event) => onChange({ ...value, parties: event.target.value })}
+          placeholder="Names, agencies, opposing parties, attorneys"
+          className={input}
+        />
+      </Field>
+      <Field label="Key events (one per line)">
+        <textarea
+          value={value.events}
+          onChange={(event) => onChange({ ...value, events: event.target.value })}
+          rows={5}
+          placeholder={"2025-07-13 — what happened\n2026-05-12 — what happened next"}
+          className={input}
+        />
+      </Field>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <Field label="Evidence you have">
+          <textarea
+            value={value.evidence}
+            onChange={(event) => onChange({ ...value, evidence: event.target.value })}
+            rows={4}
+            placeholder="Bodycam, texts, filings, photos, receipts..."
+            className={input}
+          />
+        </Field>
+        <Field label="What is still missing">
+          <textarea
+            value={value.missing}
+            onChange={(event) => onChange({ ...value, missing: event.target.value })}
+            rows={4}
+            placeholder="Records, transcripts, video, orders you still need"
+            className={input}
+          />
+        </Field>
+      </div>
+      <Field label="What outcome do you want?">
+        <input
+          value={value.goal}
+          onChange={(event) => onChange({ ...value, goal: event.target.value })}
+          placeholder="Dismiss, expose, recover, organize, get records..."
+          className={input}
+        />
+      </Field>
+    </div>
+  );
+}
+
+function RightsFields({
+  value,
+  onChange,
+}: {
+  value: RightsInput;
+  onChange: (value: RightsInput) => void;
+}) {
+  return (
+    <div className="grid gap-3 sm:grid-cols-2">
+      <Field label="What situation are you in?" required>
+        <select
+          value={value.scenario}
+          onChange={(event) => onChange({ ...value, scenario: event.target.value })}
+          className={input}
+        >
+          <option value="police stop">Police stop</option>
+          <option value="recording police">Recording the police</option>
+          <option value="questioned in custody">Questioned in custody (Miranda)</option>
+          <option value="asked to search">Asked to consent to a search</option>
+          <option value="arrest">Being arrested</option>
+        </select>
+      </Field>
+      <Field label="State">
+        <input
+          value={value.state}
+          onChange={(event) => onChange({ ...value, state: event.target.value })}
+          placeholder="Texas"
+          className={input}
+        />
+      </Field>
+    </div>
+  );
+}
+
+function MotionFields({
+  value,
+  onChange,
+}: {
+  value: MotionInput;
+  onChange: (value: MotionInput) => void;
+}) {
+  return (
+    <div className="grid gap-3">
+      <div className="grid gap-3 sm:grid-cols-2">
+        <Field label="Motion type" required>
+          <select
+            value={value.motion_type}
+            onChange={(event) => onChange({ ...value, motion_type: event.target.value })}
+            className={input}
+          >
+            <option>Motion for Continuance</option>
+            <option>Motion to Compel Discovery</option>
+            <option>Motion to Suppress</option>
+            <option>Motion for Production of Records</option>
+            <option>Motion to Recuse</option>
+            <option>Motion for Temporary Orders</option>
+            <option>General Motion</option>
+          </select>
+        </Field>
+        <Field label="Court / county / cause no.">
+          <input
+            value={value.court}
+            onChange={(event) => onChange({ ...value, court: event.target.value })}
+            placeholder="71st JDC, Harrison County — Cause No. ..."
+            className={input}
+          />
+        </Field>
+      </div>
+      <Field label="Your name and role">
+        <input
+          value={value.party}
+          onChange={(event) => onChange({ ...value, party: event.target.value })}
+          placeholder="Jane Doe, Respondent, Pro Se"
+          className={input}
+        />
+      </Field>
+      <Field label="What are you asking the court to do?" required>
+        <textarea
+          required
+          value={value.relief}
+          onChange={(event) => onChange({ ...value, relief: event.target.value })}
+          rows={3}
+          placeholder="State the exact relief: continue the hearing, compel the bodycam, suppress the statement..."
+          className={input}
+        />
+      </Field>
+      <Field label="Facts that support it" required>
+        <textarea
+          required
+          value={value.facts}
+          onChange={(event) => onChange({ ...value, facts: event.target.value })}
+          rows={5}
+          placeholder="Plain facts and dates that justify the relief."
           className={input}
         />
       </Field>
