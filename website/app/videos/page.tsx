@@ -103,7 +103,7 @@ export default async function VideosPage(props: {
       {!active && j6Videos.length > 0 ? (
         <section className="mt-8 overflow-hidden rounded-xl border-2 border-[var(--color-accent)] shadow-sm">
           <div className="bg-[#071126] p-5 text-[#fdf8ea] sm:p-7">
-            <p className="text-xs font-black uppercase tracking-[0.24em] text-[#7fe3a9]">
+            <p className="text-xs font-black uppercase tracking-[0.24em] text-[#e1bd5b]">
               J6 Video Drops
             </p>
             <h2 className="mt-2 font-display text-3xl font-black leading-tight text-[#fdf8ea] sm:text-4xl">
@@ -117,7 +117,7 @@ export default async function VideosPage(props: {
             <div className="mt-4 flex flex-wrap gap-2">
               <Link
                 href="/videos?channel=j6"
-                className="inline-flex min-h-11 items-center rounded-md border border-[#7fe3a9]/60 bg-[#7fe3a9]/15 px-4 text-sm font-black text-[#7fe3a9] transition hover:bg-[#7fe3a9]/25"
+                className="inline-flex min-h-11 items-center rounded-md border border-[#e1bd5b]/60 bg-[#e1bd5b]/15 px-4 text-sm font-black text-[#e1bd5b] transition hover:bg-[#e1bd5b]/25"
               >
                 See all J6 drops · {j6Videos.length}
               </Link>

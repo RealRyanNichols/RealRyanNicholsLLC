@@ -261,7 +261,7 @@ function AdminOfficeCard() {
     <section className="mt-6 overflow-hidden rounded-2xl border-2 border-[#203a64] bg-[#071126] text-[#fdf8ea] shadow-xl">
       <div className="border-b border-white/10 p-4 sm:flex sm:items-center sm:justify-between sm:gap-4">
         <div>
-          <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+          <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
             Admin Office
           </p>
           <h2 className="mt-1 text-2xl font-black tracking-tight">
@@ -274,7 +274,7 @@ function AdminOfficeCard() {
         </div>
         <Link
           href="/admin"
-          className="mt-4 inline-flex min-h-11 items-center justify-center rounded-full bg-[#7fe3a9] px-5 text-sm font-black uppercase tracking-normal text-[#071126] transition hover:bg-[#a7efc4] sm:mt-0"
+          className="mt-4 inline-flex min-h-11 items-center justify-center rounded-full bg-[#e1bd5b] px-5 text-sm font-black uppercase tracking-normal text-[#071126] transition hover:bg-[#a7efc4] sm:mt-0"
         >
           Open Office
         </Link>

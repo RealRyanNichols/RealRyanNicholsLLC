@@ -92,13 +92,13 @@ export default function BookPage() {
         <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:py-16">
           <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-12">
             <div className="max-w-3xl">
-              <p className="text-xs font-black uppercase tracking-[0.24em] text-[#7fe3a9]">
+              <p className="text-xs font-black uppercase tracking-[0.24em] text-[#e1bd5b]">
                 Coming 2026 · A memoir
               </p>
               <h1 className="mt-3 font-display text-5xl font-black leading-[0.95] tracking-tight text-[#fdf8ea] sm:text-7xl">
                 Fighting Shadows
               </h1>
-              <p className="mt-4 max-w-2xl font-display text-lg font-black uppercase leading-snug tracking-[0.04em] text-[#7fe3a9] sm:text-xl">
+              <p className="mt-4 max-w-2xl font-display text-lg font-black uppercase leading-snug tracking-[0.04em] text-[#e1bd5b] sm:text-xl">
                 A memoir of January 6, political persecution, and fighting back.
               </p>
               <p className="mt-5 max-w-2xl text-base font-semibold leading-7 text-[#cfd9ea] sm:text-lg">
@@ -224,7 +224,7 @@ export default function BookPage() {
             <BookWaitlist source="book_footer" tone="dark" />
           </div>
           <p className="mt-6 text-center text-sm text-[#cfd9ea]">
-            <Link href="/" className="font-semibold underline hover:text-[#7fe3a9]">
+            <Link href="/" className="font-semibold underline hover:text-[#e1bd5b]">
               ← Back to RealRyanNichols.com
             </Link>
           </p>

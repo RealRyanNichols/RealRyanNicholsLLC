@@ -161,16 +161,16 @@ export function CaseBriefingForm() {
       </button>
 
       {briefing ? (
-        <div className="rounded-2xl border-2 border-[#7fe3a9] bg-[#0e1a36] text-[#cfd9ea] p-5">
+        <div className="rounded-2xl border-2 border-[#e1bd5b] bg-[#0e1a36] text-[#cfd9ea] p-5">
           {briefing.ok ? (
             <>
               <div className="flex items-baseline justify-between mb-3">
-                <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#7fe3a9]">
+                <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#e1bd5b]">
                   Briefing {briefing.cached ? "· cached" : "· fresh"}
                 </p>
               </div>
               <div
-                className="prose-body prose-invert text-sm leading-relaxed [&_h2]:font-display [&_h2]:text-[var(--color-paper)] [&_h2]:mt-4 [&_h2]:mb-2 [&_h2]:text-base [&_h2]:font-bold [&_h2]:uppercase [&_h2]:tracking-wider [&_h2]:text-[#7fe3a9] [&_ul]:list-disc [&_ul]:pl-5 [&_li]:my-0.5"
+                className="prose-body prose-invert text-sm leading-relaxed [&_h2]:font-display [&_h2]:text-[var(--color-paper)] [&_h2]:mt-4 [&_h2]:mb-2 [&_h2]:text-base [&_h2]:font-bold [&_h2]:uppercase [&_h2]:tracking-wider [&_h2]:text-[#e1bd5b] [&_ul]:list-disc [&_ul]:pl-5 [&_li]:my-0.5"
                 dangerouslySetInnerHTML={{ __html: briefingHtml ?? "" }}
               />
             </>

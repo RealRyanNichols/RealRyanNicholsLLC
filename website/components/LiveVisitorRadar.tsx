@@ -296,7 +296,7 @@ export function LiveVisitorRadar({ initial }: { initial: Ping[] }) {
             {/* Individual visitor pings. */}
             {projected.map(({ p, x, y }) => {
               const isSel = selected?.ping_id === p.ping_id;
-              const color = isSel ? "#fff" : "#7fe3a9";
+              const color = isSel ? "#fff" : "#e1bd5b";
               return (
                 <g
                   key={p.ping_id}
@@ -321,7 +321,7 @@ export function LiveVisitorRadar({ initial }: { initial: Ping[] }) {
                     cy={y}
                     r={dotR}
                     fill={color}
-                    stroke={isSel ? "#7fe3a9" : "#0e1a36"}
+                    stroke={isSel ? "#e1bd5b" : "#0e1a36"}
                     strokeWidth={strokeW}
                   />
                   <title>
@@ -341,8 +341,8 @@ export function LiveVisitorRadar({ initial }: { initial: Ping[] }) {
 
         {/* Overlay controls (zoom + count) */}
         <div className="absolute top-3 left-3 z-10">
-          <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] font-bold text-[#7fe3a9]">
-            <span className="inline-block w-2 h-2 rounded-full bg-[#7fe3a9] animate-pulse" />
+          <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] font-bold text-[#e1bd5b]">
+            <span className="inline-block w-2 h-2 rounded-full bg-[#e1bd5b] animate-pulse" />
             U.S. live radar
           </div>
           <div className="mt-1 text-3xl sm:text-5xl font-bold tabular-nums tracking-tight font-display text-[var(--color-paper)] leading-none drop-shadow">
@@ -358,7 +358,7 @@ export function LiveVisitorRadar({ initial }: { initial: Ping[] }) {
             <button
               type="button"
               onClick={showUnitedStates}
-              className="h-9 px-2.5 text-[10px] font-black uppercase tracking-wider text-[#7fe3a9] hover:bg-[#1c2a4a]"
+              className="h-9 px-2.5 text-[10px] font-black uppercase tracking-wider text-[#e1bd5b] hover:bg-[#1c2a4a]"
               aria-label="Focus radar on the United States"
             >
               US
@@ -400,7 +400,7 @@ export function LiveVisitorRadar({ initial }: { initial: Ping[] }) {
 
       {/* Drawer: selected visitor's activity */}
       {selected ? (
-        <div className="mt-3 rounded-2xl border-2 border-[#7fe3a9] bg-[#0e1a36] text-[#cfd9ea] p-5">
+        <div className="mt-3 rounded-2xl border-2 border-[#e1bd5b] bg-[#0e1a36] text-[#cfd9ea] p-5">
           <div className="flex items-baseline justify-between gap-3 flex-wrap mb-3">
             <div className="flex items-baseline gap-2">
               <span className="text-2xl leading-none" aria-hidden>
@@ -433,7 +433,7 @@ export function LiveVisitorRadar({ initial }: { initial: Ping[] }) {
             {selected.pages_in_session === 1 ? "page" : "pages"} in this session
           </p>
 
-          <p className="text-[10px] uppercase tracking-wider font-bold text-[#7fe3a9] mb-1.5">
+          <p className="text-[10px] uppercase tracking-wider font-bold text-[#e1bd5b] mb-1.5">
             What&apos;s keeping their attention
           </p>
           {loadingTrail ? (
@@ -455,7 +455,7 @@ export function LiveVisitorRadar({ initial }: { initial: Ping[] }) {
                   <span className="text-[var(--color-paper)] flex-1 truncate">
                     {t.path}
                   </span>
-                  <span className="text-[#7fe3a9] tabular-nums whitespace-nowrap">
+                  <span className="text-[#e1bd5b] tabular-nums whitespace-nowrap">
                     {t.dwell_seconds}s
                   </span>
                   <span className="text-[#7c8aa6] tabular-nums whitespace-nowrap">

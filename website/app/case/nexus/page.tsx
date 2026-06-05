@@ -85,7 +85,7 @@ export default async function CaseNexusPage() {
     <article className="mx-auto max-w-[92rem] px-3 py-3 sm:px-4 sm:py-5">
       <header className="mb-3">
         <div className="max-w-3xl">
-          <p className="text-xs font-black uppercase tracking-normal text-[#7fe3a9]">
+          <p className="text-xs font-black uppercase tracking-normal text-[#e1bd5b]">
             The Case Nexus · connect every clue
           </p>
           <h1 className="mt-1 font-display text-3xl font-black leading-[1.02] tracking-normal sm:text-4xl">
@@ -107,13 +107,13 @@ export default async function CaseNexusPage() {
             ))}
             <Link
               href="/submit"
-              className="rounded-full border border-[#7fe3a9] bg-[#7fe3a9] px-3 py-1 text-center text-xs font-black uppercase tracking-normal text-[#071126] transition hover:bg-[#9df0c0]"
+              className="rounded-full border border-[#e1bd5b] bg-[#e1bd5b] px-3 py-1 text-center text-xs font-black uppercase tracking-normal text-[#071126] transition hover:bg-[#9df0c0]"
             >
               Add a clue
             </Link>
             <Link
               href="/tell-your-story"
-              className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1 text-center text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[#7fe3a9] hover:text-[var(--color-accent)]"
+              className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1 text-center text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[#e1bd5b] hover:text-[var(--color-accent)]"
             >
               Tell story
             </Link>

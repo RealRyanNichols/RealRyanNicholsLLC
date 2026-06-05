@@ -330,7 +330,7 @@ export default async function AdminHomePage() {
         <section className="mt-6 overflow-hidden rounded-md border border-[#233a62] bg-[#071123] text-[#fdf8ea] shadow-md">
           <div className="grid gap-px bg-white/10 lg:grid-cols-[0.9fr_1.1fr]">
             <div className="bg-[#0d1a33] p-5">
-              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
                 Attention magnet
               </p>
               <h2 className="mt-2 text-2xl font-black tracking-tight">
@@ -849,7 +849,7 @@ function MagnetMiniStat({
 }) {
   const toneClass =
     tone === "green"
-      ? "border-[#7fe3a9]/40 bg-[#7fe3a9]/10 text-[#7fe3a9]"
+      ? "border-[#e1bd5b]/40 bg-[#e1bd5b]/10 text-[#e1bd5b]"
       : tone === "gold"
         ? "border-[#e4c66a]/50 bg-[#e4c66a]/10 text-[#e4c66a]"
         : "border-[#ef6f61]/50 bg-[#ef6f61]/10 text-[#ef6f61]";
@@ -870,7 +870,7 @@ function AttentionMagnetRow({ row, rank }: { row: AttentionRow; rank: number }) 
       : row.tone === "share"
         ? "border-[#7fa9e3]/50 bg-[#7fa9e3]/10"
         : row.tone === "intake"
-          ? "border-[#7fe3a9]/50 bg-[#7fe3a9]/10"
+          ? "border-[#e1bd5b]/50 bg-[#e1bd5b]/10"
           : "border-[#ef6f61]/45 bg-[#ef6f61]/10";
   const badge =
     row.tone === "money"
@@ -883,7 +883,7 @@ function AttentionMagnetRow({ row, rank }: { row: AttentionRow; rank: number }) 
   return (
     <Link
       href={row.href}
-      className={`grid grid-cols-[auto_1fr_auto] items-center gap-3 rounded-sm border p-3 transition hover:border-[#7fe3a9] ${toneClass}`}
+      className={`grid grid-cols-[auto_1fr_auto] items-center gap-3 rounded-sm border p-3 transition hover:border-[#e1bd5b] ${toneClass}`}
     >
       <span className="grid h-9 w-9 place-items-center rounded-sm bg-white/10 font-mono text-xs font-black tabular-nums">
         #{rank}

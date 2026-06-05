@@ -173,9 +173,9 @@ export default async function CasePage({
           <div className="mb-1 flex items-center gap-2">
             <Link
               href="/case/nexus"
-              className="inline-flex items-center gap-1.5 rounded-full border-2 border-[#1f2f55] bg-[#0a1429] px-3.5 py-1.5 text-xs font-bold text-[#cfd9ea] transition hover:border-[#7fe3a9] hover:text-[#7fe3a9]"
+              className="inline-flex items-center gap-1.5 rounded-full border-2 border-[#1f2f55] bg-[#0a1429] px-3.5 py-1.5 text-xs font-bold text-[#cfd9ea] transition hover:border-[#e1bd5b] hover:text-[#e1bd5b]"
             >
-              <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[#7fe3a9]" aria-hidden />
+              <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[#e1bd5b]" aria-hidden />
               View as graph
               <span aria-hidden>→</span>
             </Link>
@@ -495,9 +495,9 @@ export default async function CasePage({
           </Link>
           <Link
             href="/case/nexus"
-            className="inline-flex items-center gap-1.5 rounded-full border-2 border-[#1f2f55] bg-[#0a1429] px-3.5 py-1.5 text-xs font-bold text-[#cfd9ea] hover:border-[#7fe3a9] hover:text-[#7fe3a9] transition"
+            className="inline-flex items-center gap-1.5 rounded-full border-2 border-[#1f2f55] bg-[#0a1429] px-3.5 py-1.5 text-xs font-bold text-[#cfd9ea] hover:border-[#e1bd5b] hover:text-[#e1bd5b] transition"
           >
-            <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#7fe3a9] animate-pulse" aria-hidden />
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#e1bd5b] animate-pulse" aria-hidden />
             View as graph
             <span aria-hidden>→</span>
           </Link>
@@ -567,7 +567,7 @@ function J6ClaimDirectoryHero({
     <section className="overflow-hidden rounded-2xl border-2 border-[#1f2f55] bg-[#071123] text-[#fdf8ea] shadow-2xl">
       <div className="grid gap-px bg-white/10 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="bg-[#071123] p-5 sm:p-7">
-          <p className="text-[11px] font-black uppercase tracking-[0.24em] text-[#7fe3a9]">
+          <p className="text-[11px] font-black uppercase tracking-[0.24em] text-[#e1bd5b]">
             {kicker}
           </p>
           <h1 className="mt-3 text-3xl font-black leading-[1.02] tracking-tight text-[#fdf8ea] sm:text-5xl">
@@ -578,8 +578,8 @@ function J6ClaimDirectoryHero({
           </p>
 
           {isUnclaimed ? (
-            <div className="mt-5 rounded-xl border border-[#7fe3a9]/30 bg-[#7fe3a9]/10 p-4">
-              <p className="text-sm font-black uppercase tracking-wider text-[#7fe3a9]">
+            <div className="mt-5 rounded-xl border border-[#e1bd5b]/30 bg-[#e1bd5b]/10 p-4">
+              <p className="text-sm font-black uppercase tracking-wider text-[#e1bd5b]">
                 What you can add after verification
               </p>
               <div className="mt-3 grid gap-2 text-sm text-[#fdf8ea] sm:grid-cols-2">
@@ -592,7 +592,7 @@ function J6ClaimDirectoryHero({
                   "Missing evidence requests",
                 ].map((item) => (
                   <div key={item} className="flex items-center gap-2">
-                    <span className="h-2 w-2 rounded-full bg-[#7fe3a9]" aria-hidden />
+                    <span className="h-2 w-2 rounded-full bg-[#e1bd5b]" aria-hidden />
                     <span>{item}</span>
                   </div>
                 ))}
@@ -603,7 +603,7 @@ function J6ClaimDirectoryHero({
           <div className="mt-6 flex flex-col gap-2 sm:flex-row">
             <Link
               href="#j6-profile-list"
-              className="inline-flex min-h-12 items-center justify-center rounded-xl bg-[#7fe3a9] px-5 py-3 text-sm font-black uppercase tracking-wider text-[#071123] transition hover:bg-[#a7efc4]"
+              className="inline-flex min-h-12 items-center justify-center rounded-xl bg-[#e1bd5b] px-5 py-3 text-sm font-black uppercase tracking-wider text-[#071123] transition hover:bg-[#a7efc4]"
             >
               Find your name
             </Link>
@@ -642,7 +642,7 @@ function J6HeroStat({
   tone: "green" | "gold" | "blue";
 }) {
   const color =
-    tone === "green" ? "text-[#7fe3a9]" : tone === "gold" ? "text-[#e4c66a]" : "text-[#7fa9e3]";
+    tone === "green" ? "text-[#e1bd5b]" : tone === "gold" ? "text-[#e4c66a]" : "text-[#7fa9e3]";
   return (
     <div className="bg-[#0d1a33] p-4 sm:p-5">
       <div className={`font-mono text-3xl font-black leading-none tabular-nums ${color}`}>

@@ -560,7 +560,7 @@ function shortPath(path: string): string {
 
 function colorBySource(key: string): string {
   const map: Record<string, string> = {
-    human: "#7fe3a9",
+    human: "#e1bd5b",
     "search-bot": "#7fa9e3",
     "ai-bot": "#c8a3ff",
     "social-bot": "#e4c66a",
@@ -584,7 +584,7 @@ function sourceLabel(key: string): string {
 
 function deviceColor(key: string): string {
   const map: Record<string, string> = {
-    mobile: "#7fe3a9",
+    mobile: "#e1bd5b",
     desktop: "#7fa9e3",
     tablet: "#e4c66a",
     bot: "#c8a3ff",
@@ -698,7 +698,7 @@ async function VisualIntelligenceWall({ excludeSelf }: { excludeSelf: boolean })
     {
       name: "Read halfway",
       value: scroll50 ?? 0,
-      fill: "#7fe3a9",
+      fill: "#e1bd5b",
       hint: "People who stayed long enough to hit 50% scroll.",
     },
     {
@@ -716,13 +716,13 @@ async function VisualIntelligenceWall({ excludeSelf }: { excludeSelf: boolean })
     {
       name: "Joined alerts",
       value: subscribeWins ?? 0,
-      fill: "#7fe3a9",
+      fill: "#e1bd5b",
       hint: "Return traffic captured by email/SMS events.",
     },
     {
       name: "Sent a tip",
       value: tipWins ?? 0,
-      fill: "#7fe3a9",
+      fill: "#e1bd5b",
       hint: "Story/data intake completed.",
     },
     {
@@ -1020,7 +1020,7 @@ async function CommandCenter() {
       <div className="border-b border-white/10 px-4 py-3 sm:px-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+            <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
               Max analytics command center
             </p>
             <h2 className="mt-1 text-xl font-black tracking-tight">
@@ -1029,7 +1029,7 @@ async function CommandCenter() {
           </div>
           <Link
             href="/the-map-room"
-            className="rounded-full border border-[#7fe3a9]/40 bg-[#7fe3a9]/10 px-4 py-2 text-xs font-black uppercase tracking-wider text-[#7fe3a9] transition hover:bg-[#7fe3a9] hover:text-[#0b1428]"
+            className="rounded-full border border-[#e1bd5b]/40 bg-[#e1bd5b]/10 px-4 py-2 text-xs font-black uppercase tracking-wider text-[#e1bd5b] transition hover:bg-[#e1bd5b] hover:text-[#0b1428]"
           >
             Open live radar
           </Link>
@@ -1074,7 +1074,7 @@ async function CommandCenter() {
                 {topPath?.label ?? "No path data yet"}
               </h3>
             </div>
-            <span className="rounded-full bg-[#7fe3a9] px-3 py-1 text-xs font-black text-[#0b1428]">
+            <span className="rounded-full bg-[#e1bd5b] px-3 py-1 text-xs font-black text-[#0b1428]">
               {fmt(topPath?.n ?? 0)} views
             </span>
           </div>
@@ -1094,11 +1094,11 @@ async function CommandCenter() {
               <Link
                 key={item.label}
                 href={item.href}
-                className="block rounded-lg border border-white/10 bg-[#101a31] p-3 transition hover:border-[#7fe3a9]"
+                className="block rounded-lg border border-white/10 bg-[#101a31] p-3 transition hover:border-[#e1bd5b]"
               >
                 <div className="flex items-center justify-between gap-3">
                   <span className="text-sm font-black">{item.label}</span>
-                  <span className="font-mono text-xs font-black text-[#7fe3a9]">
+                  <span className="font-mono text-xs font-black text-[#e1bd5b]">
                     {item.value}%
                   </span>
                 </div>

@@ -631,7 +631,7 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
 
       <aside className="grid content-start gap-4">
         <section className="rounded-lg border border-[var(--color-blue)] bg-[var(--color-blue-strong)] p-4 text-[var(--color-paper)] shadow-xl sm:p-5">
-          <p className="text-xs font-black uppercase tracking-normal text-[#7fe3a9]">
+          <p className="text-xs font-black uppercase tracking-normal text-[#e1bd5b]">
             Live preview
           </p>
           <h2 className="mt-2 font-display text-2xl font-black tracking-normal text-[var(--color-paper)]">

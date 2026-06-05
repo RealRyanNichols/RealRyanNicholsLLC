@@ -94,7 +94,7 @@ export function AdminNav({
       <div className="lg:hidden sticky top-16 z-20 -mx-4 mb-5 border-b border-[#203a64] bg-[#071126]/96 px-4 py-3 text-[#fdf8ea] shadow-xl backdrop-blur-xl">
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0">
-            <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+            <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
               Admin
             </p>
             <p className="truncate text-sm font-black">
@@ -103,7 +103,7 @@ export function AdminNav({
           </div>
           <Link
             href="/admin/new"
-            className="shrink-0 rounded-full border border-[#7fe3a9]/50 bg-[#7fe3a9]/15 px-3 py-1.5 text-[11px] font-black uppercase tracking-normal text-[#7fe3a9] transition hover:bg-[#7fe3a9]/25"
+            className="shrink-0 rounded-full border border-[#e1bd5b]/50 bg-[#e1bd5b]/15 px-3 py-1.5 text-[11px] font-black uppercase tracking-normal text-[#e1bd5b] transition hover:bg-[#e1bd5b]/25"
           >
             New post
           </Link>
@@ -122,7 +122,7 @@ export function AdminNav({
         <details className="group mt-2 rounded-lg border border-white/10 bg-white/5">
           <summary className="flex min-h-10 cursor-pointer list-none items-center justify-between gap-3 px-3 text-xs font-black uppercase tracking-normal text-[#cfd9ea] marker:hidden">
             More admin tools
-            <span className="text-base text-[#7fe3a9] transition group-open:rotate-45" aria-hidden>
+            <span className="text-base text-[#e1bd5b] transition group-open:rotate-45" aria-hidden>
               +
             </span>
           </summary>
@@ -153,7 +153,7 @@ export function AdminNav({
           >
             {collapsed ? null : (
               <div>
-                <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+                <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
                   Command
                 </p>
                 <p className="mt-1 text-xs font-bold text-[#a9b7d0]">
@@ -165,7 +165,7 @@ export function AdminNav({
               type="button"
               onClick={() => onCollapsedChange?.(!collapsed)}
               className={[
-                "grid h-9 w-9 place-items-center rounded-md border border-white/10 bg-white/5 text-sm font-black text-[#fdf8ea] transition hover:border-[#7fe3a9] hover:bg-[#7fe3a9]/15 hover:text-[#7fe3a9]",
+                "grid h-9 w-9 place-items-center rounded-md border border-white/10 bg-white/5 text-sm font-black text-[#fdf8ea] transition hover:border-[#e1bd5b] hover:bg-[#e1bd5b]/15 hover:text-[#e1bd5b]",
                 collapsed ? "mx-auto" : "",
               ].join(" ")}
               aria-label={collapsed ? "Expand admin sidebar" : "Collapse admin sidebar"}
@@ -188,7 +188,7 @@ export function AdminNav({
           <Link
             href="/admin/new"
             className={[
-              "mt-3 flex min-h-10 items-center justify-center rounded-md border border-[#7fe3a9]/50 bg-[#7fe3a9]/15 text-xs font-black uppercase tracking-normal text-[#7fe3a9] transition hover:bg-[#7fe3a9]/25",
+              "mt-3 flex min-h-10 items-center justify-center rounded-md border border-[#e1bd5b]/50 bg-[#e1bd5b]/15 text-xs font-black uppercase tracking-normal text-[#e1bd5b] transition hover:bg-[#e1bd5b]/25",
               collapsed ? "px-1" : "px-3",
             ].join(" ")}
             title="New post"
@@ -281,7 +281,7 @@ function MobilePrimaryLink({
       className={[
         "flex min-h-12 items-center justify-center rounded-lg border px-1 text-center text-[11px] font-black leading-tight transition",
         active
-          ? "border-[#7fe3a9] bg-[#7fe3a9] text-[#071126]"
+          ? "border-[#e1bd5b] bg-[#e1bd5b] text-[#071126]"
           : "border-white/10 bg-white/5 text-[#fdf8ea] hover:border-[#d8c89e] hover:bg-white/10",
       ].join(" ")}
     >
@@ -308,7 +308,7 @@ function DesktopPrimaryLink({
           ? "grid min-h-11 place-items-center px-1 py-2 text-center"
           : "grid min-h-[3.6rem] grid-cols-[1fr_auto] items-center gap-2 px-3 py-2.5",
         active
-          ? "border-[#7fe3a9]/80 bg-[#102826] text-[#fdf8ea]"
+          ? "border-[#e1bd5b]/80 bg-[#102826] text-[#fdf8ea]"
           : "border-white/10 bg-white/5 text-[#fdf8ea] hover:border-[#d8c89e] hover:bg-white/10",
       ].join(" ")}
       title={item.label}
@@ -338,8 +338,8 @@ function DesktopPrimaryLink({
           className={[
             "grid h-7 min-w-9 place-items-center whitespace-nowrap rounded-sm border px-2 text-[10px] font-black uppercase tracking-normal",
             active
-              ? "border-[#7fe3a9]/25 bg-[#7fe3a9]/10 text-[#7fe3a9]"
-              : "border-white/10 bg-white/5 text-[#7fe3a9] group-hover:border-[#7fe3a9]/50",
+              ? "border-[#e1bd5b]/25 bg-[#e1bd5b]/10 text-[#e1bd5b]"
+              : "border-white/10 bg-white/5 text-[#e1bd5b] group-hover:border-[#e1bd5b]/50",
           ].join(" ")}
           aria-hidden
         >
@@ -366,7 +366,7 @@ function ToolLink({
         "grid min-h-9 grid-cols-[1fr_auto] items-center gap-2 rounded-sm border px-2.5 py-1.5 transition",
         compact
           ? active
-            ? "border-[#7fe3a9] bg-[#7fe3a9]/15 text-[#fdf8ea]"
+            ? "border-[#e1bd5b] bg-[#e1bd5b]/15 text-[#fdf8ea]"
             : "border-white/10 bg-white/5 text-[#fdf8ea] hover:border-[#d8c89e] hover:bg-white/10"
           : active
             ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
@@ -388,7 +388,7 @@ function ToolLink({
           </span>
         ) : null}
       </span>
-      <span className={compact ? "text-[#7fe3a9]" : "text-[var(--color-muted)]"} aria-hidden>
+      <span className={compact ? "text-[#e1bd5b]" : "text-[var(--color-muted)]"} aria-hidden>
         →
       </span>
     </Link>

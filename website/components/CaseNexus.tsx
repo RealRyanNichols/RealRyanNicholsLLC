@@ -118,7 +118,7 @@ function nodeRadius(n: RawNode): number {
 }
 function nodeFill(n: RawNode): string {
   if (n.type === "connector") {
-    if (n.connector_kind === "source") return "#7fe3a9";
+    if (n.connector_kind === "source") return "#e1bd5b";
     if (n.connector_kind === "court") return "#7fa9e3";
     if (n.connector_kind === "facility") return "#ffd166";
     if (n.connector_kind === "charge") return "#f08a8a";
@@ -126,7 +126,7 @@ function nodeFill(n: RawNode): string {
   }
   if (n.type === "case") return "#1f2f55";
   if (n.type === "defendant") {
-    if (n.claim_status === "verified") return "#7fe3a9";
+    if (n.claim_status === "verified") return "#e1bd5b";
     if (n.claim_status === "pending") return "#ffd166";
     return "#e08658";
   }
@@ -157,7 +157,7 @@ function connectorRank(kind: RawConnectorKind): number {
 function linkStroke(kind: RawEdge["kind"]): string {
   if (kind === "has_document") return "#3a557c";
   if (kind === "member_of") return "#6389bd";
-  if (kind === "sourced_by") return "#7fe3a9";
+  if (kind === "sourced_by") return "#e1bd5b";
   if (kind === "filed_in") return "#7fa9e3";
   if (kind === "shared_facility") return "#ffd166";
   if (kind === "shared_charge") return "#f08a8a";
@@ -971,8 +971,8 @@ export function CaseNexus({
           </div>
 
           <div className="absolute left-3 top-3 z-10 max-w-[15rem] rounded-md border border-[#203a64]/80 bg-[#071126]/88 px-3 py-2 backdrop-blur">
-            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#7fe3a9]">
-              <span className="inline-block h-2 w-2 rounded-full bg-[#7fe3a9]" />
+            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#e1bd5b]">
+              <span className="inline-block h-2 w-2 rounded-full bg-[#e1bd5b]" />
               Evidence Nexus
             </div>
             <div className="mt-1 text-[11px] font-mono leading-tight text-[#a9b7d0]">
@@ -1021,7 +1021,7 @@ export function CaseNexus({
                 </p>
                 <Link
                   href="/case"
-                  className="mt-4 inline-flex rounded-full border border-[#7fe3a9] px-4 py-1.5 text-xs font-bold text-[#7fe3a9] hover:bg-[#7fe3a9]/10"
+                  className="mt-4 inline-flex rounded-full border border-[#e1bd5b] px-4 py-1.5 text-xs font-bold text-[#e1bd5b] hover:bg-[#e1bd5b]/10"
                 >
                   Open case archive
                 </Link>
@@ -1034,7 +1034,7 @@ export function CaseNexus({
           <div className="relative">
             <label
               htmlFor="case-nexus-search"
-              className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#7fe3a9]"
+              className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#e1bd5b]"
             >
               Find a case or name
             </label>
@@ -1048,7 +1048,7 @@ export function CaseNexus({
               }}
               onFocus={() => setSearchOpen(true)}
               placeholder="Search name or case number"
-              className="mt-2 w-full rounded-md border border-[#3a557c] bg-[#071126] px-3 py-2 text-[12px] font-mono text-[var(--color-paper)] placeholder:text-[#7c8aa6] focus:border-[#7fe3a9] focus:outline-none"
+              className="mt-2 w-full rounded-md border border-[#3a557c] bg-[#071126] px-3 py-2 text-[12px] font-mono text-[var(--color-paper)] placeholder:text-[#7c8aa6] focus:border-[#e1bd5b] focus:outline-none"
             />
             {searchOpen && query.trim().length > 0 ? (
               <div className="mt-2 max-h-72 overflow-auto rounded-md border border-[#3a557c] bg-[#071126]">
@@ -1130,21 +1130,21 @@ export function CaseNexus({
                     type="button"
                     onClick={expandSelected}
                     disabled={loadingExpand}
-                    className="rounded-full border-2 border-[#7fe3a9] bg-[#7fe3a9]/15 px-4 py-1.5 text-xs font-bold text-[#7fe3a9] transition hover:bg-[#7fe3a9]/25 disabled:opacity-50"
+                    className="rounded-full border-2 border-[#e1bd5b] bg-[#e1bd5b]/15 px-4 py-1.5 text-xs font-bold text-[#e1bd5b] transition hover:bg-[#e1bd5b]/25 disabled:opacity-50"
                   >
                     {loadingExpand ? "Expanding..." : "Expand links"}
                   </button>
                   <button
                     type="button"
                     onClick={() => fitMap(selectedNeighborhood)}
-                    className="rounded-full border border-[#3a557c] bg-[#071126] px-4 py-1.5 text-xs font-bold text-[#cfd9ea] transition hover:border-[#7fe3a9] hover:text-[#7fe3a9]"
+                    className="rounded-full border border-[#3a557c] bg-[#071126] px-4 py-1.5 text-xs font-bold text-[#cfd9ea] transition hover:border-[#e1bd5b] hover:text-[#e1bd5b]"
                   >
                     Fit focus
                   </button>
                   {selectedNode.type === "defendant" ? (
                     <Link
                       href={`/case/people/${selectedNode.slug}`}
-                      className="rounded-full border border-[#3a557c] bg-[#071126] px-4 py-1.5 text-xs font-bold text-[#cfd9ea] transition hover:border-[#7fe3a9] hover:text-[#7fe3a9]"
+                      className="rounded-full border border-[#3a557c] bg-[#071126] px-4 py-1.5 text-xs font-bold text-[#cfd9ea] transition hover:border-[#e1bd5b] hover:text-[#e1bd5b]"
                     >
                       Profile
                     </Link>
@@ -1158,7 +1158,7 @@ export function CaseNexus({
                       }
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="rounded-full border border-[#3a557c] bg-[#071126] px-4 py-1.5 text-xs font-bold text-[#cfd9ea] transition hover:border-[#7fe3a9] hover:text-[#7fe3a9]"
+                      className="rounded-full border border-[#3a557c] bg-[#071126] px-4 py-1.5 text-xs font-bold text-[#cfd9ea] transition hover:border-[#e1bd5b] hover:text-[#e1bd5b]"
                     >
                       Document
                     </a>
@@ -1167,7 +1167,7 @@ export function CaseNexus({
               </div>
             ) : (
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#7fe3a9]">
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#e1bd5b]">
                   Connect the record
                 </p>
                 <p className="mt-2 text-xs font-mono leading-relaxed text-[#a9b7d0]">
@@ -1179,13 +1179,13 @@ export function CaseNexus({
                 <div className="mt-3 grid grid-cols-2 gap-2">
                   <Link
                     href="/submit"
-                    className="rounded-md border border-[#7fe3a9] bg-[#7fe3a9]/15 px-3 py-2 text-center text-[10px] font-bold uppercase tracking-wider text-[#7fe3a9] transition hover:bg-[#7fe3a9]/25"
+                    className="rounded-md border border-[#e1bd5b] bg-[#e1bd5b]/15 px-3 py-2 text-center text-[10px] font-bold uppercase tracking-wider text-[#e1bd5b] transition hover:bg-[#e1bd5b]/25"
                   >
                     Add clue
                   </Link>
                   <Link
                     href="/tell-your-story"
-                    className="rounded-md border border-[#3a557c] bg-[#071126] px-3 py-2 text-center text-[10px] font-bold uppercase tracking-wider text-[#cfd9ea] transition hover:border-[#7fe3a9] hover:text-[#7fe3a9]"
+                    className="rounded-md border border-[#3a557c] bg-[#071126] px-3 py-2 text-center text-[10px] font-bold uppercase tracking-wider text-[#cfd9ea] transition hover:border-[#e1bd5b] hover:text-[#e1bd5b]"
                   >
                     Tell story
                   </Link>
@@ -1197,7 +1197,7 @@ export function CaseNexus({
           {visibleConnectors.length > 0 ? (
             <div className="mt-4 border-t border-[#203a64] pt-4">
               <div className="mb-2 flex items-baseline justify-between gap-3">
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#7fe3a9]">
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#e1bd5b]">
                   Shared hubs
                 </p>
                 <button
@@ -1218,7 +1218,7 @@ export function CaseNexus({
                       onClick={() => selectNode(connector.node.id, "graph")}
                       className={`flex w-full items-center justify-between gap-3 rounded-md border px-3 py-2 text-left transition ${
                         active
-                          ? "border-[#7fe3a9] bg-[#7fe3a9]/10"
+                          ? "border-[#e1bd5b] bg-[#e1bd5b]/10"
                           : "border-[#203a64] bg-[#071126] hover:border-[#3a557c]"
                       }`}
                     >
@@ -1237,7 +1237,7 @@ export function CaseNexus({
 
           <div className="mt-3 border-t border-[#203a64] pt-3">
             <div className="mb-2 flex items-baseline justify-between gap-3">
-              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#7fe3a9]">
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#e1bd5b]">
                 Case clusters
               </p>
               <button
@@ -1258,7 +1258,7 @@ export function CaseNexus({
                     onClick={() => selectNode(caseNode.node.id, "graph")}
                     className={`flex w-full items-center justify-between gap-3 rounded-md border px-3 py-2 text-left transition ${
                       active
-                        ? "border-[#7fe3a9] bg-[#7fe3a9]/10"
+                        ? "border-[#e1bd5b] bg-[#e1bd5b]/10"
                         : "border-[#203a64] bg-[#071126] hover:border-[#3a557c]"
                     }`}
                   >
@@ -1275,7 +1275,7 @@ export function CaseNexus({
           </div>
 
           <div className="mt-3 border-t border-[#203a64] pt-3 text-[10px] font-mono text-[#7c8aa6]">
-            <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#7fe3a9]">
+            <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#e1bd5b]">
               What the lines mean
             </p>
             <p className="mb-3 text-[10px] leading-relaxed text-[#a9b7d0]">
@@ -1285,10 +1285,10 @@ export function CaseNexus({
               video, statement, and facility links.
             </p>
             <div className="grid grid-cols-2 gap-x-3 gap-y-1">
-              <LegendDot color="#7fe3a9" stroke="#d8e4f7">source hub</LegendDot>
+              <LegendDot color="#e1bd5b" stroke="#d8e4f7">source hub</LegendDot>
               <LegendDot color="#7fa9e3" stroke="#d8e4f7">court hub</LegendDot>
               <LegendDot color="#1f2f55" stroke="#3a557c">case</LegendDot>
-              <LegendDot color="#7fe3a9" stroke="#3aa672">verified</LegendDot>
+              <LegendDot color="#e1bd5b" stroke="#3aa672">verified</LegendDot>
               <LegendDot color="#ffd166" stroke="#0e1a36">pending</LegendDot>
               <LegendDot color="#e08658" stroke="#0e1a36">unclaimed</LegendDot>
               <LegendDot color="#7c8aa6" stroke="#0e1a36">document</LegendDot>
@@ -1446,7 +1446,7 @@ function ZoomButton({
       type="button"
       aria-label={label}
       onClick={onClick}
-      className="h-9 w-9 rounded-full border border-[#3a557c] bg-[#0e1a36]/90 text-[#cfd9ea] text-lg font-bold leading-none flex items-center justify-center hover:border-[#7fe3a9] hover:text-[#7fe3a9] transition"
+      className="h-9 w-9 rounded-full border border-[#3a557c] bg-[#0e1a36]/90 text-[#cfd9ea] text-lg font-bold leading-none flex items-center justify-center hover:border-[#e1bd5b] hover:text-[#e1bd5b] transition"
     >
       {children}
     </button>
@@ -1470,7 +1470,7 @@ function MapActionButton({
       aria-label={label}
       onClick={onClick}
       disabled={disabled}
-      className="h-9 rounded-full border border-[#3a557c] bg-[#0e1a36]/90 px-3 text-[11px] font-bold uppercase tracking-wider text-[#cfd9ea] transition hover:border-[#7fe3a9] hover:text-[#7fe3a9] disabled:cursor-not-allowed disabled:opacity-45"
+      className="h-9 rounded-full border border-[#3a557c] bg-[#0e1a36]/90 px-3 text-[11px] font-bold uppercase tracking-wider text-[#cfd9ea] transition hover:border-[#e1bd5b] hover:text-[#e1bd5b] disabled:cursor-not-allowed disabled:opacity-45"
     >
       {children}
     </button>

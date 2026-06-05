@@ -62,7 +62,7 @@ export default async function CaseGeographyPage() {
   return (
     <article className="mx-auto max-w-6xl px-4 py-6 sm:py-8">
       <header className="max-w-3xl mb-5">
-        <p className="text-xs uppercase tracking-[0.2em] text-[#7fe3a9] font-bold">
+        <p className="text-xs uppercase tracking-[0.2em] text-[#e1bd5b] font-bold">
           The Geography · realryannichols.com
         </p>
         <h1 className="mt-2 text-3xl sm:text-5xl font-bold tracking-tight leading-[1.05] font-display">

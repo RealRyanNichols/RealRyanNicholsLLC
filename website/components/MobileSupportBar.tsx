@@ -13,7 +13,7 @@ export function MobileSupportBar() {
         <Link
           href="/tell-your-story"
           data-track="mobile-bar-story"
-          className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[#7fe3a9] bg-[#7fe3a9]/15 px-2 text-center text-xs font-black text-[#0e1a36]"
+          className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[#e1bd5b] bg-[#e1bd5b]/15 px-2 text-center text-xs font-black text-[#0e1a36]"
         >
           Story
         </Link>

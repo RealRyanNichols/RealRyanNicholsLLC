@@ -423,7 +423,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
                 className={[
                   "ml-1 inline-flex items-center rounded-full px-3.5 py-1.5 text-xs font-black transition",
                   isAdmin
-                    ? "border-2 border-[#7fe3a9] bg-[#071126] text-[#7fe3a9] hover:bg-[#7fe3a9] hover:text-[#071126]"
+                    ? "border-2 border-[#e1bd5b] bg-[#071126] text-[#e1bd5b] hover:bg-[#e1bd5b] hover:text-[#071126]"
                     : "border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]",
                 ].join(" ")}
                 aria-label={officeLabel}
@@ -458,7 +458,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
                 className={[
                   "inline-flex min-h-11 items-center rounded-full px-2.5 py-2 text-[11px] font-black uppercase tracking-normal transition min-[360px]:px-3",
                   isAdmin
-                    ? "border border-[#7fe3a9] bg-[#071126] text-[#7fe3a9]"
+                    ? "border border-[#e1bd5b] bg-[#071126] text-[#e1bd5b]"
                     : "border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink)]",
                 ].join(" ")}
               >
@@ -506,7 +506,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             <nav aria-label="Mobile navigation" className="mx-auto flex max-w-3xl flex-col gap-4">
               <div className="flex items-start justify-between gap-3 border-b border-white/10 pb-3">
                 <div>
-                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#7fe3a9]">
+                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#e1bd5b]">
                     Choose one lane
                   </p>
                   <p className="mt-1 text-sm font-semibold leading-snug text-[#cfd9ea]">
@@ -548,7 +548,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
               <details className="rounded-lg border border-white/10 bg-white/5">
                 <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between px-3 py-2 text-sm font-black text-[#fdf8ea] [&::-webkit-details-marker]:hidden">
                   More pages
-                  <span className="text-[#7fe3a9]" aria-hidden>
+                  <span className="text-[#e1bd5b]" aria-hidden>
                     +
                   </span>
                 </summary>
@@ -564,14 +564,14 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
               </details>
 
               {isAdmin ? (
-                <details className="rounded-lg border border-[#7fe3a9]/30 bg-[#7fe3a9]/10">
+                <details className="rounded-lg border border-[#e1bd5b]/30 bg-[#e1bd5b]/10">
                   <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between px-3 py-2 text-sm font-black text-[#fdf8ea] [&::-webkit-details-marker]:hidden">
                     Admin shortcuts
-                    <span className="text-[#7fe3a9]" aria-hidden>
+                    <span className="text-[#e1bd5b]" aria-hidden>
                       +
                     </span>
                   </summary>
-                  <div className="grid grid-cols-2 gap-1.5 border-t border-[#7fe3a9]/20 p-2">
+                  <div className="grid grid-cols-2 gap-1.5 border-t border-[#e1bd5b]/20 p-2">
                     {MOBILE_ADMIN_LINKS.map((item) => (
                       <MobileAdminLink
                         key={item.href}
@@ -678,7 +678,7 @@ function NavDropdown({
         >
           <div className="mb-3 flex items-center justify-between gap-4 border-b border-white/10 pb-3">
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-[#7fe3a9]">
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-[#e1bd5b]">
                 {group.label}
               </p>
               <p className="mt-1 max-w-md text-xs leading-relaxed text-[#cfd9ea]">
@@ -698,7 +698,7 @@ function NavDropdown({
                 className={[
                   "block rounded-lg border px-3 py-3 transition",
                   pathname === hrefPath(it.href)
-                    ? "border-[#7fe3a9] bg-[#7fe3a9]/12"
+                    ? "border-[#e1bd5b] bg-[#e1bd5b]/12"
                     : "border-white/10 bg-white/5 hover:border-[#d8c89e] hover:bg-white/10",
                 ].join(" ")}
               >
@@ -773,7 +773,7 @@ function DashboardTile({
         "min-w-[8.75rem] rounded-lg border px-3 py-3 transition sm:min-w-[10rem] md:min-w-0",
         mobileSecondary ? "hidden md:block" : "",
         active
-          ? "border-[#7fe3a9] bg-[#142447]"
+          ? "border-[#e1bd5b] bg-[#142447]"
           : "border-[#243452] bg-[#101a31] hover:border-[#d8c89e] hover:bg-[#142447]",
       ].join(" ")}
     >
@@ -805,7 +805,7 @@ function MobilePrimaryLink({
       className={[
         "min-h-[5.25rem] rounded-lg border px-3 py-3 transition",
         active
-          ? "border-[#7fe3a9] bg-[#7fe3a9]/12"
+          ? "border-[#e1bd5b] bg-[#e1bd5b]/12"
           : "border-white/10 bg-white/5 hover:border-[#d8c89e] hover:bg-white/10",
       ].join(" ")}
     >
@@ -831,7 +831,7 @@ function MobileCompactLink({ item, active }: { item: NavItem; active: boolean })
       className={[
         "grid min-h-11 grid-cols-[1fr_auto] items-center gap-x-3 rounded-lg border px-3 py-2 transition",
         active
-          ? "border-[#7fe3a9] bg-[#7fe3a9]/12 text-[#fdf8ea]"
+          ? "border-[#e1bd5b] bg-[#e1bd5b]/12 text-[#fdf8ea]"
           : "border-white/10 bg-white/5 text-[#fdf8ea] hover:border-[#d8c89e] hover:bg-white/10",
       ].join(" ")}
     >
@@ -843,7 +843,7 @@ function MobileCompactLink({ item, active }: { item: NavItem; active: boolean })
           </span>
         ) : null}
       </span>
-      <span className="text-lg leading-none text-[#7fe3a9]" aria-hidden>
+      <span className="text-lg leading-none text-[#e1bd5b]" aria-hidden>
         →
       </span>
     </Link>
@@ -857,7 +857,7 @@ function MobilePillLink({ item, active }: { item: NavItem; active: boolean }) {
       className={[
         "flex min-h-10 items-center justify-center rounded-lg border px-1.5 text-center text-[11px] font-black leading-tight text-[#fdf8ea] transition",
         active
-          ? "border-[#7fe3a9] bg-[#7fe3a9]/12"
+          ? "border-[#e1bd5b] bg-[#e1bd5b]/12"
           : "border-white/10 bg-white/5 hover:border-[#d8c89e] hover:bg-white/10",
       ].join(" ")}
     >
@@ -873,7 +873,7 @@ function MobileAdminLink({ item, active }: { item: NavItem; active: boolean }) {
       className={[
         "flex min-h-10 items-center justify-center rounded-lg border px-2 py-2 text-center text-xs font-black text-[#fdf8ea] transition",
         active
-          ? "border-[#7fe3a9] bg-[#7fe3a9]/12"
+          ? "border-[#e1bd5b] bg-[#e1bd5b]/12"
           : "border-white/10 bg-white/5 hover:border-[#d8c89e] hover:bg-white/10",
       ].join(" ")}
     >
@@ -887,7 +887,7 @@ function badgeClass(tone: NavItem["tone"] = "ink") {
     "shrink-0 rounded-full px-2 py-0.5 text-[10px] font-black uppercase tracking-normal";
   if (tone === "red") return `${base} bg-[var(--color-accent)] text-[#fdf8ea]`;
   if (tone === "blue") return `${base} bg-[#d9e2f2] text-[#142a52]`;
-  if (tone === "green") return `${base} bg-[#7fe3a9] text-[#0e1a36]`;
+  if (tone === "green") return `${base} bg-[#e1bd5b] text-[#0e1a36]`;
   return `${base} bg-[#d8c89e] text-[#1a1410]`;
 }
 

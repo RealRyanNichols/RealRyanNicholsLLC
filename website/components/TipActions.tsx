@@ -172,7 +172,7 @@ export function TipActions({
               className={[
                 "border px-2.5 py-2 text-left transition disabled:cursor-not-allowed disabled:opacity-60",
                 option.value === currentOutcomeStatus
-                  ? "border-[#7fe3a9] bg-[#7fe3a9]/20"
+                  ? "border-[#e1bd5b] bg-[#e1bd5b]/20"
                   : "border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-accent)]",
               ].join(" ")}
             >

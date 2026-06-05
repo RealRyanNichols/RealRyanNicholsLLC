@@ -149,7 +149,7 @@ export function CaseTimeline({ data }: { data: TimelinePayload }) {
       <div className="rounded-2xl border-2 border-[var(--color-blue)] bg-[#0a1429] p-4 sm:p-5">
         <div className="flex items-baseline justify-between gap-3 flex-wrap mb-3">
           <div>
-            <p className="text-[10px] uppercase tracking-[0.2em] text-[#7fe3a9] font-bold">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-[#e1bd5b] font-bold">
               The prosecution wave
             </p>
             <p className="mt-0.5 text-xs text-[#a9b7d0]">
@@ -159,7 +159,7 @@ export function CaseTimeline({ data }: { data: TimelinePayload }) {
             </p>
           </div>
           <div className="text-xs font-mono text-[#7c8aa6]">
-            showing <span className="text-[#7fe3a9]">{filteredRows.length}</span>{" "}
+            showing <span className="text-[#e1bd5b]">{filteredRows.length}</span>{" "}
             of {pivot === "sentence_date" ? data.totals.with_sentence : data.totals.with_arrest}
           </div>
         </div>
@@ -294,7 +294,7 @@ function Histogram({
               y={y}
               width={Math.max(0.5, barW - 1)}
               height={h}
-              fill={isActiveYear ? "#7fe3a9" : "#3a557c"}
+              fill={isActiveYear ? "#e1bd5b" : "#3a557c"}
               fillOpacity={isActiveYear ? 0.85 : 0.4}
             >
               <title>
@@ -340,7 +340,7 @@ function Histogram({
               y1={H - PAD_B + 1}
               x2={band.x1}
               y2={H - PAD_B + 1}
-              stroke="#7fe3a9"
+              stroke="#e1bd5b"
               strokeWidth={2}
             />
           ) : null}
@@ -412,7 +412,7 @@ function PivotButton({
       onClick={onClick}
       className={`rounded-full px-3.5 py-1.5 text-xs font-bold transition ${
         active
-          ? "bg-[#7fe3a9] text-[#0a1429]"
+          ? "bg-[#e1bd5b] text-[#0a1429]"
           : "text-[#cfd9ea] hover:bg-[#1c2a4a]"
       }`}
     >

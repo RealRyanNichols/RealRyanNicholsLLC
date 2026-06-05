@@ -158,7 +158,7 @@ export default async function AdminTipsPage({
       <section className="mt-6 border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm">
         <div className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
               Tip action radar
             </p>
             <h2 className="mt-1 font-sans text-2xl font-black text-[#fdf8ea]">
@@ -226,7 +226,7 @@ export default async function AdminTipsPage({
             </p>
             <Link
               href={tipsHref({ filter: view })}
-              className="border border-[#7fe3a9]/50 px-3 py-2 text-xs font-black uppercase tracking-normal text-[#7fe3a9] transition hover:bg-[#7fe3a9]/15"
+              className="border border-[#e1bd5b]/50 px-3 py-2 text-xs font-black uppercase tracking-normal text-[#e1bd5b] transition hover:bg-[#e1bd5b]/15"
             >
               Clear radar
             </Link>
@@ -403,10 +403,10 @@ function RadarStat({
       href={href}
       className={[
         "border p-3 transition",
-        active ? "ring-2 ring-[#7fe3a9]" : "hover:border-[#7fe3a9]",
+        active ? "ring-2 ring-[#e1bd5b]" : "hover:border-[#e1bd5b]",
         tone === "red"
           ? "border-[#e0362c]/70 bg-[#e0362c]/15"
-          : "border-[#7fe3a9]/40 bg-white/[0.055]",
+          : "border-[#e1bd5b]/40 bg-white/[0.055]",
       ].join(" ")}
     >
       <p className="font-sans text-2xl font-black text-[#fdf8ea]">
@@ -491,7 +491,7 @@ function TipRoutePanel({
         </Link>
         <Link
           href={`/admin/new?tip=${tipId}&mode=solution`}
-          className="border border-[#7fe3a9]/60 bg-[#7fe3a9]/15 px-3 py-2 text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:bg-[#7fe3a9]/25"
+          className="border border-[#e1bd5b]/60 bg-[#e1bd5b]/15 px-3 py-2 text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:bg-[#e1bd5b]/25"
         >
           Solution brief
         </Link>
@@ -648,7 +648,7 @@ function OutcomeBadge({ status }: { status: string }) {
       className={[
         "rounded-full px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider",
         worked
-          ? "bg-[#7fe3a9]/25 text-[#0f3d2a]"
+          ? "bg-[#e1bd5b]/25 text-[#0f3d2a]"
           : "bg-[#e0362c]/15 text-[var(--color-accent)]",
       ].join(" ")}
     >

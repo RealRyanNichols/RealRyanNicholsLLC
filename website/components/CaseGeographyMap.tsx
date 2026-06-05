@@ -68,7 +68,7 @@ function colorFor(count: number, maxCount: number): string {
   const t = Math.sqrt(count / Math.max(1, maxCount));
   // Interpolate from navy → green
   const r1 = 0x28, g1 = 0x3d, b1 = 0x6e; // #283d6e
-  const r2 = 0x7f, g2 = 0xe3, b2 = 0xa9; // #7fe3a9
+  const r2 = 0x7f, g2 = 0xe3, b2 = 0xa9; // #e1bd5b
   const r = Math.round(r1 + (r2 - r1) * t);
   const g = Math.round(g1 + (g2 - g1) * t);
   const b = Math.round(b1 + (b2 - b1) * t);
@@ -174,8 +174,8 @@ export function CaseGeographyMap({ data }: { data: GeoPayload }) {
 
         {/* Top-left header */}
         <div className="absolute top-3 left-3 z-10 max-w-[16rem]">
-          <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#7fe3a9] flex items-center gap-1.5">
-            <span className="inline-block w-2 h-2 rounded-full bg-[#7fe3a9] animate-pulse" />
+          <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#e1bd5b] flex items-center gap-1.5">
+            <span className="inline-block w-2 h-2 rounded-full bg-[#e1bd5b] animate-pulse" />
             Geography · J6 defendants
           </p>
           <p className="mt-1 text-3xl sm:text-4xl font-bold tabular-nums tracking-tight font-display text-[var(--color-paper)] leading-none drop-shadow">
@@ -204,14 +204,14 @@ export function CaseGeographyMap({ data }: { data: GeoPayload }) {
                 />
               ))}
             </div>
-            <span className="text-[#7fe3a9] font-bold">{maxCount}</span>
+            <span className="text-[#e1bd5b] font-bold">{maxCount}</span>
           </div>
         </div>
 
         {/* Hover chip */}
         {hover ? (
           <div
-            className="absolute z-10 pointer-events-none bg-[#0e1a36] border border-[#7fe3a9] rounded-md px-3 py-2 text-[11px] font-mono shadow-lg"
+            className="absolute z-10 pointer-events-none bg-[#0e1a36] border border-[#e1bd5b] rounded-md px-3 py-2 text-[11px] font-mono shadow-lg"
             style={{
               left: Math.min(hover.x + 10, W - 200),
               top: Math.max(hover.y - 60, 10),
@@ -225,7 +225,7 @@ export function CaseGeographyMap({ data }: { data: GeoPayload }) {
               {(hover.row?.defendants ?? 0) === 1 ? "" : "s"}
             </p>
             {hover.row && hover.row.sentenced > 0 ? (
-              <p className="text-[#7fe3a9] mt-0.5">
+              <p className="text-[#e1bd5b] mt-0.5">
                 {hover.row.sentenced} sentenced
               </p>
             ) : null}
@@ -275,7 +275,7 @@ export function CaseGeographyMap({ data }: { data: GeoPayload }) {
 
         {/* Selected state drawer */}
         {selected ? (
-          <div className="rounded-2xl border-2 border-[#7fe3a9] bg-[#0e1a36] text-[#cfd9ea] p-5">
+          <div className="rounded-2xl border-2 border-[#e1bd5b] bg-[#0e1a36] text-[#cfd9ea] p-5">
             <div className="flex items-baseline justify-between gap-3 flex-wrap mb-3">
               <h3 className="text-lg font-bold tracking-tight text-[var(--color-paper)]">
                 {selected}
@@ -312,7 +312,7 @@ export function CaseGeographyMap({ data }: { data: GeoPayload }) {
                   >
                     <Link
                       href={`/case/people/${r.slug}`}
-                      className="text-[var(--color-paper)] hover:text-[#7fe3a9] truncate flex-1"
+                      className="text-[var(--color-paper)] hover:text-[#e1bd5b] truncate flex-1"
                     >
                       {r.claim_status === "verified" ? "★ " : ""}
                       {r.name}

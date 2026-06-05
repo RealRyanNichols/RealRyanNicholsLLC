@@ -66,7 +66,7 @@ type TooltipPayload = {
 };
 
 const COLORS = {
-  green: "#7fe3a9",
+  green: "#e1bd5b",
   blue: "#7fa9e3",
   gold: "#e4c66a",
   red: "#ef6f61",
@@ -122,7 +122,7 @@ function LegendRow({ data }: { data: VisualSlice[] }) {
 }
 
 function toneClass(tone: VisualSystemLine["tone"]) {
-  if (tone === "good") return "border-[#7fe3a9]/50 bg-[#7fe3a9]/10 text-[#7fe3a9]";
+  if (tone === "good") return "border-[#e1bd5b]/50 bg-[#e1bd5b]/10 text-[#e1bd5b]";
   if (tone === "watch") return "border-[#e4c66a]/50 bg-[#e4c66a]/10 text-[#e4c66a]";
   if (tone === "bad") return "border-[#ef6f61]/50 bg-[#ef6f61]/10 text-[#ef6f61]";
   return "border-white/10 bg-white/5 text-[#cfd9ea]";
@@ -144,7 +144,7 @@ export function AdminVisualAnalytics({
       <div className="border-b border-white/10 bg-[#0d1a33] px-4 py-4 sm:px-5">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="max-w-2xl">
-            <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+            <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
               Visual intelligence wall
             </p>
             <h2 className="mt-1 text-xl font-black tracking-tight text-[#fdf8ea] sm:text-2xl">
