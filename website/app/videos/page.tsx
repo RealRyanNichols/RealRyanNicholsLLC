@@ -5,6 +5,7 @@ import { PostCard } from "@/components/PostCard";
 import { LiveNowBanner } from "@/components/LiveNowBanner";
 import { getActiveLiveStream } from "@/lib/live";
 import { VIDEO_CHANNELS, normalizeVideoChannel } from "@/lib/video-channels";
+import { BookPromo } from "@/components/BookPromo";
 
 export const revalidate = 60;
 
@@ -139,6 +140,8 @@ export default async function VideosPage(props: {
           </div>
         </section>
       ) : null}
+
+      {!active ? <BookPromo className="mt-6" /> : null}
 
       {allVideos.length === 0 ? (
         <section className="py-12">

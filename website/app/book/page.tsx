@@ -6,7 +6,7 @@ import { SITE } from "@/lib/site";
 
 const title = "Fighting Shadows — A Memoir by Ryan Nichols";
 const description =
-  "Fighting Shadows: a memoir of January 6, political persecution, and fighting back. Ryan Nichols tells the full story — Marine, the tunnel, the D.C. jail, the pardon, and the lawfare that followed. Join the waitlist to get the release date and the founding-reader price first.";
+  "Fighting Shadows: a memoir of January 6, political persecution, and fighting back. Ryan Nichols tells the full story — Marine, the tunnel, the D.C. jail, the pardon, and the lawfare that followed. Join the waitlist and read the opening chapter free, plus get the release date and founding-reader price first.";
 
 export const metadata: Metadata = {
   title,
@@ -35,19 +35,19 @@ export const metadata: Metadata = {
 };
 
 const heroSub =
-  "From the Marine Corps and search-and-rescue work, to January 6th and nearly four years tangled in the federal system, to the pardon and the lawfare that came home with me — this is the full account, told straight. The cover is here and the title is out. Get on the list and you are the first to know the release date — and the first chance to own it.";
+  "From the Marine Corps and search-and-rescue work, to January 6th and nearly four years tangled in the federal system, to the pardon and the lawfare that came home with me — this is the full account, told straight. Join the list and the opening chapter is yours free — plus you are first to know the release date and first in line to own it.";
 
 const whatItIs =
   "This is not a hot take or a press clipping. It is the long version — the parts that got left out, the documents, the names, the nights in the D.C. jail, and what it actually costs to be told you no longer get to defend yourself. It is also a story about faith, family, and refusing to disappear.";
 
 const perks: { title: string; body: string }[] = [
   {
-    title: "First access",
-    body: "The list gets the launch announcement before the public — and the first chance to buy.",
+    title: "Free opening chapter",
+    body: "Join and you are first to read the opening chapter of Fighting Shadows — sent to the list, free, before it is public.",
   },
   {
-    title: "Release date first",
-    body: "The cover and title are out — the list is first to learn the day it ships.",
+    title: "First access",
+    body: "The launch announcement before the public — and the first chance to buy.",
   },
   {
     title: "Founding-reader price",
@@ -93,7 +93,7 @@ export default function BookPage() {
           <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-12">
             <div className="max-w-3xl">
               <p className="text-xs font-black uppercase tracking-[0.24em] text-[#7fe3a9]">
-                Coming soon · A memoir
+                Coming 2026 · A memoir
               </p>
               <h1 className="mt-3 font-display text-5xl font-black leading-[0.95] tracking-tight text-[#fdf8ea] sm:text-7xl">
                 Fighting Shadows
@@ -216,8 +216,8 @@ export default function BookPage() {
               Be on the list before Fighting Shadows ships.
             </h2>
             <p className="mt-3 text-base font-semibold leading-7 text-[#cfd9ea]">
-              Name, email, and phone. That is it. You will be first to know the
-              release date — and first in line to own it.
+              Name, email, and phone. That is it. You get the opening chapter
+              free, the release date first, and first chance to own it.
             </p>
           </div>
           <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.06] p-4 sm:p-6">
