@@ -968,6 +968,134 @@ const falseGunPattern = [
   },
 ];
 
+const recordsToDemand = [
+  {
+    holder: "Harrison County Sheriff's Office — church case",
+    tone: "red",
+    items: [
+      "Church bodycam, dashcam, CAD, dispatch audio, and 911 calls",
+      "Offense report and all supplements",
+      "Any church security or member-recorded video they hold",
+    ],
+  },
+  {
+    holder: "Jail / booking — the Miranda count",
+    tone: "red",
+    items: [
+      "Booking and hallway bodycam plus the questioning audio",
+      "Magistrate-warning records with timestamps",
+      "Any rights-waiver form — or confirmation none exists",
+    ],
+  },
+  {
+    holder: "Panola County — Harassment Count One",
+    tone: "gold",
+    items: [
+      "Complaint and probable-cause affidavit",
+      "Complainant identity, charged subsection, and dates",
+      "Complete native message exports police relied on",
+    ],
+  },
+  {
+    holder: "Harrison County — July 13 (James Chatham)",
+    tone: "navy",
+    items: [
+      "Lt. Ron England / Capt. Clayton bodycam and report",
+      "The 'not a threat' determination on the record",
+    ],
+  },
+  {
+    holder: "Marion County",
+    tone: "navy",
+    items: [
+      "The report Ryan filed on the threats against his life",
+      "The disposition — what, if anything, was done",
+    ],
+  },
+  {
+    holder: "Banks, TWC, DocuSign — Wholesale Universe fraud",
+    tone: "gold",
+    items: [
+      "2023 bank statements (Chase 5952 and every account)",
+      "TWC payroll filings and the QuickBooks 1099 source",
+      "DocuSign Certificate of Completion / IP / device for the disputed notes",
+      "Texas SOS notary verification (Michelle Warren ID)",
+    ],
+  },
+  {
+    holder: "District Clerk / court portal",
+    tone: "red",
+    items: [
+      "The bond revocation or modification order and exact condition language",
+      "The judicial-assignment entries (recusal lane)",
+    ],
+  },
+];
+
+const longviewReport = {
+  findings: [
+    "Instruments signed while Ryan was incarcerated: an SBA/EIDL note of $1,776,900 (Oct. 21, 2021) and a $250,000 BancorpSouth note — signature authenticity disputed.",
+    "A notary discrepancy: the notary ID on the Longview PD packet (Michelle Warren, 133566960) is one digit off the business-records extract (133566560) — verify against the Texas Secretary of State.",
+    "A blank-payee pattern between the bank statements and the general ledger shared with the CPA — expenses appear on statements while the payee is scrubbed in the ledger.",
+    "Funds movement: roughly $23,000 from the children's accounts, about $112,000 in offshore wires, and about $410,000 in Poshmark sales under Bonnie's name.",
+    "No 2023 bank statements were produced — a material discovery deficiency.",
+    "Bonnie is named with Quantum Ecommerce and Troy Marchand as defendants in the federal Wealth Assistants case — a public-docket scheme overlapping the marriage.",
+  ],
+  investigate: [
+    "Signature forensics on the SBA/EIDL instrument first — highest dollar, incarceration-window, public lender (pull the DocuSign Certificate of Completion, IP, and device fingerprint).",
+    "Notary verification through the Texas Secretary of State on the Michelle Warren ID discrepancy.",
+    "Subpoena the 2023 bank statements and the DocuSign audit trails.",
+    "Pull the federal Wealth Assistants complaint and index Bonnie's role by paragraph.",
+  ],
+};
+
+const civilThroughline = {
+  anchors: [
+    {
+      label: "Same county, same judge",
+      body: "The divorce — Nichols v. Nichols, Cause No. 25-0847, 71st Judicial District Court, Harrison County, before Judge Brad Morin — runs in the same county and court system as the criminal charges. The civil and criminal pressure share a venue.",
+    },
+    {
+      label: "Materially false testimony vs. the record",
+      body: "Bonnie's hearing testimony is contradicted by contemporaneous police evidence in Longview PD case 260630230 — the same pattern as the false gun claims: stated under oath, treated as credible, disproved by the record.",
+    },
+    {
+      label: "Fraud on the community",
+      body: "Instruments signed while Ryan was incarcerated — an SBA/EIDL note of $1,776,900 (Oct. 21, 2021) and a BancorpSouth $250,000 note — plus disputed signatures, missing 2023 bank statements, and roughly $410,000 in Poshmark sales under Bonnie's name. Pled as fraud-on-the-community (TFC § 3.102), not criminal language.",
+    },
+    {
+      label: "A pled federal financial scheme",
+      body: "Bonnie is named with Quantum Ecommerce LLC and Troy Marchand as the 'Quantum-Wholesale Partnership Defendants' in the federal case David Hough et al. v. Ryan Carroll et al. (the Wealth Assistants matter) — a public-docket scheme running concurrent with the marriage.",
+    },
+    {
+      label: "No counsel, after a due-process violation",
+      body: "Ryan's prior attorney withdrew after admitting a due-process violation on the record. He has been pro se since — the same inability to retain counsel that is now crippling the criminal defense.",
+    },
+  ],
+  exhibits: [
+    {
+      label: "Divorce motions — Temporary Orders, gag, children",
+      href: "https://drive.google.com/drive/folders/1uRzesul3mnPomWYyR_LmZ4FqMN-m5EpA",
+      note: "Motion for Temporary Orders (Final), Respondent's Counter-Motion (revised), Motion for Gag Order, Motion to Interview Children in Chambers.",
+    },
+    {
+      label: "Filed into court — business receiver",
+      href: "https://drive.google.com/drive/folders/1EgDmGyfGLreWsDiJkNUVbJBCVLX2L-eV",
+      note: "Business-receiver proposed order and exhibits — receivership over Wholesale Universe (CPRC § 64.001).",
+    },
+    {
+      label: "Wholesale Universe forensic packet",
+      href: "https://drive.google.com/drive/folders/12T-W0pZsNyh7hOrkpQZN7-6WU_yclG1h",
+      note: "Payroll / 1099 findings, DA packages, subpoena and witness charts, evidence index.",
+    },
+    {
+      label: "July 13 — James Chatham bodycam",
+      href: "https://drive.google.com/drive/folders/1HylS3UUPk5gyBjfhARP_dCIhzENoq3Nv",
+      note: "Lt. England / Capt. Clayton bodycam and report — the 'not a threat' standard the church charge ignores.",
+    },
+  ],
+};
+
 const matters: Matter[] = [
   {
     id: "matter-deadly-conduct",
@@ -1210,6 +1338,12 @@ export function AttorneyBriefBody({
             Top
           </a>
           <a
+            href="#exec-summary"
+            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          >
+            Summary
+          </a>
+          <a
             href="#matters"
             className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
           >
@@ -1220,6 +1354,18 @@ export function AttorneyBriefBody({
             className="inline-flex min-h-10 items-center border border-[#b32419] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[#8d1b13] transition hover:bg-[var(--color-accent-soft)]"
           >
             The pattern
+          </a>
+          <a
+            href="#civil-throughline"
+            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          >
+            Throughline
+          </a>
+          <a
+            href="#records-to-demand"
+            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          >
+            Records
           </a>
           <a
             href="#source-doors"
@@ -1354,6 +1500,45 @@ export function AttorneyBriefBody({
             The page should keep repeating that simple distinction. Everything
             else supports, tests, or explains that record.
           </p>
+        </div>
+      </section>
+
+      <section
+        id="exec-summary"
+        className="mt-4 border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-4 shadow-sm sm:p-5"
+      >
+        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+          Executive summary
+        </p>
+        <h2 className="mt-1 font-sans text-2xl font-black leading-tight text-[var(--color-ink)] sm:text-3xl">
+          The whole case, in one breath.
+        </h2>
+        <p className="mt-3 max-w-4xl text-base font-semibold leading-7 text-[var(--color-ink)]">
+          Ryan Nichols — Marine veteran and pardoned January 6 defendant —
+          faces three Harrison County misdemeanors: a deadly-conduct charge from
+          a church parking lot and two harassment counts, all built on a false
+          narrative that he pulled a gun, which the bodycam disproves. One
+          harassment count followed custodial questioning about a Facebook post
+          with no Miranda warning, and he was charged minutes later. The same
+          county and the same judge run a divorce in which testimony against him
+          is contradicted by police records (Longview PD 260630230), while a
+          multi-million-dollar Wholesale Universe fraud sits unaddressed. He is
+          unrepresented, has already filed his own motions, and his ask is
+          simple: pull the bodycams and source records before any setting.
+        </p>
+        <div className="mt-4 grid gap-2 sm:grid-cols-3">
+          {[
+            "Three misdemeanors, each with a rights problem flagged, and no bodycam produced.",
+            "A civil and fraud throughline that runs back to the same county and judge.",
+            "Unrepresented, asking only that the record be pulled before he is brought back to court.",
+          ].map((point) => (
+            <div
+              key={point}
+              className="border border-[var(--color-accent)]/30 bg-[var(--color-surface)] p-3 text-sm font-bold leading-6 text-[var(--color-ink)]"
+            >
+              {point}
+            </div>
+          ))}
         </div>
       </section>
 
@@ -1514,6 +1699,179 @@ export function AttorneyBriefBody({
             </li>
           ))}
         </ol>
+      </section>
+
+      <section
+        id="civil-throughline"
+        className="mt-4 border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm sm:p-5"
+      >
+        <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+          The civil throughline
+        </p>
+        <h2 className="mt-1 font-sans text-2xl font-black leading-tight text-[#fdf8ea] sm:text-3xl">
+          Bo Rogers, Bonnie, and Wholesale Universe all run back to Harrison
+          County.
+        </h2>
+        <p className="mt-2 max-w-3xl text-sm font-semibold leading-6 text-[#cfd9ea]">
+          The divorce, the business fraud, and the criminal charges are not
+          separate stories. They share a county, a judge, and a pattern: a false
+          claim treated as credible, the record that disproves it ignored, and
+          Ryan left without counsel.
+        </p>
+        <div className="mt-4 grid gap-2 sm:grid-cols-2">
+          {civilThroughline.anchors.map((item) => (
+            <div
+              key={item.label}
+              className="border border-white/10 bg-white/5 p-3"
+            >
+              <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#d8c89e]">
+                {item.label}
+              </p>
+              <p className="mt-1 text-sm font-semibold leading-6 text-[#cfd9ea]">
+                {item.body}
+              </p>
+            </div>
+          ))}
+        </div>
+        <p className="mt-3 text-[10px] font-bold uppercase tracking-[0.16em] text-[#d8c89e]">
+          Reported concerns and supporting context — not court findings.
+        </p>
+        <div className="mt-4 border-t border-white/10 pt-4">
+          <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#7fe3a9]">
+            Filed exhibits — open these
+          </p>
+          <div className="mt-3 grid gap-2 md:grid-cols-2">
+            {civilThroughline.exhibits.map((ex) => (
+              <a
+                key={ex.href}
+                href={ex.href}
+                className="group border border-white/10 bg-white/5 p-3 transition hover:border-[#7fe3a9]/50 hover:bg-[#7fe3a9]/10"
+              >
+                <span className="flex items-center justify-between gap-2">
+                  <span className="text-sm font-black text-[#fdf8ea]">
+                    {ex.label}
+                  </span>
+                  <span className="shrink-0 text-[10px] font-black uppercase tracking-[0.08em] text-[#7fe3a9]">
+                    Open
+                  </span>
+                </span>
+                <span className="mt-1 block text-xs font-semibold leading-5 text-[#cfd9ea]">
+                  {ex.note}
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="records-to-demand"
+        className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5"
+      >
+        <div className="grid gap-3 lg:grid-cols-[0.4fr_1fr] lg:items-end">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+              Go get it
+            </p>
+            <h2 className="mt-1 font-sans text-2xl font-black leading-tight text-[var(--color-ink)] sm:text-3xl">
+              Records to demand — the subpoena and 39.14 board.
+            </h2>
+          </div>
+          <p className="text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
+            Grouped by who holds it. This is the production list: pull these
+            before any setting and the cases get a lot simpler.
+          </p>
+        </div>
+        <div className="mt-4 grid gap-3 md:grid-cols-2">
+          {recordsToDemand.map((group) => {
+            const hex =
+              group.tone === "red"
+                ? "#b32419"
+                : group.tone === "gold"
+                  ? "#8f6b16"
+                  : "#1d3a6b";
+            return (
+              <section
+                key={group.holder}
+                className="border border-[var(--color-line)] bg-[var(--color-paper)] p-3"
+                style={{ borderLeft: `4px solid ${hex}` }}
+              >
+                <p
+                  className="text-xs font-black uppercase tracking-[0.1em]"
+                  style={{ color: hex }}
+                >
+                  {group.holder}
+                </p>
+                <ul className="mt-2 grid gap-1.5">
+                  {group.items.map((item) => (
+                    <li
+                      key={item}
+                      className="flex gap-2 text-xs font-semibold leading-5 text-[var(--color-ink-soft)]"
+                    >
+                      <span
+                        className="mt-1.5 h-1.5 w-1.5 shrink-0"
+                        style={{ backgroundColor: hex }}
+                      />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            );
+          })}
+        </div>
+      </section>
+
+      <section
+        id="longview-report"
+        className="mt-4 border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm sm:p-5"
+      >
+        <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+          Criminal referral — Longview PD case 260630230
+        </p>
+        <h2 className="mt-1 font-sans text-2xl font-black leading-tight text-[#fdf8ea] sm:text-3xl">
+          What Ryan reported, and what still needs to be investigated.
+        </h2>
+        <p className="mt-2 max-w-3xl text-sm font-semibold leading-6 text-[#cfd9ea]">
+          Concurrent with the divorce, Ryan reported suspected financial fraud
+          to the Longview Police Department. The same records also contradict
+          the hearing testimony in the divorce. These are reported concerns and
+          supporting context — not court findings.
+        </p>
+        <div className="mt-4 grid gap-4 lg:grid-cols-2">
+          <div className="border border-white/10 bg-white/5 p-3">
+            <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
+              What was reported
+            </p>
+            <ul className="mt-2 grid gap-2">
+              {longviewReport.findings.map((item) => (
+                <li
+                  key={item}
+                  className="flex gap-2 text-sm font-semibold leading-6 text-[#cfd9ea]"
+                >
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 bg-[#d8c89e]" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="border border-[#7fe3a9]/30 bg-[#7fe3a9]/10 p-3">
+            <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#7fe3a9]">
+              What still needs investigating
+            </p>
+            <ul className="mt-2 grid gap-2">
+              {longviewReport.investigate.map((item) => (
+                <li
+                  key={item}
+                  className="flex gap-2 text-sm font-semibold leading-6 text-[#fdf8ea]"
+                >
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 bg-[#7fe3a9]" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </section>
 
       <section

@@ -9,7 +9,14 @@ import {
 
 export const runtime = "nodejs";
 
-const toolSlug = z.enum(["records-request", "timeline-builder", "next-three-moves"]);
+const toolSlug = z.enum([
+  "records-request",
+  "timeline-builder",
+  "next-three-moves",
+  "case-builder",
+  "know-your-rights",
+  "pro-se-motion",
+]);
 type ToolSlug = z.infer<typeof toolSlug>;
 
 const schema = z.object({
@@ -36,6 +43,9 @@ const labels: Record<ToolSlug, string> = {
   "records-request": "Records request builder",
   "timeline-builder": "Timeline starter",
   "next-three-moves": "Next 3 moves",
+  "case-builder": "Case builder",
+  "know-your-rights": "Know your rights card",
+  "pro-se-motion": "Pro se motion starter",
 };
 
 function asText(value: unknown, max = 2000): string {
@@ -171,10 +181,216 @@ function buildNextMoves(input: Record<string, unknown>): ToolResult {
   };
 }
 
+function buildCaseFile(input: Record<string, unknown>): ToolResult {
+  const summary = asText(input.summary, 1500) || "[what this case is about]";
+  const parties = asText(input.parties, 900) || "[who is involved / who is on the other side]";
+  const events = asText(input.events, 2400);
+  const evidence = asText(input.evidence, 1400) || "[proof you have right now]";
+  const missing = asText(input.missing, 1200) || "[records or proof you still need]";
+  const goal = asText(input.goal, 500) || "[the outcome you want]";
+  const timeline = events
+    ? events
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter(Boolean)
+        .map((line, index) => `${index + 1}. ${line}`)
+    : ["[Add one dated event per line — e.g. 2025-07-13 — what happened]"];
+
+  const caseFile = [
+    `CASE SUMMARY: ${summary}`,
+    "",
+    `PARTIES: ${parties}`,
+    "",
+    "TIMELINE:",
+    ...timeline,
+    "",
+    `EVIDENCE ON HAND: ${evidence}`,
+    `MISSING / TO OBTAIN: ${missing}`,
+    `GOAL: ${goal}`,
+  ];
+
+  return {
+    title: "Your case file",
+    summary:
+      "One organized file — parties, timeline, evidence, gaps, and next moves — the way a lawyer wants to receive it.",
+    sections: [
+      { label: "Case file", body: caseFile },
+      {
+        label: "Close the gaps",
+        body: [
+          "For each timeline entry, attach the proof beside it: screenshot, filing, video, message, or receipt.",
+          "Turn every 'missing' item into a written request to the agency, court, company, or witness.",
+          "Keep what you personally saw separate from what someone else told you.",
+          "Update this file every time something new happens, and keep the dates exact.",
+        ],
+      },
+    ],
+    copyText: caseFile.join("\n"),
+    nextPath: { label: "Send Ryan your case file", href: "/submit" },
+  };
+}
+
+function buildKnowYourRights(input: Record<string, unknown>): ToolResult {
+  const scenario = asText(input.scenario, 80) || "police stop";
+  const state = asText(input.state, 80) || "your state";
+  const cards: Record<string, { rights: string[]; say: string[] }> = {
+    "police stop": {
+      rights: [
+        "You have the right to remain silent beyond identifying yourself where the law requires it.",
+        "You can ask whether you are free to leave.",
+        "You do not have to consent to a search of yourself or your vehicle.",
+      ],
+      say: [
+        "Officer, am I free to go?",
+        "Am I being detained, and if so, for what?",
+        "I am going to remain silent.",
+        "I do not consent to any searches.",
+      ],
+    },
+    "recording police": {
+      rights: [
+        "In public, you have a First Amendment right to record police performing their duties.",
+        "Police cannot delete your footage or take your phone without a warrant.",
+        "You may be asked to step back; keep a reasonable distance and do not physically interfere.",
+      ],
+      say: [
+        "I am exercising my First Amendment right to record.",
+        "I do not consent to you searching or taking my phone.",
+        "Am I being detained, or am I free to go?",
+      ],
+    },
+    "questioned in custody": {
+      rights: [
+        "If you are in custody and being interrogated, police must read your Miranda rights first.",
+        "You have the right to remain silent.",
+        "You have the right to a lawyer, including having one present during any questioning.",
+        "Anything you say can be used against you — silence cannot.",
+      ],
+      say: [
+        "I am invoking my right to remain silent.",
+        "I want a lawyer. I will not answer questions without my attorney present.",
+        "Am I free to leave?",
+      ],
+    },
+    "asked to search": {
+      rights: [
+        "You can refuse consent to a search of your person, car, home, or phone.",
+        "Refusing consent is not an admission of guilt and cannot be held against you.",
+        "Without consent, police generally need a warrant or a recognized exception.",
+      ],
+      say: [
+        "I do not consent to a search.",
+        "Do you have a warrant?",
+        "I am not resisting, but I do not consent.",
+      ],
+    },
+    arrest: {
+      rights: [
+        "You have the right to remain silent and the right to a lawyer.",
+        "Do not physically resist, even if you believe the arrest is unlawful — challenge it later, in court.",
+        "Do not answer questions or sign anything without a lawyer.",
+      ],
+      say: [
+        "I am invoking my right to remain silent.",
+        "I want a lawyer.",
+        "I do not consent to any search.",
+      ],
+    },
+  };
+  const card = cards[scenario] ?? cards["police stop"];
+
+  return {
+    title: `Know your rights: ${scenario}`,
+    summary:
+      "Plain-English rights and the exact words to say. Stay calm, stay quiet, ask for a lawyer.",
+    sections: [
+      { label: "Your rights", body: card.rights },
+      { label: "What to say", body: card.say.map((line) => `"${line}"`) },
+      {
+        label: "Remember",
+        body: [
+          `Specifics vary by state (${state}). This is general information, not legal advice.`,
+          "Do not lie, do not resist, do not consent to searches, and do not answer questions without a lawyer.",
+          "Get the officer's name and badge number, and write down exactly what happened as soon as you safely can.",
+        ],
+      },
+    ],
+    copyText: [
+      `KNOW YOUR RIGHTS — ${scenario.toUpperCase()}`,
+      "",
+      "YOUR RIGHTS:",
+      ...card.rights.map((line) => `- ${line}`),
+      "",
+      "WHAT TO SAY:",
+      ...card.say.map((line) => `- "${line}"`),
+    ].join("\n"),
+    nextPath: { label: "Report what happened to you", href: "/submit" },
+  };
+}
+
+function buildProSeMotion(input: Record<string, unknown>): ToolResult {
+  const type = asText(input.motion_type, 120) || "Motion";
+  const court = asText(input.court, 220) || "[Court — County — Cause No.]";
+  const party = asText(input.party, 160) || "[Your name], Respondent, Pro Se";
+  const relief = asText(input.relief, 900) || "[state exactly what you want the court to do]";
+  const facts = asText(input.facts, 1800) || "[the facts that support this motion]";
+  const shortName = party.split(",")[0]?.trim() || "Movant";
+
+  const motion = [
+    court,
+    "",
+    type.toUpperCase(),
+    "",
+    "TO THE HONORABLE JUDGE OF SAID COURT:",
+    "",
+    `${party} files this ${type} and respectfully shows the Court the following:`,
+    "",
+    "I. FACTS",
+    facts,
+    "",
+    "II. RELIEF REQUESTED",
+    relief,
+    "",
+    `WHEREFORE, ${shortName} respectfully requests that the Court grant this ${type} and award any further relief to which ${shortName} is entitled.`,
+    "",
+    "Respectfully submitted,",
+    "",
+    "_______________________________",
+    party,
+    "",
+    "CERTIFICATE OF SERVICE",
+    "I certify that a true and correct copy of this document was served on all parties of record on ____________ by ____________.",
+  ];
+
+  return {
+    title: `${type} — starter draft`,
+    summary:
+      "A clean skeleton you can adapt and file. Fill the brackets, match your court's caption, and serve every party.",
+    sections: [
+      { label: "Draft motion", body: motion },
+      {
+        label: "Before you file",
+        body: [
+          "Copy the exact caption — court, county, cause number, and party names — from an existing filing in your case.",
+          "If your court requires it, file the proposed order as its own separate document.",
+          "Pair the motion with a Notice of Hearing if it needs a setting.",
+          "Serve every party and complete the certificate of service with the real date and method.",
+          "This is a starting template, not legal advice — verify your local rules and deadlines.",
+        ],
+      },
+    ],
+    copyText: motion.join("\n"),
+    nextPath: { label: "Have Ryan review it", href: "/case-review" },
+  };
+}
+
 function buildResult(tool: ToolSlug, input: Record<string, unknown>): ToolResult {
   if (tool === "records-request") return buildRecordsRequest(input);
   if (tool === "timeline-builder") return buildTimeline(input);
-  return buildNextMoves(input);
+  if (tool === "next-three-moves") return buildNextMoves(input);
+  if (tool === "case-builder") return buildCaseFile(input);
+  if (tool === "know-your-rights") return buildKnowYourRights(input);
+  return buildProSeMotion(input);
 }
 
 export async function POST(request: Request) {

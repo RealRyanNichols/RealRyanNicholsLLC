@@ -38,6 +38,7 @@ export default async function VideosPage(props: {
   // getPublishedPosts already returns feed order: pinned first, then newest
   // first. We keep that order untouched so Watch reads exactly like the Feed.
   const allVideos = publishedPosts.filter((p) => p.type === "video");
+  const j6Videos = allVideos.filter((p) => channelOf(p.category) === "J6");
 
   // Channels that actually have videos, in their canonical order, with counts.
   const channels = [...VIDEO_CHANNELS, "Unsorted"]
@@ -52,6 +53,11 @@ export default async function VideosPage(props: {
   const videos = active
     ? allVideos.filter((p) => channelOf(p.category) === active.channel)
     : allVideos;
+  // On the default view, J6 videos live in the spotlight above, so the main
+  // feed shows everything else (no duplication). Filtered views are unchanged.
+  const feedVideos = active
+    ? videos
+    : allVideos.filter((p) => channelOf(p.category) !== "J6");
 
   const counts = await Promise.all(
     videos.map(async (p) => [p.id, await getCommentCount(p.id)] as const),
@@ -93,6 +99,47 @@ export default async function VideosPage(props: {
         ) : null}
       </header>
 
+      {!active && j6Videos.length > 0 ? (
+        <section className="mt-8 overflow-hidden rounded-xl border-2 border-[var(--color-accent)] shadow-sm">
+          <div className="bg-[#071126] p-5 text-[#fdf8ea] sm:p-7">
+            <p className="text-xs font-black uppercase tracking-[0.24em] text-[#7fe3a9]">
+              J6 Video Drops
+            </p>
+            <h2 className="mt-2 font-display text-3xl font-black leading-tight text-[#fdf8ea] sm:text-4xl">
+              The footage, released one drop at a time.
+            </h2>
+            <p className="mt-3 max-w-2xl text-sm font-semibold leading-relaxed text-[#cfd9ea]">
+              Bodycam, tunnel footage, and the receipts from January 6 — pulled
+              from my own evidence and dropped here, on a site I own, where no
+              algorithm can bury them. More are coming.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <Link
+                href="/videos?channel=j6"
+                className="inline-flex min-h-11 items-center rounded-md border border-[#7fe3a9]/60 bg-[#7fe3a9]/15 px-4 text-sm font-black text-[#7fe3a9] transition hover:bg-[#7fe3a9]/25"
+              >
+                See all J6 drops · {j6Videos.length}
+              </Link>
+              <Link
+                href="/support"
+                className="inline-flex min-h-11 items-center rounded-md border border-white/15 bg-white/[0.06] px-4 text-sm font-black text-[#fdf8ea] transition hover:bg-white/10"
+              >
+                Back the work
+              </Link>
+            </div>
+          </div>
+          <div className="bg-[var(--color-surface)] p-4 sm:p-5">
+            <p className="mb-3 text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+              Latest drop
+            </p>
+            <PostCard
+              post={j6Videos[0]}
+              commentCount={countMap.get(j6Videos[0].id) ?? 0}
+            />
+          </div>
+        </section>
+      ) : null}
+
       {allVideos.length === 0 ? (
         <section className="py-12">
           <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 text-center">
@@ -113,7 +160,7 @@ export default async function VideosPage(props: {
               </Link>
             </p>
           ) : null}
-          {videos.map((p) => (
+          {feedVideos.map((p) => (
             <PostCard key={p.id} post={p} commentCount={countMap.get(p.id) ?? 0} />
           ))}
         </section>
