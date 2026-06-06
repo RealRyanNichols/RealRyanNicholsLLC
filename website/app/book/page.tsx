@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BookWaitlist } from "@/components/BookWaitlist";
+import { BookEmailSignup } from "@/components/BookEmailSignup";
 import { BookOffers } from "@/components/BookOffers";
 import { BookDisclaimer } from "@/components/BookDisclaimer";
 import { BOOK, BOOK_COVERS, BOOK_FAQ } from "@/lib/book";
@@ -102,7 +102,7 @@ export default function BookPage() {
             <p className="mb-3 mt-1 font-display text-lg font-black leading-tight text-[#fdf8ea]">
               Book updates, the release date, and the opening chapter free.
             </p>
-            <BookWaitlist source="book_sales_hero" tone="dark" />
+            <BookEmailSignup source="book_sales_hero" tone="dark" />
           </div>
         </div>
       </section>

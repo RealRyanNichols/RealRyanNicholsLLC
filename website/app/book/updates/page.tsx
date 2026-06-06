@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BookWaitlist } from "@/components/BookWaitlist";
+import { BookEmailSignup } from "@/components/BookEmailSignup";
 import { BOOK, BOOK_UPDATES, type BookUpdateStatus } from "@/lib/book";
 import { SITE } from "@/lib/site";
 
@@ -99,7 +99,7 @@ export default function BookUpdatesPage() {
             </p>
           </div>
           <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.06] p-4 sm:p-6">
-            <BookWaitlist source="book_updates" tone="dark" />
+            <BookEmailSignup source="book_updates" tone="dark" />
           </div>
           <p className="mt-6 text-center text-sm text-[#cfd9ea]">
             <Link href="/book" className="font-semibold underline hover:text-[#e1bd5b]">

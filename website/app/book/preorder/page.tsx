@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BookOffers } from "@/components/BookOffers";
-import { BookWaitlist } from "@/components/BookWaitlist";
+import { BookEmailSignup } from "@/components/BookEmailSignup";
 import { BookDisclaimer } from "@/components/BookDisclaimer";
 import { BOOK } from "@/lib/book";
 import { SITE } from "@/lib/site";
@@ -79,7 +79,7 @@ export default function BookPreorderPage() {
             chapter free.
           </p>
           <div className="mt-5 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-sm sm:p-6">
-            <BookWaitlist source="book_preorder" />
+            <BookEmailSignup source="book_preorder" />
           </div>
         </div>
       </section>
