@@ -4,23 +4,23 @@ import { BOOK_TIERS, formatUsd } from "@/lib/book";
 function Stat({
   value,
   label,
-  highlight,
+  accent,
 }: {
   value: number;
   label: string;
-  highlight?: boolean;
+  accent?: boolean;
 }) {
   return (
-    <div className="min-w-[5.5rem]">
+    <div className="min-w-[5rem]">
       <div
         className={[
-          "font-display text-3xl font-black tabular-nums",
-          highlight ? "text-[var(--color-accent)]" : "text-[var(--color-ink)]",
+          "font-display text-3xl font-black tabular-nums sm:text-4xl",
+          accent ? "text-[var(--color-accent)]" : "text-[var(--color-ink)]",
         ].join(" ")}
       >
         {value.toLocaleString()}
       </div>
-      <div className="text-[11px] font-black uppercase tracking-[0.12em] text-[var(--color-muted)]">
+      <div className="mt-0.5 text-[11px] font-black uppercase tracking-[0.1em] text-[var(--color-muted)]">
         {label}
       </div>
     </div>
@@ -28,19 +28,19 @@ function Stat({
 }
 
 /**
- * Live social-proof counter: how many have bought, how many are on the list,
- * and how many Founding spots remain. Marketing-smart about a cold start —
- * before there's traction it leads with scarcity + a "be first" line instead of
- * weak zeros. (Ryan's exact numbers always live in /admin/book.)
+ * Live social proof for the book funnel: a headline "founding launch" count with
+ * a live pulse, a 24h momentum line, a buyers/list/spots breakdown, and the
+ * Founding scarcity bar. Built to make real (even small) numbers pull people in.
  */
 export async function BookSocialProof({ className = "" }: { className?: string }) {
   const s = await getBookStats();
+  const community = s.buyers + s.onList + s.waitlist;
+  const recent = s.last24hBuyers + s.last24hSignups;
   const remaining = Math.max(0, s.foundingLimit - s.foundingClaimed);
   const pct =
     s.foundingLimit > 0
       ? Math.min(100, Math.round((s.foundingClaimed / s.foundingLimit) * 100))
       : 0;
-  const hasTraction = s.buyers + s.onList > 0;
   const digital = BOOK_TIERS.find((t) => t.slug === "early_release_digital");
   const launchPrice = digital ? formatUsd(digital.priceUsd) : "$17.76";
 
@@ -51,23 +51,41 @@ export async function BookSocialProof({ className = "" }: { className?: string }
         className,
       ].join(" ")}
     >
-      {hasTraction ? (
-        <div className="flex flex-wrap items-center justify-center gap-x-7 gap-y-3 text-center">
-          <Stat value={s.buyers} label="have pre-ordered" />
-          <span className="hidden h-8 w-px bg-[var(--color-line)] sm:block" />
-          <Stat value={s.onList} label="on the early list" />
-          <span className="hidden h-8 w-px bg-[var(--color-line)] sm:block" />
-          <Stat value={remaining} label="Founding spots left" highlight />
-        </div>
-      ) : (
-        <p className="text-center text-sm font-bold text-[var(--color-ink-soft)]">
-          🇺🇸 The Founding launch just opened —{" "}
-          <span className="text-[var(--color-accent)]">
-            be the first to lock in the {launchPrice} launch price.
+      {/* Headline — founding launch count, live */}
+      <div className="flex flex-col items-center gap-1 text-center">
+        <div className="flex items-center gap-2">
+          <span className="relative flex h-2.5 w-2.5" aria-hidden>
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-accent)] opacity-60" />
+            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[var(--color-accent)]" />
           </span>
+          <span className="font-display text-4xl font-black tabular-nums text-[var(--color-accent)] sm:text-5xl">
+            {community.toLocaleString()}
+          </span>
+        </div>
+        <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--color-ink-soft)]">
+          joined the founding launch
         </p>
-      )}
+        {recent > 0 ? (
+          <p className="mt-1 text-xs font-bold text-[var(--color-accent)]">
+            🔥 {recent} joined in the last 24 hours
+          </p>
+        ) : community === 0 ? (
+          <p className="mt-1 text-xs font-bold text-[var(--color-ink-soft)]">
+            Be the very first to lock in the {launchPrice} launch price.
+          </p>
+        ) : null}
+      </div>
 
+      {/* Breakdown */}
+      <div className="mt-4 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 border-t border-[var(--color-line)] pt-4 text-center">
+        <Stat value={s.buyers} label="pre-ordered" accent />
+        <span className="hidden h-8 w-px bg-[var(--color-line)] sm:block" />
+        <Stat value={s.onList + s.waitlist} label="on the list" />
+        <span className="hidden h-8 w-px bg-[var(--color-line)] sm:block" />
+        <Stat value={remaining} label="Founding spots left" />
+      </div>
+
+      {/* Founding scarcity */}
       <div className="mt-4">
         <div className="flex items-center justify-between text-[11px] font-black uppercase tracking-wider text-[var(--color-muted)]">
           <span>Founding Supporter Edition</span>
@@ -82,15 +100,6 @@ export async function BookSocialProof({ className = "" }: { className?: string }
           />
         </div>
       </div>
-
-      {s.last24hBuyers > 0 || s.last24hSignups > 0 ? (
-        <p className="mt-3 text-center text-xs font-bold text-[var(--color-ink-soft)]">
-          🔥{" "}
-          {s.last24hBuyers > 0
-            ? `${s.last24hBuyers.toLocaleString()} pre-ordered in the last 24 hours`
-            : `${s.last24hSignups.toLocaleString()} joined the list in the last 24 hours`}
-        </p>
-      ) : null}
     </section>
   );
 }
