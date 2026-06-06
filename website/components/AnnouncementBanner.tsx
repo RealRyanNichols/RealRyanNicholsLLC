@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { BOOK_TIERS, formatUsd, tierSale } from "@/lib/book";
 
 // Bump the version to re-show the banner to people who dismissed an older one.
 const DISMISS_KEY = "rrn-book-banner-v1";
@@ -33,6 +34,11 @@ export function AnnouncementBanner() {
     }
   }
 
+  const digital = BOOK_TIERS.find((t) => t.slug === "early_release_digital");
+  const priceLabel = digital ? formatUsd(digital.priceUsd) : "$17.76";
+  const listLabel = digital?.listPriceUsd ? formatUsd(digital.listPriceUsd) : null;
+  const percentOff = digital ? tierSale(digital).percentOff : 0;
+
   if (dismissed) return null;
   if (pathname.startsWith("/admin") || pathname.startsWith("/book")) return null;
 
@@ -44,14 +50,19 @@ export function AnnouncementBanner() {
       >
         <div className="mx-auto flex max-w-5xl items-center justify-center gap-x-2 gap-y-0.5 px-9 py-2 text-center text-xs font-bold leading-tight sm:text-sm">
           <span className="rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.12em]">
-            Pre-order
+            {percentOff > 0 ? `${percentOff}% off` : "Pre-order"}
           </span>
           <span>
             <span className="font-black">Fighting Shadows</span>
             <span className="hidden sm:inline">
               {" "}
-              — my memoir of January 6. Read the first chapter free.
+              — my memoir of January 6. Launch price{" "}
+              {listLabel ? (
+                <span className="line-through opacity-75">{listLabel}</span>
+              ) : null}{" "}
+              <span className="font-black">{priceLabel}</span>.
             </span>
+            <span className="sm:hidden"> — {priceLabel} launch price.</span>
           </span>
           <span className="whitespace-nowrap font-black underline underline-offset-2">
             Get it →

@@ -82,6 +82,15 @@ export async function BookSocialProof({ className = "" }: { className?: string }
           />
         </div>
       </div>
+
+      {s.last24hBuyers > 0 || s.last24hSignups > 0 ? (
+        <p className="mt-3 text-center text-xs font-bold text-[var(--color-ink-soft)]">
+          🔥{" "}
+          {s.last24hBuyers > 0
+            ? `${s.last24hBuyers.toLocaleString()} pre-ordered in the last 24 hours`
+            : `${s.last24hSignups.toLocaleString()} joined the list in the last 24 hours`}
+        </p>
+      ) : null}
     </section>
   );
 }
