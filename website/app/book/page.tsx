@@ -129,6 +129,16 @@ export default function BookPage() {
         </div>
       </section>
 
+      {/* Momentum band — countdown + live social proof, right up top */}
+      <section className="mx-auto max-w-4xl px-4 pt-8 sm:px-6">
+        {saleActive ? (
+          <div className="mb-4 rounded-xl border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-4 py-3 text-center text-[var(--color-accent)]">
+            <BookCountdown endsAt={SALE_ENDS_AT} className="justify-center" />
+          </div>
+        ) : null}
+        <BookSocialProof />
+      </section>
+
       {/* Positioning */}
       <section className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:py-14">
         <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
@@ -202,12 +212,6 @@ export default function BookPage() {
           finalized.
         </p>
         <div className="mt-6">
-          {saleActive ? (
-            <div className="mb-6 rounded-xl border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-4 py-3 text-center text-[var(--color-accent)]">
-              <BookCountdown endsAt={SALE_ENDS_AT} className="justify-center" />
-            </div>
-          ) : null}
-          <BookSocialProof className="mb-8" />
           <BookOffers ctaHref="/book/preorder" ctaLabel="Choose" />
           <BookShare
             url={`${SITE.url}/book`}
