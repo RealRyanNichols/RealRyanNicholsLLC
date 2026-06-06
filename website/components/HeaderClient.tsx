@@ -887,7 +887,7 @@ function badgeClass(tone: NavItem["tone"] = "ink") {
     "shrink-0 rounded-full px-2 py-0.5 text-[10px] font-black uppercase tracking-normal";
   if (tone === "red") return `${base} bg-[var(--color-accent)] text-[#fdf8ea]`;
   if (tone === "blue") return `${base} bg-[#d9e2f2] text-[#142a52]`;
-  if (tone === "green") return `${base} bg-[#e1bd5b] text-[#0e1a36]`;
+  if (tone === "green") return `${base} bg-[#7fe3a9] text-[#0e1a36]`;
   return `${base} bg-[#d8c89e] text-[#1a1410]`;
 }
 

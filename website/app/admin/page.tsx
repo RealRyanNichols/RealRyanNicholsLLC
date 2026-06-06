@@ -849,7 +849,7 @@ function MagnetMiniStat({
 }) {
   const toneClass =
     tone === "green"
-      ? "border-[#e1bd5b]/40 bg-[#e1bd5b]/10 text-[#e1bd5b]"
+      ? "border-[#7fe3a9]/40 bg-[#7fe3a9]/10 text-[#7fe3a9]"
       : tone === "gold"
         ? "border-[#e4c66a]/50 bg-[#e4c66a]/10 text-[#e4c66a]"
         : "border-[#ef6f61]/50 bg-[#ef6f61]/10 text-[#ef6f61]";

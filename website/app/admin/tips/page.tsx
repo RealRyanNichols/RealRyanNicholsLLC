@@ -648,7 +648,7 @@ function OutcomeBadge({ status }: { status: string }) {
       className={[
         "rounded-full px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider",
         worked
-          ? "bg-[#e1bd5b]/25 text-[#0f3d2a]"
+          ? "bg-[#7fe3a9]/25 text-[#0f3d2a]"
           : "bg-[#e0362c]/15 text-[var(--color-accent)]",
       ].join(" ")}
     >

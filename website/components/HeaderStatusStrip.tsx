@@ -37,7 +37,7 @@ export function HeaderStatusStrip() {
           href="/the-map-room"
           className="inline-flex min-h-9 min-w-0 flex-1 items-center gap-2 rounded-full border border-[#2f4368] bg-white/5 px-3 text-[10px] font-black uppercase tracking-[0.12em] text-[#fdf8ea] transition hover:border-[#e1bd5b] hover:text-[#e1bd5b]"
         >
-          <span className="h-2 w-2 rounded-full bg-[#e1bd5b] shadow-[0_0_18px_rgba(127,227,169,0.9)]" />
+          <span className="h-2 w-2 rounded-full bg-[#7fe3a9] shadow-[0_0_18px_rgba(127,227,169,0.9)]" />
           <span className="truncate">
             {(t?.live_now ?? 0).toLocaleString()} live now
           </span>

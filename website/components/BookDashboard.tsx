@@ -88,10 +88,10 @@ export function BookDashboard() {
       <div className="rounded-xl border border-white/10 bg-white/[0.06] p-5 sm:p-6">
         <div className="flex items-center gap-2">
           <span className="relative flex h-2.5 w-2.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#e1bd5b] opacity-75" />
-            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#e1bd5b]" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#7fe3a9] opacity-75" />
+            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#7fe3a9]" />
           </span>
-          <p className="text-xs font-black uppercase tracking-[0.16em] text-[#e1bd5b]">
+          <p className="text-xs font-black uppercase tracking-[0.16em] text-[#7fe3a9]">
             On the list right now
           </p>
         </div>
@@ -111,7 +111,7 @@ export function BookDashboard() {
           </div>
           <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-white/10">
             <div
-              className="h-full rounded-full bg-[#e1bd5b] transition-all duration-700"
+              className="h-full rounded-full bg-[#7fe3a9] transition-all duration-700"
               style={{ width: `${Math.max(total > 0 ? 2 : 0, pct)}%` }}
             />
           </div>
