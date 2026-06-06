@@ -77,6 +77,16 @@ export default function BookPreorderPage() {
         </div>
       </section>
 
+      {/* Momentum band — countdown + live social proof, right up top */}
+      <section className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
+        {saleActive ? (
+          <div className="mb-4 rounded-xl border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-4 py-3 text-center text-[var(--color-accent)]">
+            <BookCountdown endsAt={SALE_ENDS_AT} className="justify-center" />
+          </div>
+        ) : null}
+        <BookSocialProof />
+      </section>
+
       {/* Delivery-date note */}
       <section className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
         <div className="rounded-xl border-l-4 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-4 sm:p-5">
@@ -93,12 +103,6 @@ export default function BookPreorderPage() {
         id="book-offers"
         className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12"
       >
-        {saleActive ? (
-          <div className="mb-6 rounded-xl border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-4 py-3 text-center text-[var(--color-accent)]">
-            <BookCountdown endsAt={SALE_ENDS_AT} className="justify-center" />
-          </div>
-        ) : null}
-        <BookSocialProof className="mb-8" />
         <BookOffers checkout ctaLabel="Pre-order" />
         <p className="mt-4 text-center text-sm font-semibold text-[var(--color-muted)]">
           Secure checkout by Stripe. Full refund anytime before your edition
