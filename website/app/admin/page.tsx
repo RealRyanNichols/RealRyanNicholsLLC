@@ -490,7 +490,8 @@ export default async function AdminHomePage() {
             Nobody on the site in the last 5 minutes.
           </p>
         ) : (
-          <table className="mt-3 w-full text-xs">
+          <div className="mt-3 overflow-x-auto">
+            <table className="w-full min-w-[560px] text-xs">
             <thead className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
               <tr>
                 <th className="text-left py-1">Session</th>
@@ -533,6 +534,7 @@ export default async function AdminHomePage() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </section>
 
