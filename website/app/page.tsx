@@ -4,6 +4,7 @@ import { ProfileHero } from "@/components/ProfileHero";
 import { VerseSidebar } from "@/components/VerseSidebar";
 import { SignupForm } from "@/components/SignupForm";
 import { BookPromo } from "@/components/BookPromo";
+import { BookCtaBand } from "@/components/BookCtaBand";
 import { LiveNowBanner } from "@/components/LiveNowBanner";
 import { getActiveLiveStream } from "@/lib/live";
 import { SITE } from "@/lib/site";
@@ -42,6 +43,8 @@ export default async function HomePage({
       <div className="lg:col-span-2">
         <LiveNowBanner stream={activeLiveStream} />
         <ProfileHero />
+
+        <BookCtaBand className="mt-8" />
 
         {/* Chronological feed — strict newest-first, no pinning */}
         <section className="mt-8">
