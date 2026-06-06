@@ -56,10 +56,10 @@ export async function ProfileHero() {
             </div>
           )}
           <div className="flex-1 min-w-0 pt-2 sm:pb-2">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.05]">
+            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[0.95]">
               {SITE.name}
             </h1>
-            <p className="text-sm sm:text-base text-[var(--color-ink-soft)] mt-1.5 font-medium">
+            <p className="mt-2 text-sm font-black uppercase tracking-[0.04em] text-[var(--color-accent)] sm:text-base">
               {SITE.tagline}
             </p>
           </div>
