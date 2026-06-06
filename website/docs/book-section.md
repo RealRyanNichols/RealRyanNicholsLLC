@@ -73,9 +73,30 @@ Design decisions:
 
 **Env var:** `STRIPE_SECRET_KEY` (already set for the site store). No new vars.
 
+## Phase 4 — webhook fulfillment (live)
+
+**Table:** `public.book_orders` (every field from the spec; see
+`docs/sql/book_orders.sql`). RLS on, no policies — service-role only.
+
+**Webhook:** handled inside the **existing** `app/api/stripe/webhook/route.ts`
+(no new endpoint, no new secret). On `checkout.session.completed` where
+`metadata.kind === "book_preorder"` it upserts a `book_orders` row:
+
+- Idempotent two ways — the route already dedupes on `stripe_events`, and the
+  upsert is `onConflict: stripe_checkout_session_id, ignoreDuplicates: true`, so
+  retries never duplicate and never regenerate the download token.
+- Stores customer, product, amount, payment status, a generated
+  `download_token`, and the optional supporter display name (Founding tier).
+- Refunds: `charge.refunded` sets `payment_status = 'refunded'`.
+
+**Env var:** `STRIPE_WEBHOOK_SECRET` — already set (the store uses the same
+endpoint). Nothing new to configure.
+
+**Verify it is firing:** place one pre-order (Stripe test card
+`4242 4242 4242 4242`, or a real $29 you refund), then check `book_orders` for
+the row. The order also appears in the Stripe Dashboard.
+
 ## Later phases (not built yet)
 
-- **Phase 4 — webhook fulfillment:** `checkout.session.completed` →
-  `book_orders` table; `STRIPE_WEBHOOK_SECRET`.
 - **Phase 5 — secure download:** `/book/download/[token]`.
 - **Phase 6 — full docs + test checklist.**

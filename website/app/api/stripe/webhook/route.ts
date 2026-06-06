@@ -1,4 +1,5 @@
 import Stripe from "stripe";
+import { randomBytes } from "crypto";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { requireStripe } from "@/lib/stripe";
 import { getSupabaseServiceClient } from "@/lib/supabase/service";
@@ -114,6 +115,11 @@ async function handleCheckoutCompleted(
     return;
   }
 
+  if (session.mode === "payment" && kind === "book_preorder") {
+    await handleBookPreorder(supabase, session);
+    return;
+  }
+
   if (session.mode === "payment" && kind === "order") {
     const { data: order } = await supabase
       .from("orders")
@@ -166,6 +172,53 @@ async function handleCheckoutCompleted(
     }
     return;
   }
+}
+
+const BOOK_PHYSICAL_SLUGS = new Set([
+  "signed_paperback_preorder",
+  "founding_supporter_edition",
+]);
+
+async function handleBookPreorder(
+  supabase: SupabaseClient,
+  session: Stripe.Checkout.Session,
+) {
+  const details = session.customer_details;
+  const supporterField = session.custom_fields?.find(
+    (f) => f.key === "supporter_name",
+  );
+  const supporterName = supporterField?.text?.value?.trim() || null;
+  const slug = session.metadata?.product_slug ?? null;
+  const isPhysical = slug ? BOOK_PHYSICAL_SLUGS.has(slug) : false;
+
+  // Idempotent on the session id (in addition to the event-level dedupe above),
+  // and `ignoreDuplicates` keeps the original download token if this re-runs.
+  await supabase.from("book_orders").upsert(
+    {
+      stripe_checkout_session_id: session.id,
+      stripe_payment_intent_id:
+        typeof session.payment_intent === "string"
+          ? session.payment_intent
+          : null,
+      stripe_customer_id:
+        typeof session.customer === "string" ? session.customer : null,
+      customer_email: details?.email ?? null,
+      customer_name: details?.name ?? null,
+      product_slug: slug,
+      product_name: session.metadata?.product_name ?? null,
+      amount_paid: session.amount_total ?? 0,
+      currency: session.currency ?? "usd",
+      payment_status: session.payment_status ?? "paid",
+      preorder_status: "preordered",
+      download_token: randomBytes(24).toString("hex"),
+      supporter_name_opt_in: Boolean(supporterName),
+      supporter_display_name: supporterName,
+      notes: isPhysical
+        ? "Physical edition — shipping address collected at checkout (see the Stripe session)."
+        : null,
+    },
+    { onConflict: "stripe_checkout_session_id", ignoreDuplicates: true },
+  );
 }
 
 async function handleServicePaymentPlanCheckout(
@@ -251,6 +304,10 @@ async function handleRefund(supabase: SupabaseClient, event: Stripe.Event) {
     .from("orders")
     .update({ status: "refunded" })
     .eq("stripe_payment_intent", pi);
+  await supabase
+    .from("book_orders")
+    .update({ payment_status: "refunded", updated_at: new Date().toISOString() })
+    .eq("stripe_payment_intent_id", pi);
 }
 
 async function handleServiceInvoiceChange(
