@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BookWaitlist } from "@/components/BookWaitlist";
-import { BookDashboard } from "@/components/BookDashboard";
+import { BookOffers } from "@/components/BookOffers";
+import { BookDisclaimer } from "@/components/BookDisclaimer";
+import { BOOK, BOOK_COVERS, BOOK_FAQ } from "@/lib/book";
 import { SITE } from "@/lib/site";
 
 const title = "Fighting Shadows — A Memoir by Ryan Nichols";
 const description =
-  "Fighting Shadows: a memoir of January 6, political persecution, and fighting back. Ryan Nichols tells the full story — Marine, the tunnel, the D.C. jail, the pardon, and the lawfare that followed. Join the waitlist and read the opening chapter free, plus get the release date and founding-reader price first.";
+  "Fighting Shadows: a first-person account of January 6, the D.C. jail, forced vaccination, solitary confinement, coerced plea pressure, due process violations, and the fight to put the full record in public view. Pre-order direct from Ryan Nichols.";
 
 export const metadata: Metadata = {
   title,
@@ -18,71 +20,29 @@ export const metadata: Metadata = {
     description,
     url: `${SITE.url}/book`,
     images: [
-      {
-        url: "/uploads/book-og.png",
-        width: 1200,
-        height: 800,
-        alt: "Fighting Shadows — A Memoir by Ryan Nichols",
-      },
+      { url: BOOK.ogImage, width: 1200, height: 800, alt: title },
     ],
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
-    images: ["/uploads/book-og.png"],
+    images: [BOOK.ogImage],
   },
 };
 
-const heroSub =
-  "From the Marine Corps and search-and-rescue work, to January 6th and nearly four years tangled in the federal system, to the pardon and the lawfare that came home with me — this is the full account, told straight. Join the list and the opening chapter is yours free — plus you are first to know the release date and first in line to own it.";
+const whyImWriting =
+  "I am writing this because the official story is not the whole story, and because I lived a version of these events that the record can back up. I spent nearly four years inside the system. I kept notes, filed grievances, and held onto transcripts and documents. This book puts that account in one place, in my own words, so it cannot be buried, edited down, or spun. It is my recollection and my documented claims, laid out so you can weigh them yourself.";
 
-const whatItIs =
-  "This is not a hot take or a press clipping. It is the long version — the parts that got left out, the documents, the names, the nights in the D.C. jail, and what it actually costs to be told you no longer get to defend yourself. It is also a story about faith, family, and refusing to disappear.";
-
-const perks: { title: string; body: string }[] = [
+const archiveLinks = [
+  { href: "/case", label: "The case file", desc: "Timeline, people, and documents." },
+  { href: "/the-map-room", label: "The Map Room", desc: "The public record, mapped." },
   {
-    title: "Free opening chapter",
-    body: "Join and you are first to read the opening chapter of Fighting Shadows — sent to the list, free, before it is public.",
-  },
-  {
-    title: "First access",
-    body: "The launch announcement before the public — and the first chance to buy.",
-  },
-  {
-    title: "Founding-reader price",
-    body: "A launch price reserved for the people who showed up early.",
-  },
-  {
-    title: "Signed copies",
-    body: "A limited run of signed copies — list members get first shot.",
+    href: "/evidence-the-doj-tried-to-erase",
+    label: "The evidence",
+    desc: "Footage and records, in the open.",
   },
 ];
-
-const themes: { label: string; body: string }[] = [
-  {
-    label: "The tunnel",
-    body: "January 6th from the inside — and the bodycam footage that tells the truth about that day.",
-  },
-  {
-    label: "The cell",
-    body: "Nearly four years in the system, including the D.C. jail, and the men I met there.",
-  },
-  {
-    label: "Coming home",
-    body: "A pardon — and a homecoming into divorce, fraud, and criminal charges waiting at the door.",
-  },
-  {
-    label: "The fight",
-    body: "Why I publish everything, why access to my own voice is survival, and how I fight back in the open.",
-  },
-];
-
-const forWhom =
-  "For anyone who has been lied about, locked out, or told to be quiet — and for the people who still believe the truth is worth the receipts.";
-
-const fromRyan =
-  "I am putting my name, my family, and my record on the line to tell this straight. If you want it the way it actually happened — not the way they spun it — get on the list. You will hear it from me first.";
 
 export default function BookPage() {
   return (
@@ -93,74 +53,97 @@ export default function BookPage() {
           <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-12">
             <div className="max-w-3xl">
               <p className="text-xs font-black uppercase tracking-[0.24em] text-[#e1bd5b]">
-                Coming 2026 · A memoir
+                Pre-order · A memoir by {BOOK.author}
               </p>
               <h1 className="mt-3 font-display text-5xl font-black leading-[0.95] tracking-tight text-[#fdf8ea] sm:text-7xl">
-                Fighting Shadows
+                {BOOK.title}
               </h1>
               <p className="mt-4 max-w-2xl font-display text-lg font-black uppercase leading-snug tracking-[0.04em] text-[#e1bd5b] sm:text-xl">
-                A memoir of January 6, political persecution, and fighting back.
+                {BOOK.subtitle}
               </p>
               <p className="mt-5 max-w-2xl text-base font-semibold leading-7 text-[#cfd9ea] sm:text-lg">
-                {heroSub}
+                {BOOK.positioning}
               </p>
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href="/book/preorder"
+                  className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)]"
+                >
+                  Pre-order the book
+                </Link>
+                <Link
+                  href="/book/updates"
+                  className="inline-flex min-h-12 items-center justify-center rounded-lg border border-white/20 bg-white/[0.06] px-6 py-3 text-base font-black text-[#fdf8ea] transition hover:bg-white/10"
+                >
+                  Read the updates
+                </Link>
+              </div>
             </div>
             <div className="mx-auto w-full max-w-[240px] sm:max-w-[280px] lg:max-w-none">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/uploads/book-cover.png"
+                src={BOOK.cover}
                 alt="Fighting Shadows — a memoir by Ryan Nichols (book cover)"
                 width={1000}
                 height={1333}
                 className="w-full rounded-lg border border-white/15 shadow-2xl shadow-black/50 ring-1 ring-black/20"
               />
-              <p className="mt-3 text-center text-xs font-bold uppercase tracking-[0.18em] text-[#d8c89e]">
-                The cover · revealed
-              </p>
             </div>
           </div>
-          <div className="mt-10">
-            <BookDashboard />
+
+          {/* Email signup — above the fold */}
+          <div
+            id="book-list"
+            className="mt-10 rounded-xl border border-white/10 bg-white/[0.06] p-5 sm:p-6"
+          >
+            <p className="text-sm font-black uppercase tracking-[0.16em] text-[#e1bd5b]">
+              Get on the list
+            </p>
+            <p className="mb-3 mt-1 font-display text-lg font-black leading-tight text-[#fdf8ea]">
+              Book updates, the release date, and the opening chapter free.
+            </p>
+            <BookWaitlist source="book_sales_hero" tone="dark" />
           </div>
         </div>
       </section>
 
-      {/* What it is */}
+      {/* Positioning */}
       <section className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:py-14">
         <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
           What this book is
         </p>
         <h2 className="mt-2 font-display text-3xl font-black leading-tight tracking-normal sm:text-4xl">
-          The long version — receipts and all.
+          My story. My records. My experience. Told straight.
         </h2>
         <p className="mt-4 text-lg font-semibold leading-8 text-[var(--color-ink-soft)]">
-          {whatItIs}
+          {BOOK.positioning} It is written in the first person and grounded in
+          the documented record where the record exists.
         </p>
       </section>
 
-      {/* Themes */}
+      {/* What it covers */}
       <section className="border-y border-[var(--color-line)] bg-[var(--color-paper)]">
         <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:py-14">
           <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
-            Inside
+            What the book covers
           </p>
           <h2 className="mt-2 font-display text-3xl font-black leading-tight tracking-normal sm:text-4xl">
-            Four chapters of a fight that is still going.
+            The whole arc, in order.
           </h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            {themes.map((t, i) => (
+            {BOOK_COVERS.map((c, i) => (
               <div
-                key={t.label}
+                key={c.title}
                 className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-sm"
               >
                 <p className="font-mono text-xs font-black text-[var(--color-muted)]">
                   {String(i + 1).padStart(2, "0")}
                 </p>
-                <h3 className="mt-1 font-display text-2xl font-black tracking-normal text-[var(--color-ink)]">
-                  {t.label}
+                <h3 className="mt-1 font-display text-xl font-black tracking-normal text-[var(--color-ink)]">
+                  {c.title}
                 </h3>
                 <p className="mt-2 text-sm font-semibold leading-relaxed text-[var(--color-ink-soft)]">
-                  {t.body}
+                  {c.body}
                 </p>
               </div>
             ))}
@@ -168,43 +151,109 @@ export default function BookPage() {
         </div>
       </section>
 
-      {/* Perks */}
-      <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:py-14">
-        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
-          Why join the list
-        </p>
-        <h2 className="mt-2 font-display text-3xl font-black leading-tight tracking-normal sm:text-4xl">
-          The early readers get treated like it.
-        </h2>
-        <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {perks.map((p) => (
-            <div
-              key={p.title}
-              className="rounded-xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-5 transition hover:border-[var(--color-accent)]"
-            >
-              <h3 className="font-display text-xl font-black tracking-normal text-[var(--color-ink)]">
-                {p.title}
-              </h3>
-              <p className="mt-2 text-sm font-semibold leading-relaxed text-[var(--color-ink-soft)]">
-                {p.body}
-              </p>
-            </div>
-          ))}
+      {/* Why I am writing this */}
+      <section className="border-b border-[var(--color-line)] bg-[var(--color-accent-soft)]">
+        <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:py-14">
+          <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+            Why I am writing this
+          </p>
+          <p className="mt-3 font-display text-2xl font-black leading-snug tracking-normal text-[var(--color-ink)] sm:text-3xl">
+            {whyImWriting}
+          </p>
+          <p className="mt-4 text-sm font-bold uppercase tracking-[0.14em] text-[var(--color-accent)]">
+            — {BOOK.author}
+          </p>
         </div>
       </section>
 
-      {/* From Ryan */}
-      <section className="border-y border-[var(--color-line)] bg-[var(--color-accent-soft)]">
-        <div className="mx-auto max-w-3xl px-4 py-10 text-center sm:px-6 lg:py-14">
-          <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
-            From Ryan
+      {/* Pre-order offers */}
+      <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:py-14">
+        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+          Pre-order
+        </p>
+        <h2 className="mt-2 font-display text-3xl font-black leading-tight tracking-normal sm:text-4xl">
+          Three ways to get it first.
+        </h2>
+        <p className="mt-3 max-w-2xl text-base font-semibold leading-7 text-[var(--color-ink-soft)]">
+          Pre-order direct, here, before the book goes to Amazon. Delivery dates
+          are announced as the manuscript, editing, and printing schedule is
+          finalized.
+        </p>
+        <div className="mt-6">
+          <BookOffers ctaHref="/book/preorder" ctaLabel="Choose" />
+        </div>
+        <p className="mt-4 text-sm font-semibold text-[var(--color-muted)]">
+          See full details on the{" "}
+          <Link
+            href="/book/preorder"
+            className="font-black text-[var(--color-accent)] underline underline-offset-4"
+          >
+            pre-order page
+          </Link>
+          .
+        </p>
+      </section>
+
+      {/* Evidence / archive connection */}
+      <section className="bg-[#071126] text-[#fdf8ea]">
+        <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:py-14">
+          <p className="text-xs font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
+            The book and the record
           </p>
-          <p className="mt-3 font-display text-2xl font-black leading-snug tracking-normal text-[var(--color-ink)] sm:text-3xl">
-            {fromRyan}
+          <h2 className="mt-2 font-display text-3xl font-black leading-tight tracking-normal text-[#fdf8ea] sm:text-4xl">
+            It does not stand alone.
+          </h2>
+          <p className="mt-3 max-w-2xl text-base font-semibold leading-7 text-[#cfd9ea]">
+            The book sits on top of a public archive — filings, transcripts,
+            bodycam, and grievances — that you can read for yourself.
           </p>
-          <p className="mt-4 text-sm font-semibold leading-relaxed text-[var(--color-ink-soft)]">
-            {forWhom}
-          </p>
+          <div className="mt-6 grid gap-3 sm:grid-cols-3">
+            {archiveLinks.map((a) => (
+              <Link
+                key={a.href}
+                href={a.href}
+                className="group rounded-xl border border-white/12 bg-white/[0.05] p-5 transition hover:border-[#e1bd5b]/60"
+              >
+                <h3 className="font-display text-xl font-black tracking-normal text-[#fdf8ea]">
+                  {a.label}
+                </h3>
+                <p className="mt-1.5 text-sm font-semibold text-[#cfd9ea]">
+                  {a.desc}
+                </p>
+                <p className="mt-3 text-sm font-black text-[#e1bd5b] group-hover:underline">
+                  Open →
+                </p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:py-14">
+        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+          Questions
+        </p>
+        <h2 className="mt-2 font-display text-3xl font-black leading-tight tracking-normal sm:text-4xl">
+          Straight answers.
+        </h2>
+        <div className="mt-6 divide-y divide-[var(--color-line)] border-y border-[var(--color-line)]">
+          {BOOK_FAQ.map((item) => (
+            <details key={item.q} className="group py-4">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-3 font-display text-lg font-black tracking-normal text-[var(--color-ink)] [&::-webkit-details-marker]:hidden">
+                {item.q}
+                <span
+                  className="text-xl font-black text-[var(--color-accent)] transition group-open:rotate-45"
+                  aria-hidden
+                >
+                  +
+                </span>
+              </summary>
+              <p className="mt-2 text-base font-semibold leading-7 text-[var(--color-ink-soft)]">
+                {item.a}
+              </p>
+            </details>
+          ))}
         </div>
       </section>
 
@@ -213,15 +262,29 @@ export default function BookPage() {
         <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6 lg:py-16">
           <div className="text-center">
             <h2 className="font-display text-3xl font-black leading-tight tracking-normal text-[#fdf8ea] sm:text-4xl">
-              Be on the list before Fighting Shadows ships.
+              Put your name on the record.
             </h2>
             <p className="mt-3 text-base font-semibold leading-7 text-[#cfd9ea]">
-              Name, email, and phone. That is it. You get the opening chapter
-              free, the release date first, and first chance to own it.
+              Pre-order the book, or get on the list for the release date and the
+              opening chapter free.
             </p>
           </div>
-          <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.06] p-4 sm:p-6">
-            <BookWaitlist source="book_footer" tone="dark" />
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
+            <Link
+              href="/book/preorder"
+              className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)]"
+            >
+              Pre-order the book
+            </Link>
+            <Link
+              href="#book-list"
+              className="inline-flex min-h-12 items-center justify-center rounded-lg border border-white/20 bg-white/[0.06] px-6 py-3 text-base font-black text-[#fdf8ea] transition hover:bg-white/10"
+            >
+              Get on the list
+            </Link>
+          </div>
+          <div className="mt-8">
+            <BookDisclaimer className="border-white/10 bg-white/[0.05] text-[#cfd9ea]" />
           </div>
           <p className="mt-6 text-center text-sm text-[#cfd9ea]">
             <Link href="/" className="font-semibold underline hover:text-[#e1bd5b]">
