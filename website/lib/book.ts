@@ -96,6 +96,11 @@ export function tierSale(tier: BookTier): { onSale: boolean; percentOff: number 
   };
 }
 
+// FOMO countdown: the deadline for the $17.76 launch price. Set this to your
+// real deadline (or null to turn the countdown off everywhere). Defaulted two
+// weeks out — change it to whatever you want the launch window to be.
+export const SALE_ENDS_AT: string | null = "2026-06-20T23:59:59-05:00";
+
 // Why the pre-order costs what it does. The framing is both/and: you are
 // backing the work AND getting exclusive founding access before Amazon.
 export const WHY_PRICE: { title: string; body: string }[] = [

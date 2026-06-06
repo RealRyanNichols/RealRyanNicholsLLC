@@ -4,7 +4,18 @@ import { BookEmailSignup } from "@/components/BookEmailSignup";
 import { BookOffers } from "@/components/BookOffers";
 import { BookSocialProof } from "@/components/BookSocialProof";
 import { BookDisclaimer } from "@/components/BookDisclaimer";
-import { BOOK, BOOK_COVERS, BOOK_FAQ } from "@/lib/book";
+import { BookCountdown } from "@/components/BookCountdown";
+import { BookStickyBuyBar } from "@/components/BookStickyBuyBar";
+import { BookExitIntent } from "@/components/BookExitIntent";
+import { BookShare } from "@/components/BookShare";
+import {
+  BOOK,
+  BOOK_COVERS,
+  BOOK_FAQ,
+  BOOK_TIERS,
+  SALE_ENDS_AT,
+  formatUsd,
+} from "@/lib/book";
 import { SITE } from "@/lib/site";
 
 const title = "Fighting Shadows — A Memoir by Ryan Nichols";
@@ -46,8 +57,18 @@ const archiveLinks = [
 ];
 
 export default function BookPage() {
+  const digital = BOOK_TIERS.find((t) => t.slug === "early_release_digital");
+  const priceLabel = digital ? formatUsd(digital.priceUsd) : "$17.76";
+  const listLabel = digital?.listPriceUsd
+    ? formatUsd(digital.listPriceUsd)
+    : undefined;
+  const saleActive = SALE_ENDS_AT
+    ? new Date(SALE_ENDS_AT).getTime() > Date.now()
+    : false;
   return (
     <article className="rrn-page">
+      <BookExitIntent priceLabel={priceLabel} listLabel={listLabel} />
+      <BookStickyBuyBar priceLabel={priceLabel} listLabel={listLabel} />
       {/* Hero */}
       <section className="border-b border-[#203a64] bg-[#071126] text-[#fdf8ea]">
         <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:py-16">
@@ -80,7 +101,7 @@ export default function BookPage() {
                 </Link>
               </div>
             </div>
-            <div className="mx-auto w-full max-w-[240px] sm:max-w-[280px] lg:max-w-none">
+            <div className="order-first mx-auto w-full max-w-[240px] sm:max-w-[280px] lg:order-none lg:max-w-none">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={BOOK.cover}
@@ -181,8 +202,18 @@ export default function BookPage() {
           finalized.
         </p>
         <div className="mt-6">
+          {saleActive ? (
+            <div className="mb-6 rounded-xl border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-4 py-3 text-center text-[var(--color-accent)]">
+              <BookCountdown endsAt={SALE_ENDS_AT} className="justify-center" />
+            </div>
+          ) : null}
           <BookSocialProof className="mb-8" />
           <BookOffers ctaHref="/book/preorder" ctaLabel="Choose" />
+          <BookShare
+            url={`${SITE.url}/book`}
+            text="Fighting Shadows — Ryan Nichols's first-person account of January 6 and the fight to put the record in public view. Pre-order direct:"
+            className="mt-6 justify-center"
+          />
         </div>
         <p className="mt-4 text-sm font-semibold text-[var(--color-muted)]">
           See full details on the{" "}

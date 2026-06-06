@@ -1,12 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BOOK } from "@/lib/book";
+import { BOOK, BOOK_TIERS, formatUsd, tierSale, type BookTierSlug } from "@/lib/book";
 import { SITE } from "@/lib/site";
+import { BookBuyButton } from "@/components/BookBuyButton";
+import { BookShare } from "@/components/BookShare";
+import {
+  getSupabaseServiceClient,
+  isSupabaseServiceConfigured,
+} from "@/lib/supabase/service";
 
 const title = "Thank You — Fighting Shadows | Ryan Nichols";
 const description = "Thank you for your pre-order of Fighting Shadows.";
 
-// Post-purchase page — keep it out of search.
+// Post-purchase page — reads the order, so keep it dynamic and out of search.
+export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title,
   description,
@@ -29,7 +36,48 @@ const steps = [
   },
 ];
 
-export default function BookThankYouPage() {
+// Tier order, used to pick the next edition up as the upsell.
+const ORDER: BookTierSlug[] = [
+  "early_release_digital",
+  "signed_paperback_preorder",
+  "founding_supporter_edition",
+];
+
+async function purchasedSlug(sessionId?: string): Promise<BookTierSlug | null> {
+  if (!sessionId || !isSupabaseServiceConfigured()) return null;
+  const supabase = getSupabaseServiceClient();
+  const { data } = await supabase
+    .from("book_orders")
+    .select("product_slug")
+    .eq("stripe_checkout_session_id", sessionId)
+    .maybeSingle();
+  const slug = data?.product_slug as BookTierSlug | undefined;
+  return slug && ORDER.includes(slug) ? slug : null;
+}
+
+export default async function BookThankYouPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ session_id?: string }>;
+}) {
+  const { session_id } = await searchParams;
+  const bought = await purchasedSlug(session_id);
+
+  // Upsell the next edition up. If we can't tell what they bought yet (the
+  // webhook may not have landed), softly offer the Founding edition — unless
+  // they already bought it.
+  const idx = bought ? ORDER.indexOf(bought) : -1;
+  const upsellSlug =
+    idx >= 0 && idx < ORDER.length - 1
+      ? ORDER[idx + 1]
+      : bought === "founding_supporter_edition"
+        ? null
+        : "founding_supporter_edition";
+  const upsell = upsellSlug
+    ? BOOK_TIERS.find((t) => t.slug === upsellSlug)
+    : null;
+  const upsellSale = upsell ? tierSale(upsell) : { onSale: false, percentOff: 0 };
+
   return (
     <article className="rrn-page">
       <section className="bg-[#071126] text-[#fdf8ea]">
@@ -69,12 +117,64 @@ export default function BookThankYouPage() {
           ))}
         </div>
 
+        {/* Upsell — the next edition up */}
+        {upsell ? (
+          <div className="mt-6 rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-surface)] p-5 shadow-md sm:p-6">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
+                Make it count more
+              </p>
+              {upsell.limited ? (
+                <span className="rounded-full border border-[var(--color-gold)] bg-[var(--color-gold-soft)] px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-[var(--color-support-strong)]">
+                  {upsell.limited} only
+                </span>
+              ) : null}
+            </div>
+            <h2 className="mt-1 font-display text-2xl font-black tracking-normal text-[var(--color-ink)]">
+              Add the {upsell.name}
+            </h2>
+            <p className="mt-1 text-sm font-semibold text-[var(--color-ink-soft)]">
+              {upsell.tagline}
+            </p>
+            <div className="mt-3 flex items-baseline gap-2">
+              {upsellSale.onSale && upsell.listPriceUsd ? (
+                <span className="font-display text-lg font-bold tabular-nums text-[var(--color-muted)] line-through">
+                  {formatUsd(upsell.listPriceUsd)}
+                </span>
+              ) : null}
+              <span className="font-display text-3xl font-black tabular-nums text-[var(--color-ink)]">
+                {formatUsd(upsell.priceUsd)}
+              </span>
+            </div>
+            <BookBuyButton
+              slug={upsell.slug}
+              label={`Add it · ${formatUsd(upsell.priceUsd)}`}
+              className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--color-accent)] px-5 py-3 text-sm font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)] disabled:opacity-60"
+            />
+          </div>
+        ) : null}
+
         <div className="mt-6 rounded-xl border-l-4 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-4 sm:p-5">
           <p className="text-sm font-bold leading-relaxed text-[var(--color-ink)]">
             A final release date will be posted once the manuscript, editing, and
             printing schedule is set. I will not promise a date until I can keep
             it.
           </p>
+        </div>
+
+        {/* Share — post-purchase is the best moment to spread it */}
+        <div className="mt-8 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 text-center">
+          <p className="font-display text-lg font-black text-[var(--color-ink)]">
+            Bring someone with you
+          </p>
+          <p className="mt-1 text-sm font-semibold text-[var(--color-ink-soft)]">
+            The more eyes on the record, the harder it is to bury.
+          </p>
+          <BookShare
+            url={`${SITE.url}/book`}
+            text="I just pre-ordered Fighting Shadows by Ryan Nichols — his first-person account of January 6 and the fight to put the record in public view. Get it direct:"
+            className="mt-3 justify-center"
+          />
         </div>
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
