@@ -120,6 +120,11 @@ async function handleCheckoutCompleted(
     return;
   }
 
+  if (session.mode === "payment" && kind === "blueprint_purchase") {
+    await handleBlueprintPurchase(supabase, session);
+    return;
+  }
+
   if (session.mode === "payment" && kind === "order") {
     const { data: order } = await supabase
       .from("orders")
@@ -221,6 +226,44 @@ async function handleBookPreorder(
   );
 }
 
+async function handleBlueprintPurchase(
+  supabase: SupabaseClient,
+  session: Stripe.Checkout.Session,
+) {
+  const details = session.customer_details;
+  const intakeId = session.metadata?.intake_id || null;
+  await supabase.from("blueprint_orders").upsert(
+    {
+      stripe_checkout_session_id: session.id,
+      stripe_payment_intent_id:
+        typeof session.payment_intent === "string"
+          ? session.payment_intent
+          : null,
+      stripe_customer_id:
+        typeof session.customer === "string" ? session.customer : null,
+      customer_email: details?.email ?? null,
+      customer_name: details?.name ?? null,
+      package_slug: session.metadata?.package_slug ?? null,
+      package_name: session.metadata?.package_name ?? null,
+      amount_paid: session.amount_total ?? 0,
+      currency: session.currency ?? "usd",
+      payment_status: session.payment_status ?? "paid",
+      intake_id: intakeId,
+      notes:
+        session.metadata?.is_deposit === "true"
+          ? "50% deposit. Balance due before final handoff."
+          : null,
+    },
+    { onConflict: "stripe_checkout_session_id", ignoreDuplicates: true },
+  );
+  if (intakeId) {
+    await supabase
+      .from("blueprint_intake")
+      .update({ stripe_checkout_session_id: session.id })
+      .eq("id", intakeId);
+  }
+}
+
 async function handleServicePaymentPlanCheckout(
   stripe: Stripe,
   supabase: SupabaseClient,
@@ -306,6 +349,10 @@ async function handleRefund(supabase: SupabaseClient, event: Stripe.Event) {
     .eq("stripe_payment_intent", pi);
   await supabase
     .from("book_orders")
+    .update({ payment_status: "refunded", updated_at: new Date().toISOString() })
+    .eq("stripe_payment_intent_id", pi);
+  await supabase
+    .from("blueprint_orders")
     .update({ payment_status: "refunded", updated_at: new Date().toISOString() })
     .eq("stripe_payment_intent_id", pi);
 }
