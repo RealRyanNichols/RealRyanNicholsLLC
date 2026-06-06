@@ -50,10 +50,31 @@ rate-limited, upserts on `email` (no duplicates). Component:
 If `BOOK_UPDATES_FROM_EMAIL` is not set, signups are still stored; the
 confirmation email is simply skipped.
 
+## Phase 3 — Stripe Checkout (live)
+
+**API:** `POST /api/checkout/book` — body `{ slug }`. Resolves the tier from
+`BOOK_TIERS` **server-side** (the price is never sent from the client), creates a
+Stripe Checkout session (`mode: "payment"` — charge now), and returns `{ url }`.
+Component: `components/BookBuyButton.tsx`, rendered by `BookOffers` when
+`checkout` is set (the `/book/preorder` page).
+
+Design decisions:
+
+- **Inline `price_data`** built from `BOOK_TIERS[].priceUsd` — no Stripe
+  dashboard products and no per-price env vars. Change a price in `lib/book.ts`
+  and checkout follows. (Switch to stored Price IDs later if you want named
+  products in Stripe reporting.)
+- **Charge now**, with a "full refund anytime before it ships" promise on the
+  page. Success → `/book/thank-you`, cancel → `/book/preorder`.
+- Physical tiers (signed paperback, founding) collect a **US shipping address +
+  phone**. The founding tier collects an optional **supporter display name**.
+- Session `metadata` carries `product_slug`, `product_name`, `amount_usd` for
+  the Phase 4 webhook.
+
+**Env var:** `STRIPE_SECRET_KEY` (already set for the site store). No new vars.
+
 ## Later phases (not built yet)
 
-- **Phase 3 — Stripe Checkout:** map each `BOOK_TIERS` slug to a Stripe Price
-  ID; `STRIPE_SECRET_KEY`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`.
 - **Phase 4 — webhook fulfillment:** `checkout.session.completed` →
   `book_orders` table; `STRIPE_WEBHOOK_SECRET`.
 - **Phase 5 — secure download:** `/book/download/[token]`.

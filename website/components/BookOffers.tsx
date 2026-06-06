@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BOOK_TIERS } from "@/lib/book";
+import { BookBuyButton } from "./BookBuyButton";
 
 function Check() {
   return (
@@ -26,14 +27,24 @@ function Check() {
 export function BookOffers({
   ctaHref = "/book/preorder",
   ctaLabel = "Choose this edition",
+  checkout = false,
 }: {
   ctaHref?: string;
   ctaLabel?: string;
+  /** When true, the CTA starts a real Stripe Checkout instead of linking. */
+  checkout?: boolean;
 }) {
   return (
     <div className="grid gap-4 lg:grid-cols-3 lg:items-start">
       {BOOK_TIERS.map((tier) => {
         const featured = Boolean(tier.featured);
+        const ctaClass = [
+          "mt-5 w-full inline-flex min-h-12 items-center justify-center rounded-lg px-5 py-3 text-sm font-black transition disabled:opacity-60",
+          featured
+            ? "bg-[var(--color-accent)] text-[var(--color-paper)] hover:bg-[var(--color-accent-strong)]"
+            : "border-2 border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-paper)]",
+        ].join(" ");
+        const ctaText = `${ctaLabel} · $${tier.priceUsd}`;
         return (
           <div
             key={tier.slug}
@@ -83,17 +94,13 @@ export function BookOffers({
               ))}
             </ul>
 
-            <Link
-              href={ctaHref}
-              className={[
-                "mt-5 inline-flex min-h-12 items-center justify-center rounded-lg px-5 py-3 text-sm font-black transition",
-                featured
-                  ? "bg-[var(--color-accent)] text-[var(--color-paper)] hover:bg-[var(--color-accent-strong)]"
-                  : "border-2 border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-paper)]",
-              ].join(" ")}
-            >
-              {ctaLabel} · ${tier.priceUsd}
-            </Link>
+            {checkout ? (
+              <BookBuyButton slug={tier.slug} label={ctaText} className={ctaClass} />
+            ) : (
+              <Link href={ctaHref} className={ctaClass}>
+                {ctaText}
+              </Link>
+            )}
           </div>
         );
       })}

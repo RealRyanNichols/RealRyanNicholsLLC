@@ -57,10 +57,10 @@ export default function BookPreorderPage() {
 
       {/* Offers */}
       <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
-        <BookOffers ctaHref="#reserve" ctaLabel="Reserve" />
+        <BookOffers checkout ctaLabel="Pre-order" />
         <p className="mt-4 text-center text-sm font-semibold text-[var(--color-muted)]">
-          Secure Stripe checkout opens soon. Reserve your edition below and you
-          will be first to complete your pre-order.
+          Secure checkout by Stripe. Full refund anytime before your edition
+          ships.
         </p>
       </section>
 
@@ -95,15 +95,14 @@ export default function BookPreorderPage() {
       <section className="border-y border-[var(--color-line)] bg-[var(--color-paper)]">
         <div id="reserve" className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:py-14">
           <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
-            Reserve your edition
+            Not ready to pre-order?
           </p>
           <h2 className="mt-2 font-display text-3xl font-black leading-tight tracking-normal sm:text-4xl">
-            Lock your spot in line.
+            Get on the list instead.
           </h2>
           <p className="mt-3 text-base font-semibold leading-7 text-[var(--color-ink-soft)]">
-            Add your name and you will be first to complete your pre-order the
-            moment checkout opens — plus you get the release date and the opening
-            chapter free.
+            No pressure. Add your email for the release date, book updates, and
+            the opening chapter free — and pre-order whenever you are ready.
           </p>
           <div className="mt-5 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-sm sm:p-6">
             <BookEmailSignup source="book_preorder" />
@@ -120,8 +119,8 @@ export default function BookPreorderPage() {
           {[
             {
               n: "01",
-              t: "You reserve",
-              b: "Pick an edition and reserve it. When checkout opens, you complete your pre-order with secure Stripe checkout.",
+              t: "You pre-order",
+              b: "Pick an edition and check out securely with Stripe. You get an emailed confirmation and receipt right away.",
             },
             {
               n: "02",
