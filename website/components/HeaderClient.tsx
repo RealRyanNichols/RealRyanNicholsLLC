@@ -39,9 +39,9 @@ function hrefPath(href: string): string {
 const DASHBOARD_LINKS: NavItem[] = [
   {
     href: "/tell-your-story",
-    label: "Story",
-    desc: "Build the pattern",
-    badge: "Tell",
+    label: "Tell Your Story",
+    desc: "Get it off your chest — anonymous ok",
+    badge: "Open",
     tone: "green",
   },
   {
@@ -83,8 +83,8 @@ const DASHBOARD_LINKS: NavItem[] = [
 const MOBILE_PRIMARY_LINKS: NavItem[] = [
   {
     href: "/tell-your-story",
-    label: "Tell my story",
-    desc: "Give Ryan the facts",
+    label: "Tell Your Story",
+    desc: "Anonymous welcome",
     badge: "Start",
     tone: "green",
   },
