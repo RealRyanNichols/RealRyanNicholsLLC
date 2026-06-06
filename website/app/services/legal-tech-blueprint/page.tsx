@@ -265,7 +265,7 @@ export default function LegalTechBlueprintPage() {
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-gold)]">
             Real Ryan Nichols LLC / Legal-Tech Blueprint
           </p>
-          <h1 className="mt-5 max-w-4xl font-display text-4xl font-black leading-[1.06] tracking-tight sm:text-5xl lg:text-6xl">
+          <h1 className="mt-5 max-w-4xl font-display text-4xl font-black leading-[1.06] tracking-tight text-[var(--color-paper)] sm:text-5xl lg:text-6xl">
             Build Your Own Legal-Tech Case Dashboard
           </h1>
           <p className="mt-6 max-w-3xl text-lg font-medium leading-8 text-[#e7ecf6] sm:text-xl sm:leading-9">
@@ -680,7 +680,7 @@ export default function LegalTechBlueprintPage() {
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-gold)]">
             My recommendation
           </p>
-          <h2 className="mt-3 font-display text-3xl font-black leading-tight tracking-tight sm:text-4xl">
+          <h2 className="mt-3 font-display text-3xl font-black leading-tight tracking-tight text-[var(--color-paper)] sm:text-4xl">
             Start with the Guided Build Sprint.
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-base font-medium leading-7 text-[#e7ecf6] sm:text-lg">
