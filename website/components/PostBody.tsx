@@ -3,6 +3,7 @@ import remarkGfm from "remark-gfm";
 import type { ReactNode } from "react";
 import { TweetEmbed } from "./TweetEmbed";
 import { FacebookEmbed } from "./FacebookEmbed";
+import { BookCtaBand } from "./BookCtaBand";
 import { DonateBox } from "./DonateBox";
 import { FundTheTruth } from "./FundTheTruth";
 import { ReactionBar } from "./ReactionBar";
@@ -247,6 +248,13 @@ function Shortcode({ kind, arg, ctx }: { kind: string; arg?: string; ctx: Ctx })
       return (
         <div className="not-prose my-7">
           <DonateBox />
+        </div>
+      );
+    case "book":
+    case "preorder":
+      return (
+        <div className="not-prose my-7">
+          <BookCtaBand />
         </div>
       );
     // The unified donation tool. `impact` is kept as an alias so any stray
