@@ -46,7 +46,7 @@ export function BookLibraryCard({
           <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
             Your library
           </p>
-          <h2 className="mt-1 font-display text-2xl font-black tracking-tight">
+          <h2 className="mt-1 font-display text-2xl font-black tracking-tight text-[#fdf8ea]">
             {BOOK.title}
           </h2>
           <p className="mt-1 text-sm font-semibold text-[#cfd9ea]">

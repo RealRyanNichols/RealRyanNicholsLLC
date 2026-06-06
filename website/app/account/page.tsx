@@ -287,7 +287,7 @@ function AdminOfficeCard() {
           <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
             Admin Office
           </p>
-          <h2 className="mt-1 text-2xl font-black tracking-tight">
+          <h2 className="mt-1 text-2xl font-black tracking-tight text-[#fdf8ea]">
             Your backend is one click away.
           </h2>
           <p className="mt-1 max-w-2xl text-sm leading-relaxed text-[#cfd9ea]">
