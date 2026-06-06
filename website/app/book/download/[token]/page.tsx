@@ -165,6 +165,22 @@ export default async function BookDownloadPage({
         )}
       </div>
 
+      <div className="mt-6 rounded-xl border border-white/12 bg-white/[0.04] p-5 text-center">
+        <p className="font-display text-base font-black text-[#fdf8ea]">
+          Keep this in your account
+        </p>
+        <p className="mt-1 text-sm font-semibold leading-relaxed text-[#cfd9ea]">
+          Sign in with the email on this order and your copy lives in your
+          account — no link to keep track of.
+        </p>
+        <Link
+          href="/login?mode=magic&next=/account"
+          className="mt-3 inline-flex min-h-11 items-center justify-center rounded-lg border border-white/20 bg-white/[0.06] px-5 py-2.5 text-sm font-black text-[#fdf8ea] transition hover:bg-white/10"
+        >
+          Go to my account
+        </Link>
+      </div>
+
       <p className="mt-6 text-center text-sm text-[#cfd9ea]">
         <Link href="/book" className="font-semibold underline hover:text-[#e1bd5b]">
           ← Back to the book

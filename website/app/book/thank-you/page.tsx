@@ -27,8 +27,8 @@ const steps = [
     b: "A confirmation and your receipt go to the email you used at checkout. Every writing, editing, and printing update comes the same way.",
   },
   {
-    t: "Digital editions",
-    b: "When the digital edition is ready, it arrives as a secure download link tied to your order — no public file, just yours.",
+    t: "Your copy lives in your account",
+    b: "Sign in with the email you just used and your pre-order appears in your account. The digital edition unlocks right there the moment it is ready — no link to lose.",
   },
   {
     t: "Signed copies",
@@ -43,16 +43,23 @@ const ORDER: BookTierSlug[] = [
   "founding_supporter_edition",
 ];
 
-async function purchasedSlug(sessionId?: string): Promise<BookTierSlug | null> {
-  if (!sessionId || !isSupabaseServiceConfigured()) return null;
+async function getOrder(
+  sessionId?: string,
+): Promise<{ slug: BookTierSlug | null; email: string | null }> {
+  if (!sessionId || !isSupabaseServiceConfigured()) {
+    return { slug: null, email: null };
+  }
   const supabase = getSupabaseServiceClient();
   const { data } = await supabase
     .from("book_orders")
-    .select("product_slug")
+    .select("product_slug, customer_email")
     .eq("stripe_checkout_session_id", sessionId)
     .maybeSingle();
   const slug = data?.product_slug as BookTierSlug | undefined;
-  return slug && ORDER.includes(slug) ? slug : null;
+  return {
+    slug: slug && ORDER.includes(slug) ? slug : null,
+    email: (data?.customer_email as string | undefined) ?? null,
+  };
 }
 
 export default async function BookThankYouPage({
@@ -61,7 +68,7 @@ export default async function BookThankYouPage({
   searchParams: Promise<{ session_id?: string }>;
 }) {
   const { session_id } = await searchParams;
-  const bought = await purchasedSlug(session_id);
+  const { slug: bought, email: orderEmail } = await getOrder(session_id);
 
   // Upsell the next edition up. If we can't tell what they bought yet (the
   // webhook may not have landed), softly offer the Founding edition — unless
@@ -115,6 +122,33 @@ export default async function BookThankYouPage({
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Account access — where the digital copy is delivered */}
+        <div className="mt-6 overflow-hidden rounded-xl border-2 border-[#203a64] bg-[#071126] p-5 text-[#fdf8ea] shadow-md sm:p-6">
+          <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
+            Your account
+          </p>
+          <h2 className="mt-1 font-display text-2xl font-black tracking-tight text-[#fdf8ea]">
+            Get into your reading account
+          </h2>
+          <p className="mt-1.5 text-sm font-semibold leading-relaxed text-[#cfd9ea]">
+            Your pre-order is saved to your account so your copy is never tied to
+            a link you might lose. Sign in with{" "}
+            {orderEmail ? (
+              <span className="font-black text-[#fdf8ea]">{orderEmail}</span>
+            ) : (
+              "the email you just used at checkout"
+            )}{" "}
+            — we email you a one-tap sign-in link, and your digital edition
+            unlocks there the moment it is ready.
+          </p>
+          <Link
+            href="/login?mode=magic&next=/account"
+            className="mt-4 inline-flex min-h-12 items-center justify-center rounded-lg bg-[#e1bd5b] px-6 py-3 text-sm font-black text-[#071126] transition hover:bg-[#a7efc4]"
+          >
+            Access your copy →
+          </Link>
         </div>
 
         {/* Upsell — the next edition up */}

@@ -5,6 +5,12 @@ import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { SignOutButton } from "@/components/SignOutButton";
 import { ProfileEditor } from "@/components/ProfileEditor";
 import { J6Workspace } from "@/components/J6Workspace";
+import { BookLibraryCard } from "@/components/BookLibraryCard";
+import {
+  getBookOrdersForEmail,
+  entitlementsFromOrders,
+  bookFileReady,
+} from "@/lib/book-orders";
 
 export const dynamic = "force-dynamic";
 
@@ -29,6 +35,7 @@ export default async function AccountPage() {
     { data: myReactions, count: reactionsCount },
     { data: myJ6Profile },
     { data: mySubmissions },
+    bookOrders,
   ] = await Promise.all([
     supabase
       .from("profiles")
@@ -69,7 +76,15 @@ export default async function AccountPage() {
       .eq("submitted_by_user_id", data.user.id)
       .order("created_at", { ascending: false })
       .limit(20),
+    // Book pre-orders are linked to the account by the email used at checkout.
+    getBookOrdersForEmail(data.user.email),
   ]);
+
+  // Only surface purchases once the email is confirmed — this both protects the
+  // download and avoids revealing that an order exists for an unverified email.
+  const emailConfirmed = Boolean(data.user.email_confirmed_at);
+  const showLibrary = emailConfirmed && (bookOrders?.length ?? 0) > 0;
+  const bookEntitlements = entitlementsFromOrders(bookOrders ?? []);
 
   // Hydrate post titles for the activity lists
   const postIds = new Set<string>([
@@ -98,6 +113,14 @@ export default async function AccountPage() {
       <p className="text-[var(--color-ink-soft)] mt-2 text-sm">
         Signed in as <span className="font-mono">{data.user.email}</span>.
       </p>
+
+      {showLibrary ? (
+        <BookLibraryCard
+          orders={bookOrders ?? []}
+          entitlements={bookEntitlements}
+          fileReady={bookFileReady()}
+        />
+      ) : null}
 
       {isAdmin ? <AdminOfficeCard /> : null}
 
