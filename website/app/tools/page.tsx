@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { FreeToolsHub } from "@/components/FreeToolsHub";
+import { BookCtaBand } from "@/components/BookCtaBand";
 import { SITE } from "@/lib/site";
 
 const title = "Free Tools | Real Ryan Nichols";
@@ -63,6 +64,10 @@ export default function ToolsPage() {
             <MiniDeal label="99¢ later" text="Only if people prove they keep using it." />
           </div>
         </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-3 pt-4 sm:px-6">
+        <BookCtaBand />
       </section>
 
       <section className="mx-auto max-w-6xl px-3 py-4 sm:px-6 lg:py-6">
