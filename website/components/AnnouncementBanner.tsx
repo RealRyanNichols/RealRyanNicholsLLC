@@ -6,7 +6,8 @@ import { useEffect, useState } from "react";
 import { BOOK_TIERS, formatUsd, tierSale } from "@/lib/book";
 
 // Bump the version to re-show the banner to people who dismissed an older one.
-const DISMISS_KEY = "rrn-book-banner-v1";
+// v2: re-show with the $17.76 launch-sale message.
+const DISMISS_KEY = "rrn-book-banner-v2";
 
 /**
  * Site-wide announcement bar. Sits at the very top, above everything, so every
