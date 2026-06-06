@@ -1,10 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE } from "@/lib/site";
+import { BlueprintBuyButton } from "@/components/BlueprintBuyButton";
+import type { BlueprintSlug } from "@/lib/blueprint";
 
 const EMAIL = "Ryan@RealRyanNichols.com";
-const mailto = (subject: string) =>
-  `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}`;
+const INTAKE_PATH = "/services/legal-tech-blueprint/intake";
+
+// Display-card id -> checkout slug. DIY routes through the questionnaire first.
+const SLUG_MAP: Record<string, BlueprintSlug> = {
+  "guided-build": "guided_build",
+  "done-for-you": "done_for_you",
+};
 
 export const metadata: Metadata = {
   title: "Build Your Own Legal-Tech Case Dashboard",
@@ -265,7 +272,7 @@ export default function LegalTechBlueprintPage() {
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-gold)]">
             Real Ryan Nichols LLC / Legal-Tech Blueprint
           </p>
-          <h1 className="mt-5 max-w-4xl font-display text-4xl font-black leading-[1.06] tracking-tight text-[var(--color-paper)] sm:text-5xl lg:text-6xl">
+          <h1 className="mt-5 max-w-4xl font-display text-4xl font-black leading-[1.06] tracking-tight text-white sm:text-5xl lg:text-6xl">
             Build Your Own Legal-Tech Case Dashboard
           </h1>
           <p className="mt-6 max-w-3xl text-lg font-medium leading-8 text-[#e7ecf6] sm:text-xl sm:leading-9">
@@ -275,12 +282,12 @@ export default function LegalTechBlueprintPage() {
             case review, and legal data you actually own.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a
-              href={mailto("Legal-Tech Blueprint: Request the Blueprint")}
+            <Link
+              href={INTAKE_PATH}
               className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-7 py-3.5 text-base font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)]"
             >
               Request the Blueprint
-            </a>
+            </Link>
             <a
               href="#packages"
               className="inline-flex min-h-12 items-center justify-center rounded-lg border border-[var(--color-paper)]/40 bg-white/10 px-7 py-3.5 text-base font-black text-[var(--color-paper)] transition hover:bg-white/20"
@@ -553,17 +560,30 @@ export default function LegalTechBlueprintPage() {
                     Payment terms: 50% upfront, 50% before final handoff.
                   </p>
                 ) : null}
-                <a
-                  href={mailto(pkg.ctaSubject)}
-                  className={[
-                    "mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-lg px-5 py-3 text-sm font-black transition",
-                    pkg.recommended
-                      ? "bg-[var(--color-accent)] text-[var(--color-paper)] hover:bg-[var(--color-accent-strong)]"
-                      : "border border-[var(--color-blue)] text-[var(--color-blue)] hover:bg-[var(--color-blue)] hover:text-[var(--color-paper)]",
-                  ].join(" ")}
-                >
-                  {pkg.ctaLabel}
-                </a>
+                {pkg.id === "diy-blueprint" ? (
+                  <Link
+                    href={INTAKE_PATH}
+                    className={[
+                      "mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-lg px-5 py-3 text-sm font-black transition",
+                      pkg.recommended
+                        ? "bg-[var(--color-accent)] text-[var(--color-paper)] hover:bg-[var(--color-accent-strong)]"
+                        : "border border-[var(--color-blue)] text-[var(--color-blue)] hover:bg-[var(--color-blue)] hover:text-[var(--color-paper)]",
+                    ].join(" ")}
+                  >
+                    {pkg.ctaLabel}
+                  </Link>
+                ) : (
+                  <BlueprintBuyButton
+                    slug={SLUG_MAP[pkg.id]}
+                    label={pkg.ctaLabel}
+                    className={[
+                      "mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-lg px-5 py-3 text-sm font-black transition",
+                      pkg.recommended
+                        ? "bg-[var(--color-accent)] text-[var(--color-paper)] hover:bg-[var(--color-accent-strong)]"
+                        : "border border-[var(--color-blue)] text-[var(--color-blue)] hover:bg-[var(--color-blue)] hover:text-[var(--color-paper)]",
+                    ].join(" ")}
+                  />
+                )}
               </div>
             </div>
           ))}
@@ -704,12 +724,11 @@ export default function LegalTechBlueprintPage() {
           </div>
 
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <a
-              href={mailto("Legal-Tech Blueprint: Start With the Guided Build")}
+            <BlueprintBuyButton
+              slug="guided_build"
+              label="Start With the Guided Build"
               className="inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--color-accent)] px-8 py-3.5 text-base font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)] sm:w-auto"
-            >
-              Start With the Guided Build
-            </a>
+            />
             <Link
               href="/contact"
               className="text-sm font-bold text-[#e7ecf6] underline underline-offset-4 transition hover:text-[var(--color-paper)]"
@@ -757,12 +776,12 @@ export default function LegalTechBlueprintPage() {
             Let us build something you actually own.
           </p>
           <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <a
-              href={mailto("Legal-Tech Blueprint: Request the Blueprint")}
+            <Link
+              href={INTAKE_PATH}
               className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-7 py-3.5 text-base font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)]"
             >
               Request the Blueprint
-            </a>
+            </Link>
             <a
               href={`mailto:${EMAIL}`}
               className="text-sm font-bold text-[var(--color-blue)] underline underline-offset-4"
