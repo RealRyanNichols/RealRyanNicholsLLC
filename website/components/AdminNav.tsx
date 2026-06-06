@@ -30,6 +30,8 @@ const GROUPS: AdminGroup[] = [
     items: [
       { href: "/admin/invoices", label: "Invoices", sub: "Send and track payment" },
       { href: "/admin/orders", label: "Orders", sub: "Service and store checkout" },
+      { href: "/admin/book", label: "Book", sub: "Pre-orders and the list" },
+      { href: "/admin/blueprint", label: "Blueprint", sub: "Legal-tech sales and leads" },
       { href: "/admin/donations", label: "Donations", sub: "Supporter money" },
       { href: "/admin/store", label: "Store", sub: "Products and offers" },
     ],

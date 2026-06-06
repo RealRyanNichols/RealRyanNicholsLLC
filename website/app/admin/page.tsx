@@ -8,6 +8,7 @@ import {
   countCriticalIssues,
 } from "@/lib/integration-health";
 import { getBookStats } from "@/lib/book-stats";
+import { getBlueprintStats } from "@/lib/blueprint-stats";
 
 export const metadata: Metadata = {
   title: "Admin",
@@ -54,6 +55,7 @@ export default async function AdminHomePage() {
 
   const criticalIssues = countCriticalIssues(getIntegrationHealth());
   const bookStats = await getBookStats();
+  const blueprintStats = await getBlueprintStats();
 
   const now = new Date();
   const fiveMinAgo = new Date(now.getTime() - 5 * 60 * 1000).toISOString();
@@ -680,6 +682,67 @@ export default async function AdminHomePage() {
         </div>
       </section>
 
+      {/* Legal-tech blueprint — sales & leads */}
+      <section className="mt-8">
+        <div className="flex items-center justify-between">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-[var(--color-muted)]">
+            Legal-tech blueprint — sales &amp; leads
+          </h2>
+          <Link
+            href="/admin/blueprint"
+            className="text-sm font-bold text-[var(--color-accent)] hover:underline"
+          >
+            Open →
+          </Link>
+        </div>
+        <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <Link
+            href="/admin/blueprint"
+            className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 transition hover:border-[var(--color-accent)]"
+          >
+            <p className="font-display text-3xl font-black tabular-nums text-[var(--color-accent)]">
+              {blueprintStats.paidSales.toLocaleString()}
+            </p>
+            <p className="mt-1 text-[11px] font-black uppercase tracking-[0.12em] text-[var(--color-muted)]">
+              Sales (paid)
+            </p>
+          </Link>
+          <Link
+            href="/admin/blueprint"
+            className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 transition hover:border-[var(--color-accent)]"
+          >
+            <p className="font-display text-3xl font-black tabular-nums text-[var(--color-ink)]">
+              {usd(blueprintStats.grossCents)}
+            </p>
+            <p className="mt-1 text-[11px] font-black uppercase tracking-[0.12em] text-[var(--color-muted)]">
+              Collected
+            </p>
+          </Link>
+          <Link
+            href="/admin/blueprint"
+            className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 transition hover:border-[var(--color-accent)]"
+          >
+            <p className="font-display text-3xl font-black tabular-nums text-[var(--color-ink)]">
+              {blueprintStats.questionnaires.toLocaleString()}
+            </p>
+            <p className="mt-1 text-[11px] font-black uppercase tracking-[0.12em] text-[var(--color-muted)]">
+              Questionnaires
+            </p>
+          </Link>
+          <Link
+            href="/admin/blueprint"
+            className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 transition hover:border-[var(--color-accent)]"
+          >
+            <p className="font-display text-3xl font-black tabular-nums text-[var(--color-ink)]">
+              {blueprintStats.leads.toLocaleString()}
+            </p>
+            <p className="mt-1 text-[11px] font-black uppercase tracking-[0.12em] text-[var(--color-muted)]">
+              Leads
+            </p>
+          </Link>
+        </div>
+      </section>
+
       {/* Quick links to sub-pages */}
       <section className="mt-8">
         <h2 className="text-sm uppercase tracking-wider text-[var(--color-muted)] font-bold">
@@ -700,6 +763,11 @@ export default async function AdminHomePage() {
             href="/admin/book"
             title="Book"
             sub="Pre-orders, revenue, and the list"
+          />
+          <SectionLink
+            href="/admin/blueprint"
+            title="Legal-tech blueprint"
+            sub="Sales, questionnaires, and leads"
           />
           <SectionLink
             href="/admin/health"
