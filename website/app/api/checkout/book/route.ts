@@ -53,7 +53,8 @@ export async function POST(request: Request) {
           quantity: 1,
           price_data: {
             currency: "usd",
-            unit_amount: tier.priceUsd * 100,
+            // Math.round guards against float drift (17.76 * 100 = 1776.0000002).
+            unit_amount: Math.round(tier.priceUsd * 100),
             product_data: {
               name: `${BOOK.title} — ${tier.name}`,
               description: tier.tagline,

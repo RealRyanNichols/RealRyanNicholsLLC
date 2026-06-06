@@ -24,7 +24,10 @@ export type BookTierSlug =
 export type BookTier = {
   slug: BookTierSlug;
   name: string;
+  /** What the customer actually pays (the sale price, if on sale). */
   priceUsd: number;
+  /** Original price, shown struck-through when the tier is on sale. */
+  listPriceUsd?: number;
   tagline: string;
   includes: string[];
   featured?: boolean;
@@ -38,7 +41,9 @@ export const BOOK_TIERS: BookTier[] = [
   {
     slug: "early_release_digital",
     name: "Early Release Digital Edition",
-    priceUsd: 29,
+    // Early-supporter launch price: $17.76 (1776), down from $29.99.
+    priceUsd: 17.76,
+    listPriceUsd: 29.99,
     tagline: "Read it first, the moment it is ready.",
     includes: [
       "Early digital edition",
@@ -75,6 +80,26 @@ export const BOOK_TIERS: BookTier[] = [
     ],
   },
 ];
+
+/** Format a USD amount: whole dollars show no cents, otherwise two decimals. */
+export function formatUsd(n: number): string {
+  return Number.isInteger(n) ? `$${n}` : `$${n.toFixed(2)}`;
+}
+
+/** Sale info for a tier, if it carries a higher struck-through list price. */
+export function tierSale(tier: BookTier): { onSale: boolean; percentOff: number } {
+  const list = tier.listPriceUsd;
+  const onSale = typeof list === "number" && list > tier.priceUsd;
+  return {
+    onSale,
+    percentOff: onSale ? Math.round((1 - tier.priceUsd / list) * 100) : 0,
+  };
+}
+
+// FOMO countdown: the deadline for the $17.76 launch price. Set this to your
+// real deadline (or null to turn the countdown off everywhere). Defaulted two
+// weeks out — change it to whatever you want the launch window to be.
+export const SALE_ENDS_AT: string | null = "2026-06-20T23:59:59-05:00";
 
 // Why the pre-order costs what it does. The framing is both/and: you are
 // backing the work AND getting exclusive founding access before Amazon.

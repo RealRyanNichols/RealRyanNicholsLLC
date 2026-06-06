@@ -5,3 +5,8 @@ node_modules
 
 # Transient git worktrees created by background sub-agents
 .claude/worktrees/
+
+# Private book manuscript workspace — never commit to the public repo.
+# (The manuscript lives privately in Supabase + Google Drive.)
+/content/book/
+website/supabase/migrations/20260606000000_create_book_workspace_tables.sql

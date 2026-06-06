@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BOOK_TIERS } from "@/lib/book";
+import { BOOK_TIERS, formatUsd, tierSale } from "@/lib/book";
 import { BookBuyButton } from "./BookBuyButton";
 
 function Check() {
@@ -20,9 +20,8 @@ function Check() {
 }
 
 /**
- * The three pre-order offers. Pure UI (Phase 1): each card's call-to-action is
- * a placeholder link to `ctaHref` — Phase 3 swaps it for a Stripe Checkout
- * action keyed on the tier slug.
+ * The three pre-order offers. When a tier carries a `listPriceUsd`, the original
+ * price is shown struck-through next to the live (sale) price.
  */
 export function BookOffers({
   ctaHref = "/book/preorder",
@@ -38,19 +37,20 @@ export function BookOffers({
     <div className="grid gap-4 lg:grid-cols-3 lg:items-start">
       {BOOK_TIERS.map((tier) => {
         const featured = Boolean(tier.featured);
+        const sale = tierSale(tier);
         const ctaClass = [
           "mt-5 w-full inline-flex min-h-12 items-center justify-center rounded-lg px-5 py-3 text-sm font-black transition disabled:opacity-60",
           featured
             ? "bg-[var(--color-accent)] text-[var(--color-paper)] hover:bg-[var(--color-accent-strong)]"
             : "border-2 border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-paper)]",
         ].join(" ");
-        const ctaText = `${ctaLabel} · $${tier.priceUsd}`;
+        const ctaText = `${ctaLabel} · ${formatUsd(tier.priceUsd)}`;
         return (
           <div
             key={tier.slug}
             className={[
               "relative flex h-full flex-col rounded-xl border-2 bg-[var(--color-surface)] p-5 shadow-sm sm:p-6",
-              featured
+              featured || sale.onSale
                 ? "border-[var(--color-accent)] shadow-md"
                 : "border-[var(--color-line)]",
             ].join(" ")}
@@ -58,6 +58,10 @@ export function BookOffers({
             {featured ? (
               <span className="absolute -top-3 left-5 rounded-full bg-[var(--color-accent)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--color-paper)]">
                 Most chosen
+              </span>
+            ) : sale.onSale ? (
+              <span className="absolute -top-3 left-5 rounded-full bg-[var(--color-accent)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--color-paper)]">
+                Launch price · Save {sale.percentOff}%
               </span>
             ) : null}
             {tier.limited ? (
@@ -73,13 +77,24 @@ export function BookOffers({
               {tier.tagline}
             </p>
 
-            <div className="mt-4 flex items-baseline gap-1">
+            <div className="mt-4 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+              {sale.onSale && tier.listPriceUsd ? (
+                <span className="font-display text-xl font-bold tabular-nums text-[var(--color-muted)] line-through decoration-2">
+                  {formatUsd(tier.listPriceUsd)}
+                </span>
+              ) : null}
               <span className="font-display text-4xl font-black tabular-nums text-[var(--color-ink)]">
-                ${tier.priceUsd}
+                {formatUsd(tier.priceUsd)}
               </span>
-              <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-muted)]">
-                suggested
-              </span>
+              {sale.onSale ? (
+                <span className="rounded bg-[var(--color-accent-soft)] px-1.5 py-0.5 text-[11px] font-black uppercase tracking-wide text-[var(--color-accent)]">
+                  {sale.percentOff}% off
+                </span>
+              ) : (
+                <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-muted)]">
+                  pre-order
+                </span>
+              )}
             </div>
 
             <ul className="mt-4 grid flex-1 gap-2">

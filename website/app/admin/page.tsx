@@ -7,6 +7,7 @@ import {
   getIntegrationHealth,
   countCriticalIssues,
 } from "@/lib/integration-health";
+import { getBookStats } from "@/lib/book-stats";
 
 export const metadata: Metadata = {
   title: "Admin",
@@ -52,6 +53,7 @@ export default async function AdminHomePage() {
   }
 
   const criticalIssues = countCriticalIssues(getIntegrationHealth());
+  const bookStats = await getBookStats();
 
   const now = new Date();
   const fiveMinAgo = new Date(now.getTime() - 5 * 60 * 1000).toISOString();
@@ -614,6 +616,62 @@ export default async function AdminHomePage() {
               </span>
             </li>
           </ul>
+        </div>
+      </section>
+
+      {/* Book — live pre-order & list counts */}
+      <section className="mt-8">
+        <div className="flex items-center justify-between">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-[var(--color-muted)]">
+            Book — pre-orders &amp; list
+          </h2>
+          <Link
+            href="/admin/book"
+            className="text-sm font-bold text-[var(--color-accent)] hover:underline"
+          >
+            Open →
+          </Link>
+        </div>
+        <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <Link
+            href="/admin/book"
+            className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 transition hover:border-[var(--color-accent)]"
+          >
+            <p className="font-display text-3xl font-black tabular-nums text-[var(--color-ink)]">
+              {bookStats.buyers.toLocaleString()}
+            </p>
+            <p className="mt-1 text-[11px] font-black uppercase tracking-[0.12em] text-[var(--color-muted)]">
+              Pre-orders (paid)
+            </p>
+          </Link>
+          <Link
+            href="/admin/book"
+            className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 transition hover:border-[var(--color-accent)]"
+          >
+            <p className="font-display text-3xl font-black tabular-nums text-[var(--color-ink)]">
+              {bookStats.onList.toLocaleString()}
+            </p>
+            <p className="mt-1 text-[11px] font-black uppercase tracking-[0.12em] text-[var(--color-muted)]">
+              On the list
+            </p>
+          </Link>
+          <Link
+            href="/admin/book"
+            className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 transition hover:border-[var(--color-accent)]"
+          >
+            <p className="font-display text-3xl font-black tabular-nums text-[var(--color-ink)]">
+              {bookStats.foundingClaimed}/{bookStats.foundingLimit}
+            </p>
+            <p className="mt-1 text-[11px] font-black uppercase tracking-[0.12em] text-[var(--color-muted)]">
+              Founding claimed
+            </p>
+          </Link>
+          <Link
+            href="/admin/book"
+            className="flex items-center justify-center rounded-xl border border-dashed border-[var(--color-line)] bg-[var(--color-surface)] p-4 text-center text-sm font-black text-[var(--color-accent)] transition hover:border-[var(--color-accent)]"
+          >
+            Full breakdown →
+          </Link>
         </div>
       </section>
 

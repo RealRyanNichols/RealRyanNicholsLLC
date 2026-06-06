@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BookOffers } from "@/components/BookOffers";
+import { BookSocialProof } from "@/components/BookSocialProof";
 import { BookEmailSignup } from "@/components/BookEmailSignup";
 import { BookDisclaimer } from "@/components/BookDisclaimer";
-import { BOOK, WHY_PRICE } from "@/lib/book";
+import { BookCountdown } from "@/components/BookCountdown";
+import { BookStickyBuyBar } from "@/components/BookStickyBuyBar";
+import { BookExitIntent } from "@/components/BookExitIntent";
+import { BOOK, WHY_PRICE, BOOK_TIERS, SALE_ENDS_AT, formatUsd } from "@/lib/book";
 import { SITE } from "@/lib/site";
 
 const title = "Pre-order Fighting Shadows | Ryan Nichols";
@@ -25,22 +29,51 @@ export const metadata: Metadata = {
 };
 
 export default function BookPreorderPage() {
+  const digital = BOOK_TIERS.find((t) => t.slug === "early_release_digital");
+  const priceLabel = digital ? formatUsd(digital.priceUsd) : "$17.76";
+  const listLabel = digital?.listPriceUsd
+    ? formatUsd(digital.listPriceUsd)
+    : undefined;
+  const saleActive = SALE_ENDS_AT
+    ? new Date(SALE_ENDS_AT).getTime() > Date.now()
+    : false;
   return (
     <article className="rrn-page">
+      <BookExitIntent priceLabel={priceLabel} listLabel={listLabel} />
+      <BookStickyBuyBar
+        priceLabel={priceLabel}
+        listLabel={listLabel}
+        href="#book-offers"
+        cta="See editions"
+      />
       {/* Hero */}
       <section className="border-b border-[#203a64] bg-[#071126] text-[#fdf8ea]">
         <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:py-14">
-          <p className="text-xs font-black uppercase tracking-[0.24em] text-[#e1bd5b]">
-            Pre-order · {BOOK.title}
-          </p>
-          <h1 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-[#fdf8ea] sm:text-6xl">
-            Get it first. Fund the record directly.
-          </h1>
-          <p className="mt-4 max-w-2xl text-base font-semibold leading-7 text-[#cfd9ea] sm:text-lg">
-            Pre-order direct from me, here, before the book goes to Amazon. Pick
-            the edition that fits — every one helps put the full record in public
-            view.
-          </p>
+          <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_240px] lg:gap-12">
+            <div className="max-w-2xl">
+              <p className="text-xs font-black uppercase tracking-[0.24em] text-[#e1bd5b]">
+                Pre-order · {BOOK.title}
+              </p>
+              <h1 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-[#fdf8ea] sm:text-6xl">
+                Get it first. Fund the record directly.
+              </h1>
+              <p className="mt-4 max-w-2xl text-base font-semibold leading-7 text-[#cfd9ea] sm:text-lg">
+                Pre-order direct from me, here, before the book goes to Amazon.
+                Pick the edition that fits — every one helps put the full record
+                in public view.
+              </p>
+            </div>
+            <div className="order-first mx-auto w-full max-w-[200px] sm:max-w-[240px] lg:order-none lg:max-w-none">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={BOOK.cover}
+                alt="Fighting Shadows — a memoir by Ryan Nichols (book cover)"
+                width={1000}
+                height={1333}
+                className="w-full rounded-lg border border-white/15 shadow-2xl shadow-black/50 ring-1 ring-black/20"
+              />
+            </div>
+          </div>
         </div>
       </section>
 
@@ -56,7 +89,16 @@ export default function BookPreorderPage() {
       </section>
 
       {/* Offers */}
-      <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
+      <section
+        id="book-offers"
+        className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12"
+      >
+        {saleActive ? (
+          <div className="mb-6 rounded-xl border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-4 py-3 text-center text-[var(--color-accent)]">
+            <BookCountdown endsAt={SALE_ENDS_AT} className="justify-center" />
+          </div>
+        ) : null}
+        <BookSocialProof className="mb-8" />
         <BookOffers checkout ctaLabel="Pre-order" />
         <p className="mt-4 text-center text-sm font-semibold text-[var(--color-muted)]">
           Secure checkout by Stripe. Full refund anytime before your edition
