@@ -8,19 +8,31 @@ const TITLE = "Tell Your Story | Build the Pattern";
 const DESCRIPTION =
   "Tell Ryan what happened in a structured private story form. Organize dates, people, agencies, proof, witnesses, missing records, and privacy boundaries.";
 
-const storyLoops = [
+const steps = [
   {
-    title: "One story",
-    body: "You explain what happened in plain English: dates, place, people, agency, court, company, and the first proof.",
+    title: "Say what happened",
+    body: "Type it, or just talk — tap the mic and speak it out loud. There is no wrong way to tell it, and no story too small.",
   },
   {
-    title: "One pattern",
-    body: "Ryan can compare the story against other submissions by agency, official, date range, missing record, witness, and issue.",
+    title: "Choose how public",
+    body: "Stay completely anonymous, or leave a way for Ryan to reach you. You set the boundary — nothing goes public on its own.",
   },
   {
-    title: "One clearer record",
-    body: "The public version can separate facts from claims and hide source-identifying details until they are safe to use.",
+    title: "Ryan takes it from here",
+    body: "He reads every one himself, protects what needs to stay private, and looks for where your story connects to others.",
   },
+];
+
+const trustPoints = ["100% anonymous option", "Free — no account", "Ryan reads every one"];
+
+const prompts = [
+  "Police or jail",
+  "Court or family court",
+  "CPS or an agency",
+  "Censorship",
+  "Threats or retaliation",
+  "Fraud or money",
+  "Something else",
 ];
 
 const formLanes = [
@@ -85,27 +97,27 @@ export default function TellYourStoryPage() {
 
         <div className="rrn-hero-inner grid gap-6 lg:grid-cols-[0.92fr_1.08fr] lg:gap-8">
           <div className="flex flex-col justify-center">
-            <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-accent)]">
-              Real Ryan Nichols LLC / Story web
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
+              Tell Your Story
             </p>
             <h1 className="rrn-hero-title mt-3 max-w-3xl">
-              Tell your story so it can connect to the bigger pattern.
+              Something happen to you that wasn&apos;t right? Tell it here.
             </h1>
             <p className="rrn-lead mt-4 max-w-2xl">
-              People do not just want a form. They want a place to say what
-              happened, protect what needs to stay private, and see how one
-              story can connect to the next. This is where the record starts.
+              In your own words — anonymously if you want. No account, no cost.
+              Ryan reads every single one himself, and your story might be the
+              one that connects the dots for someone else going through the same
+              thing.
             </p>
-            <div className="mt-5 grid gap-2 sm:grid-cols-3">
-              {["Dates", "Proof", "Witness links"].map((item) => (
-                <div
+            <div className="mt-5 flex flex-wrap gap-2">
+              {trustPoints.map((item) => (
+                <span
                   key={item}
-                  className="border-l-4 border-[var(--color-accent)] bg-[var(--color-surface)] px-3 py-2 shadow-sm"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1.5 text-xs font-black text-[var(--color-ink)]"
                 >
-                  <p className="text-sm font-bold text-[var(--color-ink)]">
-                    {item}
-                  </p>
-                </div>
+                  <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
+                  {item}
+                </span>
               ))}
             </div>
             <div className="rrn-tap-row mt-6">
@@ -113,23 +125,39 @@ export default function TellYourStoryPage() {
                 href="#story-form"
                 className="rrn-tap rounded-lg bg-[var(--color-accent)] px-5 py-3 text-sm font-black text-white"
               >
-                Start telling it
+                Tell it now
               </a>
-              <Link
-                href="/the-map-room"
+              <a
+                href="#story-form"
                 className="rrn-tap rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-5 py-3 text-sm font-black text-[var(--color-ink)]"
               >
-                See the map room
-              </Link>
+                🎙 Prefer to talk? Record it
+              </a>
+            </div>
+            <div className="mt-5">
+              <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-muted)]">
+                What is it about?
+              </p>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {prompts.map((item) => (
+                  <a
+                    key={item}
+                    href="#story-form"
+                    className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1.5 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                  >
+                    {item}
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
 
           <div className="rounded-lg border border-[var(--color-blue)] bg-[var(--color-blue-strong)] p-5 text-[var(--color-paper)] shadow-xl sm:p-6">
             <p className="text-xs font-black uppercase tracking-normal text-[#e1bd5b]">
-              How the story web works
+              How it works — 3 steps
             </p>
             <div className="mt-4 grid gap-3">
-              {storyLoops.map((item, index) => (
+              {steps.map((item, index) => (
                 <div
                   key={item.title}
                   className="rounded-lg border border-white/20 bg-white/[0.07] p-4"

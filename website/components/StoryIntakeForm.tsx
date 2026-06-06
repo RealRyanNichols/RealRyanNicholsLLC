@@ -181,12 +181,8 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (status.kind === "submitting") return;
-    if (!story.trim() || story.trim().length < 80) {
-      setStatus({ kind: "error", message: "Give Ryan at least one clear paragraph about what happened." });
-      return;
-    }
-    if (!proof.trim()) {
-      setStatus({ kind: "error", message: "List at least one record, screenshot, witness, link, or document that supports the story." });
+    if (!story.trim() || story.trim().length < 40) {
+      setStatus({ kind: "error", message: "Tell Ryan at least a sentence or two about what happened — then send it." });
       return;
     }
     if (!ack) {
@@ -362,9 +358,9 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
           Get it off your chest. Let the world know.
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-          Say what happened in your own words — anonymously if you want. The more
-          you can add, the easier it is for Ryan to analyze the evidence and
-          connect your story to others without exposing what should stay private.
+          Say what happened in your own words — anonymously if you want.{" "}
+          <strong>Only the story itself is required</strong> — everything else is
+          optional, so add what you can and skip the rest.
         </p>
 
         <label className="mt-4 flex items-start gap-3 rounded-lg border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-3">
@@ -517,12 +513,11 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
           </div>
 
           <TextField
-            label="What proof exists?"
+            label="Got proof? List it — optional, but it makes your story land harder."
             value={proof}
             onChange={setProof}
-            required
             rows={4}
-            placeholder="Screenshots, videos, links, court filings, police reports, dispatch logs, public records, texts, emails, receipts, witness names."
+            placeholder="Screenshots, videos, links, court filings, police reports, dispatch logs, texts, emails, receipts, witness names. Don't have any yet? That's okay — send the story anyway."
             maxLength={900}
           />
 
@@ -661,7 +656,7 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
             disabled={status.kind === "submitting"}
             className="min-h-12 rounded-lg bg-[var(--color-accent)] px-5 py-3 text-base font-black text-white transition hover:bg-[var(--color-accent-strong)] disabled:opacity-60"
           >
-            {status.kind === "submitting" ? "Saving story..." : "Send story profile"}
+            {status.kind === "submitting" ? "Sending..." : "Send my story"}
           </button>
         </div>
       </form>
