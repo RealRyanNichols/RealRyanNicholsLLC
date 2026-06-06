@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE } from "@/lib/site";
 import { BlueprintBuyButton } from "@/components/BlueprintBuyButton";
+import { BlueprintLeadForm } from "@/components/BlueprintLeadForm";
+import { BlueprintStickyBar } from "@/components/BlueprintStickyBar";
 import type { BlueprintSlug } from "@/lib/blueprint";
 
 const EMAIL = "Ryan@RealRyanNichols.com";
@@ -766,6 +768,22 @@ export default function LegalTechBlueprintPage() {
         </div>
       </section>
 
+      {/* Lead capture for the not-ready-to-buy */}
+      <section className="border-y border-[var(--color-line)] bg-[var(--color-surface)]">
+        <div className="rrn-section grid gap-6 lg:grid-cols-[1fr_1fr] lg:items-center">
+          <div>
+            <Eyebrow>Not ready yet</Eyebrow>
+            <h2 className="rrn-section-title mt-2">Get the breakdown first.</h2>
+            <p className="mt-4 text-base leading-relaxed text-[var(--color-ink-soft)]">
+              Want to see how it fits your practice before you commit? Leave your
+              email and I will send the breakdown and answer your biggest
+              question. No pressure, no spam.
+            </p>
+          </div>
+          <BlueprintLeadForm />
+        </div>
+      </section>
+
       {/* SECTION 12: Footer proposal note */}
       <section className="border-t border-[var(--color-line)] bg-[var(--color-surface)]">
         <div className="mx-auto max-w-4xl px-5 py-12 text-center sm:px-6 sm:py-14">
@@ -792,6 +810,8 @@ export default function LegalTechBlueprintPage() {
           <p className="mt-8 text-base font-bold text-[var(--color-ink)]">-Ryan</p>
         </div>
       </section>
+
+      <BlueprintStickyBar />
     </article>
   );
 }
