@@ -27,7 +27,7 @@ export function BookCtaBand({ className = "" }: { className?: string }) {
           <p className="text-xs font-black uppercase tracking-[0.2em] text-[#e1bd5b]">
             {BOOK.title} · Pre-order
           </p>
-          <h2 className="mt-1 font-display text-2xl font-black leading-tight tracking-tight sm:text-3xl">
+          <h2 className="mt-1 font-display text-2xl font-black leading-tight tracking-tight text-[#fdf8ea] sm:text-3xl">
             Early access for{" "}
             <span className="text-[#e1bd5b]">{price}</span>
             {list ? (
