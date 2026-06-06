@@ -634,6 +634,11 @@ export default async function AdminHomePage() {
             sub="Service and store checkout"
           />
           <SectionLink
+            href="/admin/book"
+            title="Book"
+            sub="Pre-orders, revenue, and the list"
+          />
+          <SectionLink
             href="/admin/health"
             title="Connections"
             sub="Email, payments, keys — what's on"
