@@ -65,7 +65,11 @@ export async function BookSocialProof({ className = "" }: { className?: string }
         <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--color-ink-soft)]">
           joined the founding launch
         </p>
-        {recent > 0 ? (
+        {s.last24hBuyers > 0 ? (
+          <p className="mt-1 text-xs font-bold text-[var(--color-accent)]">
+            🔥 {s.last24hBuyers.toLocaleString()} pre-ordered in the last 24 hours
+          </p>
+        ) : recent > 0 ? (
           <p className="mt-1 text-xs font-bold text-[var(--color-accent)]">
             🔥 {recent} joined in the last 24 hours
           </p>
