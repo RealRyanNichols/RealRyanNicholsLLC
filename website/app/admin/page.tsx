@@ -637,7 +637,7 @@ export default async function AdminHomePage() {
             href="/admin/book"
             className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 transition hover:border-[var(--color-accent)]"
           >
-            <p className="font-display text-3xl font-black tabular-nums text-[var(--color-ink)]">
+            <p className="font-display text-3xl font-black tabular-nums text-[var(--color-accent)]">
               {bookStats.buyers.toLocaleString()}
             </p>
             <p className="mt-1 text-[11px] font-black uppercase tracking-[0.12em] text-[var(--color-muted)]">
@@ -652,7 +652,18 @@ export default async function AdminHomePage() {
               {bookStats.onList.toLocaleString()}
             </p>
             <p className="mt-1 text-[11px] font-black uppercase tracking-[0.12em] text-[var(--color-muted)]">
-              On the list
+              Email signups
+            </p>
+          </Link>
+          <Link
+            href="/admin/book"
+            className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 transition hover:border-[var(--color-accent)]"
+          >
+            <p className="font-display text-3xl font-black tabular-nums text-[var(--color-ink)]">
+              {bookStats.waitlist.toLocaleString()}
+            </p>
+            <p className="mt-1 text-[11px] font-black uppercase tracking-[0.12em] text-[var(--color-muted)]">
+              Waitlist
             </p>
           </Link>
           <Link
@@ -665,12 +676,6 @@ export default async function AdminHomePage() {
             <p className="mt-1 text-[11px] font-black uppercase tracking-[0.12em] text-[var(--color-muted)]">
               Founding claimed
             </p>
-          </Link>
-          <Link
-            href="/admin/book"
-            className="flex items-center justify-center rounded-xl border border-dashed border-[var(--color-line)] bg-[var(--color-surface)] p-4 text-center text-sm font-black text-[var(--color-accent)] transition hover:border-[var(--color-accent)]"
-          >
-            Full breakdown →
           </Link>
         </div>
       </section>
