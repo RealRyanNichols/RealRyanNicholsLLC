@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BookEmailSignup } from "@/components/BookEmailSignup";
 import { BookOffers } from "@/components/BookOffers";
+import { BookSocialProof } from "@/components/BookSocialProof";
 import { BookDisclaimer } from "@/components/BookDisclaimer";
 import { BOOK, BOOK_COVERS, BOOK_FAQ } from "@/lib/book";
 import { SITE } from "@/lib/site";
@@ -180,6 +181,7 @@ export default function BookPage() {
           finalized.
         </p>
         <div className="mt-6">
+          <BookSocialProof className="mb-8" />
           <BookOffers ctaHref="/book/preorder" ctaLabel="Choose" />
         </div>
         <p className="mt-4 text-sm font-semibold text-[var(--color-muted)]">

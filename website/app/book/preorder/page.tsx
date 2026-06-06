@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BookOffers } from "@/components/BookOffers";
+import { BookSocialProof } from "@/components/BookSocialProof";
 import { BookEmailSignup } from "@/components/BookEmailSignup";
 import { BookDisclaimer } from "@/components/BookDisclaimer";
 import { BOOK, WHY_PRICE } from "@/lib/book";
@@ -57,6 +58,7 @@ export default function BookPreorderPage() {
 
       {/* Offers */}
       <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
+        <BookSocialProof className="mb-8" />
         <BookOffers checkout ctaLabel="Pre-order" />
         <p className="mt-4 text-center text-sm font-semibold text-[var(--color-muted)]">
           Secure checkout by Stripe. Full refund anytime before your edition
