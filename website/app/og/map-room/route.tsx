@@ -53,7 +53,7 @@ export async function GET() {
             fontWeight: 700,
             letterSpacing: "0.2em",
             textTransform: "uppercase",
-            color: "#7fe3a9",
+            color: "#e1bd5b",
           }}
         >
           <div
@@ -61,8 +61,8 @@ export async function GET() {
               width: 14,
               height: 14,
               borderRadius: 14,
-              background: "#7fe3a9",
-              boxShadow: "0 0 12px #7fe3a9",
+              background: "#e1bd5b",
+              boxShadow: "0 0 12px #e1bd5b",
             }}
           />
           THE MAP ROOM · LIVE

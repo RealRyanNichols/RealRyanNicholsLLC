@@ -376,7 +376,7 @@ export default async function StorePage() {
               />
               <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(20,42,82,0.06),rgba(20,42,82,0.82))]" />
               <div className="absolute bottom-4 left-4 right-4">
-                <p className="text-xs font-black uppercase tracking-normal text-[#7fe3a9]">
+                <p className="text-xs font-black uppercase tracking-normal text-[#e1bd5b]">
                   The useful path
                 </p>
                 <p className="mt-1 max-w-sm font-display text-2xl font-black leading-tight tracking-normal text-white sm:text-3xl">

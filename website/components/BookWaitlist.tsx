@@ -65,9 +65,11 @@ export function BookWaitlist({
           {done.position ? `You're #${done.position} in line.` : "You're on the list."}
         </h3>
         <p className="mt-2 text-sm font-semibold leading-relaxed text-[var(--color-ink-soft)]">
-          Watch your email and phone — the list learns the release date first
-          and gets first chance to own Fighting Shadows. Thank you for being
-          early.
+          {email
+            ? `The opening chapter of Fighting Shadows is yours — we'll send it to ${email} the moment it's ready. `
+            : "The opening chapter of Fighting Shadows is yours — we'll send it the moment it's ready. "}
+          You will also learn the release date first and get first chance to own
+          it. Thank you for being early.
         </p>
       </div>
     );
@@ -128,7 +130,7 @@ export function BookWaitlist({
         disabled={busy}
         className="min-h-12 rounded-md border-2 border-[var(--color-accent)] bg-[var(--color-accent)] px-4 py-3 text-base font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)] disabled:opacity-60"
       >
-        {busy ? "Saving your spot..." : "Reserve my spot on the list"}
+        {busy ? "Saving your spot..." : "Reserve my spot + free chapter"}
       </button>
       <p
         className={
@@ -137,7 +139,8 @@ export function BookWaitlist({
             : "text-center text-[11px] font-semibold text-[var(--color-muted)]"
         }
       >
-        No spam. The list gets the release date and first chance to buy.
+        No spam. Join free — the opening chapter is sent to the list the moment
+        it is ready, plus the release date and first chance to buy.
       </p>
     </form>
   );

@@ -151,7 +151,7 @@ export default async function SalvagedDojRecordPage({
       >
         <div className="flex items-center justify-between gap-4 flex-wrap">
           <div>
-            <p className="text-[10px] uppercase tracking-[0.2em] text-[#7fe3a9] font-bold">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-[#e1bd5b] font-bold">
               Start here
             </p>
             <p className="mt-1 text-lg sm:text-xl font-bold tracking-tight font-display text-[var(--color-paper)]">

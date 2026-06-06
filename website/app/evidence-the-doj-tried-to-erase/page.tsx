@@ -93,8 +93,8 @@ export default async function EvidenceErasedPage() {
           style={{ background: "rgba(127, 227, 169, 0.16)" }}
           aria-hidden
         />
-        <p className="relative text-[11px] uppercase tracking-[0.25em] text-[#7fe3a9] font-bold flex items-center gap-2">
-          <span className="inline-block w-2 h-2 rounded-full bg-[#7fe3a9] animate-pulse" />
+        <p className="relative text-[11px] uppercase tracking-[0.25em] text-[#e1bd5b] font-bold flex items-center gap-2">
+          <span className="inline-block w-2 h-2 rounded-full bg-[#e1bd5b] animate-pulse" />
           Public record · preserved · verifiable
         </p>
         <h1 className="relative mt-3 text-4xl sm:text-6xl font-bold tracking-tight leading-[1.02] font-display text-[var(--color-paper)]">
@@ -110,7 +110,7 @@ export default async function EvidenceErasedPage() {
         </p>
         <p className="relative mt-4 text-base sm:text-xl text-[#cfd9ea] leading-relaxed max-w-3xl">
           We pulled the last complete snapshot before it vanished.{" "}
-          <strong className="text-[#7fe3a9]">Every name. Every case number.
+          <strong className="text-[#e1bd5b]">Every name. Every case number.
           Every document.</strong> It is all here, it is all verifiable
           against the Internet Archive, and{" "}
           <strong className="text-[var(--color-paper)]">it is not coming down.</strong>
@@ -290,7 +290,7 @@ export default async function EvidenceErasedPage() {
 function DarkStat({ value, label }: { value: number; label: string }) {
   return (
     <div className="rounded-xl border border-[#3a557c] bg-[#0a1429]/60 p-4">
-      <div className="text-3xl sm:text-4xl font-bold tabular-nums tracking-tight leading-none text-[#7fe3a9]">
+      <div className="text-3xl sm:text-4xl font-bold tabular-nums tracking-tight leading-none text-[#e1bd5b]">
         {value.toLocaleString()}
       </div>
       <div className="mt-2 text-[10px] uppercase tracking-wider text-[#a9b7d0] font-bold">

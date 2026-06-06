@@ -1394,7 +1394,7 @@ export function AttorneyBriefBody({
       >
         <div className="grid gap-5 lg:grid-cols-[1fr_18rem] lg:items-start">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.24em] text-[#7fe3a9]">
+            <p className="text-xs font-black uppercase tracking-[0.24em] text-[#e1bd5b]">
               Attorney cover sheet
             </p>
             <h1 className="mt-2 max-w-3xl text-3xl font-black leading-[0.98] text-[#fdf8ea] sm:text-5xl lg:text-6xl">
@@ -1409,7 +1409,7 @@ export function AttorneyBriefBody({
             <div className="mt-4 flex flex-wrap gap-2">
               <a
                 href="#source-doors"
-                className="inline-flex min-h-11 items-center border border-[#7fe3a9]/60 bg-[#7fe3a9]/15 px-4 text-sm font-black text-[#7fe3a9] transition hover:bg-[#7fe3a9]/25"
+                className="inline-flex min-h-11 items-center border border-[#e1bd5b]/60 bg-[#e1bd5b]/15 px-4 text-sm font-black text-[#e1bd5b] transition hover:bg-[#e1bd5b]/25"
               >
                 Open the first four records
               </a>
@@ -1434,7 +1434,7 @@ export function AttorneyBriefBody({
             </dl>
             <a
               href={meeting.website}
-              className="mt-4 inline-flex min-h-10 items-center border border-[#7fe3a9]/50 bg-[#7fe3a9]/15 px-3 text-sm font-black text-[#7fe3a9] transition hover:bg-[#7fe3a9]/25"
+              className="mt-4 inline-flex min-h-10 items-center border border-[#e1bd5b]/50 bg-[#e1bd5b]/15 px-3 text-sm font-black text-[#e1bd5b] transition hover:bg-[#e1bd5b]/25"
             >
               Open firm site
             </a>
@@ -1705,7 +1705,7 @@ export function AttorneyBriefBody({
         id="civil-throughline"
         className="mt-4 border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm sm:p-5"
       >
-        <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+        <p className="text-xs font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
           The civil throughline
         </p>
         <h2 className="mt-1 font-sans text-2xl font-black leading-tight text-[#fdf8ea] sm:text-3xl">
@@ -1737,7 +1737,7 @@ export function AttorneyBriefBody({
           Reported concerns and supporting context — not court findings.
         </p>
         <div className="mt-4 border-t border-white/10 pt-4">
-          <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#7fe3a9]">
+          <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#e1bd5b]">
             Filed exhibits — open these
           </p>
           <div className="mt-3 grid gap-2 md:grid-cols-2">
@@ -1745,13 +1745,13 @@ export function AttorneyBriefBody({
               <a
                 key={ex.href}
                 href={ex.href}
-                className="group border border-white/10 bg-white/5 p-3 transition hover:border-[#7fe3a9]/50 hover:bg-[#7fe3a9]/10"
+                className="group border border-white/10 bg-white/5 p-3 transition hover:border-[#e1bd5b]/50 hover:bg-[#e1bd5b]/10"
               >
                 <span className="flex items-center justify-between gap-2">
                   <span className="text-sm font-black text-[#fdf8ea]">
                     {ex.label}
                   </span>
-                  <span className="shrink-0 text-[10px] font-black uppercase tracking-[0.08em] text-[#7fe3a9]">
+                  <span className="shrink-0 text-[10px] font-black uppercase tracking-[0.08em] text-[#e1bd5b]">
                     Open
                   </span>
                 </span>
@@ -1826,7 +1826,7 @@ export function AttorneyBriefBody({
         id="longview-report"
         className="mt-4 border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm sm:p-5"
       >
-        <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+        <p className="text-xs font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
           Criminal referral — Longview PD case 260630230
         </p>
         <h2 className="mt-1 font-sans text-2xl font-black leading-tight text-[#fdf8ea] sm:text-3xl">
@@ -1855,8 +1855,8 @@ export function AttorneyBriefBody({
               ))}
             </ul>
           </div>
-          <div className="border border-[#7fe3a9]/30 bg-[#7fe3a9]/10 p-3">
-            <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#7fe3a9]">
+          <div className="border border-[#e1bd5b]/30 bg-[#e1bd5b]/10 p-3">
+            <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#e1bd5b]">
               What still needs investigating
             </p>
             <ul className="mt-2 grid gap-2">
@@ -1865,7 +1865,7 @@ export function AttorneyBriefBody({
                   key={item}
                   className="flex gap-2 text-sm font-semibold leading-6 text-[#fdf8ea]"
                 >
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 bg-[#7fe3a9]" />
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 bg-[#e1bd5b]" />
                   <span>{item}</span>
                 </li>
               ))}
@@ -2003,7 +2003,7 @@ export function AttorneyBriefBody({
         </summary>
         <div className="grid gap-4 border-t border-[var(--color-line)] p-4 lg:grid-cols-[0.9fr_1.1fr]">
         <section className="border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm sm:p-5">
-          <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+          <p className="text-xs font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
             Open first
           </p>
           <h2 className="mt-1 font-sans text-2xl font-black text-[#fdf8ea]">
@@ -2018,7 +2018,7 @@ export function AttorneyBriefBody({
               <a
                 key={source.href}
                 href={source.href}
-                className="border border-white/10 bg-white/5 p-3 transition hover:border-[#7fe3a9]/50 hover:bg-[#7fe3a9]/10"
+                className="border border-white/10 bg-white/5 p-3 transition hover:border-[#e1bd5b]/50 hover:bg-[#e1bd5b]/10"
               >
                 <span className="block text-sm font-black text-[#fdf8ea]">
                   {source.label}
@@ -2075,14 +2075,14 @@ export function AttorneyBriefBody({
       <details id="drive-evidence" className="mt-4 border border-[#203a64] bg-[#071126] text-[#fdf8ea] shadow-sm">
         <summary className="flex cursor-pointer items-center justify-between gap-3 p-4 text-sm font-black uppercase tracking-normal marker:content-[''] sm:p-5">
           <span>Open Google Drive source folders</span>
-          <span className="border border-[#7fe3a9]/50 px-2 py-1 text-[10px] text-[#7fe3a9]">
+          <span className="border border-[#e1bd5b]/50 px-2 py-1 text-[10px] text-[#e1bd5b]">
             4 folders
           </span>
         </summary>
         <div className="border-t border-white/10 p-4 sm:p-5">
         <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
               Source folders
             </p>
             <h2 className="mt-1 font-sans text-2xl font-black text-[#fdf8ea]">
@@ -2099,13 +2099,13 @@ export function AttorneyBriefBody({
             <a
               key={folder.href}
               href={folder.href}
-              className="border border-white/10 bg-white/5 p-3 transition hover:border-[#7fe3a9]/50 hover:bg-[#7fe3a9]/10"
+              className="border border-white/10 bg-white/5 p-3 transition hover:border-[#e1bd5b]/50 hover:bg-[#e1bd5b]/10"
             >
               <div className="flex items-start justify-between gap-3">
                 <span className="text-sm font-black text-[#fdf8ea]">
                   {folder.label}
                 </span>
-                <span className="bg-[#7fe3a9]/15 px-2 py-1 text-[10px] font-black uppercase tracking-[0.08em] text-[#7fe3a9]">
+                <span className="bg-[#e1bd5b]/15 px-2 py-1 text-[10px] font-black uppercase tracking-[0.08em] text-[#e1bd5b]">
                   Open
                 </span>
               </div>
@@ -2182,7 +2182,7 @@ export function AttorneyBriefBody({
       <details id="full-record" className="mt-4 border border-[#203a64] bg-[#071126] shadow-sm">
         <summary className="flex cursor-pointer items-center justify-between gap-3 p-4 text-sm font-black uppercase tracking-normal text-[#fdf8ea] marker:content-[''] sm:p-5">
           <span>Open full supporting archive</span>
-          <span className="border border-[#7fe3a9]/50 px-2 py-1 text-[10px] text-[#7fe3a9]">
+          <span className="border border-[#e1bd5b]/50 px-2 py-1 text-[10px] text-[#e1bd5b]">
             Complete record
           </span>
         </summary>
@@ -2190,7 +2190,7 @@ export function AttorneyBriefBody({
           <section className="border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] sm:p-5">
             <div className="grid gap-3 lg:grid-cols-[0.38fr_1fr] lg:items-end">
               <div>
-                <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+                <p className="text-xs font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
                   Why take Ryan
                 </p>
                 <h2 className="mt-1 font-sans text-2xl font-black text-[#fdf8ea] sm:text-3xl">
@@ -2215,7 +2215,7 @@ export function AttorneyBriefBody({
                   <p className="mt-2 text-sm font-semibold leading-6 text-[#cfd9ea]">
                     {item.body}
                   </p>
-                  <p className="mt-3 border-t border-white/10 pt-3 text-xs font-bold leading-5 text-[#7fe3a9]">
+                  <p className="mt-3 border-t border-white/10 pt-3 text-xs font-bold leading-5 text-[#e1bd5b]">
                     Proof path: {item.proof}
                   </p>
                 </section>
@@ -2272,7 +2272,7 @@ export function AttorneyBriefBody({
           </section>
 
           <section id="damages-map" className="mt-4 border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea]">
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
               Damages / money map
             </p>
             <h2 className="mt-2 font-sans text-2xl font-black text-[#fdf8ea]">
@@ -2287,7 +2287,7 @@ export function AttorneyBriefBody({
                   <p className="mt-2 font-sans text-3xl font-black text-[#fdf8ea]">
                     {item.value}
                   </p>
-                  <p className="mt-1 text-xs font-black uppercase tracking-[0.16em] text-[#7fe3a9]">
+                  <p className="mt-1 text-xs font-black uppercase tracking-[0.16em] text-[#e1bd5b]">
                     {item.sub}
                   </p>
                   <p className="mt-2 text-xs font-semibold leading-5 text-[#cfd9ea]">
@@ -2315,7 +2315,7 @@ export function AttorneyBriefBody({
 
           <section className="mt-4 grid gap-4 xl:grid-cols-[0.92fr_1.08fr]">
             <div className="border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea]">
-              <p className="text-xs font-black uppercase tracking-[0.22em] text-[#7fe3a9]">
+              <p className="text-xs font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
                 Source chain
               </p>
               <h2 className="mt-2 font-sans text-2xl font-black text-[#fdf8ea]">
@@ -2331,7 +2331,7 @@ export function AttorneyBriefBody({
                       {item.title}
                     </h3>
                     <p className="mt-1 text-sm leading-6 text-[#cfd9ea]">{item.body}</p>
-                    <p className="mt-2 text-xs font-bold leading-5 text-[#7fe3a9]">
+                    <p className="mt-2 text-xs font-bold leading-5 text-[#e1bd5b]">
                       Why it matters: {item.use}
                     </p>
                   </div>

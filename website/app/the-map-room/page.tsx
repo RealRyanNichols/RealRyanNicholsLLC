@@ -128,8 +128,8 @@ export default async function TheMapRoomPage() {
         />
         <div className="relative flex items-start justify-between gap-4 flex-wrap">
           <div className="max-w-xl">
-            <p className="text-[10px] uppercase tracking-[0.25em] text-[#7fe3a9] font-bold flex items-center gap-1.5">
-              <span className="inline-block w-2 h-2 rounded-full bg-[#7fe3a9] animate-pulse" />
+            <p className="text-[10px] uppercase tracking-[0.25em] text-[#e1bd5b] font-bold flex items-center gap-1.5">
+              <span className="inline-block w-2 h-2 rounded-full bg-[#e1bd5b] animate-pulse" />
               New · The Case Nexus
             </p>
             <h2 className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight font-display text-[var(--color-paper)]">

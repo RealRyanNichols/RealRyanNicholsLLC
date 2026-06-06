@@ -93,6 +93,7 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
   const [missing, setMissing] = useState("");
   const [safeVersion, setSafeVersion] = useState("");
   const [ack, setAck] = useState(false);
+  const [anonymous, setAnonymous] = useState(false);
   const [receipt, setReceipt] = useState<{ publicRef: string | null; ledgerUrl: string } | null>(null);
 
   const signalScore = useMemo(
@@ -206,10 +207,11 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
       `Signal score: ${signalScore}/6`,
       "",
       "Source profile",
-      `Name: ${displayName.trim() || "(not provided)"}`,
-      `Contact: ${contact.trim() || "(not provided)"}`,
-      `Privacy boundary: ${privacy}`,
-      `Follow-up preference: ${followUp}`,
+      `Anonymous: ${anonymous ? "yes" : "no"}`,
+      `Name: ${anonymous ? "(anonymous)" : displayName.trim() || "(not provided)"}`,
+      `Contact: ${anonymous ? "(anonymous)" : contact.trim() || "(not provided)"}`,
+      `Privacy boundary: ${anonymous ? "Anonymous — keep everything private" : privacy}`,
+      `Follow-up preference: ${anonymous ? "No follow-up (anonymous)" : followUp}`,
       "",
       "What happened",
       story.trim(),
@@ -248,9 +250,14 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          display_name: displayName || undefined,
-          email: contact.includes("@") ? contact : undefined,
-          phone: contact && !contact.includes("@") ? contact.slice(0, 40) : undefined,
+          display_name: anonymous ? undefined : displayName || undefined,
+          email: anonymous ? undefined : contact.includes("@") ? contact : undefined,
+          phone:
+            anonymous || contact.includes("@")
+              ? undefined
+              : contact
+                ? contact.slice(0, 40)
+                : undefined,
           subject: `Story web: ${headline.trim() || storyType}`,
           message: compiled,
           source_path: window.location.pathname,
@@ -352,12 +359,35 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
           Tell the story
         </p>
         <h2 className="mt-2 font-display text-3xl font-black tracking-normal">
-          Build a witness-style story profile.
+          Get it off your chest. Let the world know.
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-          The stronger the structure, the easier it is to connect your story to
-          another story without exposing what should stay private.
+          Say what happened in your own words — anonymously if you want. The more
+          you can add, the easier it is for Ryan to analyze the evidence and
+          connect your story to others without exposing what should stay private.
         </p>
+
+        <label className="mt-4 flex items-start gap-3 rounded-lg border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-3">
+          <input
+            type="checkbox"
+            checked={anonymous}
+            onChange={(event) => {
+              setAnonymous(event.target.checked);
+              if (event.target.checked) {
+                setDisplayName("");
+                setContact("");
+              }
+            }}
+            className="mt-0.5 h-5 w-5 shrink-0 accent-[var(--color-blue)]"
+          />
+          <span className="text-sm font-bold leading-snug text-[var(--color-ink)]">
+            Submit anonymously — no name, no contact, no account.
+            <span className="mt-0.5 block text-xs font-semibold text-[var(--color-ink-soft)]">
+              Just get it off your chest. Ryan still sees the facts and the proof,
+              so the evidence can still be analyzed.
+            </span>
+          </span>
+        </label>
 
         <div className="mt-5 grid gap-4">
           <label className="grid gap-1 text-sm font-bold">
@@ -578,24 +608,31 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
             </label>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2">
-            <Field
-              label="Name"
-              value={displayName}
-              onChange={setDisplayName}
-              placeholder="Optional"
-              maxLength={120}
-              autoComplete="name"
-            />
-            <Field
-              label="Email or phone"
-              value={contact}
-              onChange={setContact}
-              placeholder="Optional, only if follow-up is okay"
-              maxLength={120}
-              autoComplete="email"
-            />
-          </div>
+          {anonymous ? (
+            <p className="rounded-lg border border-[var(--color-blue)] bg-[var(--color-blue-soft)] px-3 py-2 text-xs font-bold leading-relaxed text-[var(--color-ink-soft)]">
+              Anonymous mode is on. No name or contact is collected — uncheck the
+              box above if you want Ryan to be able to reach you.
+            </p>
+          ) : (
+            <div className="grid gap-3 sm:grid-cols-2">
+              <Field
+                label="Name"
+                value={displayName}
+                onChange={setDisplayName}
+                placeholder="Optional"
+                maxLength={120}
+                autoComplete="name"
+              />
+              <Field
+                label="Email or phone"
+                value={contact}
+                onChange={setContact}
+                placeholder="Optional, only if follow-up is okay"
+                maxLength={120}
+                autoComplete="email"
+              />
+            </div>
+          )}
 
           <label className="flex gap-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-3 text-xs leading-relaxed text-[var(--color-ink-soft)]">
             <input
@@ -631,7 +668,7 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
 
       <aside className="grid content-start gap-4">
         <section className="rounded-lg border border-[var(--color-blue)] bg-[var(--color-blue-strong)] p-4 text-[var(--color-paper)] shadow-xl sm:p-5">
-          <p className="text-xs font-black uppercase tracking-normal text-[#7fe3a9]">
+          <p className="text-xs font-black uppercase tracking-normal text-[#e1bd5b]">
             Live preview
           </p>
           <h2 className="mt-2 font-display text-2xl font-black tracking-normal text-[var(--color-paper)]">

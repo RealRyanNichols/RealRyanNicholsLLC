@@ -3,6 +3,7 @@ import { PostCard } from "@/components/PostCard";
 import { ProfileHero } from "@/components/ProfileHero";
 import { VerseSidebar } from "@/components/VerseSidebar";
 import { SignupForm } from "@/components/SignupForm";
+import { BookPromo } from "@/components/BookPromo";
 import { LiveNowBanner } from "@/components/LiveNowBanner";
 import { getActiveLiveStream } from "@/lib/live";
 import { SITE } from "@/lib/site";
@@ -75,6 +76,9 @@ export default async function HomePage({
       <aside className="space-y-5">
         <VerseSidebar />
         <SignupForm emailEnabled={emailSignupEnabled} />
+
+        {/* Book waitlist cross-promo — funnel the feed into /book */}
+        <BookPromo />
 
         {/* Send-a-tip CTA — prominent invite for the public to participate */}
         <Link

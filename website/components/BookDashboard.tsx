@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { BookWaitlist } from "./BookWaitlist";
 
-const GOAL = 1000;
+const GOAL = 5000;
 
 // Smoothly animate a number toward a moving target (count-up), re-running only
 // when the target changes — reads the current value from a ref so the rAF loop
@@ -68,8 +68,11 @@ export function BookDashboard() {
     <div className="grid gap-4 lg:grid-cols-2 lg:items-stretch">
       {/* Sign-up form */}
       <div className="rounded-xl border border-white/10 bg-white/[0.06] p-5 sm:p-6">
-        <p className="mb-3 text-sm font-black uppercase tracking-[0.16em] text-[#7fe3a9]">
+        <p className="text-sm font-black uppercase tracking-[0.16em] text-[#e1bd5b]">
           Reserve your spot
+        </p>
+        <p className="mb-3 mt-1 font-display text-lg font-black leading-tight text-[#fdf8ea]">
+          Join free — the opening chapter lands in your inbox first.
         </p>
         <BookWaitlist
           source="book_hero"
