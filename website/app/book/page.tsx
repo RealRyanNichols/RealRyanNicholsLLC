@@ -113,6 +113,15 @@ export default function BookPage() {
             </div>
           </div>
 
+          {saleActive ? (
+            <div className="mt-8 rounded-xl border border-[#e1bd5b]/40 bg-[#e1bd5b]/10 px-4 py-3 text-center text-[#e1bd5b]">
+              <BookCountdown endsAt={SALE_ENDS_AT} className="justify-center" />
+            </div>
+          ) : null}
+          <div className="mt-4">
+            <BookSocialProof tone="dark" />
+          </div>
+
           {/* Email signup — above the fold */}
           <div
             id="book-list"
@@ -127,16 +136,6 @@ export default function BookPage() {
             <BookEmailSignup source="book_sales_hero" tone="dark" />
           </div>
         </div>
-      </section>
-
-      {/* Momentum band — countdown + live social proof, right up top */}
-      <section className="mx-auto max-w-4xl px-4 pt-8 sm:px-6">
-        {saleActive ? (
-          <div className="mb-4 rounded-xl border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-4 py-3 text-center text-[var(--color-accent)]">
-            <BookCountdown endsAt={SALE_ENDS_AT} className="justify-center" />
-          </div>
-        ) : null}
-        <BookSocialProof />
       </section>
 
       {/* Positioning */}
