@@ -49,6 +49,11 @@ export function BookOffers({
                 Most chosen
               </span>
             ) : null}
+            {tier.limited ? (
+              <span className="absolute -top-3 right-5 rounded-full border border-[var(--color-gold)] bg-[var(--color-gold-soft)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--color-support-strong)]">
+                {tier.limited} only
+              </span>
+            ) : null}
 
             <h3 className="font-display text-2xl font-black leading-tight tracking-normal text-[var(--color-ink)]">
               {tier.name}

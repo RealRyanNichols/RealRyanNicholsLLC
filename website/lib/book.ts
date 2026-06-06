@@ -28,6 +28,8 @@ export type BookTier = {
   tagline: string;
   includes: string[];
   featured?: boolean;
+  /** If set, the edition is capped at this many — drives the scarcity badge. */
+  limited?: number;
 };
 
 // The three pre-order offers. `priceUsd` is the suggested price; Phase 3 will
@@ -62,13 +64,32 @@ export const BOOK_TIERS: BookTier[] = [
     name: "Founding Supporter Edition",
     priceUsd: 250,
     tagline: "Stand on the record from day one.",
+    limited: 250,
     includes: [
-      "Signed copy",
+      "Signed & numbered copy (limited run)",
       "Digital edition",
-      "Supporter updates",
-      "Your name listed as an early supporter — only if you opt in",
       "Evidence appendix access when available",
+      "Your name listed as an early supporter — if you opt in",
+      "A personal thank-you from Ryan",
+      "Supporter updates",
     ],
+  },
+];
+
+// Why the pre-order costs what it does. The framing is both/and: you are
+// backing the work AND getting exclusive founding access before Amazon.
+export const WHY_PRICE: { title: string; body: string }[] = [
+  {
+    title: "You are funding the fight",
+    body: "Every pre-order goes straight into putting the full record in public view — the filings, the footage, and the account they would rather stay buried. Direct support, no middleman.",
+  },
+  {
+    title: "You get it first, before Amazon",
+    body: "Founding editions ship before the book ever reaches Amazon — early, signed, and numbered for the people who showed up first.",
+  },
+  {
+    title: "It is more than a book",
+    body: "The evidence appendix ties the story to the documented record. You are not just reading an account — you are holding the receipts.",
   },
 ];
 

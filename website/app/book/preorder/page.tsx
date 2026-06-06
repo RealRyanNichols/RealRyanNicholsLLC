@@ -3,7 +3,7 @@ import Link from "next/link";
 import { BookOffers } from "@/components/BookOffers";
 import { BookEmailSignup } from "@/components/BookEmailSignup";
 import { BookDisclaimer } from "@/components/BookDisclaimer";
-import { BOOK } from "@/lib/book";
+import { BOOK, WHY_PRICE } from "@/lib/book";
 import { SITE } from "@/lib/site";
 
 const title = "Pre-order Fighting Shadows | Ryan Nichols";
@@ -62,6 +62,33 @@ export default function BookPreorderPage() {
           Secure Stripe checkout opens soon. Reserve your edition below and you
           will be first to complete your pre-order.
         </p>
+      </section>
+
+      {/* Why it costs what it does */}
+      <section className="border-y border-[var(--color-line)] bg-[var(--color-paper)]">
+        <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:py-14">
+          <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+            Why it costs what it does
+          </p>
+          <h2 className="mt-2 font-display text-3xl font-black leading-tight tracking-normal sm:text-4xl">
+            You are not overpaying for paper.
+          </h2>
+          <div className="mt-6 grid gap-3 sm:grid-cols-3">
+            {WHY_PRICE.map((w) => (
+              <div
+                key={w.title}
+                className="rounded-xl border-l-4 border-[var(--color-accent)] bg-[var(--color-surface)] p-5 shadow-sm"
+              >
+                <h3 className="font-display text-xl font-black tracking-normal text-[var(--color-ink)]">
+                  {w.title}
+                </h3>
+                <p className="mt-2 text-sm font-semibold leading-relaxed text-[var(--color-ink-soft)]">
+                  {w.body}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* Reserve / email capture */}
