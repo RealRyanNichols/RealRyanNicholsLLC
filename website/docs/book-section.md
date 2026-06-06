@@ -96,7 +96,35 @@ endpoint). Nothing new to configure.
 `4242 4242 4242 4242`, or a real $29 you refund), then check `book_orders` for
 the row. The order also appears in the Stripe Dashboard.
 
-## Later phases (not built yet)
+## Phase 5 — secure download (live)
 
-- **Phase 5 — secure download:** `/book/download/[token]`.
+`/book/download/[token]` (server) verifies the token against `book_orders`:
+
+- Unknown token → "not valid" page. Refunded order → "refunded" page.
+- Valid + no file yet → "digital file coming soon."
+- Valid + `BOOK_DOWNLOAD_URL` set → a Download button.
+
+`/book/download/[token]/file` (GET) re-verifies the token, **increments
+`download_count` + sets `last_downloaded_at` only when a real download is
+triggered**, and 302-redirects to `BOOK_DOWNLOAD_URL`. The file is never in
+`/public`.
+
+**Env var (set when the file exists):** `BOOK_DOWNLOAD_URL` — a private/signed
+URL to the PDF/EPUB (e.g., a Supabase Storage signed URL). Until it is set, the
+page shows "coming soon" and the file route returns 409.
+
+## Phase 6 — go-live test checklist
+
+1. Merge the PR; confirm the production deploy.
+2. `/book`, `/book/preorder`, `/book/updates`, `/book/press` render; the
+   announcement banner shows on other pages.
+3. Email signup on `/book` → a row lands in `book_email_signups`.
+4. Pre-order (Stripe test card `4242 4242 4242 4242`) → land on
+   `/book/thank-you` → a row lands in `book_orders` with a `download_token`.
+5. Visit `/book/download/<that token>` → shows the order + "coming soon."
+6. Refund the test charge in Stripe → order flips to `payment_status =
+   refunded`; the download page shows "refunded."
+7. When the file is ready: set `BOOK_DOWNLOAD_URL` → the page shows Download and
+   `download_count` increments on click.
+8. Optional: set `BOOK_UPDATES_FROM_EMAIL` for signup confirmation emails.
 - **Phase 6 — full docs + test checklist.**
