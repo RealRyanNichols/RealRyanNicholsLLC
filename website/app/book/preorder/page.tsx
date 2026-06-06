@@ -74,17 +74,16 @@ export default function BookPreorderPage() {
               />
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Momentum band — countdown + live social proof, right up top */}
-      <section className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
-        {saleActive ? (
-          <div className="mb-4 rounded-xl border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-4 py-3 text-center text-[var(--color-accent)]">
-            <BookCountdown endsAt={SALE_ENDS_AT} className="justify-center" />
+          {saleActive ? (
+            <div className="mt-8 rounded-xl border border-[#e1bd5b]/40 bg-[#e1bd5b]/10 px-4 py-3 text-center text-[#e1bd5b]">
+              <BookCountdown endsAt={SALE_ENDS_AT} className="justify-center" />
+            </div>
+          ) : null}
+          <div className="mt-4">
+            <BookSocialProof tone="dark" />
           </div>
-        ) : null}
-        <BookSocialProof />
+        </div>
       </section>
 
       {/* Delivery-date note */}
