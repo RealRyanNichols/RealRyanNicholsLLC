@@ -1,4 +1,5 @@
 import { SITE } from "./site";
+import { BOOK } from "./book";
 
 export type EmailEnvelope = {
   subject: string;
@@ -203,6 +204,45 @@ ${footerText(unsubUrl)}`;
   `;
 
   return { subject, html, text, headers: listUnsubscribeHeaders(unsubUrl) };
+}
+
+// Confirmation for the book email list. Single opt-in (consent checkbox), so
+// there is no double-opt-in link. Includes a plain-language opt-out instead of
+// the tokenized unsubscribe machinery used by the newsletter.
+export function buildBookSignupEmail(): EmailEnvelope {
+  const url = `${SITE.url}/book/updates`;
+  const subject = `You are on the list — ${BOOK.title}`;
+
+  const text = `Thanks for signing up for updates on ${BOOK.title}.
+
+I will email you the milestones — writing, editing, printing, and the release date — and the opening chapter when it is ready.
+
+Follow along: ${url}
+
+You signed up at ${SITE.url}/book. If this was not you, just reply and I will remove you.
+
+— ${SITE.author}`;
+
+  const html = `
+    <div style="${FONT}color:#1a1a1a;max-width:560px;margin:0 auto;padding:24px 16px;">
+      <p style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#7a271a;margin:0 0 10px;">${esc(BOOK.title)}</p>
+      <h1 style="font-size:24px;line-height:1.25;margin:0 0 12px;">You are on the list.</h1>
+      <p style="font-size:15px;line-height:1.65;color:#333;margin:0 0 16px;">
+        Thanks for signing up. I will email you the milestones — writing, editing,
+        printing, and the release date — and the opening chapter when it is ready.
+      </p>
+      <p style="margin:0 0 22px;">
+        <a href="${url}" style="background:#1a1a1a;color:#fff;text-decoration:none;padding:10px 16px;border-radius:8px;display:inline-block;font-weight:700;">See the latest updates</a>
+      </p>
+      <p style="font-size:13px;line-height:1.6;color:#666;margin:0;">
+        You signed up at <a href="${SITE.url}/book" style="color:#666;">${SITE.url.replace(/^https?:\/\//, "")}/book</a>.
+        If this was not you, just reply and I will remove you.
+      </p>
+      <p style="font-size:13px;line-height:1.6;color:#666;margin:14px 0 0;">— ${esc(SITE.author)}</p>
+    </div>
+  `;
+
+  return { subject, html, text };
 }
 
 export function buildSupportThankYouEmail(opts: {

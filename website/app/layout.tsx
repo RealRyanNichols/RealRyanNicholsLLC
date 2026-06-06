@@ -4,6 +4,7 @@ import Link from "next/link";
 import { SITE } from "@/lib/site";
 import { Suspense } from "react";
 import { Header } from "@/components/Header";
+import { AnnouncementBanner } from "@/components/AnnouncementBanner";
 import { Footer } from "@/components/Footer";
 import { MobileSupportBar } from "@/components/MobileSupportBar";
 import { PageViewTracker } from "@/components/PageViewTracker";
@@ -62,6 +63,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd) }}
         />
+        <AnnouncementBanner />
         <Header />
         <main className="flex-1 w-full pb-[calc(5rem+env(safe-area-inset-bottom))] lg:pb-0">
           {children}
