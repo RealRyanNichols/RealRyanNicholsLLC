@@ -47,13 +47,40 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const personLd = {
+  // Site-wide entity graph: the Person, the LLC that publishes the site, and
+  // the WebSite itself — cross-referenced by @id so search engines read them
+  // as one connected entity (knowledge-panel + sitelink eligibility).
+  const structuredData = {
     "@context": "https://schema.org",
-    "@type": "Person",
-    name: SITE.name,
-    description: SITE.tagline,
-    url: SITE.url,
-    sameAs: [],
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": `${SITE.url}/#person`,
+        name: SITE.name,
+        alternateName: "Ryan Taylor Nichols",
+        description: SITE.tagline,
+        url: SITE.url,
+        image: `${SITE.url}/og/site`,
+        sameAs: ["https://x.com/RealRyanNichols"],
+      },
+      {
+        "@type": "Organization",
+        "@id": `${SITE.url}/#org`,
+        name: "Real Ryan Nichols LLC",
+        url: SITE.url,
+        logo: `${SITE.url}/og/site`,
+        founder: { "@id": `${SITE.url}/#person` },
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${SITE.url}/#website`,
+        name: SITE.name,
+        url: SITE.url,
+        description: SITE.description,
+        inLanguage: "en-US",
+        publisher: { "@id": `${SITE.url}/#org` },
+      },
+    ],
   };
 
   return (
@@ -61,7 +88,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-screen flex flex-col">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
         <AnnouncementBanner />
         <Header />
