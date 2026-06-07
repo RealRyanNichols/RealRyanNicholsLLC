@@ -15,68 +15,73 @@ type AdminGroup = {
   items: AdminItem[];
 };
 
+// The 5 things touched every day — the always-visible quick bar.
 const PRIMARY: AdminItem[] = [
-  { href: "/admin", label: "Overview", short: "Hub", sub: "Control room" },
-  { href: "/admin/attorney-brief", label: "Attorney brief", short: "Atty", sub: "Dallas prep" },
-  { href: "/admin/tips?filter=pending", label: "Tip queue", short: "Tip", sub: "Evidence leads" },
-  { href: "/admin/messages?filter=new", label: "Private mail", short: "Msg", sub: "Contact inbox" },
-  { href: "/admin/invoices", label: "Invoices", short: "Pay", sub: "Collect money" },
-  { href: "/admin/analytics", label: "Analytics", short: "Data", sub: "Traffic intel" },
+  { href: "/admin", label: "Home", short: "Home", sub: "Needs you now" },
+  { href: "/admin/tips?filter=pending", label: "Tips", short: "Tips", sub: "Public leads" },
+  { href: "/admin/messages?filter=new", label: "Mail", short: "Mail", sub: "Private inbox" },
+  { href: "/admin/orders", label: "Money", short: "Money", sub: "Sales & pay" },
+  { href: "/admin/analytics", label: "Stats", short: "Stats", sub: "Traffic" },
 ];
 
+// Everything else, top-to-bottom by how often you need it. No duplicates.
 const GROUPS: AdminGroup[] = [
   {
-    label: "Money",
+    label: "Needs you now",
     items: [
-      { href: "/admin/invoices", label: "Invoices", sub: "Send and track payment" },
-      { href: "/admin/orders", label: "Orders", sub: "Service and store checkout" },
-      { href: "/admin/book", label: "Book", sub: "Pre-orders and the list" },
-      { href: "/admin/blueprint", label: "Blueprint", sub: "Legal-tech sales and leads" },
-      { href: "/admin/donations", label: "Donations", sub: "Supporter money" },
-      { href: "/admin/store", label: "Store", sub: "Products and offers" },
-    ],
-  },
-  {
-    label: "Audience",
-    items: [
-      { href: "/admin", label: "Overview", sub: "What needs attention" },
-      { href: "/admin/analytics", label: "Analytics", sub: "Traffic and behavior" },
-      { href: "/admin/audience", label: "Audience intel", sub: "Profiles and signals" },
-      { href: "/admin/tools", label: "Free tools", sub: "Tool runs and needs" },
+      { href: "/admin/tips?filter=pending", label: "Tip queue", sub: "Public leads to review" },
+      { href: "/admin/messages?filter=new", label: "Private mail", sub: "Contact inbox" },
+      { href: "/admin/submissions?filter=pending", label: "Submissions", sub: "Claimant uploads" },
+      { href: "/admin/claims?filter=pending", label: "J6 claims", sub: "Profile claims" },
+      { href: "/admin/review", label: "Review queue", sub: "Classify & approve" },
     ],
   },
   {
     label: "Publish",
     items: [
-      { href: "/admin/posts", label: "Posts", sub: "Articles and updates" },
       { href: "/admin/new", label: "New post", sub: "Write now" },
-      { href: "/admin/deadman", label: "Deadman", sub: "Emergency release queue" },
-      { href: "/admin/live", label: "Live", sub: "Streams and comments" },
+      { href: "/admin/posts", label: "Posts", sub: "Articles & updates" },
+      { href: "/admin/live", label: "Live", sub: "Streams & comments" },
+      { href: "/admin/words", label: "Words", sub: "Saved copy & drafts" },
     ],
   },
   {
-    label: "Inbox",
+    label: "Money",
     items: [
-      { href: "/admin/tips?filter=pending", label: "Tip queue", sub: "Public leads to review" },
-      { href: "/admin/messages?filter=new", label: "Private mail", sub: "Contact form only" },
-      { href: "/admin/submissions?filter=pending", label: "Submissions", sub: "Claimant uploads" },
-      { href: "/admin/claims?filter=pending", label: "J6 claims", sub: "Profile claims" },
+      { href: "/admin/orders", label: "Orders", sub: "Service & store checkout" },
+      { href: "/admin/invoices", label: "Invoices", sub: "Send & track payment" },
+      { href: "/admin/donations", label: "Donations", sub: "Supporter money" },
+      { href: "/admin/book", label: "Book", sub: "Pre-orders & list" },
+      { href: "/admin/blueprint", label: "Blueprint", sub: "Legal-tech leads" },
+      { href: "/admin/store", label: "Store", sub: "Products & offers" },
     ],
   },
   {
-    label: "Cases",
+    label: "Audience & insight",
     items: [
-      { href: "/admin/attorney-brief", label: "Attorney brief", sub: "Dallas criminal-defense prep" },
-      { href: "/admin/users", label: "Users", sub: "Accounts and approvals" },
+      { href: "/admin/analytics", label: "Analytics", sub: "Traffic & behavior" },
+      { href: "/admin/audience", label: "Audience", sub: "Profiles & signals" },
+      { href: "/admin/tools", label: "Free tools", sub: "Tool runs & needs" },
+    ],
+  },
+  {
+    label: "The case",
+    items: [
+      { href: "/admin/attorney-brief", label: "Attorney brief", sub: "Defense prep" },
       { href: "/admin/case", label: "Case docs", sub: "Documents on file" },
-      { href: "/admin/imports", label: "Imports", sub: "Review staged data" },
+      { href: "/admin/evidence", label: "Evidence", sub: "Exhibits on file" },
+      { href: "/admin/continuity", label: "Continuity", sub: "Keep it all running" },
+      { href: "/admin/deadman", label: "Deadman switch", sub: "Emergency release" },
     ],
   },
   {
-    label: "Media",
+    label: "Settings & system",
     items: [
-      { href: "/admin/og-images", label: "OG images", sub: "Share thumbnails" },
+      { href: "/admin/users", label: "Users", sub: "Accounts & approvals" },
+      { href: "/admin/og-images", label: "Share images", sub: "OG thumbnails" },
       { href: "/admin/profile", label: "Profile photos", sub: "People images" },
+      { href: "/admin/imports", label: "Imports", sub: "Staged data" },
+      { href: "/admin/health", label: "System health", sub: "Connections" },
     ],
   },
 ];
@@ -111,7 +116,7 @@ export function AdminNav({
           </Link>
         </div>
 
-        <nav aria-label="Admin priority tools" className="mt-3 grid grid-cols-6 gap-1.5">
+        <nav aria-label="Admin priority tools" className="mt-3 grid grid-cols-5 gap-1.5">
           {PRIMARY.map((item) => (
             <MobilePrimaryLink
               key={item.href}
@@ -243,29 +248,44 @@ function GroupedToolGrid({
   compact?: boolean;
 }) {
   return (
-    <div className={compact ? "grid gap-3 sm:grid-cols-2" : "space-y-4"}>
-      {GROUPS.map((group) => (
-        <section key={group.label}>
-          <p
-            className={[
-              "mb-1.5 text-[10px] font-black uppercase tracking-[0.18em]",
-              compact ? "text-[#d8c89e]" : "text-[var(--color-muted)]",
-            ].join(" ")}
+    <div className="space-y-1.5">
+      {GROUPS.map((group, index) => {
+        // Open the top tier by default, plus whichever tier holds the page
+        // you're on — so the map stays a short, scannable list, not a wall.
+        const hasActive = group.items.some((item) =>
+          isActivePath(pathname, item.href),
+        );
+        return (
+          <details
+            key={group.label}
+            open={index === 0 || hasActive}
+            className="group/sect rounded-md border border-white/10 bg-white/[0.03]"
           >
-            {group.label}
-          </p>
-          <div className={compact ? "grid gap-1" : "space-y-1"}>
-            {group.items.map((item) => (
-              <ToolLink
-                key={item.href}
-                item={item}
-                active={isActivePath(pathname, item.href)}
-                compact={compact}
-              />
-            ))}
-          </div>
-        </section>
-      ))}
+            <summary className="flex min-h-9 cursor-pointer list-none items-center justify-between gap-2 px-2.5 py-1.5 marker:hidden">
+              <span className="text-[10px] font-black uppercase tracking-[0.16em] text-[#d8c89e]">
+                <span className="text-[#e1bd5b]/70">{index + 1}.</span>{" "}
+                {group.label}
+              </span>
+              <span
+                className="text-sm leading-none text-[#e1bd5b] transition group-open/sect:rotate-45"
+                aria-hidden
+              >
+                +
+              </span>
+            </summary>
+            <div className="space-y-1 border-t border-white/10 p-2">
+              {group.items.map((item) => (
+                <ToolLink
+                  key={item.href}
+                  item={item}
+                  active={isActivePath(pathname, item.href)}
+                  compact={compact}
+                />
+              ))}
+            </div>
+          </details>
+        );
+      })}
     </div>
   );
 }
