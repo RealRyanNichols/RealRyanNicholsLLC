@@ -22,6 +22,7 @@ export function PostCard({
     : "";
   const postUrl = `${SITE.url}/posts/${post.slug}`;
   const shareTitle = post.title ?? (post.body ? post.body.slice(0, 80) : SITE.name);
+  const readingMinutes = readingTimeMinutes(post);
 
   return (
     <article className="group/card border-b border-[var(--color-line)] py-7 first:pt-2 transition">
@@ -38,6 +39,12 @@ export function PostCard({
           )}
           <span aria-hidden>·</span>
           <time dateTime={post.published_at ?? undefined}>{when}</time>
+          {readingMinutes ? (
+            <>
+              <span aria-hidden>·</span>
+              <span>{readingMinutes} min read</span>
+            </>
+          ) : null}
         </div>
       </header>
 
@@ -62,6 +69,15 @@ export function PostCard({
       </div>
     </article>
   );
+}
+
+// Estimated read time at ~200 wpm. Hidden for short notes and quick reads so the
+// label only appears where it actually helps the reader decide to commit.
+function readingTimeMinutes(post: Post): number | null {
+  if (post.type === "note" || !post.body) return null;
+  const words = post.body.trim().split(/\s+/).filter(Boolean).length;
+  if (words < 120) return null;
+  return Math.max(2, Math.round(words / 200));
 }
 
 function feedExcerpt(body: string, maxLength: number): string {
@@ -180,6 +196,20 @@ function PostCardBody({ post, truncate }: { post: Post; truncate: boolean }) {
           {post.title ?? "Untitled"}
         </Link>
       </h2>
+      {post.thumbnail_url ? (
+        <Link
+          href={`/posts/${post.slug}`}
+          className="mt-3 block relative aspect-video overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)]"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={post.thumbnail_url}
+            alt=""
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        </Link>
+      ) : null}
       <div className="mt-3">
         <PostBody body={body} />
       </div>
