@@ -205,11 +205,11 @@ export function AdminNav({
         </div>
 
         {collapsed ? (
-          <div className="mt-3 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-1.5 text-center">
+          <div className="mt-3 rounded-md border border-[#203a64] bg-[#071126] p-1.5 text-center">
             <button
               type="button"
               onClick={() => onCollapsedChange?.(false)}
-              className="mx-auto grid h-9 w-9 place-items-center rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] text-[10px] font-black text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+              className="mx-auto grid h-9 w-9 place-items-center rounded-md border border-white/10 bg-white/5 text-[10px] font-black text-[#cfd9ea] transition hover:border-[#e1bd5b] hover:text-[#e1bd5b]"
               aria-label="Open full admin menu"
               title="Open full admin menu"
             >
@@ -217,21 +217,21 @@ export function AdminNav({
             </button>
           </div>
         ) : (
-          <div className="mt-3 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-3 shadow-sm">
+          <div className="mt-3 rounded-md border border-[#203a64] bg-[#071126] p-3 text-[#fdf8ea] shadow-sm">
             <div className="mb-3 flex items-center justify-between gap-3">
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-muted)]">
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#e1bd5b]">
                 Full admin map
               </p>
               <button
                 type="button"
                 onClick={() => onCollapsedChange?.(true)}
-                className="rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] px-2.5 py-1 text-[10px] font-black uppercase text-[var(--color-muted)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                className="rounded-md border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-black uppercase text-[#cfd9ea] transition hover:border-[#e1bd5b] hover:text-[#e1bd5b]"
               >
                 Close rail
               </button>
             </div>
             <div className="max-h-[42vh] overflow-y-auto pr-1">
-              <GroupedToolGrid pathname={pathname} />
+              <GroupedToolGrid pathname={pathname} compact />
             </div>
           </div>
         )}
