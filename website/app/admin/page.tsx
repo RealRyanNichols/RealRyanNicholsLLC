@@ -183,6 +183,20 @@ export default async function AdminHomePage() {
   const receivableCents = invoices
     .filter((i) => i.status === "open" || i.status === "failed")
     .reduce((sum, i) => sum + Math.max(0, i.amount_cents - i.amount_paid_cents), 0);
+
+  // Posts/drafts — the area Ryan wants front-and-center.
+  const [{ count: draftPostsCount }, { count: publishedPostsCount }] =
+    await Promise.all([
+      supabase
+        .from("posts")
+        .select("id", { count: "exact", head: true })
+        .eq("status", "draft"),
+      supabase
+        .from("posts")
+        .select("id", { count: "exact", head: true })
+        .eq("status", "published"),
+    ]);
+
   const reviewQueueTotal =
     (pendingTips ?? 0) +
     (pendingClaims ?? 0) +
@@ -237,6 +251,22 @@ export default async function AdminHomePage() {
 
       <section className="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
         <ActionLane
+          href="/admin/posts"
+          kicker="Publish"
+          title="Posts & drafts"
+          value={String(draftPostsCount ?? 0)}
+          sub={`${draftPostsCount ?? 0} draft${(draftPostsCount ?? 0) === 1 ? "" : "s"} · ${publishedPostsCount ?? 0} live`}
+          hot={(draftPostsCount ?? 0) > 0}
+        />
+        <ActionLane
+          href="/admin/analytics"
+          kicker="Watch"
+          title="Live audience"
+          value={String(activeNow ?? 0)}
+          sub={`${views24h ?? 0} views in 24h`}
+          hot={(activeNow ?? 0) > 0}
+        />
+        <ActionLane
           href="/admin/invoices"
           kicker="Collect"
           title="Receivables"
@@ -261,27 +291,12 @@ export default async function AdminHomePage() {
           hot={reviewQueueTotal > 0}
         />
         <ActionLane
-          href="/admin/analytics"
-          kicker="Watch"
-          title="Live audience"
-          value={String(activeNow ?? 0)}
-          sub={`${views24h ?? 0} views in 24h`}
-          hot={(activeNow ?? 0) > 0}
-        />
-        <ActionLane
           href="/admin/users?filter=pending"
           kicker="Approve"
           title="People"
           value={String(pendingProfiles ?? 0)}
           sub={`${activeProfiles ?? 0} active profiles`}
           hot={(pendingProfiles ?? 0) > 0}
-        />
-        <ActionLane
-          href="/admin/posts"
-          kicker="Publish"
-          title="Posts & live"
-          value="+"
-          sub="posts, video, social share cards"
         />
         <ActionLane
           href="/admin/health"
