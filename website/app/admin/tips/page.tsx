@@ -4,6 +4,7 @@ import Link from "next/link";
 import { format, formatDistanceToNowStrict } from "date-fns";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { TipActions } from "@/components/TipActions";
+import { TipEvidenceButton } from "@/components/TipEvidenceButton";
 import {
   buildIntakeRoutePlan,
   type IntakeRouteKind,
@@ -482,25 +483,32 @@ function TipRoutePanel({
           ))}
         </div>
       ) : null}
-      <div className="mt-3 flex flex-wrap gap-2 border-t border-black/10 pt-3">
-        <Link
-          href={`/admin/new?tip=${tipId}`}
-          className="border border-[var(--color-accent)] bg-[var(--color-accent)] px-3 py-2 text-xs font-black uppercase tracking-normal text-white transition hover:bg-[var(--color-accent-strong)]"
-        >
-          Article draft
-        </Link>
-        <Link
-          href={`/admin/new?tip=${tipId}&mode=solution`}
-          className="border border-[#e1bd5b]/60 bg-[#e1bd5b]/15 px-3 py-2 text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:bg-[#e1bd5b]/25"
-        >
-          Solution brief
-        </Link>
-        <Link
-          href={`/case/intake?route=${plan.kind}`}
-          className="border border-black/10 bg-white/45 px-3 py-2 text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-accent)]"
-        >
-          Public lane
-        </Link>
+      <div className="mt-3 border-t border-black/10 pt-3">
+        <p className="mb-2 text-[11px] font-bold leading-snug text-[var(--color-ink-soft)]">
+          Turn this tip into action. The first two open a ready-to-edit draft
+          built from it — nothing goes public until you hit publish.
+        </p>
+        <div className="flex flex-wrap gap-2">
+          <Link
+            href={`/admin/new?tip=${tipId}`}
+            className="border border-[var(--color-accent)] bg-[var(--color-accent)] px-3 py-2 text-xs font-black uppercase tracking-normal text-white transition hover:bg-[var(--color-accent-strong)]"
+          >
+            ✍️ Write the article →
+          </Link>
+          <Link
+            href={`/admin/new?tip=${tipId}&mode=solution`}
+            className="border border-[#e1bd5b]/60 bg-[#e1bd5b]/15 px-3 py-2 text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:bg-[#e1bd5b]/25"
+          >
+            📝 Write a solution post →
+          </Link>
+          <TipEvidenceButton tipId={tipId} />
+          <Link
+            href={`/case/intake?route=${plan.kind}`}
+            className="border border-black/10 bg-white/45 px-3 py-2 text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-accent)]"
+          >
+            📣 Public ledger →
+          </Link>
+        </div>
       </div>
     </section>
   );
