@@ -16,6 +16,14 @@ import {
   type VisualSlice,
   type VisualSystemLine,
 } from "@/components/AdminVisualAnalytics";
+import {
+  VisitorTrendChart,
+  TrafficSourcesChart,
+  ActivityHeatmap,
+  type TrendDay,
+  type SourceRow,
+  type HeatCell,
+} from "@/components/AnalyticsCharts";
 
 export const metadata: Metadata = {
   title: "Analytics",
@@ -245,6 +253,9 @@ export default async function AdminAnalyticsPage({
 
       {/* 2. 14-DAY TREND — one clear series: daily page views */}
       <TrendBars />
+
+      {/* 2b. TRAFFIC INTELLIGENCE — visitors trend, source mix, best time to post */}
+      <TrafficIntelligence />
 
       {/* 3. CONVERSION FUNNEL — reads top to bottom, leaks obvious */}
       <ConversionFunnel />
@@ -1359,12 +1370,107 @@ async function Scoreboard() {
 }
 
 // ---------------------------------------------------------------------------
+// 2b. TRAFFIC INTELLIGENCE — visitor trend, source mix, best-time-to-post
+// ---------------------------------------------------------------------------
+
+async function TrafficIntelligence() {
+  const supabase = await getSupabaseServerClient();
+  const [trendRes, sourcesRes, heatRes] = await Promise.all([
+    supabase.rpc("analytics_visitor_trend", { p_days: 30 }),
+    supabase.rpc("analytics_traffic_sources", { p_days: 30 }),
+    supabase.rpc("analytics_hourly_heatmap", { p_days: 30 }),
+  ]);
+  const trend = (Array.isArray(trendRes.data) ? trendRes.data : []) as TrendDay[];
+  const sources = (Array.isArray(sourcesRes.data) ? sourcesRes.data : []) as SourceRow[];
+  const heat = (Array.isArray(heatRes.data) ? heatRes.data : []) as HeatCell[];
+
+  const totalViews = trend.reduce((s, d) => s + d.views, 0);
+  const totalVisitors = trend.reduce((s, d) => s + d.visitors, 0);
+  const topSource = sources[0];
+  const peak = heat.reduce(
+    (best, c) => (c.views > best.views ? c : best),
+    { dow: 0, hour: 0, views: 0 },
+  );
+  const dayNames = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const peakHourLabel =
+    peak.hour === 0
+      ? "12am"
+      : peak.hour < 12
+        ? `${peak.hour}am`
+        : peak.hour === 12
+          ? "12pm"
+          : `${peak.hour - 12}pm`;
+
+  return (
+    <section
+      id="traffic-intel"
+      className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 scroll-mt-20"
+    >
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h2 className="text-lg font-bold tracking-tight">
+            Traffic intelligence — last 30 days
+          </h2>
+          <p className="mt-1 max-w-2xl text-xs text-[var(--color-muted)]">
+            {totalViews.toLocaleString()} views from{" "}
+            {totalVisitors.toLocaleString()} unique visitor-days.{" "}
+            {topSource ? `${topSource.source} is your biggest source` : "Source mix is filling in"}
+            {peak.views > 0
+              ? `, and your audience peaks ${dayNames[peak.dow]} around ${peakHourLabel}.`
+              : "."}
+          </p>
+        </div>
+        <span className="rounded-full bg-[var(--color-accent-soft)] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[var(--color-accent)]">
+          Live data
+        </span>
+      </div>
+
+      <div className="mt-5 grid gap-6 lg:grid-cols-2">
+        <div>
+          <p className="text-xs font-black uppercase tracking-wider text-[var(--color-muted)]">
+            Views &amp; unique visitors
+          </p>
+          <div className="mt-2">
+            <VisitorTrendChart data={trend} />
+          </div>
+        </div>
+        <div>
+          <p className="text-xs font-black uppercase tracking-wider text-[var(--color-muted)]">
+            Where your traffic comes from
+          </p>
+          <div className="mt-2">
+            <TrafficSourcesChart data={sources} />
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-6">
+        <p className="text-xs font-black uppercase tracking-wider text-[var(--color-muted)]">
+          Best time to post — when your audience is reading
+        </p>
+        <div className="mt-3">
+          <ActivityHeatmap data={heat} />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // 2. 14-DAY TREND (single clear series, server-rendered bars)
 // ---------------------------------------------------------------------------
 
 async function TrendBars() {
   const supabase = await getSupabaseServerClient();
-  const { data } = await supabase.rpc("analytics_daily_views", { p_days: 14 });
+  const { data } = await supabase.rpc("analytics_daily_views", { p_days: 30 });
   const rows = (Array.isArray(data) ? data : []) as { day: string; views: number }[];
   const max = rows.reduce((m, r) => Math.max(m, r.views ?? 0), 0);
   const total = rows.reduce((s, r) => s + (r.views ?? 0), 0);
@@ -1380,10 +1486,10 @@ async function TrendBars() {
     >
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="text-lg font-bold tracking-tight">Daily page views — last 14 days</h2>
+          <h2 className="text-lg font-bold tracking-tight">Daily page views — last 30 days</h2>
           <p className="mt-1 text-xs text-[var(--color-muted)]">
             One bar per day (America/Chicago). Each bar is total page views that day —
-            humans and bots. {total.toLocaleString()} views over 14 days
+            humans and bots. {total.toLocaleString()} views over 30 days
             {peak.views > 0
               ? `, peaking at ${peak.views.toLocaleString()} on ${format(new Date(`${peak.day}T12:00:00`), "MMM d")}`
               : ""}
@@ -1397,24 +1503,33 @@ async function TrendBars() {
 
       {rows.length === 0 || max === 0 ? (
         <p className="mt-4 text-sm text-[var(--color-muted)] italic">
-          No page views recorded in the last 14 days yet.
+          No page views recorded in the last 30 days yet.
         </p>
       ) : (
-        <div className="mt-5 flex items-end gap-1.5 sm:gap-2 h-44">
-          {rows.map((r) => {
+        <div className="mt-5 flex items-end gap-1 sm:gap-1.5 h-44">
+          {rows.map((r, i) => {
             const h = max > 0 ? Math.max(2, Math.round((r.views / max) * 100)) : 0;
             const d = new Date(`${r.day}T12:00:00`);
+            // Past ~16 bars the per-bar value labels collide, so drop them when
+            // dense and thin the date labels to every third day. The exact value
+            // still lives in each bar's hover title.
+            const dense = rows.length > 16;
+            const showDate = !dense || i % 3 === 0 || i === rows.length - 1;
             return (
               <div key={r.day} className="flex-1 flex flex-col items-center justify-end h-full min-w-0">
-                <span className="mb-1 text-[9px] sm:text-[10px] font-bold tabular-nums text-[var(--color-ink-soft)]">
-                  {r.views >= 1000 ? fmt(r.views) : r.views}
-                </span>
+                {!dense ? (
+                  <span className="mb-1 text-[9px] sm:text-[10px] font-bold tabular-nums text-[var(--color-ink-soft)]">
+                    {r.views >= 1000 ? fmt(r.views) : r.views}
+                  </span>
+                ) : null}
                 <div
                   className="w-full rounded-t bg-[var(--color-accent)] transition-all"
                   style={{ height: `${h}%` }}
                   title={`${format(d, "EEE MMM d")}: ${r.views.toLocaleString()} views`}
                 />
-                <span className="mt-1 text-[9px] sm:text-[10px] tabular-nums text-[var(--color-muted)] whitespace-nowrap">
+                <span
+                  className={`mt-1 text-[9px] sm:text-[10px] tabular-nums text-[var(--color-muted)] whitespace-nowrap ${showDate ? "" : "opacity-0"}`}
+                >
                   {format(d, "M/d")}
                 </span>
               </div>
@@ -1496,10 +1611,12 @@ function FunnelRow({
 
 async function ConversionFunnel() {
   const supabase = await getSupabaseServerClient();
-  const day7 = subDays(new Date(), 7).toISOString();
+  // Funnel window. `day7` keeps its name for the references below; the value is
+  // the 30-day lookback so the conversion picture covers a full month.
+  const day7 = subDays(new Date(), 30).toISOString();
 
   // Per-kind counts via head+exact so the 1000-row PostgREST cap can never
-  // undercount (scroll/video events alone exceed 1000 rows in 7d).
+  // undercount (scroll/video events alone exceed 1000 rows in 30d).
   const eventCount = (kinds: string[]) =>
     supabase
       .from("page_events")
@@ -1533,7 +1650,7 @@ async function ConversionFunnel() {
   ]);
 
   const steps: FunnelStep[] = [
-    { label: "Views", value: views7 ?? 0, href: "#trend", hint: "page loads (7d)" },
+    { label: "Views", value: views7 ?? 0, href: "#trend", hint: "page loads (30d)" },
     { label: "Scroll 50%", value: scroll50 ?? 0, href: "#live-sessions", hint: "read past the halfway mark" },
     { label: "Video play", value: vPlay ?? 0, href: "#top-content", hint: "pressed play on a video" },
     { label: "Video complete", value: vDone ?? 0, href: "#top-content", hint: "watched to the end — your strength" },
@@ -1551,7 +1668,7 @@ async function ConversionFunnel() {
     >
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2 className="text-lg font-bold tracking-tight">Conversion funnel — last 7 days</h2>
+          <h2 className="text-lg font-bold tracking-tight">Conversion funnel — last 30 days</h2>
           <p className="mt-1 text-xs text-[var(--color-muted)] max-w-xl">
             The public path, top to bottom. The bar is each step&apos;s size; the
             percentage is that step versus the one above it, so a big drop is an
@@ -1559,7 +1676,7 @@ async function ConversionFunnel() {
           </p>
         </div>
         <span className="rounded-full bg-[var(--color-accent-soft)] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[var(--color-accent)]">
-          Last 7 days
+          Last 30 days
         </span>
       </div>
 

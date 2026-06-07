@@ -41,7 +41,7 @@ function fmt(n: number | null | undefined): string {
 export async function ReachBySource({ excludeSelf }: { excludeSelf: boolean }) {
   const supabase = await getSupabaseServerClient();
   const { data } = await supabase.rpc("arrivals_overview", {
-    p_days: 14,
+    p_days: 90,
     p_exclude_self: excludeSelf,
   });
   const o = (data ?? {}) as Overview;
@@ -63,7 +63,7 @@ export async function ReachBySource({ excludeSelf }: { excludeSelf: boolean }) {
     >
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2 className="text-lg font-bold tracking-tight">Reach by source · last 14 days</h2>
+          <h2 className="text-lg font-bold tracking-tight">Reach by source · last 90 days</h2>
           <p className="mt-1 text-xs text-[var(--color-muted)] max-w-xl">
             The audit-honest view, straight from edge middleware. Every successful
             page-load is one arrival — humans, AI agents, social link-previews,
