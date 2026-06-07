@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE } from "@/lib/site";
+import { getOgImage } from "@/lib/og-images";
 import { BlueprintBuyButton } from "@/components/BlueprintBuyButton";
 import { BlueprintLeadForm } from "@/components/BlueprintLeadForm";
 import { BlueprintStickyBar } from "@/components/BlueprintStickyBar";
+import { ShareRail } from "@/components/ShareRail";
 import type { BlueprintSlug } from "@/lib/blueprint";
 
 const EMAIL = "Ryan@RealRyanNichols.com";
@@ -15,19 +17,66 @@ const SLUG_MAP: Record<string, BlueprintSlug> = {
   "done-for-you": "done_for_you",
 };
 
-export const metadata: Metadata = {
-  title: "Build Your Own Legal-Tech Case Dashboard",
-  description:
-    "A private legal app blueprint for attorneys who want to organize case data, client intake, evidence, documents, timelines, and dashboards without being trapped inside social media, scattered files, or generic website builders.",
-  alternates: { canonical: `${SITE.url}/services/legal-tech-blueprint` },
-  openGraph: {
-    title: "Build Your Own Legal-Tech Case Dashboard",
+export async function generateMetadata(): Promise<Metadata> {
+  const url = `${SITE.url}/services/legal-tech-blueprint`;
+  // Per-page OG override (page_og_images) — lets the share/social card be set
+  // or swapped live from the database with no redeploy, the same mechanism the
+  // post pages use.
+  const override = await getOgImage("/services/legal-tech-blueprint");
+  const ogTitle = override?.title ?? "Build Your Own Legal-Tech Case Dashboard";
+  const ogDescription =
+    override?.description ??
+    "A custom legal-tech foundation for attorneys: public site, private dashboard, case database, intake, evidence, documents, and timelines. Three ways to work together.";
+  const ogImage = override?.image_url
+    ? override.image_url.startsWith("http")
+      ? override.image_url
+      : `${SITE.url}${override.image_url}`
+    : null;
+  const images = ogImage
+    ? [
+        {
+          url: ogImage,
+          width: override?.width ?? 1200,
+          height: override?.height ?? 630,
+          alt: ogTitle,
+        },
+      ]
+    : undefined;
+
+  return {
+    title: "Build Your Own Legal-Tech Case Dashboard for Attorneys",
     description:
-      "A custom legal-tech foundation for attorneys: public site, private dashboard, case database, intake, evidence, documents, and timelines. Three ways to work together.",
-    url: `${SITE.url}/services/legal-tech-blueprint`,
-    type: "website",
-  },
-};
+      "Own your case management software instead of renting it. A custom legal-tech build for attorneys and family-law firms: client intake, evidence, documents, timelines, and a private case dashboard on your own stack — a custom alternative to Clio or MyCase. From $2,500.",
+    keywords: [
+      "legal tech for attorneys",
+      "legal case management software",
+      "build your own legal app",
+      "custom legal software for law firms",
+      "family law case management software",
+      "own your case management system",
+      "attorney client intake software",
+      "legal case dashboard for lawyers",
+      "Clio alternative",
+      "MyCase alternative",
+    ],
+    alternates: { canonical: url },
+    openGraph: {
+      title: ogTitle,
+      description: ogDescription,
+      url,
+      type: "website",
+      images,
+    },
+    twitter: images
+      ? {
+          card: "summary_large_image",
+          title: ogTitle,
+          description: ogDescription,
+          images: images.map((i) => i.url),
+        }
+      : undefined,
+  };
+}
 
 type Pkg = {
   id: string;
@@ -266,8 +315,57 @@ function Check() {
 }
 
 export default function LegalTechBlueprintPage() {
+  const structuredData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: "Legal-Tech Case Dashboard build for attorneys",
+      serviceType: "Custom legal-tech application development",
+      description:
+        "A custom legal-tech foundation for attorneys and family-law firms: public site, private case dashboard, database, client intake, evidence, documents, and timelines — owned by the firm.",
+      provider: { "@type": "Person", name: SITE.author, url: SITE.url },
+      areaServed: "US",
+      url: `${SITE.url}/services/legal-tech-blueprint`,
+      offers: {
+        "@type": "AggregateOffer",
+        priceCurrency: "USD",
+        lowPrice: "2500",
+        highPrice: "9500",
+        offerCount: PACKAGES.length,
+        url: `${SITE.url}/services/legal-tech-blueprint`,
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: FAQ.map((item) => ({
+        "@type": "Question",
+        name: item.q,
+        acceptedAnswer: { "@type": "Answer", text: item.a },
+      })),
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: SITE.url },
+        { "@type": "ListItem", position: 2, name: "Services", item: `${SITE.url}/services` },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: "Legal-Tech Blueprint",
+          item: `${SITE.url}/services/legal-tech-blueprint`,
+        },
+      ],
+    },
+  ];
+
   return (
     <article className="rrn-page">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       {/* SECTION 1: Hero */}
       <section className="relative overflow-hidden border-b border-[var(--color-line)] bg-[var(--color-blue)] text-[var(--color-paper)]">
         <div className="mx-auto max-w-5xl px-5 py-16 sm:px-6 sm:py-20 lg:py-28">
@@ -781,6 +879,25 @@ export default function LegalTechBlueprintPage() {
             </p>
           </div>
           <BlueprintLeadForm />
+        </div>
+      </section>
+
+      {/* Share the offer — reach another attorney who needs it */}
+      <section className="rrn-section pt-0">
+        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6">
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-[var(--color-blue)]">
+            Know an attorney who needs this?
+          </p>
+          <h2 className="mt-1 font-display text-xl font-black tracking-tight text-[var(--color-ink)] sm:text-2xl">
+            Send them the blueprint.
+          </h2>
+          <div className="mt-3">
+            <ShareRail
+              url={`${SITE.url}/services/legal-tech-blueprint`}
+              title="Build your own legal-tech case dashboard — own your case management instead of renting it. From $2,500:"
+              variant="compact"
+            />
+          </div>
         </div>
       </section>
 
