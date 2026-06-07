@@ -71,7 +71,7 @@ const GROUPS: AdminGroup[] = [
     items: [
       { href: "/admin/attorney-brief", label: "Attorney brief", sub: "Defense prep" },
       { href: "/admin/case", label: "Case docs", sub: "Documents on file" },
-      { href: "/admin/evidence", label: "Evidence", sub: "Exhibits on file" },
+      { href: "/admin/evidence/new", label: "Evidence", sub: "Lock in a tweet, article, or clip" },
       { href: "/admin/continuity", label: "Continuity", sub: "Keep it all running" },
       { href: "/admin/deadman", label: "Deadman switch", sub: "Emergency release" },
     ],
