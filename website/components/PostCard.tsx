@@ -188,7 +188,6 @@ function PostCardBody({ post, truncate }: { post: Post; truncate: boolean }) {
   }
 
   // text (default)
-  const body = truncate && post.body.length > 480 ? post.body.slice(0, 480) + "…" : post.body;
   return (
     <>
       <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">
@@ -197,22 +196,33 @@ function PostCardBody({ post, truncate }: { post: Post; truncate: boolean }) {
         </Link>
       </h2>
       {post.thumbnail_url ? (
-        <Link
-          href={`/posts/${post.slug}`}
-          className="mt-3 block relative aspect-video overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)]"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={post.thumbnail_url}
-            alt=""
-            loading="lazy"
-            className="absolute inset-0 h-full w-full object-cover"
+        // With a card thumbnail, show a plain-text excerpt — rendering the full
+        // body here would repaint any image the post already embeds (the
+        // thumbnail and the in-body image are usually the same file).
+        <>
+          <Link
+            href={`/posts/${post.slug}`}
+            className="mt-3 block relative aspect-video overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)]"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={post.thumbnail_url}
+              alt=""
+              loading="lazy"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          </Link>
+          <p className="mt-3 leading-relaxed text-[var(--color-ink-soft)]">
+            {feedExcerpt(post.body, 280)}
+          </p>
+        </>
+      ) : (
+        <div className="mt-3">
+          <PostBody
+            body={truncate && post.body.length > 480 ? post.body.slice(0, 480) + "…" : post.body}
           />
-        </Link>
-      ) : null}
-      <div className="mt-3">
-        <PostBody body={body} />
-      </div>
+        </div>
+      )}
     </>
   );
 }
