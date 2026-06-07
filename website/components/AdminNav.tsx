@@ -15,34 +15,34 @@ type AdminGroup = {
   items: AdminItem[];
 };
 
-// The 5 things touched every day — the always-visible quick bar.
+// The 5 things touched every day — the always-visible quick bar, in priority
+// order: posts/drafts first, then stats, money, mail, tips.
 const PRIMARY: AdminItem[] = [
-  { href: "/admin", label: "Home", short: "Home", sub: "Needs you now" },
-  { href: "/admin/tips?filter=pending", label: "Tips", short: "Tips", sub: "Public leads" },
-  { href: "/admin/messages?filter=new", label: "Mail", short: "Mail", sub: "Private inbox" },
-  { href: "/admin/orders", label: "Money", short: "Money", sub: "Sales & pay" },
+  { href: "/admin/posts", label: "Posts", short: "Posts", sub: "Live & drafts" },
   { href: "/admin/analytics", label: "Stats", short: "Stats", sub: "Traffic" },
+  { href: "/admin/orders", label: "Money", short: "Money", sub: "Sales & pay" },
+  { href: "/admin/messages?filter=new", label: "Mail", short: "Mail", sub: "Private inbox" },
+  { href: "/admin/tips?filter=pending", label: "Tips", short: "Tips", sub: "Public leads" },
 ];
 
-// Everything else, top-to-bottom by how often you need it. No duplicates.
+// Everything else, top-to-bottom in the same priority order as the quick bar:
+// posts first, then audience/stats, money, the action queues, the case, system.
 const GROUPS: AdminGroup[] = [
   {
-    label: "Needs you now",
+    label: "Posts & publishing",
     items: [
-      { href: "/admin/tips?filter=pending", label: "Tip queue", sub: "Public leads to review" },
-      { href: "/admin/messages?filter=new", label: "Private mail", sub: "Contact inbox" },
-      { href: "/admin/submissions?filter=pending", label: "Submissions", sub: "Claimant uploads" },
-      { href: "/admin/claims?filter=pending", label: "J6 claims", sub: "Profile claims" },
-      { href: "/admin/review", label: "Review queue", sub: "Classify & approve" },
+      { href: "/admin/posts", label: "Posts & drafts", sub: "Everything you've written" },
+      { href: "/admin/new", label: "New post", sub: "Write now" },
+      { href: "/admin/live", label: "Live", sub: "Streams & comments" },
+      { href: "/admin/words", label: "Words", sub: "Saved copy & drafts" },
     ],
   },
   {
-    label: "Publish",
+    label: "Audience & insight",
     items: [
-      { href: "/admin/new", label: "New post", sub: "Write now" },
-      { href: "/admin/posts", label: "Posts", sub: "Articles & updates" },
-      { href: "/admin/live", label: "Live", sub: "Streams & comments" },
-      { href: "/admin/words", label: "Words", sub: "Saved copy & drafts" },
+      { href: "/admin/analytics", label: "Analytics", sub: "Traffic & behavior" },
+      { href: "/admin/audience", label: "Audience", sub: "Profiles & signals" },
+      { href: "/admin/tools", label: "Free tools", sub: "Tool runs & needs" },
     ],
   },
   {
@@ -57,11 +57,13 @@ const GROUPS: AdminGroup[] = [
     ],
   },
   {
-    label: "Audience & insight",
+    label: "Needs you now",
     items: [
-      { href: "/admin/analytics", label: "Analytics", sub: "Traffic & behavior" },
-      { href: "/admin/audience", label: "Audience", sub: "Profiles & signals" },
-      { href: "/admin/tools", label: "Free tools", sub: "Tool runs & needs" },
+      { href: "/admin/tips?filter=pending", label: "Tip queue", sub: "Public leads to review" },
+      { href: "/admin/messages?filter=new", label: "Private mail", sub: "Contact inbox" },
+      { href: "/admin/submissions?filter=pending", label: "Submissions", sub: "Claimant uploads" },
+      { href: "/admin/claims?filter=pending", label: "J6 claims", sub: "Profile claims" },
+      { href: "/admin/review", label: "Review queue", sub: "Classify & approve" },
     ],
   },
   {
@@ -100,14 +102,17 @@ export function AdminNav({
     <>
       <div className="lg:hidden sticky top-16 z-20 -mx-4 mb-5 border-b border-[#203a64] bg-[#071126]/96 px-4 py-3 text-[#fdf8ea] shadow-xl backdrop-blur-xl">
         <div className="flex items-center justify-between gap-3">
-          <div className="min-w-0">
+          <Link
+            href="/admin"
+            className="-m-1 min-w-0 rounded-md p-1 transition hover:bg-white/5"
+          >
             <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
-              Admin
+              Admin · home
             </p>
             <p className="truncate text-sm font-black">
               {activePrimary?.label ?? "Command center"}
             </p>
-          </div>
+          </Link>
           <Link
             href="/admin/new"
             className="shrink-0 rounded-full border border-[#e1bd5b]/50 bg-[#e1bd5b]/15 px-3 py-1.5 text-[11px] font-black uppercase tracking-normal text-[#e1bd5b] transition hover:bg-[#e1bd5b]/25"
@@ -159,14 +164,17 @@ export function AdminNav({
             ].join(" ")}
           >
             {collapsed ? null : (
-              <div>
+              <Link
+                href="/admin"
+                className="-m-1 rounded-md p-1 transition hover:bg-white/5"
+              >
                 <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
-                  Command
+                  Admin · home
                 </p>
                 <p className="mt-1 text-xs font-bold text-[#a9b7d0]">
-                  Fast actions
+                  Dashboard &amp; alerts
                 </p>
-              </div>
+              </Link>
             )}
             <button
               type="button"
@@ -205,7 +213,15 @@ export function AdminNav({
         </div>
 
         {collapsed ? (
-          <div className="mt-3 rounded-md border border-[#203a64] bg-[#071126] p-1.5 text-center">
+          <div className="mt-3 space-y-2 rounded-md border border-[#203a64] bg-[#071126] p-1.5 text-center">
+            <Link
+              href="/admin"
+              className="mx-auto grid h-9 w-9 place-items-center rounded-md border border-white/10 bg-white/5 text-base font-black text-[#cfd9ea] transition hover:border-[#e1bd5b] hover:text-[#e1bd5b]"
+              aria-label="Admin home"
+              title="Admin home"
+            >
+              ⌂
+            </Link>
             <button
               type="button"
               onClick={() => onCollapsedChange?.(false)}
