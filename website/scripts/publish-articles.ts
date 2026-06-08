@@ -108,6 +108,13 @@ async function main() {
       continue;
     }
 
+    // Tags are a comma-separated frontmatter string ("January 6, FBI, Bond").
+    // Always set (even to []) so removing a tag from the file clears it on re-run.
+    const tags = (data.tags || "")
+      .split(",")
+      .map((t) => t.trim())
+      .filter(Boolean);
+
     const row: Record<string, unknown> = {
       slug,
       type,
@@ -115,6 +122,7 @@ async function main() {
       title,
       body,
       category: data.category || null,
+      tags,
       seo_title: data.seo_title || title,
       seo_description: data.seo_description || data.subtitle || null,
       author_id: AUTHOR_ID,

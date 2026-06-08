@@ -46,6 +46,7 @@ export type Post = {
   status: PostStatus;
   author_id: string | null;
   category: string | null;
+  tags: string[] | null;
   published_at: string | null;
   created_at: string;
   updated_at: string;
