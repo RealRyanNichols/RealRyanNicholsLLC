@@ -33,6 +33,32 @@ const supabase = createClient(SUPABASE_URL, SERVICE_KEY, {
   auth: { persistSession: false },
 });
 
+// Fail fast on a misconfigured key. The pipeline MUST run as service_role to
+// bypass RLS on `posts`; a non-service key silently fails (inserts rejected,
+// updates match 0 rows) while still printing success. Decode the JWT payload
+// and refuse to run unless its role claim is service_role.
+function assertServiceRoleKey(key: string) {
+  try {
+    const payload = JSON.parse(
+      Buffer.from(key.split(".")[1], "base64").toString("utf8"),
+    );
+    if (payload.role !== "service_role") {
+      console.error(
+        `✗ SUPABASE_SERVICE_ROLE_KEY has role "${payload.role}", not "service_role". ` +
+          `Set the real service_role key (Supabase → Project Settings → API). Aborting.`,
+      );
+      process.exit(1);
+    }
+  } catch {
+    console.error(
+      "✗ Could not decode SUPABASE_SERVICE_ROLE_KEY as a JWT. " +
+        "Set the real service_role key (Supabase → Project Settings → API). Aborting.",
+    );
+    process.exit(1);
+  }
+}
+assertServiceRoleKey(SERVICE_KEY);
+
 const ARTICLES_DIR = path.join(process.cwd(), "content", "articles");
 
 /** Minimal, dependency-free frontmatter parser for simple `key: value` blocks. */
@@ -133,9 +159,23 @@ async function main() {
     if (existing) {
       // Preserve the original publish date on re-runs unless the file overrides it.
       row.published_at = fmDate ?? existing.published_at;
-      const { error } = await supabase.from("posts").update(row).eq("id", existing.id);
+      const { data: upd, error } = await supabase
+        .from("posts")
+        .update(row)
+        .eq("id", existing.id)
+        .select("id");
       if (error) {
         console.error(`✗ ${file}: update failed — ${error.message}`);
+        failed++;
+        continue;
+      }
+      // An UPDATE that matches 0 rows returns no error under RLS — it just
+      // affects nothing and silently "succeeds". Treat an empty result as a
+      // hard failure so a bad key / RLS block surfaces instead of lying.
+      if (!upd || upd.length === 0) {
+        console.error(
+          `✗ ${file}: update affected 0 rows (RLS blocked or row vanished) — not live.`,
+        );
         failed++;
         continue;
       }
