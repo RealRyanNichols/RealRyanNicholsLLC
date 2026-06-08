@@ -6,7 +6,6 @@ import { SignupForm } from "@/components/SignupForm";
 import { BookPromo } from "@/components/BookPromo";
 import { BookCtaBand } from "@/components/BookCtaBand";
 import { RallyInline } from "@/components/RallyInline";
-import { HomeOrientation } from "@/components/HomeOrientation";
 import { LiveNowBanner } from "@/components/LiveNowBanner";
 import { getActiveLiveStream } from "@/lib/live";
 import { SITE } from "@/lib/site";
@@ -45,8 +44,6 @@ export default async function HomePage({
       <div className="lg:col-span-2">
         <LiveNowBanner stream={activeLiveStream} />
         <ProfileHero />
-
-        <HomeOrientation />
 
         <BookCtaBand className="mt-8" />
 

@@ -3,6 +3,15 @@ import Image from "next/image";
 import { SITE } from "@/lib/site";
 import { getSiteSettings } from "@/lib/site-settings";
 
+// Orientation merged into the hero — one block, no competing CTAs. Four doors
+// for the four audiences.
+const AUDIENCES = [
+  { href: "/support", label: "Supporter", desc: "Keep the record public and funded." },
+  { href: "/case", label: "Journalist / Researcher", desc: "The documented record — filings, video." },
+  { href: "/j6", label: "J6 Defendant / Source", desc: "Get on the record, or free claim help." },
+  { href: "/services", label: "Client / Customer", desc: "Want a site like this? Hire Ryan." },
+];
+
 export async function ProfileHero() {
   const settings = await getSiteSettings();
   const coverUrl = settings.cover_url;
@@ -71,25 +80,48 @@ export async function ProfileHero() {
           healing in public.
         </p>
 
-        <div className="mt-5 flex flex-wrap gap-2.5">
+        <div className="mt-5 flex flex-wrap items-center gap-2.5">
           <Link
-            href="/support"
+            href="/start-here"
             className="btn-accent inline-flex items-center rounded-full px-5 py-2 text-sm transition"
           >
-            Support the rebuild
+            Start Here
           </Link>
           <Link
-            href="/case"
-            className="inline-flex items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface-2)] px-5 py-2 text-sm font-medium text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition"
+            href="/support"
+            className="btn-support inline-flex items-center rounded-full px-5 py-2 text-sm font-semibold transition"
           >
-            Read the case
+            Support the Work
           </Link>
           <Link
             href="/about"
-            className="inline-flex items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface-2)] px-5 py-2 text-sm font-medium text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition"
+            className="inline-flex items-center rounded-full px-3 py-2 text-sm font-medium text-[var(--color-muted)] underline-offset-4 transition hover:text-[var(--color-accent)] hover:underline"
           >
             About
           </Link>
+        </div>
+
+        {/* Orientation, merged into the hero — what brings you here? */}
+        <div className="mt-6 border-t border-[var(--color-line)] pt-5">
+          <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[var(--color-muted)]">
+            What brings you here?
+          </p>
+          <div className="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+            {AUDIENCES.map((a) => (
+              <Link
+                key={a.href}
+                href={a.href}
+                className="group rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-3.5 transition hover:border-[var(--color-accent)]"
+              >
+                <p className="text-sm font-bold text-[var(--color-ink)] transition group-hover:text-[var(--color-accent)]">
+                  {a.label} →
+                </p>
+                <p className="mt-1 text-xs leading-snug text-[var(--color-muted)]">
+                  {a.desc}
+                </p>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </section>
