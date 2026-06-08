@@ -30,6 +30,7 @@ const DOORS: Door[] = [
 
 // Everything secondary lives behind one compact "More" menu (and the footer).
 const MORE: MoreLink[] = [
+  { href: "/start-here", label: "Start Here", desc: "New here? Get oriented in 60 seconds" },
   { href: "/tools", label: "Free Tools", desc: "Records request, timeline, next moves" },
   { href: "/submit", label: "Tip Line", desc: "Send records, names, or links" },
   { href: "/the-map-room", label: "Map Room", desc: "Live public-record dashboard" },
