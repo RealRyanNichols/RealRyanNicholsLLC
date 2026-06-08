@@ -27,6 +27,19 @@ export function isValidDonationAmount(cents: number): boolean {
   return cents >= DONATION_MIN_CENTS && cents <= DONATION_MAX_CENTS;
 }
 
+// Micro-pledge ("rally") tiers — deliberately BELOW the donation floor. These
+// are the one-tap $1/$3/$5 amounts that drive participation and momentum, not
+// net-of-fee revenue. Kept as a separate allowlist so the $50 donation floor
+// (and the "Fund the Truth" tool that shares it) stays unchanged.
+export const RALLY_TIERS_CENTS = [100, 300, 500, 1000] as const;
+export const RALLY_MIN_CENTS = 100; // $1
+export const RALLY_MAX_CENTS = 5000; // $50 — above this, hand off to the donation flow.
+
+export function isValidRallyAmount(cents: number): boolean {
+  if (!Number.isInteger(cents)) return false;
+  return cents >= RALLY_MIN_CENTS && cents <= RALLY_MAX_CENTS;
+}
+
 // Checkout uses Stripe dynamic payment methods when payment_method_types is not
 // hardcoded. For service invoices, request the invoice-supported financing rails
 // explicitly while letting Stripe hide anything not eligible for that customer,
