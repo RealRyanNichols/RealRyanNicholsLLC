@@ -38,21 +38,30 @@ const supabase = createClient(SUPABASE_URL, SERVICE_KEY, {
 // updates match 0 rows) while still printing success. Decode the JWT payload
 // and refuse to run unless its role claim is service_role.
 function assertServiceRoleKey(key: string) {
+  const fix =
+    "Use the service_role (legacy) or sb_secret_… (new) key from " +
+    "Supabase → Project Settings → API. Aborting.";
+  // New-format Supabase secret key — privileged, bypasses RLS, but not a JWT.
+  if (key.startsWith("sb_secret_")) return;
+  // New-format publishable key is client-side / NOT privileged — reject clearly.
+  if (key.startsWith("sb_publishable_")) {
+    console.error(`✗ SUPABASE_SERVICE_ROLE_KEY is a publishable key, not a secret key. ${fix}`);
+    process.exit(1);
+  }
+  // Otherwise expect a legacy service_role JWT (role claim must be service_role).
   try {
     const payload = JSON.parse(
       Buffer.from(key.split(".")[1], "base64").toString("utf8"),
     );
     if (payload.role !== "service_role") {
       console.error(
-        `✗ SUPABASE_SERVICE_ROLE_KEY has role "${payload.role}", not "service_role". ` +
-          `Set the real service_role key (Supabase → Project Settings → API). Aborting.`,
+        `✗ SUPABASE_SERVICE_ROLE_KEY has role "${payload.role}", not "service_role". ${fix}`,
       );
       process.exit(1);
     }
   } catch {
     console.error(
-      "✗ Could not decode SUPABASE_SERVICE_ROLE_KEY as a JWT. " +
-        "Set the real service_role key (Supabase → Project Settings → API). Aborting.",
+      `✗ SUPABASE_SERVICE_ROLE_KEY isn't a service_role JWT or an sb_secret_… key. ${fix}`,
     );
     process.exit(1);
   }
