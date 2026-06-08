@@ -52,6 +52,13 @@ export function HeaderStatusStrip() {
     };
   }, []);
 
+  // Let any component on the page open the board via openSituationRoom().
+  useEffect(() => {
+    const onOpen = () => setOpen(true);
+    window.addEventListener("rally:open", onOpen);
+    return () => window.removeEventListener("rally:open", onOpen);
+  }, []);
+
   const live = t?.live_now ?? 0;
   const countries = t?.countries_now ?? 0;
   const views = t?.total_views ?? 0;

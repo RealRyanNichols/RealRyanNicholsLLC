@@ -15,10 +15,12 @@ const TIERS = [
 export function RallyPledge({
   source = "rally",
   size = "md",
+  theme = "dark",
   className = "",
 }: {
   source?: string;
   size?: "sm" | "md";
+  theme?: "dark" | "light";
   className?: string;
 }) {
   const [loading, setLoading] = useState<number | null>(null);
@@ -50,6 +52,10 @@ export function RallyPledge({
   }
 
   const pad = size === "sm" ? "px-3 py-1.5 text-sm" : "px-4 py-2.5 text-sm";
+  const monthlyCls =
+    theme === "light"
+      ? "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+      : "border-white/20 bg-white/5 text-[#fdf8ea] hover:border-[#e1bd5b]/60 hover:text-[#e1bd5b]";
 
   return (
     <div className={className}>
@@ -67,7 +73,7 @@ export function RallyPledge({
         ))}
         <a
           href="/support?ref=rally"
-          className={`rounded-full border border-white/20 bg-white/5 font-bold tracking-tight text-[#fdf8ea] transition hover:border-[#e1bd5b]/60 hover:text-[#e1bd5b] ${pad}`}
+          className={`rounded-full border font-bold tracking-tight transition ${monthlyCls} ${pad}`}
         >
           Back me monthly →
         </a>
