@@ -5,7 +5,7 @@ author: "Ryan Nichols"
 date: "2026-06-06"
 category: "January 6"
 slug: "tim-hale-justin-stoll-provocateur-question"
-status: "draft"
+status: "published"
 pinned: false
 ---
 

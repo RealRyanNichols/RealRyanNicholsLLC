@@ -5,7 +5,7 @@ author: "Ryan Nichols"
 date: "2026-05-31"
 category: "Wall of Shame"
 slug: "when-i-asked-for-a-comment-to-come-down"
-status: "draft"
+status: "published"
 pinned: false
 ---
 
