@@ -71,6 +71,9 @@ export function Footer() {
           <Link className="hover:text-[var(--color-accent)]" href="/community-rules">
             Community rules
           </Link>
+          <Link className="hover:text-[var(--color-accent)]" href="/editorial-standards">
+            Editorial standards
+          </Link>
           <Link className="hover:text-[var(--color-accent)]" href="/rss.xml">
             RSS
           </Link>

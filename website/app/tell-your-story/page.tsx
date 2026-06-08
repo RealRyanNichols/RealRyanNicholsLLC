@@ -250,7 +250,15 @@ export default function TellYourStoryPage() {
               <PolicyBlock key={p.title} title={p.title} body={p.body} />
             ))}
           </div>
-          <p className="mt-4 text-[11px] uppercase tracking-wider text-[var(--color-muted)]">
+          <p className="mt-4 text-sm">
+            <Link
+              href="/editorial-standards"
+              className="font-bold text-[var(--color-accent)] hover:underline"
+            >
+              Read the full editorial standards →
+            </Link>
+          </p>
+          <p className="mt-2 text-[11px] uppercase tracking-wider text-[var(--color-muted)]">
             Draft policy — final wording subject to review.
           </p>
         </div>
