@@ -5,7 +5,7 @@ author: "Ryan Nichols"
 date: "2026-06-08"
 category: "January 6"
 slug: "release-every-frame-of-january-6"
-status: "draft"
+status: "published"
 pinned: false
 tags: "January 6, J6, FBI, Capitol, Informants, Government Transparency"
 ---

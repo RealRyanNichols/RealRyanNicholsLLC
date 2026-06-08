@@ -5,7 +5,7 @@ author: "Ryan Nichols"
 date: "2026-06-08"
 category: "January 6"
 slug: "tim-hale-court-file-account-suspending-j6ers"
-status: "draft"
+status: "published"
 pinned: false
 tags: "January 6, Tim Hale, Daniel McMahon, Charlottesville, Censorship, Court Records"
 ---
