@@ -386,6 +386,16 @@ export default async function CasePage({
           <J6Banner />
         </div>
 
+        <p className="mt-3 text-xs text-[var(--color-muted)]">
+          How this archive sources, labels, and corrects what it publishes —{" "}
+          <Link
+            href="/editorial-standards"
+            className="font-bold text-[var(--color-accent)] hover:underline"
+          >
+            editorial standards →
+          </Link>
+        </p>
+
         {/* Explore-the-case hub — every tool with its function spelled out,
             so nothing is a mystery and Evidence stays front-and-center. */}
         <section className="mt-8">
