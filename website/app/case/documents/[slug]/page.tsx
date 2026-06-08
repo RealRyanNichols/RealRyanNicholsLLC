@@ -8,6 +8,7 @@ import { CaseStats } from "@/components/CaseStats";
 import { CaseViewTracker } from "@/components/CaseViewTracker";
 import { SITE } from "@/lib/site";
 import { detectVideo } from "@/lib/video";
+import { EvidenceBadge } from "@/components/EvidenceBadge";
 
 export const revalidate = 300;
 
@@ -81,6 +82,7 @@ export default async function DocumentPage({
         <span className="rounded-full bg-[var(--color-accent-soft)] text-[var(--color-accent)] px-2 py-0.5 text-xs font-bold uppercase tracking-wider">
           {d.doc_type}
         </span>
+        <EvidenceBadge kind={d.doc_type} />
         {d.document_date ? (
           <span className="text-xs text-[var(--color-muted)] font-semibold">
             {format(new Date(d.document_date), "MMMM d, yyyy")}
