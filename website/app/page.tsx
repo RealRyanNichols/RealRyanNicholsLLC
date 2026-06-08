@@ -45,6 +45,18 @@ export default async function HomePage({
         <LiveNowBanner stream={activeLiveStream} />
         <ProfileHero />
 
+        <Link
+          href="/start-here"
+          className="mt-6 flex items-center justify-between gap-3 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] px-5 py-3 transition hover:border-[var(--color-accent)]"
+        >
+          <span className="text-sm font-bold text-[var(--color-ink)]">
+            New here? Start with the 60-second orientation.
+          </span>
+          <span className="shrink-0 text-sm font-black text-[var(--color-accent)]">
+            Start Here →
+          </span>
+        </Link>
+
         <BookCtaBand className="mt-8" />
 
         <RallyInline source="home" className="mt-8" />
