@@ -64,6 +64,43 @@ const rules = [
   "Public claims must be backed by records, dates, witnesses, documents, or other verifiable proof.",
 ];
 
+// Source-protection + submission policy shown before the form. DRAFT wording —
+// final language subject to review.
+const POLICY = [
+  {
+    title: "What can be published",
+    body: "Only material backed by records, dates, witnesses, or documents — and only after review. Personal testimony is labeled as testimony; allegations are labeled as allegations.",
+  },
+  {
+    title: "What stays private",
+    body: "Your identity and contact details, anything you mark private, and sensitive data stay in the private review queue — they are not posted.",
+  },
+  {
+    title: "How it's reviewed",
+    body: "Ryan reads every submission himself, compares it against other leads, and decides what (if anything) is strong and safe enough to publish.",
+  },
+  {
+    title: "No guarantee of publication",
+    body: "Submitting puts your story in the private queue. It does not guarantee publication — most submissions strengthen the bigger pattern rather than becoming their own post.",
+  },
+  {
+    title: "Not legal advice, not an emergency line",
+    body: "This is not legal advice or representation, and not an emergency service. If someone is in immediate danger, call 911.",
+  },
+  {
+    title: "Please don't send",
+    body: "Sealed records, a minor's identifying details, SSNs or bank numbers, medical records, home addresses, or private third-party data you don't have the legal right to share.",
+  },
+  {
+    title: "Anonymity — and its limits",
+    body: "You can submit fully anonymously; if you do, there is no way to follow up with you. Even with contact info, your identity stays out of public work unless you explicitly agree to go on the record after verification.",
+  },
+  {
+    title: "Fix it or take it down",
+    body: "Submitted something by mistake, or want a correction or removal? Use private contact and it will be handled.",
+  },
+];
+
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
@@ -200,6 +237,25 @@ export default function TellYourStoryPage() {
         </div>
       </section>
 
+      <section className="rrn-section">
+        <div className="rrn-card p-5 sm:p-6">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
+            Before you submit — how this works
+          </p>
+          <h2 className="rrn-section-title mt-2">
+            Your protection, in plain English.
+          </h2>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            {POLICY.map((p) => (
+              <PolicyBlock key={p.title} title={p.title} body={p.body} />
+            ))}
+          </div>
+          <p className="mt-4 text-[11px] uppercase tracking-wider text-[var(--color-muted)]">
+            Draft policy — final wording subject to review.
+          </p>
+        </div>
+      </section>
+
       <section
         id="story-form"
         className="border-y border-[var(--color-line)] bg-[var(--color-paper)]"
@@ -262,5 +318,16 @@ export default function TellYourStoryPage() {
         </div>
       </section>
     </article>
+  );
+}
+
+function PolicyBlock({ title, body }: { title: string; body: string }) {
+  return (
+    <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+      <p className="text-sm font-black text-[var(--color-ink)]">{title}</p>
+      <p className="mt-1.5 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+        {body}
+      </p>
+    </div>
   );
 }

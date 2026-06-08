@@ -92,7 +92,10 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
   const [witnesses, setWitnesses] = useState("");
   const [missing, setMissing] = useState("");
   const [safeVersion, setSafeVersion] = useState("");
-  const [ack, setAck] = useState(false);
+  const [ackLegal, setAckLegal] = useState(false);
+  const [ackNoGuarantee, setAckNoGuarantee] = useState(false);
+  const [ackRight, setAckRight] = useState(false);
+  const [ackRedact, setAckRedact] = useState(false);
   const [anonymous, setAnonymous] = useState(false);
   const [receipt, setReceipt] = useState<{ publicRef: string | null; ledgerUrl: string } | null>(null);
 
@@ -185,8 +188,11 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
       setStatus({ kind: "error", message: "Tell Ryan at least a sentence or two about what happened — then send it." });
       return;
     }
-    if (!ack) {
-      setStatus({ kind: "error", message: "Check the privacy and legal acknowledgement before sending." });
+    if (!ackLegal || !ackNoGuarantee || !ackRight || !ackRedact) {
+      setStatus({
+        kind: "error",
+        message: "Please check all four acknowledgements before sending.",
+      });
       return;
     }
 
@@ -325,7 +331,10 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
               setWitnesses("");
               setMissing("");
               setSafeVersion("");
-              setAck(false);
+              setAckLegal(false);
+              setAckNoGuarantee(false);
+              setAckRight(false);
+              setAckRedact(false);
             }}
             className="min-h-11 rounded-lg bg-[var(--color-accent)] px-4 py-2 text-sm font-black text-white"
           >
@@ -629,21 +638,24 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
             </div>
           )}
 
-          <label className="flex gap-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-3 text-xs leading-relaxed text-[var(--color-ink-soft)]">
-            <input
-              type="checkbox"
-              checked={ack}
-              onChange={(event) => setAck(event.target.checked)}
-              className="mt-0.5 h-4 w-4 shrink-0 accent-[var(--color-accent)]"
-            />
-            <span>
-              I understand this is not emergency services, not legal advice,
-              not legal representation, and not a guaranteed investigation. I
-              will not submit sealed records, minors&apos; private information,
-              SSNs, bank data, medical records, or anything I do not have
-              permission to share.
-            </span>
-          </label>
+          <div className="rounded-lg border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-3">
+            <p className="text-xs font-black uppercase tracking-wider text-[var(--color-accent)]">
+              Before you send
+            </p>
+            <p className="mt-1 text-xs leading-relaxed text-[var(--color-ink-soft)]">
+              This is <strong>not</strong> emergency services and{" "}
+              <strong>not</strong> legal representation. Please don&apos;t submit
+              sealed records, a minor&apos;s identifying details, Social Security
+              or bank numbers, medical records, home addresses, or private
+              third-party data you don&apos;t have the right to share.
+            </p>
+            <div className="mt-3 grid gap-2">
+              <AckBox checked={ackLegal} onChange={setAckLegal} label="I understand this is not legal advice." />
+              <AckBox checked={ackNoGuarantee} onChange={setAckNoGuarantee} label="I understand submitting does not guarantee publication." />
+              <AckBox checked={ackRight} onChange={setAckRight} label="I confirm I have the right to submit this material." />
+              <AckBox checked={ackRedact} onChange={setAckRedact} label="I understand private or sensitive data may be redacted." />
+            </div>
+          </div>
 
           {status.kind === "error" ? (
             <p className="rounded-lg border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-3 py-2 text-sm font-bold text-[var(--color-accent)]">
@@ -799,6 +811,28 @@ function TextField({
         placeholder={placeholder}
         className="rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
       />
+    </label>
+  );
+}
+
+function AckBox({
+  checked,
+  onChange,
+  label,
+}: {
+  checked: boolean;
+  onChange: (v: boolean) => void;
+  label: string;
+}) {
+  return (
+    <label className="flex items-start gap-2.5 text-xs font-semibold leading-snug text-[var(--color-ink)]">
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(event) => onChange(event.target.checked)}
+        className="mt-0.5 h-4 w-4 shrink-0 accent-[var(--color-accent)]"
+      />
+      <span>{label}</span>
     </label>
   );
 }
