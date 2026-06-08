@@ -6,10 +6,8 @@ import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
 import { SITE } from "@/lib/site";
 import { RallyPledge } from "./RallyPledge";
 import { HotRightNow } from "./HotRightNow";
-import { LiveAttentionMeter } from "./LiveAttentionMeter";
 
-// The world-map radar is heavy (d3-geo + world-atlas). Load it only once the
-// board is open, client-side.
+// The world-map radar is heavy (d3-geo + world-atlas). Load it only on open.
 const LiveVisitorRadar = dynamic(
   () => import("./LiveVisitorRadar").then((m) => ({ default: m.LiveVisitorRadar })),
   {
@@ -42,7 +40,14 @@ type Rally = {
   total_points: number;
   supporter_count: number;
   goal_points: number;
+  share_arrivals: number;
+  countries_reached: number;
 };
+
+type Raised = { raised_cents: number; supporters: number; charges: number; configured: boolean };
+type Leader = { rank: number; display_name: string; total_cents: number; gifts: number; recurring: boolean; tier: string };
+type Recent = { at: string; kind: string; label: string };
+type Milestone = { points: number; title: string; reward: string };
 
 function CountUp({ value }: { value: number }) {
   const [display, setDisplay] = useState(value);
@@ -102,6 +107,146 @@ function StatTile({
   );
 }
 
+function ago(iso: string): string {
+  const s = Math.max(0, (Date.now() - new Date(iso).getTime()) / 1000);
+  if (s < 60) return "just now";
+  if (s < 3600) return `${Math.floor(s / 60)}m ago`;
+  if (s < 86400) return `${Math.floor(s / 3600)}h ago`;
+  return `${Math.floor(s / 86400)}d ago`;
+}
+
+const TIER_STYLE: Record<string, string> = {
+  Founding: "bg-[#e1bd5b] text-[#0a1326]",
+  Defender: "bg-[#7fa9e3] text-[#0a1326]",
+  "Front-Line": "bg-[#7fe3a9] text-[#0a1326]",
+  Supporter: "bg-white/15 text-[#cfd9ea]",
+};
+
+function MilestoneRoadmap({ total, milestones }: { total: number; milestones: Milestone[] }) {
+  if (milestones.length === 0) return null;
+  const next = milestones.find((m) => total < m.points);
+  return (
+    <section className="mt-4 rounded-xl border border-white/10 bg-white/[0.03] p-4">
+      <div className="flex items-center justify-between gap-3">
+        <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
+          Milestones — what we unlock together
+        </p>
+        {next ? (
+          <p className="text-xs font-bold text-[#fdf8ea]">
+            <span className="text-[#e1bd5b]">{(next.points - total).toLocaleString()}</span> pts to{" "}
+            <span className="text-[#cfd9ea]">{next.title}</span>
+          </p>
+        ) : (
+          <p className="text-xs font-bold text-[#7fe3a9]">All milestones unlocked 🎉</p>
+        )}
+      </div>
+      <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+        {milestones.map((m) => {
+          const reached = total >= m.points;
+          const isNext = next?.points === m.points;
+          return (
+            <div
+              key={m.points}
+              className={[
+                "rounded-lg border p-3 transition",
+                reached
+                  ? "border-[#7fe3a9]/50 bg-[#7fe3a9]/[0.08]"
+                  : isNext
+                    ? "border-[#e1bd5b]/60 bg-[#e1bd5b]/[0.08]"
+                    : "border-white/10 bg-white/[0.02]",
+              ].join(" ")}
+            >
+              <div className="flex items-center justify-between gap-2">
+                <span className="font-display text-lg font-black tabular-nums text-[#fdf8ea]">
+                  {m.points.toLocaleString()}
+                </span>
+                <span
+                  className={[
+                    "rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-wider",
+                    reached ? "bg-[#7fe3a9] text-[#0a1326]" : isNext ? "bg-[#e1bd5b] text-[#0a1326]" : "bg-white/10 text-[#8194b4]",
+                  ].join(" ")}
+                >
+                  {reached ? "Unlocked" : isNext ? "Next" : "Locked"}
+                </span>
+              </div>
+              <p className="mt-1 text-sm font-bold text-[#fdf8ea]">{m.title}</p>
+              <p className="mt-0.5 text-[11px] leading-snug text-[#9fb0ca]">{m.reward}</p>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function Leaderboard({ leaders }: { leaders: Leader[] }) {
+  return (
+    <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+      <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
+        Top supporters
+      </p>
+      {leaders.length === 0 ? (
+        <p className="mt-3 text-xs text-[#8194b4]">
+          Be the first name on the board — pledge above.
+        </p>
+      ) : (
+        <ul className="mt-3 space-y-2">
+          {leaders.map((l) => (
+            <li key={l.rank} className="flex items-center gap-2.5">
+              <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-white/5 text-[11px] font-black tabular-nums text-[#cfd9ea]">
+                {l.rank}
+              </span>
+              <span className="min-w-0 flex-1 truncate text-sm font-bold text-[#fdf8ea]">
+                {l.display_name}
+                {l.recurring ? (
+                  <span className="ml-1.5 rounded-full bg-[#7fa9e3]/20 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-[#7fa9e3]">
+                    Monthly
+                  </span>
+                ) : null}
+              </span>
+              <span
+                className={`rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-wider ${TIER_STYLE[l.tier] ?? TIER_STYLE.Supporter}`}
+              >
+                {l.tier}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function ActivityFeed({ recent }: { recent: Recent[] }) {
+  const icon = (k: string) => (k === "pledge" ? "💵" : k === "signup" ? "✉️" : "🔁");
+  return (
+    <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+      <div className="flex items-center gap-2">
+        <span className="relative flex h-2 w-2" aria-hidden>
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#7fe3a9] opacity-70" />
+          <span className="relative inline-flex h-2 w-2 rounded-full bg-[#7fe3a9]" />
+        </span>
+        <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
+          Live activity
+        </p>
+      </div>
+      {recent.length === 0 ? (
+        <p className="mt-3 text-xs text-[#8194b4]">Quiet for a moment…</p>
+      ) : (
+        <ul className="mt-3 space-y-2">
+          {recent.slice(0, 10).map((r, i) => (
+            <li key={`${r.at}-${i}`} className="flex items-center gap-2 text-xs">
+              <span aria-hidden>{icon(r.kind)}</span>
+              <span className="min-w-0 flex-1 truncate text-[#cfd9ea]">{r.label}</span>
+              <span className="shrink-0 text-[10px] text-[#5f7197]">{ago(r.at)}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 export function SituationRoom({
   onClose,
   seed,
@@ -111,20 +256,30 @@ export function SituationRoom({
 }) {
   const [t, setT] = useState<SiteTotals | null>(seed ?? null);
   const [r, setR] = useState<Rally | null>(null);
+  const [raised, setRaised] = useState<Raised | null>(null);
+  const [leaders, setLeaders] = useState<Leader[]>([]);
+  const [recent, setRecent] = useState<Recent[]>([]);
+  const [milestones, setMilestones] = useState<Milestone[]>([]);
 
   useEffect(() => {
     let mounted = true;
     const supabase = getSupabaseBrowserClient();
     async function pull() {
-      const [totals, rally] = await Promise.all([
+      const [totals, rally, lb, rc, ms, money] = await Promise.all([
         supabase.rpc("site_totals"),
         supabase.rpc("rally_snapshot"),
+        supabase.rpc("get_rally_leaderboard", { p_limit: 10 }),
+        supabase.rpc("rally_recent", { p_limit: 16 }),
+        supabase.from("rally_milestones").select("points,title,reward").order("sort_order"),
+        fetch("/api/rally/raised").then((x) => x.json()).catch(() => null),
       ]);
       if (!mounted) return;
       if (totals.data) setT(totals.data as SiteTotals);
-      if (rally.data && Array.isArray(rally.data) && rally.data[0]) {
-        setR(rally.data[0] as Rally);
-      }
+      if (Array.isArray(rally.data) && rally.data[0]) setR(rally.data[0] as Rally);
+      if (Array.isArray(lb.data)) setLeaders(lb.data as Leader[]);
+      if (Array.isArray(rc.data)) setRecent(rc.data as Recent[]);
+      if (Array.isArray(ms.data)) setMilestones(ms.data as Milestone[]);
+      if (money) setRaised(money as Raised);
     }
     void pull();
     const id = window.setInterval(pull, 20_000);
@@ -134,7 +289,6 @@ export function SituationRoom({
     };
   }, []);
 
-  // Escape to close + lock body scroll while open.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -148,9 +302,17 @@ export function SituationRoom({
     };
   }, [onClose]);
 
+  // Money = Stripe (accurate) when available, else the DB snapshot.
+  const raisedCents =
+    raised?.configured && raised.raised_cents > 0
+      ? raised.raised_cents
+      : (r?.money_points ?? 0) * 100;
+  const moneyPts = Math.floor(raisedCents / 100);
   const goal = r?.goal_points ?? 5000;
-  const total = r?.total_points ?? 0;
+  const total = moneyPts + (r?.share_points ?? 0) + (r?.signup_points ?? 0);
   const pct = goal > 0 ? Math.min(100, Math.round((total / goal) * 100)) : 0;
+  const supporters =
+    raised?.configured && raised.supporters > 0 ? raised.supporters : r?.supporter_count ?? 0;
 
   function share() {
     const url = SITE.url;
@@ -228,7 +390,7 @@ export function SituationRoom({
           </div>
           <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-[11px] text-[#9fb0ca]">
             <span>
-              <b className="text-[#fdf8ea]">${(r?.money_points ?? 0).toLocaleString()}</b> raised
+              <b className="text-[#fdf8ea]">${moneyPts.toLocaleString()}</b> raised
             </span>
             <span>
               <b className="text-[#fdf8ea]">{(r?.share_points ?? 0).toLocaleString()}</b> from shares
@@ -237,7 +399,7 @@ export function SituationRoom({
               <b className="text-[#fdf8ea]">{(r?.signup_points ?? 0).toLocaleString()}</b> from signups
             </span>
             <span>
-              <b className="text-[#fdf8ea]">{(r?.supporter_count ?? 0).toLocaleString()}</b> supporters
+              <b className="text-[#fdf8ea]">{supporters.toLocaleString()}</b> supporters
             </span>
           </div>
           <div className="mt-4 flex flex-wrap items-center gap-3">
@@ -252,15 +414,18 @@ export function SituationRoom({
           </div>
         </section>
 
+        {/* Milestone roadmap */}
+        <MilestoneRoadmap total={total} milestones={milestones} />
+
         {/* Scoreboard */}
         <section className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           <StatTile value={t?.live_now ?? 0} label="reading now" accent="#7fe3a9" live />
-          <StatTile value={t?.countries_now ?? 0} label="countries now" accent="#7fa9e3" />
           <StatTile value={t?.total_views ?? 0} label="total views" />
-          <StatTile value={t?.total_shares ?? 0} label="total shares" />
+          <StatTile value={r?.share_arrivals ?? 0} label="share arrivals" accent="#7fa9e3" />
           <StatTile value={t?.documents ?? 0} label="evidence documents" accent="#e1bd5b" />
           <StatTile value={t?.defendants ?? 0} label="J6 defendants tracked" accent="#e1bd5b" />
-          <StatTile value={r?.money_points ?? 0} label="raised" prefix="$" accent="#7fe3a9" />
+          <StatTile value={moneyPts} label="raised (Stripe)" prefix="$" accent="#7fe3a9" />
+          <StatTile value={supporters} label="supporters" />
           <StatTile value={t?.days_since_pardon ?? 0} label="days since the pardon" />
         </section>
 
@@ -269,22 +434,24 @@ export function SituationRoom({
           <HotRightNow initial={[]} />
         </section>
 
-        {/* Live map + attention */}
+        {/* Live map + supporters */}
         <section className="mt-5 grid gap-4 lg:grid-cols-[1.4fr_1fr]">
           <div className="overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] p-2">
             <LiveVisitorRadar initial={[]} />
+            <p className="px-2 pb-1 pt-2 text-[11px] text-[#8194b4]">
+              Reached in <b className="text-[#cfd9ea]">{(r?.countries_reached ?? 0).toLocaleString()}</b>{" "}
+              countries · {(t?.total_views ?? 0).toLocaleString()} total views
+            </p>
           </div>
-          <div className="rounded-xl border border-white/10 bg-white/[0.03] p-2">
-            <LiveAttentionMeter donateUrl="/support?ref=situation-room" />
+          <div className="space-y-4">
+            <Leaderboard leaders={leaders} />
+            <ActivityFeed recent={recent} />
           </div>
         </section>
 
         <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-4 text-xs text-[#8194b4]">
           <span>Live numbers refresh every few seconds. Press Esc to close.</span>
-          <a
-            href="/the-map-room"
-            className="font-bold text-[#e1bd5b] hover:underline"
-          >
+          <a href="/the-map-room" className="font-bold text-[#e1bd5b] hover:underline">
             Open the full Map Room →
           </a>
         </div>
