@@ -1,4 +1,5 @@
 import { getPublishedPosts, getCommentCount } from "@/lib/posts";
+import { getOgImages } from "@/lib/og-images";
 import { PostCard } from "@/components/PostCard";
 import { ProfileHero } from "@/components/ProfileHero";
 import { VerseSidebar } from "@/components/VerseSidebar";
@@ -20,10 +21,14 @@ export default async function HomePage({
 }) {
   const { sort } = await searchParams;
   const view: "latest" | "trending" = sort === "trending" ? "trending" : "latest";
-  const [posts, activeLiveStream] = await Promise.all([
+  const [posts, activeLiveStream, ogImages] = await Promise.all([
     getPublishedPosts({ sort: view }),
     getActiveLiveStream(),
+    getOgImages(),
   ]);
+  // Custom OG thumbnails keyed by post path — used as feed-card art for
+  // text-only posts (PostCard ignores it when the body has its own visual).
+  const ogMap = new Map(ogImages.map((o) => [o.path, o.image_url]));
   const counts = await Promise.all(
     posts.map(async (p) => [p.id, await getCommentCount(p.id)] as const),
   );
@@ -73,6 +78,7 @@ export default async function HomePage({
                   key={p.id}
                   post={p}
                   commentCount={countMap.get(p.id) ?? 0}
+                  fallbackImage={ogMap.get(`/posts/${p.slug}`) ?? null}
                 />
               ))}
             </div>

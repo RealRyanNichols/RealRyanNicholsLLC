@@ -12,10 +12,14 @@ export function PostCard({
   post,
   commentCount,
   truncate = true,
+  fallbackImage = null,
 }: {
   post: Post;
   commentCount: number;
   truncate?: boolean;
+  // Custom OG thumbnail (from page_og_images) used as the card art ONLY when a
+  // text post has no visual of its own — never over an embed, image, or video.
+  fallbackImage?: string | null;
 }) {
   const when = post.published_at
     ? formatDistanceToNowStrict(new Date(post.published_at), { addSuffix: true })
@@ -48,7 +52,7 @@ export function PostCard({
         </div>
       </header>
 
-      <PostCardBody post={post} truncate={truncate} />
+      <PostCardBody post={post} truncate={truncate} fallbackImage={fallbackImage} />
 
       <div className="mt-5 flex items-center justify-between gap-3 text-sm">
         <PostStats
@@ -99,7 +103,30 @@ function feedExcerpt(body: string, maxLength: number): string {
   return `${lastSpace > 160 ? truncated.slice(0, lastSpace) : truncated}…`;
 }
 
-function PostCardBody({ post, truncate }: { post: Post; truncate: boolean }) {
+// True when a text post's body renders its own visual in the feed — a tweet or
+// Facebook embed, a markdown image, or a media shortcode. When false, the post
+// is effectively text-only and can fall back to its custom OG thumbnail.
+function bodyHasVisual(body: string): boolean {
+  // A tweet/Facebook URL alone on a line (what PostBody turns into an embed).
+  if (/^[ \t]*https?:\/\/(?:x\.com|twitter\.com|(?:www\.)?facebook\.com|fb\.watch)\/\S+[ \t]*$/im.test(body)) {
+    return true;
+  }
+  // A markdown image.
+  if (/!\[[^\]]*]\([^)\s]+/.test(body)) return true;
+  // A visual shortcode (video player, receipt grids/stacks, case banner).
+  if (/\{\{\s*(?:video|receiptgrid|receiptstack|casebanner)\b/i.test(body)) return true;
+  return false;
+}
+
+function PostCardBody({
+  post,
+  truncate,
+  fallbackImage,
+}: {
+  post: Post;
+  truncate: boolean;
+  fallbackImage: string | null;
+}) {
   if (post.type === "note") {
     return (
       <Link href={`/posts/${post.slug}`} className="block group">
@@ -187,7 +214,13 @@ function PostCardBody({ post, truncate }: { post: Post; truncate: boolean }) {
     );
   }
 
-  // text (default)
+  // text (default).
+  // Show the real body so tweet embeds, images, and media shortcodes render
+  // inline (that's the in-feed experience we want to keep). Only fall back to
+  // the custom OG thumbnail when the body has NO visual of its own — so a
+  // text-only post gets card art instead of a bare wall of text.
+  const cardImage =
+    post.thumbnail_url ?? (bodyHasVisual(post.body) ? null : fallbackImage ?? null);
   return (
     <>
       <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">
@@ -195,10 +228,9 @@ function PostCardBody({ post, truncate }: { post: Post; truncate: boolean }) {
           {post.title ?? "Untitled"}
         </Link>
       </h2>
-      {post.thumbnail_url ? (
-        // With a card thumbnail, show a plain-text excerpt — rendering the full
-        // body here would repaint any image the post already embeds (the
-        // thumbnail and the in-body image are usually the same file).
+      {cardImage ? (
+        // A card image (own thumbnail, or the OG fallback) means we show a
+        // plain-text excerpt — rendering the full body would repaint visuals.
         <>
           <Link
             href={`/posts/${post.slug}`}
@@ -206,7 +238,7 @@ function PostCardBody({ post, truncate }: { post: Post; truncate: boolean }) {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={post.thumbnail_url}
+              src={cardImage}
               alt=""
               loading="lazy"
               className="absolute inset-0 h-full w-full object-cover"
