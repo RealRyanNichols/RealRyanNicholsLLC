@@ -5,6 +5,7 @@ import { VerseSidebar } from "@/components/VerseSidebar";
 import { SignupForm } from "@/components/SignupForm";
 import { BookPromo } from "@/components/BookPromo";
 import { BookCtaBand } from "@/components/BookCtaBand";
+import { RallyInline } from "@/components/RallyInline";
 import { LiveNowBanner } from "@/components/LiveNowBanner";
 import { getActiveLiveStream } from "@/lib/live";
 import { SITE } from "@/lib/site";
@@ -45,6 +46,8 @@ export default async function HomePage({
         <ProfileHero />
 
         <BookCtaBand className="mt-8" />
+
+        <RallyInline source="home" className="mt-8" />
 
         {/* Chronological feed — strict newest-first, no pinning */}
         <section className="mt-8">
