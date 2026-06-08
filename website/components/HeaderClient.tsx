@@ -30,6 +30,7 @@ const DOORS: Door[] = [
 
 // Everything secondary lives behind one compact "More" menu (and the footer).
 const MORE: MoreLink[] = [
+  { href: "/search", label: "Search", desc: "Find any article, video, or document" },
   { href: "/start-here", label: "Start Here", desc: "New here? Get oriented in 60 seconds" },
   { href: "/tools", label: "Free Tools", desc: "Records request, timeline, next moves" },
   { href: "/submit", label: "Tip Line", desc: "Send records, names, or links" },
@@ -147,6 +148,15 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
               </NavLink>
             ))}
 
+            <Link
+              href="/search"
+              aria-label="Search"
+              aria-current={isActive(pathname, "/search") ? "page" : undefined}
+              className="inline-flex h-9 w-9 items-center justify-center rounded-md text-[var(--color-ink-soft)] transition hover:bg-[var(--color-accent-soft)] hover:text-[var(--color-accent)]"
+            >
+              <MagnifierIcon />
+            </Link>
+
             <div className="relative" data-more-menu>
               <button
                 type="button"
@@ -219,6 +229,13 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
 
           {/* Touch/tablet — Donate (always visible) + hamburger. */}
           <div className="flex shrink-0 items-center gap-1.5 min-[360px]:gap-2 lg:hidden">
+            <Link
+              href="/search"
+              aria-label="Search"
+              className="hidden h-11 w-11 items-center justify-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] min-[360px]:inline-flex"
+            >
+              <MagnifierIcon />
+            </Link>
             <Link
               href="/support"
               className="btn-support inline-flex min-h-11 items-center rounded-full px-3 py-2 text-xs font-semibold min-[360px]:px-4"
@@ -411,6 +428,15 @@ function CloseIcon() {
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden>
       <line x1="6" y1="6" x2="18" y2="18" />
       <line x1="6" y1="18" x2="18" y2="6" />
+    </svg>
+  );
+}
+
+function MagnifierIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="h-[18px] w-[18px]" aria-hidden>
+      <circle cx="11" cy="11" r="7" />
+      <path d="m20 20-3-3" />
     </svg>
   );
 }

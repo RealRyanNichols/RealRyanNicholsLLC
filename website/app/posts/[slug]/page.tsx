@@ -244,6 +244,19 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
               <ShareButton url={postUrl} title={displayTitle} slug={post.slug} shares={post.shares_count ?? 0} compact />
             </div>
           </div>
+          {post.tags && post.tags.length > 0 ? (
+            <div className="mt-4 flex flex-wrap gap-2">
+              {post.tags.map((tag) => (
+                <Link
+                  key={tag}
+                  href={`/search?q=${encodeURIComponent(tag)}`}
+                  className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-2.5 py-1 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                >
+                  #{tag}
+                </Link>
+              ))}
+            </div>
+          ) : null}
         </header>
 
         <FloatingShareBar url={postUrl} title={displayTitle} slug={post.slug} shares={post.shares_count ?? 0} />
