@@ -91,8 +91,37 @@ export default async function SupportPage() {
         Donations are personal gifts to Ryan Nichols — an individual, not a
         registered charity — and are <strong>not tax-deductible</strong>, with no
         goods or services exchanged for a gift. The $5/mo Supporter badge and the
-        $997 website build below are separate, clearly-priced offers.
+        website build are separate, clearly-priced offers.
       </p>
+
+      <section className="mt-8 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-6">
+        <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+          Where your support goes
+        </p>
+        <h2 className="font-display text-2xl mt-2 text-[var(--color-ink)]">
+          Plain numbers, nothing hidden.
+        </h2>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          <AccountItem
+            title="The monthly goal"
+            body="$5,000 a month covers rent, food, medical, gas, insurance, and the tools that keep this site online. The live meter below shows exactly where it stands today."
+          />
+          <AccountItem
+            title="What it pays for"
+            body="Me — not overhead, not a middleman. Bills, legal pressure, the mental healthcare I need after pretrial detention, and hosting to keep the archive growing."
+          />
+          <AccountItem
+            title="If we pass the goal"
+            body="Anything past the monthly goal rolls forward to the next month, or to another January 6 defendant who needs it. Nothing disappears into a black box."
+          />
+          <AccountItem
+            title="Prefer to give monthly?"
+            body="The $5/mo Supporter membership keeps the lights on month after month — and gets you a verified gold badge on your profile and every comment you leave."
+            href="#supporter-membership"
+            cta="Become a Supporter →"
+          />
+        </div>
+      </section>
 
       <div className="mt-8">
         <LiveAttentionMeter donateUrl={donateUrl} seed={livePulseSeed} />
@@ -234,7 +263,10 @@ export default async function SupportPage() {
       <SupportersWall supporters={supporters} />
 
       {supporterUrl ? (
-        <section className="relative mt-10 overflow-hidden rounded-lg border-2 border-amber-700 bg-gradient-to-br from-amber-950/30 to-[var(--color-surface)] p-4 sm:p-6">
+        <section
+          id="supporter-membership"
+          className="relative mt-10 scroll-mt-24 overflow-hidden rounded-lg border-2 border-amber-700 bg-gradient-to-br from-amber-950/30 to-[var(--color-surface)] p-4 sm:p-6"
+        >
           <div
             className="pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full blur-3xl bg-amber-500/20"
             aria-hidden
@@ -259,48 +291,30 @@ export default async function SupportPage() {
         </section>
       ) : null}
 
-      {/* Service offer — not a donation. A real exchange of value Ryan
-          can deliver with the skills he still has. Distinct from the
-          donate / supporter blocks above; positioned as its own offer
-          card with a clear price and warranty so nobody confuses it
-          with the J6 case work, which stays free forever. */}
-      <section className="relative mt-10 overflow-hidden rounded-lg border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-4 sm:p-8">
-        <div
-          className="pointer-events-none absolute -top-24 -left-24 h-56 w-56 rounded-full blur-3xl"
-          style={{ background: "var(--color-blue-glow, rgba(59,130,246,0.25))" }}
-          aria-hidden
-        />
+      {/* Paid service — deliberately NOT mixed into the donation flow. The
+          full offer, pricing, and secure checkout live on /build. This is a
+          slim, honest pointer (a link, not a checkout) so the donation page
+          stays a donation page. */}
+      <section className="relative mt-10 overflow-hidden rounded-lg border border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-4 sm:p-6">
         <p className="relative text-xs uppercase tracking-wider text-[var(--color-blue)] font-bold">
-          Hire me · $997
+          Not a donation — a paid service
         </p>
-        <h2 className="relative font-display text-2xl sm:text-3xl mt-2 text-[var(--color-ink)]">
-          Want a site like this one? I&apos;ll build you yours.
+        <h2 className="relative font-display text-2xl mt-2 text-[var(--color-ink)]">
+          Want a website like this one? I build them.
         </h2>
         <p className="relative mt-3 text-[var(--color-ink-soft)] leading-relaxed">
-          A personal &ldquo;social media&rdquo; site — your own feed, your
-          own profile, your own domain, your own audience. Built the same
-          way I built mine: fast, on your own terms, no algorithm in the
-          middle, no platform that can ban you for telling the truth.
+          Your own feed, your own profile, your own domain, your own audience —
+          built on the same stack as this site, with no algorithm in the middle.
+          Founder rate <strong>$250</strong> (normally $997), limited slots. This
+          is a paid service, kept separate from the donations above and from the
+          J6 work, which stays free forever.
         </p>
-        <ul className="relative mt-4 space-y-2 text-sm text-[var(--color-ink-soft)] leading-relaxed">
-          <li><strong>$997</strong> one-time, flat fee for the initial build.</li>
-          <li>I run it for <strong>30 days</strong> while you learn the ropes.</li>
-          <li>After 30 days I <strong>hand it to you</strong> — code, domain access, database, everything. <strong>100% yours.</strong></li>
-          <li>It comes with a <strong>warranty</strong>. If something I built breaks in normal use, I fix it.</li>
-        </ul>
-        <p className="relative mt-4 text-xs text-[var(--color-muted)]">
-          Important: this is separate from the J6 work. <strong>J6 case
-          profiles on realryannichols.com are free forever</strong> — every
-          J6 defendant gets one linked to their case, no payment, no
-          subscription, no catch. This $997 offer is for people who want
-          a full <em>replica</em> of this site for themselves.
-        </p>
-        <a
-          href="mailto:ryan@realryannichols.com?subject=Website%20build%20inquiry%20(%24997%20replica)&body=Hi%20Ryan%2C%0A%0AI%27d%20like%20a%20site%20like%20realryannichols.com.%20A%20bit%20about%20me%2Fwhat%20I%20want%20to%20publish%3A%0A%0A"
+        <Link
+          href="/build"
           className="relative inline-flex items-center mt-5 rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-6 py-3 text-sm font-bold hover:bg-[var(--color-blue-strong)] transition"
         >
-          Email me about a build →
-        </a>
+          See the build offer →
+        </Link>
       </section>
 
       <section className="mt-10">
@@ -369,5 +383,36 @@ export default async function SupportPage() {
         Thank you for showing up.
       </p>
     </article>
+  );
+}
+
+// One scannable accountability card. Optional href/cta turns it into a soft
+// link (used to point monthly givers at the Supporter membership below).
+function AccountItem({
+  title,
+  body,
+  href,
+  cta,
+}: {
+  title: string;
+  body: string;
+  href?: string;
+  cta?: string;
+}) {
+  return (
+    <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4">
+      <p className="text-sm font-bold text-[var(--color-ink)]">{title}</p>
+      <p className="mt-1.5 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+        {body}
+      </p>
+      {href && cta ? (
+        <a
+          href={href}
+          className="mt-2 inline-block text-sm font-bold text-[var(--color-accent)] hover:underline"
+        >
+          {cta}
+        </a>
+      ) : null}
+    </div>
   );
 }
