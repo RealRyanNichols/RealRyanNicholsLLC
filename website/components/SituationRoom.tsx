@@ -6,6 +6,8 @@ import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
 import { SITE } from "@/lib/site";
 import { RallyPledge } from "./RallyPledge";
 import { HotRightNow } from "./HotRightNow";
+import { RallyReactions } from "./RallyReactions";
+import { burstConfetti } from "@/lib/confetti";
 
 // The world-map radar is heavy (d3-geo + world-atlas). Load it only on open.
 const LiveVisitorRadar = dynamic(
@@ -260,6 +262,11 @@ export function SituationRoom({
   const [leaders, setLeaders] = useState<Leader[]>([]);
   const [recent, setRecent] = useState<Recent[]>([]);
   const [milestones, setMilestones] = useState<Milestone[]>([]);
+  const [streak, setStreak] = useState(0);
+  const [pop, setPop] = useState<number | null>(null);
+  const prevTotal = useRef<number | null>(null);
+  const celebrated = useRef<Set<number>>(new Set());
+  const milestonesInit = useRef(false);
 
   useEffect(() => {
     let mounted = true;
@@ -302,6 +309,27 @@ export function SituationRoom({
     };
   }, [onClose]);
 
+  // Daily-visit streak (local only — a personal "don't break the chain" hook).
+  useEffect(() => {
+    try {
+      const today = new Date().toISOString().slice(0, 10);
+      const raw = localStorage.getItem("rally_streak");
+      let count = 1;
+      if (raw) {
+        const s = JSON.parse(raw) as { day: string; count: number };
+        if (s.day === today) count = s.count;
+        else {
+          const yest = new Date(Date.now() - 86_400_000).toISOString().slice(0, 10);
+          count = s.day === yest ? s.count + 1 : 1;
+        }
+      }
+      localStorage.setItem("rally_streak", JSON.stringify({ day: today, count }));
+      setStreak(count);
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
   // Money = Stripe (accurate) when available, else the DB snapshot.
   const raisedCents =
     raised?.configured && raised.raised_cents > 0
@@ -313,6 +341,39 @@ export function SituationRoom({
   const pct = goal > 0 ? Math.min(100, Math.round((total / goal) * 100)) : 0;
   const supporters =
     raised?.configured && raised.supporters > 0 ? raised.supporters : r?.supporter_count ?? 0;
+  const lastHour = recent.filter(
+    (x) => Date.now() - new Date(x.at).getTime() < 3_600_000,
+  ).length;
+  const inRoom = Math.max(1, t?.live_now ?? 1);
+
+  // Seed already-reached milestones once they load, so opening the board past a
+  // milestone doesn't fire confetti — only live crossings during the session do.
+  useEffect(() => {
+    if (milestones.length && !milestonesInit.current) {
+      milestonesInit.current = true;
+      for (const m of milestones) if (total >= m.points) celebrated.current.add(m.points);
+    }
+  }, [milestones, total]);
+
+  // Slot-machine "+N" pop + milestone confetti when the score climbs live.
+  useEffect(() => {
+    if (prevTotal.current === null) {
+      prevTotal.current = total;
+      return;
+    }
+    const delta = total - prevTotal.current;
+    prevTotal.current = total;
+    if (delta > 0) {
+      setPop(delta);
+      window.setTimeout(() => setPop(null), 1500);
+      for (const m of milestones) {
+        if (total >= m.points && !celebrated.current.has(m.points)) {
+          celebrated.current.add(m.points);
+          burstConfetti();
+        }
+      }
+    }
+  }, [total, milestones]);
 
   function share() {
     const url = SITE.url;
@@ -337,6 +398,7 @@ export function SituationRoom({
       }}
     >
       <div className="mx-auto max-w-6xl px-4 py-5 sm:py-7">
+        <style>{`@keyframes rallypop{0%{opacity:0;transform:translateY(8px)}25%{opacity:1}100%{opacity:0;transform:translateY(-20px)}}`}</style>
         {/* Top bar */}
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
@@ -352,6 +414,11 @@ export function SituationRoom({
                 Live data &amp; the record, in one place
               </p>
             </div>
+            {streak > 0 ? (
+              <span className="hidden items-center gap-1 rounded-full border border-[#e1bd5b]/30 bg-[#e1bd5b]/10 px-2.5 py-1 text-[11px] font-black text-[#e1bd5b] sm:inline-flex">
+                🔥 Day {streak}
+              </span>
+            ) : null}
           </div>
           <button
             type="button"
@@ -374,15 +441,25 @@ export function SituationRoom({
                 Every share, signup, and pledge moves this meter.
               </p>
             </div>
-            <p className="font-display text-2xl font-black tabular-nums text-[#fdf8ea] sm:text-3xl">
+            <p className="relative font-display text-2xl font-black tabular-nums text-[#fdf8ea] sm:text-3xl">
               <CountUp value={total} />
               <span className="text-base font-bold text-[#8194b4]">
                 {" "}
                 / {goal.toLocaleString()} pts
               </span>
+              {pop ? (
+                <span
+                  className="pointer-events-none absolute -top-5 right-0 text-base font-black text-[#7fe3a9]"
+                  style={{ animation: "rallypop 1.4s ease-out forwards" }}
+                >
+                  +{pop.toLocaleString()}
+                </span>
+              ) : null}
             </p>
           </div>
-          <div className="mt-3 h-3 w-full overflow-hidden rounded-full bg-white/10">
+          <div
+            className={`mt-3 h-3 w-full overflow-hidden rounded-full bg-white/10 transition ${pop ? "ring-2 ring-[#7fe3a9]/60" : ""}`}
+          >
             <div
               className="h-full rounded-full bg-[linear-gradient(90deg,#e1bd5b,#f0d27a)] transition-[width] duration-700"
               style={{ width: `${pct}%` }}
@@ -402,6 +479,18 @@ export function SituationRoom({
               <b className="text-[#fdf8ea]">{supporters.toLocaleString()}</b> supporters
             </span>
           </div>
+          <p className="mt-3 text-xs font-semibold text-[#9fb0ca]">
+            🔥 {lastHour.toLocaleString()} action{lastHour === 1 ? "" : "s"} in the last hour
+            {inRoom > 1 ? (
+              <>
+                {" "}
+                ·{" "}
+                <span className="text-[#7fe3a9]">
+                  You + {(inRoom - 1).toLocaleString()} reading right now
+                </span>
+              </>
+            ) : null}
+          </p>
           <div className="mt-4 flex flex-wrap items-center gap-3">
             <RallyPledge source="situation-room" />
             <button
@@ -411,6 +500,12 @@ export function SituationRoom({
             >
               Share the mission
             </button>
+          </div>
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#5f7197]">
+              React
+            </span>
+            <RallyReactions />
           </div>
         </section>
 
