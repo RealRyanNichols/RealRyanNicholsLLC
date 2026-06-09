@@ -101,12 +101,31 @@ export async function ProfileHero() {
           </Link>
         </div>
 
-        {/* Orientation, merged into the hero — what brings you here? */}
-        <div className="mt-6 border-t border-[var(--color-line)] pt-5">
-          <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[var(--color-muted)]">
-            What brings you here?
-          </p>
-          <div className="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Orientation — collapsed by default into a dropdown so the feed is
+            front and center. Most people come to read; the "four doors" are one
+            tap away for those who want them. Native <details>, no client JS. */}
+        <details className="group/doors mt-6 border-t border-[var(--color-line)] pt-5">
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
+            <span className="text-[11px] font-black uppercase tracking-[0.16em] text-[var(--color-muted)]">
+              What brings you here?
+            </span>
+            <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-[var(--color-muted)] transition group-hover/doors:text-[var(--color-accent)]">
+              Pick your path
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="h-3.5 w-3.5 transition-transform group-open/doors:rotate-180"
+                aria-hidden
+              >
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </span>
+          </summary>
+          <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
             {AUDIENCES.map((a) => (
               <Link
                 key={a.href}
@@ -122,7 +141,7 @@ export async function ProfileHero() {
               </Link>
             ))}
           </div>
-        </div>
+        </details>
       </div>
     </section>
   );
