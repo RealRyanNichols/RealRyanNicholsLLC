@@ -79,8 +79,12 @@ export async function POST(request: Request) {
       );
     }
     const mux = getMuxClient();
+    // The browser PUTs chunks straight to Mux, so cors_origin must match the
+    // page's own origin. Use the request's Origin header (covers apex vs www,
+    // a home-screen PWA, and preview deploys) and fall back to SITE_URL.
+    const corsOrigin = request.headers.get("origin") ?? process.env.SITE_URL ?? "*";
     const upload = await mux.video.uploads.create({
-      cors_origin: process.env.SITE_URL ?? "*",
+      cors_origin: corsOrigin,
       new_asset_settings: {
         playback_policy: ["public"],
         encoding_tier: "smart",

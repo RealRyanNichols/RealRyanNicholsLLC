@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { createUpload } from "@mux/upchunk";
 import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
 
 type Tab = "text" | "note" | "photo" | "video";
@@ -421,8 +422,8 @@ function VideoForm() {
       if (!mux_upload_url) {
         throw new Error("Mux upload URL missing — server may not be configured.");
       }
-      // Direct browser → Mux upload with progress.
-      await uploadWithProgress(mux_upload_url, file, (p) =>
+      // Direct browser → Mux upload, resumable + chunked (survives mobile).
+      await uploadToMux(mux_upload_url, file, (p) =>
         setState({ kind: "submitting", label: `Uploading ${Math.round(p * 100)}%…`, progress: p })
       );
       setState({
@@ -495,23 +496,35 @@ function SubmitButton({
   );
 }
 
-function uploadWithProgress(
-  url: string,
+// Resumable, chunked upload to Mux via UpChunk. A single PUT of the whole file
+// (what this used to do) dies on mobile: phone videos are large, and any
+// cellular handoff, signal dip, or the screen locking mid-upload kills the
+// whole transfer with no recovery — leaving the post stuck at mux_status
+// 'uploading'. UpChunk sends the file in chunks, retries each one on its own,
+// and adapts the chunk size to the connection, so a flaky mobile link resumes
+// instead of failing.
+function uploadToMux(
+  endpoint: string,
   file: File,
   onProgress: (fraction: number) => void
 ): Promise<void> {
   return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open("PUT", url);
-    xhr.upload.onprogress = (e) => {
-      if (e.lengthComputable) onProgress(e.loaded / e.total);
-    };
-    xhr.onload = () => {
-      if (xhr.status >= 200 && xhr.status < 300) resolve();
-      else reject(new Error(`Upload failed: ${xhr.status} ${xhr.statusText}`));
-    };
-    xhr.onerror = () => reject(new Error("Network error during upload."));
-    xhr.send(file);
+    const upload = createUpload({
+      endpoint,
+      file,
+      dynamicChunkSize: true, // start small on slow mobile links, grow on fast ones
+      attempts: 6, // retry each chunk before giving up
+    });
+    upload.on("progress", (e) => onProgress(Number(e.detail) / 100));
+    upload.on("success", () => resolve());
+    upload.on("error", (e) => {
+      const detail = e.detail as { message?: string } | undefined;
+      reject(
+        new Error(
+          detail?.message ?? "Upload failed. Check your connection and try again."
+        )
+      );
+    });
   });
 }
 
