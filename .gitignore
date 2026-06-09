@@ -2,3 +2,12 @@
 node_modules
 *.tsbuildinfo
 .DS_Store
+
+# Local Claude Code agent worktrees / tooling — never commit.
+.claude/
+
+# PRIVATE book source material (memoir drafts, memos, evidence scans, people
+# files). This is private working material and must NOT be published to the
+# repo. The book_* database tables that mirror it are RLS deny-all for the
+# same reason. Do not remove this rule.
+/content/book/
