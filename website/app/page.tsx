@@ -50,11 +50,10 @@ export default async function HomePage({
         <LiveNowBanner stream={activeLiveStream} />
         <ProfileHero />
 
-        <BookCtaBand className="mt-8" />
-
-        <RallyInline source="home" className="mt-8" />
-
-        {/* Chronological feed — strict newest-first, no pinning */}
+        {/* Feed sits directly under the hero — people come to read first.
+            The take-action blocks are woven into the feed below at spaced
+            breaks (not stacked above it), so each lands where it belongs
+            without burying the posts. */}
         <section className="mt-8">
           <div className="flex items-center justify-between gap-3 mb-3 border-b border-[var(--color-line)]">
             <h2 className="sr-only">Feed</h2>
@@ -73,14 +72,22 @@ export default async function HomePage({
             </p>
           ) : (
             <div>
-              {feed.map((p) => (
+              {feed.flatMap((p, i) => [
                 <PostCard
                   key={p.id}
                   post={p}
                   commentCount={countMap.get(p.id) ?? 0}
                   fallbackImage={ogMap.get(`/posts/${p.slug}`) ?? null}
-                />
-              ))}
+                />,
+                // Rally CTA after the first few posts; book band a few posts
+                // later — spaced, so neither bunches with the other.
+                i === 2 ? (
+                  <RallyInline key="home-rally" source="home" className="my-8" />
+                ) : null,
+                i === 6 ? (
+                  <BookCtaBand key="home-book" className="my-8" />
+                ) : null,
+              ])}
             </div>
           )}
         </section>
