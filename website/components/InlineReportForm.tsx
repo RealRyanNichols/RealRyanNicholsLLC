@@ -6,7 +6,21 @@ import { trackEvent } from "@/lib/analytics";
 // Inline "report what you saw" form, embedded in an article via the {{report}}
 // shortcode. Posts to the existing /api/tips intake (category "j6"), so reports
 // land in the same reviewed inbox as the tip line. Anonymous by default.
-export function InlineReportForm({ subject }: { subject?: string }) {
+export function InlineReportForm({
+  subject,
+  kicker = "Were you there?",
+  heading = "Report what you saw at the D.C. Jail.",
+  blurb = "If you witnessed these officers — or were held there yourself — say what you saw. Anonymous is fine; leave contact only if we can follow up. Every report is reviewed by hand and becomes part of the record.",
+  placeholder = "What you saw or experienced — names, dates, the unit or SHU, anything you remember.",
+  buttonLabel = "Send my report →",
+}: {
+  subject?: string;
+  kicker?: string;
+  heading?: string;
+  blurb?: string;
+  placeholder?: string;
+  buttonLabel?: string;
+}) {
   const [status, setStatus] = useState<"idle" | "submitting" | "ok" | "error">("idle");
   const [err, setErr] = useState<string | null>(null);
 
@@ -70,22 +84,20 @@ export function InlineReportForm({ subject }: { subject?: string }) {
   return (
     <div className="not-prose rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-surface)] p-6">
       <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
-        Were you there?
+        {kicker}
       </p>
       <h3 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight font-display">
-        Report what you saw at the D.C. Jail.
+        {heading}
       </h3>
       <p className="mt-2 text-sm text-[var(--color-ink-soft)] leading-relaxed">
-        If you witnessed these officers — or were held there yourself — say what you
-        saw. Anonymous is fine; leave contact only if we can follow up. Every report
-        is reviewed by hand and becomes part of the record.
+        {blurb}
       </p>
       <form onSubmit={onSubmit} className="mt-4 space-y-3">
         <textarea
           name="narrative"
           required
           rows={6}
-          placeholder="What you saw or experienced — names, dates, the unit or SHU, anything you remember."
+          placeholder={placeholder}
           className={`${inputCls} font-sans resize-y`}
         />
         <div className="grid sm:grid-cols-2 gap-3">
@@ -105,7 +117,7 @@ export function InlineReportForm({ subject }: { subject?: string }) {
           disabled={status === "submitting"}
           className="w-full rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-white px-5 py-3.5 font-bold hover:bg-[var(--color-accent-strong)] transition disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {status === "submitting" ? "Sending…" : "Send my report →"}
+          {status === "submitting" ? "Sending…" : buttonLabel}
         </button>
         <p className="text-xs text-[var(--color-muted)] text-center">
           Reviewed by hand. We don&apos;t store your IP — only a one-way hash for rate

@@ -272,12 +272,25 @@ function Shortcode({ kind, arg, ctx }: { kind: string; arg?: string; ctx: Ctx })
           <ShareRow />
         </div>
       );
-    case "report":
+    case "report": {
+      // {{report}} → defaults. Optional pipe-delimited overrides:
+      // {{report: subject | kicker | heading | blurb | placeholder | button }}
+      const [rSubject, rKicker, rHeading, rBlurb, rPlaceholder, rButton] = (arg ?? "")
+        .split("|")
+        .map((s) => s.trim());
       return (
         <div className="not-prose my-7">
-          <InlineReportForm subject={arg || ctx.title} />
+          <InlineReportForm
+            subject={rSubject || ctx.title}
+            kicker={rKicker || undefined}
+            heading={rHeading || undefined}
+            blurb={rBlurb || undefined}
+            placeholder={rPlaceholder || undefined}
+            buttonLabel={rButton || undefined}
+          />
         </div>
       );
+    }
     case "poll":
     case "react":
       return ctx.postId ? (
