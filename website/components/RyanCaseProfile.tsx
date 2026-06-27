@@ -74,14 +74,14 @@ export function RyanCaseProfile({
           {ROLE_LINE}
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
+          <span className="rounded-full border border-[var(--color-line)] text-[var(--color-muted)] px-3 py-1 text-xs font-bold">
+            Convicted &amp; sentenced — May 2024
+          </span>
           <span className="rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] px-3 py-1 text-xs font-bold">
-            ★ Pardoned — Jan 20, 2025
+            ★ Fully pardoned — Jan 20, 2025
           </span>
           <span className="rounded-full border-2 border-[var(--color-success)] text-[var(--color-success)] px-3 py-1 text-xs font-bold">
-            ✓ All charges dismissed with prejudice
-          </span>
-          <span className="rounded-full border border-[var(--color-line)] text-[var(--color-muted)] px-3 py-1 text-xs font-bold">
-            Cannot be brought again
+            ✓ Then dismissed with prejudice
           </span>
         </div>
       </div>
@@ -143,25 +143,27 @@ export function RyanCaseProfile({
           The case · start to finish
         </p>
         <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
-          Arrested to exonerated.
+          Arrested. Convicted. Pardoned.
         </h2>
         <ol className="mt-5 relative border-l-2 border-[var(--color-line)] ml-3 space-y-5">
           {[
             { date: "Jan 18, 2021", title: "Arrested", detail: "Taken into custody in the Eastern District of Texas." },
-            { date: "Feb 12, 2021", title: "Indicted", detail: "Charged with ten counts tied to January 6." },
-            { date: "Apr 26, 2021", title: "Arraigned", detail: "Pleaded not guilty to all counts." },
+            { date: "2021", title: "Indicted", detail: "Charged with multiple counts tied to January 6." },
+            { date: "Apr 26, 2021", title: "Arraigned", detail: "Initially pleaded not guilty." },
             {
               date: "Dec 2021",
               title: "Due process violated — on the record",
               detail:
                 "A federal judge acknowledged from the bench that his due-process rights had been violated. He was held across ten federal and local facilities anyway.",
             },
+            { date: "Nov 2023", title: "Pleaded guilty", detail: "Pleaded guilty to two felonies: obstruction of an official proceeding and assaulting, resisting, or impeding officers." },
+            { date: "May 2, 2024", title: "Convicted & sentenced", detail: "Sentenced to 63 months in federal prison and a $200,000 fine." },
             { date: "Jan 20, 2025", title: "Fully pardoned", detail: "Granted a full and unconditional pardon by President Trump." },
             {
               date: "2025",
               title: "Dismissed with prejudice",
               detail:
-                "Every charge dismissed with prejudice by U.S. Attorney Edward R. Martin Jr. — the case can never be brought again.",
+                "Following the pardon, the charges were dismissed with prejudice by U.S. Attorney Edward R. Martin Jr. — the case can never be brought again.",
             },
           ].map((e) => (
             <li key={e.date} className="relative pl-6">
