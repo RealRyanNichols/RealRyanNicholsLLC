@@ -7,6 +7,7 @@ import { Header } from "@/components/Header";
 import { AnnouncementBanner } from "@/components/AnnouncementBanner";
 import { Footer } from "@/components/Footer";
 import { MobileSupportBar } from "@/components/MobileSupportBar";
+import { PathPicker } from "@/components/PathPicker";
 import { PageViewTracker } from "@/components/PageViewTracker";
 import { ThirdPartyAnalytics } from "@/components/ThirdPartyAnalytics";
 import { Analytics } from "@vercel/analytics/next";
@@ -97,6 +98,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </main>
         <Footer />
         <MobileSupportBar />
+        <PathPicker variant="overlay" />
         <Suspense fallback={null}>
           <PageViewTracker />
         </Suspense>

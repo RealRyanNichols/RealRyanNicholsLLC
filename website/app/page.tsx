@@ -2,6 +2,7 @@ import { getPublishedPosts, getCommentCount } from "@/lib/posts";
 import { getOgImages } from "@/lib/og-images";
 import { PostCard } from "@/components/PostCard";
 import { ProfileHero } from "@/components/ProfileHero";
+import { PathPicker } from "@/components/PathPicker";
 import { VerseSidebar } from "@/components/VerseSidebar";
 import { SignupForm } from "@/components/SignupForm";
 import { BookPromo } from "@/components/BookPromo";
@@ -45,6 +46,10 @@ export default async function HomePage({
       <div className="lg:col-span-2">
         <LiveNowBanner stream={activeLiveStream} />
         <ProfileHero />
+
+        <div className="mt-6">
+          <PathPicker variant="band" />
+        </div>
 
         {/* Feed sits directly under the hero — people come to read first.
             The take-action blocks are woven into the feed below at spaced

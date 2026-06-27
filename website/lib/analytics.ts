@@ -1,11 +1,14 @@
 import { track as vercelTrack } from "@vercel/analytics";
+import { getVisitorId } from "@/lib/client-ids";
 
 // One call → every analytics sink we run: Vercel Web Analytics, the Meta
-// Pixel, GA4, and our own first-party page_events table. Use this for key
-// conversions (donate click, subscribe, share, claim) so they show up
-// everywhere at once. Safe to call anywhere client-side; each sink is
-// guarded so a missing pixel never throws.
-type Props = Record<string, string | number | boolean>;
+// Pixel, GA4, TikTok, X/Twitter, and our own first-party page_events table.
+// Use this for key conversions (intent, source, subscribe, share, claim) so
+// they show up everywhere at once. Safe to call anywhere client-side; each
+// sink is guarded so a missing pixel never throws. Every first-party event
+// also carries the persistent visitor_id, so a person is tracked across
+// sessions, not just within one visit.
+type Props = Record<string, string | number | boolean | null>;
 
 export function trackEvent(name: string, props: Props = {}): void {
   if (typeof window === "undefined") return;
@@ -25,12 +28,24 @@ export function trackEvent(name: string, props: Props = {}): void {
   } catch {
     /* noop */
   }
-  // First-party: fold into the same page_events stream as clicks/scroll.
+  try {
+    window.ttq?.track?.(name, props);
+  } catch {
+    /* noop */
+  }
+  try {
+    window.twq?.("event", name, props);
+  } catch {
+    /* noop */
+  }
+  // First-party: fold into the same page_events stream as clicks/scroll,
+  // stamped with the persistent visitor_id for cross-session identity.
   try {
     const sid = window.sessionStorage.getItem("rn_session_id") ?? "";
     if (sid) {
       const body = JSON.stringify({
         session_id: sid,
+        visitor_id: getVisitorId() || null,
         path: `${window.location.pathname}${window.location.search}`,
         kind: name,
         target: JSON.stringify(props).slice(0, 480),
