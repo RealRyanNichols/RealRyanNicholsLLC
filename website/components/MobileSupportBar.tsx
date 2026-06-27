@@ -32,11 +32,11 @@ export function MobileSupportBar() {
           Private
         </Link>
         <Link
-          href="/support#support-mission"
-          data-track="mobile-support-mission"
+          href="/#join"
+          data-track="mobile-bar-join"
           className="btn-support inline-flex min-h-11 items-center justify-center rounded-lg px-2 text-center text-xs font-black"
         >
-          Donate
+          Join
         </Link>
       </nav>
     </div>

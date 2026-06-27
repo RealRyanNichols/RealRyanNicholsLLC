@@ -28,7 +28,6 @@ export const SITE = {
   emailCaptureEnabled: true,
   // Stripe-hosted $5/month Supporter Membership checkout. Optional badge,
   // doesn't gate commenting (which stays free).
-  supporterUrl:
-    process.env.NEXT_PUBLIC_SUPPORTER_URL ??
-    "https://buy.stripe.com/dRm5kw2HCamd33z8st8k80L",
+  // Donations removed — Ryan sells what he builds, he does not pass the hat.
+  supporterUrl: "",
 };

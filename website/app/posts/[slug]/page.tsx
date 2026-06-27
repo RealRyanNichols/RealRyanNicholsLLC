@@ -16,7 +16,6 @@ import { PostFollowCapture } from "@/components/PostLivePulse";
 import { ReadNext } from "@/components/ReadNext";
 import { NotifySubscribersButton } from "@/components/NotifySubscribersButton";
 import { PostMain } from "@/components/PostMain";
-import { PostSupportCTA } from "@/components/PostSupportCTA";
 import { StoryTipCTA } from "@/components/StoryTipCTA";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { SITE } from "@/lib/site";
@@ -278,8 +277,6 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
         ) : null}
 
         <RallyInline source="article" className="mt-8" />
-
-        {post.category !== "Offers" ? <PostSupportCTA /> : null}
 
         <PostFollowCapture
           path={path}

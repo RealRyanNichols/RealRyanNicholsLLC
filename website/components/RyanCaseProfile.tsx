@@ -453,16 +453,16 @@ export function RyanCaseProfile({
             He kept the receipts. Help keep them public.
           </h2>
           <p className="mt-4 text-base text-[var(--color-ink-soft)] leading-relaxed max-w-xl mx-auto">
-            Keeping this record up — the filings, the scans, the names — costs money and
-            takes nerve. Two ways to help right now: back the rebuild, or put this page in
-            front of one more person.
+            Keeping this record up — the filings, the scans, the names — takes work and
+            nerve. The best way to help: read it, and put this page in front of one more
+            person.
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <Link
-              href="/support"
+              href="/book"
               className="inline-flex items-center rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] px-6 py-3 text-sm font-bold hover:opacity-90 transition"
             >
-              Back the rebuild →
+              Get the book →
             </Link>
             <ShareButton
               url={url}
@@ -474,9 +474,6 @@ export function RyanCaseProfile({
           <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-xs text-[var(--color-muted)]">
             <Link href="/the-harassment" className="hover:text-[var(--color-accent)] font-semibold">
               The harassment wall →
-            </Link>
-            <Link href="/impact" className="hover:text-[var(--color-accent)] font-semibold">
-              Where the money goes →
             </Link>
             <Link href="/" className="hover:text-[var(--color-accent)] font-semibold">
               The latest dispatches →
