@@ -284,11 +284,7 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
         <PostFollowCapture
           path={path}
           seed={pulseSeed}
-          emailEnabled={Boolean(
-            SITE.mailingAddress &&
-              process.env.RESEND_API_KEY &&
-              process.env.RESEND_FROM_EMAIL,
-          )}
+          emailEnabled={SITE.emailCaptureEnabled}
         />
 
         <div className="mt-6">
@@ -318,11 +314,7 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
       <aside className="space-y-5">
         <VerseSidebar />
         <SignupForm
-          emailEnabled={Boolean(
-            SITE.mailingAddress &&
-              process.env.RESEND_API_KEY &&
-              process.env.RESEND_FROM_EMAIL,
-          )}
+          emailEnabled={SITE.emailCaptureEnabled}
         />
       </aside>
     </div>

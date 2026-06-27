@@ -33,11 +33,7 @@ export default async function HomePage({
     posts.map(async (p) => [p.id, await getCommentCount(p.id)] as const),
   );
   const countMap = new Map(counts);
-  const emailSignupEnabled = Boolean(
-    SITE.mailingAddress &&
-      process.env.RESEND_API_KEY &&
-      process.env.RESEND_FROM_EMAIL,
-  );
+  const emailSignupEnabled = SITE.emailCaptureEnabled;
 
   // Pinned posts float to the top of the feed; everything else follows in
   // chronological order. getPublishedPosts already returns them pinned-first

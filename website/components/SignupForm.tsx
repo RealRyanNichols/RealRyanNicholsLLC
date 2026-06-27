@@ -106,7 +106,7 @@ export function SignupForm({ emailEnabled = false }: { emailEnabled?: boolean })
       </div>
       <p className="mt-2 text-[11px] text-[var(--color-muted)] leading-relaxed">
         {emailEnabled
-          ? "Email gets a confirmation link. Phone numbers are stored until SMS updates go live — unsubscribe anytime."
+          ? "No spam, ever. Unsubscribe anytime."
           : "Your number is stored until SMS updates go live — unsubscribe anytime."}
       </p>
       {state.kind === "success" && (

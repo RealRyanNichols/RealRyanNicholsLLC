@@ -61,17 +61,14 @@ export async function POST(request: Request) {
   const emailIn = parsed.data.email && parsed.data.email.length > 0 ? parsed.data.email : null;
   const phoneIn = parsed.data.phone && parsed.data.phone.length > 0 ? parsed.data.phone : null;
 
-  // Email leg requires Resend creds. If only phone was given we can skip the check.
+  // Sending a confirmation requires a verified Resend sender AND a physical
+  // mailing address (CAN-SPAM). If those aren't set yet we do NOT reject the
+  // signup — we still STORE the email as an unconfirmed lead (storing is not
+  // sending, so it stays compliant) and send the confirmation once sending is
+  // turned on. This is what stops the read-and-leave leak.
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.RESEND_FROM_EMAIL;
-  // Email requires a verified sender (Resend) AND a physical mailing address
-  // (CAN-SPAM). Phone signups carry no such requirement, so they always work.
-  if (emailIn && (!apiKey || !from || !SITE.mailingAddress)) {
-    return NextResponse.json(
-      { error: "Email signups aren't enabled yet — enter a phone number instead." },
-      { status: 503 }
-    );
-  }
+  const canSendEmail = Boolean(apiKey && from && SITE.mailingAddress);
 
   let supabase: ReturnType<typeof getSupabaseServiceClient>;
   try {
@@ -102,6 +99,7 @@ export async function POST(request: Request) {
   // Send confirmation email if a new/refreshed email signup was created.
   if (
     emailIn &&
+    canSendEmail &&
     row.email_confirmation_token &&
     (row.email_action === "created" ||
       row.email_action === "reconfirm" ||
@@ -132,8 +130,10 @@ export async function POST(request: Request) {
   if (emailIn) {
     if (row.email_action === "already_subscribed") {
       parts.push("Your email is already on the list.");
-    } else {
+    } else if (canSendEmail) {
       parts.push("Check your email to confirm your subscription.");
+    } else {
+      parts.push("You're on the list. I'll send your confirmation the moment email updates go live.");
     }
   }
   if (phoneIn) {

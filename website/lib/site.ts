@@ -21,6 +21,11 @@ export const SITE = {
   // CAN-SPAM requires a physical postal address in every commercial email.
   // Set SITE_MAILING_ADDRESS in your environment (a PO box is fine).
   mailingAddress: process.env.SITE_MAILING_ADDRESS ?? "",
+  // Show the email field in signup forms and CAPTURE emails now — stored as
+  // unconfirmed leads. SENDING confirmations still requires mailingAddress +
+  // Resend (gated server-side); this only controls whether we collect the
+  // address. Always on so we never lose a lead while sending is being set up.
+  emailCaptureEnabled: true,
   // Stripe-hosted $5/month Supporter Membership checkout. Optional badge,
   // doesn't gate commenting (which stays free).
   supporterUrl:
