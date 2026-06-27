@@ -79,7 +79,7 @@
     overflow-x: hidden;
   }
 
-  :where(header, footer, nav, main, section, article, aside, div, ul, ol, li) {
+  :where(header, footer, nav, main, section, article, aside, div, ul, ol, li, label, form, fieldset) {
     min-width: 0;
   }
 
@@ -89,6 +89,7 @@
 
   :where(input, textarea, select, button) {
     max-width: 100%;
+    min-width: 0;
   }
 
   :where(h1, h2, h3, h4, p, li, blockquote, figcaption, a) {

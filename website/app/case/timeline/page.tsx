@@ -19,7 +19,7 @@ const DESCRIPTION =
 export async function generateMetadata(): Promise<Metadata> {
   const override = await getOgImage("/case/timeline");
   const url = `${SITE.url}/case/timeline`;
-  const ogUrl = override?.image_url ?? null;
+  const ogUrl = override?.image_url ?? `${SITE.url}/og/site`;
   return {
     title: override?.title ?? "The J6 Sentencing Wave",
     description: override?.description ?? DESCRIPTION,

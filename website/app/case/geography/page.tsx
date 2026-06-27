@@ -17,7 +17,7 @@ const DESCRIPTION =
 export async function generateMetadata(): Promise<Metadata> {
   const override = await getOgImage("/case/geography");
   const url = `${SITE.url}/case/geography`;
-  const ogUrl = override?.image_url ?? null;
+  const ogUrl = override?.image_url ?? `${SITE.url}/og/site`;
   return {
     title: override?.title ?? "J6 Geography",
     description: override?.description ?? DESCRIPTION,

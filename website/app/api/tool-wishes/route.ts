@@ -39,7 +39,9 @@ export async function GET() {
   const supabase = await getSupabaseServerClient();
   const { data: auth } = await supabase.auth.getUser();
   if (!auth.user) {
-    return NextResponse.json({ error: "Sign in to use tool wishes." }, { status: 401 });
+    // Anonymous visitors aren't an error. Return a benign signed-out status at
+    // 200 so /tools doesn't log a 401 in the browser console on every load.
+    return NextResponse.json({ ok: false, signed_in: false }, { status: 200 });
   }
 
   const { count, error } = await supabase
