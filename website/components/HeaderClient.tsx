@@ -86,7 +86,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
     <>
       {!isAdminPath ? <HeaderStatusStrip /> : null}
       <header className="sticky top-0 z-30 border-b border-[var(--color-line)] bg-[var(--color-paper)]/90 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-2 px-3 sm:gap-3 sm:px-4">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-3 sm:px-5">
           <Link
             href="/"
             className="group flex min-h-11 min-w-0 items-center gap-2.5"
@@ -118,7 +118,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
           </Link>
 
           {/* Desktop: the four doors + one compact More + Donate. */}
-          <nav data-desktop-nav className="hidden items-center gap-1 text-sm lg:flex">
+          <nav data-desktop-nav className="hidden items-center gap-1 text-sm xl:flex">
             {DOORS.map((d) => (
               <NavLink key={d.href} href={d.href} active={isActive(pathname, d.href)}>
                 {d.label}
@@ -181,7 +181,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
           </nav>
 
           {/* Touch/tablet — Donate (always visible) + hamburger. */}
-          <div className="flex shrink-0 items-center gap-1.5 min-[360px]:gap-2 lg:hidden">
+          <div className="flex shrink-0 items-center gap-1.5 min-[360px]:gap-2 xl:hidden">
             <Link
               href="/search"
               aria-label="Search"
@@ -215,7 +215,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             id="mobile-menu"
             role="dialog"
             aria-label="Site menu"
-            className="absolute left-0 right-0 top-full z-30 max-h-[calc(100dvh-4rem)] overflow-y-auto border-b border-[var(--color-line)] bg-[#101a31]/98 px-4 py-4 text-[var(--color-paper)] shadow-2xl backdrop-blur-xl lg:hidden"
+            className="absolute left-0 right-0 top-full z-30 max-h-[calc(100dvh-4rem)] overflow-y-auto border-b border-[var(--color-line)] bg-[#101a31]/98 px-4 py-4 text-[var(--color-paper)] shadow-2xl backdrop-blur-xl xl:hidden"
           >
             <nav aria-label="Mobile navigation" className="mx-auto flex max-w-3xl flex-col gap-4">
               <div className="flex items-center justify-between gap-3 border-b border-white/10 pb-3">
@@ -310,7 +310,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
       {/* Mobile menu backdrop — tap to close. */}
       {open ? (
         <div
-          className="fixed inset-0 z-20 bg-black/60 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-20 bg-black/60 backdrop-blur-sm xl:hidden"
           onClick={() => setOpen(false)}
           aria-hidden
         />
@@ -333,7 +333,7 @@ function NavLink({
       href={href}
       aria-current={active ? "page" : undefined}
       className={[
-        "rounded-md px-2.5 py-1.5 font-medium transition",
+        "whitespace-nowrap rounded-md px-2.5 py-1.5 font-medium transition",
         active
           ? "bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
           : "text-[var(--color-ink-soft)] hover:bg-[var(--color-accent-soft)] hover:text-[var(--color-accent)]",
