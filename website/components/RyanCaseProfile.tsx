@@ -64,6 +64,16 @@ export function RyanCaseProfile({
 
       {/* ---- Hero ---- */}
       <div className="rounded-3xl border-2 border-[var(--color-accent)] bg-gradient-to-br from-[var(--color-accent-soft)] to-[var(--color-surface)] p-6 sm:p-9">
+        {person.photo_url ? (
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={person.photo_url}
+              alt={person.name}
+              className="float-right ml-4 mb-3 h-32 w-32 sm:h-44 sm:w-44 rounded-2xl object-cover border-2 border-[var(--color-accent)] shadow-lg"
+            />
+          </>
+        ) : null}
         <p className="text-[11px] uppercase tracking-[0.25em] text-[var(--color-accent)] font-bold">
           Verified subject · United States v. Nichols
         </p>
