@@ -3,6 +3,7 @@ import { getOgImages } from "@/lib/og-images";
 import { PostCard } from "@/components/PostCard";
 import { ProfileHero } from "@/components/ProfileHero";
 import { PathPicker } from "@/components/PathPicker";
+import { RyanChat } from "@/components/RyanChat";
 import { VerseSidebar } from "@/components/VerseSidebar";
 import { SignupForm } from "@/components/SignupForm";
 import { BookPromo } from "@/components/BookPromo";
@@ -46,6 +47,10 @@ export default async function HomePage({
       <div className="lg:col-span-2">
         <LiveNowBanner stream={activeLiveStream} />
         <ProfileHero />
+
+        <div className="mt-6">
+          <RyanChat variant="hero" surface="home" />
+        </div>
 
         <div className="mt-6">
           <PathPicker variant="band" />
