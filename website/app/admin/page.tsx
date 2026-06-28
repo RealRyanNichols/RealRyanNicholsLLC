@@ -7,6 +7,10 @@ import {
   getIntegrationHealth,
   countCriticalIssues,
 } from "@/lib/integration-health";
+import {
+  getSupabaseServiceClient,
+  isSupabaseServiceConfigured,
+} from "@/lib/supabase/service";
 
 export const metadata: Metadata = {
   title: "Admin",
@@ -137,6 +141,27 @@ export default async function AdminHomePage() {
         .eq("status", "published"),
     ]);
 
+  // Conversations ("the brain") — read via the service client since the chat
+  // tables are admin-only (RLS deny-all).
+  let chats24h = 0;
+  let chatsTotal = 0;
+  if (isSupabaseServiceConfigured()) {
+    try {
+      const svc = getSupabaseServiceClient();
+      const [{ count: c24 }, { count: cTot }] = await Promise.all([
+        svc
+          .from("chat_sessions")
+          .select("id", { count: "exact", head: true })
+          .gte("last_at", oneDayAgo),
+        svc.from("chat_sessions").select("id", { count: "exact", head: true }),
+      ]);
+      chats24h = c24 ?? 0;
+      chatsTotal = cTot ?? 0;
+    } catch {
+      /* chat storage optional */
+    }
+  }
+
   const reviewQueueTotal =
     (pendingTips ?? 0) +
     (pendingClaims ?? 0) +
@@ -199,6 +224,14 @@ export default async function AdminHomePage() {
           value={String(activeNow ?? 0)}
           sub={`${views24h ?? 0} views in 24h`}
           hot={(activeNow ?? 0) > 0}
+        />
+        <ActionLane
+          href="/admin/chats"
+          kicker="Chats"
+          title="Conversations"
+          value={String(chats24h)}
+          sub={`${chatsTotal} total · talking to your AI`}
+          hot={chats24h > 0}
         />
         <ActionLane
           href="/admin/invoices"

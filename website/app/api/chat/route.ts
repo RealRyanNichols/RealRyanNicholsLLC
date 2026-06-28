@@ -1,4 +1,10 @@
 import { NextResponse } from "next/server";
+import {
+  getSupabaseServiceClient,
+  isSupabaseServiceConfigured,
+} from "@/lib/supabase/service";
+import { sendAdminAlert } from "@/lib/admin-email-alerts";
+import { SITE } from "@/lib/site";
 
 // "Talk to Ryan" — the on-site chat that answers in Ryan's voice. Reuses the
 // same Anthropic Messages engine as /api/case/briefing (claude-haiku-4-5,
@@ -68,9 +74,17 @@ export async function POST(req: Request) {
     );
   }
 
-  let body: { messages?: unknown };
+  let body: {
+    messages?: unknown;
+    chatId?: unknown;
+    visitorId?: unknown;
+    direction?: unknown;
+    source?: unknown;
+    path?: unknown;
+    surface?: unknown;
+  };
   try {
-    body = (await req.json()) as { messages?: unknown };
+    body = (await req.json()) as typeof body;
   } catch {
     return NextResponse.json({ ok: false, error: "bad_json" }, { status: 400 });
   }
@@ -147,5 +161,94 @@ export async function POST(req: Request) {
     json.content?.find((c) => c.type === "text")?.text?.trim() ??
     "I'm having trouble answering right now. Send it through the tip line and I'll get to it myself.";
 
+  // Persist the conversation to the admin inbox ("the brain") and alert Ryan on
+  // a brand-new chat. Best-effort — storage must never break the reply.
+  const chatId =
+    typeof body.chatId === "string" && /^[0-9a-fA-F-]{16,40}$/.test(body.chatId)
+      ? body.chatId
+      : null;
+  if (chatId && isSupabaseServiceConfigured()) {
+    try {
+      const svc = getSupabaseServiceClient();
+      const lastUser = messages[messages.length - 1].content;
+      const nowIso = new Date().toISOString();
+      const visitorId =
+        typeof body.visitorId === "string" ? body.visitorId.slice(0, 64) : null;
+      const direction =
+        typeof body.direction === "string" ? body.direction.slice(0, 40) : null;
+      const source =
+        typeof body.source === "string" ? body.source.slice(0, 40) : null;
+      const cpath =
+        typeof body.path === "string" ? body.path.slice(0, 200) : null;
+      const surface =
+        typeof body.surface === "string" ? body.surface.slice(0, 40) : null;
+
+      const { data: existing } = await svc
+        .from("chat_sessions")
+        .select("id")
+        .eq("id", chatId)
+        .maybeSingle();
+      const isNew = !existing;
+
+      if (isNew) {
+        await svc.from("chat_sessions").insert({
+          id: chatId,
+          visitor_id: visitorId,
+          visitor_hash: visitorId,
+          surface,
+          direction,
+          source,
+          path: cpath,
+          user_agent: req.headers.get("user-agent")?.slice(0, 300) ?? null,
+          message_count: 0,
+          started_at: nowIso,
+          last_at: nowIso,
+        });
+      }
+
+      await svc.from("chat_messages").insert([
+        { session_id: chatId, role: "user", content: lastUser },
+        { session_id: chatId, role: "assistant", content: reply },
+      ]);
+      await svc
+        .from("chat_sessions")
+        .update({ last_at: nowIso, message_count: messages.length + 1 })
+        .eq("id", chatId);
+
+      if (isNew) {
+        const adminUrl = `${SITE.url}/admin/chats`;
+        const tags = [
+          direction ? `here for: ${direction}` : null,
+          source ? `found via: ${source}` : null,
+        ]
+          .filter(Boolean)
+          .join(" · ");
+        await sendAdminAlert({
+          subject: `New chat on your site: "${lastUser.slice(0, 60)}"`,
+          text: `Someone just started chatting with your AI.\n\nThey asked: ${lastUser}\n\n${tags}\n\nRead it: ${adminUrl}`,
+          html: `<p><strong>Someone just started chatting with your AI.</strong></p><p>They asked:</p><blockquote>${escapeHtml(
+            lastUser,
+          )}</blockquote>${tags ? `<p>${escapeHtml(tags)}</p>` : ""}<p><a href="${adminUrl}">Open the conversation →</a></p>`,
+        }).catch(() => {});
+      }
+    } catch {
+      /* best-effort; never break the chat */
+    }
+  }
+
   return NextResponse.json({ ok: true, reply });
+}
+
+function escapeHtml(value: string): string {
+  return value.replace(/[&<>"']/g, (c) =>
+    c === "&"
+      ? "&amp;"
+      : c === "<"
+        ? "&lt;"
+        : c === ">"
+          ? "&gt;"
+          : c === '"'
+            ? "&quot;"
+            : "&#39;",
+  );
 }

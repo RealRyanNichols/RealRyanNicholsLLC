@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
+import { getVisitorId } from "@/lib/client-ids";
 
 type Turn = { role: "user" | "assistant"; content: string };
 type Variant = "hero" | "launcher";
@@ -16,22 +17,55 @@ const SUGGESTIONS = [
 const GREETING =
   "I'm Ryan's AI — trained on his words, in his voice. Ask me about the case, faith, rebuilding, or working together. He reads what comes through and jumps in himself when he can.";
 
+const TEASER_KEY = "rrn_chat_teaser_seen";
+const PROFILE_KEY = "rrn_visitor_profile";
+
+function makeId(): string {
+  try {
+    if (typeof crypto !== "undefined" && "randomUUID" in crypto)
+      return crypto.randomUUID();
+  } catch {
+    /* fall through */
+  }
+  return `c${Date.now().toString(36)}${Math.random().toString(36).slice(2, 10)}`;
+}
+
+function readProfile(): { direction: string | null; source: string | null } {
+  try {
+    const p = JSON.parse(localStorage.getItem(PROFILE_KEY) || "{}");
+    return { direction: p.direction ?? null, source: p.source ?? null };
+  } catch {
+    return { direction: null, source: null };
+  }
+}
+
 function useRyanChat(surface: string) {
   const [messages, setMessages] = useState<Turn[]>([]);
   const [loading, setLoading] = useState(false);
+  const chatId = useRef<string | null>(null);
 
   async function send(text: string) {
     const clean = text.trim();
     if (!clean || loading) return;
+    if (!chatId.current) chatId.current = makeId();
     const next: Turn[] = [...messages, { role: "user", content: clean }];
     setMessages(next);
     setLoading(true);
     trackEvent("chat_send", { surface });
     try {
+      const profile = readProfile();
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next }),
+        body: JSON.stringify({
+          messages: next,
+          chatId: chatId.current,
+          visitorId: getVisitorId(),
+          direction: profile.direction,
+          source: profile.source,
+          surface,
+          path: typeof window !== "undefined" ? window.location.pathname : null,
+        }),
       });
       const data = await res.json().catch(() => null);
       let reply: string;
@@ -79,10 +113,7 @@ function Thread({
   }, [messages, loading]);
 
   return (
-    <div
-      className={compact ? "space-y-3" : "space-y-4"}
-      aria-live="polite"
-    >
+    <div className={compact ? "space-y-3" : "space-y-4"} aria-live="polite">
       {messages.length === 0 ? (
         <div className="rounded-2xl rounded-tl-sm border border-[var(--color-line)] bg-[var(--color-accent-soft)] px-4 py-3 text-sm leading-relaxed text-[var(--color-ink)]">
           {GREETING}
@@ -180,6 +211,15 @@ function Monogram({ size = "h-10 w-10" }: { size?: string }) {
   );
 }
 
+function CloseGlyph() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" className="h-5 w-5" aria-hidden>
+      <line x1="6" y1="6" x2="18" y2="18" />
+      <line x1="6" y1="18" x2="18" y2="6" />
+    </svg>
+  );
+}
+
 export function RyanChat({
   variant = "hero",
   surface = "home",
@@ -189,16 +229,41 @@ export function RyanChat({
 }) {
   const { messages, loading, send } = useRyanChat(surface);
   const [open, setOpen] = useState(false);
+  const [teaser, setTeaser] = useState(false);
 
-  // Esc closes the launcher panel.
   useEffect(() => {
     if (variant !== "launcher") return;
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") setOpen(false);
     }
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    let t: number | undefined;
+    try {
+      if (!localStorage.getItem(TEASER_KEY)) {
+        t = window.setTimeout(() => setTeaser(true), 4500);
+      }
+    } catch {
+      /* ignore */
+    }
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      if (t) window.clearTimeout(t);
+    };
   }, [variant]);
+
+  function markTeaserSeen() {
+    try {
+      localStorage.setItem(TEASER_KEY, "1");
+    } catch {
+      /* ignore */
+    }
+  }
+  function openChat() {
+    setOpen(true);
+    setTeaser(false);
+    markTeaserSeen();
+    trackEvent("chat_open", { surface });
+  }
 
   if (variant === "hero") {
     return (
@@ -255,15 +320,18 @@ export function RyanChat({
         <div
           role="dialog"
           aria-label="Talk to Ryan"
-          className="fixed bottom-5 right-5 z-50 flex h-[560px] w-[380px] flex-col overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-paper)] shadow-2xl"
+          className="fixed bottom-5 right-5 z-50 flex h-[564px] w-[384px] flex-col overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-paper)] shadow-2xl"
         >
           <div className="flex items-center justify-between gap-3 border-b border-[var(--color-line)] bg-[var(--color-ink)] px-4 py-3 text-[var(--color-paper)]">
             <div className="flex items-center gap-2.5">
-              <Monogram size="h-8 w-8" />
+              <span className="relative">
+                <Monogram size="h-9 w-9" />
+                <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-[var(--color-ink)] bg-emerald-400" />
+              </span>
               <div>
                 <p className="text-sm font-bold leading-tight">Talk to Ryan</p>
                 <p className="text-[11px] leading-tight text-[var(--color-paper)]/70">
-                  Answers in his voice
+                  Answers in his voice · he reads every one
                 </p>
               </div>
             </div>
@@ -273,10 +341,7 @@ export function RyanChat({
               aria-label="Close chat"
               className="rounded-full p-1 text-[var(--color-paper)]/80 transition hover:bg-white/10 hover:text-[var(--color-paper)]"
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" className="h-5 w-5">
-                <line x1="6" y1="6" x2="18" y2="18" />
-                <line x1="6" y1="18" x2="18" y2="6" />
-              </svg>
+              <CloseGlyph />
             </button>
           </div>
 
@@ -303,18 +368,51 @@ export function RyanChat({
           </div>
         </div>
       ) : (
-        <button
-          type="button"
-          onClick={() => {
-            setOpen(true);
-            trackEvent("chat_open", { surface });
-          }}
-          className="fixed bottom-5 right-5 z-50 flex items-center gap-2.5 rounded-full bg-[var(--color-accent)] px-4 py-3 text-sm font-bold text-[var(--color-ink)] shadow-xl shadow-[var(--color-accent-glow)] transition hover:brightness-105"
-          aria-label="Talk to Ryan"
-        >
-          <Monogram size="h-7 w-7" />
-          Talk to Ryan
-        </button>
+        <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
+          {teaser ? (
+            <div className="relative max-w-[260px] rounded-2xl rounded-br-sm border border-[var(--color-line)] bg-[var(--color-paper)] px-4 py-3 shadow-xl">
+              <button
+                type="button"
+                onClick={() => {
+                  setTeaser(false);
+                  markTeaserSeen();
+                }}
+                aria-label="Dismiss"
+                className="absolute -right-2 -top-2 grid h-6 w-6 place-items-center rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] text-sm text-[var(--color-muted)] shadow"
+              >
+                ×
+              </button>
+              <button type="button" onClick={openChat} className="block text-left">
+                <p className="text-sm font-bold text-[var(--color-ink)]">
+                  Got a question?
+                </p>
+                <p className="mt-0.5 text-xs text-[var(--color-ink-soft)]">
+                  Ask me anything — in my own words. I read every one.
+                </p>
+              </button>
+            </div>
+          ) : null}
+
+          <button
+            type="button"
+            onClick={openChat}
+            aria-label="Talk to Ryan"
+            className="flex items-center gap-2.5 rounded-full border border-[var(--color-accent)]/30 bg-[var(--color-paper)] py-2 pl-2 pr-4 shadow-xl shadow-[var(--color-accent-glow)] transition hover:brightness-[1.02] hover:shadow-2xl"
+          >
+            <span className="relative">
+              <Monogram size="h-9 w-9" />
+              <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-[var(--color-paper)] bg-emerald-400" />
+            </span>
+            <span className="text-left leading-tight">
+              <span className="block text-sm font-black text-[var(--color-ink)]">
+                Talk to Ryan
+              </span>
+              <span className="block text-[11px] font-semibold text-[var(--color-ink-soft)]">
+                Ask me anything
+              </span>
+            </span>
+          </button>
+        </div>
       )}
     </div>
   );
