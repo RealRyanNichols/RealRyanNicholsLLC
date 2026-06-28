@@ -48,7 +48,7 @@ export default async function HomePage({
         <LiveNowBanner stream={activeLiveStream} />
         <ProfileHero />
 
-        <div className="mt-6">
+        <div id="talk" className="mt-6 scroll-mt-24">
           <RyanChat variant="hero" surface="home" />
         </div>
 

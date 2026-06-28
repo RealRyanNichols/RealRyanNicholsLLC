@@ -141,6 +141,12 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             ))}
 
             <Link
+              href="/#talk"
+              className="ml-1 inline-flex items-center rounded-full bg-[var(--color-accent)] px-3.5 py-1.5 text-xs font-black text-[var(--color-ink)] transition hover:brightness-105"
+            >
+              Talk to Ryan
+            </Link>
+            <Link
               href="/#join"
               className="btn-support ml-1 inline-flex items-center rounded-full px-3.5 py-1.5 text-xs font-semibold"
             >
@@ -229,6 +235,14 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
                   {signedIn ? officeLabel : "Sign in"}
                 </Link>
               </div>
+
+              <Link
+                href="/#talk"
+                onClick={() => setOpen(false)}
+                className="flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-4 py-3 text-sm font-black text-[var(--color-ink)] transition hover:brightness-105"
+              >
+                Talk to Ryan
+              </Link>
 
               <div className="grid grid-cols-2 gap-2">
                 {DOORS.map((d) => (
