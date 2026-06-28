@@ -112,7 +112,7 @@ function Thread({
             <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[var(--color-accent)] [animation-delay:-0.1s]" />
             <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[var(--color-accent)]" />
           </span>
-          Ryan's AI is typing…
+          Ryan&apos;s AI is typing…
         </div>
       ) : null}
       <div ref={endRef} />
