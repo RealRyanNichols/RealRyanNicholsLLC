@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { getPersonBySlug } from "@/lib/case";
+import { ogEmbeddableImage } from "@/lib/og-embed";
 
 export const runtime = "nodejs";
 export const revalidate = 3600;
@@ -31,7 +32,10 @@ export async function GET(
       : p.role ?? "Person of record";
 
   // When a photo is set, the share card *is* the photo with a caption bar.
-  if (p.photo_url) {
+  // Embed it via ogEmbeddableImage — a relative photo_url (like Ryan's
+  // /uploads/… path) makes ImageResponse throw a 500 otherwise.
+  const photo = await ogEmbeddableImage(p.photo_url);
+  if (photo) {
     return new ImageResponse(
       (
         <div
@@ -46,7 +50,7 @@ export async function GET(
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             alt={p.name}
-            src={p.photo_url}
+            src={photo}
             width={1200}
             height={630}
             style={{
@@ -103,6 +107,8 @@ export async function GET(
       { width: 1200, height: 630 },
     );
   }
+
+  const siteMark = await ogEmbeddableImage("/avatar.jpg");
 
   return new ImageResponse(
     (
@@ -198,22 +204,22 @@ export async function GET(
               gap: 14,
             }}
           >
-            <div
-              style={{
-                width: 48,
-                height: 48,
-                borderRadius: 48,
-                background: "#b32419",
-                color: "#fdf8ea",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: 20,
-                fontWeight: 700,
-              }}
-            >
-              RN
-            </div>
+            {/* Ryan's real face as the site mark — no monogram (his call). */}
+            {siteMark ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                alt=""
+                src={siteMark}
+                width={48}
+                height={48}
+                style={{
+                  width: 48,
+                  height: 48,
+                  borderRadius: 48,
+                  objectFit: "cover",
+                }}
+              />
+            ) : null}
             <div
               style={{
                 fontSize: 20,
