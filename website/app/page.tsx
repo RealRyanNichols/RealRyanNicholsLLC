@@ -10,6 +10,7 @@ import { SignupForm } from "@/components/SignupForm";
 import { BookPromo } from "@/components/BookPromo";
 import { BookCtaBand } from "@/components/BookCtaBand";
 import { RallyInline } from "@/components/RallyInline";
+import { FeedPoll } from "@/components/FeedPoll";
 import { LiveNowBanner } from "@/components/LiveNowBanner";
 import { getActiveLiveStream } from "@/lib/live";
 import { SITE } from "@/lib/site";
@@ -86,8 +87,12 @@ export default async function HomePage({
                   commentCount={countMap.get(p.id) ?? 0}
                   fallbackImage={ogMap.get(`/posts/${p.slug}`) ?? null}
                 />,
-                // Rally CTA after the first few posts; book band a few posts
-                // later — spaced, so neither bunches with the other.
+                // Feed poll right after the lead post (renders only when a
+                // poll is live); rally CTA after the first few posts; book
+                // band a few posts later — spaced, so nothing bunches.
+                i === 0 ? (
+                  <FeedPoll key="home-poll" className="my-8" />
+                ) : null,
                 i === 2 ? (
                   <RallyInline key="home-rally" source="home" className="my-8" />
                 ) : null,

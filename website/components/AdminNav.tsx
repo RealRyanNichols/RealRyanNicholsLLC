@@ -42,6 +42,7 @@ const GROUPS: AdminGroup[] = [
     items: [
       { href: "/admin/analytics", label: "Analytics", sub: "Traffic & behavior" },
       { href: "/admin/audience", label: "Audience", sub: "Profiles & signals" },
+      { href: "/admin/polls", label: "Polls", sub: "Votes & email unlocks" },
       { href: "/admin/tools", label: "Free tools", sub: "Tool runs & needs" },
     ],
   },

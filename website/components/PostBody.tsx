@@ -7,6 +7,7 @@ import { BookCtaBand } from "./BookCtaBand";
 import { DonateBox } from "./DonateBox";
 import { FundTheTruth } from "./FundTheTruth";
 import { ReactionBar } from "./ReactionBar";
+import { PollCard } from "./PollCard";
 import { InlineReportForm } from "./InlineReportForm";
 import { DemandAction } from "./DemandAction";
 import { ShareRow } from "./ShareRow";
@@ -291,7 +292,38 @@ function Shortcode({ kind, arg, ctx }: { kind: string; arg?: string; ctx: Ctx })
         </div>
       );
     }
-    case "poll":
+    case "poll": {
+      // {{poll: Question? | Option A | Option B | ...}} → a real one-tap poll
+      // with email-gated results. A bare {{poll}} (or {{poll: prompt}} with no
+      // options) keeps the legacy behavior and renders the reaction bar.
+      const parts = (arg ?? "").split("|").map((s) => s.trim()).filter(Boolean);
+      if (parts.length >= 3 && ctx.postId) {
+        const [pollQuestion, ...pollOptions] = parts;
+        const qSlug = pollQuestion
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "")
+          .slice(0, 60);
+        return (
+          <div className="not-prose my-7">
+            <PollCard
+              pollKey={`post:${ctx.postId}:${qSlug}`}
+              question={pollQuestion}
+              options={pollOptions.slice(0, 6)}
+            />
+          </div>
+        );
+      }
+      return ctx.postId ? (
+        <div className="not-prose my-7">
+          <ReactionBar
+            targetType="post"
+            targetId={ctx.postId}
+            prompt={arg ?? "How does this hit you? Tap — no signup."}
+          />
+        </div>
+      ) : null;
+    }
     case "react":
       return ctx.postId ? (
         <div className="not-prose my-7">
