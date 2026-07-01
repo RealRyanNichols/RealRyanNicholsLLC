@@ -269,21 +269,34 @@
   background: var(--color-accent);
   color: #fdf8ea;
   font-weight: 600;
-  box-shadow: 0 0 24px var(--color-accent-glow);
+  box-shadow: 0 2px 14px var(--color-accent-glow);
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease,
+    filter 0.2s ease;
 }
 .btn-accent:hover {
   background: var(--color-accent-strong);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 26px var(--color-accent-glow), 0 0 30px var(--color-accent-glow);
+}
+.btn-accent:active {
+  transform: translateY(0);
 }
 
 .btn-support {
   background: linear-gradient(135deg, var(--color-support), #e1bd5b);
   color: #17110a;
   font-weight: 800;
-  box-shadow: 0 0 26px var(--color-support-glow);
+  box-shadow: 0 2px 16px var(--color-support-glow);
+  transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 .btn-support:hover {
   background: linear-gradient(135deg, var(--color-support-strong), var(--color-support));
   color: #fff8e6;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 30px var(--color-support-glow), 0 0 32px var(--color-support-glow);
+}
+.btn-support:active {
+  transform: translateY(0);
 }
 
 /* Secondary CTA using the navy blue — pairs with red on the page. */
@@ -291,9 +304,15 @@
   background: var(--color-blue);
   color: #fdf8ea;
   font-weight: 600;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 .btn-blue:hover {
   background: var(--color-blue-strong);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(11, 27, 52, 0.28);
+}
+.btn-blue:active {
+  transform: translateY(0);
 }
 
 /* Mobile-first page primitives for the public conversion pages. Most traffic
