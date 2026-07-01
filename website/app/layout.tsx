@@ -1,5 +1,5 @@
 import "./globals.css";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import { SITE } from "@/lib/site";
 import { Suspense } from "react";
@@ -9,6 +9,7 @@ import { Footer } from "@/components/Footer";
 import { MobileSupportBar } from "@/components/MobileSupportBar";
 import { PathPicker } from "@/components/PathPicker";
 import { RyanChat } from "@/components/RyanChat";
+import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import { PageViewTracker } from "@/components/PageViewTracker";
 import { ThirdPartyAnalytics } from "@/components/ThirdPartyAnalytics";
 import { Analytics } from "@vercel/analytics/next";
@@ -46,6 +47,20 @@ export const metadata: Metadata = {
     types: { "application/rss+xml": "/rss.xml" },
   },
   robots: { index: true, follow: true },
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    title: "Ryan Nichols",
+    statusBarStyle: "black-translucent",
+  },
+  icons: {
+    icon: "/icons/icon-192.png",
+    apple: "/icons/icon-180.png",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0b1b34",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -107,6 +122,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Analytics />
         <SpeedInsights />
         <ThirdPartyAnalytics />
+        <ServiceWorkerRegister />
         <Link
           href="#top"
           aria-hidden="true"
