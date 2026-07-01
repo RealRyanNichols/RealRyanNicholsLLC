@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
 import { getVisitorId } from "@/lib/client-ids";
 
-type Turn = { role: "user" | "assistant"; content: string };
+type Turn = { role: "user" | "assistant"; content: string; live?: boolean };
 type Variant = "hero" | "launcher";
 
 const SUGGESTIONS = [
@@ -15,7 +15,7 @@ const SUGGESTIONS = [
 ];
 
 const GREETING =
-  "I'm Ryan's AI — trained on his words, in his voice. Ask me about the case, faith, rebuilding, or working together. He reads what comes through and jumps in himself when he can.";
+  "This is a direct line to me — trained on my own words, in my voice. Ask me about the case, faith, rebuilding, or working together. I read every one, and when I'm around I'll jump in myself.";
 
 const TEASER_KEY = "rrn_chat_teaser_seen";
 const PROFILE_KEY = "rrn_visitor_profile";
@@ -42,12 +42,17 @@ function readProfile(): { direction: string | null; source: string | null } {
 function useRyanChat(surface: string) {
   const [messages, setMessages] = useState<Turn[]>([]);
   const [loading, setLoading] = useState(false);
+  const [human, setHuman] = useState(false);
+  const [started, setStarted] = useState(false);
+  const [contactSent, setContactSent] = useState(false);
   const chatId = useRef<string | null>(null);
+  const cursor = useRef<string>(new Date().toISOString());
 
   async function send(text: string) {
     const clean = text.trim();
     if (!clean || loading) return;
     if (!chatId.current) chatId.current = makeId();
+    setStarted(true);
     const next: Turn[] = [...messages, { role: "user", content: clean }];
     setMessages(next);
     setLoading(true);
@@ -68,26 +73,41 @@ function useRyanChat(surface: string) {
         }),
       });
       const data = await res.json().catch(() => null);
-      let reply: string;
-      if (res.ok && data?.reply) {
-        reply = data.reply as string;
+      if (res.ok && data?.human) {
+        setHuman(true); // Ryan is handling this live — his reply arrives via poll
+      } else if (res.ok && data?.reply) {
+        setMessages((m) => [...m, { role: "assistant", content: data.reply }]);
       } else if (res.status === 503) {
-        reply =
-          "I'm just coming online here. In the meantime, send it through the tip line or join my list and I'll get to you myself.";
+        setMessages((m) => [
+          ...m,
+          {
+            role: "assistant",
+            content:
+              "I'm just coming online here. In the meantime, send it through the tip line or leave your email below and I'll get to you myself.",
+          },
+        ]);
       } else if (res.status === 429) {
-        reply = "Give me just a second, then ask me again.";
+        setMessages((m) => [
+          ...m,
+          { role: "assistant", content: "Give me just a second, then ask me again." },
+        ]);
       } else {
-        reply =
-          "I'm having trouble answering right now. Drop it on the tip line and I'll get to it myself.";
+        setMessages((m) => [
+          ...m,
+          {
+            role: "assistant",
+            content:
+              "I'm having trouble answering right now. Leave your email below and I'll get to it myself.",
+          },
+        ]);
       }
-      setMessages((m) => [...m, { role: "assistant", content: reply }]);
     } catch {
       setMessages((m) => [
         ...m,
         {
           role: "assistant",
           content:
-            "Something glitched on my end. Try again, or leave it on the tip line and I'll see it.",
+            "Something glitched on my end. Try again, or leave your email below and I'll see it.",
         },
       ]);
     } finally {
@@ -95,16 +115,72 @@ function useRyanChat(surface: string) {
     }
   }
 
-  return { messages, loading, send };
+  // Once a conversation exists, poll for Ryan's LIVE replies + takeover state.
+  useEffect(() => {
+    if (!started) return;
+    let alive = true;
+    async function poll() {
+      const id = chatId.current;
+      if (!id) return;
+      try {
+        const res = await fetch(
+          `/api/chat/poll?chatId=${encodeURIComponent(id)}&after=${encodeURIComponent(cursor.current)}`,
+        );
+        const data = await res.json().catch(() => null);
+        if (!alive || !data?.ok) return;
+        if (typeof data.human === "boolean") setHuman(data.human);
+        if (Array.isArray(data.messages) && data.messages.length > 0) {
+          setMessages((m) => [
+            ...m,
+            ...data.messages.map((x: { content: string }) => ({
+              role: "assistant" as const,
+              content: x.content,
+              live: true,
+            })),
+          ]);
+          const last = data.messages[data.messages.length - 1];
+          cursor.current = last.at || new Date().toISOString();
+        }
+      } catch {
+        /* best-effort */
+      }
+    }
+    const timer = window.setInterval(poll, 4000);
+    poll();
+    return () => {
+      alive = false;
+      window.clearInterval(timer);
+    };
+  }, [started]);
+
+  async function submitContact(email: string) {
+    const clean = email.trim();
+    if (!chatId.current || !clean.includes("@")) return;
+    try {
+      await fetch("/api/chat/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chatId: chatId.current, email: clean }),
+      });
+      setContactSent(true);
+      trackEvent("chat_contact", { surface });
+    } catch {
+      /* best-effort */
+    }
+  }
+
+  return { messages, loading, human, started, contactSent, send, submitContact };
 }
 
 function Thread({
   messages,
   loading,
+  human,
   compact,
 }: {
   messages: Turn[];
   loading: boolean;
+  human: boolean;
   compact?: boolean;
 }) {
   const endRef = useRef<HTMLDivElement>(null);
@@ -128,7 +204,12 @@ function Thread({
             </div>
           </div>
         ) : (
-          <div key={i} className="flex justify-start">
+          <div key={i} className="flex flex-col items-start">
+            {m.live ? (
+              <span className="mb-1 ml-1 text-[10px] font-black uppercase tracking-wider text-emerald-600">
+                Ryan · live
+              </span>
+            ) : null}
             <div className="max-w-[90%] whitespace-pre-wrap rounded-2xl rounded-tl-sm border border-[var(--color-line)] bg-[var(--color-accent-soft)] px-4 py-2.5 text-sm leading-relaxed text-[var(--color-ink)]">
               {m.content}
             </div>
@@ -136,7 +217,7 @@ function Thread({
         ),
       )}
 
-      {loading ? (
+      {loading && !human ? (
         <div className="flex items-center gap-2 text-xs text-[var(--color-muted)]">
           <span className="inline-flex gap-1">
             <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[var(--color-accent)] [animation-delay:-0.2s]" />
@@ -200,6 +281,65 @@ function Composer({
   );
 }
 
+function ContactRow({
+  onSubmit,
+  sent,
+}: {
+  onSubmit: (email: string) => void;
+  sent: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  if (sent) {
+    return (
+      <p className="mt-2 text-[11px] font-semibold text-emerald-600">
+        Got it — Ryan will reach out to you personally.
+      </p>
+    );
+  }
+  return open ? (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSubmit(email);
+      }}
+      className="mt-2 flex items-center gap-2"
+    >
+      <input
+        type="email"
+        required
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="you@email.com"
+        className="min-h-9 flex-1 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-1.5 text-xs text-[var(--color-ink)] outline-none focus:border-[var(--color-accent)]"
+      />
+      <button
+        type="submit"
+        className="rounded-lg bg-[var(--color-ink)] px-3 py-1.5 text-xs font-bold text-[var(--color-paper)]"
+      >
+        Send to Ryan
+      </button>
+    </form>
+  ) : (
+    <button
+      type="button"
+      onClick={() => setOpen(true)}
+      className="mt-2 text-[11px] font-semibold text-[var(--color-accent)] hover:underline"
+    >
+      Want a personal reply? Leave your email →
+    </button>
+  );
+}
+
+function LiveBanner() {
+  return (
+    <div className="mb-2 flex items-center gap-2 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-3 py-2 text-xs font-bold text-emerald-700">
+      <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-500" />
+      You&apos;re talking to Ryan live.
+    </div>
+  );
+}
+
 function Monogram({ size = "h-10 w-10" }: { size?: string }) {
   return (
     <span
@@ -227,7 +367,8 @@ export function RyanChat({
   variant?: Variant;
   surface?: string;
 }) {
-  const { messages, loading, send } = useRyanChat(surface);
+  const { messages, loading, human, started, contactSent, send, submitContact } =
+    useRyanChat(surface);
   const [open, setOpen] = useState(false);
   const [teaser, setTeaser] = useState(false);
 
@@ -273,7 +414,7 @@ export function RyanChat({
             <Monogram />
             <div>
               <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-accent)]">
-                Talk to me
+                Talk to me — a direct line
               </p>
               <h2 className="font-display text-xl font-bold tracking-tight text-[var(--color-ink)]">
                 Ask me anything — in my own words.
@@ -283,8 +424,9 @@ export function RyanChat({
         </div>
 
         <div className="px-5 py-4">
+          {human ? <LiveBanner /> : null}
           <div className="max-h-[340px] overflow-y-auto pr-1">
-            <Thread messages={messages} loading={loading} />
+            <Thread messages={messages} loading={loading} human={human} />
           </div>
 
           {messages.length === 0 ? (
@@ -305,9 +447,13 @@ export function RyanChat({
           <div className="mt-4">
             <Composer onSend={send} loading={loading} />
           </div>
-          <p className="mt-2 text-[11px] text-[var(--color-muted)]">
-            Ryan&apos;s AI, trained on his words. He reads what comes through.
-          </p>
+          {started ? (
+            <ContactRow onSubmit={submitContact} sent={contactSent} />
+          ) : (
+            <p className="mt-2 text-[11px] text-[var(--color-muted)]">
+              A direct line to Ryan. He reads what comes through.
+            </p>
+          )}
         </div>
       </section>
     );
@@ -331,7 +477,7 @@ export function RyanChat({
               <div>
                 <p className="text-sm font-bold leading-tight">Talk to Ryan</p>
                 <p className="text-[11px] leading-tight text-[var(--color-paper)]/70">
-                  Answers in his voice · he reads every one
+                  A direct line · he reads every one
                 </p>
               </div>
             </div>
@@ -346,7 +492,8 @@ export function RyanChat({
           </div>
 
           <div className="flex-1 overflow-y-auto px-4 py-4">
-            <Thread messages={messages} loading={loading} compact />
+            {human ? <LiveBanner /> : null}
+            <Thread messages={messages} loading={loading} human={human} compact />
             {messages.length === 0 ? (
               <div className="mt-3 flex flex-col gap-2">
                 {SUGGESTIONS.map((s) => (
@@ -360,6 +507,9 @@ export function RyanChat({
                   </button>
                 ))}
               </div>
+            ) : null}
+            {started ? (
+              <ContactRow onSubmit={submitContact} sent={contactSent} />
             ) : null}
           </div>
 
@@ -387,7 +537,7 @@ export function RyanChat({
                   Got a question?
                 </p>
                 <p className="mt-0.5 text-xs text-[var(--color-ink-soft)]">
-                  Ask me anything — in my own words. I read every one.
+                  Ask me anything — a direct line to me. I read every one.
                 </p>
               </button>
             </div>

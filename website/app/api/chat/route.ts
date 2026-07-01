@@ -127,6 +127,39 @@ export async function POST(req: Request) {
   }
   lastByIp.set(ip, now);
 
+  // Live takeover: if Ryan has jumped into this conversation, the AI stands
+  // down. Store the visitor's message so Ryan sees it and let the client poll
+  // for his live reply — no LLM call.
+  const liveChatId =
+    typeof body.chatId === "string" && /^[0-9a-fA-F-]{16,40}$/.test(body.chatId)
+      ? body.chatId
+      : null;
+  if (liveChatId && isSupabaseServiceConfigured()) {
+    try {
+      const svc0 = getSupabaseServiceClient();
+      const { data: sess } = await svc0
+        .from("chat_sessions")
+        .select("human_active")
+        .eq("id", liveChatId)
+        .maybeSingle();
+      if (sess?.human_active) {
+        const nowIso0 = new Date().toISOString();
+        await svc0.from("chat_messages").insert({
+          session_id: liveChatId,
+          role: "user",
+          content: messages[messages.length - 1].content,
+        });
+        await svc0
+          .from("chat_sessions")
+          .update({ last_at: nowIso0 })
+          .eq("id", liveChatId);
+        return NextResponse.json({ ok: true, reply: null, human: true });
+      }
+    } catch {
+      /* fall through to the AI path */
+    }
+  }
+
   let upstream: Response;
   try {
     upstream = await fetch(ANTHROPIC_URL, {
