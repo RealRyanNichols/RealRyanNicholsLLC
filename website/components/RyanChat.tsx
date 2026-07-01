@@ -258,6 +258,82 @@ function Composer({
   autoFocus?: boolean;
 }) {
   const [input, setInput] = useState("");
+  const [talking, setTalking] = useState(false);
+  const [micSupported, setMicSupported] = useState(false);
+  const recRef = useRef<{ stop: () => void } | null>(null);
+
+  useEffect(() => {
+    const w = window as unknown as {
+      SpeechRecognition?: unknown;
+      webkitSpeechRecognition?: unknown;
+    };
+    setMicSupported(Boolean(w.SpeechRecognition ?? w.webkitSpeechRecognition));
+    return () => {
+      try {
+        recRef.current?.stop();
+      } catch {
+        /* already stopped */
+      }
+    };
+  }, []);
+
+  function toggleTalk() {
+    if (talking) {
+      try {
+        recRef.current?.stop();
+      } catch {
+        /* ignore */
+      }
+      setTalking(false);
+      return;
+    }
+    type RecInstance = {
+      continuous: boolean;
+      interimResults: boolean;
+      lang: string;
+      start: () => void;
+      stop: () => void;
+      onresult:
+        | ((e: {
+            resultIndex: number;
+            results: ArrayLike<ArrayLike<{ transcript: string }> & { isFinal: boolean }>;
+          }) => void)
+        | null;
+      onend: (() => void) | null;
+      onerror: (() => void) | null;
+    };
+    const w = window as unknown as {
+      SpeechRecognition?: new () => RecInstance;
+      webkitSpeechRecognition?: new () => RecInstance;
+    };
+    const Ctor = w.SpeechRecognition ?? w.webkitSpeechRecognition;
+    if (!Ctor) return;
+    const rec = new Ctor();
+    rec.continuous = true;
+    rec.interimResults = false;
+    rec.lang = "en-US";
+    rec.onresult = (e) => {
+      let text = "";
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const r = e.results[i];
+        if (r.isFinal) text += r[0]?.transcript ?? "";
+      }
+      if (text.trim()) {
+        setInput((prev) => (prev ? `${prev} ${text.trim()}` : text.trim()));
+      }
+    };
+    rec.onend = () => setTalking(false);
+    rec.onerror = () => setTalking(false);
+    recRef.current = rec;
+    try {
+      rec.start();
+      setTalking(true);
+      trackEvent("chat_talk_to_text", {});
+    } catch {
+      /* start() while running throws — ignore */
+    }
+  }
+
   return (
     <form
       onSubmit={(e) => {
@@ -279,9 +355,29 @@ function Composer({
         }}
         rows={1}
         autoFocus={autoFocus}
-        placeholder="Ask me anything…"
+        placeholder={talking ? "Listening… just talk." : "Ask me anything — tap the mic and just talk"}
         className="min-h-[44px] max-h-32 flex-1 resize-none rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] px-3.5 py-2.5 text-sm text-[var(--color-ink)] outline-none transition focus:border-[var(--color-accent)]"
       />
+      {micSupported ? (
+        <button
+          type="button"
+          onClick={toggleTalk}
+          aria-label={talking ? "Stop talking" : "Talk instead of type"}
+          aria-pressed={talking}
+          className={[
+            "grid h-11 w-11 shrink-0 place-items-center rounded-xl border transition",
+            talking
+              ? "border-[var(--color-navy)] bg-[var(--color-navy)] text-[#fdf8ea] animate-pulse"
+              : "border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink-soft)] hover:border-[var(--color-navy)] hover:text-[var(--color-navy)]",
+          ].join(" ")}
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+            <line x1="12" y1="19" x2="12" y2="22" />
+          </svg>
+        </button>
+      ) : null}
       <button
         type="submit"
         disabled={loading || !input.trim()}
