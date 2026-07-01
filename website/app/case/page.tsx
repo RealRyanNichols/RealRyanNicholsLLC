@@ -15,6 +15,10 @@ import {
 import { getSiteSettings } from "@/lib/site-settings";
 import { getOgImage, canonicalPath } from "@/lib/og-images";
 import { SITE } from "@/lib/site";
+import { RyanCaseProfile } from "@/components/RyanCaseProfile";
+import { getDocumentsForPerson } from "@/lib/case";
+import { getPublishedPosts } from "@/lib/posts";
+import { SUBJECT_SLUG } from "@/lib/bio";
 
 export const revalidate = 300;
 
@@ -91,6 +95,31 @@ export default async function CasePage({
   const { view, q: rawQ, filter: rawFilter, page: rawPage } = await searchParams;
   const q = (rawQ ?? "").trim();
   const page = Math.max(1, Number.parseInt(rawPage ?? "1", 10) || 1);
+
+  // THE FRONT DOOR. Clicking "Case" lands on United States v. Nichols —
+  // Ryan's full story, the detention record, the whole file. The archive
+  // hub (grievances / timeline / people / documents) still lives at
+  // ?view=… and is linked from "The full record" directory inside the
+  // profile. This is deliberate: the case page IS his case.
+  if (!view && !q) {
+    const ryan = await getPersonBySlug(SUBJECT_SLUG);
+    if (ryan) {
+      const [evidence, totals, posts] = await Promise.all([
+        getDocumentsForPerson(ryan.id),
+        getCaseTotals(),
+        getPublishedPosts(),
+      ]);
+      return (
+        <RyanCaseProfile
+          person={ryan}
+          evidence={evidence}
+          totals={totals}
+          posts={posts}
+          url={`${SITE.url}/case`}
+        />
+      );
+    }
+  }
   const tab: Tab =
     view === "timeline" || view === "people" || view === "documents"
       ? (view as Tab)
