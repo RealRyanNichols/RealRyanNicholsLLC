@@ -190,6 +190,141 @@ export function RyanCaseProfile({
         </ol>
       </section>
 
+      {/* ---- The detention record — the documented account ---- */}
+      <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+          The detention record · {totals.daysDetained.toLocaleString()} days
+        </p>
+        <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
+          Not memoir. Paper.
+        </h2>
+        <p className="mt-2 text-sm text-[var(--color-ink-soft)] max-w-2xl leading-relaxed">
+          What happened between arrest and pardon is not a story he tells — it is
+          a file he built, one exhibit at a time, from inside. Every entry below
+          carries an exhibit number from the master archive or lives in the{" "}
+          <Link href="/case?view=documents" className="text-[var(--color-accent)] font-semibold hover:underline">
+            public document record
+          </Link>
+          . Items marked <DetTag kind="doc" /> are documented. Items marked{" "}
+          <DetTag kind="account" /> are his sworn or stated account, with the
+          corroborating records named.
+        </p>
+
+        <div className="mt-6 space-y-3">
+          {[
+            {
+              tag: "doc" as const,
+              title: "Solitary confinement",
+              detail:
+                "Documented from inside: inmates passing out in solitary (EX-258); the conditions record photographed and filed (EX-251, EX-256). A federal judge discussed his solitary confinement and due process on the record — preserved on video (EX-529).",
+            },
+            {
+              tag: "doc" as const,
+              title: "Due process violated — acknowledged from the bench",
+              detail:
+                "December 2021: U.S. District Judge Thomas F. Hogan acknowledged on the record that his due-process rights had been violated. He remained detained. The moment is preserved (EX-529) and became the foundation of the equal-justice fight.",
+            },
+            {
+              tag: "doc" as const,
+              title: "Officers threatening inmates — photographed",
+              detail:
+                "Two photographed instances of officers threatening detainees, preserved and filed (EX-260, EX-261), alongside his contemporaneous notes to fellow inmates (EX-262).",
+            },
+            {
+              tag: "doc" as const,
+              title: "The transport complaint — signed and filed",
+              detail:
+                "A signed complaint documenting a transport event, JMD 21-08-16, filed while in custody (EX-173). Full USMS transport records are under FOIA request.",
+            },
+            {
+              tag: "doc" as const,
+              title: "The medical record",
+              detail:
+                "PTSD diagnosis on file (EX-268; post-release diagnosis EX-005). Ketamine treatment records (EX-267). Alprazolam prescription (EX-269). Mental-health grievances and a FOIA request for complete BOP medical records are in the file (EX-007, EX-008).",
+            },
+            {
+              tag: "doc" as const,
+              title: "Congress was turned away at the door",
+              detail:
+                "Members of Congress — Reps. Louie Gohmert and Marjorie Taylor Greene — were denied access to the jail holding him. It is on video (EX-266).",
+            },
+            {
+              tag: "account" as const,
+              title: "The first plea offer: 10 to 12 years",
+              detail:
+                "His account of the government's opening position, preserved as a recorded discussion in the file (EX-015) — against a final sentence of 63 months, and then a full pardon and dismissal with prejudice.",
+            },
+            {
+              tag: "doc" as const,
+              title: `The grievance machine — ${totals.ryanFiledGrievances.toLocaleString()} forms in his own hand`,
+              detail:
+                "He papered every facility that held him: " +
+                `${totals.ryanFiledGrievances.toLocaleString()} grievance forms he authored sit in the public archive, drawn from a master exhibit set of 203 (EX-319 through EX-519, indexed in EX-520). ` +
+                `${totals.grievances} distinct grievance patterns are documented across facilities.`,
+            },
+            {
+              tag: "doc" as const,
+              title: "The discovery that cuts the other way",
+              detail:
+                "From his own discovery: officers letting protesters into the Capitol, on video (EX-217, EX-218, EX-219). FBI 302 interview reports (EX-032, EX-006). The DOJ's admitted withholding of exculpatory evidence in a related January 6 case (EX-022, EX-028). He maintains the prosecution was entrapment and lawfare; these are the exhibits that claim stands on.",
+            },
+            {
+              tag: "doc" as const,
+              title: "The video they don't lead with",
+              detail:
+                "Footage on file shows him helping Metropolitan Police Officer Michael Fanone to safety on January 6. It sits in the case file alongside 25+ character letters and seven sworn affidavits (EX-282 through EX-318).",
+            },
+          ].map((item) => (
+            <div
+              key={item.title}
+              className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-5"
+            >
+              <div className="flex flex-wrap items-center gap-2">
+                <DetTag kind={item.tag} />
+                <h3 className="text-base font-bold tracking-tight text-[var(--color-ink)]">
+                  {item.title}
+                </h3>
+              </div>
+              <p className="mt-1.5 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+                {item.detail}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-6 rounded-2xl bg-[var(--color-surface-2)] p-4 sm:p-5">
+          <p className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-navy)]">
+            The {totals.facilities} facilities, as he lists them
+          </p>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {[
+              "Tyler, TX (E.D. Tex.)",
+              "DC DOC — CTF",
+              "Rappahannock Regional",
+              "Northern Neck Regional",
+              "FDC Houston",
+              "Florence",
+              "Oklahoma City (transit)",
+              "Albany",
+              "NW3 quarantine",
+              "BOP (post-sentence)",
+            ].map((f) => (
+              <span
+                key={f}
+                className="rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-1 text-xs font-semibold text-[var(--color-ink-soft)]"
+              >
+                {f}
+              </span>
+            ))}
+          </div>
+          <p className="mt-2 text-xs text-[var(--color-muted)]">
+            His account. Official USMS transport and BOP records are under FOIA
+            request; the list will carry document citations as they land. The
+            file is still being built — provenance first.
+          </p>
+        </div>
+      </section>
+
       {/* ---- Who he is, before the government ---- */}
       <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
         <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
@@ -389,8 +524,9 @@ export function RyanCaseProfile({
           </h2>
           <p className="text-sm text-[var(--color-ink-soft)] mt-1 max-w-2xl">
             {evidence.length > 0 ? "A sample pulled to this profile. " : ""}His name runs
-            through the whole case file — {totals.documents.toLocaleString()} documents and{" "}
-            {totals.grievances} documented grievances across {totals.facilities} facilities.{" "}
+            through the whole case file — {totals.documents.toLocaleString()} documents,{" "}
+            {totals.ryanFiledGrievances.toLocaleString()} grievance forms in his own hand,{" "}
+            {totals.grievances} documented grievance patterns, {totals.facilities} facilities.{" "}
             <Link href="/case?view=documents" className="text-[var(--color-accent)] font-semibold hover:underline">
               Walk the full record →
             </Link>
@@ -622,6 +758,18 @@ function AttorneyBriefing() {
         </p>
       </div>
     </section>
+  );
+}
+
+function DetTag({ kind }: { kind: "doc" | "account" }) {
+  return kind === "doc" ? (
+    <span className="rounded-full bg-[var(--color-navy)] px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-[#fdf8ea]">
+      Documented
+    </span>
+  ) : (
+    <span className="rounded-full border border-[var(--color-navy)] px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-[var(--color-navy)]">
+      His account
+    </span>
   );
 }
 
