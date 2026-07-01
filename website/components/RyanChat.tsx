@@ -669,7 +669,7 @@ export function RyanChat({
       ) : (
         <div className="fixed right-3 bottom-[calc(4.75rem+env(safe-area-inset-bottom))] z-50 flex flex-col items-end gap-3 lg:bottom-6 lg:right-6">
           {teaser ? (
-            <div className="relative max-w-[260px] rounded-2xl rounded-br-sm border border-[var(--color-line)] bg-[var(--color-paper)] px-4 py-3 shadow-xl">
+            <div className="relative max-w-[280px] rounded-2xl rounded-br-sm border border-[#e1bd5b]/50 bg-[#0b1b34] px-4 py-3 shadow-2xl">
               <button
                 type="button"
                 onClick={() => {
@@ -677,16 +677,17 @@ export function RyanChat({
                   markTeaserSeen();
                 }}
                 aria-label="Dismiss"
-                className="absolute -right-2 -top-2 grid h-6 w-6 place-items-center rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] text-sm text-[var(--color-muted)] shadow"
+                className="absolute -right-2 -top-2 grid h-6 w-6 place-items-center rounded-full border border-[#e1bd5b]/50 bg-[#0b1b34] text-sm text-[#cfd9ea] shadow"
               >
                 ×
               </button>
               <button type="button" onClick={openChat} className="block text-left">
-                <p className="text-sm font-bold text-[var(--color-ink)]">
-                  Got a question?
+                <p className="text-sm font-bold text-[#fdf8ea]">
+                  Ask me anything. Out loud, if you want.
                 </p>
-                <p className="mt-0.5 text-xs text-[var(--color-ink-soft)]">
-                  Ask me anything — a direct line to me. I read every one.
+                <p className="mt-0.5 text-xs text-[#cfd9ea]">
+                  The case, the comeback, building your own platform — tap the
+                  mic and just talk. I read every single one.
                 </p>
               </button>
             </div>
@@ -696,18 +697,18 @@ export function RyanChat({
             type="button"
             onClick={openChat}
             aria-label="Talk to Ryan"
-            className="flex items-center gap-3 rounded-full border-[1.5px] border-[var(--color-navy)] bg-[var(--color-paper)] py-2.5 pl-2.5 pr-5 shadow-2xl transition hover:bg-[var(--color-surface)] lg:py-3 lg:pl-3 lg:pr-6"
+            className="flex items-center gap-3 rounded-full border border-[#e1bd5b]/50 bg-[#0b1b34] py-2.5 pl-2.5 pr-5 shadow-2xl transition hover:border-[#e1bd5b] lg:py-3 lg:pl-3 lg:pr-6"
           >
             <span className="relative">
               <Avatar size="h-11 w-11 lg:h-14 lg:w-14" />
-              <span className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full border-2 border-[var(--color-paper)] bg-emerald-400" />
+              <span className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full border-2 border-[#0b1b34] bg-emerald-400" />
             </span>
             <span className="text-left leading-tight">
-              <span className="block text-base font-black text-[var(--color-ink)] lg:text-lg">
+              <span className="block text-base font-black text-[#fdf8ea] lg:text-lg">
                 Talk to Ryan
               </span>
-              <span className="block text-xs font-semibold text-[var(--color-ink-soft)] lg:text-sm">
-                Ask me anything — I read every one
+              <span className="block text-xs font-semibold text-[#e1bd5b] lg:text-sm">
+                Tap the mic and just talk
               </span>
             </span>
           </button>

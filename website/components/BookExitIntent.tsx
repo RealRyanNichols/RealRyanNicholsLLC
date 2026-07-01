@@ -47,45 +47,43 @@ export function BookExitIntent({
       onClick={() => setOpen(false)}
     >
       <div
-        className="relative w-full max-w-md rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 shadow-2xl"
+        className="relative w-full max-w-md rounded-2xl border border-[#e1bd5b]/50 bg-[#0b1b34] p-6 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           type="button"
           onClick={() => setOpen(false)}
           aria-label="Close"
-          className="absolute right-3 top-3 text-2xl leading-none text-[var(--color-muted)] hover:text-[var(--color-ink)]"
+          className="absolute right-3 top-3 text-2xl leading-none text-[#8194b4] hover:text-[#fdf8ea]"
         >
           ×
         </button>
-        <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
+        <p className="text-xs font-black uppercase tracking-[0.2em] text-[#e1bd5b]">
           Before you go
         </p>
-        <h2 className="mt-2 font-display text-2xl font-black leading-tight text-[var(--color-ink)]">
-          Lock in the {priceLabel} launch price
+        <h2 className="mt-2 font-display text-2xl font-black leading-tight text-[#fdf8ea]">
+          They tried to bury this story. I wrote it down.
         </h2>
-        <p className="mt-2 text-sm font-semibold leading-relaxed text-[var(--color-ink-soft)]">
-          The digital edition of <span className="font-black">Fighting Shadows</span>{" "}
-          is{" "}
+        <p className="mt-2 text-sm font-semibold leading-relaxed text-[#cfd9ea]">
+          <span className="font-black text-[#fdf8ea]">Fighting Shadows</span> — my
+          memoir of January 6 — is{" "}
           {listLabel ? (
             <span className="line-through opacity-60">{listLabel}</span>
           ) : null}{" "}
-          <span className="font-black text-[var(--color-accent)]">
-            {priceLabel}
-          </span>{" "}
-          for early supporters. Don&rsquo;t miss it.
+          <span className="font-black text-[#e1bd5b]">{priceLabel}</span> for early
+          supporters. Lock it in before it goes.
         </p>
         <Link
           href="/book/preorder"
           onClick={() => setOpen(false)}
-          className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--color-accent)] px-5 py-3 text-base font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)]"
+          className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-[#e1bd5b] px-5 py-3 text-base font-black text-[#0b1b34] transition hover:brightness-105"
         >
           Pre-order for {priceLabel}
         </Link>
-        <div className="my-4 flex items-center gap-3 text-[11px] font-black uppercase tracking-wider text-[var(--color-muted)]">
-          <span className="h-px flex-1 bg-[var(--color-line)]" />
+        <div className="my-4 flex items-center gap-3 text-[11px] font-black uppercase tracking-wider text-[#8194b4]">
+          <span className="h-px flex-1 bg-white/15" />
           or just get on the list
-          <span className="h-px flex-1 bg-[var(--color-line)]" />
+          <span className="h-px flex-1 bg-white/15" />
         </div>
         <BookEmailSignup source="book_exit_intent" />
       </div>
