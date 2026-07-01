@@ -52,9 +52,12 @@ export const metadata: Metadata = {
     title: "Ryan Nichols",
     statusBarStyle: "black-translucent",
   },
+  // THE FAVICON IS RYAN'S FACE — his profile photo, permanently. Never swap
+  // in a monogram or designed mark. Bump ?v= only when avatar.jpg changes
+  // (regenerate via scripts/gen-icons.mjs).
   icons: {
-    icon: "/icons/icon-192.png?v=2",
-    apple: "/icons/icon-180.png?v=2",
+    icon: "/icons/icon-192.png?v=3",
+    apple: "/icons/icon-180.png?v=3",
   },
 };
 
