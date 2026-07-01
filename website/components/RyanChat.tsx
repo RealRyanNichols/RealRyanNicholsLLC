@@ -340,6 +340,28 @@ function LiveBanner() {
   );
 }
 
+function OfferRow() {
+  const offers = [
+    { href: "/book", label: "📖 The book" },
+    { href: "/services", label: "🔨 Work with me" },
+    { href: "/submit", label: "📨 Send a tip" },
+  ];
+  return (
+    <div className="mt-3 flex flex-wrap gap-2 border-t border-[var(--color-line)] pt-3">
+      {offers.map((o) => (
+        <a
+          key={o.href}
+          href={o.href}
+          onClick={() => trackEvent("chat_offer_click", { offer: o.href })}
+          className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1.5 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+        >
+          {o.label}
+        </a>
+      ))}
+    </div>
+  );
+}
+
 function Monogram({ size = "h-10 w-10" }: { size?: string }) {
   return (
     <span
@@ -454,6 +476,7 @@ export function RyanChat({
               A direct line to Ryan. He reads what comes through.
             </p>
           )}
+          <OfferRow />
         </div>
       </section>
     );
@@ -511,6 +534,7 @@ export function RyanChat({
             {started ? (
               <ContactRow onSubmit={submitContact} sent={contactSent} />
             ) : null}
+            <OfferRow />
           </div>
 
           <div className="border-t border-[var(--color-line)] px-3 py-3">
