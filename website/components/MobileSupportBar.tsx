@@ -1,5 +1,10 @@
+"use client";
+
 import Link from "next/link";
 
+// The mobile action bar. Talk is the primary door — it opens the chat
+// panel in place via the ryanchat:open event (no navigation), feeding
+// the same lead pipeline as everything else.
 export function MobileSupportBar() {
   return (
     <div
@@ -8,33 +13,41 @@ export function MobileSupportBar() {
     >
       <nav
         aria-label="Mobile quick actions"
-        className="mx-auto grid max-w-md grid-cols-4 gap-2"
+        className="mx-auto grid max-w-md grid-cols-5 gap-1.5"
       >
+        <button
+          type="button"
+          data-track="mobile-bar-talk"
+          onClick={() => window.dispatchEvent(new Event("ryanchat:open"))}
+          className="inline-flex min-h-11 items-center justify-center rounded-lg bg-[var(--color-navy)] px-1 text-center text-xs font-black text-[#fdf8ea]"
+        >
+          Talk
+        </button>
         <Link
           href="/tell-your-story"
           data-track="mobile-bar-story"
-          className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[#e1bd5b] bg-[#e1bd5b]/15 px-2 text-center text-xs font-black text-[#0e1a36]"
+          className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-1 text-center text-xs font-black text-[var(--color-ink)]"
         >
           Story
         </Link>
         <Link
           href="/submit"
           data-track="mobile-bar-submit"
-          className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-2 text-center text-xs font-black text-[var(--color-ink)]"
+          className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-1 text-center text-xs font-black text-[var(--color-ink)]"
         >
           Tip
         </Link>
         <Link
           href="/contact"
           data-track="mobile-bar-contact"
-          className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[var(--color-blue)] bg-[var(--color-blue-soft)] px-2 text-center text-xs font-black text-[var(--color-blue)]"
+          className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-1 text-center text-xs font-black text-[var(--color-ink)]"
         >
           Private
         </Link>
         <Link
           href="/#join"
           data-track="mobile-bar-join"
-          className="btn-support inline-flex min-h-11 items-center justify-center rounded-lg px-2 text-center text-xs font-black"
+          className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[#e1bd5b] bg-[#e1bd5b]/15 px-1 text-center text-xs font-black text-[var(--color-navy)]"
         >
           Join
         </Link>
