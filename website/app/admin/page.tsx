@@ -145,20 +145,23 @@ export default async function AdminHomePage() {
   // tables are admin-only (RLS deny-all).
   let chats24h = 0;
   let chatsTotal = 0;
+  let leadsTotal = 0;
   if (isSupabaseServiceConfigured()) {
     try {
       const svc = getSupabaseServiceClient();
-      const [{ count: c24 }, { count: cTot }] = await Promise.all([
+      const [{ count: c24 }, { count: cTot }, { count: lTot }] = await Promise.all([
         svc
           .from("chat_sessions")
           .select("id", { count: "exact", head: true })
           .gte("last_at", oneDayAgo),
         svc.from("chat_sessions").select("id", { count: "exact", head: true }),
+        svc.from("leads").select("id", { count: "exact", head: true }),
       ]);
       chats24h = c24 ?? 0;
       chatsTotal = cTot ?? 0;
+      leadsTotal = lTot ?? 0;
     } catch {
-      /* chat storage optional */
+      /* chat + lead storage optional */
     }
   }
 
@@ -232,6 +235,14 @@ export default async function AdminHomePage() {
           value={String(chats24h)}
           sub={`${chatsTotal} total · talking to your AI`}
           hot={chats24h > 0}
+        />
+        <ActionLane
+          href="/admin/leads"
+          kicker="Leads"
+          title="Leads"
+          value={String(leadsTotal)}
+          sub="people who left you data — follow up & sell"
+          hot={leadsTotal > 0}
         />
         <ActionLane
           href="/admin/invoices"

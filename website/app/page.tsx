@@ -4,6 +4,7 @@ import { PostCard } from "@/components/PostCard";
 import { ProfileHero } from "@/components/ProfileHero";
 import { PathPicker } from "@/components/PathPicker";
 import { RyanChat } from "@/components/RyanChat";
+import { GetToKnowYou } from "@/components/GetToKnowYou";
 import { VerseSidebar } from "@/components/VerseSidebar";
 import { SignupForm } from "@/components/SignupForm";
 import { BookPromo } from "@/components/BookPromo";
@@ -99,6 +100,7 @@ export default async function HomePage({
         </section>
       </div>
       <aside className="space-y-5">
+        <GetToKnowYou />
         <VerseSidebar />
         <SignupForm emailEnabled={emailSignupEnabled} />
 
