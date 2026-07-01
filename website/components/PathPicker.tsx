@@ -92,6 +92,10 @@ export function PathPicker({ variant = "band" }: { variant?: Variant }) {
     setShow(false);
   }
 
+  // The homepage renders the band inline — the floating overlay stands down
+  // there so first-timers aren't asked the same question twice.
+  if (variant === "overlay" && pathname === "/") return null;
+
   if (!show) return null;
 
   const inner = (
