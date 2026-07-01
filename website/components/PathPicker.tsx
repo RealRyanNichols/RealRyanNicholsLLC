@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { trackEvent } from "@/lib/analytics";
 
 type Variant = "band" | "overlay";
@@ -33,6 +33,7 @@ const PROFILE_KEY = "rrn_visitor_profile";
 
 export function PathPicker({ variant = "band" }: { variant?: Variant }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [show, setShow] = useState(false);
   const [step, setStep] = useState<"intent" | "source">("intent");
   const [dir, setDir] = useState<Dir | null>(null);
