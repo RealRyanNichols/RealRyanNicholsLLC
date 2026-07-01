@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
 import { getVisitorId } from "@/lib/client-ids";
@@ -184,8 +185,23 @@ function Thread({
   compact?: boolean;
 }) {
   const endRef = useRef<HTMLDivElement>(null);
+  const hasAutoScrolled = useRef(false);
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+    // Scroll only the chat's own overflow box — never the page. scrollIntoView
+    // walks every scrollable ancestor, so the inline homepage chat yanked the
+    // whole page down toward #talk on first load.
+    const end = endRef.current;
+    if (!end) return;
+    let box: HTMLElement | null = end.parentElement;
+    while (box && box.scrollHeight <= box.clientHeight + 1) {
+      box = box.parentElement;
+    }
+    if (!box || box === document.body || box === document.documentElement) return;
+    box.scrollTo({
+      top: box.scrollHeight,
+      behavior: hasAutoScrolled.current ? "smooth" : "auto",
+    });
+    hasAutoScrolled.current = true;
   }, [messages, loading]);
 
   return (
@@ -362,14 +378,18 @@ function OfferRow() {
   );
 }
 
-function Monogram({ size = "h-10 w-10" }: { size?: string }) {
+// Ryan's real face, not a monogram — his explicit call. Every chat surface
+// (hero header, panel header, launcher pill) uses this.
+function Avatar({ size = "h-10 w-10" }: { size?: string }) {
   return (
-    <span
-      className={`grid ${size} shrink-0 place-items-center rounded-xl bg-[var(--color-accent)] font-display text-sm font-black text-[var(--color-ink)]`}
+    <Image
+      src="/avatar.jpg"
+      alt=""
+      width={80}
+      height={80}
+      className={`${size} shrink-0 rounded-full object-cover`}
       aria-hidden
-    >
-      RN
-    </span>
+    />
   );
 }
 
@@ -433,7 +453,7 @@ export function RyanChat({
       <section className="overflow-hidden rounded-2xl border border-[var(--color-accent)]/40 bg-[var(--color-paper)] shadow-[0_0_0_1px_var(--color-accent-glow)]">
         <div className="border-b border-[var(--color-line)] bg-[var(--color-surface)] px-5 py-4">
           <div className="flex items-center gap-3">
-            <Monogram />
+            <Avatar />
             <div>
               <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-accent)]">
                 Talk to me — a direct line
@@ -494,7 +514,7 @@ export function RyanChat({
           <div className="flex items-center justify-between gap-3 border-b border-[var(--color-line)] bg-[var(--color-ink)] px-4 py-3 text-[var(--color-paper)]">
             <div className="flex items-center gap-2.5">
               <span className="relative">
-                <Monogram size="h-9 w-9" />
+                <Avatar size="h-9 w-9" />
                 <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-[var(--color-ink)] bg-emerald-400" />
               </span>
               <div>
@@ -574,7 +594,7 @@ export function RyanChat({
             className="flex items-center gap-2.5 rounded-full border border-[var(--color-accent)]/30 bg-[var(--color-paper)] py-2 pl-2 pr-4 shadow-xl shadow-[var(--color-accent-glow)] transition hover:brightness-[1.02] hover:shadow-2xl"
           >
             <span className="relative">
-              <Monogram size="h-9 w-9" />
+              <Avatar size="h-9 w-9" />
               <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-[var(--color-paper)] bg-emerald-400" />
             </span>
             <span className="text-left leading-tight">
