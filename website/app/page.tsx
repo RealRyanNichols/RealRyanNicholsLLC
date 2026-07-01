@@ -86,14 +86,40 @@ export default async function HomePage({
                 // Feed poll right after the lead post (renders only when a
                 // poll is live); rally CTA after the first few posts; book
                 // band a few posts later — spaced, so nothing bunches.
+                // On phones the sidebar doesn't exist (it stacks below the
+                // fold), so its capture surfaces are woven into the feed at
+                // spaced breaks too — lg:hidden here, hidden lg:block in the
+                // aside, so nothing renders twice on the same screen.
                 i === 0 ? (
                   <FeedPoll key="home-poll" className="my-8" />
+                ) : null,
+                i === 1 ? (
+                  <GetToKnowYou
+                    key="home-gtky-mobile"
+                    className="lg:hidden my-8 rounded-2xl bg-[var(--color-surface)] p-5"
+                  />
                 ) : null,
                 i === 2 ? (
                   <RallyInline key="home-rally" source="home" className="my-8" />
                 ) : null,
+                i === 4 ? (
+                  <VerseSidebar
+                    key="home-verse-mobile"
+                    className="lg:hidden my-8 rounded-2xl bg-[var(--color-surface)] p-5"
+                  />
+                ) : null,
+                i === 5 ? (
+                  <SignupForm
+                    key="home-signup-mobile"
+                    emailEnabled={emailSignupEnabled}
+                    className="lg:hidden my-8 rounded-2xl border-2 border-[var(--color-support)] bg-[var(--color-paper)] p-5 shadow-[0_0_26px_var(--color-support-glow)]"
+                  />
+                ) : null,
                 i === 6 ? (
                   <BookCtaBand key="home-book" className="my-8" />
+                ) : null,
+                i === 8 ? (
+                  <TipLineCard key="home-tip-mobile" className="lg:hidden my-8" />
                 ) : null,
               ])}
             </div>
@@ -111,32 +137,18 @@ export default async function HomePage({
           the gold accent treatment; everything else sits quiet — borderless
           on --color-surface — so the cards stop blurring into one another. */}
       <aside className="space-y-5">
-        <GetToKnowYou className="rounded-2xl bg-[var(--color-surface)] p-5" />
-        <VerseSidebar className="rounded-2xl bg-[var(--color-surface)] p-5" />
+        <GetToKnowYou className="hidden lg:block rounded-2xl bg-[var(--color-surface)] p-5" />
+        <VerseSidebar className="hidden lg:block rounded-2xl bg-[var(--color-surface)] p-5" />
         <SignupForm
           emailEnabled={emailSignupEnabled}
-          className="rounded-2xl border-2 border-[var(--color-support)] bg-[var(--color-paper)] p-5 shadow-[0_0_26px_var(--color-support-glow)]"
+          className="hidden lg:block rounded-2xl border-2 border-[var(--color-support)] bg-[var(--color-paper)] p-5 shadow-[0_0_26px_var(--color-support-glow)]"
         />
 
         {/* Book waitlist cross-promo — funnel the feed into /book */}
         <BookPromo className="shadow-[0_0_26px_var(--color-support-glow)]" />
 
         {/* Send-a-tip CTA — quiet card, blue only as the label cue */}
-        <Link
-          href="/submit"
-          className="block rounded-2xl bg-[var(--color-surface)] p-5 transition hover:bg-[var(--color-blue-soft)]"
-        >
-          <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-blue)]">
-            The tip line
-          </p>
-          <p className="mt-1.5 text-base font-bold text-[var(--color-ink)] leading-tight">
-            Got a story? Send it.
-          </p>
-          <p className="mt-1 text-xs text-[var(--color-ink-soft)]">
-            Local, national, worldwide — or a J6 case. Anonymous, free. Ryan
-            reads every one. →
-          </p>
-        </Link>
+        <TipLineCard className="hidden lg:block" />
 
         <div className="rounded-2xl bg-[var(--color-surface)] p-5 text-sm text-[var(--color-ink-soft)]">
           <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] mb-2">
@@ -157,6 +169,26 @@ export default async function HomePage({
         </div>
       </aside>
     </div>
+  );
+}
+
+function TipLineCard({ className = "" }: { className?: string }) {
+  return (
+    <Link
+      href="/submit"
+      className={`block rounded-2xl bg-[var(--color-surface)] p-5 transition hover:bg-[var(--color-blue-soft)] ${className}`}
+    >
+      <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-blue)]">
+        The tip line
+      </p>
+      <p className="mt-1.5 text-base font-bold text-[var(--color-ink)] leading-tight">
+        Got a story? Send it.
+      </p>
+      <p className="mt-1 text-xs text-[var(--color-ink-soft)]">
+        Local, national, worldwide — or a J6 case. Anonymous, free. Ryan
+        reads every one. →
+      </p>
+    </Link>
   );
 }
 
