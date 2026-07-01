@@ -73,7 +73,13 @@ const STEPS: Step[] = [
   },
 ];
 
-export function GetToKnowYou() {
+export function GetToKnowYou({
+  // Default keeps the historical look everywhere; the homepage passes a
+  // quieter shell so the sidebar's money surfaces stand out instead.
+  className = "rounded-2xl border border-[var(--color-accent)]/40 bg-[var(--color-paper)] p-5 shadow-sm",
+}: {
+  className?: string;
+}) {
   const [show, setShow] = useState(false);
   const [i, setI] = useState(0);
   const [text, setText] = useState("");
@@ -138,7 +144,7 @@ export function GetToKnowYou() {
   const step = STEPS[i];
 
   return (
-    <section className="rounded-2xl border border-[var(--color-accent)]/40 bg-[var(--color-paper)] p-5 shadow-sm">
+    <section className={className}>
       <div className="flex items-start justify-between gap-3">
         <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-accent)]">
           {done ? "Thanks for that" : "Let me get to know you"}

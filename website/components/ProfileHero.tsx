@@ -72,7 +72,7 @@ export async function ProfileHero() {
               {SITE.tagline}
             </p>
           </div>
-          <div className="hidden sm:flex items-center gap-2 pb-1">
+          <div className="hidden sm:flex shrink-0 items-center gap-2 pb-1">
             <Link
               href="/start-here"
               className="btn-accent inline-flex items-center rounded-full px-4 py-1.5 text-xs transition"

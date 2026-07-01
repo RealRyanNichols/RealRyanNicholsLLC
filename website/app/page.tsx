@@ -107,32 +107,38 @@ export default async function HomePage({
           <RyanChat variant="hero" surface="home" />
         </div>
       </div>
+      {/* Sidebar hierarchy: the two money surfaces (Signup, BookPromo) carry
+          the gold accent treatment; everything else sits quiet — borderless
+          on --color-surface — so the cards stop blurring into one another. */}
       <aside className="space-y-5">
-        <GetToKnowYou />
-        <VerseSidebar />
-        <SignupForm emailEnabled={emailSignupEnabled} />
+        <GetToKnowYou className="rounded-2xl bg-[var(--color-surface)] p-5" />
+        <VerseSidebar className="rounded-2xl bg-[var(--color-surface)] p-5" />
+        <SignupForm
+          emailEnabled={emailSignupEnabled}
+          className="rounded-2xl border-2 border-[var(--color-support)] bg-[var(--color-paper)] p-5 shadow-[0_0_26px_var(--color-support-glow)]"
+        />
 
         {/* Book waitlist cross-promo — funnel the feed into /book */}
-        <BookPromo />
+        <BookPromo className="shadow-[0_0_26px_var(--color-support-glow)]" />
 
-        {/* Send-a-tip CTA — prominent invite for the public to participate */}
+        {/* Send-a-tip CTA — quiet card, blue only as the label cue */}
         <Link
           href="/submit"
-          className="block rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-5 hover:bg-[var(--color-blue)] hover:text-[var(--color-paper)] transition group"
+          className="block rounded-2xl bg-[var(--color-surface)] p-5 transition hover:bg-[var(--color-blue-soft)]"
         >
-          <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-blue)] group-hover:text-[var(--color-paper)]">
+          <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-blue)]">
             The tip line
           </p>
-          <p className="mt-1.5 text-base font-bold text-[var(--color-ink)] group-hover:text-[var(--color-paper)] leading-tight">
+          <p className="mt-1.5 text-base font-bold text-[var(--color-ink)] leading-tight">
             Got a story? Send it.
           </p>
-          <p className="mt-1 text-xs text-[var(--color-ink-soft)] group-hover:text-[var(--color-paper)]">
+          <p className="mt-1 text-xs text-[var(--color-ink-soft)]">
             Local, national, worldwide — or a J6 case. Anonymous, free. Ryan
             reads every one. →
           </p>
         </Link>
 
-        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 text-sm text-[var(--color-ink-soft)]">
+        <div className="rounded-2xl bg-[var(--color-surface)] p-5 text-sm text-[var(--color-ink-soft)]">
           <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] mb-2">
             About this site
           </p>

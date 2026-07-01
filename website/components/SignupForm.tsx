@@ -9,7 +9,15 @@ type State =
   | { kind: "success"; message: string }
   | { kind: "error"; message: string };
 
-export function SignupForm({ emailEnabled = false }: { emailEnabled?: boolean }) {
+export function SignupForm({
+  emailEnabled = false,
+  // Default keeps the historical look everywhere; the homepage passes the
+  // gold money treatment so the capture form pops out of the sidebar.
+  className = "rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5",
+}: {
+  emailEnabled?: boolean;
+  className?: string;
+}) {
   const [state, setState] = useState<State>({ kind: "idle" });
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -60,10 +68,7 @@ export function SignupForm({ emailEnabled = false }: { emailEnabled?: boolean })
   }
 
   return (
-    <form
-      onSubmit={onSubmit}
-      className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
-    >
+    <form onSubmit={onSubmit} className={className}>
       <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] mb-2">
         Get updates
       </p>
