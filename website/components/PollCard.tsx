@@ -141,7 +141,7 @@ export function PollCard({
   return (
     <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-5">
       <div className="mb-2 flex items-center justify-between gap-3">
-        <p className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-accent)]">
+        <p className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-navy)]">
           {kicker}
           {closed ? " · closed" : ""}
         </p>
@@ -228,7 +228,7 @@ export function PollCard({
               </div>
             ))}
           </div>
-          <form onSubmit={unlock} className="mt-3 rounded-xl border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-3">
+          <form onSubmit={unlock} className="mt-3 border-l-2 border-[#e1bd5b] bg-[var(--color-surface-2)] p-3">
             <p className="text-sm font-bold text-[var(--color-ink)]">
               Your vote is in. The breakdown is locked.
             </p>
@@ -248,7 +248,7 @@ export function PollCard({
               <button
                 type="submit"
                 disabled={busy}
-                className="whitespace-nowrap rounded-lg bg-[var(--color-accent)] px-4 py-2 text-sm font-bold text-[var(--color-paper)] transition hover:opacity-90 disabled:opacity-60"
+                className="btn-accent whitespace-nowrap px-4 py-2 text-sm disabled:opacity-60"
               >
                 {busy ? "Unlocking…" : "See results"}
               </button>

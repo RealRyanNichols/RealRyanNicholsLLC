@@ -100,13 +100,13 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
                 aria-hidden
                 width={36}
                 height={36}
-                className="h-9 w-9 flex-shrink-0 rounded-full object-cover ring-2 ring-[var(--color-accent-glow)]"
+                className="h-9 w-9 flex-shrink-0 rounded-full object-cover ring-1 ring-[var(--color-line)]"
                 priority
                 unoptimized={avatarUrl.startsWith("http")}
               />
             ) : (
               <span
-                className="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-[var(--color-accent)] text-sm font-bold text-[var(--color-paper)] ring-2 ring-[var(--color-accent-glow)]"
+                className="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border-[1.5px] border-[var(--color-navy)] bg-transparent font-display text-sm font-bold text-[var(--color-navy)]"
                 aria-hidden
               >
                 RN
@@ -142,20 +142,20 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
 
             <Link
               href="/#talk"
-              className="ml-1 inline-flex items-center rounded-full bg-[var(--color-accent)] px-3.5 py-1.5 text-xs font-black text-[var(--color-ink)] transition hover:brightness-105"
+              className="btn-accent ml-2 inline-flex items-center px-4 py-1.5 text-xs"
             >
               Talk to Ryan
             </Link>
             <Link
               href="/#join"
-              className="btn-support ml-1 inline-flex items-center rounded-full px-3.5 py-1.5 text-xs font-semibold"
+              className="btn-support ml-2 inline-flex items-center py-1.5 text-xs"
             >
               Join
             </Link>
             {isAdmin ? (
               <Link
                 href="/admin/new"
-                className="ml-1 inline-flex items-center gap-1 rounded-full border-2 border-[#e1bd5b] bg-[#e1bd5b] px-3.5 py-1.5 text-xs font-black text-[#071126] transition hover:brightness-110"
+                className="ml-3 inline-flex items-center gap-1 text-xs font-medium text-[var(--color-muted)] underline decoration-[var(--color-line)] underline-offset-4 transition hover:text-[var(--color-navy)] hover:decoration-[var(--color-navy)]"
                 aria-label="Write a new post"
               >
                 <PencilIcon />
@@ -165,12 +165,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             {signedIn ? (
               <Link
                 href={officeHref}
-                className={[
-                  "ml-1 inline-flex items-center rounded-full px-3.5 py-1.5 text-xs font-black transition",
-                  isAdmin
-                    ? "border-2 border-[#e1bd5b] bg-[#071126] text-[#e1bd5b] hover:bg-[#e1bd5b] hover:text-[#071126]"
-                    : "border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]",
-                ].join(" ")}
+                className="ml-3 inline-flex items-center text-xs font-medium text-[var(--color-muted)] underline decoration-[var(--color-line)] underline-offset-4 transition hover:text-[var(--color-navy)] hover:decoration-[var(--color-navy)]"
                 aria-label={officeLabel}
               >
                 {officeLabel}
@@ -179,7 +174,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             {!signedIn ? (
               <Link
                 href="/login"
-                className="ml-1 inline-flex items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3.5 py-1.5 text-xs font-medium text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                className="ml-3 inline-flex items-center text-xs font-medium text-[var(--color-muted)] underline decoration-[var(--color-line)] underline-offset-4 transition hover:text-[var(--color-navy)] hover:decoration-[var(--color-navy)]"
               >
                 Sign in
               </Link>
@@ -239,7 +234,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
               <Link
                 href="/#talk"
                 onClick={() => setOpen(false)}
-                className="flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-4 py-3 text-sm font-black text-[var(--color-ink)] transition hover:brightness-105"
+                className="flex min-h-12 items-center justify-center rounded-lg bg-[#e1bd5b] px-4 py-3 text-sm font-bold text-[#071126] transition hover:brightness-105"
               >
                 Talk to Ryan
               </Link>
@@ -269,7 +264,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
               {isAdmin ? (
                 <Link
                   href="/admin/new"
-                  className="flex min-h-12 items-center justify-center gap-2 rounded-lg border-2 border-[#e1bd5b] bg-[#e1bd5b] px-4 py-3 text-sm font-black text-[#071126] transition hover:brightness-110"
+                  className="flex min-h-12 items-center justify-center gap-2 rounded-lg border border-[#e1bd5b]/60 px-4 py-3 text-sm font-bold text-[#e1bd5b] transition hover:bg-[#e1bd5b]/10"
                 >
                   <PencilIcon />
                   New Post

@@ -207,7 +207,7 @@ function Thread({
   return (
     <div className={compact ? "space-y-3" : "space-y-4"} aria-live="polite">
       {messages.length === 0 ? (
-        <div className="rounded-2xl rounded-tl-sm border border-[var(--color-line)] bg-[var(--color-accent-soft)] px-4 py-3 text-sm leading-relaxed text-[var(--color-ink)]">
+        <div className="rounded-2xl rounded-tl-sm border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-3 text-sm leading-relaxed text-[var(--color-ink-soft)]">
           {GREETING}
         </div>
       ) : null}
@@ -450,12 +450,12 @@ export function RyanChat({
 
   if (variant === "hero") {
     return (
-      <section className="overflow-hidden rounded-2xl border border-[var(--color-accent)]/40 bg-[var(--color-paper)] shadow-[0_0_0_1px_var(--color-accent-glow)]">
+      <section className="overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-paper)]">
         <div className="border-b border-[var(--color-line)] bg-[var(--color-surface)] px-5 py-4">
           <div className="flex items-center gap-3">
             <Avatar />
             <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-accent)]">
+              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-navy)]">
                 Talk to me — a direct line
               </p>
               <h2 className="font-display text-xl font-bold tracking-tight text-[var(--color-ink)]">
@@ -591,7 +591,7 @@ export function RyanChat({
             type="button"
             onClick={openChat}
             aria-label="Talk to Ryan"
-            className="flex items-center gap-2.5 rounded-full border border-[var(--color-accent)]/30 bg-[var(--color-paper)] py-2 pl-2 pr-4 shadow-xl shadow-[var(--color-accent-glow)] transition hover:brightness-[1.02] hover:shadow-2xl"
+            className="flex items-center gap-2.5 rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] py-2 pl-2 pr-4 shadow-xl transition hover:border-[var(--color-navy)]"
           >
             <span className="relative">
               <Avatar size="h-9 w-9" />

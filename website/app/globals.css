@@ -28,7 +28,9 @@
   --color-support-glow: rgba(200, 155, 47, 0.28);
 
   /* Navy blue — the second American color. Use for institutional context,
-     procedural tags, secondary CTAs. */
+     procedural tags, secondary CTAs. --color-navy is the deep brand navy
+     (headers, primary buttons); --color-blue is its lighter hover step. */
+  --color-navy: #0b1b34;
   --color-blue: #1d3a6b;
   --color-blue-strong: #142a52;
   --color-blue-soft: #d9e2f2;
@@ -264,55 +266,65 @@
   margin: 1.35em 0;
 }
 
-/* Glowing accent button used for primary CTAs that need to demand a tap. */
+/* Quiet Authority button language. One solid navy button per view; every
+   other action is clean type. Flat ink — no gradients, no glow, no lift.
+   These rules are unlayered on purpose so they beat Tailwind utilities
+   (rounded-full etc.) already baked into markup across the site. */
 .btn-accent {
-  background: var(--color-accent);
+  background: var(--color-navy);
   color: #fdf8ea;
   font-weight: 600;
-  box-shadow: 0 2px 14px var(--color-accent-glow);
-  transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease,
-    filter 0.2s ease;
+  border-radius: 8px;
+  box-shadow: none;
+  transition: background 0.15s ease;
 }
 .btn-accent:hover {
-  background: var(--color-accent-strong);
-  transform: translateY(-1px);
-  box-shadow: 0 8px 26px var(--color-accent-glow), 0 0 30px var(--color-accent-glow);
+  background: var(--color-blue);
+  transform: none;
+  box-shadow: none;
 }
 .btn-accent:active {
-  transform: translateY(0);
+  transform: none;
 }
 
+/* Secondary action: type, not a box. Navy ink carried on a gold rule. */
 .btn-support {
-  background: linear-gradient(135deg, var(--color-support), #e1bd5b);
-  color: #17110a;
-  font-weight: 800;
-  box-shadow: 0 2px 16px var(--color-support-glow);
-  transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  background: transparent;
+  color: inherit;
+  font-weight: 600;
+  border-radius: 0;
+  border-bottom: 2px solid #e1bd5b;
+  box-shadow: none;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  transition: border-color 0.15s ease, color 0.15s ease;
 }
 .btn-support:hover {
-  background: linear-gradient(135deg, var(--color-support-strong), var(--color-support));
-  color: #fff8e6;
-  transform: translateY(-1px);
-  box-shadow: 0 8px 30px var(--color-support-glow), 0 0 32px var(--color-support-glow);
+  background: transparent;
+  color: var(--color-support-strong);
+  border-bottom-color: var(--color-support-strong);
+  transform: none;
+  box-shadow: none;
 }
 .btn-support:active {
-  transform: translateY(0);
+  transform: none;
 }
 
-/* Secondary CTA using the navy blue — pairs with red on the page. */
+/* Legacy alias — same navy primary. */
 .btn-blue {
-  background: var(--color-blue);
+  background: var(--color-navy);
   color: #fdf8ea;
   font-weight: 600;
-  transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease;
+  border-radius: 8px;
+  transition: background 0.15s ease;
 }
 .btn-blue:hover {
-  background: var(--color-blue-strong);
-  transform: translateY(-1px);
-  box-shadow: 0 8px 22px rgba(11, 27, 52, 0.28);
+  background: var(--color-blue);
+  transform: none;
+  box-shadow: none;
 }
 .btn-blue:active {
-  transform: translateY(0);
+  transform: none;
 }
 
 /* Mobile-first page primitives for the public conversion pages. Most traffic
