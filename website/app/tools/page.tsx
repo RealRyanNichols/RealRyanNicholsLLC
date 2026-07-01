@@ -17,11 +17,13 @@ export const metadata: Metadata = {
     title,
     description,
     url: `${SITE.url}/tools`,
+    images: [`${SITE.url}/og/site`],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title,
     description,
+    images: [`${SITE.url}/og/site`],
   },
 };
 

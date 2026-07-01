@@ -110,11 +110,13 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     url: `${SITE.url}/tell-your-story`,
+    images: [`${SITE.url}/og/site`],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: TITLE,
     description: DESCRIPTION,
+    images: [`${SITE.url}/og/site`],
   },
 };
 

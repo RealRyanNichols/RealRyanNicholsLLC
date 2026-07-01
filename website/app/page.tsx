@@ -2,11 +2,15 @@ import { getPublishedPosts, getCommentCount } from "@/lib/posts";
 import { getOgImages } from "@/lib/og-images";
 import { PostCard } from "@/components/PostCard";
 import { ProfileHero } from "@/components/ProfileHero";
+import { PathPicker } from "@/components/PathPicker";
+import { RyanChat } from "@/components/RyanChat";
+import { GetToKnowYou } from "@/components/GetToKnowYou";
 import { VerseSidebar } from "@/components/VerseSidebar";
 import { SignupForm } from "@/components/SignupForm";
 import { BookPromo } from "@/components/BookPromo";
 import { BookCtaBand } from "@/components/BookCtaBand";
 import { RallyInline } from "@/components/RallyInline";
+import { FeedPoll } from "@/components/FeedPoll";
 import { LiveNowBanner } from "@/components/LiveNowBanner";
 import { getActiveLiveStream } from "@/lib/live";
 import { SITE } from "@/lib/site";
@@ -33,11 +37,7 @@ export default async function HomePage({
     posts.map(async (p) => [p.id, await getCommentCount(p.id)] as const),
   );
   const countMap = new Map(counts);
-  const emailSignupEnabled = Boolean(
-    SITE.mailingAddress &&
-      process.env.RESEND_API_KEY &&
-      process.env.RESEND_FROM_EMAIL,
-  );
+  const emailSignupEnabled = SITE.emailCaptureEnabled;
 
   // Pinned posts float to the top of the feed; everything else follows in
   // chronological order. getPublishedPosts already returns them pinned-first
@@ -50,11 +50,15 @@ export default async function HomePage({
         <LiveNowBanner stream={activeLiveStream} />
         <ProfileHero />
 
+        <div className="mt-4">
+          <PathPicker variant="band" />
+        </div>
+
         {/* Feed sits directly under the hero — people come to read first.
             The take-action blocks are woven into the feed below at spaced
             breaks (not stacked above it), so each lands where it belongs
             without burying the posts. */}
-        <section className="mt-8">
+        <section className="mt-6">
           <div className="flex items-center justify-between gap-3 mb-3 border-b border-[var(--color-line)]">
             <h2 className="sr-only">Feed</h2>
             <nav className="flex gap-0" role="tablist" aria-label="Feed sort">
@@ -79,8 +83,12 @@ export default async function HomePage({
                   commentCount={countMap.get(p.id) ?? 0}
                   fallbackImage={ogMap.get(`/posts/${p.slug}`) ?? null}
                 />,
-                // Rally CTA after the first few posts; book band a few posts
-                // later — spaced, so neither bunches with the other.
+                // Feed poll right after the lead post (renders only when a
+                // poll is live); rally CTA after the first few posts; book
+                // band a few posts later — spaced, so nothing bunches.
+                i === 0 ? (
+                  <FeedPoll key="home-poll" className="my-8" />
+                ) : null,
                 i === 2 ? (
                   <RallyInline key="home-rally" source="home" className="my-8" />
                 ) : null,
@@ -91,32 +99,46 @@ export default async function HomePage({
             </div>
           )}
         </section>
+
+        {/* Talk to Ryan — below the feed now. People come to read first; the
+            floating launcher and the nav button still open the chat from
+            anywhere, and #talk lands here. */}
+        <div id="talk" className="mt-10 scroll-mt-24">
+          <RyanChat variant="hero" surface="home" />
+        </div>
       </div>
+      {/* Sidebar hierarchy: the two money surfaces (Signup, BookPromo) carry
+          the gold accent treatment; everything else sits quiet — borderless
+          on --color-surface — so the cards stop blurring into one another. */}
       <aside className="space-y-5">
-        <VerseSidebar />
-        <SignupForm emailEnabled={emailSignupEnabled} />
+        <GetToKnowYou className="rounded-2xl bg-[var(--color-surface)] p-5" />
+        <VerseSidebar className="rounded-2xl bg-[var(--color-surface)] p-5" />
+        <SignupForm
+          emailEnabled={emailSignupEnabled}
+          className="rounded-2xl border-2 border-[var(--color-support)] bg-[var(--color-paper)] p-5 shadow-[0_0_26px_var(--color-support-glow)]"
+        />
 
         {/* Book waitlist cross-promo — funnel the feed into /book */}
-        <BookPromo />
+        <BookPromo className="shadow-[0_0_26px_var(--color-support-glow)]" />
 
-        {/* Send-a-tip CTA — prominent invite for the public to participate */}
+        {/* Send-a-tip CTA — quiet card, blue only as the label cue */}
         <Link
           href="/submit"
-          className="block rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-5 hover:bg-[var(--color-blue)] hover:text-[var(--color-paper)] transition group"
+          className="block rounded-2xl bg-[var(--color-surface)] p-5 transition hover:bg-[var(--color-blue-soft)]"
         >
-          <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-blue)] group-hover:text-[var(--color-paper)]">
+          <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-blue)]">
             The tip line
           </p>
-          <p className="mt-1.5 text-base font-bold text-[var(--color-ink)] group-hover:text-[var(--color-paper)] leading-tight">
+          <p className="mt-1.5 text-base font-bold text-[var(--color-ink)] leading-tight">
             Got a story? Send it.
           </p>
-          <p className="mt-1 text-xs text-[var(--color-ink-soft)] group-hover:text-[var(--color-paper)]">
+          <p className="mt-1 text-xs text-[var(--color-ink-soft)]">
             Local, national, worldwide — or a J6 case. Anonymous, free. Ryan
             reads every one. →
           </p>
         </Link>
 
-        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 text-sm text-[var(--color-ink-soft)]">
+        <div className="rounded-2xl bg-[var(--color-surface)] p-5 text-sm text-[var(--color-ink-soft)]">
           <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] mb-2">
             About this site
           </p>

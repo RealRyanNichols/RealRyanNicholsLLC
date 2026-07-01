@@ -22,7 +22,6 @@ const COLUMNS: { heading: string; links: { href: string; label: string }[] }[] =
       { href: "/submit", label: "Tip Line" },
       { href: "/case/intake", label: "Public Ledger" },
       { href: "/contact", label: "Private Contact" },
-      { href: "/support", label: "Donate" },
     ],
   },
   {

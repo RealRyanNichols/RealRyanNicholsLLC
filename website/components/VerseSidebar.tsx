@@ -1,8 +1,14 @@
 import { SITE } from "@/lib/site";
 
-export function VerseSidebar() {
+export function VerseSidebar({
+  // Default keeps the historical look everywhere; the homepage passes a
+  // quieter shell so the sidebar's money surfaces stand out instead.
+  className = "rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5",
+}: {
+  className?: string;
+}) {
   return (
-    <aside className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+    <aside className={className}>
       <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] mb-2">
         The verse I keep coming back to
       </p>

@@ -27,7 +27,7 @@ const connectionTypes = [
 export async function generateMetadata(): Promise<Metadata> {
   const override = await getOgImage("/case/nexus");
   const url = `${SITE.url}/case/nexus`;
-  const ogUrl = override?.image_url ?? null;
+  const ogUrl = override?.image_url ?? `${SITE.url}/og/site`;
   return {
     title: override?.title ?? "The Case Nexus",
     description: override?.description ?? DESCRIPTION,

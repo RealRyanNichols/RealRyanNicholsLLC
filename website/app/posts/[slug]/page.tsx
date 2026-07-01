@@ -16,7 +16,6 @@ import { PostFollowCapture } from "@/components/PostLivePulse";
 import { ReadNext } from "@/components/ReadNext";
 import { NotifySubscribersButton } from "@/components/NotifySubscribersButton";
 import { PostMain } from "@/components/PostMain";
-import { PostSupportCTA } from "@/components/PostSupportCTA";
 import { StoryTipCTA } from "@/components/StoryTipCTA";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { SITE } from "@/lib/site";
@@ -279,16 +278,10 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
 
         <RallyInline source="article" className="mt-8" />
 
-        {post.category !== "Offers" ? <PostSupportCTA /> : null}
-
         <PostFollowCapture
           path={path}
           seed={pulseSeed}
-          emailEnabled={Boolean(
-            SITE.mailingAddress &&
-              process.env.RESEND_API_KEY &&
-              process.env.RESEND_FROM_EMAIL,
-          )}
+          emailEnabled={SITE.emailCaptureEnabled}
         />
 
         <div className="mt-6">
@@ -318,11 +311,7 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
       <aside className="space-y-5">
         <VerseSidebar />
         <SignupForm
-          emailEnabled={Boolean(
-            SITE.mailingAddress &&
-              process.env.RESEND_API_KEY &&
-              process.env.RESEND_FROM_EMAIL,
-          )}
+          emailEnabled={SITE.emailCaptureEnabled}
         />
       </aside>
     </div>

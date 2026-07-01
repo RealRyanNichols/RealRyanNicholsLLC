@@ -21,8 +21,9 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     url: `${SITE.url}/case/officials`,
+    images: [`${SITE.url}/og/site`],
   },
-  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
+  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION, images: [`${SITE.url}/og/site`] },
 };
 
 type Official = {
