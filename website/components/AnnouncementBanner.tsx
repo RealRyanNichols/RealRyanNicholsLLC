@@ -49,7 +49,7 @@ export function AnnouncementBanner() {
         href="/book/preorder"
         className="block transition hover:bg-[var(--color-accent-strong)]"
       >
-        <div className="mx-auto flex max-w-5xl items-center justify-center gap-x-2 gap-y-0.5 px-9 py-2 text-center text-xs font-bold leading-tight sm:text-sm">
+        <div className="mx-auto flex max-w-5xl items-center justify-center gap-x-2 gap-y-0.5 px-9 py-1.5 text-center text-xs font-bold leading-tight">
           <span className="rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.12em]">
             {percentOff > 0 ? `${percentOff}% off` : "Pre-order"}
           </span>

@@ -50,11 +50,7 @@ export default async function HomePage({
         <LiveNowBanner stream={activeLiveStream} />
         <ProfileHero />
 
-        <div id="talk" className="mt-6 scroll-mt-24">
-          <RyanChat variant="hero" surface="home" />
-        </div>
-
-        <div className="mt-6">
+        <div className="mt-4">
           <PathPicker variant="band" />
         </div>
 
@@ -62,7 +58,7 @@ export default async function HomePage({
             The take-action blocks are woven into the feed below at spaced
             breaks (not stacked above it), so each lands where it belongs
             without burying the posts. */}
-        <section className="mt-8">
+        <section className="mt-6">
           <div className="flex items-center justify-between gap-3 mb-3 border-b border-[var(--color-line)]">
             <h2 className="sr-only">Feed</h2>
             <nav className="flex gap-0" role="tablist" aria-label="Feed sort">
@@ -103,6 +99,13 @@ export default async function HomePage({
             </div>
           )}
         </section>
+
+        {/* Talk to Ryan — below the feed now. People come to read first; the
+            floating launcher and the nav button still open the chat from
+            anywhere, and #talk lands here. */}
+        <div id="talk" className="mt-10 scroll-mt-24">
+          <RyanChat variant="hero" surface="home" />
+        </div>
       </div>
       <aside className="space-y-5">
         <GetToKnowYou />
