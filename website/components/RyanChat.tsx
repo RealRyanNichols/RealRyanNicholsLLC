@@ -419,7 +419,13 @@ export function RyanChat({
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") setOpen(false);
     }
+    // Any surface on any page can open the chat panel:
+    // window.dispatchEvent(new Event("ryanchat:open"))
+    function onOpenEvent() {
+      openChat();
+    }
     window.addEventListener("keydown", onKey);
+    window.addEventListener("ryanchat:open", onOpenEvent);
     let t: number | undefined;
     try {
       if (!localStorage.getItem(TEASER_KEY)) {
@@ -430,6 +436,7 @@ export function RyanChat({
     }
     return () => {
       window.removeEventListener("keydown", onKey);
+      window.removeEventListener("ryanchat:open", onOpenEvent);
       if (t) window.clearTimeout(t);
     };
   }, [variant]);
@@ -502,14 +509,16 @@ export function RyanChat({
     );
   }
 
-  // launcher (desktop only — mobile uses the homepage hero + the bottom bar)
+  // launcher — every screen size. On phones it floats above the bottom
+  // action bar; the open panel goes near-full-screen. This is the front
+  // door to the whole data engine: it has to be seen.
   return (
-    <div className="hidden lg:block">
+    <div>
       {open ? (
         <div
           role="dialog"
           aria-label="Talk to Ryan"
-          className="fixed bottom-5 right-5 z-50 flex h-[564px] w-[384px] flex-col overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-paper)] shadow-2xl"
+          className="fixed inset-x-2 bottom-2 z-50 flex h-[82dvh] flex-col overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-paper)] shadow-2xl lg:inset-x-auto lg:bottom-5 lg:right-5 lg:h-[564px] lg:w-[384px]"
         >
           <div className="flex items-center justify-between gap-3 border-b border-[var(--color-line)] bg-[var(--color-ink)] px-4 py-3 text-[var(--color-paper)]">
             <div className="flex items-center gap-2.5">
@@ -562,7 +571,7 @@ export function RyanChat({
           </div>
         </div>
       ) : (
-        <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
+        <div className="fixed right-3 bottom-[calc(4.75rem+env(safe-area-inset-bottom))] z-50 flex flex-col items-end gap-3 lg:bottom-6 lg:right-6">
           {teaser ? (
             <div className="relative max-w-[260px] rounded-2xl rounded-br-sm border border-[var(--color-line)] bg-[var(--color-paper)] px-4 py-3 shadow-xl">
               <button
@@ -591,18 +600,18 @@ export function RyanChat({
             type="button"
             onClick={openChat}
             aria-label="Talk to Ryan"
-            className="flex items-center gap-2.5 rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] py-2 pl-2 pr-4 shadow-xl transition hover:border-[var(--color-navy)]"
+            className="flex items-center gap-3 rounded-full border-[1.5px] border-[var(--color-navy)] bg-[var(--color-paper)] py-2.5 pl-2.5 pr-5 shadow-2xl transition hover:bg-[var(--color-surface)] lg:py-3 lg:pl-3 lg:pr-6"
           >
             <span className="relative">
-              <Avatar size="h-9 w-9" />
-              <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-[var(--color-paper)] bg-emerald-400" />
+              <Avatar size="h-11 w-11 lg:h-14 lg:w-14" />
+              <span className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full border-2 border-[var(--color-paper)] bg-emerald-400" />
             </span>
             <span className="text-left leading-tight">
-              <span className="block text-sm font-black text-[var(--color-ink)]">
+              <span className="block text-base font-black text-[var(--color-ink)] lg:text-lg">
                 Talk to Ryan
               </span>
-              <span className="block text-[11px] font-semibold text-[var(--color-ink-soft)]">
-                Ask me anything
+              <span className="block text-xs font-semibold text-[var(--color-ink-soft)] lg:text-sm">
+                Ask me anything — I read every one
               </span>
             </span>
           </button>
