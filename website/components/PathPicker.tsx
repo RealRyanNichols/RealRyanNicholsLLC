@@ -37,6 +37,9 @@ export function PathPicker({ variant = "band" }: { variant?: Variant }) {
   const [show, setShow] = useState(false);
   const [step, setStep] = useState<"intent" | "source">("intent");
   const [dir, setDir] = useState<Dir | null>(null);
+  // The band starts collapsed on phones (feed first) and open on desktop,
+  // where there's room for both.
+  const [bandOpen, setBandOpen] = useState(false);
 
   // Show to anyone we haven't recorded yet — for BOTH the band and the
   // overlay. Once a visitor answers (or dismisses), we never ask again:
@@ -46,6 +49,9 @@ export function PathPicker({ variant = "band" }: { variant?: Variant }) {
       if (!localStorage.getItem(SEEN_KEY)) setShow(true);
     } catch {
       /* ignore */
+    }
+    if (window.matchMedia("(min-width: 640px)").matches) {
+      setBandOpen(true);
     }
   }, []);
 
@@ -102,6 +108,8 @@ export function PathPicker({ variant = "band" }: { variant?: Variant }) {
   // card, never camouflage against the cream page. The inline band keeps
   // the paper treatment.
   const dark = variant === "overlay";
+
+  const collapsedBand = variant === "band" && !bandOpen;
 
   const inner = (
     <div className="w-full">
@@ -175,6 +183,44 @@ export function PathPicker({ variant = "band" }: { variant?: Variant }) {
           {inner}
         </div>
       </div>
+    );
+  }
+
+  if (collapsedBand) {
+    // Phones start here: one compact row, so the feed is a thumb-scroll away.
+    return (
+      <section className="mx-auto max-w-3xl rounded-2xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4 shadow-sm sm:p-5">
+        <button
+          type="button"
+          onClick={() => setBandOpen(true)}
+          aria-expanded={false}
+          className="flex w-full items-center justify-between gap-3 text-left"
+        >
+          <span className="min-w-0">
+            <span className="block text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-navy)]">
+              Welcome — glad you&apos;re here
+            </span>
+            <span className="mt-0.5 block truncate font-display text-lg font-bold tracking-tight text-[var(--color-ink)]">
+              What brings you by today?
+            </span>
+          </span>
+          <span className="inline-flex shrink-0 items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-[var(--color-muted)]">
+            Pick your path
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-3.5 w-3.5"
+              aria-hidden
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </span>
+        </button>
+      </section>
     );
   }
 
