@@ -149,6 +149,43 @@ export default async function DocumentPage({
               </a>
             </figcaption>
           </>
+        ) : !d.file_url && d.external_url ? (
+          // Official records we deliberately do NOT re-host (court filings on
+          // CourtListener/RECAP): embed the PDF straight from the source, with
+          // a graceful hand-off if the browser won't inline it.
+          <>
+            <object
+              data={d.external_url}
+              type="application/pdf"
+              className="block h-[75vh] w-full bg-white"
+            >
+              <div className="flex h-[40vh] flex-col items-center justify-center gap-4 p-8 text-center">
+                <p className="max-w-md text-sm leading-relaxed text-white/85">
+                  This is an official court record, served directly from the
+                  public docket so you can verify it at the source.
+                </p>
+                <a
+                  href={d.external_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center rounded-lg bg-[#fdf8ea] px-5 py-2.5 text-sm font-bold text-[var(--color-navy)]"
+                >
+                  Open the PDF →
+                </a>
+              </div>
+            </object>
+            <figcaption className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 text-xs text-[var(--color-muted)]">
+              <span>Official record · not re-hosted — verify at the source</span>
+              <a
+                href={d.external_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-[var(--color-accent)] underline"
+              >
+                Open at the source →
+              </a>
+            </figcaption>
+          </>
         ) : (
           <>
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -175,10 +212,15 @@ export default async function DocumentPage({
       </figure>
 
       <div className="mt-10 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-ink-soft)]">
-        <Link href="/support" className="text-[var(--color-accent)] underline font-semibold">
-          Support Ryan&apos;s rebuild
+        This record stays public because the work sells, not begs —{" "}
+        <Link href="/book" className="text-[var(--color-accent)] underline font-semibold">
+          get the book
         </Link>{" "}
-        — every dollar funds keeping this record public.
+        or{" "}
+        <Link href="/case-builder" className="text-[var(--color-accent)] underline font-semibold">
+          get your own case built like this
+        </Link>
+        .
       </div>
     </article>
   );

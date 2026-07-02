@@ -135,55 +135,119 @@ function SeriesCard({ series }: { series: DocSeries }) {
   const multi = series.pages.length > 1;
   const title = multi ? lead.series_title ?? lead.title : lead.title;
   const video = !multi ? detectVideo(lead.external_url) : null;
+  const officialOnly = !lead.file_url && !!lead.external_url && !video;
+
+  if (video) {
+    return (
+      <article className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] overflow-hidden">
+        <div className="px-4 pt-3 pb-2 flex items-baseline justify-between gap-3 flex-wrap">
+          <div className="min-w-0 flex-1">
+            <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent)] font-bold">
+              {video.platformLabel} · video
+              {lead.document_date ? (
+                <> · {format(new Date(lead.document_date), "MMM d, yyyy")}</>
+              ) : null}
+            </p>
+            <p className="mt-1 text-sm font-semibold leading-snug text-[var(--color-ink)]">
+              {title}
+            </p>
+          </div>
+          <Link
+            href={`/case/documents/${lead.slug}`}
+            className="text-xs font-semibold text-[var(--color-accent)] hover:underline whitespace-nowrap"
+          >
+            Share & discuss →
+          </Link>
+        </div>
+        <VideoEmbedBlock video={video} title={title} />
+      </article>
+    );
+  }
+
+  // Article-style row: the document's face on the left (first page, or an
+  // official-record seal for court filings we serve from the source), the
+  // story of it on the right.
   return (
-    <article className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] overflow-hidden">
-      <div className="px-4 pt-3 pb-2 flex items-baseline justify-between gap-3 flex-wrap">
-        <div className="min-w-0 flex-1">
-          <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent)] font-bold">
-            {video ? `${video.platformLabel} · video` : lead.doc_type}
-            {lead.document_date ? (
-              <>
-                {" · "}
-                {format(new Date(lead.document_date), "MMM d, yyyy")}
-              </>
-            ) : null}
-            {multi ? <span className="ml-2 text-[var(--color-muted)]">{series.pages.length} pages</span> : null}
-          </p>
-          <p className="mt-1 text-sm font-semibold leading-snug text-[var(--color-ink)]">
+    <article className="overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] sm:flex sm:items-stretch">
+      <Link
+        href={`/case/documents/${lead.slug}`}
+        className="block shrink-0 sm:w-44"
+        aria-label={`Open ${title}`}
+      >
+        {officialOnly ? (
+          <span className="flex h-40 w-full flex-col items-center justify-center gap-1.5 bg-[var(--color-navy)] p-4 text-center sm:h-full">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#fdf8ea"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-8 w-8"
+              aria-hidden
+            >
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" />
+              <path d="M14 2v6h6" />
+              <path d="m9 15 2 2 4-4" />
+            </svg>
+            <span className="text-[10px] font-black uppercase tracking-wider text-[#fdf8ea]">
+              Official record
+            </span>
+            <span className="text-[10px] leading-snug text-[#8194b4]">
+              served from the court docket
+            </span>
+          </span>
+        ) : (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={`/api/case-doc/${lead.slug}/image`}
+            alt={title}
+            loading="lazy"
+            className="h-40 w-full bg-black object-cover object-top sm:h-full"
+          />
+        )}
+      </Link>
+      <div className="min-w-0 flex-1 p-4">
+        <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent)] font-bold">
+          {lead.doc_type}
+          {lead.document_date ? (
+            <> · {format(new Date(lead.document_date), "MMM d, yyyy")}</>
+          ) : null}
+          {multi ? (
+            <span className="ml-2 text-[var(--color-muted)]">
+              {series.pages.length} pages
+            </span>
+          ) : null}
+        </p>
+        <Link href={`/case/documents/${lead.slug}`} className="block">
+          <p className="mt-1 text-sm font-semibold leading-snug text-[var(--color-ink)] hover:text-[var(--color-navy)] transition">
             {title}
           </p>
-        </div>
-        <Link
-          href={`/case/documents/${lead.slug}`}
-          className="text-xs font-semibold text-[var(--color-accent)] hover:underline whitespace-nowrap"
-        >
-          Share & discuss →
         </Link>
-      </div>
-      {video ? (
-        <VideoEmbedBlock video={video} title={title} />
-      ) : (
-        <div className="bg-black">
-          {series.pages.map((p, i) => (
+        {lead.description ? (
+          <p className="mt-1.5 text-xs leading-snug text-[var(--color-ink-soft)] line-clamp-3">
+            {lead.description}
+          </p>
+        ) : null}
+        <div className="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-semibold">
+          <Link
+            href={`/case/documents/${lead.slug}`}
+            className="text-[var(--color-navy)] hover:underline"
+          >
+            Read & discuss →
+          </Link>
+          {lead.external_url ? (
             <a
-              key={p.id}
-              href={`/api/case-doc/${p.slug}/image`}
+              href={lead.external_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="block"
-              aria-label={`Open ${multi ? `page ${i + 1} of ${title}` : title} full size`}
+              className="text-[var(--color-muted)] hover:text-[var(--color-navy)] hover:underline"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={`/api/case-doc/${p.slug}/image`}
-                alt={multi ? `${title} — page ${i + 1}` : p.title}
-                loading="lazy"
-                className="w-full h-auto block"
-              />
+              Open at the source →
             </a>
-          ))}
+          ) : null}
         </div>
-      )}
+      </div>
     </article>
   );
 }

@@ -1,7 +1,8 @@
 import Link from "next/link";
 import type { CasePerson, CaseDocument } from "@/lib/case";
 import { ROLE_LINE, DECORATIONS, OPERATIONS, RECOGNITION } from "@/lib/bio";
-import { FIGHTS } from "@/lib/fights";
+import { storySlugFor } from "@/lib/story";
+import { muxThumbnailUrl } from "@/lib/mux";
 import { CaseViewTracker } from "@/components/CaseViewTracker";
 import { ShareButton } from "@/components/ShareButton";
 import { CaseInfoCard } from "@/components/CaseInfoCard";
@@ -27,6 +28,21 @@ type CaseTotals = {
 // How many linked documents render on the profile itself before handing off
 // to the documents view.
 const EVIDENCE_SAMPLE = 12;
+
+// Every dispatch card carries a picture: the post's own art if it has any,
+// the video's first frame, else the generated share card — never a bare box.
+function postThumb(p: Post): string {
+  return (
+    p.thumbnail_url ||
+    p.image_urls?.find(Boolean) ||
+    p.media?.find(
+      (m) => m.url && !/\.(mp4|mov|m4v|webm)(?:\?|#|$)/i.test(m.url),
+    )?.url ||
+    (p.type === "video" && p.mux_playback_id
+      ? muxThumbnailUrl(p.mux_playback_id, { width: 600, time: 1 })
+      : `/og/${p.slug}`)
+  );
+}
 
 // The bespoke, flagship profile for the subject of the entire site. Everything
 // else at /case/people/[slug] uses the generic person template; Ryan's own page
@@ -375,15 +391,26 @@ export function RyanCaseProfile({
             {OPERATIONS.map((op) => (
               <li key={op.title} className="relative pl-6">
                 <span className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full bg-[var(--color-accent)] ring-4 ring-[var(--color-paper)]" />
-                <div className="flex flex-wrap items-baseline gap-2">
-                  <span className="rounded bg-[var(--color-ink)] text-[var(--color-paper)] px-1.5 py-0.5 text-[10px] font-bold tabular-nums">
-                    {op.year}
+                <Link href={`/story/${storySlugFor(op)}`} className="group block">
+                  <div className="flex flex-wrap items-baseline gap-2">
+                    <span className="rounded bg-[var(--color-ink)] text-[var(--color-paper)] px-1.5 py-0.5 text-[10px] font-bold tabular-nums">
+                      {op.year}
+                    </span>
+                    <h4 className="text-base sm:text-lg font-bold tracking-tight font-display transition group-hover:text-[var(--color-navy)]">
+                      {op.title}
+                    </h4>
+                    <span
+                      aria-hidden
+                      className="text-xs font-bold text-[var(--color-muted)] transition group-hover:translate-x-0.5 group-hover:text-[var(--color-navy)]"
+                    >
+                      →
+                    </span>
+                  </div>
+                  <p className="mt-1 text-sm text-[var(--color-ink-soft)] leading-snug">{op.detail}</p>
+                  <span className="mt-0.5 inline-block text-xs font-bold text-[var(--color-navy)] opacity-0 transition group-hover:opacity-100">
+                    Open this chapter — the full story, pictures, and record
                   </span>
-                  <h4 className="text-base sm:text-lg font-bold tracking-tight font-display">
-                    {op.title}
-                  </h4>
-                </div>
-                <p className="mt-1 text-sm text-[var(--color-ink-soft)] leading-snug">{op.detail}</p>
+                </Link>
               </li>
             ))}
           </ol>
@@ -396,12 +423,17 @@ export function RyanCaseProfile({
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
             {RECOGNITION.map((r) => (
-              <span
+              <Link
                 key={r}
-                className="rounded-full border border-[var(--color-blue)]/30 bg-[var(--color-paper)] px-3 py-1 text-xs font-bold text-[var(--color-blue)]"
+                href={
+                  r === "The Ellen Show"
+                    ? "/story/hurricane-florence-2018"
+                    : "/about"
+                }
+                className="rounded-full border border-[var(--color-blue)]/30 bg-[var(--color-paper)] px-3 py-1 text-xs font-bold text-[var(--color-blue)] transition hover:border-[var(--color-blue)] hover:bg-[var(--color-blue-soft)]"
               >
-                {r}
-              </span>
+                {r} →
+              </Link>
             ))}
           </div>
           <p className="mt-3 text-sm text-[var(--color-ink-soft)] leading-snug">
@@ -652,12 +684,13 @@ export function RyanCaseProfile({
               "NW3 quarantine",
               "BOP (post-sentence)",
             ].map((f) => (
-              <span
+              <Link
                 key={f}
-                className="rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-1 text-xs font-semibold text-[var(--color-ink-soft)]"
+                href="/case/geography"
+                className="rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-1 text-xs font-semibold text-[var(--color-ink-soft)] transition hover:border-[var(--color-navy)] hover:text-[var(--color-navy)]"
               >
-                {f}
-              </span>
+                {f} →
+              </Link>
             ))}
           </div>
           <p className="mt-2 text-xs text-[var(--color-muted)]">
@@ -714,40 +747,15 @@ export function RyanCaseProfile({
         </div>
       </section>
 
-      {/* ---- The fight now ---- */}
-      <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
-          Chapter Four · What he&apos;s fighting for now
-        </p>
-        <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
-          Out the other side — and on offense.
-        </h2>
-        <div className="mt-5 grid gap-3 sm:grid-cols-2">
-          {FIGHTS.map((f) => (
-            <Link
-              key={f.slug}
-              href={`/fights/${f.slug}`}
-              className="group rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4 hover:border-[var(--color-accent)] transition"
-            >
-              <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
-                {f.tag}
-              </p>
-              <p className="mt-1 text-lg font-bold tracking-tight font-display group-hover:text-[var(--color-accent)] transition">
-                {f.title}
-              </p>
-              <p className="mt-1 text-sm text-[var(--color-ink-soft)] leading-snug">
-                {f.stakes}
-              </p>
-            </Link>
-          ))}
-        </div>
-      </section>
+      {/* The political fights (water rights, First Amendment, tax fairness…)
+          deliberately do NOT live on the case page — this page is January 6,
+          period. They keep their own home at /fights. */}
 
       {/* ---- On the record now (latest dispatches) ---- */}
       {titledPosts.length > 0 ? (
         <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
           <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
-            Chapter Five · On the record now
+            Chapter Four · On the record now
           </p>
           <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
             He didn&apos;t go quiet. He built a newsroom.
@@ -761,22 +769,31 @@ export function RyanCaseProfile({
               <Link
                 key={p.slug}
                 href={`/posts/${p.slug}`}
-                className="group rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4 hover:border-[var(--color-accent)] transition"
+                className="group overflow-hidden rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-accent)] transition"
               >
-                <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] font-bold text-[var(--color-accent)]">
-                  {p.category ? <span>{p.category}</span> : null}
-                  {p.published_at ? (
-                    <span className="text-[var(--color-muted)]">
-                      {new Date(p.published_at).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                      })}
-                    </span>
-                  ) : null}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={postThumb(p)}
+                  alt=""
+                  loading="lazy"
+                  className="h-28 w-full border-b border-[var(--color-line)] object-cover"
+                />
+                <div className="p-4">
+                  <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] font-bold text-[var(--color-accent)]">
+                    {p.category ? <span>{p.category}</span> : null}
+                    {p.published_at ? (
+                      <span className="text-[var(--color-muted)]">
+                        {new Date(p.published_at).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                        })}
+                      </span>
+                    ) : null}
+                  </div>
+                  <p className="mt-1 text-base font-bold tracking-tight font-display leading-snug group-hover:text-[var(--color-accent)] transition">
+                    {p.title}
+                  </p>
                 </div>
-                <p className="mt-1 text-base font-bold tracking-tight font-display leading-snug group-hover:text-[var(--color-accent)] transition">
-                  {p.title}
-                </p>
               </Link>
             ))}
           </div>
@@ -809,6 +826,12 @@ export function RyanCaseProfile({
               Walk the full record →
             </Link>
           </p>
+          <Link
+            href="/case?view=documents"
+            className="btn-accent mt-3 inline-flex items-center px-5 py-2.5 text-sm"
+          >
+            Open all {totals.documents.toLocaleString()} documents →
+          </Link>
         </div>
         {/* Capped hard: this is a biography page, not the archive. The wall of
             hundreds of cards buried everything below it; the full set lives in

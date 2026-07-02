@@ -9,6 +9,7 @@ import {
 import { getPublicLiveStreams } from "@/lib/live";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { FIGHTS } from "@/lib/fights";
+import { STORY_CHAPTERS } from "@/lib/story";
 import { SITE } from "@/lib/site";
 
 export const revalidate = 600;
@@ -117,6 +118,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.5,
   }));
 
+  const storyEntries: MetadataRoute.Sitemap = STORY_CHAPTERS.map((c) => ({
+    url: `${SITE.url}/story/${c.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.8,
+  }));
+
   const fightEntries: MetadataRoute.Sitemap = FIGHTS.map((f) => ({
     url: `${SITE.url}/fights/${f.slug}`,
     lastModified: now,
@@ -143,6 +151,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...documentEntries,
     ...eventEntries,
     ...profileEntries,
+    ...storyEntries,
     ...fightEntries,
     ...productEntries,
   ];
