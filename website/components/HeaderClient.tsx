@@ -40,6 +40,7 @@ const MOBILE_ADMIN_LINKS: { href: string; label: string }[] = [
   { href: "/admin/tips", label: "Tips" },
   { href: "/admin/analytics", label: "Analytics" },
   { href: "/admin/new", label: "New Post" },
+  { href: "/admin/queue", label: "Queue" },
   { href: "/admin/live", label: "Live Room" },
 ];
 

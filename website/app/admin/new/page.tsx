@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { ComposeForm } from "@/components/ComposeForm";
+import { Composer } from "@/components/Composer";
 import { getVideoConfigStatus } from "@/lib/video-config";
 import { buildIntakeRoutePlan } from "@/lib/intake-routing";
 import { buildTipDraft } from "@/lib/tip-draft";
@@ -136,17 +137,22 @@ export default async function NewPostPage({
           </>
         ) : (
           <>
-            Pick a type, write or upload, hit publish. The feed at <code>/</code>{" "}
-            renders all four types in one timeline.
+            One box. Write it, attach it, post it — the type figures itself
+            out.
           </>
         )}
       </p>
       <div className="mt-8">
-        <ComposeForm
-          videoConfig={getVideoConfigStatus()}
-          initial={initial}
-          prefill={prefill}
-        />
+        {initial ? (
+          // Editing keeps the proven type-locked form.
+          <ComposeForm
+            videoConfig={getVideoConfigStatus()}
+            initial={initial}
+            prefill={prefill}
+          />
+        ) : (
+          <Composer videoConfig={getVideoConfigStatus()} prefill={prefill} />
+        )}
       </div>
     </article>
   );
