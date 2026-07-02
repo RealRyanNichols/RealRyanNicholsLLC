@@ -9,6 +9,8 @@ import { CaseViewTracker } from "@/components/CaseViewTracker";
 import { CaseCommentList } from "@/components/CaseCommentList";
 import { CaseCommentForm } from "@/components/CaseCommentForm";
 import { EvidenceGrid } from "@/components/EvidenceGrid";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbLd } from "@/lib/jsonld";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { getOgImage } from "@/lib/og-images";
 import { SITE } from "@/lib/site";
@@ -82,6 +84,13 @@ export default async function EventPage({
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
       <CaseViewTracker type="event" slug={e.slug} />
+      <JsonLd
+        data={breadcrumbLd([
+          { name: "The J6 Case", url: `${SITE.url}/case` },
+          { name: "Timeline", url: `${SITE.url}/case?view=timeline` },
+          { name: e.title, url },
+        ])}
+      />
 
       <nav className="text-sm text-[var(--color-muted)] mb-4">
         <Link href="/case" className="hover:underline">

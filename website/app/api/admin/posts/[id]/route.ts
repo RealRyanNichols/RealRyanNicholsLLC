@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { getDirectVideoUrl } from "@/lib/direct-video";
+import { pingIndexNow } from "@/lib/indexnow";
 
 const patchSchema = z
   .object({
@@ -49,10 +50,11 @@ export async function PATCH(
 
   // If publishing a draft for the first time, set published_at.
   const patch: Record<string, unknown> = { ...parsed.data };
+  let publishedSlug: string | null = null;
   if (parsed.data.status === "published") {
     const { data: existing, error: existingError } = await supabase
       .from("posts")
-      .select("published_at, type, media, mux_status, mux_playback_id")
+      .select("slug, published_at, type, media, mux_status, mux_playback_id")
       .eq("id", id)
       .maybeSingle();
     if (existingError) {
@@ -77,6 +79,7 @@ export async function PATCH(
     if (existing && !existing.published_at) {
       patch.published_at = new Date().toISOString();
     }
+    publishedSlug = existing.slug ?? null;
   }
 
   const { error } = await supabase.from("posts").update(patch).eq("id", id);
@@ -85,6 +88,10 @@ export async function PATCH(
       { error: error.message || "Update failed." },
       { status: 500 },
     );
+  }
+  // Tell the engines the post is live (fire-and-forget).
+  if (publishedSlug) {
+    void pingIndexNow([`/posts/${publishedSlug}`, "/"]);
   }
   return NextResponse.json({ ok: true });
 }

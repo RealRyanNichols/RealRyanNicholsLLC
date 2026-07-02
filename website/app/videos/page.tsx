@@ -6,6 +6,9 @@ import { LiveNowBanner } from "@/components/LiveNowBanner";
 import { getActiveLiveStream } from "@/lib/live";
 import { VIDEO_CHANNELS, normalizeVideoChannel } from "@/lib/video-channels";
 import { BookPromo } from "@/components/BookPromo";
+import { JsonLd } from "@/components/JsonLd";
+import { muxThumbnailUrl } from "@/lib/mux";
+import { SITE } from "@/lib/site";
 
 export const revalidate = 60;
 
@@ -65,8 +68,36 @@ export default async function VideosPage(props: {
   );
   const countMap = new Map(counts);
 
+  // Machine-readable index of the site-owned videos (top 24) so engines see
+  // real VideoObjects with thumbnails and durations, not just links.
+  const videoListLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: allVideos
+      .filter((p) => p.mux_playback_id)
+      .slice(0, 24)
+      .map((p, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        item: {
+          "@type": "VideoObject",
+          name: p.title ?? "Video",
+          description: p.seo_description ?? p.title ?? "Video from Ryan Nichols",
+          url: `${SITE.url}/posts/${p.slug}`,
+          thumbnailUrl:
+            p.thumbnail_url ??
+            muxThumbnailUrl(p.mux_playback_id ?? "", { width: 1200, time: 1 }),
+          ...(p.published_at ? { uploadDate: p.published_at } : {}),
+          ...(p.duration_seconds
+            ? { duration: `PT${Math.round(p.duration_seconds)}S` }
+            : {}),
+        },
+      })),
+  };
+
   return (
     <main className="mx-auto max-w-5xl px-4 py-10">
+      <JsonLd data={videoListLd} />
       <LiveNowBanner stream={activeLiveStream} />
       <nav className="mb-5 text-sm text-[var(--color-muted)]">
         <Link href="/" className="hover:underline">

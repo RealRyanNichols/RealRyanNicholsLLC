@@ -17,6 +17,8 @@ import {
   formatUsd,
 } from "@/lib/book";
 import { SITE } from "@/lib/site";
+import { JsonLd } from "@/components/JsonLd";
+import { personRef } from "@/lib/jsonld";
 
 const title = "Fighting Shadows — A Memoir by Ryan Nichols";
 const description =
@@ -67,6 +69,27 @@ export default function BookPage() {
     : false;
   return (
     <article className="rrn-page">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "Book",
+          "@id": `${SITE.url}/book#book`,
+          name: "Fighting Shadows",
+          author: personRef(),
+          url: `${SITE.url}/book`,
+          image: new URL(BOOK.ogImage, SITE.url).toString(),
+          inLanguage: "en",
+          abstract: description,
+          offers: BOOK_TIERS.map((t) => ({
+            "@type": "Offer",
+            name: t.name,
+            price: t.priceUsd,
+            priceCurrency: "USD",
+            url: `${SITE.url}/book/preorder`,
+            availability: "https://schema.org/PreOrder",
+          })),
+        }}
+      />
       <BookExitIntent priceLabel={priceLabel} listLabel={listLabel} />
       <BookStickyBuyBar priceLabel={priceLabel} listLabel={listLabel} />
       {/* Hero */}

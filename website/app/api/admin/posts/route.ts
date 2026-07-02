@@ -4,6 +4,7 @@ import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { getMuxClient, isMuxConfigured } from "@/lib/mux";
 import { getVideoConfigStatus } from "@/lib/video-config";
 import { SITE } from "@/lib/site";
+import { pingIndexNow } from "@/lib/indexnow";
 
 const mediaItemSchema = z.object({
   url: z.string().url(),
@@ -224,6 +225,11 @@ export async function POST(request: Request) {
       { error: error?.message ?? "Could not create post." },
       { status: 500 }
     );
+  }
+
+  // Tell the engines the moment something new goes live (fire-and-forget).
+  if (input.status === "published" && post.slug) {
+    void pingIndexNow([`/posts/${post.slug}`, "/"]);
   }
 
   let sourceTipUpdated = false;

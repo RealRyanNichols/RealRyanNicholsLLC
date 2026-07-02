@@ -17,6 +17,8 @@ import { ClaimMeHero, ClaimMeFooter } from "@/components/ClaimMeHero";
 import { CaseInfoCard } from "@/components/CaseInfoCard";
 import { ReactionBar } from "@/components/ReactionBar";
 import { RyanCaseProfile } from "@/components/RyanCaseProfile";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbLd, websiteRef } from "@/lib/jsonld";
 import { SUBJECT_SLUG } from "@/lib/bio";
 import { SITE } from "@/lib/site";
 
@@ -92,6 +94,32 @@ export default async function PersonPage({
     );
   }
 
+  // Generic people of record get a lightweight ProfilePage + breadcrumb
+  // trail. (Ryan's flagship profile carries its own richer schema inside
+  // RyanCaseProfile.)
+  const personLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfilePage",
+      "@id": `${url}#profile`,
+      url,
+      name: `${p.name} — United States v. Nichols`,
+      isPartOf: websiteRef(),
+      mainEntity: {
+        "@type": "Person",
+        name: p.name,
+        url,
+        ...(p.role ? { jobTitle: p.role } : {}),
+        ...(p.description ? { description: p.description } : {}),
+      },
+    },
+    breadcrumbLd([
+      { name: "The J6 Case", url: `${SITE.url}/case` },
+      { name: "People", url: `${SITE.url}/case?view=people` },
+      { name: p.name, url },
+    ]),
+  ];
+
   const isUnclaimedJ6er =
     p.is_j6_defendant === true &&
     (p.claim_status === "unclaimed" || p.claim_status === "pending");
@@ -104,6 +132,7 @@ export default async function PersonPage({
     return (
       <article className="mx-auto max-w-3xl px-4 py-10">
         <CaseViewTracker type="person" slug={p.slug} />
+        <JsonLd data={personLd} />
 
         <nav className="text-sm text-[var(--color-muted)] mb-4">
           <Link href="/case" className="hover:underline">

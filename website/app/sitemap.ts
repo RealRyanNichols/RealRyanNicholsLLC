@@ -8,6 +8,7 @@ import {
 } from "@/lib/case";
 import { getPublicLiveStreams } from "@/lib/live";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
+import { FIGHTS } from "@/lib/fights";
 import { SITE } from "@/lib/site";
 
 export const revalidate = 600;
@@ -24,11 +25,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Public, non-banned, has-username profiles only
   const supabase = getSupabaseStaticClient();
-  const { data: profiles } = await supabase
-    .from("profiles")
-    .select("username, updated_at")
-    .not("username", "is", null)
-    .neq("status", "banned");
+  const [{ data: profiles }, { data: products }] = await Promise.all([
+    supabase
+      .from("profiles")
+      .select("username, updated_at")
+      .not("username", "is", null)
+      .neq("status", "banned"),
+    supabase.from("products").select("slug").eq("active", true),
+  ]);
 
   const now = new Date().toISOString();
 
@@ -53,6 +57,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE.url}/case-review`, lastModified: now, changeFrequency: "weekly", priority: 0.85 },
     { url: `${SITE.url}/store`, lastModified: now, changeFrequency: "weekly", priority: 0.85 },
     { url: `${SITE.url}/services`, lastModified: now, changeFrequency: "weekly", priority: 0.85 },
+    { url: `${SITE.url}/book`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${SITE.url}/book/preorder`, lastModified: now, changeFrequency: "weekly", priority: 0.85 },
+    { url: `${SITE.url}/j6`, lastModified: now, changeFrequency: "weekly", priority: 0.85 },
     { url: `${SITE.url}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE.url}/jan-6`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
     { url: `${SITE.url}/support`, lastModified: now, changeFrequency: "weekly", priority: 0.85 },
@@ -109,6 +116,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.5,
   }));
 
+  const fightEntries: MetadataRoute.Sitemap = FIGHTS.map((f) => ({
+    url: `${SITE.url}/fights/${f.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.8,
+  }));
+
+  const productEntries: MetadataRoute.Sitemap = (products ?? []).map((p) => ({
+    url: `${SITE.url}/store/${p.slug}`,
+    lastModified: now,
+    changeFrequency: "weekly",
+    priority: 0.75,
+  }));
+
+  // Well under the 50k-URL sitemap cap (posts + ~1.5k people + ~1.1k docs +
+  // grievances + events + profiles ≈ low thousands); chunking can wait until
+  // the archive grows an order of magnitude.
   return [
     ...staticEntries,
     ...postEntries,
@@ -118,5 +142,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...documentEntries,
     ...eventEntries,
     ...profileEntries,
+    ...fightEntries,
+    ...productEntries,
   ];
 }

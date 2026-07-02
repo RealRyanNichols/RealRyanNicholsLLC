@@ -8,6 +8,9 @@ import { CaseInfoCard } from "@/components/CaseInfoCard";
 import { CaseStats } from "@/components/CaseStats";
 import { EvidenceGrid } from "@/components/EvidenceGrid";
 import { ReactionBar } from "@/components/ReactionBar";
+import { JsonLd } from "@/components/JsonLd";
+import { PERSON_ID, personRef, websiteRef } from "@/lib/jsonld";
+import { SITE } from "@/lib/site";
 import type { Post } from "@/lib/types";
 
 type CaseTotals = {
@@ -39,8 +42,106 @@ export function RyanCaseProfile({
 }) {
   const titledPosts = posts.filter((p) => p.title && p.title.trim()).slice(0, 6);
 
+  // Structured data: extend the site-wide Person entity (declared in the root
+  // layout by @id) with case-specific detail, mark this page as his profile,
+  // describe the archive as a Dataset, and answer the questions people
+  // actually ask engines — every answer drawn from this page's verified copy.
+  const days = totals.daysDetained.toLocaleString("en-US");
+  const profileLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfilePage",
+      "@id": `${url}#profile`,
+      url,
+      name: `${person.name} — United States v. Nichols`,
+      isPartOf: websiteRef(),
+      mainEntity: {
+        "@type": "Person",
+        "@id": PERSON_ID,
+        name: person.name,
+        alternateName: "Ryan Taylor Nichols",
+        description: ROLE_LINE,
+        url: SITE.url,
+        jobTitle: "Independent investigative journalist",
+        sameAs: ["https://x.com/RealRyanNichols"],
+        knowsAbout: [
+          "United States v. Nichols (1:21-cr-00117, D.D.C.)",
+          "January 6 prosecutions",
+          "Pretrial detention conditions",
+          "Due process",
+          "Search and rescue operations",
+        ],
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "@id": `${SITE.url}/case#archive`,
+      url: `${SITE.url}/case`,
+      name: "The J6 Case Archive — United States v. Nichols",
+      isPartOf: websiteRef(),
+      about: personRef(),
+      mainEntity: {
+        "@type": "Dataset",
+        "@id": `${SITE.url}/case#dataset`,
+        name: "The J6 Case Archive — United States v. Nichols",
+        description: `The public record of United States v. Nichols (1:21-cr-00117, D.D.C.): ${totals.documents.toLocaleString("en-US")} documents, ${totals.grievances} documented grievance patterns, ${totals.ryanFiledGrievances.toLocaleString("en-US")} grievance forms authored in custody, and the people of record — open, sourced, and free.`,
+        creator: personRef(),
+        license: `${SITE.url}/case`,
+        isAccessibleForFree: true,
+        distribution: [
+          {
+            "@type": "DataDownload",
+            contentUrl: `${SITE.url}/case?view=documents`,
+            encodingFormat: "text/html",
+          },
+        ],
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "@id": `${url}#faq`,
+      mainEntity: [
+        {
+          "@type": "Question",
+          name: "Who is Ryan Nichols?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: `Ryan Taylor Nichols is a pardoned January 6 defendant, U.S. Marine Corps veteran, search-and-rescue specialist, and independent investigative journalist. Before the case he served in the Marine Corps (2010–2014, honorable discharge) and led civilian search-and-rescue work across more than two dozen hurricane deployments.`,
+          },
+        },
+        {
+          "@type": "Question",
+          name: "Was Ryan Nichols pardoned?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Yes. He was granted a full and unconditional pardon by President Trump on January 20, 2025. Following the pardon, the charges were dismissed with prejudice — the case can never be brought again.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "What was United States v. Nichols?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "United States v. Nichols (case 1:21-cr-00117, D.D.C.) was the federal January 6 prosecution of Ryan Nichols. He was arrested January 18, 2021, pleaded guilty in November 2023 to two felonies — obstruction of an official proceeding and assaulting, resisting, or impeding officers — and was sentenced May 2, 2024 to 63 months and a $200,000 fine. He was fully pardoned January 20, 2025, and the case was dismissed with prejudice.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "What happened to Ryan Nichols in jail?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: `He was detained ${days} days between arrest and pardon, held across ${totals.facilities} federal and local facilities, including extended solitary confinement. In December 2021 a federal judge acknowledged on the record that his due-process rights had been violated; he remained detained. From inside he authored ${totals.ryanFiledGrievances.toLocaleString("en-US")} grievance forms, and the conditions record — photographs, complaints, medical records — is public in the case archive.`,
+          },
+        },
+      ],
+    },
+  ];
+
   return (
     <article className="mx-auto max-w-4xl px-4 py-10">
+      <JsonLd data={profileLd} />
       <CaseViewTracker type="person" slug={person.slug} />
 
       <nav className="text-sm text-[var(--color-muted)] mb-4">

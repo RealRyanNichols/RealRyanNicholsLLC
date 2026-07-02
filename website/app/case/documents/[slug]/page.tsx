@@ -6,6 +6,8 @@ import { getDocuments, getDocumentBySlug } from "@/lib/case";
 import { ShareButton } from "@/components/ShareButton";
 import { CaseStats } from "@/components/CaseStats";
 import { CaseViewTracker } from "@/components/CaseViewTracker";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbLd } from "@/lib/jsonld";
 import { SITE } from "@/lib/site";
 import { detectVideo } from "@/lib/video";
 import { EvidenceBadge } from "@/components/EvidenceBadge";
@@ -67,6 +69,13 @@ export default async function DocumentPage({
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
       <CaseViewTracker type="document" slug={d.slug} />
+      <JsonLd
+        data={breadcrumbLd([
+          { name: "The J6 Case", url: `${SITE.url}/case` },
+          { name: "Documents", url: `${SITE.url}/case?view=documents` },
+          { name: d.title, url },
+        ])}
+      />
 
       <nav className="text-sm text-[var(--color-muted)] mb-4">
         <Link href="/case" className="hover:underline">

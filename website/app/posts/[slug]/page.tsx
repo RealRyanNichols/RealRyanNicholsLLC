@@ -13,7 +13,9 @@ import { CommentForm } from "@/components/CommentForm";
 import { VerseSidebar } from "@/components/VerseSidebar";
 import { SignupForm } from "@/components/SignupForm";
 import { PostFollowCapture } from "@/components/PostLivePulse";
-import { ReadNext } from "@/components/ReadNext";
+import { ReadNext, type CaseLink } from "@/components/ReadNext";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbLd, orgRef, personRef, websiteRef } from "@/lib/jsonld";
 import { NotifySubscribersButton } from "@/components/NotifySubscribersButton";
 import { PostMain } from "@/components/PostMain";
 import { StoryTipCTA } from "@/components/StoryTipCTA";
@@ -52,6 +54,11 @@ function firstMarkdownImage(body: string): string | null {
 function looksLikeVideoUrl(url: string): boolean {
   return /\.(mp4|mov|m4v|webm)(?:\?|#|$)/i.test(url);
 }
+
+// Posts that touch the case get 1-2 deep links into the evidence archive in
+// Read Next — a path from the story to the record behind it.
+const CASE_HINT =
+  /\b(j6|jan(?:uary)?\s*6|nichols|jail|detention|solitary|grievance|pardon|doj|fbi|court|judge|due[- ]?process|prosecut\w*|indict\w*|sentenc\w*|evidence|exhibit)\b/i;
 
 function firstMediaImage(media: MediaItem[] | null): string | null {
   return media?.find((item) => item.url && !looksLikeVideoUrl(item.url))?.url ?? null;
@@ -153,6 +160,23 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
     getOgImage(path),
   ]);
   const readNext = allPosts.filter((p) => p.id !== post.id).slice(0, 4);
+  const caseHaystack = [post.title, post.category, ...(post.tags ?? [])]
+    .filter(Boolean)
+    .join(" ");
+  const caseLinks: CaseLink[] = CASE_HINT.test(caseHaystack)
+    ? [
+        {
+          href: "/case",
+          title: "United States v. Nichols — the case",
+          sub: "Timeline, people, documents — the whole file",
+        },
+        {
+          href: "/case?view=documents",
+          title: "The document archive",
+          sub: "Every public scan, sourced and labeled",
+        },
+      ]
+    : [];
   const pulseSeed = (pulseRes.data as
     | { reading_now: number; today: number; week: number; site_reading_now: number }
     | null) ?? undefined;
@@ -178,8 +202,11 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
     headline: displayTitle,
     datePublished: post.published_at,
     dateModified: post.updated_at,
-    author: { "@type": "Person", name: SITE.author, url: SITE.url },
-    publisher: { "@type": "Organization", name: SITE.name, url: SITE.url },
+    // Point into the site-wide entity graph (root layout) instead of
+    // re-declaring the author/publisher on every post.
+    author: personRef(),
+    publisher: orgRef(),
+    isPartOf: websiteRef(),
     mainEntityOfPage: `${SITE.url}/posts/${post.slug}`,
     ...(post.category ? { articleSection: post.category } : {}),
     ...(ldImage ? { image: [ldImage] } : {}),
@@ -196,9 +223,14 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }}
+      <JsonLd
+        data={[
+          articleLd,
+          breadcrumbLd([
+            { name: "Feed", url: `${SITE.url}/` },
+            { name: displayTitle, url: postUrl },
+          ]),
+        ]}
       />
       <article className="lg:col-span-2">
         <nav className="text-sm text-[var(--color-muted)] mb-4">
@@ -300,7 +332,7 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
           </p>
           <ShareButton url={postUrl} title={displayTitle} slug={post.slug} shares={post.shares_count ?? 0} />
         </div>
-        <ReadNext posts={readNext} />
+        <ReadNext posts={readNext} caseLinks={caseLinks} />
         <section className="mt-12 border-t border-[var(--color-line)] pt-8">
           <h2 className="text-xl font-semibold mb-4">Comments</h2>
           <CommentForm postId={post.id} signedIn={signedIn} />

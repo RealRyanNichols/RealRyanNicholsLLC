@@ -9,6 +9,8 @@ import { CaseCommentList } from "@/components/CaseCommentList";
 import { CaseCommentForm } from "@/components/CaseCommentForm";
 import { EvidenceGrid } from "@/components/EvidenceGrid";
 import { NamedPeople } from "@/components/NamedPeople";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbLd } from "@/lib/jsonld";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { SITE } from "@/lib/site";
 
@@ -77,6 +79,13 @@ export default async function GrievancePage({
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
       <CaseViewTracker type="grievance" slug={g.slug} />
+      <JsonLd
+        data={breadcrumbLd([
+          { name: "The J6 Case", url: `${SITE.url}/case` },
+          { name: "Grievances", url: `${SITE.url}/case?view=grievances` },
+          { name: g.title, url },
+        ])}
+      />
 
       <nav className="text-sm text-[var(--color-muted)] mb-4">
         <Link href="/case" className="hover:underline">
