@@ -271,7 +271,7 @@ export default async function AdminHealthPage() {
             <SignalCard
               label="Attention events"
               value={metricText(ops.pageEvents7d)}
-              detail={`${metricText(ops.checkoutOpens7d)} checkout/donate opens`}
+              detail={`${metricText(ops.checkoutOpens7d)} checkout opens`}
               status={metricStatus(ops.pageEvents7d)}
             />
             <SignalCard

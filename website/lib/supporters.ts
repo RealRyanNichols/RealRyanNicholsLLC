@@ -9,8 +9,8 @@ export type PublicSupporter = {
   amount: string | null;
 };
 
-// Human labels for the support "purpose" tags, matching the mission board on
-// the support page (SupportIntentForm).
+// Human labels for the support "purpose" tags. Historical — the intent form
+// is retired with donations; these keep old admin ledger rows readable.
 export const PURPOSE_LABELS: Record<string, string> = {
   site: "Keep the site alive",
   video: "Own the video archive",

@@ -83,8 +83,8 @@ export default async function HomePage({
                   fallbackImage={ogMap.get(`/posts/${p.slug}`) ?? null}
                 />,
                 // Feed poll right after the lead post (renders only when a
-                // poll is live); rally CTA after the first few posts; book
-                // band a few posts later — spaced, so nothing bunches.
+                // poll is live); book band a few posts later — spaced, so
+                // nothing bunches. (Rally pledges are retired — sell, don't ask.)
                 // On phones the sidebar doesn't exist (it stacks below the
                 // fold), so its capture surfaces are woven into the feed at
                 // spaced breaks too — lg:hidden here, hidden lg:block in the
