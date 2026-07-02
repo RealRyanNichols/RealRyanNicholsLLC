@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { formatDistanceToNowStrict } from "date-fns";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { PendingProfileActions } from "@/components/PendingProfileActions";
 import {
   getIntegrationHealth,
   countCriticalIssues,
@@ -212,13 +213,15 @@ export default async function AdminHomePage() {
       ) : null}
 
       <section className="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+        {/* Red tint is reserved for tiles that need Ryan's ACTION. Good news
+            (audience, chats, leads, drafts) stays calm — it's a door, not an
+            alarm. */}
         <ActionLane
           href="/admin/posts"
           kicker="Publish"
           title="Posts & drafts"
           value={String(draftPostsCount ?? 0)}
           sub={`${draftPostsCount ?? 0} draft${(draftPostsCount ?? 0) === 1 ? "" : "s"} · ${publishedPostsCount ?? 0} live`}
-          hot={(draftPostsCount ?? 0) > 0}
         />
         <ActionLane
           href="/admin/analytics"
@@ -226,7 +229,6 @@ export default async function AdminHomePage() {
           title="Live audience"
           value={String(activeNow ?? 0)}
           sub={`${views24h ?? 0} views in 24h`}
-          hot={(activeNow ?? 0) > 0}
         />
         <ActionLane
           href="/admin/chats"
@@ -234,7 +236,6 @@ export default async function AdminHomePage() {
           title="Conversations"
           value={String(chats24h)}
           sub={`${chatsTotal} total · talking to your AI`}
-          hot={chats24h > 0}
         />
         <ActionLane
           href="/admin/leads"
@@ -242,7 +243,6 @@ export default async function AdminHomePage() {
           title="Leads"
           value={String(leadsTotal)}
           sub="people who left you data — follow up & sell"
-          hot={leadsTotal > 0}
         />
         <ActionLane
           href="/admin/invoices"
@@ -326,12 +326,7 @@ export default async function AdminHomePage() {
                     })}
                   </p>
                 </div>
-                <Link
-                  href="/admin/users?filter=pending"
-                  className="text-xs font-semibold text-[var(--color-accent)] hover:underline whitespace-nowrap"
-                >
-                  Review →
-                </Link>
+                <PendingProfileActions id={p.id} />
               </li>
             ))}
           </ul>
@@ -432,14 +427,20 @@ function ActionLane({
     <Link
       href={href}
       className={[
-        "block rounded-md border p-4 transition hover:border-[var(--color-accent)]",
+        "group block rounded-md border p-4 transition hover:border-[var(--color-navy)]",
         hot
           ? "border-[var(--color-accent)] bg-[var(--color-accent)]/10"
           : "border-[var(--color-line)] bg-[var(--color-surface)]",
       ].join(" ")}
     >
-      <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--color-muted)]">
+      <p className="flex items-center justify-between text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--color-muted)]">
         {kicker}
+        <span
+          aria-hidden
+          className="text-sm leading-none text-[var(--color-muted)] transition group-hover:translate-x-0.5 group-hover:text-[var(--color-navy)]"
+        >
+          →
+        </span>
       </p>
       <div className="mt-2 flex items-start justify-between gap-3">
         <div className="min-w-0">
