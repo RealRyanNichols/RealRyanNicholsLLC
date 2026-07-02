@@ -42,7 +42,7 @@ export function BookCtaBand({ className = "" }: { className?: string }) {
             ) : null}
           </h2>
           <p className="mt-1 text-sm font-semibold text-[#cfd9ea]">
-            Read it first and fund the fight directly — or become a Founding
+            Read it first and own a piece of the story — or become a Founding
             Supporter (limited to {founding?.limited ?? 250}).
           </p>
         </div>

@@ -73,10 +73,10 @@ export default function AboutPage() {
           My Jan 6 story
         </Link>
         <Link
-          href="/support"
+          href="/book/preorder"
           className="rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
         >
-          Back the work
+          Get the Book
         </Link>
       </div>
 
@@ -483,7 +483,7 @@ export default function AboutPage() {
             <Link href="/support" className="text-[var(--color-accent)] underline font-bold">
               How to support →
             </Link>{" "}
-            — if any of this has been useful and you want to back the work.
+            — the book, the builds, and the store. Own a piece of the work.
           </li>
           <li>
             <Link href="/community-rules" className="text-[var(--color-accent)] underline font-bold">

@@ -230,7 +230,7 @@ export function BuildSpecial() {
         </h2>
         <p className="mx-auto mt-3 max-w-2xl text-center text-slate-300">
           This entire site — the feed, the case archive, the live visitor
-          dashboard, the store, the donation rails, the search — I built on the
+          dashboard, the store, the checkout, the search — I built on the
           same stack I&apos;ll use for yours. Click around. If this site can do
           it, yours can too.
         </p>
@@ -320,21 +320,21 @@ export function BuildSpecial() {
           and I&apos;ll send a secure invoice.
         </p>
 
-        {/* Donate path */}
+        {/* Book path — donations retired; the "no build needed" door sells. */}
         <div className="mt-16 rounded-2xl border border-slate-700 bg-white/[0.04] p-6 text-center">
           <h2 className="text-2xl font-black text-white sm:text-3xl">
-            Don&apos;t need a build? You can still help.
+            Don&apos;t need a build? Take the story home.
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-slate-300">
-            If you can&apos;t use a website but want to keep this work going, any
-            amount counts — every dollar matters.
+            The book covers the whole fight — pre-order it, read it first, and
+            you&apos;ll own the story no platform can pull.
           </p>
           <div className="mt-5">
             <Link
-              href="/support"
-              className="inline-flex items-center rounded-full border-2 border-emerald-500 px-7 py-3 text-base font-black text-white transition hover:bg-emerald-500"
+              href="/book/preorder"
+              className="inline-flex items-center rounded-full border-2 border-yellow-400 px-7 py-3 text-base font-black text-white transition hover:bg-yellow-400 hover:text-[#0a1326]"
             >
-              Support the work →
+              Get the Book →
             </Link>
           </div>
         </div>

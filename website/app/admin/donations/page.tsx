@@ -152,7 +152,10 @@ export default async function AdminDonationsPage() {
       <h1 className="text-3xl font-bold tracking-tight font-display">
         Donations &amp; payments
       </h1>
-      <p className="mt-1 text-sm text-[var(--color-muted)]">
+      <p className="mt-1 inline-block rounded border border-[var(--color-line)] bg-[var(--color-surface)] px-2 py-1 text-xs font-bold uppercase tracking-wider text-[var(--color-muted)]">
+        Legacy — donations retired. Kept as the historical ledger; the public site now sells (book, services, store).
+      </p>
+      <p className="mt-2 text-sm text-[var(--color-muted)]">
         Every dollar in, in one place.
       </p>
 

@@ -208,19 +208,19 @@ export default async function FightPage(props: { params: Promise<{ slug: string 
 
       <section className="mt-10 rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-6 sm:p-8">
         <h2 className="text-xl sm:text-2xl font-bold tracking-tight font-display">
-          Fuel this fight.
+          Take this fight home.
         </h2>
         <p className="mt-2 text-sm sm:text-base text-[var(--color-ink-soft)] max-w-2xl">
           I do this with no organization behind me and no middleman taking a cut.
-          If this is your fight too, the most powerful things you can do are share it
-          and help keep the lights on.
+          If this is your fight too, the most powerful things you can do are share
+          it — and read the whole story for yourself.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
           <Link
-            href="/support"
+            href="/book/preorder"
             className="rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
           >
-            Fund the fight →
+            Get the Book →
           </Link>
           <Link
             href="/submit"

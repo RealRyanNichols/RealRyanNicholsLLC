@@ -55,7 +55,7 @@ export default function BookPreorderPage() {
                 Pre-order · {BOOK.title}
               </p>
               <h1 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-[#fdf8ea] sm:text-6xl">
-                Get it first. Fund the record directly.
+                Get it first. Own the record directly.
               </h1>
               <p className="mt-4 max-w-2xl text-base font-semibold leading-7 text-[#cfd9ea] sm:text-lg">
                 Pre-order direct from me, here, before the book goes to Amazon.

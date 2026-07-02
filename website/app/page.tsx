@@ -9,7 +9,6 @@ import { VerseSidebar } from "@/components/VerseSidebar";
 import { SignupForm } from "@/components/SignupForm";
 import { BookPromo } from "@/components/BookPromo";
 import { BookCtaBand } from "@/components/BookCtaBand";
-import { RallyInline } from "@/components/RallyInline";
 import { FeedPoll } from "@/components/FeedPoll";
 import { LiveNowBanner } from "@/components/LiveNowBanner";
 import { getActiveLiveStream } from "@/lib/live";
@@ -100,7 +99,30 @@ export default async function HomePage({
                   />
                 ) : null,
                 i === 2 ? (
-                  <RallyInline key="home-rally" source="home" className="my-8" />
+                  // Donations retired — this slot sells the other offer:
+                  // paid builds and investigations (/services).
+                  <aside
+                    key="home-services"
+                    className="my-8 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
+                  >
+                    <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
+                      Work with Ryan
+                    </p>
+                    <p className="mt-2 text-lg font-bold tracking-tight text-[var(--color-ink)]">
+                      Want a site like this one — feed, evidence wall, store,
+                      the works?
+                    </p>
+                    <p className="mt-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+                      Ryan builds them on the same stack that runs this page.
+                      Sites, dashboards, and sourced investigations.
+                    </p>
+                    <Link
+                      href="/services"
+                      className="btn-accent mt-4 inline-flex items-center rounded-full px-5 py-2.5 text-sm font-bold"
+                    >
+                      See the services →
+                    </Link>
+                  </aside>
                 ) : null,
                 i === 4 ? (
                   <VerseSidebar

@@ -224,10 +224,10 @@ export default async function TheMapRoomPage() {
             About Ryan
           </Link>
           <Link
-            href="/support"
+            href="/book/preorder"
             className="rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
           >
-            Back the work
+            Get the Book
           </Link>
         </div>
       </section>

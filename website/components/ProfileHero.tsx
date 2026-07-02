@@ -6,7 +6,7 @@ import { getSiteSettings } from "@/lib/site-settings";
 // Orientation merged into the hero — one block, no competing CTAs. Four doors
 // for the four audiences.
 const AUDIENCES = [
-  { href: "/support", label: "Supporter", desc: "Keep the record public and funded." },
+  { href: "/support", label: "Supporter", desc: "Own a piece of the work — book, builds, store." },
   { href: "/case", label: "Journalist / Researcher", desc: "The documented record — filings, video." },
   { href: "/j6", label: "J6 Defendant / Source", desc: "Get on the record, or free claim help." },
   { href: "/services", label: "Client / Customer", desc: "Want a site like this? Hire Ryan." },
@@ -80,10 +80,10 @@ export async function ProfileHero() {
               Start Here
             </Link>
             <Link
-              href="/support"
+              href="/book/preorder"
               className="btn-support inline-flex items-center rounded-full px-4 py-1.5 text-xs font-semibold transition"
             >
-              Support the Work
+              Get the Book
             </Link>
           </div>
         </div>
@@ -96,10 +96,10 @@ export async function ProfileHero() {
             Start Here
           </Link>
           <Link
-            href="/support"
+            href="/book/preorder"
             className="btn-support inline-flex items-center rounded-full px-4 py-1.5 text-xs font-semibold transition"
           >
-            Support the Work
+            Get the Book
           </Link>
         </div>
 

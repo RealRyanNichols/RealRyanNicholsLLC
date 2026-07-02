@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Start Here",
   description:
-    "New here? This site does four jobs: preserve Ryan Nichols's record, help others document their own stories, publish evidence-driven investigations, and fund the rebuild. Pick the door that fits why you came.",
+    "New here? This site does four jobs: preserve Ryan Nichols's record, help others document their own stories, publish evidence-driven investigations, and sell what he builds. Pick the door that fits why you came.",
   alternates: { canonical: "/start-here" },
 };
 
@@ -26,8 +26,8 @@ const JOBS = [
   },
   {
     n: "4",
-    title: "Fund the rebuild",
-    body: "Representing yourself costs money: filings, records, gear, and time. Support keeps the work — and the public record — alive.",
+    title: "Sell what he builds",
+    body: "No donations here. The book, the paid builds, and the store pay for the filings, records, gear, and time — buying something is what keeps the record public.",
   },
 ];
 
@@ -46,9 +46,9 @@ const CARDS = [
   },
   {
     href: "/support",
-    kicker: "Support",
-    title: "Support the Work",
-    body: "Keep the lights on and the record public. One-time or monthly.",
+    kicker: "Own",
+    title: "Own a Piece of It",
+    body: "The book, the builds, the store — support the work by buying it.",
   },
   {
     href: "/services",
@@ -83,10 +83,10 @@ export default function StartHerePage() {
           Read the Case
         </Link>
         <Link
-          href="/support"
+          href="/book/preorder"
           className="btn-support rounded-full px-5 py-2.5 text-sm font-semibold"
         >
-          Support the Work
+          Get the Book
         </Link>
       </div>
 

@@ -122,10 +122,10 @@ export default async function VideosPage(props: {
                 See all J6 drops · {j6Videos.length}
               </Link>
               <Link
-                href="/support"
+                href="/book/preorder"
                 className="inline-flex min-h-11 items-center rounded-md border border-white/15 bg-white/[0.06] px-4 text-sm font-black text-[#fdf8ea] transition hover:bg-white/10"
               >
-                Back the work
+                Get the Book
               </Link>
             </div>
           </div>

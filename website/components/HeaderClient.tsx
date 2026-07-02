@@ -117,7 +117,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             </span>
           </Link>
 
-          {/* Desktop: the four doors + one compact More + Donate. */}
+          {/* Desktop: the four doors + the two offers + Talk/Join. */}
           <nav data-desktop-nav className="hidden items-center gap-1 text-sm xl:flex">
             {DOORS.map((d) => (
               <NavLink key={d.href} href={d.href} active={isActive(pathname, d.href)}>
@@ -181,7 +181,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             ) : null}
           </nav>
 
-          {/* Touch/tablet — Donate (always visible) + hamburger. */}
+          {/* Touch/tablet — Join (always visible) + hamburger. */}
           <div className="flex shrink-0 items-center gap-1.5 min-[360px]:gap-2 xl:hidden">
             <Link
               href="/search"
@@ -210,7 +210,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
           </div>
         </div>
 
-        {/* Mobile drawer — four doors, Donate, then a short More list. */}
+        {/* Mobile drawer — four doors, the offers, then a short More list. */}
         {open ? (
           <div
             id="mobile-menu"

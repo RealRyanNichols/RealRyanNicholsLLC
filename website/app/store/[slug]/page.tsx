@@ -94,7 +94,7 @@ const SALES_OFFERS: Record<string, SalesOffer> = {
     deliverables: [
       { title: "Written audit", body: "A direct review of what works, what fails, and what to fix first." },
       { title: "Mobile-first notes", body: "What breaks or feels weak on the phone view where most people arrive." },
-      { title: "CTA map", body: "Where to ask for a lead, a checkout, a tip, a comment, or a donation." },
+      { title: "CTA map", body: "Where to ask for a lead, a checkout, a tip, a comment, or a booking." },
       { title: "Trust signal pass", body: "Proof, receipts, testimonials, media, images, and credibility gaps." },
       { title: "Offer copy cleanup", body: "Plain-language edits that make the offer easier to believe and buy." },
       { title: "Next three moves", body: "A small action list so the audit becomes work, not just notes." },
@@ -175,7 +175,7 @@ const SALES_OFFERS: Record<string, SalesOffer> = {
     ],
     faq: [
       { q: "Is this custom software?", a: "This is a site build. Custom software, dashboards, portals, and API work can be scoped after the site path is clear." },
-      { q: "Can payments be added?", a: "Yes. Stripe checkout, invoices, donations, and offer pages can be added when the offer is ready." },
+      { q: "Can payments be added?", a: "Yes. Stripe checkout, invoices, and offer pages can be added when the offer is ready." },
       { q: "What if I do not know what the site should say?", a: "Start with the strategy call or send the brief. Ryan can help find the offer and first page structure." },
     ],
   },

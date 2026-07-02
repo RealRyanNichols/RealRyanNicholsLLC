@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
 import { SITE } from "@/lib/site";
-import { RallyPledge } from "./RallyPledge";
 import { HotRightNow } from "./HotRightNow";
 import { RallyReactions } from "./RallyReactions";
 import { burstConfetti } from "@/lib/confetti";
@@ -47,7 +46,6 @@ type Rally = {
 };
 
 type Raised = { raised_cents: number; supporters: number; charges: number; configured: boolean };
-type Leader = { rank: number; display_name: string; total_cents: number; gifts: number; recurring: boolean; tier: string };
 type Recent = { at: string; kind: string; label: string };
 type Milestone = { points: number; title: string; reward: string };
 
@@ -117,13 +115,6 @@ function ago(iso: string): string {
   return `${Math.floor(s / 86400)}d ago`;
 }
 
-const TIER_STYLE: Record<string, string> = {
-  Founding: "bg-[#e1bd5b] text-[#0a1326]",
-  Defender: "bg-[#7fa9e3] text-[#0a1326]",
-  "Front-Line": "bg-[#7fe3a9] text-[#0a1326]",
-  Supporter: "bg-white/15 text-[#cfd9ea]",
-};
-
 function MilestoneRoadmap({ total, milestones }: { total: number; milestones: Milestone[] }) {
   if (milestones.length === 0) return null;
   const next = milestones.find((m) => total < m.points);
@@ -181,46 +172,11 @@ function MilestoneRoadmap({ total, milestones }: { total: number; milestones: Mi
   );
 }
 
-function Leaderboard({ leaders }: { leaders: Leader[] }) {
-  return (
-    <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
-      <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
-        Top supporters
-      </p>
-      {leaders.length === 0 ? (
-        <p className="mt-3 text-xs text-[#8194b4]">
-          Be the first name on the board — pledge above.
-        </p>
-      ) : (
-        <ul className="mt-3 space-y-2">
-          {leaders.map((l) => (
-            <li key={l.rank} className="flex items-center gap-2.5">
-              <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-white/5 text-[11px] font-black tabular-nums text-[#cfd9ea]">
-                {l.rank}
-              </span>
-              <span className="min-w-0 flex-1 truncate text-sm font-bold text-[#fdf8ea]">
-                {l.display_name}
-                {l.recurring ? (
-                  <span className="ml-1.5 rounded-full bg-[#7fa9e3]/20 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-[#7fa9e3]">
-                    Monthly
-                  </span>
-                ) : null}
-              </span>
-              <span
-                className={`rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-wider ${TIER_STYLE[l.tier] ?? TIER_STYLE.Supporter}`}
-              >
-                {l.tier}
-              </span>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}
-
-function ActivityFeed({ recent }: { recent: Recent[] }) {
-  const icon = (k: string) => (k === "pledge" ? "💵" : k === "signup" ? "✉️" : "🔁");
+function ActivityFeed({ recent: recentRaw }: { recent: Recent[] }) {
+  // Donations retired — historical pledge entries stay in the data but are
+  // no longer displayed as public momentum.
+  const recent = recentRaw.filter((r) => r.kind !== "pledge");
+  const icon = (k: string) => (k === "signup" ? "✉️" : "🔁");
   return (
     <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
       <div className="flex items-center gap-2">
@@ -259,7 +215,6 @@ export function SituationRoom({
   const [t, setT] = useState<SiteTotals | null>(seed ?? null);
   const [r, setR] = useState<Rally | null>(null);
   const [raised, setRaised] = useState<Raised | null>(null);
-  const [leaders, setLeaders] = useState<Leader[]>([]);
   const [recent, setRecent] = useState<Recent[]>([]);
   const [milestones, setMilestones] = useState<Milestone[]>([]);
   const [streak, setStreak] = useState(0);
@@ -272,10 +227,9 @@ export function SituationRoom({
     let mounted = true;
     const supabase = getSupabaseBrowserClient();
     async function pull() {
-      const [totals, rally, lb, rc, ms, money] = await Promise.all([
+      const [totals, rally, rc, ms, money] = await Promise.all([
         supabase.rpc("site_totals"),
         supabase.rpc("rally_snapshot"),
-        supabase.rpc("get_rally_leaderboard", { p_limit: 10 }),
         supabase.rpc("rally_recent", { p_limit: 16 }),
         supabase.from("rally_milestones").select("points,title,reward").order("sort_order"),
         fetch("/api/rally/raised").then((x) => x.json()).catch(() => null),
@@ -283,7 +237,6 @@ export function SituationRoom({
       if (!mounted) return;
       if (totals.data) setT(totals.data as SiteTotals);
       if (Array.isArray(rally.data) && rally.data[0]) setR(rally.data[0] as Rally);
-      if (Array.isArray(lb.data)) setLeaders(lb.data as Leader[]);
       if (Array.isArray(rc.data)) setRecent(rc.data as Recent[]);
       if (Array.isArray(ms.data)) setMilestones(ms.data as Milestone[]);
       if (money) setRaised(money as Raised);
@@ -339,8 +292,6 @@ export function SituationRoom({
   const goal = r?.goal_points ?? 5000;
   const total = moneyPts + (r?.share_points ?? 0) + (r?.signup_points ?? 0);
   const pct = goal > 0 ? Math.min(100, Math.round((total / goal) * 100)) : 0;
-  const supporters =
-    raised?.configured && raised.supporters > 0 ? raised.supporters : r?.supporter_count ?? 0;
   const lastHour = recent.filter(
     (x) => Date.now() - new Date(x.at).getTime() < 3_600_000,
   ).length;
@@ -438,7 +389,7 @@ export function SituationRoom({
                 The Rally
               </p>
               <p className="mt-1 text-sm text-[#cfd9ea]">
-                Every share, signup, and pledge moves this meter.
+                Every share and signup moves this meter.
               </p>
             </div>
             <p className="relative font-display text-2xl font-black tabular-nums text-[#fdf8ea] sm:text-3xl">
@@ -467,16 +418,10 @@ export function SituationRoom({
           </div>
           <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-[11px] text-[#9fb0ca]">
             <span>
-              <b className="text-[#fdf8ea]">${moneyPts.toLocaleString()}</b> raised
-            </span>
-            <span>
               <b className="text-[#fdf8ea]">{(r?.share_points ?? 0).toLocaleString()}</b> from shares
             </span>
             <span>
               <b className="text-[#fdf8ea]">{(r?.signup_points ?? 0).toLocaleString()}</b> from signups
-            </span>
-            <span>
-              <b className="text-[#fdf8ea]">{supporters.toLocaleString()}</b> supporters
             </span>
           </div>
           <p className="mt-3 text-xs font-semibold text-[#9fb0ca]">
@@ -492,7 +437,13 @@ export function SituationRoom({
             ) : null}
           </p>
           <div className="mt-4 flex flex-wrap items-center gap-3">
-            <RallyPledge source="situation-room" />
+            {/* Donations retired — the room's money door now sells the book. */}
+            <a
+              href="/book/preorder"
+              className="rounded-full border border-[#e1bd5b]/60 bg-[#e1bd5b] px-4 py-2.5 text-sm font-black tracking-tight text-[#0a1326] transition hover:bg-[#f0d27a]"
+            >
+              Get the Book →
+            </a>
             <button
               type="button"
               onClick={share}
@@ -519,8 +470,6 @@ export function SituationRoom({
           <StatTile value={r?.share_arrivals ?? 0} label="share arrivals" accent="#7fa9e3" />
           <StatTile value={t?.documents ?? 0} label="evidence documents" accent="#e1bd5b" />
           <StatTile value={t?.defendants ?? 0} label="J6 defendants tracked" accent="#e1bd5b" />
-          <StatTile value={moneyPts} label="raised (Stripe)" prefix="$" accent="#7fe3a9" />
-          <StatTile value={supporters} label="supporters" />
           <StatTile value={t?.days_since_pardon ?? 0} label="days since the pardon" />
         </section>
 
@@ -539,7 +488,6 @@ export function SituationRoom({
             </p>
           </div>
           <div className="space-y-4">
-            <Leaderboard leaders={leaders} />
             <ActivityFeed recent={recent} />
           </div>
         </section>

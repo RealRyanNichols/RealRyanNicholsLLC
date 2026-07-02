@@ -51,7 +51,7 @@ const GROUPS: AdminGroup[] = [
     items: [
       { href: "/admin/orders", label: "Orders", sub: "Service & store checkout" },
       { href: "/admin/invoices", label: "Invoices", sub: "Send & track payment" },
-      { href: "/admin/donations", label: "Donations", sub: "Supporter money" },
+      { href: "/admin/donations", label: "Donations", sub: "Legacy ledger — retired" },
       { href: "/admin/book", label: "Book", sub: "Pre-orders & list" },
       { href: "/admin/blueprint", label: "Blueprint", sub: "Legal-tech leads" },
       { href: "/admin/store", label: "Store", sub: "Products & offers" },

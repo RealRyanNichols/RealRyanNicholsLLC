@@ -21,7 +21,7 @@ import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { SITE } from "@/lib/site";
 import { muxThumbnailUrl } from "@/lib/mux";
 import { getOgImage } from "@/lib/og-images";
-import { RallyInline } from "@/components/RallyInline";
+import { BookCtaBand } from "@/components/BookCtaBand";
 import type { Post, MediaItem } from "@/lib/types";
 
 export const revalidate = 60;
@@ -276,7 +276,8 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
           <StoryTipCTA subject={post.title ?? undefined} />
         ) : null}
 
-        <RallyInline source="article" className="mt-8" />
+        {/* Donations retired — the article-foot ask now sells the book. */}
+        <BookCtaBand className="mt-8" />
 
         <PostFollowCapture
           path={path}

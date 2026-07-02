@@ -224,7 +224,7 @@ function nextActionsFor(
     return [
       "Draft a public-safe angle: what happened, why it matters, what is still missing.",
       "Ask the public for one specific record or witness confirmation.",
-      "Link the post back to submit a tip, donate, and the intake ledger.",
+      "Link the post back to submit a tip and the intake ledger.",
     ];
   }
   if (kind === "service") {

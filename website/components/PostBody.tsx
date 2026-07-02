@@ -4,8 +4,6 @@ import type { ReactNode } from "react";
 import { TweetEmbed } from "./TweetEmbed";
 import { FacebookEmbed } from "./FacebookEmbed";
 import { BookCtaBand } from "./BookCtaBand";
-import { DonateBox } from "./DonateBox";
-import { FundTheTruth } from "./FundTheTruth";
 import { ReactionBar } from "./ReactionBar";
 import { PollCard } from "./PollCard";
 import { InlineReportForm } from "./InlineReportForm";
@@ -245,26 +243,16 @@ function Shortcode({ kind, arg, ctx }: { kind: string; arg?: string; ctx: Ctx })
       return <ReceiptGrid arg={arg} />;
     case "receiptstack":
       return <ReceiptStack arg={arg} />;
+    // Donations are retired — legacy {{donate}}, {{fund}}, and {{impact}}
+    // tokens in old articles now sell the book instead of asking for gifts.
     case "donate":
-      return (
-        <div className="not-prose my-7">
-          <DonateBox />
-        </div>
-      );
     case "book":
     case "preorder":
-      return (
-        <div className="not-prose my-7">
-          <BookCtaBand />
-        </div>
-      );
-    // The unified donation tool. `impact` is kept as an alias so any stray
-    // legacy token still renders the one tool instead of a broken block.
     case "fund":
     case "impact":
       return (
         <div className="not-prose my-7">
-          <FundTheTruth />
+          <BookCtaBand />
         </div>
       );
     case "share":

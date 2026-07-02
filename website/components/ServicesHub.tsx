@@ -94,7 +94,7 @@ const MODULES = [
   ["Public feed", "Posts, updates, essays, videos, and proof on your domain."],
   ["Service ladder", "A clear path from call to audit to build."],
   ["Tip or intake form", "Structured submissions without dumping chaos into your inbox."],
-  ["Support path", "Donate, subscribe, book, or buy without hunting."],
+  ["Support path", "Subscribe, book, or buy without hunting."],
   ["Live pulse", "Visible momentum: people reading, sharing, or supporting."],
   ["Receipt wall", "Screenshots, files, source links, and timelines people can inspect."],
   ["Private follow-up", "A safer route for sensitive details that should not be public."],
