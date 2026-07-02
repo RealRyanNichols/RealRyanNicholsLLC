@@ -236,6 +236,29 @@ export default async function PersonPage({
         <ReactionBar targetType="person" targetId={p.slug} />
       </div>
 
+      {/* The nexus: how this person connects to the anchor case. Detainees,
+          co-defendants, and witnesses joined by shared documents. */}
+      {p.is_j6_defendant || /detainee|co-?defendant|witness/i.test(p.role ?? "") ? (
+        <section className="mt-10 rounded-2xl border-2 border-[var(--color-navy)]/25 bg-[var(--color-blue-soft)]/40 p-5">
+          <p className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-navy)]">
+            Connection to United States v. Nichols
+          </p>
+          <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+            {p.name} appears in the record of United States v. Nichols
+            {evidence.length > 0
+              ? ` through ${evidence.length} shared ${evidence.length === 1 ? "document" : "documents"} on file below`
+              : ""}
+            . The full case — timeline, people, documents — is public and free.
+          </p>
+          <Link
+            href="/case"
+            className="mt-3 inline-block text-sm font-bold text-[var(--color-navy)] hover:underline"
+          >
+            Walk the whole case →
+          </Link>
+        </section>
+      ) : null}
+
       <section className="mt-12 border-t border-[var(--color-line)] pt-8">
         <div className="border-l-2 border-[var(--color-accent)] pl-4 mb-5">
           <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent)] font-bold">

@@ -270,6 +270,17 @@ export default async function IntakeLedgerPage({
               help verify, connect, dispute, or add context to another case,
               document, witness, agency, or timeline.
             </p>
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--color-ink-soft)]">
+              Sending a statement about the case? Sworn or notarized statements
+              carry the most weight. Voice recordings are accepted too —{" "}
+              <Link
+                href="/tell-your-story"
+                className="font-bold text-[var(--color-navy)] hover:underline"
+              >
+                record yours here
+              </Link>
+              .
+            </p>
             <div className="rrn-tap-row mt-5">
               <Link
                 href="/submit"

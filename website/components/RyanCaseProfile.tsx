@@ -225,7 +225,11 @@ export function RyanCaseProfile({
         <Stat n={totals.daysDetained.toLocaleString()} label="Days, arrest → pardon" />
         <Stat n={totals.ryanFiledGrievances.toLocaleString()} label="Grievances he filed" />
         <Stat n={totals.documents.toLocaleString()} label="Documents on the record" />
-        <Stat n={String(totals.corroborators)} label="Fellow detainees on record" />
+        <Stat
+          n={String(totals.corroborators)}
+          label="Fellow detainees on record"
+          href="/case?view=people&filter=all"
+        />
       </section>
 
       {/* ---- The line that should stop you ---- */}
@@ -267,9 +271,24 @@ export function RyanCaseProfile({
               detail:
                 "A federal judge acknowledged from the bench that his due-process rights had been violated. He was held across ten federal and local facilities anyway.",
             },
-            { date: "Nov 2023", title: "Pleaded guilty", detail: "Pleaded guilty to two felonies: obstruction of an official proceeding and assaulting, resisting, or impeding officers." },
-            { date: "May 2, 2024", title: "Convicted & sentenced", detail: "Sentenced to 63 months in federal prison and a $200,000 fine." },
-            { date: "Jan 20, 2025", title: "Fully pardoned", detail: "Granted a full and unconditional pardon by President Trump." },
+            {
+              date: "Nov 2023",
+              title: "Pleaded guilty",
+              detail: "Pleaded guilty to two felonies: obstruction of an official proceeding and assaulting, resisting, or impeding officers.",
+              doc: "/case/documents/ex537-plea-agreement",
+            },
+            {
+              date: "May 2, 2024",
+              title: "Convicted & sentenced",
+              detail: "Sentenced to 63 months in federal prison and a $200,000 fine.",
+              doc: "/case/documents/docket-314-judgment",
+            },
+            {
+              date: "Jan 20, 2025",
+              title: "Fully pardoned",
+              detail: "Granted a full and unconditional pardon by President Trump.",
+              doc: "/case/documents/order-j6-presidential-pardon-2025",
+            },
             {
               date: "2025",
               title: "Dismissed with prejudice",
@@ -286,6 +305,14 @@ export function RyanCaseProfile({
                 <h3 className="text-base sm:text-lg font-bold tracking-tight font-display">{e.title}</h3>
               </div>
               <p className="mt-1 text-sm text-[var(--color-ink-soft)] leading-snug">{e.detail}</p>
+              {"doc" in e && e.doc ? (
+                <Link
+                  href={e.doc}
+                  className="mt-1 inline-block text-xs font-bold text-[var(--color-navy)] hover:underline"
+                >
+                  Read the paper →
+                </Link>
+              ) : null}
             </li>
           ))}
         </ol>
@@ -423,6 +450,36 @@ export function RyanCaseProfile({
             request; the list will carry document citations as they land. The
             file is still being built — provenance first.
           </p>
+        </div>
+
+        {/* Statement intake — the archive grows one account at a time. */}
+        <div className="mt-8 rounded-2xl bg-[var(--color-navy)] p-6 sm:p-8 text-[#fdf8ea]">
+          <p className="text-[11px] uppercase tracking-[0.2em] font-bold text-[#8194b4]">
+            Statement intake
+          </p>
+          <h3 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display text-[#fdf8ea]">
+            Were you there? The archive has room for your statement.
+          </h3>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[#cfd9ea]">
+            Detainees, witnesses, family — the record grows one account at a
+            time. Sworn or notarized statements carry the most weight; voice
+            recordings are accepted too. Every submission lands in the public
+            intake ledger with provenance intact.
+          </p>
+          <div className="mt-5 flex flex-wrap items-center gap-4">
+            <Link
+              href="/case/intake"
+              className="inline-flex items-center rounded-lg bg-[#fdf8ea] px-5 py-2.5 text-sm font-bold text-[var(--color-navy)] transition hover:bg-white"
+            >
+              Add your statement →
+            </Link>
+            <Link
+              href="/tell-your-story"
+              className="text-sm font-bold text-[#cfd9ea] transition hover:text-[#fdf8ea] hover:underline"
+            >
+              Record it in your own voice →
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -874,16 +931,25 @@ function DetTag({ kind }: { kind: "doc" | "account" }) {
   );
 }
 
-function Stat({ n, label }: { n: string; label: string }) {
-  return (
-    <div className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+function Stat({ n, label, href }: { n: string; label: string; href?: string }) {
+  const inner = (
+    <>
       <div className="text-2xl sm:text-3xl font-bold tracking-tight leading-none text-[var(--color-accent)] font-display tabular-nums">
         {n}
       </div>
       <div className="mt-2 text-xs sm:text-sm font-bold text-[var(--color-ink)] leading-tight">
         {label}
+        {href ? <span aria-hidden> →</span> : null}
       </div>
-    </div>
+    </>
+  );
+  const shell = "rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4";
+  return href ? (
+    <Link href={href} className={`${shell} block transition hover:border-[var(--color-navy)]`}>
+      {inner}
+    </Link>
+  ) : (
+    <div className={shell}>{inner}</div>
   );
 }
 
