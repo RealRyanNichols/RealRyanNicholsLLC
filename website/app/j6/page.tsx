@@ -8,9 +8,9 @@ import { SITE } from "@/lib/site";
 
 export const revalidate = 300;
 
-const TITLE = "The J6 Case · Free, for every January 6 defendant";
+const TITLE = "The January 6 Case Archive · free for every defendant";
 const DESCRIPTION =
-  "Free profiles, free upload tools, free login — for every January 6 defendant. Your case stacks into the master J6 case. The full record, in public, with no gatekeeping.";
+  "The largest public case archive of January 6 — witness statements from inside, court motions, documents, video, all verified and labeled. Free profiles and upload tools for every J6 defendant. Every case stacks into one record they cannot bury.";
 
 export async function generateMetadata(): Promise<Metadata> {
   const override = await getOgImage("/j6");
@@ -53,7 +53,12 @@ export default async function J6MissionPage() {
   const totals = await getCaseTotals();
 
   const supabase = getSupabaseStaticClient();
-  const [{ count: profilesReady }, { count: profilesClaimed }] = await Promise.all([
+  const [
+    { count: profilesReady },
+    { count: profilesClaimed },
+    { count: defendantsTotal },
+    { count: swornStatements },
+  ] = await Promise.all([
     supabase
       .from("case_people")
       .select("id", { count: "exact", head: true })
@@ -64,19 +69,27 @@ export default async function J6MissionPage() {
       .select("id", { count: "exact", head: true })
       .eq("is_j6_defendant", true)
       .eq("claim_status", "verified"),
+    supabase
+      .from("case_people")
+      .select("id", { count: "exact", head: true })
+      .eq("is_j6_defendant", true),
+    supabase
+      .from("case_documents")
+      .select("id", { count: "exact", head: true })
+      .eq("doc_type", "affidavit")
+      .eq("visibility", "public"),
   ]);
 
+  // This page IS the archive's front door — point engines at the same
+  // Dataset entity the case page declares.
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "WebPage",
-    name: TITLE,
+    "@type": "CollectionPage",
+    name: "The January 6 Case Archive",
     url: `${SITE.url}/j6`,
     description: DESCRIPTION,
-    isPartOf: { "@type": "WebSite", url: SITE.url, name: SITE.name },
-    about: {
-      "@type": "Thing",
-      name: "January 6 defendants legal record",
-    },
+    isPartOf: { "@id": `${SITE.url}/#website` },
+    about: { "@id": `${SITE.url}/case#dataset` },
   };
 
   return (
@@ -87,13 +100,17 @@ export default async function J6MissionPage() {
       />
       <article className="mx-auto max-w-3xl px-4 py-12">
         <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
-          Ryan Nichols · A Promise
+          The January 6 Case Archive · founded by Ryan Nichols
         </p>
         <h1 className="mt-3 text-4xl sm:text-6xl font-bold tracking-tight font-display leading-[1.05]">
-          The J6 Case.
+          The largest public case archive of January 6.
         </h1>
         <p className="mt-5 text-xl sm:text-2xl text-[var(--color-ink-soft)] leading-snug">
-          Free. For every January 6 defendant. Forever.
+          Built from the inside.{" "}
+          {(defendantsTotal ?? 0) > 0
+            ? `${(defendantsTotal ?? 0).toLocaleString()} defendants on record. `
+            : ""}
+          Free for every one of them. Forever.
         </p>
 
         {(profilesReady ?? 0) > 0 ? (
@@ -174,6 +191,41 @@ export default async function J6MissionPage() {
           </ol>
         </section>
 
+        {/* The trust argument — why historians, lawyers, and reporters can
+            build on this archive instead of starting over. */}
+        <section className="mt-14 rounded-2xl bg-[var(--color-navy)] p-6 sm:p-8 text-[#fdf8ea]">
+          <p className="text-[11px] uppercase tracking-[0.2em] font-bold text-[#8194b4]">
+            Verified, or it does not post
+          </p>
+          <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display text-[#fdf8ea]">
+            Why this record can be trusted.
+          </h2>
+          <ul className="mt-4 space-y-3 text-sm sm:text-base leading-relaxed text-[#cfd9ea]">
+            <li>
+              <strong className="text-[#fdf8ea]">Every claim is labeled</strong>{" "}
+              — FACT, STATEMENT, or NEEDS AUTHENTICATION. The archive says what
+              it knows and what it does not.
+            </li>
+            <li>
+              <strong className="text-[#fdf8ea]">Every upload is reviewed</strong>{" "}
+              — nothing a defendant or witness submits goes public until a
+              human checks it.
+            </li>
+            <li>
+              <strong className="text-[#fdf8ea]">
+                Court records link to the court
+              </strong>{" "}
+              — filings point at the official docket, so you verify against the
+              source, not a screenshot.
+            </li>
+            <li>
+              <strong className="text-[#fdf8ea]">Every page is citable</strong>{" "}
+              — permanent URLs, a citation format, and machine-readable
+              structure for researchers and AI assistants alike.
+            </li>
+          </ul>
+        </section>
+
         {/* Why this matters */}
         <section className="mt-14">
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight font-display">
@@ -205,11 +257,13 @@ export default async function J6MissionPage() {
           <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">
             Already in the archive
           </p>
-          <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <Stat n={defendantsTotal ?? 0} label="Defendants on record" />
+            <Stat n={profilesClaimed ?? 0} label="Verified & building" />
             <Stat n={totals.documents} label="Documents" />
             <Stat n={totals.grievances} label="Grievances" />
+            <Stat n={swornStatements ?? 0} label="Sworn statements" />
             <Stat n={totals.events} label="Timeline events" />
-            <Stat n={totals.daysDetained} label="Days detained (Ryan)" />
           </div>
           <p className="mt-5 text-sm text-[var(--color-ink-soft)]">
             See what a profile looks like:{" "}

@@ -244,11 +244,29 @@ export function RyanCaseProfile({
       </div>
 
       {/* ---- The case in numbers ---- */}
+      {/* Every number is a door to its proof — nothing on this page is a
+          claim without a receipt. */}
       <section className="mt-8 grid grid-cols-2 sm:grid-cols-5 gap-3">
-        <Stat n={String(totals.facilities)} label="Facilities held across" />
-        <Stat n={totals.daysDetained.toLocaleString()} label="Days, arrest → pardon" />
-        <Stat n={totals.ryanFiledGrievances.toLocaleString()} label="Grievances he filed" />
-        <Stat n={totals.documents.toLocaleString()} label="Documents on the record" />
+        <Stat
+          n={String(totals.facilities)}
+          label="Facilities held across"
+          href="/case/geography"
+        />
+        <Stat
+          n={totals.daysDetained.toLocaleString()}
+          label="Days, arrest → pardon"
+          href="/case?view=timeline"
+        />
+        <Stat
+          n={totals.ryanFiledGrievances.toLocaleString()}
+          label="Grievances he filed"
+          href="/case?view=grievances"
+        />
+        <Stat
+          n={totals.documents.toLocaleString()}
+          label="Documents on the record"
+          href="/case?view=documents"
+        />
         <Stat
           n={String(totals.corroborators)}
           label="Fellow detainees on record"
@@ -272,6 +290,21 @@ export function RyanCaseProfile({
           Equal justice under the law — the fight that came out of it →
         </Link>
       </aside>
+
+      {/* The archive this case anchors — the growth loop. */}
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border-2 border-[var(--color-navy)]/30 bg-[var(--color-blue-soft)]/40 px-5 py-4">
+        <p className="text-sm font-bold text-[var(--color-ink)]">
+          This case anchors the{" "}
+          <span className="text-[var(--color-navy)]">January 6 Case Archive</span>{" "}
+          — every defendant who joins stacks their record into it.
+        </p>
+        <Link
+          href="/j6"
+          className="shrink-0 text-sm font-bold text-[var(--color-navy)] hover:underline"
+        >
+          Enter the archive →
+        </Link>
+      </div>
 
       {/* ---- Who he is, before the government ---- */}
       <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
