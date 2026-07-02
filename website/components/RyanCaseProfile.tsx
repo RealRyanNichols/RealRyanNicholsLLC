@@ -8,6 +8,7 @@ import { CaseInfoCard } from "@/components/CaseInfoCard";
 import { CaseStats } from "@/components/CaseStats";
 import { EvidenceGrid } from "@/components/EvidenceGrid";
 import { ReactionBar } from "@/components/ReactionBar";
+import { ReadingProgress } from "@/components/ReadingProgress";
 import { JsonLd } from "@/components/JsonLd";
 import { PERSON_ID, personRef, websiteRef } from "@/lib/jsonld";
 import { SITE } from "@/lib/site";
@@ -22,6 +23,10 @@ type CaseTotals = {
   daysDetained: number;
   events: number;
 };
+
+// How many linked documents render on the profile itself before handing off
+// to the documents view.
+const EVIDENCE_SAMPLE = 12;
 
 // The bespoke, flagship profile for the subject of the entire site. Everything
 // else at /case/people/[slug] uses the generic person template; Ryan's own page
@@ -135,6 +140,14 @@ export function RyanCaseProfile({
             text: `He was detained ${days} days between arrest and pardon, held across ${totals.facilities} federal and local facilities, including extended solitary confinement. In December 2021 a federal judge acknowledged on the record that his due-process rights had been violated; he remained detained. From inside he authored ${totals.ryanFiledGrievances.toLocaleString("en-US")} grievance forms, and the conditions record — photographs, complaints, medical records — is public in the case archive.`,
           },
         },
+        {
+          "@type": "Question",
+          name: "Did Ryan Nichols sue the government over his detention?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Yes. On August 10, 2022, while still detained, he petitioned for a writ of habeas corpus — Nichols v. Garland, No. 1:22-cv-02356 (D.D.C.) — naming Attorney General Merrick Garland and DC jail leadership. The petition was voluntarily dismissed that October, and on November 22, 2022 the criminal court ordered his release on personal recognizance. Both filings are public in the archive.",
+          },
+        },
       ],
     },
   ];
@@ -143,8 +156,9 @@ export function RyanCaseProfile({
     <article className="mx-auto max-w-4xl px-4 py-10">
       <JsonLd data={profileLd} />
       <CaseViewTracker type="person" slug={person.slug} />
+      <ReadingProgress />
 
-      <nav className="text-sm text-[var(--color-muted)] mb-4">
+      <nav className="text-sm text-[var(--color-muted)] mb-2">
         <Link href="/case" className="hover:underline">
           ← J6 Case
         </Link>{" "}
@@ -154,14 +168,15 @@ export function RyanCaseProfile({
         </Link>
       </nav>
 
-      {/* ============================================================
-          ATTORNEY BRIEFING — front-loaded for counsel evaluating the
-          CURRENT matter. PUBLIC PAGE: contains only already-public facts
-          and links to already-published motions. No bond status, no
-          hearing dates, no self-admissions — sensitive specifics move to
-          the private attorney conversation.
-          ============================================================ */}
-      <AttorneyBriefing />
+      <p className="mb-4 text-xs text-[var(--color-muted)]">
+        Attorney evaluating his current matter?{" "}
+        <a
+          href="#attorney-briefing"
+          className="font-bold text-[var(--color-navy)] hover:underline"
+        >
+          Jump to the briefing ↓
+        </a>
+      </p>
 
       {/* ---- Hero ---- */}
       <div className="rounded-3xl border-2 border-[var(--color-accent)] bg-gradient-to-br from-[var(--color-accent-soft)] to-[var(--color-surface)] p-6 sm:p-9">
@@ -195,6 +210,15 @@ export function RyanCaseProfile({
             ✓ Then dismissed with prejudice
           </span>
         </div>
+        <p className="mt-5 max-w-2xl text-sm sm:text-base leading-relaxed text-[var(--color-ink)]">
+          New here? This page is the whole story, told in paper: a Marine and
+          hurricane rescuer, arrested after January 6 — {days} days detained,
+          solitary confinement, a judge admitting on the record that his due
+          process was violated, a habeas suit filed from his cell, release, a
+          plea, 63 months, then a full pardon and dismissal with prejudice.
+          Every claim links to the document that proves it. Read it. Check it.
+          Share it.
+        </p>
       </div>
 
       {person.description ? (
@@ -249,244 +273,10 @@ export function RyanCaseProfile({
         </Link>
       </aside>
 
-      {/* ---- The case file (case number, court, disposition, charges) ---- */}
-      <CaseInfoCard person={person} />
-
-      {/* ---- The J6 case, start to finish ---- */}
-      <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
-          The case · start to finish
-        </p>
-        <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
-          Arrested. Convicted. Pardoned.
-        </h2>
-        <ol className="mt-5 relative border-l-2 border-[var(--color-line)] ml-3 space-y-5">
-          {[
-            { date: "Jan 18, 2021", title: "Arrested", detail: "Taken into custody in the Eastern District of Texas." },
-            { date: "2021", title: "Indicted", detail: "Charged with multiple counts tied to January 6." },
-            { date: "Apr 26, 2021", title: "Arraigned", detail: "Initially pleaded not guilty." },
-            {
-              date: "Dec 2021",
-              title: "Due process violated — on the record",
-              detail:
-                "A federal judge acknowledged from the bench that his due-process rights had been violated. He was held across ten federal and local facilities anyway.",
-            },
-            {
-              date: "Nov 2023",
-              title: "Pleaded guilty",
-              detail: "Pleaded guilty to two felonies: obstruction of an official proceeding and assaulting, resisting, or impeding officers.",
-              doc: "/case/documents/ex537-plea-agreement",
-            },
-            {
-              date: "May 2, 2024",
-              title: "Convicted & sentenced",
-              detail: "Sentenced to 63 months in federal prison and a $200,000 fine.",
-              doc: "/case/documents/docket-314-judgment",
-            },
-            {
-              date: "Jan 20, 2025",
-              title: "Fully pardoned",
-              detail: "Granted a full and unconditional pardon by President Trump.",
-              doc: "/case/documents/order-j6-presidential-pardon-2025",
-            },
-            {
-              date: "2025",
-              title: "Dismissed with prejudice",
-              detail:
-                "Following the pardon, the charges were dismissed with prejudice by U.S. Attorney Edward R. Martin Jr. — the case can never be brought again.",
-            },
-          ].map((e) => (
-            <li key={e.date} className="relative pl-6">
-              <span className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full bg-[var(--color-accent)] ring-4 ring-[var(--color-paper)]" />
-              <div className="flex flex-wrap items-baseline gap-2">
-                <span className="rounded bg-[var(--color-ink)] text-[var(--color-paper)] px-1.5 py-0.5 text-[10px] font-bold tabular-nums">
-                  {e.date}
-                </span>
-                <h3 className="text-base sm:text-lg font-bold tracking-tight font-display">{e.title}</h3>
-              </div>
-              <p className="mt-1 text-sm text-[var(--color-ink-soft)] leading-snug">{e.detail}</p>
-              {"doc" in e && e.doc ? (
-                <Link
-                  href={e.doc}
-                  className="mt-1 inline-block text-xs font-bold text-[var(--color-navy)] hover:underline"
-                >
-                  Read the paper →
-                </Link>
-              ) : null}
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      {/* ---- The detention record — the documented account ---- */}
-      <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
-          The detention record · {totals.daysDetained.toLocaleString()} days
-        </p>
-        <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
-          Not memoir. Paper.
-        </h2>
-        <p className="mt-2 text-sm text-[var(--color-ink-soft)] max-w-2xl leading-relaxed">
-          What happened between arrest and pardon is not a story he tells — it is
-          a file he built, one exhibit at a time, from inside. Every entry below
-          carries an exhibit number from the master archive or lives in the{" "}
-          <Link href="/case?view=documents" className="text-[var(--color-accent)] font-semibold hover:underline">
-            public document record
-          </Link>
-          . Items marked <DetTag kind="doc" /> are documented. Items marked{" "}
-          <DetTag kind="account" /> are his sworn or stated account, with the
-          corroborating records named.
-        </p>
-
-        <div className="mt-6 space-y-3">
-          {[
-            {
-              tag: "doc" as const,
-              title: "Solitary confinement",
-              detail:
-                "Documented from inside: inmates passing out in solitary (EX-258); the conditions record photographed and filed (EX-251, EX-256). A federal judge discussed his solitary confinement and due process on the record — preserved on video (EX-529).",
-            },
-            {
-              tag: "doc" as const,
-              title: "Due process violated — acknowledged from the bench",
-              detail:
-                "December 2021: U.S. District Judge Thomas F. Hogan acknowledged on the record that his due-process rights had been violated. He remained detained. The moment is preserved (EX-529) and became the foundation of the equal-justice fight.",
-            },
-            {
-              tag: "doc" as const,
-              title: "Officers threatening inmates — photographed",
-              detail:
-                "Two photographed instances of officers threatening detainees, preserved and filed (EX-260, EX-261), alongside his contemporaneous notes to fellow inmates (EX-262).",
-            },
-            {
-              tag: "doc" as const,
-              title: "The transport complaint — signed and filed",
-              detail:
-                "A signed complaint documenting a transport event, JMD 21-08-16, filed while in custody (EX-173). Full USMS transport records are under FOIA request.",
-            },
-            {
-              tag: "doc" as const,
-              title: "The medical record",
-              detail:
-                "PTSD diagnosis on file (EX-268; post-release diagnosis EX-005). Ketamine treatment records (EX-267). Alprazolam prescription (EX-269). Mental-health grievances and a FOIA request for complete BOP medical records are in the file (EX-007, EX-008).",
-            },
-            {
-              tag: "doc" as const,
-              title: "Congress was turned away at the door",
-              detail:
-                "Members of Congress — Reps. Louie Gohmert and Marjorie Taylor Greene — were denied access to the jail holding him. It is on video (EX-266).",
-            },
-            {
-              tag: "account" as const,
-              title: "The first plea offer: 10 to 12 years",
-              detail:
-                "His account of the government's opening position, preserved as a recorded discussion in the file (EX-015) — against a final sentence of 63 months, and then a full pardon and dismissal with prejudice.",
-            },
-            {
-              tag: "doc" as const,
-              title: `The grievance machine — ${totals.ryanFiledGrievances.toLocaleString()} forms in his own hand`,
-              detail:
-                "He papered every facility that held him: " +
-                `${totals.ryanFiledGrievances.toLocaleString()} grievance forms he authored sit in the public archive, drawn from a master exhibit set of 203 (EX-319 through EX-519, indexed in EX-520). ` +
-                `${totals.grievances} distinct grievance patterns are documented across facilities.`,
-            },
-            {
-              tag: "doc" as const,
-              title: "The discovery that cuts the other way",
-              detail:
-                "From his own discovery: officers letting protesters into the Capitol, on video (EX-217, EX-218, EX-219). FBI 302 interview reports (EX-032, EX-006). The DOJ's admitted withholding of exculpatory evidence in a related January 6 case (EX-022, EX-028). He maintains the prosecution was entrapment and lawfare; these are the exhibits that claim stands on.",
-            },
-            {
-              tag: "doc" as const,
-              title: "The video they don't lead with",
-              detail:
-                "Footage on file shows him helping Metropolitan Police Officer Michael Fanone to safety on January 6. It sits in the case file alongside 25+ character letters and seven sworn affidavits (EX-282 through EX-318).",
-            },
-          ].map((item) => (
-            <div
-              key={item.title}
-              className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-5"
-            >
-              <div className="flex flex-wrap items-center gap-2">
-                <DetTag kind={item.tag} />
-                <h3 className="text-base font-bold tracking-tight text-[var(--color-ink)]">
-                  {item.title}
-                </h3>
-              </div>
-              <p className="mt-1.5 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-                {item.detail}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-6 rounded-2xl bg-[var(--color-surface-2)] p-4 sm:p-5">
-          <p className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-navy)]">
-            The {totals.facilities} facilities, as he lists them
-          </p>
-          <div className="mt-2 flex flex-wrap gap-1.5">
-            {[
-              "Tyler, TX (E.D. Tex.)",
-              "DC DOC — CTF",
-              "Rappahannock Regional",
-              "Northern Neck Regional",
-              "FDC Houston",
-              "Florence",
-              "Oklahoma City (transit)",
-              "Albany",
-              "NW3 quarantine",
-              "BOP (post-sentence)",
-            ].map((f) => (
-              <span
-                key={f}
-                className="rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-1 text-xs font-semibold text-[var(--color-ink-soft)]"
-              >
-                {f}
-              </span>
-            ))}
-          </div>
-          <p className="mt-2 text-xs text-[var(--color-muted)]">
-            His account. Official USMS transport and BOP records are under FOIA
-            request; the list will carry document citations as they land. The
-            file is still being built — provenance first.
-          </p>
-        </div>
-
-        {/* Statement intake — the archive grows one account at a time. */}
-        <div className="mt-8 rounded-2xl bg-[var(--color-navy)] p-6 sm:p-8 text-[#fdf8ea]">
-          <p className="text-[11px] uppercase tracking-[0.2em] font-bold text-[#8194b4]">
-            Statement intake
-          </p>
-          <h3 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display text-[#fdf8ea]">
-            Were you there? The archive has room for your statement.
-          </h3>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[#cfd9ea]">
-            Detainees, witnesses, family — the record grows one account at a
-            time. Sworn or notarized statements carry the most weight; voice
-            recordings are accepted too. Every submission lands in the public
-            intake ledger with provenance intact.
-          </p>
-          <div className="mt-5 flex flex-wrap items-center gap-4">
-            <Link
-              href="/case/intake"
-              className="inline-flex items-center rounded-lg bg-[#fdf8ea] px-5 py-2.5 text-sm font-bold text-[var(--color-navy)] transition hover:bg-white"
-            >
-              Add your statement →
-            </Link>
-            <Link
-              href="/tell-your-story"
-              className="text-sm font-bold text-[#cfd9ea] transition hover:text-[#fdf8ea] hover:underline"
-            >
-              Record it in your own voice →
-            </Link>
-          </div>
-        </div>
-      </section>
-
       {/* ---- Who he is, before the government ---- */}
       <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
         <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
-          Before the case · the man behind the file
+          Chapter One · Before the case — the man behind the file
         </p>
         <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
           Two decades running toward the disaster.
@@ -597,10 +387,304 @@ export function RyanCaseProfile({
         </Link>
       </section>
 
+      {/* ---- The case file (case number, court, disposition, charges) ---- */}
+      <CaseInfoCard person={person} />
+
+      {/* ---- The J6 case, start to finish ---- */}
+      <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+          Chapter Two · The case, start to finish
+        </p>
+        <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
+          Arrested. Convicted. Pardoned.
+        </h2>
+        <ol className="mt-5 relative border-l-2 border-[var(--color-line)] ml-3 space-y-5">
+          {[
+            { date: "Jan 18, 2021", title: "Arrested", detail: "Taken into custody in the Eastern District of Texas." },
+            { date: "2021", title: "Indicted", detail: "Charged with multiple counts tied to January 6." },
+            { date: "Apr 26, 2021", title: "Arraigned", detail: "Initially pleaded not guilty." },
+            {
+              date: "Dec 2021",
+              title: "Due process violated — on the record",
+              detail:
+                "A federal judge acknowledged from the bench that his due-process rights had been violated. He was held across ten federal and local facilities anyway.",
+            },
+            {
+              date: "Aug 10, 2022",
+              title: "Sued the Attorney General from his cell",
+              detail:
+                "Still detained, he petitioned for a writ of habeas corpus — Nichols v. Garland, 1:22-cv-02356 (D.D.C.) — naming Attorney General Merrick Garland and the DC jail leadership over his pretrial detention.",
+              doc: "/case/documents/habeas-petition-2022",
+            },
+            {
+              date: "Nov 22, 2022",
+              title: "Released on personal recognizance",
+              detail:
+                "After 22 months of pretrial detention, Judge Thomas F. Hogan ordered release on personal recognizance. The habeas petition had been voluntarily dismissed weeks earlier.",
+              doc: "/case/documents/docket-180-release-order",
+            },
+            {
+              date: "Nov 2023",
+              title: "Pleaded guilty",
+              detail: "Pleaded guilty to two felonies: obstruction of an official proceeding and assaulting, resisting, or impeding officers.",
+              doc: "/case/documents/ex537-plea-agreement",
+            },
+            {
+              date: "May 2, 2024",
+              title: "Convicted & sentenced",
+              detail: "Sentenced to 63 months in federal prison and a $200,000 fine.",
+              doc: "/case/documents/docket-314-judgment",
+            },
+            {
+              date: "Jan 20, 2025",
+              title: "Fully pardoned",
+              detail: "Granted a full and unconditional pardon by President Trump.",
+              doc: "/case/documents/order-j6-presidential-pardon-2025",
+            },
+            {
+              date: "2025",
+              title: "Dismissed with prejudice",
+              detail:
+                "Following the pardon, the charges were dismissed with prejudice by U.S. Attorney Edward R. Martin Jr. — the case can never be brought again.",
+            },
+          ].map((e) => (
+            <li key={e.date} className="relative pl-6">
+              <span className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full bg-[var(--color-accent)] ring-4 ring-[var(--color-paper)]" />
+              <div className="flex flex-wrap items-baseline gap-2">
+                <span className="rounded bg-[var(--color-ink)] text-[var(--color-paper)] px-1.5 py-0.5 text-[10px] font-bold tabular-nums">
+                  {e.date}
+                </span>
+                <h3 className="text-base sm:text-lg font-bold tracking-tight font-display">{e.title}</h3>
+              </div>
+              <p className="mt-1 text-sm text-[var(--color-ink-soft)] leading-snug">{e.detail}</p>
+              {"doc" in e && e.doc ? (
+                <Link
+                  href={e.doc}
+                  className="mt-1 inline-block text-xs font-bold text-[var(--color-navy)] hover:underline"
+                >
+                  Read the paper →
+                </Link>
+              ) : null}
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {/* ---- The detention record — the documented account ---- */}
+      <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+          Chapter Three · The detention record — {totals.daysDetained.toLocaleString()} days
+        </p>
+        <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
+          Not memoir. Paper.
+        </h2>
+        <p className="mt-2 text-sm text-[var(--color-ink-soft)] max-w-2xl leading-relaxed">
+          What happened between arrest and pardon is not a story he tells — it is
+          a file he built, one exhibit at a time, from inside. Every entry below
+          carries an exhibit number from the master archive or lives in the{" "}
+          <Link href="/case?view=documents" className="text-[var(--color-accent)] font-semibold hover:underline">
+            public document record
+          </Link>
+          . Items marked <DetTag kind="doc" /> are documented. Items marked{" "}
+          <DetTag kind="account" /> are his sworn or stated account, with the
+          corroborating records named.
+        </p>
+
+        <div className="mt-6 space-y-3">
+          {[
+            {
+              tag: "doc" as const,
+              title: "Solitary confinement",
+              detail:
+                "Documented from inside: inmates passing out in solitary (EX-258); the conditions record photographed and filed (EX-251, EX-256). A federal judge discussed his solitary confinement and due process on the record — preserved on video (EX-529).",
+              paper: {
+                href: "/case/documents/docket-150-emergency-release-motion",
+                label: "The emergency release motion that put the conditions before the court",
+              },
+            },
+            {
+              tag: "doc" as const,
+              title: "Due process violated — acknowledged from the bench",
+              detail:
+                "December 2021: U.S. District Judge Thomas F. Hogan acknowledged on the record that his due-process rights had been violated. He remained detained. The moment is preserved (EX-529) and became the foundation of the equal-justice fight.",
+              paper: {
+                href: "/case/documents/habeas-petition-2022",
+                label: "The habeas petition that took the due-process fight to court",
+              },
+            },
+            {
+              tag: "doc" as const,
+              title: "He sued the Attorney General from his cell",
+              detail:
+                "August 2022: a petition for a writ of habeas corpus — Nichols v. Garland, 1:22-cv-02356 (D.D.C.) — filed against Attorney General Merrick Garland and DC jail leadership while he was still detained. Voluntarily dismissed that October; weeks later the criminal court ordered his release.",
+              paper: {
+                href: "/case/documents/habeas-voluntary-dismissal-2022",
+                label: "The dismissal notice — and the release order that followed",
+              },
+            },
+            {
+              tag: "doc" as const,
+              title: "Officers threatening inmates — photographed",
+              detail:
+                "Two photographed instances of officers threatening detainees, preserved and filed (EX-260, EX-261), alongside his contemporaneous notes to fellow inmates (EX-262).",
+            },
+            {
+              tag: "doc" as const,
+              title: "The transport complaint — signed and filed",
+              detail:
+                "A signed complaint documenting a transport event, JMD 21-08-16, filed while in custody (EX-173). Full USMS transport records are under FOIA request.",
+            },
+            {
+              tag: "doc" as const,
+              title: "The medical record",
+              detail:
+                "PTSD diagnosis on file (EX-268; post-release diagnosis EX-005). Ketamine treatment records (EX-267). Alprazolam prescription (EX-269). Mental-health grievances and a FOIA request for complete BOP medical records are in the file (EX-007, EX-008).",
+            },
+            {
+              tag: "doc" as const,
+              title: "Congress was turned away at the door",
+              detail:
+                "Members of Congress — Reps. Louie Gohmert and Marjorie Taylor Greene — were denied access to the jail holding him. It is on video (EX-266).",
+            },
+            {
+              tag: "account" as const,
+              title: "The first plea offer: 10 to 12 years",
+              detail:
+                "His account of the government's opening position, preserved as a recorded discussion in the file (EX-015) — against a final sentence of 63 months, and then a full pardon and dismissal with prejudice.",
+            },
+            {
+              tag: "doc" as const,
+              title: `The grievance machine — ${totals.ryanFiledGrievances.toLocaleString()} forms in his own hand`,
+              detail:
+                "He papered every facility that held him: " +
+                `${totals.ryanFiledGrievances.toLocaleString()} grievance forms he authored sit in the public archive, drawn from a master exhibit set of 203 (EX-319 through EX-519, indexed in EX-520). ` +
+                `${totals.grievances} distinct grievance patterns are documented across facilities.`,
+              paper: {
+                href: "/case?view=grievances",
+                label: `Read all ${totals.grievances} documented grievance patterns, with the scans`,
+              },
+            },
+            {
+              tag: "doc" as const,
+              title: "The discovery that cuts the other way",
+              detail:
+                "From his own discovery: officers letting protesters into the Capitol, on video (EX-217, EX-218, EX-219). FBI 302 interview reports (EX-032, EX-006). The DOJ's admitted withholding of exculpatory evidence in a related January 6 case (EX-022, EX-028). He maintains the prosecution was entrapment and lawfare; these are the exhibits that claim stands on.",
+            },
+            {
+              tag: "doc" as const,
+              title: "The video they don't lead with",
+              detail:
+                "Footage on file shows him helping Metropolitan Police Officer Michael Fanone to safety on January 6. It sits in the case file alongside 25+ character letters and seven sworn affidavits (EX-282 through EX-318).",
+            },
+          ].map((item) => (
+            <div
+              key={item.title}
+              className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-5"
+            >
+              <div className="flex flex-wrap items-center gap-2">
+                <DetTag kind={item.tag} />
+                <h3 className="text-base font-bold tracking-tight text-[var(--color-ink)]">
+                  {item.title}
+                </h3>
+              </div>
+              <p className="mt-1.5 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+                {item.detail}
+              </p>
+              {"paper" in item && item.paper ? (
+                <Link
+                  href={item.paper.href}
+                  className="mt-2 inline-block text-xs font-bold text-[var(--color-navy)] hover:underline"
+                >
+                  {item.paper.label} →
+                </Link>
+              ) : null}
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-6 rounded-2xl bg-[var(--color-surface-2)] p-4 sm:p-5">
+          <p className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-navy)]">
+            The {totals.facilities} facilities, as he lists them
+          </p>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {[
+              "Tyler, TX (E.D. Tex.)",
+              "DC DOC — CTF",
+              "Rappahannock Regional",
+              "Northern Neck Regional",
+              "FDC Houston",
+              "Florence",
+              "Oklahoma City (transit)",
+              "Albany",
+              "NW3 quarantine",
+              "BOP (post-sentence)",
+            ].map((f) => (
+              <span
+                key={f}
+                className="rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-1 text-xs font-semibold text-[var(--color-ink-soft)]"
+              >
+                {f}
+              </span>
+            ))}
+          </div>
+          <p className="mt-2 text-xs text-[var(--color-muted)]">
+            His account. Official USMS transport and BOP records are under FOIA
+            request; the list will carry document citations as they land. The
+            file is still being built — provenance first.
+          </p>
+        </div>
+
+        {/* Statement intake — the archive grows one account at a time. */}
+        <div className="mt-8 rounded-2xl bg-[var(--color-navy)] p-6 sm:p-8 text-[#fdf8ea]">
+          <p className="text-[11px] uppercase tracking-[0.2em] font-bold text-[#8194b4]">
+            Statement intake
+          </p>
+          <h3 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display text-[#fdf8ea]">
+            Were you there? The archive has room for your statement.
+          </h3>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[#cfd9ea]">
+            Detainees, witnesses, family — the record grows one account at a
+            time. Sworn or notarized statements carry the most weight; voice
+            recordings are accepted too. Every submission lands in the public
+            intake ledger with provenance intact.
+          </p>
+          <div className="mt-5 flex flex-wrap items-center gap-4">
+            <Link
+              href="/case/intake"
+              className="inline-flex items-center rounded-lg bg-[#fdf8ea] px-5 py-2.5 text-sm font-bold text-[var(--color-navy)] transition hover:bg-white"
+            >
+              Add your statement →
+            </Link>
+            <Link
+              href="/tell-your-story"
+              className="text-sm font-bold text-[#cfd9ea] transition hover:text-[#fdf8ea] hover:underline"
+            >
+              Record it in your own voice →
+            </Link>
+          </div>
+        </div>
+
+        {/* Share moment — placed right after the heaviest chapter, where a
+            reader who made it this far is most likely to pass it on. */}
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+          <p className="text-sm font-bold text-[var(--color-ink)]">
+            If this chapter stopped you, it will stop someone else. Put it in
+            front of one more person.
+          </p>
+          <ShareButton
+            url={url}
+            title={`The detention record of ${person.name} — ${totals.daysDetained.toLocaleString()} days, documented on paper. Read it and check it yourself:`}
+            slug={person.slug}
+            caseKind="person"
+            compact
+          />
+        </div>
+      </section>
+
       {/* ---- The fight now ---- */}
       <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
         <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
-          What he&apos;s fighting for now
+          Chapter Four · What he&apos;s fighting for now
         </p>
         <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
           Out the other side — and on offense.
@@ -618,7 +702,7 @@ export function RyanCaseProfile({
               <p className="mt-1 text-lg font-bold tracking-tight font-display group-hover:text-[var(--color-accent)] transition">
                 {f.title}
               </p>
-              <p className="mt-1 text-sm text-[var(--color-ink-soft)] leading-snug line-clamp-2">
+              <p className="mt-1 text-sm text-[var(--color-ink-soft)] leading-snug">
                 {f.stakes}
               </p>
             </Link>
@@ -630,7 +714,7 @@ export function RyanCaseProfile({
       {titledPosts.length > 0 ? (
         <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
           <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
-            On the record now
+            Chapter Five · On the record now
           </p>
           <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
             He didn&apos;t go quiet. He built a newsroom.
@@ -681,8 +765,11 @@ export function RyanCaseProfile({
               : "The documents that name him directly"}
           </h2>
           <p className="text-sm text-[var(--color-ink-soft)] mt-1 max-w-2xl">
-            {evidence.length > 0 ? "A sample pulled to this profile. " : ""}His name runs
-            through the whole case file — {totals.documents.toLocaleString()} documents,{" "}
+            {evidence.length > EVIDENCE_SAMPLE
+              ? `A sample of ${EVIDENCE_SAMPLE} from the ${evidence.length.toLocaleString()} documents that name him directly. `
+              : ""}
+            His name runs through the whole case file —{" "}
+            {totals.documents.toLocaleString()} documents,{" "}
             {totals.ryanFiledGrievances.toLocaleString()} grievance forms in his own hand,{" "}
             {totals.grievances} documented grievance patterns, {totals.facilities} facilities.{" "}
             <Link href="/case?view=documents" className="text-[var(--color-accent)] font-semibold hover:underline">
@@ -690,11 +777,21 @@ export function RyanCaseProfile({
             </Link>
           </p>
         </div>
-        <EvidenceGrid documents={evidence} />
+        {/* Capped hard: this is a biography page, not the archive. The wall of
+            hundreds of cards buried everything below it; the full set lives in
+            the documents view one tap away. */}
+        <EvidenceGrid documents={evidence.slice(0, EVIDENCE_SAMPLE)} />
         <div className="mt-4">
           <CaseStats views={person.views_count} shares={person.shares_count} />
         </div>
       </section>
+
+      {/* Attorney briefing — below the story now. Counsel jumps straight
+          here via the chip under the breadcrumb; strangers get the human
+          story first. Same public-facts-only content as before. */}
+      <div id="attorney-briefing" className="scroll-mt-24">
+        <AttorneyBriefing />
+      </div>
 
       {/* ---- The full record · a directory into every part of the case ---- */}
       <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
@@ -734,6 +831,84 @@ export function RyanCaseProfile({
           />
           <CrossLink href="/case/damages" title="Damages" sub="What four years of this cost" />
           <CrossLink href="/about" title="Full biography" sub="Exhibit 288, in his words" />
+        </div>
+      </section>
+
+      {/* ---- Study this case — the researcher's on-ramp ---- */}
+      <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-navy)] font-bold">
+          Study this case
+        </p>
+        <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
+          Built to be checked, cited, and taught.
+        </h2>
+        <p className="mt-3 text-base text-[var(--color-ink-soft)] leading-relaxed max-w-2xl">
+          This page and the archive behind it exist so journalists, lawyers,
+          students, and historians can study United States v. Nichols from the
+          primary record — court filings linked at their official source,
+          grievance scans, transcripts, and sworn statements, each labeled for
+          what it is (FACT / RYAN STATEMENT / NEEDS AUTHENTICATION).
+        </p>
+        <div className="mt-5 rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+          <p className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-muted)]">
+            How to cite this archive
+          </p>
+          <p className="mt-2 font-mono text-xs sm:text-sm leading-relaxed text-[var(--color-ink)] break-words">
+            Nichols, Ryan. <em>The J6 Case Archive: United States v. Nichols</em>,
+            No. 1:21-cr-00117 (D.D.C.). RealRyanNichols.com.
+            https://www.realryannichols.com/case
+          </p>
+          <p className="mt-3 text-xs text-[var(--color-muted)] leading-relaxed">
+            Cite individual documents by their own URL — every scan, filing, and
+            grievance has a permanent page. Court records link to CourtListener/RECAP
+            so you can verify against the official docket yourself. Related habeas
+            matter: Nichols v. Garland, No. 1:22-cv-02356 (D.D.C.).
+          </p>
+          <div className="mt-4 flex flex-wrap gap-x-5 gap-y-1.5 text-xs font-bold">
+            <Link href="/case?view=documents" className="text-[var(--color-navy)] hover:underline">
+              The full document archive →
+            </Link>
+            <Link href="/case?view=timeline" className="text-[var(--color-navy)] hover:underline">
+              The dated timeline →
+            </Link>
+            <a href="/llms.txt" className="text-[var(--color-navy)] hover:underline">
+              Machine-readable overview (llms.txt) →
+            </a>
+            <a href="/rss.xml" className="text-[var(--color-navy)] hover:underline">
+              RSS →
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ---- Case Builder — this page is the product demo ---- */}
+      <section className="mt-12 rounded-2xl border-2 border-[var(--color-navy)] bg-[var(--color-surface)] p-6 sm:p-8">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-navy)] font-bold">
+          Case Builder
+        </p>
+        <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
+          Fighting a case the public should see? He builds these.
+        </h2>
+        <p className="mt-3 text-base text-[var(--color-ink-soft)] leading-relaxed max-w-2xl">
+          Everything on this page — the classified evidence, the dated
+          timeline, the people of record, the court filings linked at their
+          official source — is a system Ryan builds for other people&apos;s
+          cases too. Yours could look exactly like this, and be just as hard
+          to bury.
+        </p>
+        <div className="mt-5 flex flex-wrap items-center gap-4">
+          <Link
+            href="/case-builder"
+            className="btn-accent inline-flex items-center px-6 py-3 text-sm"
+          >
+            Request a case build →
+          </Link>
+          <Link
+            href="/j6"
+            className="text-sm font-bold text-[var(--color-navy)] hover:underline"
+          >
+            J6 defendant? Yours is free →
+          </Link>
         </div>
       </section>
 
