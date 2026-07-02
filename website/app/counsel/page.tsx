@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
-import { AttorneyBriefBody } from "@/app/admin/attorney-brief/page";
+import { AttorneyBriefBody } from "@/components/AttorneyBriefBody";
 import { COUNSEL_COOKIE, isCounselSessionValid } from "@/lib/counsel";
 import { counselLogin } from "./actions";
 

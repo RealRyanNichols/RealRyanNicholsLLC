@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { format } from "date-fns";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { SupportNoteModerator } from "@/components/SupportNoteModerator";
-import { FundingAdmin } from "@/components/FundingAdmin";
 
 export const metadata: Metadata = {
   title: "Donations",
@@ -159,12 +158,26 @@ export default async function AdminDonationsPage() {
         Every dollar in, in one place.
       </p>
 
-      <FundingAdmin
-        initialItems={fundingItems}
-        initialSettings={fundingSettings}
-        goalCents={fundingGoalCents}
-        raisedCents={fundingRaisedCents}
-      />
+      {/* Goal tools retired with the donations program — records only.
+          fundingSettings kept in scope for the ledger note below. */}
+      <div className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+        <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--color-muted)]">
+          Closed program — accounting records only
+        </p>
+        <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
+          {(fundingRaisedCents / 100).toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD",
+          })}{" "}
+          raised across the life of &ldquo;{fundingSettings.campaign_title}&rdquo;
+          ({fundingItems.length} funding line items, goal was{" "}
+          {(fundingGoalCents / 100).toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD",
+          })}
+          /mo). The ledgers below stay for money, sales, and accounting.
+        </p>
+      </div>
 
       {key && stripeOk ? (
         <>

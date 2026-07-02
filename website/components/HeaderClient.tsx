@@ -37,6 +37,7 @@ const OFFERS: Offer[] = [
 const MOBILE_ADMIN_LINKS: { href: string; label: string }[] = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/messages", label: "Messages" },
+  { href: "/admin/inbox", label: "Inbox" },
   { href: "/admin/tips", label: "Tips" },
   { href: "/admin/analytics", label: "Analytics" },
   { href: "/admin/new", label: "New Post" },
