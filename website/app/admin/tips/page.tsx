@@ -274,56 +274,80 @@ export default async function AdminTipsPage({
             return (
               <article
                 key={t.id}
-                className="border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5"
+                className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5"
               >
-                <header className="flex flex-wrap items-baseline justify-between gap-3">
-                  <div>
-                    <div className="flex items-center gap-2 flex-wrap mb-1">
-                      <CategoryChip category={t.category} />
-                      {t.location ? (
-                        <span className="text-[11px] text-[var(--color-muted)] font-mono">
-                          {t.location}
+                <header className="flex flex-wrap items-start justify-between gap-3">
+                  <div className="flex min-w-0 items-start gap-3">
+                    <span
+                      className={[
+                        "mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-full text-sm font-bold",
+                        t.submitter_name
+                          ? "bg-[var(--color-blue-soft)] text-[var(--color-navy)]"
+                          : "border border-dashed border-[var(--color-muted)] text-[var(--color-muted)]",
+                      ].join(" ")}
+                      aria-hidden
+                    >
+                      {t.submitter_name
+                        ? String(t.submitter_name)
+                            .split(/\s+/)
+                            .slice(0, 2)
+                            .map((w: string) => w[0]?.toUpperCase() ?? "")
+                            .join("")
+                        : "?"}
+                    </span>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap mb-1">
+                        <CategoryChip category={t.category} />
+                        {t.location ? (
+                          <span className="text-[11px] text-[var(--color-muted)] font-mono">
+                            {t.location}
+                          </span>
+                        ) : null}
+                      </div>
+                      <h2 className="text-lg font-bold tracking-tight">
+                        {t.defendant_name
+                          ? `About: ${t.defendant_name}`
+                          : "(no subject given)"}
+                      </h2>
+                      <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-[var(--color-muted)]">
+                        <span className="font-bold text-[var(--color-ink-soft)]">
+                          {t.submitter_name || "Anonymous"}
                         </span>
-                      ) : null}
-                    </div>
-                    <h2 className="text-lg font-bold tracking-tight">
-                      {t.defendant_name
-                        ? `About: ${t.defendant_name}`
-                        : "(no subject given)"}
-                    </h2>
-                    <p className="text-xs text-[var(--color-muted)] mt-0.5">
-                      {t.submitter_name || "anonymous"}
-                      {t.submitter_email ? (
-                        <>
-                          {" · "}
+                        {t.submitter_email ? (
                           <a
                             href={`mailto:${t.submitter_email}`}
-                            className="text-[var(--color-accent)] hover:underline"
+                            className="rounded border border-[var(--color-line)] bg-[var(--color-paper)] px-1.5 py-0.5 font-mono text-[10px] text-[var(--color-navy)] hover:underline"
                           >
                             {t.submitter_email}
                           </a>
-                        </>
-                      ) : (
-                        " · no email"
-                      )}{" "}
-                      ·{" "}
-                      {formatDistanceToNowStrict(new Date(t.created_at), {
-                        addSuffix: true,
-                      })}
-                      {" · "}
-                      <span title={format(new Date(t.created_at), "yyyy-MM-dd HH:mm:ss")}>
-                        {format(new Date(t.created_at), "MMM d, yyyy")}
-                      </span>
-                    </p>
+                        ) : (
+                          <span className="text-[10px] uppercase tracking-wider">
+                            no email left
+                          </span>
+                        )}
+                        <span>
+                          {formatDistanceToNowStrict(new Date(t.created_at), {
+                            addSuffix: true,
+                          })}
+                        </span>
+                        <span
+                          title={format(new Date(t.created_at), "yyyy-MM-dd HH:mm:ss")}
+                        >
+                          {format(new Date(t.created_at), "MMM d, yyyy")}
+                        </span>
+                      </p>
+                    </div>
                   </div>
-                  <StatusBadge status={t.status} />
-                  <OutcomeBadge
-                    status={
-                      typeof t.outcome_status === "string"
-                        ? t.outcome_status
-                        : "unworked"
-                    }
-                  />
+                  <div className="flex shrink-0 flex-wrap items-center gap-2">
+                    <StatusBadge status={t.status} />
+                    <OutcomeBadge
+                      status={
+                        typeof t.outcome_status === "string"
+                          ? t.outcome_status
+                          : "unworked"
+                      }
+                    />
+                  </div>
                 </header>
 
                 <TipRoutePanel plan={plan} tipId={t.id} />
