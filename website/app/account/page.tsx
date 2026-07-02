@@ -4,7 +4,6 @@ import { formatDistanceToNowStrict } from "date-fns";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { SignOutButton } from "@/components/SignOutButton";
 import { ProfileEditor } from "@/components/ProfileEditor";
-import { J6Workspace } from "@/components/J6Workspace";
 import { BookLibraryCard } from "@/components/BookLibraryCard";
 import {
   getBookOrdersForEmail,
@@ -124,18 +123,30 @@ export default async function AccountPage() {
 
       {isAdmin ? <AdminOfficeCard /> : null}
 
+      {/* The Case Builder is a destination, not the front desk — a quiet
+          card here, the full workspace at /account/case-builder. */}
       {myJ6Profile ? (
-        <div className="mt-6">
-          <J6Workspace
-            j6Profile={myJ6Profile}
-            submissions={mySubmissions ?? []}
-            firstName={
-              (profile?.full_name?.split(/\s+/)[0]) ||
-              (profile?.display_name?.split(/\s+/)[0]) ||
-              myJ6Profile.name.split(/\s+/)[0]
-            }
-          />
-        </div>
+        <section className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="min-w-0">
+              <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--color-muted)]">
+                J6 Case Builder
+              </p>
+              <p className="mt-0.5 text-sm font-bold text-[var(--color-ink)]">
+                Your case workspace — {myJ6Profile.name}
+              </p>
+              <p className="mt-0.5 text-xs text-[var(--color-ink-soft)]">
+                Tell your story, add evidence, manage your public case profile.
+              </p>
+            </div>
+            <Link
+              href="/account/case-builder"
+              className="btn-accent inline-flex min-h-10 shrink-0 items-center px-4 py-2 text-xs"
+            >
+              Open workspace →
+            </Link>
+          </div>
+        </section>
       ) : null}
 
       {isBanned ? (

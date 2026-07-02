@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { formatDistanceToNowStrict } from "date-fns";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { PendingProfileActions } from "@/components/PendingProfileActions";
 import {
   getIntegrationHealth,
   countCriticalIssues,
@@ -165,6 +166,40 @@ export default async function AdminHomePage() {
     }
   }
 
+  // One row per VISITOR, not per page-view: latest page wins (rows arrive
+  // newest-first), the rest just counts. Kills the six-duplicate-rows look.
+  const visitorGroups = (() => {
+    const map = new Map<
+      string,
+      {
+        session_id: string;
+        path: string;
+        ref: string | null;
+        user_id: string | null;
+        last_activity_at: string;
+        pages: number;
+      }
+    >();
+    for (const s of recentSessions ?? []) {
+      const g = map.get(s.session_id);
+      if (!g) {
+        map.set(s.session_id, {
+          session_id: s.session_id,
+          path: s.path,
+          ref: s.ref,
+          user_id: s.user_id,
+          last_activity_at: s.last_activity_at,
+          pages: 1,
+        });
+      } else {
+        g.pages += 1;
+        g.user_id = g.user_id ?? s.user_id;
+        g.ref = g.ref ?? s.ref;
+      }
+    }
+    return Array.from(map.values()).slice(0, 8);
+  })();
+
   const reviewQueueTotal =
     (pendingTips ?? 0) +
     (pendingClaims ?? 0) +
@@ -212,13 +247,15 @@ export default async function AdminHomePage() {
       ) : null}
 
       <section className="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+        {/* Red tint is reserved for tiles that need Ryan's ACTION. Good news
+            (audience, chats, leads, drafts) stays calm — it's a door, not an
+            alarm. */}
         <ActionLane
           href="/admin/posts"
           kicker="Publish"
           title="Posts & drafts"
           value={String(draftPostsCount ?? 0)}
           sub={`${draftPostsCount ?? 0} draft${(draftPostsCount ?? 0) === 1 ? "" : "s"} · ${publishedPostsCount ?? 0} live`}
-          hot={(draftPostsCount ?? 0) > 0}
         />
         <ActionLane
           href="/admin/analytics"
@@ -226,7 +263,6 @@ export default async function AdminHomePage() {
           title="Live audience"
           value={String(activeNow ?? 0)}
           sub={`${views24h ?? 0} views in 24h`}
-          hot={(activeNow ?? 0) > 0}
         />
         <ActionLane
           href="/admin/chats"
@@ -234,7 +270,6 @@ export default async function AdminHomePage() {
           title="Conversations"
           value={String(chats24h)}
           sub={`${chatsTotal} total · talking to your AI`}
-          hot={chats24h > 0}
         />
         <ActionLane
           href="/admin/leads"
@@ -242,7 +277,6 @@ export default async function AdminHomePage() {
           title="Leads"
           value={String(leadsTotal)}
           sub="people who left you data — follow up & sell"
-          hot={leadsTotal > 0}
         />
         <ActionLane
           href="/admin/invoices"
@@ -287,19 +321,24 @@ export default async function AdminHomePage() {
       </section>
 
       {/* Action items — pending verifications */}
-      <section className="mt-8 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+      <section className="mt-8 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
         <div className="flex items-center justify-between gap-3">
-          <h2 className="text-lg font-bold tracking-tight">
-            Pending verification
-            {(pendingProfiles ?? 0) > 0 ? (
-              <span className="ml-2 inline-block rounded-full bg-[var(--color-accent)] px-2 py-0.5 text-xs font-bold text-black">
-                {pendingProfiles}
-              </span>
-            ) : null}
-          </h2>
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--color-muted)]">
+              Needs a human
+            </p>
+            <h2 className="mt-0.5 font-display text-xl font-bold tracking-tight">
+              Pending verification
+              {(pendingProfiles ?? 0) > 0 ? (
+                <span className="ml-2 inline-block rounded-full bg-[var(--color-navy)] px-2 py-0.5 align-middle text-xs font-bold text-[#fdf8ea]">
+                  {pendingProfiles}
+                </span>
+              ) : null}
+            </h2>
+          </div>
           <Link
             href="/admin/users?filter=pending"
-            className="text-xs font-semibold text-[var(--color-accent)] hover:underline"
+            className="text-xs font-semibold text-[var(--color-navy)] hover:underline"
           >
             Open queue →
           </Link>
@@ -309,31 +348,68 @@ export default async function AdminHomePage() {
             Nobody waiting. Inbox zero.
           </p>
         ) : (
-          <ul className="mt-3 divide-y divide-[var(--color-line)]">
-            {pendingProfilesList.map((p) => (
-              <li
-                key={p.id}
-                className="flex items-center justify-between gap-3 py-2.5"
-              >
-                <div className="min-w-0 flex-1">
-                  <p className="font-medium truncate">
-                    {p.display_name || p.full_name || p.username || "(no name)"}
-                  </p>
-                  <p className="text-xs text-[var(--color-muted)] font-mono truncate">
-                    {p.username ? `@${p.username}` : "no handle"} ·{" "}
-                    {formatDistanceToNowStrict(new Date(p.created_at), {
-                      addSuffix: true,
-                    })}
-                  </p>
-                </div>
-                <Link
-                  href="/admin/users?filter=pending"
-                  className="text-xs font-semibold text-[var(--color-accent)] hover:underline whitespace-nowrap"
+          <ul className="mt-4 space-y-2">
+            {pendingProfilesList.map((p) => {
+              const name = p.display_name || p.full_name || p.username;
+              const ghost = !name && !p.username;
+              return (
+                <li
+                  key={p.id}
+                  className={[
+                    "flex items-center gap-3 rounded-xl border p-3",
+                    ghost
+                      ? "border-dashed border-[var(--color-line)] bg-[var(--color-paper)]"
+                      : "border-[var(--color-line)] bg-[var(--color-paper)]",
+                  ].join(" ")}
                 >
-                  Review →
-                </Link>
-              </li>
-            ))}
+                  <span
+                    className={[
+                      "grid h-10 w-10 shrink-0 place-items-center rounded-full text-sm font-bold",
+                      ghost
+                        ? "border border-dashed border-[var(--color-muted)] text-[var(--color-muted)]"
+                        : "bg-[var(--color-blue-soft)] text-[var(--color-navy)]",
+                    ].join(" ")}
+                    aria-hidden
+                  >
+                    {ghost
+                      ? "?"
+                      : String(name ?? "??")
+                          .split(/\s+/)
+                          .slice(0, 2)
+                          .map((w: string) => w[0]?.toUpperCase() ?? "")
+                          .join("")}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p
+                      className={[
+                        "truncate text-sm font-bold",
+                        ghost ? "text-[var(--color-muted)]" : "text-[var(--color-ink)]",
+                      ].join(" ")}
+                    >
+                      {name ?? "Abandoned signup"}
+                    </p>
+                    <p className="mt-0.5 flex flex-wrap items-center gap-x-2 text-xs text-[var(--color-muted)]">
+                      {p.username ? (
+                        <span className="rounded border border-[var(--color-line)] bg-[var(--color-surface)] px-1.5 py-0.5 font-mono text-[10px]">
+                          @{p.username}
+                        </span>
+                      ) : null}
+                      {ghost ? (
+                        <span className="text-[10px] font-bold uppercase tracking-wider">
+                          never finished · safe to delete
+                        </span>
+                      ) : null}
+                      <span>
+                        {formatDistanceToNowStrict(new Date(p.created_at), {
+                          addSuffix: true,
+                        })}
+                      </span>
+                    </p>
+                  </div>
+                  <PendingProfileActions id={p.id} />
+                </li>
+              );
+            })}
           </ul>
         )}
       </section>
@@ -357,56 +433,50 @@ export default async function AdminHomePage() {
             Full analytics →
           </Link>
         </div>
-        {!recentSessions || recentSessions.length === 0 ? (
+        {visitorGroups.length === 0 ? (
           <p className="mt-3 text-sm text-[var(--color-muted)] italic">
             Nobody on the site in the last 5 minutes.
           </p>
         ) : (
-          <div className="mt-3 overflow-x-auto">
-            <table className="w-full min-w-[560px] text-xs">
-            <thead className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
-              <tr>
-                <th className="text-left py-1">Session</th>
-                <th className="text-left py-1">Path</th>
-                <th className="text-left py-1">Referrer</th>
-                <th className="text-right py-1">Last seen</th>
-                <th className="text-right py-1">User</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recentSessions.map((s) => (
-                <tr
-                  key={`${s.session_id}-${s.path}-${s.started_at}`}
-                  className="border-t border-[var(--color-line)]"
-                >
-                  <td className="py-1.5 font-mono text-[10px] text-[var(--color-muted)]">
-                    {s.session_id.slice(0, 8)}
-                  </td>
-                  <td className="py-1.5 font-mono truncate max-w-[200px]">
-                    {s.path}
-                  </td>
-                  <td className="py-1.5 truncate max-w-[140px] text-[var(--color-ink-soft)]">
-                    {refDomain(s.ref)}
-                  </td>
-                  <td className="py-1.5 text-right whitespace-nowrap">
-                    {formatDistanceToNowStrict(new Date(s.last_activity_at), {
-                      addSuffix: true,
-                    })}
-                  </td>
-                  <td className="py-1.5 text-right">
-                    {s.user_id ? (
-                      <span className="text-[var(--color-accent)] font-semibold">
-                        signed in
-                      </span>
-                    ) : (
-                      "anon"
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          </div>
+          <ul className="mt-4 space-y-2">
+            {visitorGroups.map((v) => (
+              <li
+                key={v.session_id}
+                className="flex items-center gap-3 rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-3"
+              >
+                <span
+                  className="h-2.5 w-2.5 shrink-0 rounded-full"
+                  style={{ background: dotColor(v.session_id) }}
+                  aria-hidden
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-bold text-[var(--color-ink)]">
+                    {humanizePath(v.path)}
+                  </p>
+                  <p className="mt-0.5 flex flex-wrap items-center gap-x-2 text-xs text-[var(--color-muted)]">
+                    <span className="rounded border border-[var(--color-line)] bg-[var(--color-surface)] px-1.5 py-0.5 text-[10px] font-bold">
+                      {refDomain(v.ref) === "direct" ? "came direct" : `via ${refDomain(v.ref)}`}
+                    </span>
+                    {v.pages > 1 ? <span>{v.pages} pages this visit</span> : null}
+                    <span>
+                      {formatDistanceToNowStrict(new Date(v.last_activity_at), {
+                        addSuffix: true,
+                      })}
+                    </span>
+                  </p>
+                </div>
+                {v.user_id ? (
+                  <span className="shrink-0 rounded-full bg-[var(--color-navy)] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#fdf8ea]">
+                    Signed in
+                  </span>
+                ) : (
+                  <span className="shrink-0 text-[10px] font-bold uppercase tracking-wider text-[var(--color-muted)]">
+                    Visitor
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
         )}
       </section>
     </article>
@@ -432,14 +502,20 @@ function ActionLane({
     <Link
       href={href}
       className={[
-        "block rounded-md border p-4 transition hover:border-[var(--color-accent)]",
+        "group block rounded-md border p-4 transition hover:border-[var(--color-navy)]",
         hot
           ? "border-[var(--color-accent)] bg-[var(--color-accent)]/10"
           : "border-[var(--color-line)] bg-[var(--color-surface)]",
       ].join(" ")}
     >
-      <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--color-muted)]">
+      <p className="flex items-center justify-between text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--color-muted)]">
         {kicker}
+        <span
+          aria-hidden
+          className="text-sm leading-none text-[var(--color-muted)] transition group-hover:translate-x-0.5 group-hover:text-[var(--color-navy)]"
+        >
+          →
+        </span>
       </p>
       <div className="mt-2 flex items-start justify-between gap-3">
         <div className="min-w-0">
@@ -460,6 +536,52 @@ function usd(cents: number): string {
     currency: "USD",
     maximumFractionDigits: 0,
   });
+}
+
+function titleizeSlug(slug: string): string {
+  return slug
+    .split("-")
+    .filter(Boolean)
+    .map((w) => (w[0]?.toUpperCase() ?? "") + w.slice(1))
+    .join(" ");
+}
+
+// Turn a raw path into what the visitor is actually DOING — the dashboard
+// should read like a room, not a log file.
+function humanizePath(path: string): string {
+  const clean = path.split("?")[0] || "/";
+  if (clean === "/") return "Reading the feed";
+  if (clean.startsWith("/posts/"))
+    return `Reading: ${titleizeSlug(clean.split("/")[2] ?? "a post")}`;
+  if (clean.startsWith("/case/documents/"))
+    return `In the evidence: ${titleizeSlug(clean.split("/")[3] ?? "")}`;
+  if (clean.startsWith("/case")) return "Studying the case";
+  if (clean.startsWith("/book")) return "Looking at the book";
+  if (clean.startsWith("/store")) return "In the store";
+  if (clean.startsWith("/videos")) return "Watching videos";
+  if (clean.startsWith("/services") || clean.startsWith("/case-builder"))
+    return "Checking the services";
+  if (clean.startsWith("/admin")) return "You — in the back office";
+  if (clean.startsWith("/j6")) return "On the J6 mission page";
+  const seg = clean.split("/")[1];
+  return seg ? `On ${titleizeSlug(seg)}` : clean;
+}
+
+// Flat palette dot per visitor — deterministic from the session id, so the
+// same person keeps the same color while you watch.
+const DOT_COLORS = [
+  "var(--color-navy)",
+  "var(--color-gold)",
+  "var(--color-success)",
+  "var(--color-tag-procedural)",
+  "var(--color-blue)",
+];
+function dotColor(sessionId: string): string {
+  let h = 0;
+  for (let i = 0; i < sessionId.length; i++) {
+    h = (h * 31 + sessionId.charCodeAt(i)) >>> 0;
+  }
+  return DOT_COLORS[h % DOT_COLORS.length]!;
 }
 
 function refDomain(ref: string | null | undefined): string {

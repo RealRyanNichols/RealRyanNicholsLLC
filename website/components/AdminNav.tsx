@@ -60,6 +60,7 @@ const GROUPS: AdminGroup[] = [
   {
     label: "Needs you now",
     items: [
+      { href: "/admin/inbox", label: "Inbox", sub: "Everything incoming, one queue" },
       { href: "/admin/tips?filter=pending", label: "Tip queue", sub: "Public leads to review" },
       { href: "/admin/messages?filter=new", label: "Private mail", sub: "Contact inbox" },
       { href: "/admin/submissions?filter=pending", label: "Submissions", sub: "Claimant uploads" },
@@ -70,7 +71,6 @@ const GROUPS: AdminGroup[] = [
   {
     label: "The case",
     items: [
-      { href: "/admin/attorney-brief", label: "Attorney brief", sub: "Defense prep" },
       { href: "/admin/case", label: "Case docs", sub: "Documents on file" },
       { href: "/admin/evidence/new", label: "Evidence", sub: "Lock in a tweet, article, or clip" },
       { href: "/admin/continuity", label: "Continuity", sub: "Keep it all running" },

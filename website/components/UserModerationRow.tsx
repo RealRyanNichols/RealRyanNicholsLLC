@@ -56,6 +56,32 @@ export function UserModerationRow({
   const [question, setQuestion] = useState("");
   const [note, setNote] = useState(profile.admin_notes ?? "");
 
+  // Hard delete for pending signups only — the server refuses anything with
+  // history (active/denied/banned accounts go through status changes instead).
+  async function deletePending() {
+    if (
+      !confirm(
+        "Delete this pending signup completely? The account and profile are removed for good.",
+      )
+    ) {
+      return;
+    }
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await fetch(`/api/admin/users/${profile.id}`, {
+        method: "DELETE",
+      });
+      const json = (await res.json().catch(() => ({}))) as { error?: string };
+      if (!res.ok) throw new Error(json.error ?? "Delete failed.");
+      router.refresh();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Delete failed");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function update(patch: Record<string, unknown>) {
     setBusy(true);
     setError(null);
@@ -340,6 +366,17 @@ export function UserModerationRow({
               title="Send back to pending review"
             >
               ↺ Reset to pending
+            </button>
+          ) : null}
+          {profile.status === "pending" ? (
+            <button
+              type="button"
+              disabled={busy}
+              onClick={deletePending}
+              className="rounded-md border border-[var(--color-danger)] px-3 py-1.5 text-xs font-bold text-[var(--color-danger)] transition hover:bg-[var(--color-danger)] hover:text-[var(--color-paper)] disabled:opacity-60"
+              title="Delete this abandoned signup entirely — account and profile"
+            >
+              🗑 Delete signup
             </button>
           ) : null}
           <button
