@@ -373,10 +373,10 @@ export default async function AdminHomePage() {
                   >
                     {ghost
                       ? "?"
-                      : (name ?? "??")
+                      : String(name ?? "??")
                           .split(/\s+/)
                           .slice(0, 2)
-                          .map((w) => w[0]?.toUpperCase() ?? "")
+                          .map((w: string) => w[0]?.toUpperCase() ?? "")
                           .join("")}
                   </span>
                   <div className="min-w-0 flex-1">
