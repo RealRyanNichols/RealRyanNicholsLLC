@@ -1165,18 +1165,18 @@ function DetTag({ kind }: { kind: "doc" | "account" }) {
 function Stat({ n, label, href }: { n: string; label: string; href?: string }) {
   const inner = (
     <>
-      <div className="text-2xl sm:text-3xl font-bold tracking-tight leading-none text-[var(--color-accent)] font-display tabular-nums">
+      <div className="text-3xl sm:text-[2.4rem] font-bold tracking-tight leading-none text-[var(--color-navy)] font-display tabular-nums">
         {n}
       </div>
-      <div className="mt-2 text-xs sm:text-sm font-bold text-[var(--color-ink)] leading-tight">
+      <div className="mt-2 text-[11px] sm:text-xs font-black uppercase tracking-[0.08em] text-[var(--color-support-strong)] leading-tight">
         {label}
         {href ? <span aria-hidden> →</span> : null}
       </div>
     </>
   );
-  const shell = "rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4";
+  const shell = "qa-tile p-4 sm:p-5";
   return href ? (
-    <Link href={href} className={`${shell} block transition hover:border-[var(--color-navy)]`}>
+    <Link href={href} className={`${shell} block`}>
       {inner}
     </Link>
   ) : (

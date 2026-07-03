@@ -266,6 +266,55 @@
   margin: 1.35em 0;
 }
 
+/* Quiet Authority — non-flat depth. Cards feel pressed into paper: a soft
+   warm-neutral ground shadow, a top highlight + bottom ink hairline (emboss),
+   and a gold rule that draws in on hover. No gradients, no glow. Used on the
+   case stat tiles and document cards. Matches the Figma design system. */
+.qa-tile {
+  position: relative;
+  border-radius: 12px;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  box-shadow: 0 1px 3px rgba(11, 27, 52, 0.06), 0 6px 18px rgba(11, 27, 52, 0.05);
+  transition: box-shadow 0.2s ease;
+}
+.qa-tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  pointer-events: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 -1px 0 rgba(11, 27, 52, 0.08);
+}
+.qa-tile::after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 0;
+  height: 3px;
+  border-radius: 2px;
+  background: #e1bd5b;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.qa-tile:hover {
+  box-shadow: 0 2px 4px rgba(11, 27, 52, 0.07), 0 12px 26px rgba(11, 27, 52, 0.07);
+}
+.qa-tile:hover::after {
+  transform: scaleX(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .qa-tile,
+  .qa-tile::after {
+    transition: none;
+  }
+  .qa-tile:hover::after {
+    transform: scaleX(1);
+  }
+}
+
 /* Quiet Authority button language. One solid navy button per view; every
    other action is clean type. Flat ink — no gradients, no glow, no lift.
    These rules are unlayered on purpose so they beat Tailwind utilities
