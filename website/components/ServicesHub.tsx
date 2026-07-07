@@ -207,25 +207,28 @@ export function ServicesHub() {
             className="rounded-lg border border-[#d8c89e]/50 bg-[#fdf8ea] p-4 text-[var(--color-ink)] shadow-2xl sm:p-5"
           >
             <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
-              What the page should do first
+              Proof you can click
             </p>
             <h2 className="mt-2 font-display text-3xl font-black leading-tight tracking-normal">
-              Make the visitor feel the story before you ask them to buy.
+              You&apos;re standing inside the demo.
             </h2>
+            <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+              This whole site — the feed, the searchable case archive, the live
+              traffic map, the capture, the chat you can talk to out loud — is the
+              exact system I build. Not a template. A domain I own that can&apos;t
+              be throttled off. I build that for you.
+            </p>
             <div className="mt-4 grid gap-2">
               {[
-                ["1", "Attention lands", "They see live traffic, proof, and a reason to stay."],
-                ["2", "Story opens", "They tell what happened without getting lost in a blank form."],
-                ["3", "Proof organizes", "Dates, people, records, witnesses, and missing documents become readable."],
-                ["4", "Action is obvious", "Then services, tips, support, booking, or checkout make sense."],
-              ].map(([num, title, body]) => (
+                ["Marine, builder, journalist", "Wholesale Universe founder. I build owned platforms, record systems, and lead engines that turn attention into action."],
+                ["I built this from the ground up", "1,000+ documents, a live evidence archive, AI chat, data capture — proof of what the same system does for a business."],
+                ["Own it, don't rent it", "Stop begging the algorithm. Your story, your list, your record, on a domain nobody can take."],
+              ].map(([title, body]) => (
                 <div
                   key={title}
-                  className="grid grid-cols-[2.5rem_1fr] gap-3 rounded-lg border border-[var(--color-line)] bg-white p-3"
+                  className="grid grid-cols-[1.5rem_1fr] gap-3 rounded-lg border border-[var(--color-line)] bg-white p-3"
                 >
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-accent)] text-sm font-black text-white">
-                    {num}
-                  </span>
+                  <span className="mt-1 flex h-3 w-3 items-center justify-center rounded-full bg-[var(--color-accent)]" aria-hidden />
                   <span>
                     <strong className="block text-base font-black text-[var(--color-ink)]">
                       {title}
@@ -238,18 +241,18 @@ export function ServicesHub() {
               ))}
             </div>
             <div className="rrn-tap-row mt-4">
-              <Link
-                href="/tell-your-story"
-                className="rrn-tap inline-flex rounded-lg border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-4 py-2 text-sm font-black text-[var(--color-accent)]"
-              >
-                Try the story flow
-              </Link>
               <a
                 href="#service-match"
+                className="rrn-tap inline-flex rounded-lg border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-4 py-2 text-sm font-black text-[var(--color-accent)]"
+              >
+                See what I build
+              </a>
+              <Link
+                href="/#talk"
                 className="rrn-tap inline-flex rounded-lg border border-[var(--color-line)] px-4 py-2 text-sm font-black text-[var(--color-ink)]"
               >
-                Then pick service
-              </a>
+                Talk to Ryan — tap the mic
+              </Link>
             </div>
           </div>
         </div>
