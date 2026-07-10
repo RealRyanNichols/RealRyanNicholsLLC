@@ -139,7 +139,7 @@ export function PollCard({
   const closed = st.status === "closed";
 
   return (
-    <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-5">
+    <div className="rounded-2xl border border-[var(--color-line)] border-l-4 border-l-[var(--color-gold)] bg-[var(--color-surface)] p-4 sm:p-5">
       <div className="mb-2 flex items-center justify-between gap-3">
         <p className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-navy)]">
           {kicker}
@@ -157,18 +157,33 @@ export function PollCard({
 
       {!voted && !closed ? (
         <div className="space-y-2">
+          <p className="mb-2 inline-flex items-center gap-1.5 rounded-md bg-[var(--color-gold-soft)] px-2 py-1 text-[11px] font-black uppercase tracking-wider text-[var(--color-support-strong)]">
+            Tap your answer to vote
+          </p>
           {opts.map((label, idx) => (
             <button
               key={idx}
               type="button"
               onClick={() => vote(idx)}
-              className="block w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] px-4 py-2.5 text-left text-sm font-semibold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+              className="group flex w-full items-center gap-3 rounded-xl border-2 border-[var(--color-line)] bg-[var(--color-paper)] px-4 py-3 text-left text-sm font-bold text-[var(--color-ink)] shadow-sm transition hover:border-[var(--color-gold)] hover:bg-[var(--color-gold-soft)] active:scale-[0.99]"
             >
-              {label}
+              <span
+                aria-hidden
+                className="grid h-5 w-5 shrink-0 place-items-center rounded-full border-2 border-[var(--color-gold)] transition group-hover:bg-[var(--color-gold)]"
+              >
+                <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-gold)] transition group-hover:bg-[var(--color-paper)]" />
+              </span>
+              <span className="min-w-0 flex-1">{label}</span>
+              <span
+                aria-hidden
+                className="shrink-0 text-base font-black text-[var(--color-support-strong)] opacity-50 transition group-hover:translate-x-0.5 group-hover:opacity-100"
+              >
+                →
+              </span>
             </button>
           ))}
           <p className="pt-1 text-xs text-[var(--color-muted)]">
-            One tap. No signup to vote.
+            One tap. Free and anonymous. No signup to vote.
           </p>
         </div>
       ) : null}
@@ -183,11 +198,11 @@ export function PollCard({
               <div key={idx} className="relative overflow-hidden rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)]">
                 <div
                   aria-hidden
-                  className="absolute inset-y-0 left-0 bg-[var(--color-accent-soft)] transition-[width] duration-700"
+                  className="absolute inset-y-0 left-0 bg-[var(--color-gold-soft)] transition-[width] duration-700"
                   style={{ width: `${pct}%` }}
                 />
                 <div className="relative flex items-center justify-between gap-3 px-4 py-2.5">
-                  <span className={`text-sm ${mine ? "font-bold text-[var(--color-accent)]" : "font-semibold text-[var(--color-ink-soft)]"}`}>
+                  <span className={`text-sm ${mine ? "font-bold text-[var(--color-support-strong)]" : "font-semibold text-[var(--color-ink-soft)]"}`}>
                     {label}
                     {mine ? " ✓" : ""}
                   </span>
@@ -213,11 +228,11 @@ export function PollCard({
                 className="relative overflow-hidden rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)]"
               >
                 <div
-                  className="absolute inset-y-0 left-0 bg-[var(--color-accent-soft)] blur-[6px]"
+                  className="absolute inset-y-0 left-0 bg-[var(--color-gold-soft)] blur-[6px]"
                   style={{ width: `${28 + ((idx * 37) % 45)}%` }}
                 />
                 <div className="relative flex items-center justify-between gap-3 px-4 py-2.5">
-                  <span className={`text-sm ${st.mine === idx ? "font-bold text-[var(--color-accent)]" : "font-semibold text-[var(--color-ink-soft)]"}`}>
+                  <span className={`text-sm ${st.mine === idx ? "font-bold text-[var(--color-support-strong)]" : "font-semibold text-[var(--color-ink-soft)]"}`}>
                     {label}
                     {st.mine === idx ? " ✓ your vote" : ""}
                   </span>
