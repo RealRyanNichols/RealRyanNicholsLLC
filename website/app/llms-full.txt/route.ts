@@ -43,8 +43,9 @@ Structure of ${SITE.url}/case:
   - ${SITE.url}/case/events/<slug>
 
 Anchor facts (verified): pardoned January 20, 2025; dismissed with
-prejudice; sentence was 63 months plus $200,000 ordered to be paid;
-detained 1,463 days; case number 1:21-cr-00117.
+prejudice; sentence was 63 months plus a $200,000 fine — the largest
+fine imposed in any January 6 case; detained 1,463 days; case number
+1:21-cr-00117.
 
 ## Latest 20 posts
 

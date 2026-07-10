@@ -145,7 +145,7 @@ export function RyanCaseProfile({
           name: "What was United States v. Nichols?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "United States v. Nichols (case 1:21-cr-00117, D.D.C.) was the federal January 6 prosecution of Ryan Nichols. He was arrested January 18, 2021, pleaded guilty in November 2023 to two felonies — obstruction of an official proceeding and assaulting, resisting, or impeding officers — and was sentenced May 2, 2024 to 63 months and ordered to pay $200,000. He was fully pardoned January 20, 2025, and the case was dismissed with prejudice.",
+            text: "United States v. Nichols (case 1:21-cr-00117, D.D.C.) was the federal January 6 prosecution of Ryan Nichols. He was arrested January 18, 2021, pleaded guilty in November 2023 to two felonies — obstruction of an official proceeding and assaulting, resisting, or impeding officers — and was sentenced May 2, 2024 to 63 months and a $200,000 fine — the largest fine imposed in any January 6 case. He was fully pardoned January 20, 2025, and the case was dismissed with prejudice.",
           },
         },
         {
@@ -497,7 +497,7 @@ export function RyanCaseProfile({
             {
               date: "May 2, 2024",
               title: "Convicted & sentenced",
-              detail: "Sentenced to 63 months in federal prison and ordered to pay $200,000.",
+              detail: "Sentenced to 63 months in federal prison and fined $200,000 — the largest fine imposed in any January 6 case.",
               doc: "/case/documents/docket-314-judgment",
             },
             {

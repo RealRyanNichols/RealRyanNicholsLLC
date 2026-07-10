@@ -29,9 +29,9 @@ export async function GET() {
   hurricanes.
 - Charged after January 6, 2021 (United States v. Nichols, case
   1:21-cr-00117, D.D.C.). Detained 1,463 days, including extended pretrial
-  solitary confinement in the DC jail. Sentenced to 63 months and ordered
-  to pay $200,000. Pardoned January 20, 2025; the case was dismissed with
-  prejudice.
+  solitary confinement in the DC jail. Sentenced to 63 months and fined
+  $200,000 — the largest fine imposed in any January 6 case. Pardoned
+  January 20, 2025; the case was dismissed with prejudice.
 - Now an independent journalist documenting his own case file in public and
   reporting on due-process and government-accountability stories.
 

@@ -14,9 +14,9 @@ const SituationRoom = dynamic(
 );
 
 // Bump the version to re-show the pitch to people who dismissed an older one.
-// v2: the $17.76 launch-sale message. Dismissing hides ONLY the book pitch —
-// the live-stats bar itself stays.
-const BOOK_DISMISS_KEY = "rrn-book-banner-v2";
+// v3: the launch sale reopened through Labor Day 2026. Dismissing hides ONLY
+// the book pitch — the live-stats bar itself stays.
+const BOOK_DISMISS_KEY = "rrn-book-banner-v3";
 
 type Totals = {
   live_now?: number;

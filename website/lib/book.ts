@@ -115,7 +115,9 @@ export function tierPriceUsd(tier: BookTier): number {
 // FOMO countdown: the deadline for the $17.76 launch price. Set this to your
 // real deadline (or null to turn the countdown off everywhere). When it
 // passes, saleActive() flips and the price reverts to list automatically.
-export const SALE_ENDS_AT: string | null = "2026-06-20T23:59:59-05:00";
+// Current window: through Labor Day 2026 (Mon Sep 7) — "launch price ends
+// Labor Day" is the marketing hook; list price $29.99 resumes after.
+export const SALE_ENDS_AT: string | null = "2026-09-07T23:59:59-05:00";
 
 // Why the pre-order costs what it does. The framing is both/and: you are
 // backing the work AND getting exclusive founding access before Amazon.
