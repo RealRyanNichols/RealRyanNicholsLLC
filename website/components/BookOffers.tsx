@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BOOK_TIERS, formatUsd, tierSale } from "@/lib/book";
+import { BOOK_TIERS, formatUsd, tierPriceUsd, tierSale } from "@/lib/book";
 import { BookBuyButton } from "./BookBuyButton";
 
 function Check() {
@@ -44,7 +44,7 @@ export function BookOffers({
             ? "bg-[var(--color-accent)] text-[var(--color-paper)] hover:bg-[var(--color-accent-strong)]"
             : "border-2 border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-paper)]",
         ].join(" ");
-        const ctaText = `${ctaLabel} · ${formatUsd(tier.priceUsd)}`;
+        const ctaText = `${ctaLabel} · ${formatUsd(tierPriceUsd(tier))}`;
         return (
           <div
             key={tier.slug}
@@ -84,7 +84,7 @@ export function BookOffers({
                 </span>
               ) : null}
               <span className="font-display text-4xl font-black tabular-nums text-[var(--color-ink)]">
-                {formatUsd(tier.priceUsd)}
+                {formatUsd(tierPriceUsd(tier))}
               </span>
               {sale.onSale ? (
                 <span className="rounded bg-[var(--color-accent-soft)] px-1.5 py-0.5 text-[11px] font-black uppercase tracking-wide text-[var(--color-accent)]">

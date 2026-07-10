@@ -361,7 +361,7 @@ export default async function CasePage({
                     facilities are already in the header above this card, so the
                     card carries the case-file facts and the link — not a re-telling. */}
                 <p className="mt-2 text-xs sm:text-sm font-medium text-[var(--color-muted)]">
-                  Case No. {ryan.case_number ?? "1:21-cr-117"}
+                  Case No. {ryan.case_number ?? "1:21-cr-00117"}
                   {" · "}
                   {ryan.court ?? "U.S. District Court for the District of Columbia"}
                   {" · "}

@@ -34,7 +34,7 @@ Structure of ${SITE.url}/case:
 - Witnesses: ${SITE.url}/case/witnesses — corroborating witnesses on record
 - Timeline: ${SITE.url}/case?view=timeline — every event, dated and sourced
 - Documents: ${SITE.url}/case?view=documents — ${totals?.documents?.toLocaleString("en-US") ?? "the"} public documents (court filings, government records, grievance forms, exhibits; each carries a classification label: FACT / RYAN STATEMENT / NEEDS AUTHENTICATION)
-- Grievances: ${SITE.url}/case?view=grievances — ${totals?.grievances?.toLocaleString("en-US") ?? "398"} grievance forms filed from inside the DC jail
+- Grievances: ${SITE.url}/case?view=grievances — ${totals?.grievances?.toLocaleString("en-US") ?? "34"} documented grievance patterns, drawn from the ${totals?.ryanFiledGrievances?.toLocaleString("en-US") ?? "267"} grievance forms Ryan filed from inside the DC jail
 - People: ${SITE.url}/case?view=people — ${totals?.people?.toLocaleString("en-US") ?? "the"} people of record, including ${totals?.corroborators?.toLocaleString("en-US") ?? "22"} corroborating detainees and January 6 defendants
 - Individual entities resolve as:
   - ${SITE.url}/case/people/<slug>
@@ -43,8 +43,8 @@ Structure of ${SITE.url}/case:
   - ${SITE.url}/case/events/<slug>
 
 Anchor facts (verified): pardoned January 20, 2025; dismissed with
-prejudice; sentence was 63 months + $200,000 restitution; detained 1,463
-days; case number 1:21-cr-00117.
+prejudice; sentence was 63 months plus $200,000 ordered to be paid;
+detained 1,463 days; case number 1:21-cr-00117.
 
 ## Latest 20 posts
 

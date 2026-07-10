@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SITE } from "@/lib/site";
+import { SignupForm } from "@/components/SignupForm";
 
 const COLUMNS: { heading: string; links: { href: string; label: string }[] }[] = [
   {
@@ -41,6 +42,19 @@ export function Footer() {
   return (
     <footer className="mt-16 border-t border-[var(--color-line)]">
       <div className="mx-auto max-w-5xl px-4 py-10 text-sm text-[var(--color-muted)]">
+        {/* Last-chance capture: every page ends with a way onto the list. */}
+        <div className="mb-10 grid items-center gap-4 sm:grid-cols-[1fr_1.2fr]">
+          <div>
+            <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--color-ink-soft)]">
+              No algorithm
+            </p>
+            <p className="mt-1 font-semibold text-[var(--color-ink-soft)]">
+              Get the next post by email or text — straight from Ryan.
+            </p>
+          </div>
+          <SignupForm emailEnabled={SITE.emailCaptureEnabled} />
+        </div>
+
         <div className="grid gap-8 sm:grid-cols-3">
           {COLUMNS.map((col) => (
             <nav key={col.heading} aria-label={col.heading}>

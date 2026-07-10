@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BOOK, BOOK_TIERS, formatUsd, tierSale } from "@/lib/book";
+import { BOOK, BOOK_TIERS, formatUsd, tierPriceUsd, tierSale } from "@/lib/book";
 
 /**
  * Reusable book pre-order CTA, synced to lib/book.ts (price, sale, Founding cap).
@@ -12,7 +12,7 @@ export function BookCtaBand({ className = "" }: { className?: string }) {
     (t) => t.slug === "founding_supporter_edition",
   );
   const sale = digital ? tierSale(digital) : { onSale: false, percentOff: 0 };
-  const price = digital ? formatUsd(digital.priceUsd) : "$17.76";
+  const price = digital ? formatUsd(tierPriceUsd(digital)) : "$29.99";
   const list = digital?.listPriceUsd ? formatUsd(digital.listPriceUsd) : null;
 
   return (

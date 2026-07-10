@@ -45,7 +45,7 @@ type Rally = {
   countries_reached: number;
 };
 
-type Raised = { raised_cents: number; supporters: number; charges: number; configured: boolean };
+type Raised = { points: number; configured: boolean };
 type Recent = { at: string; kind: string; label: string };
 type Milestone = { points: number; title: string; reward: string };
 
@@ -283,12 +283,13 @@ export function SituationRoom({
     }
   }, []);
 
-  // Money = Stripe (accurate) when available, else the DB snapshot.
-  const raisedCents =
-    raised?.configured && raised.raised_cents > 0
-      ? raised.raised_cents
-      : (r?.money_points ?? 0) * 100;
-  const moneyPts = Math.floor(raisedCents / 100);
+  // Money points = Stripe-derived (accurate) when available, else the DB
+  // snapshot. The endpoint only ships the points figure now — the raw revenue
+  // breakdown stays private.
+  const moneyPts =
+    raised?.configured && raised.points > 0
+      ? raised.points
+      : (r?.money_points ?? 0);
   const goal = r?.goal_points ?? 5000;
   const total = moneyPts + (r?.share_points ?? 0) + (r?.signup_points ?? 0);
   const pct = goal > 0 ? Math.min(100, Math.round((total / goal) * 100)) : 0;

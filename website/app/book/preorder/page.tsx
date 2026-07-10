@@ -7,7 +7,7 @@ import { BookDisclaimer } from "@/components/BookDisclaimer";
 import { BookCountdown } from "@/components/BookCountdown";
 import { BookStickyBuyBar } from "@/components/BookStickyBuyBar";
 import { BookExitIntent } from "@/components/BookExitIntent";
-import { BOOK, WHY_PRICE, BOOK_TIERS, SALE_ENDS_AT, formatUsd } from "@/lib/book";
+import { BOOK, WHY_PRICE, BOOK_TIERS, SALE_ENDS_AT, formatUsd, tierPriceUsd } from "@/lib/book";
 import { SITE } from "@/lib/site";
 
 const title = "Pre-order Fighting Shadows | Ryan Nichols";
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 
 export default function BookPreorderPage() {
   const digital = BOOK_TIERS.find((t) => t.slug === "early_release_digital");
-  const priceLabel = digital ? formatUsd(digital.priceUsd) : "$17.76";
+  const priceLabel = digital ? formatUsd(tierPriceUsd(digital)) : "$29.99";
   const listLabel = digital?.listPriceUsd
     ? formatUsd(digital.listPriceUsd)
     : undefined;

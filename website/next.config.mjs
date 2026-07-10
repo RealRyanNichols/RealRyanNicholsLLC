@@ -34,6 +34,18 @@ const nextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      // Canonical host is the apex. Without this, www serves a full duplicate
+      // of every page and search engines split ranking signal between the two.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.realryannichols.com" }],
+        destination: "https://realryannichols.com/:path*",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

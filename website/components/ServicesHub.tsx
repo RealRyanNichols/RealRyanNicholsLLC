@@ -69,6 +69,7 @@ const SERVICES: Service[] = [
       "Fast site structure around your actual work.",
       "Feed, service CTA, support/contact path, and basic analytics.",
       "30-day handoff so you can keep posting.",
+      "Founder-rate window: the same base build is $250 at /build while early slots last.",
     ],
     proof: "Core offer",
   },

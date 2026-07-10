@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { DECORATIONS, OPERATIONS, RECOGNITION } from "@/lib/bio";
+import { pageMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "About Ryan Nichols",
   description:
     "United States Marine Corps veteran. Search and Rescue specialist. Founder of Wholesale Universe. Father. January 6 defendant pardoned January 20, 2025. Charges dismissed with prejudice.",
-};
+  path: "/about",
+});
 
 function Stat({ n, label, sub }: { n: string; label: string; sub?: string }) {
   return (

@@ -1,13 +1,12 @@
-import type { Metadata } from "next";
 import Link from "next/link";
-import { SITE } from "@/lib/site";
+import { pageMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "How the numbers work",
   description:
     "Exactly how reach, engagement, shares, and comments are counted on RealRyanNichols.com — what each number includes, what it excludes, and why.",
-  alternates: { canonical: `${SITE.url}/about/numbers` },
-};
+  path: "/about/numbers",
+});
 
 function Q({ q, children }: { q: string; children: React.ReactNode }) {
   return (

@@ -1,16 +1,15 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { GuidedHelpDesk } from "@/components/GuidedHelpDesk";
 import { PrivateMessageBox } from "@/components/PrivateMessageBox";
-import { SITE } from "@/lib/site";
+import { pageMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Contact Ryan Privately",
   description:
     "Send Ryan Nichols a private message about records, evidence, case organization, public corruption, tips, or sensitive follow-up.",
-  alternates: { canonical: `${SITE.url}/contact` },
-};
+  path: "/contact",
+});
 
 const useCases = [
   {

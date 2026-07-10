@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
 import Link from "next/link";
+import { pageMetadata } from "@/lib/page-metadata";
 import { getCommentCount, getPublishedPosts } from "@/lib/posts";
 import { PostCard } from "@/components/PostCard";
 import { LiveNowBanner } from "@/components/LiveNowBanner";
@@ -12,12 +12,12 @@ import { SITE } from "@/lib/site";
 
 export const revalidate = 60;
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Videos",
   description:
     "Watch Ryan Nichols videos on the site he owns. No social media gatekeeping, no algorithm between you and the record.",
-  alternates: { canonical: "/videos" },
-};
+  path: "/videos",
+});
 
 const KNOWN_CHANNELS = new Set<string>(VIDEO_CHANNELS);
 

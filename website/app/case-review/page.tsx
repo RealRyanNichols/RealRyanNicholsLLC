@@ -1,15 +1,14 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { GuidedHelpDesk } from "@/components/GuidedHelpDesk";
-import { SITE } from "@/lib/site";
+import { pageMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Case Review Intake",
   description:
     "Use the guided private intake to organize facts, evidence, questions, privacy needs, and next steps before asking Ryan to review the record.",
-  alternates: { canonical: `${SITE.url}/case-review` },
-};
+  path: "/case-review",
+});
 
 const routes = [
   {

@@ -65,7 +65,6 @@ const GROUPS: AdminGroup[] = [
       { href: "/admin/messages?filter=new", label: "Private mail", sub: "Contact inbox" },
       { href: "/admin/submissions?filter=pending", label: "Submissions", sub: "Claimant uploads" },
       { href: "/admin/claims?filter=pending", label: "J6 claims", sub: "Profile claims" },
-      { href: "/admin/review", label: "Review queue", sub: "Classify & approve" },
     ],
   },
   {
@@ -73,7 +72,6 @@ const GROUPS: AdminGroup[] = [
     items: [
       { href: "/admin/case", label: "Case docs", sub: "Documents on file" },
       { href: "/admin/evidence/new", label: "Evidence", sub: "Lock in a tweet, article, or clip" },
-      { href: "/admin/continuity", label: "Continuity", sub: "Keep it all running" },
       { href: "/admin/deadman", label: "Deadman switch", sub: "Emergency release" },
     ],
   },

@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
 import Link from "next/link";
+import { pageMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Start Here",
   description:
     "New here? This site does four jobs: preserve Ryan Nichols's record, help others document their own stories, publish evidence-driven investigations, and sell what he builds. Pick the door that fits why you came.",
-  alternates: { canonical: "/start-here" },
-};
+  path: "/start-here",
+});
 
 const JOBS = [
   {

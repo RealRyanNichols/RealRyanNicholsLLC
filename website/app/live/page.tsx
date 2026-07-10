@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
 import Link from "next/link";
+import { pageMetadata } from "@/lib/page-metadata";
 import { LivePlayer } from "@/components/LivePlayer";
 import { SignupForm } from "@/components/SignupForm";
 import { ShareButton } from "@/components/ShareButton";
@@ -10,12 +10,12 @@ import { SITE } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Live",
   description:
     "Watch Ryan Nichols live on the site he owns. No algorithm, no platform middleman, no social media gatekeeping.",
-  alternates: { canonical: "/live" },
-};
+  path: "/live",
+});
 
 export default async function LivePage() {
   const stream = await getActiveLiveStream();

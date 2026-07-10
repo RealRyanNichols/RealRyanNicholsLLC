@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
 import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
-import { BOOK_TIERS, formatUsd } from "@/lib/book";
+import { BOOK_TIERS, formatUsd, tierPriceUsd, tierSale } from "@/lib/book";
 
 // The full board only loads when someone opens it (it pulls in the world map).
 const SituationRoom = dynamic(
@@ -98,7 +98,8 @@ export function HeaderStatusStrip() {
     !pathname.startsWith("/admin");
 
   const digital = BOOK_TIERS.find((x) => x.slug === "early_release_digital");
-  const priceLabel = digital ? formatUsd(digital.priceUsd) : "$17.76";
+  const priceLabel = digital ? formatUsd(tierPriceUsd(digital)) : "$29.99";
+  const onSale = digital ? tierSale(digital).onSale : false;
 
   return (
     <>
@@ -145,7 +146,8 @@ export function HeaderStatusStrip() {
                     Fighting Shadows {priceLabel} →
                   </span>
                   <span className="hidden sm:inline">
-                    Fighting Shadows — {priceLabel} launch. Get it →
+                    Fighting Shadows — {priceLabel}
+                    {onSale ? " launch" : ""}. Get it →
                   </span>
                 </Link>
                 <button

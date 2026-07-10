@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { requireStripe } from "@/lib/stripe";
 import { recordDonationFromSession } from "@/lib/donations";
 import { PurchaseTracker } from "@/components/PurchaseTracker";
+import { SignupForm } from "@/components/SignupForm";
+import { SITE } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -75,6 +77,10 @@ export default async function SuccessPage({
     }
   }
 
+  const boughtBook = lineItems.some((li) =>
+    /fighting shadows|book/i.test(li.description),
+  );
+
   return (
     <article className="mx-auto max-w-xl px-4 py-16 text-center">
       {amount > 0 ? <PurchaseTracker amount={amount / 100} kind="order" /> : null}
@@ -104,6 +110,50 @@ export default async function SuccessPage({
           </div>
         </div>
       ) : null}
+
+      {/* A buyer is the warmest contact the site ever sees — capture the
+          follow-up channel while they're here instead of dead-ending. */}
+      <div className="mt-8 text-left">
+        <p className="mb-3 text-sm font-bold text-[var(--color-ink)]">
+          Get what I publish next — straight to you, no algorithm.
+        </p>
+        <SignupForm emailEnabled={SITE.emailCaptureEnabled} />
+      </div>
+
+      {boughtBook ? (
+        <div className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 text-left">
+          <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--color-accent)]">
+            While you wait for the book
+          </p>
+          <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+            The case archive behind it is already public — every document,
+            grievance, and timeline entry, free to read.
+          </p>
+          <Link
+            href="/case"
+            className="mt-3 inline-block font-semibold text-[var(--color-accent)] underline underline-offset-4"
+          >
+            Open the case archive →
+          </Link>
+        </div>
+      ) : (
+        <div className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 text-left">
+          <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--color-accent)]">
+            One more thing
+          </p>
+          <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+            Fighting Shadows — the full first-person account behind this site.
+            Early access is open now.
+          </p>
+          <Link
+            href="/book/preorder"
+            className="mt-3 inline-block font-semibold text-[var(--color-accent)] underline underline-offset-4"
+          >
+            Get the book →
+          </Link>
+        </div>
+      )}
+
       <Link
         href="/"
         className="inline-block mt-8 text-[var(--color-accent)] font-semibold underline underline-offset-4"

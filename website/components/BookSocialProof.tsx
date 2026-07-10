@@ -1,5 +1,5 @@
 import { getBookStats } from "@/lib/book-stats";
-import { BOOK_TIERS, formatUsd } from "@/lib/book";
+import { BOOK_TIERS, formatUsd, tierPriceUsd } from "@/lib/book";
 
 type Tone = "light" | "dark";
 
@@ -79,7 +79,7 @@ export async function BookSocialProof({
       ? Math.min(100, Math.round((s.foundingClaimed / s.foundingLimit) * 100))
       : 0;
   const digital = BOOK_TIERS.find((t) => t.slug === "early_release_digital");
-  const launchPrice = digital ? formatUsd(digital.priceUsd) : "$17.76";
+  const launchPrice = digital ? formatUsd(tierPriceUsd(digital)) : "$29.99";
 
   return (
     <section

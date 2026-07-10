@@ -1,17 +1,17 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { SITE } from "@/lib/site";
+import { pageMetadata } from "@/lib/page-metadata";
 import { StoryProtectionDemo } from "@/components/StoryProtectionDemo";
 
 export const revalidate = 300;
 
-export const metadata: Metadata = {
-  title: "Store | Case Help, Services, and Support",
+export const metadata = pageMetadata({
+  title: "Store | Case Help, Tools, and Services",
   description:
-    "Hire Ryan Nichols for focused review, evidence organization, public-records help, owned-site services, and direct support for the work.",
-  alternates: { canonical: `${SITE.url}/store` },
-};
+    "Hire Ryan Nichols for focused case review, evidence organization, public-records help, and owned-site builds. Digital tools and services, delivered.",
+  path: "/store",
+});
 
 type Product = {
   slug: string;

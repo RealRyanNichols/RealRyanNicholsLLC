@@ -86,19 +86,35 @@ export function formatUsd(n: number): string {
   return Number.isInteger(n) ? `$${n}` : `$${n.toFixed(2)}`;
 }
 
-/** Sale info for a tier, if it carries a higher struck-through list price. */
+/** Is the launch-sale window still open? SALE_ENDS_AT is the ONE switch. */
+export function saleActive(): boolean {
+  return !!SALE_ENDS_AT && new Date(SALE_ENDS_AT).getTime() > Date.now();
+}
+
+/** Sale info for a tier — the discount only exists while the window is open.
+ * Before this gate, the countdown expired but the badge, strikethrough, and
+ * the CHARGED price all kept running: a false-urgency trap and ~$12/sale
+ * left on the table. Badge, strikethrough, and charge now share this truth. */
 export function tierSale(tier: BookTier): { onSale: boolean; percentOff: number } {
   const list = tier.listPriceUsd;
-  const onSale = typeof list === "number" && list > tier.priceUsd;
+  const onSale = saleActive() && typeof list === "number" && list > tier.priceUsd;
   return {
     onSale,
-    percentOff: onSale ? Math.round((1 - tier.priceUsd / list) * 100) : 0,
+    percentOff: onSale && typeof list === "number" ? Math.round((1 - tier.priceUsd / list) * 100) : 0,
   };
 }
 
+/** The price actually in force right now: the sale price while the window is
+ * open, the list price after it closes. EVERY display and EVERY charge must
+ * go through this — never read tier.priceUsd directly for money. */
+export function tierPriceUsd(tier: BookTier): number {
+  if (tierSale(tier).onSale) return tier.priceUsd;
+  return typeof tier.listPriceUsd === "number" ? tier.listPriceUsd : tier.priceUsd;
+}
+
 // FOMO countdown: the deadline for the $17.76 launch price. Set this to your
-// real deadline (or null to turn the countdown off everywhere). Defaulted two
-// weeks out — change it to whatever you want the launch window to be.
+// real deadline (or null to turn the countdown off everywhere). When it
+// passes, saleActive() flips and the price reverts to list automatically.
 export const SALE_ENDS_AT: string | null = "2026-06-20T23:59:59-05:00";
 
 // Why the pre-order costs what it does. The framing is both/and: you are
@@ -202,7 +218,7 @@ export const BOOK_FAQ: { q: string; a: string }[] = [
   },
   {
     q: "What about refunds?",
-    a: "Pre-order terms and the refund policy will be posted clearly before any charge is finalized. The intent is simple: this should feel safe, not risky.",
+    a: "Full refund anytime before your edition ships — email ryan@realryannichols.com and it's done. This should feel safe, not risky.",
   },
   {
     q: "What formats are there?",

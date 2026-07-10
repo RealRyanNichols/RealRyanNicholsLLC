@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
 
-const FALLBACK_URL = "https://www.realryannichols.com/posts/ive-never-asked-for-help-im-asking-now";
-const SHARE_TEXT = "I've never asked for help before. I'm asking now.";
+const FALLBACK_URL = "https://realryannichols.com/";
+const SHARE_TEXT = "Read this. Check the receipts yourself.";
 
-// Interactive "spread it" row — for people who can't give but can share, which
-// helps just as much. Uses the live page URL so it works on any post.
+// Interactive "spread it" row. Sharing IS the ask — the site sells, it does
+// not solicit. Uses the live page URL so it works on any post.
 export function ShareRow() {
   const [url, setUrl] = useState(FALLBACK_URL);
   const [copied, setCopied] = useState(false);
@@ -36,7 +36,7 @@ export function ShareRow() {
   return (
     <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-5">
       <p className="text-sm font-bold text-[var(--color-ink)]">
-        Can&apos;t give right now? Sharing this helps just as much.
+        Sharing this is the biggest help. Put it in front of one more person.
       </p>
       <div className="mt-3 grid grid-cols-3 gap-2">
         <a href={xHref} target="_blank" rel="noopener noreferrer" onClick={() => trackEvent("share_x", {})} className={btn}>

@@ -224,7 +224,7 @@ export default async function SalvagedDojRecordPage({
             type="search"
             name="q"
             defaultValue={q ?? ""}
-            placeholder="Search by name, case number, or location… (e.g. Nichols, 1:21-cr-117, Texas)"
+            placeholder="Search by name, case number, or location… (e.g. Nichols, 1:21-cr-00117, Texas)"
             className="flex-1 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-3 text-base focus:outline-none focus:border-[var(--color-accent)]"
           />
           <button

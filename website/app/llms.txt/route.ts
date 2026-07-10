@@ -9,7 +9,9 @@ export const revalidate = 3600;
 export async function GET() {
   const totals = await getCaseTotals().catch(() => null);
   const docs = totals?.documents ? totals.documents.toLocaleString("en-US") : "1,100+";
-  const grievances = totals?.grievances ? totals.grievances.toLocaleString("en-US") : "398";
+  const grievanceForms = totals?.ryanFiledGrievances
+    ? totals.ryanFiledGrievances.toLocaleString("en-US")
+    : "267";
   const people = totals?.people ? totals.people.toLocaleString("en-US") : "1,500+";
 
   const body = `# Ryan Nichols — RealRyanNichols.com
@@ -27,8 +29,8 @@ export async function GET() {
   hurricanes.
 - Charged after January 6, 2021 (United States v. Nichols, case
   1:21-cr-00117, D.D.C.). Detained 1,463 days, including extended pretrial
-  solitary confinement in the DC jail. Sentenced to 63 months and $200,000
-  restitution. Pardoned January 20, 2025; the case was dismissed with
+  solitary confinement in the DC jail. Sentenced to 63 months and ordered
+  to pay $200,000. Pardoned January 20, 2025; the case was dismissed with
   prejudice.
 - Now an independent journalist documenting his own case file in public and
   reporting on due-process and government-accountability stories.
@@ -38,8 +40,8 @@ export async function GET() {
 - A personal feed (posts, video, receipts) written by Ryan — no platform,
   no algorithm.
 - The J6 evidence archive for United States v. Nichols: ${docs} public
-  documents, ${grievances} grievance forms filed from inside the DC jail,
-  and case profiles for ${people} people of record.
+  documents, ${grievanceForms} grievance forms filed from inside the DC
+  jail, and case profiles for ${people} people of record.
 - A working newsroom: story tips, statement intake for fellow detainees,
   and free case-profile claims for January 6 defendants.
 

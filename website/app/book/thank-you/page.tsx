@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BOOK, BOOK_TIERS, formatUsd, tierSale, type BookTierSlug } from "@/lib/book";
+import { BOOK, BOOK_TIERS, formatUsd, tierPriceUsd, tierSale, type BookTierSlug } from "@/lib/book";
 import { SITE } from "@/lib/site";
 import { BookBuyButton } from "@/components/BookBuyButton";
 import { BookShare } from "@/components/BookShare";
@@ -177,12 +177,12 @@ export default async function BookThankYouPage({
                 </span>
               ) : null}
               <span className="font-display text-3xl font-black tabular-nums text-[var(--color-ink)]">
-                {formatUsd(upsell.priceUsd)}
+                {formatUsd(tierPriceUsd(upsell))}
               </span>
             </div>
             <BookBuyButton
               slug={upsell.slug}
-              label={`Add it · ${formatUsd(upsell.priceUsd)}`}
+              label={`Add it · ${formatUsd(tierPriceUsd(upsell))}`}
               className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--color-accent)] px-5 py-3 text-sm font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)] disabled:opacity-60"
             />
           </div>

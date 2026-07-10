@@ -4,14 +4,14 @@ import { requireStripe } from "@/lib/stripe";
 
 export const runtime = "nodejs";
 
-// The accurate "raised" number — straight from Stripe (the source of truth),
-// not the DB tables (which only capture some payment types). Sums all
-// succeeded charges minus refunds, counts distinct supporters, and caches the
-// result in-module for 10 minutes so we never hammer the API on a busy board.
+// Rally-points feed for the Situation Room board. Deliberately returns ONLY
+// the derived points figure ($1 = 1 point — the same number the public board
+// already displays), never the raw revenue breakdown. The old shape exposed
+// exact gross cents, distinct-buyer count, and charge count to anyone who
+// curled the endpoint — a financial-privacy leak with no consumer for the
+// extra fields. Raw aggregates stay in Stripe and the admin dashboards.
 type RaisedData = {
-  raised_cents: number;
-  supporters: number;
-  charges: number;
+  points: number;
   configured: boolean;
 };
 
@@ -20,7 +20,7 @@ const TTL_MS = 10 * 60 * 1000;
 
 export async function GET() {
   if (!process.env.STRIPE_SECRET_KEY) {
-    return NextResponse.json({ raised_cents: 0, supporters: 0, charges: 0, configured: false });
+    return NextResponse.json({ points: 0, configured: false });
   }
   if (cache && Date.now() - cache.at < TTL_MS) {
     return NextResponse.json(cache.data, {
@@ -30,8 +30,6 @@ export async function GET() {
   try {
     const stripe = requireStripe();
     let raised = 0;
-    let charges = 0;
-    const supporters = new Set<string>();
     let startingAfter: string | undefined;
     // Paginate succeeded charges (cap at 20 pages = 2,000 charges).
     for (let i = 0; i < 20; i += 1) {
@@ -41,18 +39,13 @@ export async function GET() {
       for (const ch of page.data) {
         if (ch.status === "succeeded" && ch.paid) {
           raised += (ch.amount ?? 0) - (ch.amount_refunded ?? 0);
-          charges += 1;
-          const cust = typeof ch.customer === "string" ? ch.customer : ch.customer?.id;
-          supporters.add(cust || ch.id);
         }
       }
       if (!page.has_more || page.data.length === 0) break;
       startingAfter = page.data[page.data.length - 1]?.id;
     }
     const data: RaisedData = {
-      raised_cents: raised,
-      supporters: supporters.size,
-      charges,
+      points: Math.max(0, Math.floor(raised / 100)),
       configured: true,
     };
     cache = { at: Date.now(), data };
@@ -61,6 +54,6 @@ export async function GET() {
     });
   } catch {
     // Never break the board — fall back to "unknown" and let it use the DB value.
-    return NextResponse.json({ raised_cents: 0, supporters: 0, charges: 0, configured: false });
+    return NextResponse.json({ points: 0, configured: false });
   }
 }

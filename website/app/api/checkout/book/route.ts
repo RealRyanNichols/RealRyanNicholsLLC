@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireStripe } from "@/lib/stripe";
 import { SITE } from "@/lib/site";
-import { BOOK, BOOK_TIERS, type BookTierSlug } from "@/lib/book";
+import { BOOK, BOOK_TIERS, tierPriceUsd, type BookTierSlug } from "@/lib/book";
 
 export const runtime = "nodejs";
 
@@ -53,8 +53,9 @@ export async function POST(request: Request) {
           quantity: 1,
           price_data: {
             currency: "usd",
-            // Math.round guards against float drift (17.76 * 100 = 1776.0000002).
-            unit_amount: Math.round(tier.priceUsd * 100),
+            // tierPriceUsd is the enforced price: sale while the window is
+            // open, list after. Math.round guards float drift (17.76 * 100).
+            unit_amount: Math.round(tierPriceUsd(tier) * 100),
             product_data: {
               name: `${BOOK.title} — ${tier.name}`,
               description: tier.tagline,
@@ -89,7 +90,7 @@ export async function POST(request: Request) {
         kind: "book_preorder",
         product_slug: tier.slug,
         product_name: tier.name,
-        amount_usd: String(tier.priceUsd),
+        amount_usd: String(tierPriceUsd(tier)),
       },
     });
 

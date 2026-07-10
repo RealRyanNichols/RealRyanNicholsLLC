@@ -29,6 +29,21 @@ export default async function SubscribedPage({
           <p className="mt-2 text-sm text-[var(--color-muted)]">
             Check your inbox for a welcome note.
           </p>
+          <div className="mt-8 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 text-left">
+            <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--color-accent)]">
+              While you&apos;re here
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+              Fighting Shadows — the full first-person account of the case this
+              site documents. Early access is open now.
+            </p>
+            <Link
+              href="/book/preorder"
+              className="mt-3 inline-block font-semibold text-[var(--color-accent)] underline underline-offset-4"
+            >
+              Get the book →
+            </Link>
+          </div>
         </>
       ) : (
         <>

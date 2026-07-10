@@ -15,6 +15,7 @@ import {
   BOOK_TIERS,
   SALE_ENDS_AT,
   formatUsd,
+  tierPriceUsd,
 } from "@/lib/book";
 import { SITE } from "@/lib/site";
 import { JsonLd } from "@/components/JsonLd";
@@ -60,7 +61,7 @@ const archiveLinks = [
 
 export default function BookPage() {
   const digital = BOOK_TIERS.find((t) => t.slug === "early_release_digital");
-  const priceLabel = digital ? formatUsd(digital.priceUsd) : "$17.76";
+  const priceLabel = digital ? formatUsd(tierPriceUsd(digital)) : "$29.99";
   const listLabel = digital?.listPriceUsd
     ? formatUsd(digital.listPriceUsd)
     : undefined;
@@ -83,7 +84,7 @@ export default function BookPage() {
           offers: BOOK_TIERS.map((t) => ({
             "@type": "Offer",
             name: t.name,
-            price: t.priceUsd,
+            price: tierPriceUsd(t),
             priceCurrency: "USD",
             url: `${SITE.url}/book/preorder`,
             availability: "https://schema.org/PreOrder",
