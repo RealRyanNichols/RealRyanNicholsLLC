@@ -51,7 +51,6 @@ export function getIntegrationHealth(): IntegrationGroup[] {
   const stripeKey = present(e.STRIPE_SECRET_KEY);
   const stripeWebhook = present(e.STRIPE_WEBHOOK_SECRET);
   const supporterPrice = present(e.STRIPE_SUPPORTER_PRICE_ID);
-  const donationUrl = present(e.NEXT_PUBLIC_DONATION_URL);
 
   const serviceRole = present(e.SUPABASE_SERVICE_ROLE_KEY);
   const supaUrl = present(e.NEXT_PUBLIC_SUPABASE_URL);
@@ -92,17 +91,17 @@ export function getIntegrationHealth(): IntegrationGroup[] {
         },
         {
           id: "mailing",
-          label: "Mailing address (CAN-SPAM)",
+          label: "Mailing address (to send email)",
           status: mailing ? "ok" : "off",
           critical: true,
           summary: mailing
-            ? "Set — email signups are allowed."
-            : "Email newsletter signups are blocked until a postal address is set (US CAN-SPAM law).",
+            ? "Set — the site can send email to your list."
+            : "Email signups are still captured and saved as leads — nothing is lost. But confirmations and broadcasts can't SEND until a postal address is on file (US CAN-SPAM law).",
           unlocks:
-            "Lets people subscribe by email; printed in every email footer and on the privacy page.",
+            "Turns on sending: subscriber confirmations and post/broadcast emails.",
           missing: missing([[mailing, "SITE_MAILING_ADDRESS"]]),
           where:
-            'Any street address or PO box is fine. Set SITE_MAILING_ADDRESS in Vercel (e.g. "PO Box 123, City, ST 00000").',
+            "Use a PO box or a mailbox service (UPS Store, iPostal1) — the address prints in every email footer and on the public privacy page, so avoid a home address. Set SITE_MAILING_ADDRESS in Vercel.",
         },
         {
           id: "admin-notify",
@@ -127,7 +126,7 @@ export function getIntegrationHealth(): IntegrationGroup[] {
     },
     {
       group: "Payments",
-      blurb: "Taking money: one-time donations, the store, and the membership.",
+      blurb: "Taking money: the store, service checkout, and book pre-orders.",
       checks: [
         {
           id: "stripe",
@@ -135,26 +134,12 @@ export function getIntegrationHealth(): IntegrationGroup[] {
           status: stripeKey ? "ok" : "off",
           critical: true,
           summary: stripeKey
-            ? "Connected — donations and checkout work."
+            ? "Connected — checkout works."
             : "Payments are off — every checkout returns 'not configured yet.'",
-          unlocks: "One-time donations, store orders, and supporter checkout.",
+          unlocks: "Store orders, service checkout, and book pre-orders.",
           missing: missing([[stripeKey, "STRIPE_SECRET_KEY"]]),
           where:
             "Stripe Dashboard → Developers → API keys (a restricted key with write on Checkout/Payment Intents is enough). Set STRIPE_SECRET_KEY in Vercel.",
-        },
-        {
-          id: "donation-link",
-          label: "Donation link (note → pay)",
-          status: donationUrl ? "ok" : "off",
-          critical: false,
-          summary: donationUrl
-            ? "Set — the support-note form and meter CTA can hand off to your Stripe donation page."
-            : "The native donate button still works, but the 'leave a note → pay' hand-off and some donate CTAs have no link to send people to.",
-          unlocks:
-            "The one-tap Stripe donation link used by the support-note form and the attention-meter call-to-action.",
-          missing: missing([[donationUrl, "NEXT_PUBLIC_DONATION_URL"]]),
-          where:
-            "Create a Stripe Payment Link (or use a hosted donation page) and set NEXT_PUBLIC_DONATION_URL in Vercel.",
         },
         {
           id: "stripe-webhook",
