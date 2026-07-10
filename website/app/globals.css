@@ -168,10 +168,11 @@
 }
 
 .prose-body {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: 1.0625rem;
   line-height: 1.7;
-  color: var(--color-ink-soft);
+  color: var(--color-ink);
+  max-width: 65ch;
 }
 
 /* Every prose rule is scoped with :not(.not-prose *) so embedded interactive
@@ -179,54 +180,87 @@
    never overrides a component's own colors/spacing. This is what makes the
    inline donate/report/demand/poll blocks render correctly inside an article. */
 .prose-body p:not(.not-prose *) {
-  margin: 0 0 1.1em;
+  margin: 0 0 1.15em;
 }
 
 .prose-body p:not(.not-prose *):last-child {
   margin-bottom: 0;
 }
 
-.prose-body strong:not(.not-prose *) {
+/* The opening hook is a deliberate lede — serif, larger, unbold — the editorial
+   counterpoint to the sans body that follows. Applies only to the very first
+   paragraph; articles that open with a heading or media simply skip it. */
+.prose-body > p:first-child:not(.not-prose *) {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  line-height: 1.5;
   color: var(--color-ink);
-  font-weight: 600;
+  margin-bottom: 1.45em;
 }
 
+/* Bold mid-article reads as an intentional callout (navy), not accidental
+   black — used for emphasis lines like "Read that again." */
+.prose-body strong:not(.not-prose *) {
+  color: var(--color-navy);
+  font-weight: 700;
+}
+
+/* Section heads: serif, tight tracking, a hairline rule above for clear beats,
+   and a short gold accent tick. Gold = constructive/secondary; red is reserved
+   for danger, so it never appears on a routine heading. */
 .prose-body h2:not(.not-prose *) {
+  font-family: var(--font-display);
   color: var(--color-ink);
-  font-size: clamp(1.55rem, 2vw, 2.1rem);
+  font-size: clamp(1.6rem, 2.2vw, 2.15rem);
   font-weight: 800;
-  line-height: 1.12;
-  margin: 2.1em 0 0.65em;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin: 2.4em 0 0.7em;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--color-line);
 }
 
 .prose-body h2:not(.not-prose *)::before {
   content: "";
   display: block;
-  width: 3rem;
-  height: 4px;
+  width: 2.25rem;
+  height: 3px;
   border-radius: 2px;
-  background: var(--color-accent);
-  margin-bottom: 0.7rem;
+  background: var(--color-gold);
+  margin-bottom: 0.85rem;
+}
+
+/* No floating rule when the article opens straight into a section. */
+.prose-body > h2:first-child:not(.not-prose *) {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 0.2em;
 }
 
 .prose-body h3:not(.not-prose *) {
+  font-family: var(--font-display);
   color: var(--color-ink);
-  font-size: 1.2rem;
+  font-size: 1.28rem;
   font-weight: 800;
   line-height: 1.25;
-  margin: 1.55em 0 0.45em;
+  letter-spacing: -0.015em;
+  margin: 1.7em 0 0.5em;
 }
 
+/* Body links: navy type on a gold underline (the Quiet Authority secondary
+   pattern), never red. */
 .prose-body a:not(.not-prose *) {
-  color: var(--color-accent);
+  color: var(--color-navy);
   text-decoration: underline;
+  text-decoration-color: var(--color-gold);
+  text-decoration-thickness: 1.5px;
   text-underline-offset: 3px;
 }
 
 .prose-body ol:not(.not-prose *),
 .prose-body ul:not(.not-prose *) {
   padding-left: 1.5rem;
-  margin: 0 0 1.1em;
+  margin: 0 0 1.15em;
 }
 
 .prose-body ol:not(.not-prose *) {
@@ -238,14 +272,16 @@
 }
 
 .prose-body li:not(.not-prose *) {
-  margin: 0.35em 0;
+  margin: 0.4em 0;
 }
 
 .prose-body blockquote:not(.not-prose *) {
-  border-left: 3px solid var(--color-accent);
-  padding-left: 1rem;
-  margin: 1.25em 0;
+  border-left: 3px solid var(--color-gold);
+  padding-left: 1.1rem;
+  margin: 1.4em 0;
+  font-family: var(--font-display);
   font-style: italic;
+  font-size: 1.15rem;
   color: var(--color-ink);
 }
 
