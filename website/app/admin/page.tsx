@@ -213,114 +213,119 @@ export default async function AdminHomePage() {
         ? "/admin/claims?filter=pending"
         : (pendingSubmissions ?? 0) > 0
           ? "/admin/submissions?filter=pending"
-          : "/admin";
+          : "/admin/inbox";
+
+  // The whole dashboard contract: a row exists ONLY if it needs Ryan's
+  // hands. Zeros don't get cards — they get one calm sentence.
+  const needsYou: { href: string; title: string; sub: string; count: string }[] = [];
+  if (criticalIssues > 0) {
+    needsYou.push({
+      href: "/admin/health",
+      title: `Fix ${criticalIssues} connection${criticalIssues === 1 ? "" : "s"}`,
+      sub: "Email, payments, or database is off — usually why contact, tips, or pay feel broken.",
+      count: String(criticalIssues),
+    });
+  }
+  if (reviewQueueTotal > 0) {
+    needsYou.push({
+      href: reviewQueueHref,
+      title: "Review tips & uploads",
+      sub: `${pendingTips ?? 0} tips · ${pendingClaims ?? 0} claims · ${pendingSubmissions ?? 0} uploads · ${(pendingComments ?? 0) + (commentReports ?? 0)} comments`,
+      count: String(reviewQueueTotal),
+    });
+  }
+  if ((pendingPrivateMessages ?? 0) > 0) {
+    needsYou.push({
+      href: "/admin/messages?filter=new",
+      title: "Answer private mail",
+      sub: "New contact-form messages waiting on a reply.",
+      count: String(pendingPrivateMessages ?? 0),
+    });
+  }
+  if (receivableCents > 0) {
+    needsYou.push({
+      href: "/admin/invoices",
+      title: "Collect on invoices",
+      sub: `${invoices.length} open invoice${invoices.length === 1 ? "" : "s"} outstanding.`,
+      count: usd(receivableCents),
+    });
+  }
+  if ((pendingProfiles ?? 0) > 0) {
+    needsYou.push({
+      href: "/admin/users?filter=pending",
+      title: "Approve new people",
+      sub: "Verify or delete pending signups below.",
+      count: String(pendingProfiles ?? 0),
+    });
+  }
 
   return (
-    <article className="mx-auto max-w-[78rem] px-4 py-7">
+    <article className="mx-auto max-w-3xl px-4 py-7">
       <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
-        Admin control room
+        Admin
       </p>
       <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">
-        What needs attention now
+        What needs you now
       </h1>
       <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
-        Money to collect, people to answer, records to approve, and the live
-        public audience in one place.
+        If it&apos;s not listed here, it&apos;s handled.
       </p>
 
-      {criticalIssues > 0 ? (
-        <Link
-          href="/admin/health"
-          className="mt-5 flex items-center justify-between gap-3 rounded-md border border-[var(--color-accent)] bg-[var(--color-accent)]/10 px-4 py-3 transition hover:bg-[var(--color-accent)]/15"
-        >
-          <span className="text-sm">
-            <span className="font-bold">
-              {criticalIssues} core connection{criticalIssues === 1 ? "" : "s"} off
-            </span>{" "}
-            — email, payments, or database. Usually why contact / tips / pay feel
-            broken.
-          </span>
-          <span className="shrink-0 text-xs font-semibold text-[var(--color-accent)] whitespace-nowrap">
-            Fix →
-          </span>
-        </Link>
-      ) : null}
-
-      <section className="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-        {/* Red tint is reserved for tiles that need Ryan's ACTION. Good news
-            (audience, chats, leads, drafts) stays calm — it's a door, not an
-            alarm. */}
-        <ActionLane
-          href="/admin/posts"
-          kicker="Publish"
-          title="Posts & drafts"
-          value={String(draftPostsCount ?? 0)}
-          sub={`${draftPostsCount ?? 0} draft${(draftPostsCount ?? 0) === 1 ? "" : "s"} · ${publishedPostsCount ?? 0} live`}
-        />
-        <ActionLane
-          href="/admin/analytics"
-          kicker="Watch"
-          title="Live audience"
-          value={String(activeNow ?? 0)}
-          sub={`${views24h ?? 0} views in 24h`}
-        />
-        <ActionLane
-          href="/admin/chats"
-          kicker="Chats"
-          title="Conversations"
-          value={String(chats24h)}
-          sub={`${chatsTotal} total · talking to your AI`}
-        />
-        <ActionLane
-          href="/admin/leads"
-          kicker="Leads"
-          title="Leads"
-          value={String(leadsTotal)}
-          sub="people who left you data — follow up & sell"
-        />
-        <ActionLane
-          href="/admin/invoices"
-          kicker="Collect"
-          title="Receivables"
-          value={usd(receivableCents)}
-          sub={`${invoices.length} active invoice${invoices.length === 1 ? "" : "s"}`}
-          hot={receivableCents > 0}
-        />
-        <ActionLane
-          href="/admin/messages?filter=new"
-          kicker="Answer"
-          title="Private messages"
-          value={String(pendingPrivateMessages ?? 0)}
-          sub="new contact form messages"
-          hot={(pendingPrivateMessages ?? 0) > 0}
-        />
-        <ActionLane
-          href={reviewQueueHref}
-          kicker="Review"
-          title={(pendingTips ?? 0) > 0 ? "Tips need review" : "Tips & submissions"}
-          value={String(reviewQueueTotal)}
-          sub={`${pendingTips ?? 0} tips · ${pendingClaims ?? 0} claims · ${pendingSubmissions ?? 0} uploads`}
-          hot={reviewQueueTotal > 0}
-        />
-        <ActionLane
-          href="/admin/users?filter=pending"
-          kicker="Approve"
-          title="People"
-          value={String(pendingProfiles ?? 0)}
-          sub={`${activeProfiles ?? 0} active profiles`}
-          hot={(pendingProfiles ?? 0) > 0}
-        />
-        <ActionLane
-          href="/admin/health"
-          kicker="Fix"
-          title="Connections"
-          value={String(criticalIssues)}
-          sub="email, payments, database, video"
-          hot={criticalIssues > 0}
-        />
+      <section className="mt-6">
+        {needsYou.length === 0 ? (
+          <div className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] px-5 py-6">
+            <p className="text-lg font-bold tracking-tight">All clear.</p>
+            <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
+              No tips waiting, no mail unanswered, no money to chase, nobody
+              pending. Go write something.
+            </p>
+          </div>
+        ) : (
+          <div className="grid gap-2">
+            {needsYou.map((row) => (
+              <Link
+                key={row.href}
+                href={row.href}
+                className="group flex items-center gap-4 rounded-md border border-[var(--color-accent)]/60 bg-[var(--color-accent)]/[0.07] px-4 py-3.5 transition hover:border-[var(--color-accent)] hover:bg-[var(--color-accent)]/15"
+              >
+                <span className="min-w-[3.25rem] shrink-0 text-right text-2xl font-bold tabular-nums tracking-tight text-[var(--color-accent)]">
+                  {row.count}
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[0.95rem] font-bold leading-tight text-[var(--color-ink)]">
+                    {row.title}
+                  </span>
+                  <span className="mt-0.5 block text-xs leading-snug text-[var(--color-ink-soft)]">
+                    {row.sub}
+                  </span>
+                </span>
+                <span
+                  aria-hidden
+                  className="shrink-0 text-[var(--color-muted)] transition group-hover:translate-x-0.5 group-hover:text-[var(--color-accent)]"
+                >
+                  →
+                </span>
+              </Link>
+            ))}
+          </div>
+        )}
       </section>
 
-      {/* Action items — pending verifications */}
+      {/* The pulse — every number that used to be a card, at whisper volume. */}
+      <section className="mt-6 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] px-5 py-4">
+        <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2">
+          <Pulse href="/admin/analytics" n={activeNow ?? 0} label="live now" live={(activeNow ?? 0) > 0} />
+          <Pulse href="/admin/analytics" n={views24h ?? 0} label="views · 24h" />
+          <Pulse href="/admin/posts" n={draftPostsCount ?? 0} label="drafts" />
+          <Pulse href="/admin/posts" n={publishedPostsCount ?? 0} label="posts live" />
+          <Pulse href="/admin/leads" n={leadsTotal} label="leads" />
+          <Pulse href="/admin/chats" n={chats24h} label="chats · 24h" />
+          <Pulse href="/admin/users" n={activeProfiles ?? 0} label="members" />
+        </div>
+      </section>
+
+      {/* Pending verifications — rendered ONLY when someone is waiting. */}
+      {(pendingProfiles ?? 0) > 0 ? (
       <section className="mt-8 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
         <div className="flex items-center justify-between gap-3">
           <div>
@@ -413,6 +418,7 @@ export default async function AdminHomePage() {
           </ul>
         )}
       </section>
+      ) : null}
 
       {/* Live now */}
       <section
@@ -483,49 +489,32 @@ export default async function AdminHomePage() {
   );
 }
 
-function ActionLane({
+// One number in the pulse strip: quiet, linked, no card chrome.
+function Pulse({
   href,
-  kicker,
-  title,
-  value,
-  sub,
-  hot,
+  n,
+  label,
+  live,
 }: {
   href: string;
-  kicker: string;
-  title: string;
-  value: string;
-  sub: string;
-  hot?: boolean;
+  n: number;
+  label: string;
+  live?: boolean;
 }) {
   return (
     <Link
       href={href}
-      className={[
-        "group block rounded-md border p-4 transition hover:border-[var(--color-navy)]",
-        hot
-          ? "border-[var(--color-accent)] bg-[var(--color-accent)]/10"
-          : "border-[var(--color-line)] bg-[var(--color-surface)]",
-      ].join(" ")}
+      className="group inline-flex items-baseline gap-1.5 rounded-sm px-1 py-0.5 transition hover:bg-[var(--color-paper)]"
     >
-      <p className="flex items-center justify-between text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--color-muted)]">
-        {kicker}
-        <span
-          aria-hidden
-          className="text-sm leading-none text-[var(--color-muted)] transition group-hover:translate-x-0.5 group-hover:text-[var(--color-navy)]"
-        >
-          →
-        </span>
-      </p>
-      <div className="mt-2 flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <h2 className="truncate text-lg font-bold tracking-tight">{title}</h2>
-          <p className="mt-1 text-xs text-[var(--color-ink-soft)]">{sub}</p>
-        </div>
-        <p className="shrink-0 text-2xl font-bold tracking-tight tabular-nums">
-          {value}
-        </p>
-      </div>
+      {live ? (
+        <span className="inline-block h-2 w-2 self-center rounded-full bg-green-500 animate-pulse" aria-hidden />
+      ) : null}
+      <span className="text-lg font-bold tabular-nums tracking-tight text-[var(--color-ink)]">
+        {n.toLocaleString()}
+      </span>
+      <span className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)] transition group-hover:text-[var(--color-accent)]">
+        {label}
+      </span>
     </Link>
   );
 }

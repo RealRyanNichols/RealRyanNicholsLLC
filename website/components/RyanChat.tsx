@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { trackEvent } from "@/lib/analytics";
 import { getVisitorId } from "@/lib/client-ids";
 
@@ -509,6 +510,8 @@ export function RyanChat({
     useRyanChat(surface);
   const [open, setOpen] = useState(false);
   const [teaser, setTeaser] = useState(false);
+  const pathname = usePathname();
+  const inAdmin = pathname.startsWith("/admin");
 
   useEffect(() => {
     if (variant !== "launcher") return;
@@ -550,6 +553,10 @@ export function RyanChat({
     markTeaserSeen();
     trackEvent("chat_open", { surface });
   }
+
+  // The floating launcher never rides into the back office — admin is a
+  // workspace, not a funnel. (After all hooks, so the hook order is stable.)
+  if (variant === "launcher" && inAdmin) return null;
 
   if (variant === "hero") {
     return (

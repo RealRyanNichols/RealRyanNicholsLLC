@@ -6,428 +6,170 @@ import { usePathname } from "next/navigation";
 type AdminItem = {
   href: string;
   label: string;
-  short?: string;
-  sub?: string;
 };
 
-type AdminGroup = {
-  label: string;
-  items: AdminItem[];
-};
-
-// The 5 things touched every day — the always-visible quick bar, in priority
-// order: posts/drafts first, then stats, money, mail, tips.
-const PRIMARY: AdminItem[] = [
-  { href: "/admin/posts", label: "Posts", short: "Posts", sub: "Live & drafts" },
-  { href: "/admin/analytics", label: "Stats", short: "Stats", sub: "Traffic" },
-  { href: "/admin/orders", label: "Money", short: "Money", sub: "Sales & pay" },
-  { href: "/admin/messages?filter=new", label: "Mail", short: "Mail", sub: "Private inbox" },
-  { href: "/admin/tips?filter=pending", label: "Tips", short: "Tips", sub: "Public leads" },
+// ONE rail, one flat list. The seven doors Ryan opens every day stay visible;
+// everything else lives behind a single collapsed "More tools" — no stacked
+// panels, no numbered accordions, no duplicate chips. If a page matters
+// daily, it earns a spot in DAILY; otherwise it goes in MORE. That's the rule.
+const DAILY: AdminItem[] = [
+  { href: "/admin", label: "Dashboard" },
+  { href: "/admin/posts", label: "Posts" },
+  { href: "/admin/inbox", label: "Inbox" },
+  { href: "/admin/orders", label: "Money" },
+  { href: "/admin/analytics", label: "Stats" },
+  { href: "/admin/case", label: "Case files" },
+  { href: "/admin/users", label: "Users" },
 ];
 
-// Everything else, top-to-bottom in the same priority order as the quick bar:
-// posts first, then audience/stats, money, the action queues, the case, system.
-const GROUPS: AdminGroup[] = [
-  {
-    label: "Posts & publishing",
-    items: [
-      { href: "/admin/posts", label: "Posts & drafts", sub: "Everything you've written" },
-      { href: "/admin/new", label: "New post", sub: "Write now" },
-      { href: "/admin/live", label: "Live", sub: "Streams & comments" },
-      { href: "/admin/words", label: "Words", sub: "Saved copy & drafts" },
-    ],
-  },
-  {
-    label: "Audience & insight",
-    items: [
-      { href: "/admin/analytics", label: "Analytics", sub: "Traffic & behavior" },
-      { href: "/admin/audience", label: "Audience", sub: "Profiles & signals" },
-      { href: "/admin/polls", label: "Polls", sub: "Votes & email unlocks" },
-      { href: "/admin/tools", label: "Free tools", sub: "Tool runs & needs" },
-    ],
-  },
-  {
-    label: "Money",
-    items: [
-      { href: "/admin/orders", label: "Orders", sub: "Service & store checkout" },
-      { href: "/admin/invoices", label: "Invoices", sub: "Send & track payment" },
-      { href: "/admin/donations", label: "Donations", sub: "Legacy ledger — retired" },
-      { href: "/admin/book", label: "Book", sub: "Pre-orders & list" },
-      { href: "/admin/blueprint", label: "Blueprint", sub: "Legal-tech leads" },
-      { href: "/admin/store", label: "Store", sub: "Products & offers" },
-    ],
-  },
-  {
-    label: "Needs you now",
-    items: [
-      { href: "/admin/inbox", label: "Inbox", sub: "Everything incoming, one queue" },
-      { href: "/admin/tips?filter=pending", label: "Tip queue", sub: "Public leads to review" },
-      { href: "/admin/messages?filter=new", label: "Private mail", sub: "Contact inbox" },
-      { href: "/admin/submissions?filter=pending", label: "Submissions", sub: "Claimant uploads" },
-      { href: "/admin/claims?filter=pending", label: "J6 claims", sub: "Profile claims" },
-    ],
-  },
-  {
-    label: "The case",
-    items: [
-      { href: "/admin/case", label: "Case docs", sub: "Documents on file" },
-      { href: "/admin/evidence/new", label: "Evidence", sub: "Lock in a tweet, article, or clip" },
-      { href: "/admin/deadman", label: "Deadman switch", sub: "Emergency release" },
-    ],
-  },
-  {
-    label: "Settings & system",
-    items: [
-      { href: "/admin/users", label: "Users", sub: "Accounts & approvals" },
-      { href: "/admin/og-images", label: "Share images", sub: "OG thumbnails" },
-      { href: "/admin/profile", label: "Profile photos", sub: "People images" },
-      { href: "/admin/imports", label: "Imports", sub: "Staged data" },
-      { href: "/admin/health", label: "System health", sub: "Connections" },
-    ],
-  },
+const MORE: AdminItem[] = [
+  { href: "/admin/audience", label: "Audience" },
+  { href: "/admin/blueprint", label: "Blueprint leads" },
+  { href: "/admin/book", label: "Book orders" },
+  { href: "/admin/chats", label: "Chats" },
+  { href: "/admin/claims", label: "J6 claims" },
+  { href: "/admin/deadman", label: "Deadman switch" },
+  { href: "/admin/donations", label: "Donations ledger" },
+  { href: "/admin/evidence/new", label: "Evidence locker" },
+  { href: "/admin/health", label: "System health" },
+  { href: "/admin/imports", label: "Imports" },
+  { href: "/admin/invoices", label: "Invoices" },
+  { href: "/admin/leads", label: "Leads" },
+  { href: "/admin/live", label: "Live streams" },
+  { href: "/admin/messages", label: "Private mail" },
+  { href: "/admin/og-images", label: "Share images" },
+  { href: "/admin/polls", label: "Polls" },
+  { href: "/admin/profile", label: "Profile photos" },
+  { href: "/admin/queue", label: "Publish queue" },
+  { href: "/admin/store", label: "Store" },
+  { href: "/admin/submissions", label: "Submissions" },
+  { href: "/admin/tips", label: "Tips" },
+  { href: "/admin/tools", label: "Free tools" },
+  { href: "/admin/words", label: "Words" },
 ];
 
-export function AdminNav({
-  collapsed = false,
-  onCollapsedChange,
-}: {
-  collapsed?: boolean;
-  onCollapsedChange?: (collapsed: boolean) => void;
-}) {
+export function AdminNav() {
   const pathname = usePathname();
-  const activePrimary = PRIMARY.find((item) => isActivePath(pathname, item.href));
+  const moreActive = MORE.some((item) => isActivePath(pathname, item.href));
+  const activeLabel =
+    [...DAILY, ...MORE].find((item) => isActivePath(pathname, item.href))
+      ?.label ?? "Dashboard";
 
   return (
     <>
-      <div className="lg:hidden sticky top-16 z-20 -mx-4 mb-5 border-b border-[#203a64] bg-[#071126]/96 px-4 py-3 text-[#fdf8ea] shadow-xl backdrop-blur-xl">
-        <div className="flex items-center justify-between gap-3">
-          <Link
-            href="/admin"
-            className="-m-1 min-w-0 rounded-md p-1 transition hover:bg-white/5"
-          >
-            <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
-              Admin · home
-            </p>
-            <p className="truncate text-sm font-black">
-              {activePrimary?.label ?? "Command center"}
-            </p>
-          </Link>
+      {/* Mobile: one slim sticky bar — where you are, the one gold action,
+          and a single menu. Nothing else. */}
+      <div className="lg:hidden sticky top-16 z-20 -mx-4 mb-5 border-b border-[#203a64] bg-[#071126]/96 px-4 py-2.5 text-[#fdf8ea] backdrop-blur-xl">
+        <div className="flex items-center justify-between gap-2">
+          <details className="group relative min-w-0 flex-1">
+            <summary className="flex min-h-10 cursor-pointer list-none items-center gap-2 marker:hidden">
+              <span className="min-w-0">
+                <span className="block text-[10px] font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
+                  Admin
+                </span>
+                <span className="block truncate text-sm font-black">
+                  {activeLabel}
+                </span>
+              </span>
+              <span
+                className="text-xs text-[#e1bd5b] transition group-open:rotate-180"
+                aria-hidden
+              >
+                ▾
+              </span>
+            </summary>
+            <nav
+              aria-label="Admin navigation"
+              className="absolute left-0 top-full z-30 mt-2 max-h-[60vh] w-64 overflow-y-auto rounded-md border border-[#203a64] bg-[#071126] p-2 shadow-xl"
+            >
+              {DAILY.map((item) => (
+                <RailLink
+                  key={item.href}
+                  item={item}
+                  active={isActivePath(pathname, item.href)}
+                />
+              ))}
+              <p className="mt-2 border-t border-white/10 px-2 pb-1 pt-2 text-[10px] font-black uppercase tracking-[0.18em] text-[#8194b4]">
+                More tools
+              </p>
+              {MORE.map((item) => (
+                <RailLink
+                  key={item.href}
+                  item={item}
+                  active={isActivePath(pathname, item.href)}
+                />
+              ))}
+            </nav>
+          </details>
           <Link
             href="/admin/new"
-            className="shrink-0 rounded-full border border-[#e1bd5b]/50 bg-[#e1bd5b]/15 px-3 py-1.5 text-[11px] font-black uppercase tracking-normal text-[#e1bd5b] transition hover:bg-[#e1bd5b]/25"
+            className="shrink-0 rounded-md bg-[#e1bd5b] px-3.5 py-2 text-xs font-black uppercase tracking-normal text-[#071126] transition hover:bg-[#f0d48a]"
           >
             New post
           </Link>
         </div>
-
-        <nav aria-label="Admin priority tools" className="mt-3 grid grid-cols-5 gap-1.5">
-          {PRIMARY.map((item) => (
-            <MobilePrimaryLink
-              key={item.href}
-              item={item}
-              active={isActivePath(pathname, item.href)}
-            />
-          ))}
-        </nav>
-
-        <details className="group mt-2 rounded-lg border border-white/10 bg-white/5">
-          <summary className="flex min-h-10 cursor-pointer list-none items-center justify-between gap-3 px-3 text-xs font-black uppercase tracking-normal text-[#cfd9ea] marker:hidden">
-            More admin tools
-            <span className="text-base text-[#e1bd5b] transition group-open:rotate-45" aria-hidden>
-              +
-            </span>
-          </summary>
-          <div className="border-t border-white/10 p-3">
-            <GroupedToolGrid pathname={pathname} compact />
-          </div>
-        </details>
       </div>
 
+      {/* Desktop: one quiet panel. Seven links, one button, one collapsed
+          "More tools". */}
       <nav
-        className={[
-          "hidden text-sm lg:sticky lg:top-20 lg:block",
-          collapsed ? "lg:w-[4.25rem]" : "lg:w-full",
-        ].join(" ")}
-        aria-label="Admin desktop navigation"
+        className="hidden text-sm lg:sticky lg:top-20 lg:block"
+        aria-label="Admin navigation"
       >
-        <div
-          className={[
-            "rounded-md border border-[#203a64] bg-[#071126] text-[#fdf8ea] shadow-sm shadow-[#071126]/15",
-            collapsed ? "p-1.5" : "p-3",
-          ].join(" ")}
-        >
-          <div
-            className={[
-              "flex items-center gap-2",
-              collapsed ? "justify-center" : "justify-between",
-            ].join(" ")}
+        <div className="rounded-md border border-[#203a64] bg-[#071126] p-3 text-[#fdf8ea]">
+          <p className="px-2 text-[10px] font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
+            Admin
+          </p>
+          <Link
+            href="/admin/new"
+            className="mt-3 flex min-h-10 items-center justify-center rounded-md bg-[#e1bd5b] px-3 text-xs font-black uppercase tracking-normal text-[#071126] transition hover:bg-[#f0d48a]"
           >
-            {collapsed ? null : (
-              <Link
-                href="/admin"
-                className="-m-1 rounded-md p-1 transition hover:bg-white/5"
-              >
-                <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
-                  Admin · home
-                </p>
-                <p className="mt-1 text-xs font-bold text-[#a9b7d0]">
-                  Dashboard &amp; alerts
-                </p>
-              </Link>
-            )}
-            <button
-              type="button"
-              onClick={() => onCollapsedChange?.(!collapsed)}
-              className={[
-                "grid h-9 w-9 place-items-center rounded-md border border-white/10 bg-white/5 text-sm font-black text-[#fdf8ea] transition hover:border-[#e1bd5b] hover:bg-[#e1bd5b]/15 hover:text-[#e1bd5b]",
-                collapsed ? "mx-auto" : "",
-              ].join(" ")}
-              aria-label={collapsed ? "Expand admin sidebar" : "Collapse admin sidebar"}
-              title={collapsed ? "Expand admin sidebar" : "Collapse admin sidebar"}
-            >
-              {collapsed ? ">" : "<"}
-            </button>
-          </div>
-
-          <div className={collapsed ? "mt-3 space-y-2" : "mt-4 grid gap-2"}>
-            {PRIMARY.map((item) => (
-              <DesktopPrimaryLink
+            New post
+          </Link>
+          <div className="mt-3 grid gap-0.5">
+            {DAILY.map((item) => (
+              <RailLink
                 key={item.href}
                 item={item}
                 active={isActivePath(pathname, item.href)}
-                collapsed={collapsed}
               />
             ))}
           </div>
-          <Link
-            href="/admin/new"
-            className={[
-              "mt-3 flex min-h-10 items-center justify-center rounded-md border border-[#e1bd5b]/50 bg-[#e1bd5b]/15 text-xs font-black uppercase tracking-normal text-[#e1bd5b] transition hover:bg-[#e1bd5b]/25",
-              collapsed ? "px-1" : "px-3",
-            ].join(" ")}
-            title="New post"
-          >
-            {collapsed ? "+" : "New post"}
-          </Link>
+          <details className="group mt-2 border-t border-white/10 pt-2" open={moreActive}>
+            <summary className="flex min-h-9 cursor-pointer list-none items-center justify-between rounded-md px-2 text-[10px] font-black uppercase tracking-[0.18em] text-[#8194b4] transition hover:text-[#e1bd5b] marker:hidden">
+              More tools
+              <span className="text-sm text-[#e1bd5b] transition group-open:rotate-45" aria-hidden>
+                +
+              </span>
+            </summary>
+            <div className="mt-1 grid gap-0.5">
+              {MORE.map((item) => (
+                <RailLink
+                  key={item.href}
+                  item={item}
+                  active={isActivePath(pathname, item.href)}
+                />
+              ))}
+            </div>
+          </details>
         </div>
-
-        {collapsed ? (
-          <div className="mt-3 space-y-2 rounded-md border border-[#203a64] bg-[#071126] p-1.5 text-center">
-            <Link
-              href="/admin"
-              className="mx-auto grid h-9 w-9 place-items-center rounded-md border border-white/10 bg-white/5 text-base font-black text-[#cfd9ea] transition hover:border-[#e1bd5b] hover:text-[#e1bd5b]"
-              aria-label="Admin home"
-              title="Admin home"
-            >
-              ⌂
-            </Link>
-            <button
-              type="button"
-              onClick={() => onCollapsedChange?.(false)}
-              className="mx-auto grid h-9 w-9 place-items-center rounded-md border border-white/10 bg-white/5 text-[10px] font-black text-[#cfd9ea] transition hover:border-[#e1bd5b] hover:text-[#e1bd5b]"
-              aria-label="Open full admin menu"
-              title="Open full admin menu"
-            >
-              All
-            </button>
-          </div>
-        ) : (
-          <div className="mt-3 rounded-md border border-[#203a64] bg-[#071126] p-3 text-[#fdf8ea] shadow-sm">
-            <div className="mb-3 flex items-center justify-between gap-3">
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#e1bd5b]">
-                Full admin map
-              </p>
-              <button
-                type="button"
-                onClick={() => onCollapsedChange?.(true)}
-                className="rounded-md border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-black uppercase text-[#cfd9ea] transition hover:border-[#e1bd5b] hover:text-[#e1bd5b]"
-              >
-                Close rail
-              </button>
-            </div>
-            <div className="max-h-[42vh] overflow-y-auto pr-1">
-              <GroupedToolGrid pathname={pathname} compact />
-            </div>
-          </div>
-        )}
       </nav>
     </>
   );
 }
 
-function GroupedToolGrid({
-  pathname,
-  compact = false,
-}: {
-  pathname: string;
-  compact?: boolean;
-}) {
-  return (
-    <div className="space-y-1.5">
-      {GROUPS.map((group, index) => {
-        // Open the top tier by default, plus whichever tier holds the page
-        // you're on — so the map stays a short, scannable list, not a wall.
-        const hasActive = group.items.some((item) =>
-          isActivePath(pathname, item.href),
-        );
-        return (
-          <details
-            key={group.label}
-            open={index === 0 || hasActive}
-            className="group/sect rounded-md border border-white/10 bg-white/[0.03]"
-          >
-            <summary className="flex min-h-9 cursor-pointer list-none items-center justify-between gap-2 px-2.5 py-1.5 marker:hidden">
-              <span className="text-[10px] font-black uppercase tracking-[0.16em] text-[#d8c89e]">
-                <span className="text-[#e1bd5b]/70">{index + 1}.</span>{" "}
-                {group.label}
-              </span>
-              <span
-                className="text-sm leading-none text-[#e1bd5b] transition group-open/sect:rotate-45"
-                aria-hidden
-              >
-                +
-              </span>
-            </summary>
-            <div className="space-y-1 border-t border-white/10 p-2">
-              {group.items.map((item) => (
-                <ToolLink
-                  key={item.href}
-                  item={item}
-                  active={isActivePath(pathname, item.href)}
-                  compact={compact}
-                />
-              ))}
-            </div>
-          </details>
-        );
-      })}
-    </div>
-  );
-}
-
-function MobilePrimaryLink({
-  item,
-  active,
-}: {
-  item: AdminItem;
-  active: boolean;
-}) {
+function RailLink({ item, active }: { item: AdminItem; active: boolean }) {
   return (
     <Link
       href={item.href}
       className={[
-        "flex min-h-12 items-center justify-center rounded-lg border px-1 text-center text-[11px] font-black leading-tight transition",
+        "flex min-h-9 items-center rounded-md border-l-2 px-2.5 text-[0.85rem] font-bold transition",
         active
-          ? "border-[#e1bd5b] bg-[#e1bd5b] text-[#071126]"
-          : "border-white/10 bg-white/5 text-[#fdf8ea] hover:border-[#d8c89e] hover:bg-white/10",
+          ? "border-[#e1bd5b] bg-white/[0.07] text-[#e1bd5b]"
+          : "border-transparent text-[#cfd9ea] hover:bg-white/5 hover:text-[#fdf8ea]",
       ].join(" ")}
     >
-      {item.short ?? item.label}
-    </Link>
-  );
-}
-
-function DesktopPrimaryLink({
-  item,
-  active,
-  collapsed,
-}: {
-  item: AdminItem;
-  active: boolean;
-  collapsed: boolean;
-}) {
-  return (
-    <Link
-      href={item.href}
-      className={[
-        "group relative overflow-hidden rounded-md border transition",
-        collapsed
-          ? "grid min-h-11 place-items-center px-1 py-2 text-center"
-          : "grid min-h-[3.6rem] grid-cols-[1fr_auto] items-center gap-2 px-3 py-2.5",
-        active
-          ? "border-[#e1bd5b]/80 bg-[#102826] text-[#fdf8ea]"
-          : "border-white/10 bg-white/5 text-[#fdf8ea] hover:border-[#d8c89e] hover:bg-white/10",
-      ].join(" ")}
-      title={item.label}
-    >
-      <span className="min-w-0">
-        <span
-          className={[
-            "block font-black leading-tight",
-            collapsed ? "text-[10px]" : "text-[0.95rem]",
-          ].join(" ")}
-        >
-          {collapsed ? item.short ?? item.label.slice(0, 3) : item.label}
-        </span>
-        {!collapsed && item.sub ? (
-          <span
-            className={[
-              "mt-1 block text-xs font-semibold leading-snug",
-              active ? "text-[#bdeccd]" : "text-[#cfd9ea]",
-            ].join(" ")}
-          >
-            {item.sub}
-          </span>
-        ) : null}
-      </span>
-      {!collapsed ? (
-        <span
-          className={[
-            "grid h-7 min-w-9 place-items-center whitespace-nowrap rounded-sm border px-2 text-[10px] font-black uppercase tracking-normal",
-            active
-              ? "border-[#e1bd5b]/25 bg-[#e1bd5b]/10 text-[#e1bd5b]"
-              : "border-white/10 bg-white/5 text-[#e1bd5b] group-hover:border-[#e1bd5b]/50",
-          ].join(" ")}
-          aria-hidden
-        >
-          {item.short ?? item.label.slice(0, 1)}
-        </span>
-      ) : null}
-    </Link>
-  );
-}
-
-function ToolLink({
-  item,
-  active,
-  compact,
-}: {
-  item: AdminItem;
-  active: boolean;
-  compact: boolean;
-}) {
-  return (
-    <Link
-      href={item.href}
-      className={[
-        "grid min-h-9 grid-cols-[1fr_auto] items-center gap-2 rounded-sm border px-2.5 py-1.5 transition",
-        compact
-          ? active
-            ? "border-[#e1bd5b] bg-[#e1bd5b]/15 text-[#fdf8ea]"
-            : "border-white/10 bg-white/5 text-[#fdf8ea] hover:border-[#d8c89e] hover:bg-white/10"
-          : active
-            ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
-            : "border-transparent text-[var(--color-ink-soft)] hover:border-[var(--color-line)] hover:bg-[var(--color-paper)] hover:text-[var(--color-ink)]",
-      ].join(" ")}
-    >
-      <span className="min-w-0">
-        <span className="block truncate text-xs font-black leading-tight">
-          {item.label}
-        </span>
-        {item.sub ? (
-          <span
-            className={[
-              "mt-0.5 block truncate text-[10px] font-semibold leading-snug",
-              compact ? "text-[#a9b7d0]" : "text-[var(--color-muted)]",
-            ].join(" ")}
-          >
-            {item.sub}
-          </span>
-        ) : null}
-      </span>
-      <span className={compact ? "text-[#e1bd5b]" : "text-[var(--color-muted)]"} aria-hidden>
-        →
-      </span>
+      {item.label}
     </Link>
   );
 }

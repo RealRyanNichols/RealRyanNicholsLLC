@@ -1,11 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 // The mobile action bar. Talk is the primary door — it opens the chat
 // panel in place via the ryanchat:open event (no navigation), feeding
 // the same lead pipeline as everything else.
 export function MobileSupportBar() {
+  const pathname = usePathname();
+  // Visitor funnel only — never in the back office.
+  if (pathname.startsWith("/admin")) return null;
   return (
     <div
       data-mobile-support-bar

@@ -99,8 +99,9 @@ export function PathPicker({ variant = "band" }: { variant?: Variant }) {
   }
 
   // The homepage renders the band inline — the floating overlay stands down
-  // there so first-timers aren't asked the same question twice.
-  if (variant === "overlay" && pathname === "/") return null;
+  // there so first-timers aren't asked the same question twice. And it NEVER
+  // shows in the back office: admin is a workspace, not a funnel.
+  if (variant === "overlay" && (pathname === "/" || pathname.startsWith("/admin"))) return null;
 
   if (!show) return null;
 
