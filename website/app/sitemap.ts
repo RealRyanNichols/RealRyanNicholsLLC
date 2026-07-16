@@ -43,10 +43,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE.url}/case/brief`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
     { url: `${SITE.url}/case/damages`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
     { url: `${SITE.url}/case/witnesses`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${SITE.url}/case?view=timeline`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${SITE.url}/case?view=grievances`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${SITE.url}/case?view=people`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${SITE.url}/case?view=documents`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     { url: `${SITE.url}/videos`, lastModified: now, changeFrequency: "daily", priority: 0.9 },
     { url: `${SITE.url}/live`, lastModified: now, changeFrequency: "daily", priority: 0.9 },
     { url: `${SITE.url}/fights`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
@@ -72,7 +68,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE.url}/start-here`, lastModified: now, changeFrequency: "weekly", priority: 0.85 },
     { url: `${SITE.url}/impact`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${SITE.url}/the-harassment`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${SITE.url}/build`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${SITE.url}/own-your-feed`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${SITE.url}/services/legal-tech-blueprint`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${SITE.url}/book/press`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
@@ -82,6 +77,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE.url}/jan-6`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
     { url: `${SITE.url}/support`, lastModified: now, changeFrequency: "weekly", priority: 0.85 },
     { url: `${SITE.url}/community-rules`, lastModified: now, changeFrequency: "monthly", priority: 0.4 },
+    { url: `${SITE.url}/editorial-standards`, lastModified: now, changeFrequency: "monthly", priority: 0.4 },
     { url: `${SITE.url}/privacy`, lastModified: now, changeFrequency: "monthly", priority: 0.4 },
   ];
 
