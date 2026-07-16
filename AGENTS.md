@@ -44,3 +44,4 @@ traps that have actually bitten us — not things you can read straight from the
 - **GitHub API has an hourly rate limit.** When it trips, back off and retry the merge — `git push` itself is unaffected.
 - Consider installing **Supabase Agent Skills** (`npx skills add supabase/agent-skills`) for RLS / `security_invoker` guidance.
 - The site is already heavily built (analytics, shortcodes, admin control room, services/store). **Prefer extending existing systems over adding new ones, and coordinate to avoid duplicating parallel agents' work.**
+- **No-cost clicks doctrine:** every article ships with 2–3 inline `{{poll: ...}}` one-tap questions — at least one mid-article, one as the closer. Free, anonymous, no navigation, about the *reader* not the article. Full rules in `CODEX.md`. Autopost pipeline: `content_queue` → `publish_next_queue_item()` (pg_cron, daily 14:00 UTC) publishes approved items and clean low-risk drafts; medium/high-risk always waits for Ryan.
