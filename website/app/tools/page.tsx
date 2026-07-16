@@ -63,7 +63,6 @@ export default function ToolsPage() {
           <div className="grid gap-2 sm:grid-cols-3 lg:grid-cols-1">
             <MiniDeal label="Free now" text="Copy the output immediately." />
             <MiniDeal label="Data first" text="Track use, completion, and demand." />
-            <MiniDeal label="99¢ later" text="Only if people prove they keep using it." />
           </div>
         </div>
       </section>
