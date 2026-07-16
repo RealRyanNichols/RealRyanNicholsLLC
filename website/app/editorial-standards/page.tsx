@@ -23,9 +23,6 @@ export default function EditorialStandardsPage() {
         evidence-driven work. These standards exist so you always know which is
         which — and so the people named here are treated fairly.
       </p>
-      <p className="mt-2 text-[11px] uppercase tracking-wider text-[var(--color-muted)]">
-        Draft — final wording subject to review.
-      </p>
 
       <div className="prose-body mt-8 space-y-7">
         <section>

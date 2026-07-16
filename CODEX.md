@@ -54,6 +54,28 @@ description if `seo_description` isn't set. `slug` is the unique key.
 - **Don't add the cover/OG image** — that's wired separately after review. Just
   write the body.
 
+## No-cost clicks — REQUIRED in every article
+Every article carries **one-tap inline questions** using the poll shortcode:
+
+```
+{{poll: Question in Ryan's voice? | Option one | Option two | Option three}}
+```
+
+These render as tappable buttons **right where they sit in the body**. One tap,
+free, anonymous, no signup, no navigation — the reader answers and keeps
+reading. That's the whole point: it costs the reader nothing and tells us what
+they think.
+
+Rules:
+- **2 to 3 per article.** One mid-article (drop it right after the hook or the
+  first receipt, at a natural pause) and one as the closer. Long articles
+  (1,500+ words) can carry a third in the middle third.
+- Questions are **about the reader**, not a quiz about the article. "Where do
+  you go when the noise gets loud?" beats "What did Ryan file on June 1?"
+- 2–4 options, each under 6 words, no wrong answers, no gotchas.
+- Write them in Ryan's voice. Direct. Warm. No corporate survey tone.
+- Never make a poll the ask for money or signup — it must stay a no-cost click.
+
 ## Active-matter caution
 Some topics relate to an **active legal matter** where Ryan is the named
 subject under conditions of release. For anything touching that:

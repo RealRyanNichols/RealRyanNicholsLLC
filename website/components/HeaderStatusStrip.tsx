@@ -117,16 +117,29 @@ export function HeaderStatusStrip() {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#7fe3a9] opacity-70" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-[#7fe3a9] shadow-[0_0_10px_rgba(127,227,169,0.8)]" />
               </span>
-              <Stat value={live} label="live now" />
+              {/* Until the RPC responds, show a label instead of fake zeros —
+                  crawlers, link previews, and slow connections were seeing
+                  "0 live now · 0 countries · 0 views" baked into the HTML. */}
+              {t === null ? (
+                <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#8194b4]">
+                  Situation Room
+                </span>
+              ) : (
+                <Stat value={live} label="live now" />
+              )}
             </span>
-            <span className="hidden h-3 w-px bg-white/10 sm:block" aria-hidden />
-            <span className="hidden sm:inline-flex">
-              <Stat value={countries} label={countries === 1 ? "country" : "countries"} />
-            </span>
-            <span className="hidden h-3 w-px bg-white/10 md:block" aria-hidden />
-            <span className="hidden md:inline-flex">
-              <Stat value={views} label="views" />
-            </span>
+            {t !== null ? (
+              <>
+                <span className="hidden h-3 w-px bg-white/10 sm:block" aria-hidden />
+                <span className="hidden sm:inline-flex">
+                  <Stat value={countries} label={countries === 1 ? "country" : "countries"} />
+                </span>
+                <span className="hidden h-3 w-px bg-white/10 md:block" aria-hidden />
+                <span className="hidden md:inline-flex">
+                  <Stat value={views} label="views" />
+                </span>
+              </>
+            ) : null}
             <span
               className="ml-0.5 text-[#5f7197] transition group-hover:text-[#e1bd5b]"
               aria-hidden
