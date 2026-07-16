@@ -260,9 +260,6 @@ export default function TellYourStoryPage() {
               Read the full editorial standards →
             </Link>
           </p>
-          <p className="mt-2 text-[11px] uppercase tracking-wider text-[var(--color-muted)]">
-            Draft policy — final wording subject to review.
-          </p>
         </div>
       </section>
 
