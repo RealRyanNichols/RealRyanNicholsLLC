@@ -248,12 +248,21 @@ function PostCardBody({
             {feedExcerpt(post.body, 280)}
           </p>
         </>
-      ) : (
+      ) : bodyHasVisual(post.body) ? (
+        // The body carries its own visual (tweet embed, image, video shortcode)
+        // — render it so the feed keeps its social, media-forward feel.
         <div className="mt-3">
           <PostBody
             body={truncate && post.body.length > 480 ? post.body.slice(0, 480) + "…" : post.body}
           />
         </div>
+      ) : (
+        // Plain text with no visual: a clean, clamped excerpt instead of raw
+        // markdown (headings and blockquotes mid-card made the feed read like
+        // one endless article — every card now has an obvious start and end).
+        <p className="mt-3 leading-relaxed text-[var(--color-ink-soft)]">
+          {feedExcerpt(post.body, 280)}
+        </p>
       )}
     </>
   );

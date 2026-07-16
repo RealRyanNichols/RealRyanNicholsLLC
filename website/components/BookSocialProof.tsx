@@ -72,6 +72,11 @@ export async function BookSocialProof({
   const s = await getBookStats();
   const p = palette(tone);
   const community = s.buyers + s.onList + s.waitlist;
+
+  // Below this floor, raw counts are anti-proof ("2 of 250 claimed" reads as
+  // nobody wants it). Hide the whole social-proof block until the numbers
+  // actually help the offer; the tiers and scarcity copy elsewhere still sell.
+  if (community < 25) return null;
   const recent = s.last24hBuyers + s.last24hSignups;
   const remaining = Math.max(0, s.foundingLimit - s.foundingClaimed);
   const pct =
