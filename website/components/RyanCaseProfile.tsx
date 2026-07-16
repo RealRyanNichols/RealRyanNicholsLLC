@@ -215,17 +215,10 @@ export function RyanCaseProfile({
         <p className="mt-3 text-sm sm:text-base font-semibold text-[var(--color-ink)] leading-relaxed">
           {ROLE_LINE}
         </p>
-        <div className="mt-4 flex flex-wrap gap-2">
-          <span className="rounded-full border border-[var(--color-line)] text-[var(--color-muted)] px-3 py-1 text-xs font-bold">
-            Convicted &amp; sentenced — May 2024
-          </span>
-          <span className="rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] px-3 py-1 text-xs font-bold">
-            ★ Fully pardoned — Jan 20, 2025
-          </span>
-          <span className="rounded-full border-2 border-[var(--color-success)] text-[var(--color-success)] px-3 py-1 text-xs font-bold">
-            ✓ Then dismissed with prejudice
-          </span>
-        </div>
+        <p className="mt-4 max-w-2xl border-l-2 border-[var(--color-navy)] pl-4 text-sm font-semibold leading-relaxed text-[var(--color-ink)]">
+          Sentenced May 2, 2024. Pardoned in full on January 20, 2025 — and the
+          case was dismissed with prejudice. It can never be brought again.
+        </p>
         <p className="mt-5 max-w-2xl text-sm sm:text-base leading-relaxed text-[var(--color-ink)]">
           New here? This page is the whole story, told in paper: a Marine and
           hurricane rescuer, arrested after January 6 — {days} days detained,
@@ -291,17 +284,17 @@ export function RyanCaseProfile({
       </section>
 
       {/* ---- The line that should stop you ---- */}
-      <aside className="mt-6 rounded-2xl bg-[var(--color-ink)] text-[var(--color-paper)] p-6 sm:p-8">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+      <aside className="mt-6 rounded-2xl border-2 border-[var(--color-navy)]/30 bg-[var(--color-blue-soft)]/40 p-6 sm:p-8">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-navy)] font-bold">
           On the record
         </p>
-        <p className="mt-2 text-xl sm:text-2xl font-bold tracking-tight font-display leading-snug">
+        <p className="mt-2 text-xl sm:text-2xl font-bold tracking-tight font-display leading-snug text-[var(--color-ink)]">
           A federal judge acknowledged — out loud, on the record — that his
           due-process rights had been violated. He stayed in anyway.
         </p>
         <Link
           href="/fights/equal-justice"
-          className="mt-4 inline-block text-sm font-bold text-[var(--color-accent)] hover:underline"
+          className="mt-4 inline-block text-sm font-bold text-[var(--color-navy)] hover:underline"
         >
           Equal justice under the law — the fight that came out of it →
         </Link>
