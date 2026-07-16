@@ -27,7 +27,7 @@ const JOBS = [
   {
     n: "4",
     title: "Sell what he builds",
-    body: "No donations here. The book, the paid builds, and the store pay for the filings, records, gear, and time — buying something is what keeps the record public.",
+    body: "Ryan would rather earn it than ask for it. The book, the paid builds, and the store pay for the filings, records, gear, and time — buying something is what keeps the record public.",
   },
 ];
 
@@ -45,7 +45,7 @@ const CARDS = [
     body: "Get it off your chest. Anonymous is OK. Reviewed before anything goes public.",
   },
   {
-    href: "/support",
+    href: "/store",
     kicker: "Own",
     title: "Own a Piece of It",
     body: "The book, the builds, the store — support the work by buying it.",
