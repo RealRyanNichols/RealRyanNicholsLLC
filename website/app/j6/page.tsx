@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getCaseTotals } from "@/lib/case";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { SiteMomentum } from "@/components/SiteMomentum";
+import { FindYourCase } from "@/components/FindYourCase";
 import { getOgImage } from "@/lib/og-images";
 import { SITE } from "@/lib/site";
 
@@ -121,6 +122,12 @@ export default async function J6MissionPage() {
               : ""}
           </p>
         ) : null}
+
+        {/* Find Your Case — the first question every defendant and family
+            member has: am I in here? Answer it before anything else. */}
+        <section className="mt-8">
+          <FindYourCase />
+        </section>
 
         {/* Live momentum panel — moved off the homepage feed so it lives where
             it makes thematic sense. Every tile clicks into the underlying list. */}

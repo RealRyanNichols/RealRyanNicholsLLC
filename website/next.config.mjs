@@ -29,8 +29,18 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: "/:path*",
+        // Everything EXCEPT /embed/* keeps the strict anti-framing headers.
+        source: "/((?!embed/).*)",
         headers: SECURITY_HEADERS,
+      },
+      {
+        // /embed/* exists to be iframed by other sites — same hardening minus
+        // X-Frame-Options, with frame-ancestors open instead.
+        source: "/embed/:path*",
+        headers: [
+          ...SECURITY_HEADERS.filter((h) => h.key !== "X-Frame-Options"),
+          { key: "Content-Security-Policy", value: "frame-ancestors *" },
+        ],
       },
     ];
   },

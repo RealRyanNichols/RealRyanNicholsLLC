@@ -8,8 +8,8 @@ import { usePathname } from "next/navigation";
 // the same lead pipeline as everything else.
 export function MobileSupportBar() {
   const pathname = usePathname();
-  // Visitor funnel only — never in the back office.
-  if (pathname.startsWith("/admin")) return null;
+  // Visitor funnel only — never in the back office or inside embeds.
+  if (pathname.startsWith("/admin") || pathname.startsWith("/embed")) return null;
   return (
     <div
       data-mobile-support-bar

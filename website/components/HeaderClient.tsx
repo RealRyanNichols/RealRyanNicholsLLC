@@ -54,6 +54,8 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const isAdminPath = pathname.startsWith("/admin");
+  // Embeds live inside other people's sites — no site chrome at all.
+  const isEmbedPath = pathname.startsWith("/embed");
   const officeHref = isAdmin ? "/admin" : "/account";
   const officeLabel = isAdmin ? "Admin Office" : "My Office";
 
@@ -83,6 +85,8 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
       delete document.body.dataset.mobileMenuOpen;
     };
   }, [open]);
+
+  if (isEmbedPath) return null;
 
   return (
     <>

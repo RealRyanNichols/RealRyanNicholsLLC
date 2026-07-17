@@ -511,7 +511,7 @@ export function RyanChat({
   const [open, setOpen] = useState(false);
   const [teaser, setTeaser] = useState(false);
   const pathname = usePathname();
-  const inAdmin = pathname.startsWith("/admin");
+  const inAdmin = pathname.startsWith("/admin") || pathname.startsWith("/embed");
 
   useEffect(() => {
     if (variant !== "launcher") return;
