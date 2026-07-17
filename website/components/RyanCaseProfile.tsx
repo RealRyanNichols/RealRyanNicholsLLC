@@ -359,16 +359,9 @@ export function RyanCaseProfile({
             <p className="text-[11px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
               Decorations
             </p>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {DECORATIONS.map((d) => (
-                <span
-                  key={d}
-                  className="rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-1 text-xs font-bold text-[var(--color-ink)]"
-                >
-                  🎖 {d}
-                </span>
-              ))}
-            </div>
+            <p className="mt-2 text-sm font-semibold leading-relaxed text-[var(--color-ink)]">
+              {DECORATIONS.join("   ·   ")}
+            </p>
           </div>
         </div>
 
@@ -620,6 +613,16 @@ export function RyanCaseProfile({
               paper: {
                 href: "/case?view=grievances",
                 label: `Read all ${totals.grievances} documented grievance patterns, with the scans`,
+              },
+            },
+            {
+              tag: "account" as const,
+              title: "First to put the discovery failures to Judge Hogan — with data, not rhetoric",
+              detail:
+                "By his account, he became the first January 6 defendant to stand at the defense table and lay the discovery problems in his own case directly before U.S. District Judge Thomas F. Hogan — not with argument, but with the data he had compiled from inside. The exhibits that carry that claim are in the file (EX-217, EX-218, EX-219, EX-022, EX-028).",
+              paper: {
+                href: "/case?view=documents",
+                label: "The discovery exhibits he put on the record",
               },
             },
             {
