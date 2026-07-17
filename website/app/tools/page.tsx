@@ -67,6 +67,48 @@ export default function ToolsPage() {
         </div>
       </section>
 
+      {/* Flagship standalone tools — full pages, shareable on their own. */}
+      <section className="mx-auto max-w-6xl px-3 pt-4 sm:px-6">
+        <div className="grid gap-3 sm:grid-cols-2">
+          <Link
+            href="/tools/share-card"
+            className="group rounded-2xl border-2 border-[var(--color-navy)]/25 bg-[var(--color-surface)] p-5 transition hover:border-[var(--color-navy)]"
+          >
+            <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--color-navy)]">
+              New · Share Card Generator
+            </p>
+            <p className="mt-1.5 font-display text-xl font-black leading-snug text-[var(--color-ink)]">
+              A billboard in your pocket.
+            </p>
+            <p className="mt-1.5 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+              Type a headline, download a branded card built for X, Facebook,
+              and texts. No design app.
+            </p>
+            <p className="mt-3 text-sm font-black text-[var(--color-navy)] transition group-hover:translate-x-0.5">
+              Make a card →
+            </p>
+          </Link>
+          <Link
+            href="/tools/records-request"
+            className="group rounded-2xl border-2 border-[var(--color-navy)]/25 bg-[var(--color-surface)] p-5 transition hover:border-[var(--color-navy)]"
+          >
+            <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--color-navy)]">
+              Records &amp; Bodycam Request
+            </p>
+            <p className="mt-1.5 font-display text-xl font-black leading-snug text-[var(--color-ink)]">
+              Release the bodycam.
+            </p>
+            <p className="mt-1.5 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+              A correctly-formatted public-records letter in 60 seconds — Texas
+              PIA or federal FOIA.
+            </p>
+            <p className="mt-3 text-sm font-black text-[var(--color-navy)] transition group-hover:translate-x-0.5">
+              Build the letter →
+            </p>
+          </Link>
+        </div>
+      </section>
+
       <section className="mx-auto max-w-6xl px-3 pt-4 sm:px-6">
         <BookCtaBand />
       </section>
