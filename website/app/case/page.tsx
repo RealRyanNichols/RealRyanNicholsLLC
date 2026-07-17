@@ -42,8 +42,12 @@ export async function generateMetadata({
   const override = await getOgImage(canonical);
 
   const settings = await getSiteSettings();
-  const fallbackOg = settings.case_og_url ?? `${SITE.url}/og/case-default.png`;
-  const ogImageUrl = override?.image_url ?? (settings.case_og_url ? fallbackOg : null);
+  // Self-created, self-hosted default card — /og/case renders a branded share
+  // image from live stats for any view, so no case page ships without one.
+  // Precedence: a pinned override wins, then the site setting, then the
+  // auto-generated card.
+  const autoOg = `${SITE.url}/og/case${sp.view ? `?view=${encodeURIComponent(sp.view)}` : ""}`;
+  const ogImageUrl = override?.image_url ?? settings.case_og_url ?? autoOg;
 
   const title = override?.title ?? "The J6 Case";
   const description = override?.description ?? CASE_DESCRIPTION;
