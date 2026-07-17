@@ -45,7 +45,9 @@ export async function generateMetadata({
     ? `Hey ${p.name} — your J6 Anti-Weaponization Case Builder profile is ready`
     : `${p.name} · ${p.role ?? "person of record"}`;
   const description = isUnclaimedJ6er
-    ? `${p.name} is a January 6 defendant. This profile is ready to be claimed and built out. Free, forever, no gatekeeping.`
+    ? p.description
+      ? p.description.replace(/\s+/g, " ").slice(0, 200)
+      : `${p.name} is a January 6 defendant. This profile is ready to be claimed and built out. Free, forever, no gatekeeping.`
     : p.description ?? `Person of record in United States v. Nichols.`;
   const ogUrl = `${SITE.url}/og/person/${p.slug}`;
   const ogImages = [
@@ -168,6 +170,22 @@ export default async function PersonPage({
             prompt={`Stand with ${p.name} — tap to react, no signup`}
           />
         </div>
+
+        {/* The record this profile already holds — researched, sourced, and
+            waiting for its owner. This is what makes the page worth finding,
+            sharing, and claiming. */}
+        {p.description ? (
+          <section className="mt-10">
+            <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[var(--color-navy)]">
+              The record, so far
+            </p>
+            <p className="mt-3 whitespace-pre-wrap text-base leading-relaxed text-[var(--color-ink-soft)] sm:text-lg">
+              {p.description}
+            </p>
+          </section>
+        ) : null}
+
+        <CaseInfoCard person={p} />
 
         <ClaimMeFooter name={p.name} />
       </article>
