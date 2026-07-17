@@ -127,6 +127,100 @@ export default async function CaseNexusPage() {
         initialError={initial.error ?? null}
       />
 
+      {/* Read the map — the key to every color, dot, and line on the board.
+          Dark investigation-board panel so the graph stops being a mystery. */}
+      <section className="mt-4 overflow-hidden rounded-xl border border-[#1f2f55] bg-[#0a1429] p-5 sm:p-6">
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-[#e1bd5b]">
+            Read the map
+          </p>
+          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#7c8aa6]">
+            Every dot and line, decoded
+          </p>
+        </div>
+
+        <div className="mt-4 grid gap-6 md:grid-cols-3">
+          {/* The dots */}
+          <div>
+            <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[#cfd9ea]">
+              The dots — who and what
+            </p>
+            <ul className="mt-3 space-y-2 text-sm text-[#dbe4f4]">
+              {[
+                ["#1f2f55", "Case", "A case number. Bigger = more defendants on it.", "ring"],
+                ["#e08658", "Defendant — unclaimed", "A person on the record; profile free to claim.", "dot"],
+                ["#e1bd5b", "Defendant — verified", "A profile claimed and confirmed.", "dot"],
+                ["#ffd166", "Defendant — pending", "A claim in review.", "dot"],
+                ["#7c8aa6", "Document", "A filing, order, exhibit, or scan.", "dot"],
+              ].map(([color, label, sub, shape]) => (
+                <li key={label} className="flex items-start gap-2.5">
+                  <span
+                    aria-hidden
+                    className={shape === "ring" ? "mt-0.5 h-3.5 w-3.5 flex-shrink-0 rounded-full border-2" : "mt-1 h-3 w-3 flex-shrink-0 rounded-full"}
+                    style={shape === "ring" ? { borderColor: "#3a557c", background: color } : { background: color }}
+                  />
+                  <span>
+                    <span className="font-bold text-white">{label}</span>
+                    <span className="block text-xs leading-snug text-[#9fb0cc]">{sub}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* The connectors */}
+          <div>
+            <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[#cfd9ea]">
+              The hubs — what they share
+            </p>
+            <ul className="mt-3 space-y-2 text-sm text-[#dbe4f4]">
+              {[
+                ["#e1bd5b", "Source", "The DOJ / salvaged record a case came from."],
+                ["#7fa9e3", "Court", "The court a case was filed in."],
+                ["#ffd166", "Facility", "A jail or prison in the record."],
+                ["#f08a8a", "Charge", "A charge shared across defendants."],
+                ["#d8c89e", "Agency · year · pattern", "Other shared threads that tie cases together."],
+              ].map(([color, label, sub]) => (
+                <li key={label} className="flex items-start gap-2.5">
+                  <span aria-hidden className="mt-1 h-3 w-3 flex-shrink-0 rounded-full" style={{ background: color }} />
+                  <span>
+                    <span className="font-bold text-white">{label}</span>
+                    <span className="block text-xs leading-snug text-[#9fb0cc]">{sub}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* How to work it */}
+          <div>
+            <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[#cfd9ea]">
+              How to work the board
+            </p>
+            <ul className="mt-3 space-y-2 text-sm text-[#dbe4f4]">
+              {[
+                ["Click", "any dot to open who it is and what it touches."],
+                ["Expand", "a node to pull its whole neighborhood onto the board."],
+                ["Search", "a name or case number to drop a new starting point."],
+                ["Focus / Fit", "to isolate one thread or frame the whole web."],
+              ].map(([verb, sub]) => (
+                <li key={verb} className="flex items-start gap-2.5">
+                  <span aria-hidden className="mt-1.5 h-2 w-6 flex-shrink-0 rounded-full bg-[#e1bd5b]" />
+                  <span>
+                    <span className="font-bold text-white">{verb}</span>{" "}
+                    <span className="text-xs leading-snug text-[#9fb0cc]">{sub}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4 text-xs leading-snug text-[#7c8aa6]">
+              Thicker, brighter lines are the strongest links — a shared source,
+              the same court, the same charge. Faint lines are looser threads.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {connectionTypes.map(([title, body]) => (
           <div
