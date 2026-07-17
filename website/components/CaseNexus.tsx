@@ -475,6 +475,11 @@ export function CaseNexus({
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchError, setSearchError] = useState<string | null>(null);
   const [graphError, setGraphError] = useState<string | null>(initialError);
+  // Investigation filters — toggle whole entity classes and label clutter off
+  // the board so you can isolate exactly what you're chasing.
+  const [showDocs, setShowDocs] = useState(true);
+  const [showHubs, setShowHubs] = useState(true);
+  const [showLabels, setShowLabels] = useState(true);
 
   const selectNode = useCallback(
     (id: string, origin: "graph" | "search") => {
@@ -900,6 +905,11 @@ export function CaseNexus({
                 {linksRef.current.map((l, i) => {
                   const sId = linkNodeId(l.source);
                   const tId = linkNodeId(l.target);
+                  const sType = (l.source as SimNode).node?.type;
+                  const tType = (l.target as SimNode).node?.type;
+                  const linkHidden =
+                    (!showDocs && (sType === "document" || tType === "document")) ||
+                    (!showHubs && (sType === "connector" || tType === "connector"));
                   const inFocus =
                     !selectedId ||
                     (selectedNeighborhood.has(sId) && selectedNeighborhood.has(tId));
@@ -915,20 +925,30 @@ export function CaseNexus({
                       y2={(l.target as SimNode).y ?? 0}
                       stroke={linkStroke(l.kind)}
                       strokeWidth={linkWidth(l.kind)}
-                      strokeOpacity={linkOpacity(l.kind, inFocus)}
+                      strokeOpacity={linkHidden ? 0 : linkOpacity(l.kind, inFocus)}
                     />
                   );
                 })}
                 {nodesRef.current.map((sn) => {
+                  const nType = sn.node.type;
+                  const nodeHidden =
+                    (!showDocs && nType === "document") ||
+                    (!showHubs && nType === "connector");
                   const isSelected = selectedId === sn.node.id;
                   const inFocus = !selectedId || selectedNeighborhood.has(sn.node.id);
                   const showLabel =
-                    sn.node.type === "connector" ||
-                    sn.node.type === "case" ||
-                    isSelected ||
-                    (selectedId && inFocus && sn.node.type === "defendant");
+                    showLabels &&
+                    !nodeHidden &&
+                    (sn.node.type === "connector" ||
+                      sn.node.type === "case" ||
+                      isSelected ||
+                      (selectedId && inFocus && sn.node.type === "defendant"));
                   return (
-                    <g key={sn.node.id} opacity={inFocus ? 1 : 0.22}>
+                    <g
+                      key={sn.node.id}
+                      opacity={nodeHidden ? 0 : inFocus ? 1 : 0.22}
+                      style={nodeHidden ? { pointerEvents: "none" } : undefined}
+                    >
                       <circle
                         data-nid={sn.node.id}
                         cx={sn.x ?? sn.targetX ?? 0}
@@ -981,6 +1001,20 @@ export function CaseNexus({
               {totalDocs > 0 ? ` · ${totalDocs} docs` : null}
               {selectedId ? ` · ${focusCount} in focus` : null}
             </div>
+          </div>
+
+          {/* Investigation filters — toggle whole classes off the board so you
+              can isolate exactly what you're chasing. */}
+          <div className="absolute right-3 top-3 z-10 flex flex-wrap justify-end gap-1.5">
+            <FilterChip on={showHubs} onClick={() => setShowHubs((v) => !v)}>
+              Hubs
+            </FilterChip>
+            <FilterChip on={showDocs} onClick={() => setShowDocs((v) => !v)}>
+              Docs
+            </FilterChip>
+            <FilterChip on={showLabels} onClick={() => setShowLabels((v) => !v)}>
+              Labels
+            </FilterChip>
           </div>
 
           <div className="absolute bottom-16 right-3 z-10 flex items-end gap-1.5 sm:bottom-3">
@@ -1303,6 +1337,32 @@ export function CaseNexus({
         </p>
       ) : null}
     </div>
+  );
+}
+
+function FilterChip({
+  on,
+  onClick,
+  children,
+}: {
+  on: boolean;
+  onClick: () => void;
+  children: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={on}
+      className={`rounded-full border px-2.5 py-1 text-[10px] font-black uppercase tracking-wider backdrop-blur transition ${
+        on
+          ? "border-[#e1bd5b] bg-[#e1bd5b]/15 text-[#e1bd5b]"
+          : "border-[#203a64] bg-[#071126]/80 text-[#7c8aa6] hover:border-[#3a557c] hover:text-[#cfd9ea]"
+      }`}
+    >
+      {on ? "● " : "○ "}
+      {children}
+    </button>
   );
 }
 
