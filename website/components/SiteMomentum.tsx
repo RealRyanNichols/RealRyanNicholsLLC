@@ -47,7 +47,9 @@ export async function SiteMomentum({ variant = "wide" }: { variant?: "wide" | "c
           { label: "Profiles ready to claim", value: profilesReady ?? 0, tone: "blue", href: "/case?view=people&filter=unclaimed" },
           { label: "Profiles verified", value: profilesClaimed ?? 0, tone: "ink", href: "/case?view=people&filter=verified" },
           { label: "Documents on file", value: documents ?? 0, tone: "ink", href: "/case?view=documents" },
-          { label: "Grievances filed", value: grievances ?? 0, tone: "ink", href: "/case?view=grievances" },
+          // t.grievances counts DOCUMENTED PATTERNS (34), not the 267 forms
+          // Ryan filed — label it as what it is so the number reads true.
+          { label: "Grievance patterns", value: grievances ?? 0, tone: "ink", href: "/case?view=grievances" },
           { label: "Total views", value: totalViews, tone: "accent", href: "/?sort=trending" },
           { label: "Total shares", value: totalShares, tone: "accent", href: "/?sort=trending" },
         ];

@@ -22,7 +22,7 @@ export const DECORATIONS = [
 export type Operation = { year: string; title: string; detail: string };
 
 export const OPERATIONS: Operation[] = [
-  { year: "2005", title: "Hurricane Katrina", detail: "His first rescue — at age 13." },
+  { year: "2005", title: "Hurricane Katrina", detail: "His first rescue — at age 14." },
   {
     year: "2012",
     title: "Okinawa typhoons",

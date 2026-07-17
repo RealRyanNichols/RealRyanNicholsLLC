@@ -84,7 +84,7 @@ export default function AboutPage() {
       {/* ---- At a glance ---- */}
       <section className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3">
         <Stat n="4" label="Years active-duty Marine" sub="2010–2014" />
-        <Stat n="2 dozen+" label="Disaster deployments" sub="Since age 13" />
+        <Stat n="2 dozen+" label="Disaster deployments" sub="Since age 14" />
         <Stat n="50+" label="Rescued in a single day" sub="Hurricane Sally" />
         <Stat n="25K+" label="Rescue the Universe supporters" sub="Before deplatforming" />
       </section>
@@ -291,7 +291,7 @@ export default function AboutPage() {
             He has participated in more than two dozen hurricane rescues and
             disaster relief efforts — saving lives, providing relief
             supplies, and showing up where help was needed. His first
-            hurricane rescue was at age 13, during Katrina. While serving in
+            hurricane rescue was at age 14, during Katrina. While serving in
             the Marines in Okinawa, he was on the ground for four typhoons,
             most notably Super Typhoon Jelawat.
           </p>

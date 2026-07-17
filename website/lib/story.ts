@@ -42,7 +42,7 @@ const ENRICHMENT: Record<string, Enrichment> = {
     context:
       "August 2005. Hurricane Katrina drowned the Gulf Coast — one of the deadliest and costliest storms in American history, with whole neighborhoods underwater from Louisiana to Mississippi.",
     involvement:
-      "Ryan was thirteen years old. This is where the record starts: his first rescue, years before the Marine Corps, decades before the case. The kid who went toward the water instead of away from it.",
+      "Ryan was fourteen years old. This is where the record starts: his first rescue, years before the Marine Corps, decades before the case. The kid who went toward the water instead of away from it.",
     significance:
       "Everything that follows — the Marine, the boat captain, the man wading into floodwater for strangers — traces back to this storm.",
   },
