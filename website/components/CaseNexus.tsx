@@ -480,6 +480,10 @@ export function CaseNexus({
   const [showDocs, setShowDocs] = useState(true);
   const [showHubs, setShowHubs] = useState(true);
   const [showLabels, setShowLabels] = useState(true);
+  // Trace-the-connection — pick two entities, light up the path between them.
+  const [traceMode, setTraceMode] = useState(false);
+  const [traceA, setTraceA] = useState<string | null>(null);
+  const [traceB, setTraceB] = useState<string | null>(null);
 
   const selectNode = useCallback(
     (id: string, origin: "graph" | "search") => {
@@ -490,6 +494,25 @@ export function CaseNexus({
       });
     },
     [],
+  );
+
+  // A click means one of two things: in trace mode it sets the two endpoints
+  // of a path; otherwise it selects the node the way it always has.
+  const onNodeClick = useCallback(
+    (id: string) => {
+      if (traceMode) {
+        if (!traceA || (traceA && traceB)) {
+          setTraceA(id);
+          setTraceB(null);
+        } else {
+          setTraceB(id);
+        }
+        trackEvent("nexus_trace_pick", {});
+        return;
+      }
+      selectNode(id, "graph");
+    },
+    [traceMode, traceA, traceB, selectNode],
   );
 
   // Seed the graph on mount.
@@ -745,6 +768,58 @@ export function CaseNexus({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedId, version]);
 
+  // BFS shortest path between the two trace endpoints over the visible link
+  // graph. Returns the ordered chain plus fast-lookup sets for rendering.
+  const tracePath = useMemo(() => {
+    if (!traceA || !traceB) return null;
+    const adj = new Map<string, string[]>();
+    for (const l of linksRef.current) {
+      const s = linkNodeId(l.source);
+      const t = linkNodeId(l.target);
+      if (!adj.has(s)) adj.set(s, []);
+      if (!adj.has(t)) adj.set(t, []);
+      adj.get(s)!.push(t);
+      adj.get(t)!.push(s);
+    }
+    const prev = new Map<string, string | null>([[traceA, null]]);
+    const queue: string[] = [traceA];
+    let found = traceA === traceB;
+    while (queue.length && !found) {
+      const cur = queue.shift()!;
+      for (const nb of adj.get(cur) ?? []) {
+        if (prev.has(nb)) continue;
+        prev.set(nb, cur);
+        if (nb === traceB) {
+          found = true;
+          break;
+        }
+        queue.push(nb);
+      }
+    }
+    if (!found) {
+      return { chain: [] as string[], nodes: new Set<string>(), edges: new Set<string>(), broken: true };
+    }
+    const chain: string[] = [];
+    const nodes = new Set<string>();
+    const edges = new Set<string>();
+    let cur: string | null = traceB;
+    while (cur) {
+      chain.push(cur);
+      nodes.add(cur);
+      const p: string | null = prev.get(cur) ?? null;
+      if (p) {
+        edges.add(`${p}::${cur}`);
+        edges.add(`${cur}::${p}`);
+      }
+      cur = p;
+    }
+    chain.reverse();
+    return { chain, nodes, edges, broken: false };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [traceA, traceB, version]);
+
+  const traceActive = !!(traceA && traceB && tracePath && !tracePath.broken);
+
   useEffect(() => {
     if (selectedId) return;
     if (nodesRef.current.length === 0) return;
@@ -910,6 +985,8 @@ export function CaseNexus({
                   const linkHidden =
                     (!showDocs && (sType === "document" || tType === "document")) ||
                     (!showHubs && (sType === "connector" || tType === "connector"));
+                  const onTrace =
+                    traceActive && tracePath!.edges.has(`${sId}::${tId}`);
                   const inFocus =
                     !selectedId ||
                     (selectedNeighborhood.has(sId) && selectedNeighborhood.has(tId));
@@ -923,9 +1000,17 @@ export function CaseNexus({
                       y1={(l.source as SimNode).y ?? 0}
                       x2={(l.target as SimNode).x ?? 0}
                       y2={(l.target as SimNode).y ?? 0}
-                      stroke={linkStroke(l.kind)}
-                      strokeWidth={linkWidth(l.kind)}
-                      strokeOpacity={linkHidden ? 0 : linkOpacity(l.kind, inFocus)}
+                      stroke={onTrace ? "#9df0c0" : linkStroke(l.kind)}
+                      strokeWidth={onTrace ? linkWidth(l.kind) + 1.6 : linkWidth(l.kind)}
+                      strokeOpacity={
+                        linkHidden
+                          ? 0
+                          : traceActive
+                            ? onTrace
+                              ? 1
+                              : 0.05
+                            : linkOpacity(l.kind, inFocus)
+                      }
                     />
                   );
                 })}
@@ -935,32 +1020,47 @@ export function CaseNexus({
                     (!showDocs && nType === "document") ||
                     (!showHubs && nType === "connector");
                   const isSelected = selectedId === sn.node.id;
+                  const isTraceEnd =
+                    traceMode && (sn.node.id === traceA || sn.node.id === traceB);
+                  const inPath = traceActive && tracePath!.nodes.has(sn.node.id);
+                  const emphasize = isSelected || isTraceEnd || inPath;
                   const inFocus = !selectedId || selectedNeighborhood.has(sn.node.id);
+                  const nodeOpacity = nodeHidden
+                    ? 0
+                    : traceActive
+                      ? inPath
+                        ? 1
+                        : 0.12
+                      : inFocus
+                        ? 1
+                        : 0.22;
                   const showLabel =
                     showLabels &&
                     !nodeHidden &&
-                    (sn.node.type === "connector" ||
+                    (inPath ||
+                      isTraceEnd ||
+                      sn.node.type === "connector" ||
                       sn.node.type === "case" ||
                       isSelected ||
                       (selectedId && inFocus && sn.node.type === "defendant"));
                   return (
                     <g
                       key={sn.node.id}
-                      opacity={nodeHidden ? 0 : inFocus ? 1 : 0.22}
+                      opacity={nodeOpacity}
                       style={nodeHidden ? { pointerEvents: "none" } : undefined}
                     >
                       <circle
                         data-nid={sn.node.id}
                         cx={sn.x ?? sn.targetX ?? 0}
                         cy={sn.y ?? sn.targetY ?? 0}
-                        r={nodeRadius(sn.node) + (isSelected ? 3 : 0)}
+                        r={nodeRadius(sn.node) + (emphasize ? 3 : 0)}
                         fill={nodeFill(sn.node)}
-                        stroke={nodeStroke(sn.node, isSelected)}
-                        strokeWidth={isSelected ? 3 : 1.2}
+                        stroke={isTraceEnd ? "#9df0c0" : nodeStroke(sn.node, isSelected)}
+                        strokeWidth={emphasize ? 3 : 1.2}
                         style={{ cursor: "pointer" }}
                         onClick={(e) => {
                           e.stopPropagation();
-                          selectNode(sn.node.id, "graph");
+                          onNodeClick(sn.node.id);
                         }}
                       >
                         <title>{nodeTitle(sn.node)}</title>
@@ -975,7 +1075,7 @@ export function CaseNexus({
                           fontSize={sn.node.type === "connector" ? "9" : sn.node.type === "case" ? "10" : "8"}
                           fontFamily="ui-monospace, monospace"
                           fontWeight={sn.node.type === "connector" || sn.node.type === "case" ? "800" : "600"}
-                          fill={isSelected ? "#ffffff" : "#d8e4f7"}
+                          fill={emphasize ? "#ffffff" : "#d8e4f7"}
                           paintOrder="stroke"
                           stroke="#071126"
                           strokeWidth="3"
@@ -1006,6 +1106,29 @@ export function CaseNexus({
           {/* Investigation filters — toggle whole classes off the board so you
               can isolate exactly what you're chasing. */}
           <div className="absolute right-3 top-3 z-10 flex flex-wrap justify-end gap-1.5">
+            <button
+              type="button"
+              onClick={() =>
+                setTraceMode((v) => {
+                  const next = !v;
+                  if (!next) {
+                    setTraceA(null);
+                    setTraceB(null);
+                  } else {
+                    setSelectedId(null);
+                  }
+                  return next;
+                })
+              }
+              aria-pressed={traceMode}
+              className={`rounded-full border px-2.5 py-1 text-[10px] font-black uppercase tracking-wider backdrop-blur transition ${
+                traceMode
+                  ? "border-[#9df0c0] bg-[#9df0c0]/15 text-[#9df0c0]"
+                  : "border-[#203a64] bg-[#071126]/80 text-[#7c8aa6] hover:border-[#3a557c] hover:text-[#cfd9ea]"
+              }`}
+            >
+              {traceMode ? "◆ Trace" : "◇ Trace"}
+            </button>
             <FilterChip on={showHubs} onClick={() => setShowHubs((v) => !v)}>
               Hubs
             </FilterChip>
@@ -1065,6 +1188,76 @@ export function CaseNexus({
         </div>
 
         <aside className="rounded-xl border-2 border-[#203a64] bg-[#0e1a36] p-3 text-[#cfd9ea] sm:p-4 xl:max-h-[min(44vh,480px)] xl:overflow-auto 2xl:max-h-[min(48vh,520px)]">
+          {traceMode ? (
+            <div className="mb-3 rounded-md border border-[#9df0c0]/50 bg-[#9df0c0]/10 p-3">
+              <div className="flex items-center justify-between">
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#9df0c0]">
+                  Trace the connection
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setTraceA(null);
+                    setTraceB(null);
+                    setTraceMode(false);
+                  }}
+                  className="text-[10px] font-bold uppercase tracking-wider text-[#7c8aa6] hover:text-white"
+                >
+                  Done
+                </button>
+              </div>
+              {!traceA ? (
+                <p className="mt-2 text-[11px] font-mono leading-relaxed text-[#cfe9d8]">
+                  Click the first entity on the board.
+                </p>
+              ) : !traceB ? (
+                <p className="mt-2 text-[11px] font-mono leading-relaxed text-[#cfe9d8]">
+                  Now click the second. I&apos;ll light up the path between them.
+                </p>
+              ) : tracePath && tracePath.broken ? (
+                <p className="mt-2 text-[11px] font-mono leading-relaxed text-[#ffd166]">
+                  No visible path between those two yet. Expand a node or add a
+                  clue to bridge them.
+                </p>
+              ) : tracePath ? (
+                <div className="mt-2">
+                  <p className="text-[11px] font-mono text-[#cfe9d8]">
+                    {tracePath.chain.length - 1} step
+                    {tracePath.chain.length - 1 === 1 ? "" : "s"} between them:
+                  </p>
+                  <ol className="mt-2 space-y-1">
+                    {tracePath.chain.map((id, idx) => {
+                      const n = nodesRef.current.find((nn) => nn.node.id === id)?.node;
+                      return (
+                        <li key={id} className="flex items-start gap-2 text-[11px]">
+                          <span className="mt-0.5 font-mono text-[#7c8aa6]">{idx + 1}.</span>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setTraceMode(false);
+                              setTraceA(null);
+                              setTraceB(null);
+                              selectNode(id, "graph");
+                            }}
+                            className="text-left font-bold text-white hover:text-[#9df0c0]"
+                          >
+                            {n ? nodeHeadline(n) : id}
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ol>
+                  <button
+                    type="button"
+                    onClick={() => fitMap(tracePath.nodes)}
+                    className="mt-2 rounded-full border border-[#9df0c0]/50 bg-[#071126] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#9df0c0] hover:bg-[#9df0c0]/10"
+                  >
+                    Fit the path
+                  </button>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
           <div className="relative">
             <label
               htmlFor="case-nexus-search"
