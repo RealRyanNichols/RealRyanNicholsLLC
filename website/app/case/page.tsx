@@ -298,11 +298,20 @@ export default async function CasePage({
           it cost him.
         </p>
 
+        {/* One unified stat block — the four headline numbers, then the four
+            secondary ones, adjacent. No buttons splitting them apart. */}
         <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl">
           <BigStat label="Days detained" value={totals.daysDetained.toLocaleString()} />
           <BigStat label="Grievances filed" value={String(totals.grievances)} />
           <BigStat label="Documents on file" value={String(totals.documents)} />
           <BigStat label="Co-detainees corroborating" value={String(totals.corroborators)} />
+        </div>
+
+        <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2 max-w-3xl">
+          <SmallStat label="Events" value={q ? filteredEvents.length : events.length} />
+          <SmallStat label="People named" value={q ? filteredPeople.length : totals.people} />
+          <SmallStat label="Facilities" value={totals.facilities} />
+          <SmallStat label="Federal officers on record (IGP broken)" value={2} />
         </div>
 
         <div className="mt-6 flex flex-wrap gap-3">
@@ -324,13 +333,6 @@ export default async function CasePage({
           >
             Wall of Corroborators →
           </Link>
-        </div>
-
-        <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2 max-w-2xl">
-          <SmallStat label="Events" value={q ? filteredEvents.length : events.length} />
-          <SmallStat label="People named" value={q ? filteredPeople.length : totals.people} />
-          <SmallStat label="Facilities" value={totals.facilities} />
-          <SmallStat label="Federal officers on record (IGP broken)" value={2} />
         </div>
 
         {/* PILLAR 1 — THE LEAD CASE. Ryan's own file is the main story this
@@ -380,38 +382,11 @@ export default async function CasePage({
           </Link>
         ) : null}
 
-        {/* PILLAR 2 — every other defendant. Front door to the full directory. */}
-        <Link
-          href="/case?view=people&filter=unclaimed"
-          className="mt-6 flex items-center justify-between gap-4 rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-5 hover:bg-[var(--color-accent)] transition group"
-        >
-          <div>
-            <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-accent)] group-hover:text-[var(--color-paper)]">
-              Every other defendant
-            </p>
-            <p className="mt-1 text-xl sm:text-2xl font-bold tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-paper)]">
-              Browse all J6 defendants →
-            </p>
-            <p className="mt-1 text-sm text-[var(--color-ink-soft)] group-hover:text-[var(--color-paper)]">
-              {people.filter((p) => p.is_j6_defendant).length.toLocaleString()}{" "}
-              defendant profiles on record. Find a name, claim a profile, build a
-              case.
-            </p>
-          </div>
-          <span
-            aria-hidden
-            className="text-3xl font-bold flex-shrink-0 text-[var(--color-accent)] group-hover:text-[var(--color-paper)]"
-          >
-            →
-          </span>
-        </Link>
-
-        {/* PILLAR 3 — the overall J6 story, on its own: the collective record
-            beyond any single defendant. */}
-        <div className="mt-10">
-          <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-muted)] font-bold mb-3">
-            The overall J6 story
-          </p>
+        {/* PILLAR 2 — every other defendant. One door to the whole archive
+            (the buggy duplicate directory card that showed a partial "1
+            defendant" count was removed; this branded banner carries the
+            correct count and the claim CTA). */}
+        <div className="mt-6">
           <J6Banner />
         </div>
 
