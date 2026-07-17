@@ -17,11 +17,11 @@ const TITLE =
 const DESCRIPTION =
   "A public evidence map for connecting J6 cases by case number, defendant, clue, witness statement, court document, video, picture, and archived record.";
 
-const connectionTypes = [
-  ["Court documents", "Dockets, filings, exhibits, orders, plea papers, sentencing records, and archived DOJ documents."],
-  ["Witness statements", "People who saw the same event, heard the same instruction, received the same treatment, or can confirm a timeline."],
-  ["Photos and videos", "Public clips, bodycam references, livestreams, still frames, metadata, timestamps, and location context."],
-  ["Shared clues", "Names, agencies, prosecutors, officers, facilities, dates, charges, locations, aliases, URLs, and repeated fact patterns."],
+const connectionTypes: { n: string; title: string; body: string; color: string }[] = [
+  { n: "01", title: "Court documents", color: "#7fa9e3", body: "Dockets, filings, exhibits, orders, plea papers, sentencing records, and archived DOJ documents." },
+  { n: "02", title: "Witness statements", color: "#e1bd5b", body: "People who saw the same event, heard the same instruction, received the same treatment, or can confirm a timeline." },
+  { n: "03", title: "Photos and videos", color: "#ffd166", body: "Public clips, bodycam references, livestreams, still frames, metadata, timestamps, and location context." },
+  { n: "04", title: "Shared clues", color: "#f08a8a", body: "Names, agencies, prosecutors, officers, facilities, dates, charges, locations, aliases, URLs, and repeated fact patterns." },
 ];
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -97,23 +97,32 @@ export default async function CaseNexusPage() {
             belongs.
           </p>
           <div className="mt-3 flex flex-wrap items-center gap-1.5">
-            {["Case", "Person", "Document", "Witness", "Video", "Photo", "Clue"].map((label) => (
+            {([
+              ["Case", "#1f2f55"],
+              ["Person", "#e08658"],
+              ["Document", "#7c8aa6"],
+              ["Witness", "#7fa9e3"],
+              ["Video", "#ffd166"],
+              ["Photo", "#f08a8a"],
+              ["Clue", "#e1bd5b"],
+            ] as const).map(([label, color]) => (
               <span
                 key={label}
-                className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-2.5 py-0.5 text-[11px] font-black uppercase tracking-normal text-[var(--color-ink)]"
+                className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] py-1 pl-2 pr-2.5 text-[11px] font-bold uppercase tracking-normal text-[var(--color-ink)]"
               >
+                <span aria-hidden className="h-2 w-2 rounded-full" style={{ background: color }} />
                 {label}
               </span>
             ))}
             <Link
               href="/submit"
-              className="rounded-full border border-[#e1bd5b] bg-[#e1bd5b] px-3 py-1 text-center text-xs font-black uppercase tracking-normal text-[#071126] transition hover:bg-[#9df0c0]"
+              className="rounded-full bg-[#e1bd5b] px-3.5 py-1.5 text-center text-xs font-black uppercase tracking-normal text-[#071126] shadow-sm transition hover:brightness-105"
             >
-              Add a clue
+              + Add a clue
             </Link>
             <Link
               href="/tell-your-story"
-              className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1 text-center text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[#e1bd5b] hover:text-[var(--color-accent)]"
+              className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3.5 py-1.5 text-center text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[#e1bd5b] hover:text-[var(--color-accent)]"
             >
               Tell story
             </Link>
@@ -221,20 +230,36 @@ export default async function CaseNexusPage() {
         </div>
       </section>
 
-      <section className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        {connectionTypes.map(([title, body]) => (
-          <div
-            key={title}
-            className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4"
-          >
-            <h2 className="font-display text-xl font-black tracking-normal">
-              {title}
-            </h2>
-            <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-              {body}
-            </p>
-          </div>
-        ))}
+      <section className="mt-5">
+        <p className="mb-3 text-xs font-black uppercase tracking-[0.18em] text-[var(--color-accent)]">
+          The four ways one case connects to another
+        </p>
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {connectionTypes.map((c) => (
+            <div
+              key={c.title}
+              className="group relative overflow-hidden rounded-xl border border-[#1f2f55] bg-[#0a1429] p-5 transition duration-200 hover:-translate-y-0.5 hover:border-[#3a557c]"
+            >
+              <span aria-hidden className="absolute inset-x-0 top-0 h-1" style={{ background: c.color }} />
+              <div className="flex items-center justify-between">
+                <span
+                  aria-hidden
+                  className="inline-flex h-7 w-7 items-center justify-center rounded-full text-[11px] font-black text-[#071126]"
+                  style={{ background: c.color }}
+                >
+                  {c.n}
+                </span>
+                <span aria-hidden className="h-2.5 w-2.5 rounded-full" style={{ background: c.color }} />
+              </div>
+              <h2 className="mt-3 font-display text-lg font-black tracking-normal text-white">
+                {c.title}
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-[#a9b7d0]">
+                {c.body}
+              </p>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* Share rail */}
