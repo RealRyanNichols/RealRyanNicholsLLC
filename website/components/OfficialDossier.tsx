@@ -116,7 +116,7 @@ export function OfficialDossier({
             <p className="text-[11px] font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
               {dossier.kicker}
             </p>
-            <h1 className="mt-1 font-display text-3xl font-black leading-tight tracking-tight sm:text-4xl">
+            <h1 className="mt-1 font-display text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl">
               {dossier.name}
             </h1>
             <p className="mt-1.5 text-sm font-semibold text-white/70">
