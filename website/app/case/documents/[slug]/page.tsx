@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { format } from "date-fns";
-import { getDocuments, getDocumentBySlug } from "@/lib/case";
+import { getDocumentBySlug } from "@/lib/case";
 import { ShareButton } from "@/components/ShareButton";
 import { CaseStats } from "@/components/CaseStats";
 import { CaseViewTracker } from "@/components/CaseViewTracker";
@@ -11,13 +11,12 @@ import { breadcrumbLd } from "@/lib/jsonld";
 import { SITE } from "@/lib/site";
 import { detectVideo } from "@/lib/video";
 import { EvidenceBadge } from "@/components/EvidenceBadge";
+import { getGateState } from "@/lib/gate";
+import { RecordWall } from "@/components/RecordWall";
 
-export const revalidate = 300;
-
-export async function generateStaticParams() {
-  const list = await getDocuments();
-  return list.map((d) => ({ slug: d.slug }));
-}
+// Rendered per request: crawlers get the full record, logged-out humans get
+// the summary + the wall. That branch cannot be baked at build time.
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -65,6 +64,7 @@ export default async function DocumentPage({
   const externalUrl = d.file_url ?? d.external_url;
   const proxiedImage = `/api/case-doc/${d.slug}/image`;
   const video = detectVideo(d.external_url);
+  const gate = await getGateState();
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
@@ -123,6 +123,7 @@ export default async function DocumentPage({
         <CaseStats views={d.views_count} shares={d.shares_count} />
       </div>
 
+      {gate.open ? (
       <figure className="mt-8 rounded-xl overflow-hidden border border-[var(--color-line)] bg-black">
         {video ? (
           <>
@@ -210,6 +211,16 @@ export default async function DocumentPage({
           </>
         )}
       </figure>
+      ) : (
+        <RecordWall
+          path={`/case/documents/${d.slug}`}
+          resourceType="document"
+          resourceSlug={d.slug}
+          title={d.title}
+          signedIn={gate.signedIn}
+          unconfirmed={gate.unconfirmed}
+        />
+      )}
 
       <div className="mt-10 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-ink-soft)]">
         This record stays public because the work sells, not begs —{" "}
