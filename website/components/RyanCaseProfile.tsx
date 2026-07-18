@@ -373,7 +373,36 @@ export function RyanCaseProfile({
           <h3 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight font-display">
             Two dozen-plus deployments. A partial record.
           </h3>
-          <ol className="mt-5 relative border-l-2 border-[var(--color-line)] ml-3 space-y-5">
+
+          {/* Decorative preview into the full rescue gallery on /the-story.
+              Screened, self-hosted photos — a glimpse of the work, not the wall. */}
+          <Link
+            href="/the-story"
+            aria-label="See the full rescue photo gallery — 54 images"
+            className="group mt-4 block"
+          >
+            <div className="grid grid-cols-4 gap-2">
+              {["006", "019", "031", "047"].map((n) => (
+                <div
+                  key={n}
+                  className="relative aspect-[4/3] overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)]"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={`/rescues/rescue-${n}.jpg`}
+                    alt="Ryan Nichols on a hurricane flood rescue, pulling people to safety"
+                    loading="lazy"
+                    className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.04]"
+                  />
+                </div>
+              ))}
+            </div>
+            <span className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-[var(--color-navy)] group-hover:underline">
+              The rescue record, in pictures — see all 54 →
+            </span>
+          </Link>
+
+          <ol className="mt-6 relative border-l-2 border-[var(--color-line)] ml-3 space-y-5">
             {OPERATIONS.map((op) => (
               <li key={op.title} className="relative pl-6">
                 <span className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full bg-[var(--color-accent)] ring-4 ring-[var(--color-paper)]" />
