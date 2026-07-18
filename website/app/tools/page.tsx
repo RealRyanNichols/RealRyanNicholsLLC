@@ -67,46 +67,29 @@ export default function ToolsPage() {
         </div>
       </section>
 
-      {/* Flagship standalone tools — full pages, shareable on their own. */}
+      {/* Flagship tool — the records generator, front and center */}
       <section className="mx-auto max-w-6xl px-3 pt-4 sm:px-6">
-        <div className="grid gap-3 sm:grid-cols-2">
-          <Link
-            href="/tools/share-card"
-            className="group rounded-2xl border-2 border-[var(--color-navy)]/25 bg-[var(--color-surface)] p-5 transition hover:border-[var(--color-navy)]"
-          >
-            <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--color-navy)]">
-              New · Share Card Generator
+        <Link
+          href="/tools/records-request"
+          className="group flex flex-wrap items-center justify-between gap-4 rounded-2xl border-2 border-[var(--color-navy)] bg-[var(--color-blue-soft)]/50 p-5 transition hover:border-[var(--color-accent)] sm:p-6"
+        >
+          <div className="min-w-0">
+            <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[var(--color-navy)]">
+              New · Free · No signup
             </p>
-            <p className="mt-1.5 font-display text-xl font-black leading-snug text-[var(--color-ink)]">
-              A billboard in your pocket.
+            <p className="mt-1 font-display text-xl font-black tracking-tight text-[var(--color-ink)] sm:text-2xl">
+              Records &amp; Bodycam Request Generator
             </p>
-            <p className="mt-1.5 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-              Type a headline, download a branded card built for X, Facebook,
-              and texts. No design app.
+            <p className="mt-1 max-w-2xl text-sm leading-relaxed text-[var(--color-ink-soft)]">
+              Bodycam. Dispatch. 911 audio. Jail medical. Grievances. Pick what
+              you need and walk away with a statute-correct request letter —
+              Texas Public Information Act or federal FOIA — ready to send.
             </p>
-            <p className="mt-3 text-sm font-black text-[var(--color-navy)] transition group-hover:translate-x-0.5">
-              Make a card →
-            </p>
-          </Link>
-          <Link
-            href="/tools/records-request"
-            className="group rounded-2xl border-2 border-[var(--color-navy)]/25 bg-[var(--color-surface)] p-5 transition hover:border-[var(--color-navy)]"
-          >
-            <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--color-navy)]">
-              Records &amp; Bodycam Request
-            </p>
-            <p className="mt-1.5 font-display text-xl font-black leading-snug text-[var(--color-ink)]">
-              Release the bodycam.
-            </p>
-            <p className="mt-1.5 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-              A correctly-formatted public-records letter in 60 seconds — Texas
-              PIA or federal FOIA.
-            </p>
-            <p className="mt-3 text-sm font-black text-[var(--color-navy)] transition group-hover:translate-x-0.5">
-              Build the letter →
-            </p>
-          </Link>
-        </div>
+          </div>
+          <span className="btn-accent shrink-0 rounded-full px-5 py-2.5 text-sm font-bold">
+            Build my letter →
+          </span>
+        </Link>
       </section>
 
       <section className="mx-auto max-w-6xl px-3 pt-4 sm:px-6">
