@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { pageMetadata } from "@/lib/page-metadata";
+import { RescueGallery } from "@/components/RescueGallery";
 
 export const metadata: Metadata = pageMetadata({
   title: "The Story — Ryan Nichols, All of It",
@@ -217,6 +218,25 @@ export default function TheStoryPage() {
             </p>
           </Link>
         ))}
+      </section>
+
+      {/* The rescue record, in pictures — screened set, self-hosted on-domain */}
+      <section className="mt-14">
+        <p className="text-xs font-black uppercase tracking-[0.25em] text-[var(--color-accent)]">
+          The rescue record · in pictures
+        </p>
+        <h2 className="mt-2 font-display text-3xl font-black leading-tight tracking-tight sm:text-4xl">
+          Before he was a case number, he ran toward the water.
+        </h2>
+        <p className="mt-3 max-w-2xl text-base leading-relaxed text-[var(--color-ink-soft)]">
+          Hurricane after hurricane — boats in the floodline, strangers pulled to
+          safety, the children he went in to save. Two dozen deployments, one
+          calling. This is the record of the work, straight off the drive. Tap
+          any photo to open it.
+        </p>
+        <div className="mt-6">
+          <RescueGallery count={54} />
+        </div>
       </section>
 
       {/* The why */}
