@@ -17,9 +17,11 @@ import { ClaimMeHero, ClaimMeFooter } from "@/components/ClaimMeHero";
 import { CaseInfoCard } from "@/components/CaseInfoCard";
 import { ReactionBar } from "@/components/ReactionBar";
 import { RyanCaseProfile } from "@/components/RyanCaseProfile";
+import { OfficialDossier } from "@/components/OfficialDossier";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbLd, websiteRef } from "@/lib/jsonld";
 import { SUBJECT_SLUG } from "@/lib/bio";
+import { officialFor } from "@/lib/officials";
 import { SITE } from "@/lib/site";
 
 export const revalidate = 300;
@@ -93,6 +95,45 @@ export default async function PersonPage({
     ]);
     return (
       <RyanCaseProfile person={p} evidence={evidence} totals={totals} posts={posts} url={url} />
+    );
+  }
+
+  // Public officials of record get a full dossier — the "Wall of Shame" record,
+  // documented in their official capacity and labeled claim-by-claim. Overrides
+  // the generic person template.
+  const dossier = officialFor(p.slug);
+  if (dossier) {
+    const officialLd = [
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfilePage",
+        "@id": `${url}#profile`,
+        url,
+        name: `${p.name} — United States v. Nichols`,
+        isPartOf: websiteRef(),
+        mainEntity: {
+          "@type": "Person",
+          name: p.name,
+          url,
+          ...(p.role ? { jobTitle: p.role } : {}),
+          ...(p.agency
+            ? { worksFor: { "@type": "Organization", name: p.agency } }
+            : {}),
+          description: dossier.standfirst,
+        },
+      },
+      breadcrumbLd([
+        { name: "The J6 Case", url: `${SITE.url}/case` },
+        { name: "People", url: `${SITE.url}/case?view=people` },
+        { name: p.name, url },
+      ]),
+    ];
+    return (
+      <>
+        <CaseViewTracker type="person" slug={p.slug} />
+        <JsonLd data={officialLd} />
+        <OfficialDossier dossier={dossier} person={p} url={url} />
+      </>
     );
   }
 
