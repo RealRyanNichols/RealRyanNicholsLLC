@@ -39,6 +39,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const staticEntries: MetadataRoute.Sitemap = [
     { url: `${SITE.url}/`, lastModified: now, changeFrequency: "daily", priority: 1.0 },
+    { url: `${SITE.url}/the-story`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
+    { url: `${SITE.url}/about`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${SITE.url}/tools/records-request`, lastModified: now, changeFrequency: "weekly", priority: 0.85 },
     { url: `${SITE.url}/case`, lastModified: now, changeFrequency: "daily", priority: 0.95 },
     { url: `${SITE.url}/case/brief`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
     { url: `${SITE.url}/case/damages`, lastModified: now, changeFrequency: "weekly", priority: 0.95 },
@@ -48,8 +51,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE.url}/fights`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     { url: `${SITE.url}/the-map-room`, lastModified: now, changeFrequency: "daily", priority: 0.85 },
     { url: `${SITE.url}/tools`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${SITE.url}/tools/records-request`, lastModified: now, changeFrequency: "weekly", priority: 0.85 },
-    { url: `${SITE.url}/tools/share-card`, lastModified: now, changeFrequency: "weekly", priority: 0.85 },
     { url: `${SITE.url}/tell-your-story`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     { url: `${SITE.url}/submit`, lastModified: now, changeFrequency: "weekly", priority: 0.85 },
     { url: `${SITE.url}/contact`, lastModified: now, changeFrequency: "weekly", priority: 0.85 },
