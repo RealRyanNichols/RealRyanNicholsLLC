@@ -36,6 +36,7 @@ function LoginPageInner() {
   const [displayName, setDisplayName] = useState("");
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
+  const [audienceRole, setAudienceRole] = useState("");
 
   useEffect(() => {
     setState({ kind: "idle" });
@@ -79,6 +80,9 @@ function LoginPageInner() {
         if (!fullName.trim() || !displayName.trim() || !username.trim()) {
           throw new Error("Full name, display name, and username are required.");
         }
+        if (!audienceRole) {
+          throw new Error("Tell me who you are so I know who the archive is reaching.");
+        }
         if (!/^[a-zA-Z0-9][a-zA-Z0-9_-]{2,29}$/.test(username)) {
           throw new Error(
             "Username must be 3–30 characters, letters/numbers/underscore/dash, not starting with a dash."
@@ -93,6 +97,8 @@ function LoginPageInner() {
               full_name: fullName.trim(),
               display_name: displayName.trim(),
               username: username.trim().toLowerCase(),
+              audience_role: audienceRole,
+              registered_from_path: next,
             },
           },
         });
@@ -186,6 +192,30 @@ function LoginPageInner() {
             />
             <p className="mt-1.5 text-xs text-[var(--color-muted)]">
               Required. Only admins see this — used to verify you&apos;re a real person, not a sockpuppet.
+            </p>
+
+            <label htmlFor="login-role" className="mt-4 text-xs uppercase tracking-wider text-[var(--color-muted)] block mb-2">
+              Who are you?
+            </label>
+            <select
+              id="login-role"
+              required
+              value={audienceRole}
+              onChange={(e) => setAudienceRole(e.target.value)}
+              className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm"
+            >
+              <option value="">Choose one…</option>
+              <option value="defendant">January 6 defendant</option>
+              <option value="family">Family of a defendant</option>
+              <option value="attorney">Attorney or legal worker</option>
+              <option value="journalist">Journalist or media</option>
+              <option value="researcher">Researcher or historian</option>
+              <option value="supporter">Supporter / here for the record</option>
+              <option value="other">Something else</option>
+            </select>
+            <p className="mt-1.5 text-xs text-[var(--color-muted)]">
+              This tells me who the archive is actually reaching. J6 defendants and
+              families always get their profile free.
             </p>
 
             <label htmlFor="login-displayname" className="mt-4 text-xs uppercase tracking-wider text-[var(--color-muted)] block mb-2">
