@@ -19,6 +19,7 @@ type Offer = { href: string; label: string };
 // Four clear doors — the whole primary navigation. No mega-menus, no slider.
 const DOORS: Door[] = [
   { href: "/", label: "Feed", desc: "Posts, video, and receipts" },
+  { href: "/the-story", label: "The Story", desc: "One life, told whole — with receipts" },
   { href: "/case", label: "Case", desc: "Timeline, people, documents" },
   { href: "/videos", label: "Watch", desc: "Video drops and live" },
   {
@@ -54,8 +55,6 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const isAdminPath = pathname.startsWith("/admin");
-  // Embeds live inside other people's sites — no site chrome at all.
-  const isEmbedPath = pathname.startsWith("/embed");
   const officeHref = isAdmin ? "/admin" : "/account";
   const officeLabel = isAdmin ? "Admin Office" : "My Office";
 
@@ -85,8 +84,6 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
       delete document.body.dataset.mobileMenuOpen;
     };
   }, [open]);
-
-  if (isEmbedPath) return null;
 
   return (
     <>
