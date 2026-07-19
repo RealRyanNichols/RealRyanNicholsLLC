@@ -1281,38 +1281,58 @@ function PaginationControls({
 }
 
 function DocumentsView({ documents }: { documents: Awaited<ReturnType<typeof getDocuments>> }) {
+  // The archive is visual — nearly every record on file is a scan. Show the
+  // paper, not a paragraph about the paper. Fixed 4:3 wells keep every card
+  // the same shape no matter what the underlying scan measures, so the grid
+  // stays square on a phone and on a desktop.
   return (
-    <div className="space-y-2">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {documents.map((d) => (
         <Link
           key={d.id}
           href={`/case/documents/${d.slug}`}
-          className="block rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-accent)] transition p-4"
+          className="group flex flex-col overflow-hidden rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] transition hover:border-[var(--color-accent)] hover:shadow-md"
         >
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-accent)]">
+          <div className="relative aspect-[4/3] w-full overflow-hidden bg-black">
+            {d.file_url ? (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                src={`/api/case-doc/${d.slug}/image`}
+                alt={d.title}
+                loading="lazy"
+                className="h-full w-full object-cover object-top transition duration-300 group-hover:scale-[1.03]"
+              />
+            ) : (
+              <div className="flex h-full w-full flex-col items-center justify-center gap-1.5 bg-gradient-to-br from-[#16223f] to-[#0b1428] px-3 text-center">
+                <span className="text-[10px] font-black uppercase tracking-[0.18em] text-white/70">
                   {d.doc_type}
                 </span>
-                {d.document_date ? (
-                  <span className="text-xs text-[var(--color-muted)]">
-                    {format(new Date(d.document_date), "MMM d, yyyy")}
-                  </span>
-                ) : null}
+                <span className="text-[9px] leading-snug text-white/40">
+                  Official record — served from the court docket
+                </span>
               </div>
-              <h2 className="text-base font-semibold">{d.title}</h2>
-              {d.description ? (
-                <p className="mt-1 text-sm text-[var(--color-ink-soft)] leading-relaxed">
-                  {d.description}
-                </p>
-              ) : null}
-              {d.source ? (
-                <p className="mt-1 text-xs text-[var(--color-muted)]">{d.source}</p>
-              ) : null}
-            </div>
-            <span className="text-[var(--color-accent)] text-sm font-semibold whitespace-nowrap">
-              Open →
+            )}
+            <span className="absolute left-2 top-2 rounded bg-black/75 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-[0.12em] text-white backdrop-blur-sm">
+              {d.doc_type}
+            </span>
+          </div>
+
+          <div className="flex flex-1 flex-col p-3.5">
+            {d.document_date ? (
+              <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--color-accent)]">
+                {format(new Date(d.document_date), "MMM d, yyyy")}
+              </p>
+            ) : null}
+            <h2 className="mt-1 line-clamp-2 text-sm font-bold leading-snug tracking-tight text-[var(--color-ink)] transition group-hover:text-[var(--color-navy)]">
+              {d.title}
+            </h2>
+            {d.description ? (
+              <p className="mt-1.5 line-clamp-2 text-xs leading-snug text-[var(--color-ink-soft)]">
+                {d.description}
+              </p>
+            ) : null}
+            <span className="mt-auto pt-2.5 text-xs font-bold text-[var(--color-navy)]">
+              Open the record →
             </span>
           </div>
         </Link>
