@@ -46,6 +46,18 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      // --- Consolidation: duplicate doors merged into one. Permanent (308) so
+      // search engines move the ranking to the survivor instead of splitting it.
+      // NOTE: "/case/people" matches only the exact path — individual profiles
+      // at /case/people/<slug> are untouched.
+      { source: "/case/briefing", destination: "/case/brief", permanent: true },
+      {
+        source: "/evidence-the-doj-tried-to-erase",
+        destination: "/case/the-salvaged-doj-record",
+        permanent: true,
+      },
+      { source: "/jan-6", destination: "/j6", permanent: true },
+      { source: "/case/people", destination: "/case?view=people", permanent: true },
       // Canonical host is the apex. Without this, www serves a full duplicate
       // of every page and search engines split ranking signal between the two.
       {
