@@ -1293,25 +1293,27 @@ function DocumentsView({ documents }: { documents: Awaited<ReturnType<typeof get
           href={`/case/documents/${d.slug}`}
           className="group flex flex-col overflow-hidden rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] transition hover:border-[var(--color-accent)] hover:shadow-md"
         >
-          <div className="relative aspect-[4/3] w-full overflow-hidden bg-black">
+          <div className="relative aspect-[4/3] w-full overflow-hidden">
+            {/* The plate always renders underneath. If the scan is missing or
+                the image request fails, this is what shows — a designed tile,
+                never a broken icon or raw alt text bleeding over black. */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 bg-gradient-to-br from-[#16223f] to-[#0b1428] px-3 text-center">
+              <span className="text-[10px] font-black uppercase tracking-[0.18em] text-white/70">
+                {d.doc_type}
+              </span>
+              <span className="text-[9px] leading-snug text-white/40">
+                Record on file — open to view
+              </span>
+            </div>
             {d.file_url ? (
               /* eslint-disable-next-line @next/next/no-img-element */
               <img
                 src={`/api/case-doc/${d.slug}/image`}
-                alt={d.title}
+                alt=""
                 loading="lazy"
-                className="h-full w-full object-cover object-top transition duration-300 group-hover:scale-[1.03]"
+                className="absolute inset-0 h-full w-full bg-black object-cover object-top transition duration-300 group-hover:scale-[1.03]"
               />
-            ) : (
-              <div className="flex h-full w-full flex-col items-center justify-center gap-1.5 bg-gradient-to-br from-[#16223f] to-[#0b1428] px-3 text-center">
-                <span className="text-[10px] font-black uppercase tracking-[0.18em] text-white/70">
-                  {d.doc_type}
-                </span>
-                <span className="text-[9px] leading-snug text-white/40">
-                  Official record — served from the court docket
-                </span>
-              </div>
-            )}
+            ) : null}
             <span className="absolute left-2 top-2 rounded bg-black/75 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-[0.12em] text-white backdrop-blur-sm">
               {d.doc_type}
             </span>
