@@ -21,14 +21,20 @@ export async function ProfileHero() {
 
   return (
     <section className="relative overflow-hidden rounded-3xl border border-[var(--color-line)] bg-gradient-to-br from-[var(--color-surface-2)] to-[var(--color-surface)]">
-      <div className="relative h-14 sm:h-20 w-full overflow-hidden">
+      <div
+        className={
+          hasCover
+            ? "relative aspect-[3/1] w-full overflow-hidden bg-[#0b1428]"
+            : "relative h-14 w-full overflow-hidden sm:h-20"
+        }
+      >
         {hasCover ? (
           <Image
             src={coverUrl!}
             alt=""
             fill
             sizes="(min-width: 1024px) 768px, 100vw"
-            className="object-cover"
+            className="object-contain"
             priority
             unoptimized={coverUrl!.startsWith("http")}
           />
@@ -40,7 +46,9 @@ export async function ProfileHero() {
           style={{ background: "var(--color-accent-glow)" }}
           aria-hidden
         />
-        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[var(--color-surface)]/95 to-transparent" />
+        {!hasCover ? (
+          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[var(--color-surface)]/95 to-transparent" />
+        ) : null}
       </div>
 
       <div className="relative px-5 sm:px-6 pb-5 -mt-7 sm:-mt-9">
@@ -64,11 +72,23 @@ export async function ProfileHero() {
               RN
             </div>
           )}
-          <div className="flex-1 min-w-0 pb-0.5">
-            <h1 className="font-display text-2xl sm:text-3xl font-black tracking-tight leading-none">
+          <div className={hasCover ? "flex-1 min-w-0" : "flex-1 min-w-0 pb-0.5"}>
+            <h1
+              className={
+                hasCover
+                  ? "sr-only"
+                  : "font-display text-2xl font-black leading-none tracking-tight sm:text-3xl"
+              }
+            >
               {SITE.name}
             </h1>
-            <p className="mt-1 text-[11px] font-black uppercase tracking-[0.04em] text-[var(--color-accent)] sm:text-xs">
+            <p
+              className={
+                hasCover
+                  ? "sr-only"
+                  : "mt-1 text-[11px] font-black uppercase tracking-[0.04em] text-[var(--color-accent)] sm:text-xs"
+              }
+            >
               {SITE.tagline}
             </p>
           </div>
