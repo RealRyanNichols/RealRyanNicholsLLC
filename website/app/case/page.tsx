@@ -286,21 +286,78 @@ export default async function CasePage({
           <J6ClaimDirectoryHero counts={j6Counts} activeFilter={j6Filter} />
         ) : (
           <>
-        <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
-          The case · United States v. Nichols
+        {/* Two ways in. A visitor decides in one glance instead of reading a
+            paragraph first — one door to Ryan's own file, one to the whole
+            archive. Everything else on this page sits below the choice. */}
+        <p className="text-[11px] font-black uppercase tracking-[0.24em] text-[var(--color-accent)]">
+          The January 6 Files
         </p>
-        <h1 className="mt-2 text-4xl sm:text-6xl font-bold tracking-tight leading-[1.02]">
-          {totals.daysDetained.toLocaleString()} days. Ten facilities. Full presidential pardon. Charges dismissed with prejudice.
+        <h1 className="mt-2 font-display text-4xl font-black leading-[0.95] tracking-tight sm:text-6xl">
+          Where do you
+          <br />
+          want to start?
         </h1>
-        <p className="mt-4 text-base sm:text-lg text-[var(--color-ink-soft)] max-w-3xl leading-relaxed">
-          Ryan Nichols — United States Marine Corps veteran, founder of Wholesale Universe, Inc.
-          (a multi-million-dollar wholesale/retail company), Texas Search and Rescue specialist,
-          father. Convicted under the previous administration. <strong>Pardoned by President Trump
-          on January 20, 2025.</strong> Charges <strong>dismissed with prejudice</strong> by U.S.
-          Attorney Edward R. Martin Jr. — the case cannot be brought again. This is the documented
-          record of what the previous administration did to him in the years between — and what
-          it cost him.
+        <p className="mt-3 text-base font-semibold text-[var(--color-ink-soft)]">
+          Two ways in. Both free, both public.
         </p>
+
+        <div className="mt-7 grid gap-4 sm:grid-cols-2">
+          {/* Door 1 — the anchor case */}
+          <Link
+            href="/case/people/ryan-nichols"
+            className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-[#0b1428] p-6 text-white transition hover:shadow-xl sm:p-7"
+          >
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
+                One man&rsquo;s case
+              </p>
+              <p className="mt-3 font-display text-5xl font-black leading-none tracking-tight">
+                {totals.daysDetained.toLocaleString()}
+              </p>
+              <p className="mt-1 text-xs font-bold uppercase tracking-[0.14em] text-white/55">
+                days detained
+              </p>
+              <p className="mt-4 text-sm leading-snug text-white/75">
+                Arrest to pardon. The filings, the grievances, the ten facilities
+                &mdash; and the judge who said it out loud.
+              </p>
+            </div>
+            <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-black text-[var(--color-accent)]">
+              Read Ryan&rsquo;s case
+              <span aria-hidden className="transition group-hover:translate-x-1">
+                &rarr;
+              </span>
+            </span>
+          </Link>
+
+          {/* Door 2 — everyone else */}
+          <Link
+            href="/case?view=people"
+            className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border-2 border-[var(--color-navy)]/25 bg-[var(--color-blue-soft)]/50 p-6 transition hover:border-[var(--color-navy)] hover:shadow-xl sm:p-7"
+          >
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-navy)]">
+                Everyone else
+              </p>
+              <p className="mt-3 font-display text-5xl font-black leading-none tracking-tight text-[var(--color-ink)]">
+                {j6Counts.total.toLocaleString()}
+              </p>
+              <p className="mt-1 text-xs font-bold uppercase tracking-[0.14em] text-[var(--color-muted)]">
+                defendants indexed
+              </p>
+              <p className="mt-4 text-sm leading-snug text-[var(--color-ink-soft)]">
+                Search every January 6 case on file. Find a name, claim a
+                profile, or read the whole record.
+              </p>
+            </div>
+            <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-black text-[var(--color-navy)]">
+              Search the archive
+              <span aria-hidden className="transition group-hover:translate-x-1">
+                &rarr;
+              </span>
+            </span>
+          </Link>
+        </div>
 
         {/* One unified stat block — the four headline numbers, then the four
             secondary ones, adjacent. No buttons splitting them apart. */}
