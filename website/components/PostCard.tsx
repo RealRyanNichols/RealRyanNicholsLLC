@@ -282,13 +282,19 @@ function PhotoGrid({ media }: { media: MediaItem[] }) {
   if (media.length === 0) return null;
   if (media.length === 1) {
     const m = media[0];
+    // The well reserves its height before the photo arrives. Without this the
+    // image lands at zero height, then snaps to full size and shoves the rest
+    // of the feed down the page — the single biggest layout-shift source here.
     return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img
-        src={m.url}
-        alt={m.alt ?? ""}
-        className="w-full rounded-lg max-h-[600px] object-cover border border-[var(--color-line)]"
-      />
+      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={m.url}
+          alt={m.alt ?? ""}
+          loading="lazy"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+      </div>
     );
   }
   const count = Math.min(media.length, 4);
