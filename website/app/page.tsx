@@ -1,4 +1,4 @@
-import { getPublishedPosts, getCommentCount } from "@/lib/posts";
+import { getPublishedPosts, getCommentCounts } from "@/lib/posts";
 import { getOgImages } from "@/lib/og-images";
 import { PostCard } from "@/components/PostCard";
 import { ProfileHero } from "@/components/ProfileHero";
@@ -32,10 +32,7 @@ export default async function HomePage({
   // Custom OG thumbnails keyed by post path — used as feed-card art for
   // text-only posts (PostCard ignores it when the body has its own visual).
   const ogMap = new Map(ogImages.map((o) => [o.path, o.image_url]));
-  const counts = await Promise.all(
-    posts.map(async (p) => [p.id, await getCommentCount(p.id)] as const),
-  );
-  const countMap = new Map(counts);
+  const countMap = await getCommentCounts(posts.map((p) => p.id));
   const emailSignupEnabled = SITE.emailCaptureEnabled;
 
   // Pinned posts float to the top of the feed; everything else follows in
