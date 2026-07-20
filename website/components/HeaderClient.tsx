@@ -18,9 +18,9 @@ type Offer = { href: string; label: string };
 
 // Four clear doors — the whole primary navigation. No mega-menus, no slider.
 const DOORS: Door[] = [
-  { href: "/", label: "Feed", desc: "Posts, video, and receipts" },
-  { href: "/the-story", label: "The Story", desc: "One life, told whole — with receipts" },
-  { href: "/case", label: "Case", desc: "Timeline, people, documents" },
+  { href: "/", label: "Latest", desc: "Posts, video, and receipts" },
+  { href: "/the-story", label: "My Story", desc: "One life, told whole — with receipts" },
+  { href: "/case", label: "J6 Files", desc: "Ryan's case and the full J6 archive" },
   { href: "/videos", label: "Watch", desc: "Video drops and live" },
   {
     href: "/tell-your-story",
@@ -132,9 +132,10 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
               href="/search"
               aria-label="Search"
               aria-current={isActive(pathname, "/search") ? "page" : undefined}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-md text-[var(--color-ink-soft)] transition hover:bg-[var(--color-accent-soft)] hover:text-[var(--color-accent)]"
+              className="inline-flex h-9 items-center gap-1.5 rounded-full border border-[var(--color-line)] px-3 text-xs font-semibold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-soft)] hover:text-[var(--color-accent)]"
             >
               <MagnifierIcon />
+              <span>Search</span>
             </Link>
 
             {OFFERS.map((o) => (
