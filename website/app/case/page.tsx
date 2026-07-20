@@ -16,6 +16,7 @@ import { getSiteSettings } from "@/lib/site-settings";
 import { getOgImage, canonicalPath } from "@/lib/og-images";
 import { SITE } from "@/lib/site";
 import { RyanCaseProfile } from "@/components/RyanCaseProfile";
+import { J6PathSplit } from "@/components/J6PathSplit";
 import { getDocumentsForPerson } from "@/lib/case";
 import { getPublishedPosts } from "@/lib/posts";
 import { SUBJECT_SLUG } from "@/lib/bio";
@@ -108,19 +109,29 @@ export default async function CasePage({
   if (!view && !q) {
     const ryan = await getPersonBySlug(SUBJECT_SLUG);
     if (ryan) {
-      const [evidence, totals, posts] = await Promise.all([
+      const [evidence, totals, posts, allPeople] = await Promise.all([
         getDocumentsForPerson(ryan.id),
         getCaseTotals(),
         getPublishedPosts(),
+        getPeople(),
       ]);
+      const defendantCount = allPeople.filter((p) => p.is_j6_defendant).length;
       return (
-        <RyanCaseProfile
-          person={ryan}
-          evidence={evidence}
-          totals={totals}
-          posts={posts}
-          url={`${SITE.url}/case`}
-        />
+        <>
+          <J6PathSplit
+            daysDetained={totals.daysDetained}
+            defendants={defendantCount}
+          />
+          <div id="the-case" className="scroll-mt-4">
+            <RyanCaseProfile
+              person={ryan}
+              evidence={evidence}
+              totals={totals}
+              posts={posts}
+              url={`${SITE.url}/case`}
+            />
+          </div>
+        </>
       );
     }
   }
