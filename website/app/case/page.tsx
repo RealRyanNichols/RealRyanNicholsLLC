@@ -770,6 +770,64 @@ function TabLink({
   );
 }
 
+const PEOPLE_GROUPS: { label: string; match: (agency: string | null) => boolean; lead: string }[] = [
+  {
+    label: "Executive",
+    match: (a) => !!a && /^executive/i.test(a),
+    lead: "The Presidential pardon and the Anti-Weaponization Fund originate here.",
+  },
+  {
+    label: "Judiciary",
+    match: (a) => !!a && /district court/i.test(a),
+    lead: "Federal judges who presided over the case and were the subject of defense motions.",
+  },
+  {
+    label: "Prosecution",
+    match: (a) => !!a && /u\.?s\.? attorney/i.test(a),
+    lead: "Federal prosecutors of record in United States v. Nichols.",
+  },
+  {
+    label: "Defense Counsel",
+    match: (a) => !!a && /private counsel/i.test(a),
+    lead: "Defense attorneys representing Ryan and other January 6 defendants.",
+  },
+  {
+    label: "Capitol Police / MPD (January 6)",
+    match: (a) => !!a && /capitol police|mpd/i.test(a),
+    lead: "Officers from the events at the U.S. Capitol on January 6, 2021 — named in the bodycam discovery record.",
+  },
+  {
+    label: "DC DOC / Detention Staff",
+    match: (a) => !!a && /(dc doc|doc medical|igp)/i.test(a),
+    lead: "Detention staff named in the documented grievances.",
+  },
+  {
+    label: "Rappahannock & Northern Neck",
+    match: (a) => !!a && /(rappahannock|northern neck)/i.test(a),
+    lead: "Staff at the second and third facilities Ryan was moved through after the unannounced September 2022 transfer.",
+  },
+  {
+    label: "U.S. Marshals",
+    match: (a) => !!a && /marshals/i.test(a),
+    lead: "Federal officers tied to specific incidents inside the facilities — including the witness statement acknowledging the IGP is broken.",
+  },
+  {
+    label: "Co-defendants & Fellow Detainees",
+    match: (a) => !!a && /(c-2b|^dc doc$|harkrider|defend|j6 detainee|sibick witness)/i.test(a),
+    lead: "Co-defendants on the indictment and detainees who signed witness statements.",
+  },
+  {
+    label: "January 6 Capitol Crowd",
+    match: (a) => !!a && /january 6 capitol crowd/i.test(a),
+    lead: "Civilian figures from the Capitol events on January 6.",
+  },
+  {
+    label: "Family",
+    match: (a) => !!a && /family/i.test(a),
+    lead: "Family members directly affected.",
+  },
+];
+
 function PeopleView({
   people,
   j6Filter,
