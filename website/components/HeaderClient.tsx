@@ -21,10 +21,10 @@ const DOORS: Door[] = [
   { href: "/", label: "Latest", desc: "Posts, video, and receipts" },
   { href: "/the-story", label: "My Story", desc: "One life, told whole — with receipts" },
   { href: "/case", label: "J6 Files", desc: "Ryan's case and the full J6 archive" },
-  { href: "/videos", label: "Watch", desc: "Video drops and live" },
+  { href: "/videos", label: "Videos", desc: "Video drops and live" },
   {
     href: "/tell-your-story",
-    label: "Tell Your Story",
+    label: "Get Your Free Profile",
     desc: "Get it off your chest — anonymous ok",
   },
 ];
