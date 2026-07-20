@@ -20,6 +20,9 @@ const CHAPTERS: {
   href: string;
   cta: string;
   tone?: "dark" | "light";
+  // Only set when a REAL, verified photo of that era exists. Chapters without
+  // one get a designed era plate — never a photo from the wrong year.
+  image?: string;
 }[] = [
   {
     era: "2005",
@@ -54,6 +57,7 @@ const CHAPTERS: {
     ],
     href: "/story/hurricane-florence-2018",
     cta: "The rescue operations log →",
+    image: "/rescues/rescue-047.jpg",
   },
   {
     era: "2014–2021",
@@ -181,17 +185,41 @@ export default function TheStoryPage() {
 
       {/* Chapters */}
       <section className="mt-14 space-y-6">
-        {CHAPTERS.map((c) => (
+        {CHAPTERS.map((c, idx) => (
           <Link
             key={c.kicker}
             href={c.href}
             className={[
-              "group block rounded-2xl border-2 p-6 transition sm:p-8",
+              "group grid gap-5 rounded-2xl border-2 p-6 transition sm:grid-cols-[168px_minmax(0,1fr)] sm:p-8",
               c.tone === "dark"
                 ? "border-[var(--color-navy)]/40 bg-[var(--color-blue-soft)]/40 hover:border-[var(--color-navy)]"
                 : "border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-accent)]",
             ].join(" ")}
           >
+            {/* Fixed 4:3 well — a real photo when one exists for that era,
+                otherwise a numbered chapter plate. Height is reserved either
+                way, so the page never jumps as images load. */}
+            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-[var(--color-line)]">
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-[#16223f] to-[#0b1428]">
+                <span className="font-display text-4xl font-black leading-none text-white/90">
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
+                <span className="mt-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
+                  {c.era}
+                </span>
+              </div>
+              {c.image ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  src={c.image}
+                  alt={`Ryan Nichols — ${c.title}`}
+                  loading="lazy"
+                  className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-[1.04]"
+                />
+              ) : null}
+            </div>
+
+            <div className="min-w-0">
             <div className="flex items-baseline justify-between gap-3">
               <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
                 {c.kicker}
@@ -216,6 +244,7 @@ export default function TheStoryPage() {
             <p className="mt-4 text-sm font-bold text-[var(--color-navy)] transition group-hover:text-[var(--color-accent)]">
               {c.cta}
             </p>
+            </div>
           </Link>
         ))}
       </section>
