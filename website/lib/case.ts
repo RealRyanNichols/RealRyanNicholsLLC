@@ -159,7 +159,7 @@ export async function getJ6PeoplePage({
   page = 1,
   pageSize = 120,
 }: {
-  claimStatus: "unclaimed" | "verified" | "pending";
+  claimStatus: "all" | "unclaimed" | "verified" | "pending";
   q?: string;
   page?: number;
   pageSize?: number;
@@ -175,8 +175,13 @@ export async function getJ6PeoplePage({
     .from("case_people")
     .select(PERSON_COLS, { count: "exact" })
     .eq("visibility", "public")
-    .eq("is_j6_defendant", true)
-    .eq("claim_status", claimStatus)
+    .eq("is_j6_defendant", true);
+
+  if (claimStatus !== "all") {
+    request = request.eq("claim_status", claimStatus);
+  }
+
+  request = request
     .order("name", { ascending: true })
     .range(from, to);
 
@@ -198,17 +203,25 @@ export async function getJ6PeoplePage({
 
 export async function getJ6ClaimCounts(): Promise<{
   total: number;
+  withCaseNumber: number;
   unclaimed: number;
   verified: number;
   pending: number;
 }> {
   const supabase = getSupabaseStaticClient();
-  const [total, unclaimed, verified, pending] = await Promise.all([
+  const [total, withCaseNumber, unclaimed, verified, pending] = await Promise.all([
     supabase
       .from("case_people")
       .select("id", { count: "exact", head: true })
       .eq("visibility", "public")
       .eq("is_j6_defendant", true),
+    supabase
+      .from("case_people")
+      .select("id", { count: "exact", head: true })
+      .eq("visibility", "public")
+      .eq("is_j6_defendant", true)
+      .not("case_number", "is", null)
+      .neq("case_number", ""),
     supabase
       .from("case_people")
       .select("id", { count: "exact", head: true })
@@ -231,6 +244,7 @@ export async function getJ6ClaimCounts(): Promise<{
 
   return {
     total: total.count ?? 0,
+    withCaseNumber: withCaseNumber.count ?? 0,
     unclaimed: unclaimed.count ?? 0,
     verified: verified.count ?? 0,
     pending: pending.count ?? 0,

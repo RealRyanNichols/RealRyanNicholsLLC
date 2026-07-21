@@ -150,11 +150,11 @@ export default async function CasePage({
     rawFilter === "pending"
       ? rawFilter
       : "all";
-  const isJ6ClaimDirectory = tab === "people" && j6Filter !== "all";
+  const isJ6ClaimDirectory = tab === "people";
 
   if (isJ6ClaimDirectory) {
     const [j6Page, j6Counts] = await Promise.all([
-      getJ6PeoplePage({ claimStatus: j6Filter, q, page, pageSize: 120 }),
+      getJ6PeoplePage({ claimStatus: j6Filter, q, page, pageSize: 48 }),
       getJ6ClaimCounts(),
     ]);
 
@@ -172,7 +172,9 @@ export default async function CasePage({
             className="mt-6 flex flex-col gap-2 sm:flex-row"
           >
             <input type="hidden" name="view" value="people" />
-            <input type="hidden" name="filter" value={j6Filter} />
+            {j6Filter !== "all" ? (
+              <input type="hidden" name="filter" value={j6Filter} />
+            ) : null}
             <input
               type="search"
               name="q"
@@ -188,7 +190,11 @@ export default async function CasePage({
             </button>
             {q ? (
               <Link
-                href={`/case?view=people&filter=${j6Filter}`}
+                href={
+                  j6Filter === "all"
+                    ? "/case?view=people"
+                    : `/case?view=people&filter=${j6Filter}`
+                }
                 className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-4 text-sm font-bold text-[var(--color-ink-soft)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
               >
                 Clear
@@ -212,7 +218,14 @@ export default async function CasePage({
             <TabLink active={false} href="/case?view=timeline">
               Timeline
             </TabLink>
-            <TabLink active href={`/case?view=people&filter=${j6Filter}`}>
+            <TabLink
+              active
+              href={
+                j6Filter === "all"
+                  ? "/case?view=people"
+                  : `/case?view=people&filter=${j6Filter}`
+              }
+            >
               People
             </TabLink>
             <TabLink active={false} href="/case?view=documents">
@@ -231,7 +244,7 @@ export default async function CasePage({
           </div>
         </div>
 
-        <PeopleView
+        <J6DefendantsView
           people={j6Page.people}
           j6Filter={j6Filter}
           q={q}
@@ -290,6 +303,7 @@ export default async function CasePage({
   const j6People = people.filter((p) => p.is_j6_defendant);
   const j6Counts = {
     total: j6People.length,
+    withCaseNumber: j6People.filter((p) => Boolean(p.case_number)).length,
     unclaimed: j6People.filter((p) => p.claim_status === "unclaimed").length,
     verified: j6People.filter((p) => p.claim_status === "verified").length,
     pending: j6People.filter((p) => p.claim_status === "pending").length,
@@ -631,8 +645,14 @@ function J6ClaimDirectoryHero({
   counts,
   activeFilter,
 }: {
-  counts: { total: number; unclaimed: number; verified: number; pending: number };
-  activeFilter: "unclaimed" | "verified" | "pending";
+  counts: {
+    total: number;
+    withCaseNumber: number;
+    unclaimed: number;
+    verified: number;
+    pending: number;
+  };
+  activeFilter: "all" | "unclaimed" | "verified" | "pending";
 }) {
   const isUnclaimed = activeFilter === "unclaimed";
   const kicker =
@@ -640,19 +660,25 @@ function J6ClaimDirectoryHero({
       ? "Verified defendants"
       : activeFilter === "pending"
         ? "Claims under review"
-        : "J6 defendants · get in here";
+        : activeFilter === "unclaimed"
+          ? "J6 defendants · get in here"
+          : "The January 6 People Archive";
   const title =
     activeFilter === "verified"
       ? "These J6 defendants are already building their public record."
       : activeFilter === "pending"
         ? "These claims are waiting on verification."
-        : "If you have the facts and evidence, build your case here.";
+        : activeFilter === "unclaimed"
+          ? "If you have the facts and evidence, build your case here."
+          : "Search every name. Open the record. Help complete what is missing.";
   const lead =
     activeFilter === "verified"
       ? "A verified profile becomes a living case file: testimony, court documents, photos, videos, links, dates, witnesses, and updates in one place."
       : activeFilter === "pending"
         ? "Claims do not go public until Ryan verifies the person against the docket and public record. That protects the defendants and keeps the archive credible."
-        : "Every J6 defendant should have a place to organize what happened in plain English. Find your name, claim your profile, and start turning scattered facts into a record people can inspect.";
+        : activeFilter === "unclaimed"
+          ? "Every J6 defendant should have a place to organize what happened in plain English. Find your name, claim your profile, and start turning scattered facts into a record people can inspect."
+          : "A searchable, evidence-first directory of public January 6 profiles. Find a person by name or case number, inspect the available record, and help fill an honest gap with a source.";
 
   return (
     <section className="overflow-hidden rounded-2xl border-2 border-[#1f2f55] bg-[#071123] text-[#fdf8ea] shadow-2xl">
@@ -714,7 +740,7 @@ function J6ClaimDirectoryHero({
 
         <div className="grid grid-cols-2 gap-px bg-white/10 sm:grid-cols-4 lg:grid-cols-2">
           <J6HeroStat label="Total J6 profiles" value={counts.total} tone="blue" />
-          <J6HeroStat label="Ready to claim" value={counts.unclaimed} tone="gold" />
+          <J6HeroStat label="Docket numbers" value={counts.withCaseNumber} tone="gold" />
           <J6HeroStat label="Verified" value={counts.verified} tone="green" />
           <J6HeroStat label="Under review" value={counts.pending} tone="blue" />
         </div>
@@ -945,7 +971,7 @@ function J6DefendantsView({
   pageSize = people.length || 1,
 }: {
   people: Awaited<ReturnType<typeof getPeople>>;
-  j6Filter: "unclaimed" | "verified" | "pending";
+  j6Filter: "all" | "unclaimed" | "verified" | "pending";
   q: string;
   totalCount?: number;
   page?: number;
@@ -956,13 +982,17 @@ function J6DefendantsView({
   const first = shownTotal === 0 ? 0 : (page - 1) * pageSize + 1;
   const last = Math.min(shownTotal, first + people.length - 1);
   const heading =
-    j6Filter === "unclaimed"
+    j6Filter === "all"
+      ? `${shownTotal.toLocaleString()} searchable January 6 profiles`
+      : j6Filter === "unclaimed"
       ? `${shownTotal.toLocaleString()} J6 defendant profiles waiting to be claimed`
       : j6Filter === "verified"
         ? `${shownTotal.toLocaleString()} J6 defendants verified`
         : `${shownTotal.toLocaleString()} J6 claims pending review`;
   const lead =
-    j6Filter === "unclaimed"
+    j6Filter === "all"
+      ? "The public directory, ordered A–Z. Search a name, case number, or role; open the profile; then contribute a source if the record is incomplete."
+      : j6Filter === "unclaimed"
       ? "Profiles ready for the defendant to claim and build out. Every claim is checked against the DOJ docket and public record before approval."
       : j6Filter === "verified"
         ? "Defendants who have claimed and verified their profile. Their case archive is theirs."
@@ -998,12 +1028,11 @@ function J6DefendantsView({
       {/* Sub-filter pills */}
       <nav className="mb-5 flex flex-wrap gap-2">
         {(["unclaimed", "verified", "pending", "all"] as const).map((f) => {
-          const active = f === "all" ? false : f === j6Filter;
-          const allActive = f === "all";
+          const active = f === j6Filter;
           const href = `/case?view=people${f !== "all" ? `&filter=${f}` : ""}${q ? `&q=${encodeURIComponent(q)}` : ""}`;
           const label =
             f === "all"
-              ? "All people (grouped)"
+              ? "All J6 profiles"
               : f === "unclaimed"
                 ? "Ready to claim"
                 : f === "verified"
@@ -1017,9 +1046,7 @@ function J6DefendantsView({
                 "rounded-full px-3 py-1.5 text-xs font-bold border-2 transition",
                 active
                   ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)]"
-                  : allActive
-                    ? "border-[var(--color-line)] hover:border-[var(--color-accent)]"
-                    : "border-[var(--color-line)] hover:border-[var(--color-accent)]",
+                  : "border-[var(--color-line)] hover:border-[var(--color-accent)]",
               ].join(" ")}
             >
               {label}
@@ -1150,15 +1177,12 @@ function PaginationControls({
 }: {
   page: number;
   pageCount: number;
-  j6Filter: "unclaimed" | "verified" | "pending";
+  j6Filter: "all" | "unclaimed" | "verified" | "pending";
   q: string;
 }) {
   const hrefFor = (nextPage: number) => {
-    const params = new URLSearchParams({
-      view: "people",
-      filter: j6Filter,
-      page: String(nextPage),
-    });
+    const params = new URLSearchParams({ view: "people", page: String(nextPage) });
+    if (j6Filter !== "all") params.set("filter", j6Filter);
     if (q) params.set("q", q);
     return `/case?${params.toString()}`;
   };

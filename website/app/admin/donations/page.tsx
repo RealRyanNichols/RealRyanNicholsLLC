@@ -69,7 +69,7 @@ export default async function AdminDonationsPage() {
 
   const key = process.env.STRIPE_SECRET_KEY;
 
-  // Supporter memberships are tracked in the app regardless of Stripe.
+  // Supporter status can be granted manually; it is not a paid membership.
   const { data: supporters } = await supabase
     .from("profiles")
     .select("display_name, username, supporter_since")
@@ -184,7 +184,7 @@ export default async function AdminDonationsPage() {
           <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-3">
             <Stat label="Total raised (last 100 gifts)" value={usd(totalCents)} accent />
             <Stat label="One-time gifts" value={String(chargeCount)} />
-            <Stat label="Supporter memberships" value={String(supporterCount)} />
+            <Stat label="Supporters" value={String(supporterCount)} />
           </div>
 
           <section className="mt-8">
@@ -311,10 +311,10 @@ export default async function AdminDonationsPage() {
         )}
       </section>
 
-      {/* Supporter memberships — always available from the app DB */}
+      {/* Manually recognized supporters — no paid membership is offered. */}
       <section className="mt-10">
         <h2 className="text-lg font-bold tracking-tight mb-1">
-          Supporter memberships
+          Supporters
         </h2>
         <p className="text-xs text-[var(--color-muted)] mb-3">
           {supporterCount} active {supporterCount === 1 ? "supporter" : "supporters"}.
@@ -322,7 +322,7 @@ export default async function AdminDonationsPage() {
         </p>
         {supporterCount === 0 ? (
           <p className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 text-sm text-[var(--color-ink-soft)] italic">
-            No active supporter memberships yet.
+            No active supporters yet.
           </p>
         ) : (
           <ul className="rounded-2xl border border-[var(--color-line)] divide-y divide-[var(--color-line)]">

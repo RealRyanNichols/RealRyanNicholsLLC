@@ -50,7 +50,6 @@ export function getIntegrationHealth(): IntegrationGroup[] {
 
   const stripeKey = present(e.STRIPE_SECRET_KEY);
   const stripeWebhook = present(e.STRIPE_WEBHOOK_SECRET);
-  const supporterPrice = present(e.STRIPE_SUPPORTER_PRICE_ID);
 
   const serviceRole = present(e.SUPABASE_SERVICE_ROLE_KEY);
   const supaUrl = present(e.NEXT_PUBLIC_SUPABASE_URL);
@@ -154,19 +153,6 @@ export function getIntegrationHealth(): IntegrationGroup[] {
           missing: missing([[stripeWebhook, "STRIPE_WEBHOOK_SECRET"]]),
           where:
             "Stripe → Developers → Webhooks → add endpoint /api/stripe/webhook, then copy its signing secret into STRIPE_WEBHOOK_SECRET in Vercel.",
-        },
-        {
-          id: "supporter",
-          label: "Membership ($5/mo)",
-          status: supporterPrice ? "ok" : "off",
-          critical: false,
-          summary: supporterPrice
-            ? "Connected — the $5/mo membership checkout works."
-            : "The $5/mo membership API errors out (a hardcoded Stripe payment link may still work). One-time donations are unaffected.",
-          unlocks: "The recurring $5/month supporter subscription via native checkout.",
-          missing: missing([[supporterPrice, "STRIPE_SUPPORTER_PRICE_ID"]]),
-          where:
-            "In Stripe, create a recurring $5/mo Price, then paste its price_… id into STRIPE_SUPPORTER_PRICE_ID in Vercel.",
         },
       ],
     },
