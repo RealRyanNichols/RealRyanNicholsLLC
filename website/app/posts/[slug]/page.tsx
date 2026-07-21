@@ -73,6 +73,30 @@ function firstPostShareImage(post: Post): string | null {
   );
 }
 
+function relatedPostScore(current: Post, candidate: Post): number {
+  let score = 0;
+  if (current.category && candidate.category === current.category) score += 8;
+
+  const currentTags = new Set(
+    (current.tags ?? []).map((tag) => tag.trim().toLowerCase()).filter(Boolean),
+  );
+  for (const tag of candidate.tags ?? []) {
+    if (currentTags.has(tag.trim().toLowerCase())) score += 3;
+  }
+
+  const currentCase = CASE_HINT.test(
+    [current.title, current.category, ...(current.tags ?? [])].filter(Boolean).join(" "),
+  );
+  const candidateCase = CASE_HINT.test(
+    [candidate.title, candidate.category, ...(candidate.tags ?? [])]
+      .filter(Boolean)
+      .join(" "),
+  );
+  if (currentCase === candidateCase) score += 2;
+
+  return score;
+}
+
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
@@ -159,7 +183,16 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
     supabase.rpc("post_live_pulse", { p_path: path }),
     getOgImage(path),
   ]);
-  const readNext = allPosts.filter((p) => p.id !== post.id).slice(0, 4);
+  const readNext = allPosts
+    .filter((p) => p.id !== post.id)
+    .map((candidate, index) => ({
+      candidate,
+      index,
+      score: relatedPostScore(post, candidate),
+    }))
+    .sort((a, b) => b.score - a.score || a.index - b.index)
+    .slice(0, 4)
+    .map(({ candidate }) => candidate);
   const caseHaystack = [post.title, post.category, ...(post.tags ?? [])]
     .filter(Boolean)
     .join(" ");
@@ -304,6 +337,10 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
         <ViewTracker slug={post.slug} />
         <PostMain post={post} />
 
+        {/* Give a reader the strongest relevant next click while the story is
+            still fresh. Sales, signup, reactions, and comments remain below. */}
+        <ReadNext posts={readNext} caseLinks={caseLinks} />
+
         {post.category === "Investigation" ? (
           <StoryTipCTA subject={post.title ?? undefined} />
         ) : null}
@@ -332,7 +369,6 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
           </p>
           <ShareButton url={postUrl} title={displayTitle} slug={post.slug} shares={post.shares_count ?? 0} />
         </div>
-        <ReadNext posts={readNext} caseLinks={caseLinks} />
         <section className="mt-12 border-t border-[var(--color-line)] pt-8">
           <h2 className="text-xl font-semibold mb-4">Comments</h2>
           <CommentForm postId={post.id} signedIn={signedIn} />
