@@ -158,8 +158,7 @@ export function getIntegrationHealth(): IntegrationGroup[] {
     },
     {
       group: "Database",
-      blurb:
-        "Where everything is read and written. Messages and notes post here.",
+      blurb: "Where everything is read and written. Messages and notes post here.",
       checks: [
         {
           id: "supabase-public",
@@ -196,8 +195,7 @@ export function getIntegrationHealth(): IntegrationGroup[] {
     },
     {
       group: "Media & extras",
-      blurb:
-        "Optional. The core site (reading, contact, donations) runs without these.",
+      blurb: "Optional. The core site (reading, contact, donations) runs without these.",
       checks: [
         {
           id: "mux",
@@ -229,8 +227,7 @@ export function getIntegrationHealth(): IntegrationGroup[] {
             : "The AI briefings page returns 503 (the rest of the site is unaffected).",
           unlocks: "The AI-generated case briefings at /case/briefing.",
           missing: missing([[anthropic, "ANTHROPIC_API_KEY"]]),
-          where:
-            "console.anthropic.com → API keys. Set ANTHROPIC_API_KEY in Vercel.",
+          where: "console.anthropic.com → API keys. Set ANTHROPIC_API_KEY in Vercel.",
         },
         {
           id: "admin-emails",
@@ -240,8 +237,7 @@ export function getIntegrationHealth(): IntegrationGroup[] {
           summary: adminEmails
             ? "Set — listed emails get author tools."
             : "No ADMIN_EMAILS set (admin is then driven only by the Supabase admin_emails table).",
-          unlocks:
-            "Author-only tools for whoever signs in with a listed email.",
+          unlocks: "Author-only tools for whoever signs in with a listed email.",
           missing: missing([[adminEmails, "ADMIN_EMAILS"]]),
           where:
             "Comma-separated emails in ADMIN_EMAILS (Vercel). Also seed public.admin_emails in Supabase so row-level security agrees.",

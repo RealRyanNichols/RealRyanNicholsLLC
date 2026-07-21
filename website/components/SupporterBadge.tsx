@@ -1,4 +1,8 @@
-export function SupporterBadge({ size = "sm" }: { size?: "xs" | "sm" | "md" }) {
+export function SupporterBadge({
+  size = "sm",
+}: {
+  size?: "xs" | "sm" | "md";
+}) {
   const cls =
     size === "xs"
       ? "text-[9px] px-1.5 py-px"

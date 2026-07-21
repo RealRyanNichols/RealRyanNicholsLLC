@@ -28,8 +28,7 @@ import { SUBJECT_SLUG } from "@/lib/bio";
 
 export const revalidate = 300;
 
-const CASE_TITLE =
-  "The J6 Case · United States v. Nichols & every defendant who joins";
+const CASE_TITLE = "The J6 Case · United States v. Nichols & every defendant who joins";
 const CASE_DESCRIPTION =
   "The master January 6 case archive. Starts with United States v. Nichols — every filed grievance, every named official, every event, every document. Other J6 defendants are joining and stacking their cases in. The full record, in public, free.";
 
@@ -101,19 +100,9 @@ function matchesQuery(q: string, ...fields: (string | null | undefined)[]) {
 export default async function CasePage({
   searchParams,
 }: {
-  searchParams: Promise<{
-    view?: string;
-    q?: string;
-    filter?: string;
-    page?: string;
-  }>;
+  searchParams: Promise<{ view?: string; q?: string; filter?: string; page?: string }>;
 }) {
-  const {
-    view,
-    q: rawQ,
-    filter: rawFilter,
-    page: rawPage,
-  } = await searchParams;
+  const { view, q: rawQ, filter: rawFilter, page: rawPage } = await searchParams;
   const q = (rawQ ?? "").trim();
   const page = Math.max(1, Number.parseInt(rawPage ?? "1", 10) || 1);
 
@@ -248,10 +237,7 @@ export default async function CasePage({
               href="/case/nexus"
               className="inline-flex items-center gap-1.5 rounded-full border-2 border-[#1f2f55] bg-[#0a1429] px-3.5 py-1.5 text-xs font-bold text-[#cfd9ea] transition hover:border-[#e1bd5b] hover:text-[#e1bd5b]"
             >
-              <span
-                className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[#e1bd5b]"
-                aria-hidden
-              />
+              <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[#e1bd5b]" aria-hidden />
               View as graph
               <span aria-hidden>→</span>
             </Link>
@@ -270,28 +256,25 @@ export default async function CasePage({
     );
   }
 
-  const [grievances, people, events, documents, totals, siteSettings] =
-    await Promise.all([
-      getGrievances(),
-      tab === "people" || q
-        ? getPeople()
-        : getPersonBySlug("ryan-nichols").then((p) => (p ? [p] : [])),
-      getEvents(),
-      getDocuments(),
-      getCaseTotals(),
-      getSiteSettings(),
-    ]);
+  const [grievances, people, events, documents, totals, siteSettings] = await Promise.all([
+    getGrievances(),
+    tab === "people" || q ? getPeople() : getPersonBySlug("ryan-nichols").then((p) => (p ? [p] : [])),
+    getEvents(),
+    getDocuments(),
+    getCaseTotals(),
+    getSiteSettings(),
+  ]);
   const ryan = people.find((p) => p.slug === "ryan-nichols") ?? null;
   const ryanPhoto = siteSettings.avatar_url ?? null;
 
   const filteredGrievances = q
     ? grievances.filter((g) =>
-        matchesQuery(q, g.title, g.summary, g.body, g.category),
+        matchesQuery(q, g.title, g.summary, g.body, g.category)
       )
     : grievances;
   const filteredPeopleByQ = q
     ? people.filter((p) =>
-        matchesQuery(q, p.name, p.role, p.agency, p.description),
+        matchesQuery(q, p.name, p.role, p.agency, p.description)
       )
     : people;
   const filteredPeople =
@@ -301,11 +284,13 @@ export default async function CasePage({
           (p) => p.is_j6_defendant && p.claim_status === j6Filter,
         );
   const filteredEvents = q
-    ? events.filter((e) => matchesQuery(q, e.title, e.description, e.location))
+    ? events.filter((e) =>
+        matchesQuery(q, e.title, e.description, e.location)
+      )
     : events;
   const filteredDocuments = q
     ? documents.filter((d) =>
-        matchesQuery(q, d.title, d.description, d.doc_type, d.source),
+        matchesQuery(q, d.title, d.description, d.doc_type, d.source)
       )
     : documents;
 
@@ -331,250 +316,221 @@ export default async function CasePage({
           <J6ClaimDirectoryHero counts={j6Counts} activeFilter={j6Filter} />
         ) : (
           <>
-            {/* Two ways in. A visitor decides in one glance instead of reading a
+        {/* Two ways in. A visitor decides in one glance instead of reading a
             paragraph first — one door to Ryan's own file, one to the whole
             archive. Everything else on this page sits below the choice. */}
-            <p className="text-[11px] font-black uppercase tracking-[0.24em] text-[var(--color-accent)]">
-              The January 6 Files
-            </p>
-            <h1 className="mt-2 font-display text-4xl font-black leading-[0.95] tracking-tight sm:text-6xl">
-              Where do you
-              <br />
-              want to start?
-            </h1>
-            <p className="mt-3 text-base font-semibold text-[var(--color-ink-soft)]">
-              Two ways in. Both free, both public.
-            </p>
+        <p className="text-[11px] font-black uppercase tracking-[0.24em] text-[var(--color-accent)]">
+          The January 6 Files
+        </p>
+        <h1 className="mt-2 font-display text-4xl font-black leading-[0.95] tracking-tight sm:text-6xl">
+          Where do you
+          <br />
+          want to start?
+        </h1>
+        <p className="mt-3 text-base font-semibold text-[var(--color-ink-soft)]">
+          Two ways in. Both free, both public.
+        </p>
 
-            <div className="mt-7 grid gap-4 sm:grid-cols-2">
-              {/* Door 1 — the anchor case */}
-              <Link
-                href="/case/people/ryan-nichols"
-                className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-[#0b1428] p-6 text-white transition hover:shadow-xl sm:p-7"
-              >
-                <div>
-                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
-                    One man&rsquo;s case
-                  </p>
-                  <p className="mt-3 font-display text-5xl font-black leading-none tracking-tight">
-                    {totals.daysDetained.toLocaleString()}
-                  </p>
-                  <p className="mt-1 text-xs font-bold uppercase tracking-[0.14em] text-white/55">
-                    days detained
-                  </p>
-                  <p className="mt-4 text-sm leading-snug text-white/75">
-                    Arrest to pardon. The filings, the grievances, the ten
-                    facilities &mdash; and the judge who said it out loud.
-                  </p>
-                </div>
-                <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-black text-[var(--color-accent)]">
-                  Read Ryan&rsquo;s case
-                  <span
-                    aria-hidden
-                    className="transition group-hover:translate-x-1"
-                  >
-                    &rarr;
-                  </span>
-                </span>
-              </Link>
-
-              {/* Door 2 — everyone else */}
-              <Link
-                href="/case?view=people"
-                className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border-2 border-[var(--color-navy)]/25 bg-[var(--color-blue-soft)]/50 p-6 transition hover:border-[var(--color-navy)] hover:shadow-xl sm:p-7"
-              >
-                <div>
-                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-navy)]">
-                    Everyone else
-                  </p>
-                  <p className="mt-3 font-display text-5xl font-black leading-none tracking-tight text-[var(--color-ink)]">
-                    {j6Counts.total.toLocaleString()}
-                  </p>
-                  <p className="mt-1 text-xs font-bold uppercase tracking-[0.14em] text-[var(--color-muted)]">
-                    defendants indexed
-                  </p>
-                  <p className="mt-4 text-sm leading-snug text-[var(--color-ink-soft)]">
-                    Search every January 6 case on file. Find a name, claim a
-                    profile, or read the whole record.
-                  </p>
-                </div>
-                <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-black text-[var(--color-navy)]">
-                  Search the archive
-                  <span
-                    aria-hidden
-                    className="transition group-hover:translate-x-1"
-                  >
-                    &rarr;
-                  </span>
-                </span>
-              </Link>
+        <div className="mt-7 grid gap-4 sm:grid-cols-2">
+          {/* Door 1 — the anchor case */}
+          <Link
+            href="/case/people/ryan-nichols"
+            className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-[#0b1428] p-6 text-white transition hover:shadow-xl sm:p-7"
+          >
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
+                One man&rsquo;s case
+              </p>
+              <p className="mt-3 font-display text-5xl font-black leading-none tracking-tight">
+                {totals.daysDetained.toLocaleString()}
+              </p>
+              <p className="mt-1 text-xs font-bold uppercase tracking-[0.14em] text-white/55">
+                days detained
+              </p>
+              <p className="mt-4 text-sm leading-snug text-white/75">
+                Arrest to pardon. The filings, the grievances, the ten facilities
+                &mdash; and the judge who said it out loud.
+              </p>
             </div>
+            <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-black text-[var(--color-accent)]">
+              Read Ryan&rsquo;s case
+              <span aria-hidden className="transition group-hover:translate-x-1">
+                &rarr;
+              </span>
+            </span>
+          </Link>
 
-            {/* One unified stat block — the four headline numbers, then the four
+          {/* Door 2 — everyone else */}
+          <Link
+            href="/case?view=people"
+            className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border-2 border-[var(--color-navy)]/25 bg-[var(--color-blue-soft)]/50 p-6 transition hover:border-[var(--color-navy)] hover:shadow-xl sm:p-7"
+          >
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-navy)]">
+                Everyone else
+              </p>
+              <p className="mt-3 font-display text-5xl font-black leading-none tracking-tight text-[var(--color-ink)]">
+                {j6Counts.total.toLocaleString()}
+              </p>
+              <p className="mt-1 text-xs font-bold uppercase tracking-[0.14em] text-[var(--color-muted)]">
+                defendants indexed
+              </p>
+              <p className="mt-4 text-sm leading-snug text-[var(--color-ink-soft)]">
+                Search every January 6 case on file. Find a name, claim a
+                profile, or read the whole record.
+              </p>
+            </div>
+            <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-black text-[var(--color-navy)]">
+              Search the archive
+              <span aria-hidden className="transition group-hover:translate-x-1">
+                &rarr;
+              </span>
+            </span>
+          </Link>
+        </div>
+
+        {/* One unified stat block — the four headline numbers, then the four
             secondary ones, adjacent. No buttons splitting them apart. */}
-            <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl">
-              <BigStat
-                label="Days detained"
-                value={totals.daysDetained.toLocaleString()}
-              />
-              <BigStat
-                label="Grievances filed"
-                value={String(totals.grievances)}
-              />
-              <BigStat
-                label="Documents on file"
-                value={String(totals.documents)}
-              />
-              <BigStat
-                label="Co-detainees corroborating"
-                value={String(totals.corroborators)}
-              />
-            </div>
+        <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl">
+          <BigStat label="Days detained" value={totals.daysDetained.toLocaleString()} />
+          <BigStat label="Grievances filed" value={String(totals.grievances)} />
+          <BigStat label="Documents on file" value={String(totals.documents)} />
+          <BigStat label="Co-detainees corroborating" value={String(totals.corroborators)} />
+        </div>
 
-            <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2 max-w-3xl">
-              <SmallStat
-                label="Events"
-                value={q ? filteredEvents.length : events.length}
-              />
-              <SmallStat
-                label="People named"
-                value={q ? filteredPeople.length : totals.people}
-              />
-              <SmallStat label="Facilities" value={totals.facilities} />
-              <SmallStat
-                label="Federal officers on record (IGP broken)"
-                value={2}
-              />
-            </div>
+        <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2 max-w-3xl">
+          <SmallStat label="Events" value={q ? filteredEvents.length : events.length} />
+          <SmallStat label="People named" value={q ? filteredPeople.length : totals.people} />
+          <SmallStat label="Facilities" value={totals.facilities} />
+          <SmallStat label="Federal officers on record (IGP broken)" value={2} />
+        </div>
 
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link
-                href="/case/brief"
-                className="btn-accent inline-flex items-center rounded-full px-5 py-2.5 text-sm font-bold"
-              >
-                Read the Compensation Brief →
-              </Link>
-              <Link
-                href="/case/damages"
-                className="inline-flex items-center rounded-full border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-5 py-2.5 text-sm font-bold text-[var(--color-accent)] hover:opacity-90"
-              >
-                What it cost him — Damages →
-              </Link>
-              <Link
-                href="/case/witnesses"
-                className="inline-flex items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-5 py-2.5 text-sm font-bold text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
-              >
-                Wall of Corroborators →
-              </Link>
-            </div>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Link
+            href="/case/brief"
+            className="btn-accent inline-flex items-center rounded-full px-5 py-2.5 text-sm font-bold"
+          >
+            Read the Compensation Brief →
+          </Link>
+          <Link
+            href="/case/damages"
+            className="inline-flex items-center rounded-full border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-5 py-2.5 text-sm font-bold text-[var(--color-accent)] hover:opacity-90"
+          >
+            What it cost him — Damages →
+          </Link>
+          <Link
+            href="/case/witnesses"
+            className="inline-flex items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-5 py-2.5 text-sm font-bold text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          >
+            Wall of Corroborators →
+          </Link>
+        </div>
 
-            {/* PILLAR 1 — THE LEAD CASE. Ryan's own file is the main story this
+        {/* PILLAR 1 — THE LEAD CASE. Ryan's own file is the main story this
             whole archive is built on; surface it as the centerpiece with a
             direct path to his full profile, not a name buried in the list. */}
-            {ryan ? (
-              <Link
-                href="/case/people/ryan-nichols"
-                className="mt-6 block overflow-hidden rounded-2xl border-2 border-[var(--color-ink)] bg-[var(--color-surface)] hover:border-[var(--color-accent)] transition group"
-              >
-                <div className="flex flex-col sm:flex-row">
-                  {ryanPhoto ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={ryanPhoto}
-                      alt="Ryan Nichols"
-                      className="h-52 w-full flex-shrink-0 object-cover object-top sm:h-auto sm:w-48"
-                    />
-                  ) : null}
-                  <div className="flex-1 p-5 sm:p-6">
-                    <p className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--color-accent)]">
-                      The lead case · ✓ verified
-                    </p>
-                    <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
-                      United States v. Nichols
-                    </h2>
-                    {/* Hard docket identifiers only. The pardon, the days, and the ten
+        {ryan ? (
+          <Link
+            href="/case/people/ryan-nichols"
+            className="mt-6 block overflow-hidden rounded-2xl border-2 border-[var(--color-ink)] bg-[var(--color-surface)] hover:border-[var(--color-accent)] transition group"
+          >
+            <div className="flex flex-col sm:flex-row">
+              {ryanPhoto ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={ryanPhoto}
+                  alt="Ryan Nichols"
+                  className="h-52 w-full flex-shrink-0 object-cover object-top sm:h-auto sm:w-48"
+                />
+              ) : null}
+              <div className="flex-1 p-5 sm:p-6">
+                <p className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--color-accent)]">
+                  The lead case · ✓ verified
+                </p>
+                <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
+                  United States v. Nichols
+                </h2>
+                {/* Hard docket identifiers only. The pardon, the days, and the ten
                     facilities are already in the header above this card, so the
                     card carries the case-file facts and the link — not a re-telling. */}
-                    <p className="mt-2 text-xs sm:text-sm font-medium text-[var(--color-muted)]">
-                      Case No. {ryan.case_number ?? "1:21-cr-00117"}
-                      {" · "}
-                      {ryan.court ??
-                        "U.S. District Court for the District of Columbia"}
-                      {" · "}
-                      {ryan.charges?.length ?? 10} federal charges
-                      {ryan.judge_name ? ` · Judge ${ryan.judge_name}` : ""}
-                    </p>
-                    <p className="mt-2 text-sm sm:text-base text-[var(--color-ink-soft)] leading-relaxed">
-                      The case this whole archive was built on. Every filing,
-                      every named official, every document — the full record is
-                      on my file.
-                    </p>
-                    <span className="mt-3 inline-block text-sm font-bold text-[var(--color-accent)] group-hover:underline">
-                      Read my full case file →
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            ) : null}
+                <p className="mt-2 text-xs sm:text-sm font-medium text-[var(--color-muted)]">
+                  Case No. {ryan.case_number ?? "1:21-cr-00117"}
+                  {" · "}
+                  {ryan.court ?? "U.S. District Court for the District of Columbia"}
+                  {" · "}
+                  {ryan.charges?.length ?? 10} federal charges
+                  {ryan.judge_name ? ` · Judge ${ryan.judge_name}` : ""}
+                </p>
+                <p className="mt-2 text-sm sm:text-base text-[var(--color-ink-soft)] leading-relaxed">
+                  The case this whole archive was built on. Every filing, every named
+                  official, every document — the full record is on my file.
+                </p>
+                <span className="mt-3 inline-block text-sm font-bold text-[var(--color-accent)] group-hover:underline">
+                  Read my full case file →
+                </span>
+              </div>
+            </div>
+          </Link>
+        ) : null}
 
-            {/* PILLAR 2 — every other defendant. One door to the whole archive
+        {/* PILLAR 2 — every other defendant. One door to the whole archive
             (the buggy duplicate directory card that showed a partial "1
             defendant" count was removed; this branded banner carries the
             correct count and the claim CTA). */}
-            <div className="mt-6">
-              <J6Banner />
-            </div>
+        <div className="mt-6">
+          <J6Banner />
+        </div>
 
-            <p className="mt-3 text-xs text-[var(--color-muted)]">
-              How this archive sources, labels, and corrects what it publishes —{" "}
-              <Link
-                href="/editorial-standards"
-                className="font-bold text-[var(--color-accent)] hover:underline"
-              >
-                editorial standards →
-              </Link>
-            </p>
+        <p className="mt-3 text-xs text-[var(--color-muted)]">
+          How this archive sources, labels, and corrects what it publishes —{" "}
+          <Link
+            href="/editorial-standards"
+            className="font-bold text-[var(--color-accent)] hover:underline"
+          >
+            editorial standards →
+          </Link>
+        </p>
 
-            {/* Explore-the-case hub — every tool with its function spelled out,
+        {/* Explore-the-case hub — every tool with its function spelled out,
             so nothing is a mystery and Evidence stays front-and-center. */}
-            <section className="mt-8">
-              <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold mb-3">
-                Explore this case
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                <HubCard
-                  href="/evidence-the-doj-tried-to-erase"
-                  title="Evidence the DOJ Tried to Erase"
-                  sub="The scrubbed federal record — preserved and hash-verified."
-                  featured
-                />
-                <HubCard
-                  href="/the-map-room"
-                  title="The Map Room — LIVE"
-                  sub="Who's reading the case right now, on a live world map."
-                />
-                <HubCard
-                  href="/case/officials"
-                  title="Accountability Index"
-                  sub="Everyone named in the record, grouped by agency."
-                />
-                <HubCard
-                  href="/case/nexus"
-                  title="The Nexus"
-                  sub="Force-directed graph of the co-defendant network."
-                />
-                <HubCard
-                  href="/case/timeline"
-                  title="The Timeline"
-                  sub="Every arrest and sentencing, month by month."
-                />
-                <HubCard
-                  href="/case/geography"
-                  title="The Geography"
-                  sub="Every J6 defendant plotted by home state."
-                />
-              </div>
-            </section>
+        <section className="mt-8">
+          <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold mb-3">
+            Explore this case
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            <HubCard
+              href="/evidence-the-doj-tried-to-erase"
+              title="Evidence the DOJ Tried to Erase"
+              sub="The scrubbed federal record — preserved and hash-verified."
+              featured
+            />
+            <HubCard
+              href="/the-map-room"
+              title="The Map Room — LIVE"
+              sub="Who's reading the case right now, on a live world map."
+            />
+            <HubCard
+              href="/case/officials"
+              title="Accountability Index"
+              sub="Everyone named in the record, grouped by agency."
+            />
+            <HubCard
+              href="/case/nexus"
+              title="The Nexus"
+              sub="Force-directed graph of the co-defendant network."
+            />
+            <HubCard
+              href="/case/timeline"
+              title="The Timeline"
+              sub="Every arrest and sentencing, month by month."
+            />
+            <HubCard
+              href="/case/geography"
+              title="The Geography"
+              sub="Every J6 defendant plotted by home state."
+            />
+          </div>
+        </section>
           </>
         )}
 
@@ -611,36 +567,26 @@ export default async function CasePage({
         </form>
         {q ? (
           <p className="mt-2 text-xs text-[var(--color-muted)]">
-            {totalHits} match{totalHits === 1 ? "" : "es"} for &quot;{q}&quot;
-            across all 4 sections.
+            {totalHits} match{totalHits === 1 ? "" : "es"} for &quot;{q}&quot; across all 4 sections.
           </p>
         ) : null}
       </header>
 
       <div className="flex items-end justify-between gap-3 flex-wrap border-b border-[var(--color-line)] mb-8">
-        <nav className="flex flex-wrap gap-1" aria-label="Case view">
-          <TabLink
-            active={tab === "grievances"}
-            href={`/case?view=grievances${q ? `&q=${encodeURIComponent(q)}` : ""}`}
-          >
+        <nav
+          className="flex flex-wrap gap-1"
+          aria-label="Case view"
+        >
+          <TabLink active={tab === "grievances"} href={`/case?view=grievances${q ? `&q=${encodeURIComponent(q)}` : ""}`}>
             Grievances {q ? `(${filteredGrievances.length})` : ""}
           </TabLink>
-          <TabLink
-            active={tab === "timeline"}
-            href={`/case?view=timeline${q ? `&q=${encodeURIComponent(q)}` : ""}`}
-          >
+          <TabLink active={tab === "timeline"} href={`/case?view=timeline${q ? `&q=${encodeURIComponent(q)}` : ""}`}>
             Timeline {q ? `(${filteredEvents.length})` : ""}
           </TabLink>
-          <TabLink
-            active={tab === "people"}
-            href={`/case?view=people${q ? `&q=${encodeURIComponent(q)}` : ""}`}
-          >
+          <TabLink active={tab === "people"} href={`/case?view=people${q ? `&q=${encodeURIComponent(q)}` : ""}`}>
             People {q ? `(${filteredPeople.length})` : ""}
           </TabLink>
-          <TabLink
-            active={tab === "documents"}
-            href={`/case?view=documents${q ? `&q=${encodeURIComponent(q)}` : ""}`}
-          >
+          <TabLink active={tab === "documents"} href={`/case?view=documents${q ? `&q=${encodeURIComponent(q)}` : ""}`}>
             Documents {q ? `(${filteredDocuments.length})` : ""}
           </TabLink>
         </nav>
@@ -656,19 +602,14 @@ export default async function CasePage({
             href="/case/nexus"
             className="inline-flex items-center gap-1.5 rounded-full border-2 border-[#1f2f55] bg-[#0a1429] px-3.5 py-1.5 text-xs font-bold text-[#cfd9ea] hover:border-[#e1bd5b] hover:text-[#e1bd5b] transition"
           >
-            <span
-              className="inline-block w-1.5 h-1.5 rounded-full bg-[#e1bd5b] animate-pulse"
-              aria-hidden
-            />
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#e1bd5b] animate-pulse" aria-hidden />
             View as graph
             <span aria-hidden>→</span>
           </Link>
         </div>
       </div>
 
-      {tab === "grievances" && (
-        <GrievancesView grievances={filteredGrievances} />
-      )}
+      {tab === "grievances" && <GrievancesView grievances={filteredGrievances} />}
       {tab === "timeline" && <TimelineView events={filteredEvents} />}
       {tab === "people" && (
         <PeopleView people={filteredPeople} j6Filter={j6Filter} q={q} />
@@ -691,18 +632,10 @@ function BigStat({ label, value }: { label: string; value: string }) {
   );
 }
 
-function SmallStat({
-  label,
-  value,
-}: {
-  label: string;
-  value: number | string;
-}) {
+function SmallStat({ label, value }: { label: string; value: number | string }) {
   return (
     <div className="rounded-lg border border-[var(--color-line)] px-2.5 py-1.5 text-[var(--color-ink-soft)]">
-      <span className="text-sm font-bold text-[var(--color-ink)] mr-1.5">
-        {value}
-      </span>
+      <span className="text-sm font-bold text-[var(--color-ink)] mr-1.5">{value}</span>
       <span className="text-[10px] uppercase tracking-wider">{label}</span>
     </div>
   );
@@ -776,10 +709,7 @@ function J6ClaimDirectoryHero({
                   "Missing evidence requests",
                 ].map((item) => (
                   <div key={item} className="flex items-center gap-2">
-                    <span
-                      className="h-2 w-2 rounded-full bg-[#e1bd5b]"
-                      aria-hidden
-                    />
+                    <span className="h-2 w-2 rounded-full bg-[#e1bd5b]" aria-hidden />
                     <span>{item}</span>
                   </div>
                 ))}
@@ -809,16 +739,8 @@ function J6ClaimDirectoryHero({
         </div>
 
         <div className="grid grid-cols-2 gap-px bg-white/10 sm:grid-cols-4 lg:grid-cols-2">
-          <J6HeroStat
-            label="Total J6 profiles"
-            value={counts.total}
-            tone="blue"
-          />
-          <J6HeroStat
-            label="Docket numbers"
-            value={counts.withCaseNumber}
-            tone="gold"
-          />
+          <J6HeroStat label="Total J6 profiles" value={counts.total} tone="blue" />
+          <J6HeroStat label="Docket numbers" value={counts.withCaseNumber} tone="gold" />
           <J6HeroStat label="Verified" value={counts.verified} tone="green" />
           <J6HeroStat label="Under review" value={counts.pending} tone="blue" />
         </div>
@@ -837,16 +759,10 @@ function J6HeroStat({
   tone: "green" | "gold" | "blue";
 }) {
   const color =
-    tone === "green"
-      ? "text-[#e1bd5b]"
-      : tone === "gold"
-        ? "text-[#e4c66a]"
-        : "text-[#7fa9e3]";
+    tone === "green" ? "text-[#e1bd5b]" : tone === "gold" ? "text-[#e4c66a]" : "text-[#7fa9e3]";
   return (
     <div className="bg-[#0d1a33] p-4 sm:p-5">
-      <div
-        className={`font-mono text-3xl font-black leading-none tabular-nums ${color}`}
-      >
+      <div className={`font-mono text-3xl font-black leading-none tabular-nums ${color}`}>
         {value.toLocaleString()}
       </div>
       <div className="mt-2 text-[10px] font-black uppercase tracking-[0.18em] text-[#cfd9ea]">
@@ -880,11 +796,7 @@ function TabLink({
   );
 }
 
-const PEOPLE_GROUPS: {
-  label: string;
-  match: (agency: string | null) => boolean;
-  lead: string;
-}[] = [
+const PEOPLE_GROUPS: { label: string; match: (agency: string | null) => boolean; lead: string }[] = [
   {
     label: "Executive",
     match: (a) => !!a && /^executive/i.test(a),
@@ -927,9 +839,7 @@ const PEOPLE_GROUPS: {
   },
   {
     label: "Co-defendants & Fellow Detainees",
-    match: (a) =>
-      !!a &&
-      /(c-2b|^dc doc$|harkrider|defend|j6 detainee|sibick witness)/i.test(a),
+    match: (a) => !!a && /(c-2b|^dc doc$|harkrider|defend|j6 detainee|sibick witness)/i.test(a),
     lead: "Co-defendants on the indictment and detainees who signed witness statements.",
   },
   {
@@ -993,9 +903,7 @@ function PeopleView({
         group.items.length === 0 ? null : (
           <section key={group.label}>
             <div className="border-l-2 border-[var(--color-accent)] pl-4 mb-4">
-              <h2 className="text-lg sm:text-xl font-bold tracking-tight">
-                {group.label}
-              </h2>
+              <h2 className="text-lg sm:text-xl font-bold tracking-tight">{group.label}</h2>
               <p className="text-sm text-[var(--color-ink-soft)] mt-1 max-w-2xl leading-relaxed">
                 {group.lead}
               </p>
@@ -1026,9 +934,7 @@ function PeopleView({
       {rest.length > 0 ? (
         <section>
           <div className="border-l-2 border-[var(--color-line)] pl-4 mb-4">
-            <h2 className="text-lg sm:text-xl font-bold tracking-tight">
-              Other Named Individuals
-            </h2>
+            <h2 className="text-lg sm:text-xl font-bold tracking-tight">Other Named Individuals</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {rest.map((p) => (
@@ -1079,18 +985,18 @@ function J6DefendantsView({
     j6Filter === "all"
       ? `${shownTotal.toLocaleString()} searchable January 6 profiles`
       : j6Filter === "unclaimed"
-        ? `${shownTotal.toLocaleString()} J6 defendant profiles waiting to be claimed`
-        : j6Filter === "verified"
-          ? `${shownTotal.toLocaleString()} J6 defendants verified`
-          : `${shownTotal.toLocaleString()} J6 claims pending review`;
+      ? `${shownTotal.toLocaleString()} J6 defendant profiles waiting to be claimed`
+      : j6Filter === "verified"
+        ? `${shownTotal.toLocaleString()} J6 defendants verified`
+        : `${shownTotal.toLocaleString()} J6 claims pending review`;
   const lead =
     j6Filter === "all"
       ? "The public directory, ordered A–Z. Search a name, case number, or role; open the profile; then contribute a source if the record is incomplete."
       : j6Filter === "unclaimed"
-        ? "Profiles ready for the defendant to claim and build out. Every claim is checked against the DOJ docket and public record before approval."
-        : j6Filter === "verified"
-          ? "Defendants who have claimed and verified their profile. Their case archive is theirs."
-          : "Claims submitted and awaiting Ryan's review.";
+      ? "Profiles ready for the defendant to claim and build out. Every claim is checked against the DOJ docket and public record before approval."
+      : j6Filter === "verified"
+        ? "Defendants who have claimed and verified their profile. Their case archive is theirs."
+        : "Claims submitted and awaiting Ryan's review.";
   return (
     <div id="j6-profile-list" className="scroll-mt-24">
       <div className="mb-5 overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)]">
@@ -1111,18 +1017,9 @@ function J6DefendantsView({
               The build path
             </p>
             <ol className="mt-3 grid gap-2 text-sm text-[var(--color-ink-soft)]">
-              <li>
-                <strong className="text-[var(--color-ink)]">1.</strong> Find
-                your name.
-              </li>
-              <li>
-                <strong className="text-[var(--color-ink)]">2.</strong> Claim
-                the profile with proof it is you.
-              </li>
-              <li>
-                <strong className="text-[var(--color-ink)]">3.</strong> Build
-                your page with facts, documents, media, and testimony.
-              </li>
+              <li><strong className="text-[var(--color-ink)]">1.</strong> Find your name.</li>
+              <li><strong className="text-[var(--color-ink)]">2.</strong> Claim the profile with proof it is you.</li>
+              <li><strong className="text-[var(--color-ink)]">3.</strong> Build your page with facts, documents, media, and testimony.</li>
             </ol>
           </div>
         </div>
@@ -1176,7 +1073,7 @@ function J6DefendantsView({
           No profiles in this bucket yet.
         </p>
       ) : (
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {people.map((p) => {
             const badge =
               p.claim_status === "verified"
@@ -1188,30 +1085,12 @@ function J6DefendantsView({
             return (
               <article
                 key={p.id}
-                className="flex min-h-[190px] flex-col rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 transition hover:-translate-y-0.5 hover:border-[var(--color-blue)] hover:shadow-lg"
+                className="flex min-h-[210px] flex-col rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 transition hover:border-[var(--color-blue)]"
               >
-                <div className="flex items-start gap-3">
-                  <div
-                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] font-mono text-xs font-black text-[var(--color-navy)]"
-                    aria-hidden
-                  >
-                    {p.name
-                      .split(/\s+/)
-                      .slice(0, 2)
-                      .map((part) => part[0])
-                      .join("")
-                      .toUpperCase()}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <h3 className="text-base font-bold leading-tight tracking-tight">
-                      {p.name}
-                    </h3>
-                    {p.role ? (
-                      <p className="mt-1 line-clamp-2 text-xs leading-tight text-[var(--color-muted)]">
-                        {p.role}
-                      </p>
-                    ) : null}
-                  </div>
+                <div className="flex items-start justify-between gap-2">
+                  <h3 className="text-base font-bold tracking-tight leading-tight">
+                    {p.name}
+                  </h3>
                   <span
                     className="rounded-md px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider whitespace-nowrap text-[var(--color-paper)]"
                     style={{ background: badge.bg }}
@@ -1219,6 +1098,11 @@ function J6DefendantsView({
                     {badge.label}
                   </span>
                 </div>
+                {p.role ? (
+                  <p className="mt-1 text-xs text-[var(--color-muted)] leading-tight">
+                    {p.role}
+                  </p>
+                ) : null}
                 <div className="mt-3 grid grid-cols-2 gap-2 text-[11px] text-[var(--color-muted)]">
                   <span className="rounded-md border border-[var(--color-line-soft)] bg-[var(--color-paper)] px-2 py-1">
                     {p.case_number ?? "Case # needed"}
@@ -1228,24 +1112,34 @@ function J6DefendantsView({
                   </span>
                 </div>
                 <div className="mt-auto pt-4">
-                  <Link
-                    href={`/case/people/${p.slug}`}
-                    className="block rounded-lg bg-[var(--color-blue)] px-3 py-2.5 text-center text-sm font-black text-[var(--color-paper)] transition hover:bg-[var(--color-blue-strong)]"
-                  >
-                    Open case file →
-                  </Link>
+                  {p.claim_status === "unclaimed" ? (
+                    <Link
+                      href={claimHref}
+                      className="block rounded-lg bg-[var(--color-blue)] px-3 py-2.5 text-center text-sm font-black text-[var(--color-paper)] transition hover:bg-[var(--color-blue-strong)]"
+                    >
+                      Claim + build case →
+                    </Link>
+                  ) : p.claim_status === "pending" ? (
+                    <Link
+                      href={`/case/people/${p.slug}`}
+                      className="block rounded-lg bg-[var(--color-blue-soft)] px-3 py-2.5 text-center text-sm font-black text-[var(--color-blue)] transition hover:bg-[var(--color-blue)] hover:text-[var(--color-paper)]"
+                    >
+                      View pending profile →
+                    </Link>
+                  ) : (
+                    <Link
+                      href={`/case/people/${p.slug}`}
+                      className="block rounded-lg bg-[var(--color-success)] px-3 py-2.5 text-center text-sm font-black text-[var(--color-paper)] transition hover:opacity-90"
+                    >
+                      Open verified file →
+                    </Link>
+                  )}
                   <div className="mt-2 grid grid-cols-2 gap-2">
                     <Link
-                      href={
-                        p.claim_status === "unclaimed"
-                          ? claimHref
-                          : `/case/people/${p.slug}`
-                      }
+                      href={`/case/people/${p.slug}`}
                       className="rounded-lg border border-[var(--color-line)] px-3 py-2 text-center text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
                     >
-                      {p.claim_status === "unclaimed"
-                        ? "Claim profile"
-                        : "Profile status"}
+                      Profile
                     </Link>
                     <Link
                       href={`/submit?type=j6&about=${encodeURIComponent(p.name)}`}
@@ -1287,10 +1181,7 @@ function PaginationControls({
   q: string;
 }) {
   const hrefFor = (nextPage: number) => {
-    const params = new URLSearchParams({
-      view: "people",
-      page: String(nextPage),
-    });
+    const params = new URLSearchParams({ view: "people", page: String(nextPage) });
     if (j6Filter !== "all") params.set("filter", j6Filter);
     if (q) params.set("q", q);
     return `/case?${params.toString()}`;
@@ -1360,9 +1251,7 @@ function HubCard({
       >
         {title} <span aria-hidden>→</span>
       </p>
-      <p className="mt-1 text-xs leading-snug text-[var(--color-ink-soft)]">
-        {sub}
-      </p>
+      <p className="mt-1 text-xs leading-snug text-[var(--color-ink-soft)]">{sub}</p>
     </Link>
   );
 }
