@@ -26,8 +26,4 @@ export const SITE = {
   // Resend (gated server-side); this only controls whether we collect the
   // address. Always on so we never lose a lead while sending is being set up.
   emailCaptureEnabled: true,
-  // Stripe-hosted $5/month Supporter Membership checkout. Optional badge,
-  // doesn't gate commenting (which stays free).
-  // Donations removed — Ryan sells what he builds, he does not pass the hat.
-  supporterUrl: "",
 };

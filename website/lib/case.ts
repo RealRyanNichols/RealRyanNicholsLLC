@@ -110,7 +110,9 @@ export async function getGrievances(): Promise<CaseGrievance[]> {
   return (data ?? []) as CaseGrievance[];
 }
 
-export async function getGrievanceBySlug(slug: string): Promise<CaseGrievance | null> {
+export async function getGrievanceBySlug(
+  slug: string,
+): Promise<CaseGrievance | null> {
   const supabase = getSupabaseStaticClient();
   const { data } = await supabase
     .from("case_grievances")
@@ -150,7 +152,10 @@ export type J6PeoplePage = {
 };
 
 function cleanCaseSearch(q: string): string {
-  return q.replace(/[,%()]/g, " ").replace(/\s+/g, " ").trim();
+  return q
+    .replace(/[,%()]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 export async function getJ6PeoplePage({
@@ -159,7 +164,7 @@ export async function getJ6PeoplePage({
   page = 1,
   pageSize = 120,
 }: {
-  claimStatus: "unclaimed" | "verified" | "pending";
+  claimStatus: "all" | "unclaimed" | "verified" | "pending";
   q?: string;
   page?: number;
   pageSize?: number;
@@ -175,10 +180,13 @@ export async function getJ6PeoplePage({
     .from("case_people")
     .select(PERSON_COLS, { count: "exact" })
     .eq("visibility", "public")
-    .eq("is_j6_defendant", true)
-    .eq("claim_status", claimStatus)
-    .order("name", { ascending: true })
-    .range(from, to);
+    .eq("is_j6_defendant", true);
+
+  if (claimStatus !== "all") {
+    request = request.eq("claim_status", claimStatus);
+  }
+
+  request = request.order("name", { ascending: true }).range(from, to);
 
   if (query) {
     const like = `%${query}%`;
@@ -198,46 +206,58 @@ export async function getJ6PeoplePage({
 
 export async function getJ6ClaimCounts(): Promise<{
   total: number;
+  withCaseNumber: number;
   unclaimed: number;
   verified: number;
   pending: number;
 }> {
   const supabase = getSupabaseStaticClient();
-  const [total, unclaimed, verified, pending] = await Promise.all([
-    supabase
-      .from("case_people")
-      .select("id", { count: "exact", head: true })
-      .eq("visibility", "public")
-      .eq("is_j6_defendant", true),
-    supabase
-      .from("case_people")
-      .select("id", { count: "exact", head: true })
-      .eq("visibility", "public")
-      .eq("is_j6_defendant", true)
-      .eq("claim_status", "unclaimed"),
-    supabase
-      .from("case_people")
-      .select("id", { count: "exact", head: true })
-      .eq("visibility", "public")
-      .eq("is_j6_defendant", true)
-      .eq("claim_status", "verified"),
-    supabase
-      .from("case_people")
-      .select("id", { count: "exact", head: true })
-      .eq("visibility", "public")
-      .eq("is_j6_defendant", true)
-      .eq("claim_status", "pending"),
-  ]);
+  const [total, withCaseNumber, unclaimed, verified, pending] =
+    await Promise.all([
+      supabase
+        .from("case_people")
+        .select("id", { count: "exact", head: true })
+        .eq("visibility", "public")
+        .eq("is_j6_defendant", true),
+      supabase
+        .from("case_people")
+        .select("id", { count: "exact", head: true })
+        .eq("visibility", "public")
+        .eq("is_j6_defendant", true)
+        .not("case_number", "is", null)
+        .neq("case_number", ""),
+      supabase
+        .from("case_people")
+        .select("id", { count: "exact", head: true })
+        .eq("visibility", "public")
+        .eq("is_j6_defendant", true)
+        .eq("claim_status", "unclaimed"),
+      supabase
+        .from("case_people")
+        .select("id", { count: "exact", head: true })
+        .eq("visibility", "public")
+        .eq("is_j6_defendant", true)
+        .eq("claim_status", "verified"),
+      supabase
+        .from("case_people")
+        .select("id", { count: "exact", head: true })
+        .eq("visibility", "public")
+        .eq("is_j6_defendant", true)
+        .eq("claim_status", "pending"),
+    ]);
 
   return {
     total: total.count ?? 0,
+    withCaseNumber: withCaseNumber.count ?? 0,
     unclaimed: unclaimed.count ?? 0,
     verified: verified.count ?? 0,
     pending: pending.count ?? 0,
   };
 }
 
-export async function getPersonBySlug(slug: string): Promise<CasePerson | null> {
+export async function getPersonBySlug(
+  slug: string,
+): Promise<CasePerson | null> {
   const supabase = getSupabaseStaticClient();
   const { data } = await supabase
     .from("case_people")
@@ -295,15 +315,24 @@ export async function getDocuments(): Promise<CaseDocument[]> {
 // witnesses, then court/government documents.
 function rankByAuthorRole(role: CaseAuthorRole): number {
   switch (role) {
-    case "ryan": return 0;
-    case "co_detainee": return 1;
-    case "attorney": return 2;
-    case "court": return 3;
-    case "government": return 4;
-    case "evidence": return 5;
-    case "family": return 6;
-    case "media": return 7;
-    default: return 8;
+    case "ryan":
+      return 0;
+    case "co_detainee":
+      return 1;
+    case "attorney":
+      return 2;
+    case "court":
+      return 3;
+    case "government":
+      return 4;
+    case "evidence":
+      return 5;
+    case "family":
+      return 6;
+    case "media":
+      return 7;
+    default:
+      return 8;
   }
 }
 
@@ -331,7 +360,9 @@ export async function getAllDocumentsForAdmin(): Promise<CaseDocument[]> {
   return (data ?? []) as CaseDocument[];
 }
 
-export async function getDocumentBySlug(slug: string): Promise<CaseDocument | null> {
+export async function getDocumentBySlug(
+  slug: string,
+): Promise<CaseDocument | null> {
   const supabase = getSupabaseStaticClient();
   const { data } = await supabase
     .from("case_documents")
@@ -356,7 +387,9 @@ export async function getCaseCommentsCount(
   return count ?? 0;
 }
 
-export async function getDocumentsForGrievance(grievanceId: string): Promise<CaseDocument[]> {
+export async function getDocumentsForGrievance(
+  grievanceId: string,
+): Promise<CaseDocument[]> {
   const supabase = getSupabaseStaticClient();
   const { data: links } = await supabase
     .from("case_doc_grievance")
@@ -373,7 +406,9 @@ export async function getDocumentsForGrievance(grievanceId: string): Promise<Cas
   return sortEvidenceForCaseEntity((data ?? []) as CaseDocument[]);
 }
 
-export async function getDocumentsForEvent(eventId: string): Promise<CaseDocument[]> {
+export async function getDocumentsForEvent(
+  eventId: string,
+): Promise<CaseDocument[]> {
   const supabase = getSupabaseStaticClient();
   const { data: links } = await supabase
     .from("case_doc_event")
@@ -390,7 +425,9 @@ export async function getDocumentsForEvent(eventId: string): Promise<CaseDocumen
   return sortEvidenceForCaseEntity((data ?? []) as CaseDocument[]);
 }
 
-export async function getDocumentsForPerson(personId: string): Promise<CaseDocument[]> {
+export async function getDocumentsForPerson(
+  personId: string,
+): Promise<CaseDocument[]> {
   const supabase = getSupabaseStaticClient();
   const { data: links } = await supabase
     .from("case_doc_person")
@@ -407,7 +444,9 @@ export async function getDocumentsForPerson(personId: string): Promise<CaseDocum
   return sortEvidenceForCaseEntity((data ?? []) as CaseDocument[]);
 }
 
-export async function getPeopleForGrievance(grievanceId: string): Promise<CasePerson[]> {
+export async function getPeopleForGrievance(
+  grievanceId: string,
+): Promise<CasePerson[]> {
   const supabase = getSupabaseStaticClient();
   // Get all docs linked to this grievance, then all people linked to those docs.
   const { data: docLinks } = await supabase
@@ -420,7 +459,9 @@ export async function getPeopleForGrievance(grievanceId: string): Promise<CasePe
     .from("case_doc_person")
     .select("person_id")
     .in("document_id", docIds);
-  const personIds = Array.from(new Set((personLinks ?? []).map((l) => l.person_id)));
+  const personIds = Array.from(
+    new Set((personLinks ?? []).map((l) => l.person_id)),
+  );
   if (personIds.length === 0) return [];
   const { data } = await supabase
     .from("case_people")
@@ -443,40 +484,56 @@ export async function getCaseTotals(): Promise<{
   events: number;
 }> {
   const supabase = getSupabaseStaticClient();
-  const [grievances, documents, people, corroborators, events, ryanFiled] = await Promise.all([
-    supabase.from("case_grievances").select("id", { count: "exact", head: true }).eq("visibility", "public"),
-    supabase.from("case_documents").select("id", { count: "exact", head: true }).eq("visibility", "public").eq("archived", false),
-    supabase.from("case_people").select("id", { count: "exact", head: true }).eq("visibility", "public"),
-    // Corroborating witnesses: detainees, co-defendants, named witnesses, regardless of which
-    // facility's people record they sit under. Excludes facility staff explicitly named.
-    supabase
-      .from("case_people")
-      .select("id", { count: "exact", head: true })
-      .eq("visibility", "public")
-      .or(
-        "role.ilike.%detainee%,role.ilike.%co-defendant%,role.ilike.%witness%,agency.ilike.%c-2b%,agency.ilike.%detainee%",
-      )
-      .not("slug", "in", "(cpl-o-connor,supt-ted-hull)"),
-    supabase.from("case_events").select("id", { count: "exact", head: true }).eq("visibility", "public"),
-    // Grievance forms actually filed by Ryan (excludes co-detainee IGPs Ryan was holding as evidence).
-    supabase
-      .from("case_documents")
-      .select("id", { count: "exact", head: true })
-      .eq("visibility", "public")
-      .eq("archived", false)
-      .eq("author_role", "ryan")
-      .eq("doc_type", "grievance_form"),
-  ]);
+  const [grievances, documents, people, corroborators, events, ryanFiled] =
+    await Promise.all([
+      supabase
+        .from("case_grievances")
+        .select("id", { count: "exact", head: true })
+        .eq("visibility", "public"),
+      supabase
+        .from("case_documents")
+        .select("id", { count: "exact", head: true })
+        .eq("visibility", "public")
+        .eq("archived", false),
+      supabase
+        .from("case_people")
+        .select("id", { count: "exact", head: true })
+        .eq("visibility", "public"),
+      // Corroborating witnesses: detainees, co-defendants, named witnesses, regardless of which
+      // facility's people record they sit under. Excludes facility staff explicitly named.
+      supabase
+        .from("case_people")
+        .select("id", { count: "exact", head: true })
+        .eq("visibility", "public")
+        .or(
+          "role.ilike.%detainee%,role.ilike.%co-defendant%,role.ilike.%witness%,agency.ilike.%c-2b%,agency.ilike.%detainee%",
+        )
+        .not("slug", "in", "(cpl-o-connor,supt-ted-hull)"),
+      supabase
+        .from("case_events")
+        .select("id", { count: "exact", head: true })
+        .eq("visibility", "public"),
+      // Grievance forms actually filed by Ryan (excludes co-detainee IGPs Ryan was holding as evidence).
+      supabase
+        .from("case_documents")
+        .select("id", { count: "exact", head: true })
+        .eq("visibility", "public")
+        .eq("archived", false)
+        .eq("author_role", "ryan")
+        .eq("doc_type", "grievance_form"),
+    ]);
   const arrest = new Date("2021-01-18");
   const pardon = new Date("2025-01-20");
-  const daysDetained = Math.round((pardon.getTime() - arrest.getTime()) / 86400000);
+  const daysDetained = Math.round(
+    (pardon.getTime() - arrest.getTime()) / 86400000,
+  );
   return {
     grievances: grievances.count ?? 0,
     ryanFiledGrievances: ryanFiled.count ?? 0,
     documents: documents.count ?? 0,
     people: people.count ?? 0,
     facilities: 10, // Tyler/E.D.Tex., DC DOC CTF, Rappahannock, Northern Neck, FDC Houston,
-                    // Florence, Oklahoma transit, Albany, NW3 quarantine, BOP post-sentence.
+    // Florence, Oklahoma transit, Albany, NW3 quarantine, BOP post-sentence.
     corroborators: corroborators.count ?? 0,
     daysDetained,
     events: events.count ?? 0,

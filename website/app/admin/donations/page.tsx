@@ -33,7 +33,10 @@ type SupportIntent = {
   status: string;
 };
 
-async function stripeGet(path: string, key: string): Promise<{ data?: Charge[] } | null> {
+async function stripeGet(
+  path: string,
+  key: string,
+): Promise<{ data?: Charge[] } | null> {
   try {
     const r = await fetch(`https://api.stripe.com/v1/${path}`, {
       headers: { Authorization: `Bearer ${key}` },
@@ -58,7 +61,9 @@ export default async function AdminDonationsPage() {
   const supabase = await getSupabaseServerClient();
   const { data: auth } = await supabase.auth.getUser();
   if (!auth.user) redirect("/login?next=/admin/donations");
-  const { data: adminCheck } = await supabase.rpc("is_admin", { uid: auth.user.id });
+  const { data: adminCheck } = await supabase.rpc("is_admin", {
+    uid: auth.user.id,
+  });
   if (adminCheck !== true) {
     return (
       <article className="mx-auto max-w-md px-4 py-16 text-center">
@@ -69,7 +74,7 @@ export default async function AdminDonationsPage() {
 
   const key = process.env.STRIPE_SECRET_KEY;
 
-  // Supporter memberships are tracked in the app regardless of Stripe.
+  // Supporter status can be granted manually; it is not a paid membership.
   const { data: supporters } = await supabase
     .from("profiles")
     .select("display_name, username, supporter_since")
@@ -86,18 +91,23 @@ export default async function AdminDonationsPage() {
     .limit(25);
 
   // Transparent funding goal: all line items (incl. inactive) + settings + snapshot.
-  const [fundingItemsRes, fundingSettingsRes, fundingSnapRes] = await Promise.all([
-    supabase
-      .from("funding_line_items")
-      .select("id, label, blurb, amount_cents, cadence, sort_order, is_active")
-      .order("sort_order", { ascending: true }),
-    supabase
-      .from("funding_settings")
-      .select("campaign_title, campaign_blurb, manual_raised_cents, manual_note, show_amounts")
-      .eq("id", "default")
-      .maybeSingle(),
-    supabase.rpc("funding_snapshot"),
-  ]);
+  const [fundingItemsRes, fundingSettingsRes, fundingSnapRes] =
+    await Promise.all([
+      supabase
+        .from("funding_line_items")
+        .select(
+          "id, label, blurb, amount_cents, cadence, sort_order, is_active",
+        )
+        .order("sort_order", { ascending: true }),
+      supabase
+        .from("funding_settings")
+        .select(
+          "campaign_title, campaign_blurb, manual_raised_cents, manual_note, show_amounts",
+        )
+        .eq("id", "default")
+        .maybeSingle(),
+      supabase.rpc("funding_snapshot"),
+    ]);
   const fundingItems = (fundingItemsRes.data ?? []) as {
     id: string;
     label: string;
@@ -152,7 +162,8 @@ export default async function AdminDonationsPage() {
         Donations &amp; payments
       </h1>
       <p className="mt-1 inline-block rounded border border-[var(--color-line)] bg-[var(--color-surface)] px-2 py-1 text-xs font-bold uppercase tracking-wider text-[var(--color-muted)]">
-        Legacy — donations retired. Kept as the historical ledger; the public site now sells (book, services, store).
+        Legacy — donations retired. Kept as the historical ledger; the public
+        site now sells (book, services, store).
       </p>
       <p className="mt-2 text-sm text-[var(--color-muted)]">
         Every dollar in, in one place.
@@ -169,8 +180,8 @@ export default async function AdminDonationsPage() {
             style: "currency",
             currency: "USD",
           })}{" "}
-          raised across the life of &ldquo;{fundingSettings.campaign_title}&rdquo;
-          ({fundingItems.length} funding line items, goal was{" "}
+          raised across the life of &ldquo;{fundingSettings.campaign_title}
+          &rdquo; ({fundingItems.length} funding line items, goal was{" "}
           {(fundingGoalCents / 100).toLocaleString("en-US", {
             style: "currency",
             currency: "USD",
@@ -182,13 +193,19 @@ export default async function AdminDonationsPage() {
       {key && stripeOk ? (
         <>
           <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-3">
-            <Stat label="Total raised (last 100 gifts)" value={usd(totalCents)} accent />
+            <Stat
+              label="Total raised (last 100 gifts)"
+              value={usd(totalCents)}
+              accent
+            />
             <Stat label="One-time gifts" value={String(chargeCount)} />
-            <Stat label="Supporter memberships" value={String(supporterCount)} />
+            <Stat label="Supporters" value={String(supporterCount)} />
           </div>
 
           <section className="mt-8">
-            <h2 className="text-lg font-bold tracking-tight mb-3">Recent gifts</h2>
+            <h2 className="text-lg font-bold tracking-tight mb-3">
+              Recent gifts
+            </h2>
             <div className="rounded-2xl border border-[var(--color-line)] overflow-x-auto">
               <table className="w-full min-w-[28rem] text-sm">
                 <thead className="bg-[var(--color-surface)] text-[10px] uppercase tracking-wider text-[var(--color-muted)]">
@@ -232,8 +249,9 @@ export default async function AdminDonationsPage() {
             <p>
               Your &ldquo;Donate&rdquo; button is a Stripe Payment Link, so
               one-time gifts go straight to Stripe and aren&apos;t recorded in
-              this app. To pull <strong>total raised, recent gifts, and donor
-              emails</strong> right onto this page:
+              this app. To pull{" "}
+              <strong>total raised, recent gifts, and donor emails</strong>{" "}
+              right onto this page:
             </p>
             <ol className="list-decimal pl-5 space-y-1">
               <li>
@@ -257,9 +275,7 @@ export default async function AdminDonationsPage() {
       )}
 
       <section className="mt-10">
-        <h2 className="text-lg font-bold tracking-tight mb-1">
-          Support notes
-        </h2>
+        <h2 className="text-lg font-bold tracking-tight mb-1">Support notes</h2>
         <p className="text-xs text-[var(--color-muted)] mb-3">
           Notes captured on the support page before Stripe opens.
         </p>
@@ -279,7 +295,10 @@ export default async function AdminDonationsPage() {
                         : intent.display_name || intent.email || "Supporter"}
                     </p>
                     <p className="text-xs text-[var(--color-muted)]">
-                      {format(new Date(intent.created_at), "MMM d, yyyy h:mm a")}
+                      {format(
+                        new Date(intent.created_at),
+                        "MMM d, yyyy h:mm a",
+                      )}
                       {" · "}
                       {intent.purpose.replaceAll("_", " ")}
                       {intent.intended_amount
@@ -301,7 +320,10 @@ export default async function AdminDonationsPage() {
                   {" · "}
                   Show amount: {intent.show_amount ? "yes" : "no"}
                   {" · "}
-                  Name: {intent.display_as === "name" ? intent.display_name || "—" : "anonymous"}
+                  Name:{" "}
+                  {intent.display_as === "name"
+                    ? intent.display_name || "—"
+                    : "anonymous"}
                   {intent.email ? ` · ${intent.email}` : ""}
                 </p>
                 <SupportNoteModerator id={intent.id} status={intent.status} />
@@ -311,23 +333,25 @@ export default async function AdminDonationsPage() {
         )}
       </section>
 
-      {/* Supporter memberships — always available from the app DB */}
+      {/* Manually recognized supporters — no paid membership is offered. */}
       <section className="mt-10">
-        <h2 className="text-lg font-bold tracking-tight mb-1">
-          Supporter memberships
-        </h2>
+        <h2 className="text-lg font-bold tracking-tight mb-1">Supporters</h2>
         <p className="text-xs text-[var(--color-muted)] mb-3">
-          {supporterCount} active {supporterCount === 1 ? "supporter" : "supporters"}.
-          {" "}Set on a profile in the Users admin.
+          {supporterCount} active{" "}
+          {supporterCount === 1 ? "supporter" : "supporters"}. Set on a profile
+          in the Users admin.
         </p>
         {supporterCount === 0 ? (
           <p className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 text-sm text-[var(--color-ink-soft)] italic">
-            No active supporter memberships yet.
+            No active supporters yet.
           </p>
         ) : (
           <ul className="rounded-2xl border border-[var(--color-line)] divide-y divide-[var(--color-line)]">
             {supporters!.map((s, i) => (
-              <li key={i} className="flex items-center justify-between px-4 py-2.5 text-sm">
+              <li
+                key={i}
+                className="flex items-center justify-between px-4 py-2.5 text-sm"
+              >
                 <span className="font-semibold text-[var(--color-ink)]">
                   {s.display_name || s.username || "Supporter"}
                 </span>

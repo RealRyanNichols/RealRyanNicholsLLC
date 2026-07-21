@@ -50,7 +50,6 @@ export function getIntegrationHealth(): IntegrationGroup[] {
 
   const stripeKey = present(e.STRIPE_SECRET_KEY);
   const stripeWebhook = present(e.STRIPE_WEBHOOK_SECRET);
-  const supporterPrice = present(e.STRIPE_SUPPORTER_PRICE_ID);
 
   const serviceRole = present(e.SUPABASE_SERVICE_ROLE_KEY);
   const supaUrl = present(e.NEXT_PUBLIC_SUPABASE_URL);
@@ -155,24 +154,12 @@ export function getIntegrationHealth(): IntegrationGroup[] {
           where:
             "Stripe → Developers → Webhooks → add endpoint /api/stripe/webhook, then copy its signing secret into STRIPE_WEBHOOK_SECRET in Vercel.",
         },
-        {
-          id: "supporter",
-          label: "Membership ($5/mo)",
-          status: supporterPrice ? "ok" : "off",
-          critical: false,
-          summary: supporterPrice
-            ? "Connected — the $5/mo membership checkout works."
-            : "The $5/mo membership API errors out (a hardcoded Stripe payment link may still work). One-time donations are unaffected.",
-          unlocks: "The recurring $5/month supporter subscription via native checkout.",
-          missing: missing([[supporterPrice, "STRIPE_SUPPORTER_PRICE_ID"]]),
-          where:
-            "In Stripe, create a recurring $5/mo Price, then paste its price_… id into STRIPE_SUPPORTER_PRICE_ID in Vercel.",
-        },
       ],
     },
     {
       group: "Database",
-      blurb: "Where everything is read and written. Messages and notes post here.",
+      blurb:
+        "Where everything is read and written. Messages and notes post here.",
       checks: [
         {
           id: "supabase-public",
@@ -209,7 +196,8 @@ export function getIntegrationHealth(): IntegrationGroup[] {
     },
     {
       group: "Media & extras",
-      blurb: "Optional. The core site (reading, contact, donations) runs without these.",
+      blurb:
+        "Optional. The core site (reading, contact, donations) runs without these.",
       checks: [
         {
           id: "mux",
@@ -241,7 +229,8 @@ export function getIntegrationHealth(): IntegrationGroup[] {
             : "The AI briefings page returns 503 (the rest of the site is unaffected).",
           unlocks: "The AI-generated case briefings at /case/briefing.",
           missing: missing([[anthropic, "ANTHROPIC_API_KEY"]]),
-          where: "console.anthropic.com → API keys. Set ANTHROPIC_API_KEY in Vercel.",
+          where:
+            "console.anthropic.com → API keys. Set ANTHROPIC_API_KEY in Vercel.",
         },
         {
           id: "admin-emails",
@@ -251,7 +240,8 @@ export function getIntegrationHealth(): IntegrationGroup[] {
           summary: adminEmails
             ? "Set — listed emails get author tools."
             : "No ADMIN_EMAILS set (admin is then driven only by the Supabase admin_emails table).",
-          unlocks: "Author-only tools for whoever signs in with a listed email.",
+          unlocks:
+            "Author-only tools for whoever signs in with a listed email.",
           missing: missing([[adminEmails, "ADMIN_EMAILS"]]),
           where:
             "Comma-separated emails in ADMIN_EMAILS (Vercel). Also seed public.admin_emails in Supabase so row-level security agrees.",
