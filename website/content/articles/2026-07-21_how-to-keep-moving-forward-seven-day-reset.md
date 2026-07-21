@@ -5,7 +5,7 @@ author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-21"
 category: "Motivation"
 slug: "how-to-keep-moving-forward-seven-day-reset"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "How to Keep Moving Forward: A Practical 7-Day Reset"
 seo_description: "Life knocked you down and you need a way forward. Use the Carry, Cut, Create decision tool and this honest seven-day reset to rebuild momentum."
