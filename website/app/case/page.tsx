@@ -258,7 +258,7 @@ export default async function CasePage({
 
   const [grievances, people, events, documents, totals, siteSettings] = await Promise.all([
     getGrievances(),
-    tab === "people" || q ? getPeople() : getPersonBySlug("ryan-nichols").then((p) => (p ? [p] : [])),
+    q ? getPeople() : getPersonBySlug("ryan-nichols").then((p) => (p ? [p] : [])),
     getEvents(),
     getDocuments(),
     getCaseTotals(),
