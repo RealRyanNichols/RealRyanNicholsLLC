@@ -215,12 +215,12 @@ function PostCardBody({
   }
 
   // text (default).
-  // Show the real body so tweet embeds, images, and media shortcodes render
-  // inline (that's the in-feed experience we want to keep). Only fall back to
-  // the custom OG thumbnail when the body has NO visual of its own — so a
-  // text-only post gets card art instead of a bare wall of text.
-  const cardImage =
-    post.thumbnail_url ?? (bodyHasVisual(post.body) ? null : fallbackImage ?? null);
+  // The post's assigned thumbnail/OG image is the canonical card art. A body
+  // may contain an embed much farther down than the feed excerpt; treating that
+  // as the card visual suppresses the thumbnail but then truncates before the
+  // embed, leaving a text-only row. Only render body visuals when no assigned
+  // card image exists.
+  const cardImage = post.thumbnail_url ?? fallbackImage ?? null;
   return (
     <>
       <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">
@@ -239,7 +239,7 @@ function PostCardBody({
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={cardImage}
-              alt=""
+              alt={post.title ? `${post.title} social preview` : "Article social preview"}
               loading="lazy"
               className="absolute inset-0 h-full w-full object-cover"
             />
