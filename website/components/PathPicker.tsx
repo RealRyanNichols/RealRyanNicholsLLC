@@ -103,7 +103,10 @@ export function PathPicker({ variant = "band" }: { variant?: Variant }) {
   // shows in the back office or inside embeds: those aren't funnels.
   if (
     variant === "overlay" &&
-    (pathname === "/" || pathname.startsWith("/admin") || pathname.startsWith("/embed"))
+    (pathname === "/" ||
+      pathname.startsWith("/posts/") ||
+      pathname.startsWith("/admin") ||
+      pathname.startsWith("/embed"))
   )
     return null;
 
