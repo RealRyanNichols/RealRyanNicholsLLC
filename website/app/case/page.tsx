@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { format } from "date-fns";
 import { J6Banner } from "@/components/J6Banner";
 import {
   getGrievances,
@@ -91,6 +90,10 @@ export async function generateMetadata({
 
 type Tab = "grievances" | "timeline" | "people" | "documents";
 
+function shouldRenderJ6Directory(tab: Tab): boolean {
+  return tab === "people";
+}
+
 function matchesQuery(q: string, ...fields: (string | null | undefined)[]) {
   if (!q) return true;
   const needle = q.toLowerCase();
@@ -152,7 +155,7 @@ export default async function CasePage({
       : "all";
   const isJ6ClaimDirectory = tab === "people";
 
-  if (isJ6ClaimDirectory) {
+  if (shouldRenderJ6Directory(tab)) {
     const [j6Page, j6Counts] = await Promise.all([
       getJ6PeoplePage({ claimStatus: j6Filter, q, page, pageSize: 48 }),
       getJ6ClaimCounts(),
@@ -258,7 +261,7 @@ export default async function CasePage({
 
   const [grievances, people, events, documents, totals, siteSettings] = await Promise.all([
     getGrievances(),
-    q ? getPeople() : getPersonBySlug("ryan-nichols").then((p) => (p ? [p] : [])),
+    tab === "people" || q ? getPeople() : getPersonBySlug("ryan-nichols").then((p) => (p ? [p] : [])),
     getEvents(),
     getDocuments(),
     getCaseTotals(),
