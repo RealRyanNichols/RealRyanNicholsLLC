@@ -39,8 +39,29 @@ function parseHost(ref: string | null | undefined): string | null {
 
 // Crude device classifier — good enough for "is this a phone?"
 // without dragging in a 200KB ua-parser.
-function classifyDevice(ua: string | null | undefined): string {
+function isKnownSyntheticGoogleVisit(
+  ua: string | null | undefined,
+  referrerHost: string | null,
+): boolean {
+  if (referrerHost !== "google.com" || !ua) return false;
+
+  // This distributed crawler executes client JavaScript, forges a Google
+  // referrer, and presents one fixed desktop Chrome signature. It generated
+  // thousands of zero-dwell, zero-scroll visits and materially distorted the
+  // human bounce rate. Keep the match deliberately narrow so ordinary Linux
+  // readers and real Google search visitors remain classified as people.
+  return (
+    ua ===
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36"
+  );
+}
+
+function classifyDevice(
+  ua: string | null | undefined,
+  referrerHost: string | null,
+): string {
   if (!ua) return "unknown";
+  if (isKnownSyntheticGoogleVisit(ua, referrerHost)) return "bot";
   const s = ua.toLowerCase();
   if (/bot|crawler|spider|preview|lighthouse|headless|http-client/.test(s))
     return "bot";
@@ -79,7 +100,7 @@ export async function POST(request: Request) {
 
   const vh = visitorHash(parsed.data.visitor_id, ip, parsed.data.ua ?? null);
   const referrer_host = parseHost(parsed.data.ref ?? null);
-  const device_kind = classifyDevice(parsed.data.ua ?? null);
+  const device_kind = classifyDevice(parsed.data.ua ?? null, referrer_host);
   let userId: string | null = null;
   try {
     const authClient = await getSupabaseServerClient();
