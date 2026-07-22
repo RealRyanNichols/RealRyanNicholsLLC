@@ -31,6 +31,25 @@ const SOURCES: { key: string; label: string }[] = [
 const SEEN_KEY = "rrn_intent_done";
 const PROFILE_KEY = "rrn_visitor_profile";
 
+const OVERLAY_BLOCKED_PATHS = [
+  "/start-here",
+  "/services",
+  "/store",
+  "/book",
+  "/tell-your-story",
+  "/contact",
+  "/build",
+  "/own-your-feed",
+  "/login",
+  "/subscribed",
+];
+
+function blocksOverlay(pathname: string) {
+  return OVERLAY_BLOCKED_PATHS.some(
+    (path) => pathname === path || pathname.startsWith(`${path}/`),
+  );
+}
+
 export function PathPicker({ variant = "band" }: { variant?: Variant }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -106,7 +125,8 @@ export function PathPicker({ variant = "band" }: { variant?: Variant }) {
     (pathname === "/" ||
       pathname.startsWith("/posts/") ||
       pathname.startsWith("/admin") ||
-      pathname.startsWith("/embed"))
+      pathname.startsWith("/embed") ||
+      blocksOverlay(pathname))
   )
     return null;
 
