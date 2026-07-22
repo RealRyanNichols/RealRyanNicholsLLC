@@ -6,14 +6,17 @@ court: U.S. Court of Appeals for the District of Columbia Circuit
 case_name: United States of America v. Peter K. Navarro
 appellate_case_number: 24-3006
 district_case_number: 1:22-cr-00200-1
+opinion_document_id: "2184223"
+page_count: 37
 decided_at: "2026-07-21"
-captured_at_utc: "2026-07-22T05:56:02Z"
+initial_capture_at_utc: "2026-07-22T05:56:02Z"
+last_verified_at_utc: "2026-07-22T10:56:33Z"
 primary_source_url: "https://media.cadc.uscourts.gov/opinions/docs/2026/07/24-3006-2184223.pdf"
-opinions_archive_url: "https://media.cadc.uscourts.gov/opinions/?OpenView=&count=100"
+opinions_archive_url: "https://media.cadc.uscourts.gov/opinions/bydate/thisweek"
 primary_source_url_sha256: "ac08a5fc4e0ca9dd98bf362ef5fc51e3eb12435e40b811867395816d3a4cf2e9"
-opinions_archive_url_sha256: "1e53ba164acd3d38ee7614d30d10f781a281bcb38c18dee61009104df85b2b8d"
+opinions_archive_url_sha256: "31953910fed6dd0382816b48f29525e3d7d1cfbe3935b5aee7c85ad99b16fd86"
 content_sha256: null
-capture_status: official_pdf_url_and_text_preserved
+capture_status: official_pdf_reachable_text_parsed_binary_copy_pending
 verification_status: verified_primary_source
 related_people:
   - peter-navarro
@@ -25,8 +28,10 @@ related_people:
 ## Primary source
 
 - Official opinion PDF: https://media.cadc.uscourts.gov/opinions/docs/2026/07/24-3006-2184223.pdf
-- D.C. Circuit opinions archive: https://media.cadc.uscourts.gov/opinions/?OpenView=&count=100
+- D.C. Circuit opinions archive: https://media.cadc.uscourts.gov/opinions/bydate/thisweek
+- Court opinion document ID: `2184223`
 - Decision date: July 21, 2026
+- Length: 37 pages
 - Panel: Judges Patricia Millett, Cornelia Pillard, and J. Michelle Childs
 - Opinion author: Judge Patricia Millett
 
@@ -55,6 +60,10 @@ The court's findings and legal conclusions are recorded as the official judicial
 - DOJ sentencing release: https://www.justice.gov/usao-dc/pr/ex-white-house-trade-advisor-peter-navarro-sentenced-four-months-prison-two-counts
 - DOJ conviction release: https://www.justice.gov/usao-dc/pr/former-white-house-advisor-convicted-contempt-congress
 
-## Capture limitation
+## Capture verification update
 
-The official PDF was reachable and its text and first page were reviewed through the court's public endpoint. The runtime could not download the PDF bytes into the archive storage environment because of a transient DNS failure, so a cryptographic hash of the PDF file itself is not yet available. The canonical source URL and SHA-256 hash of that URL were preserved. A native PDF copy and file hash remain a follow-up capture item.
+The official D.C. Circuit archive now directly lists case `24-3006 — USA v. Peter Navarro` among the opinions released July 21, 2026, and links to the 37-page PDF carrying court document ID `2184223`. The official PDF remains reachable and machine-readable through the court endpoint.
+
+## Remaining capture limitation
+
+A second attempt to download the native PDF bytes into archive storage failed because the storage runtime could not resolve `media.cadc.uscourts.gov`, even though the court endpoint was reachable through the web retrieval channel. A cryptographic hash of the PDF file itself therefore remains unavailable. The canonical source URL, stable opinion identifier, page count, full parsed text access, and SHA-256 hashes of both source URLs are preserved. A native stored PDF and file-content hash remain the only outstanding capture items.
