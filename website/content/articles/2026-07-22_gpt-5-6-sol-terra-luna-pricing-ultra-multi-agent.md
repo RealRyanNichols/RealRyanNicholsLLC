@@ -5,7 +5,7 @@ author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-22T20:30:00Z"
 category: "AI & Technology"
 slug: "gpt-5-6-sol-terra-luna-pricing-ultra-multi-agent"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "GPT-5.6 Sol, Terra and Luna: Price, Access and Risks"
 seo_description: "OpenAI's GPT-5.6 family explained: Sol, Terra and Luna pricing, ChatGPT access, max and ultra modes, multi-agent risks, and one practical test."
