@@ -102,6 +102,65 @@ const MODULES = [
   ["Admin surface", "A control room for posts, submissions, orders, and next actions."],
 ];
 
+const PORTFOLIO = [
+  {
+    name: "RealRyanNichols.com",
+    role: "Owned media and publishing platform",
+    proof: "Feed, evidence archive, audience capture, commerce, and live tools.",
+    href: "https://realryannichols.com",
+    status: "Live",
+  },
+  {
+    name: "RepWatchr",
+    role: "Founder and product builder",
+    proof: "Public-record accountability profiles, research tools, and source packets.",
+    href: "https://repwatchr.com",
+    status: "Live",
+  },
+  {
+    name: "Premier Dental Academy",
+    role: "Digital platform and operating systems",
+    proof: "Enrollment, interactive training tools, and practice-ready student workflows.",
+    href: "https://www.premierdentalacademyoflongview.com",
+    status: "Live",
+  },
+  {
+    name: "The LeadFlow Pro",
+    role: "Owner and lead-system builder",
+    proof: "Offer design, paid diagnostics, lead capture, and service-business growth paths.",
+    href: "https://theleadflowpro.com",
+    status: "Live",
+  },
+  {
+    name: "Gideon Commerce",
+    role: "Founder and commerce product builder",
+    proof: "Seller-first marketplace, AI-assisted listings, and low-fee commerce tools.",
+    href: "https://gideonhq.com",
+    status: "Live",
+  },
+  {
+    name: "Faretta.Legal",
+    role: "Founder and case-organization builder",
+    proof: "Pro se case organization, document triage, timelines, and investigative support.",
+    href: "https://www.faretta.legal",
+    status: "Live",
+  },
+  {
+    name: "Faretta.AI",
+    role: "Product in development",
+    proof: "AI-assisted case workspace for organizing files, timelines, and self-represented work.",
+    href: null,
+    status: "Building",
+  },
+  {
+    name: "Don & Patti Nichols",
+    role: "Mission website and digital platform",
+    proof: "Medical-mission storytelling, trip information, and support for service in Belize.",
+    href: "https://www.donandpatti.com",
+    status: "Live",
+  },
+] as const;
+
 const PROBLEMS = [
   { value: "stuck", label: "I need clarity fast" },
   { value: "weak-site", label: "My site is not converting" },
@@ -486,6 +545,78 @@ export function ServicesHub() {
                 social media becomes the billboard; the domain becomes the home.
               </li>
             </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-y border-[var(--color-line)] bg-[var(--color-surface)]">
+        <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-10">
+          <div className="grid gap-4 lg:grid-cols-[0.72fr_1.28fr] lg:gap-8">
+            <div>
+              <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+                Working proof
+              </p>
+              <h2 className="mt-2 text-3xl font-black leading-tight tracking-normal sm:text-4xl">
+                See the platforms behind the promise.
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+                These are not concept mockups. They are businesses, mission
+                projects, public-record systems, and commerce tools Ryan owns,
+                builds, or supports. Open the live work and inspect it yourself.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {PORTFOLIO.map((project) => {
+                const content = (
+                  <>
+                    <div className="flex items-start justify-between gap-3">
+                      <h3 className="font-sans text-lg font-black text-[var(--color-ink)]">
+                        {project.name}
+                      </h3>
+                      <span className="rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] px-2.5 py-1 text-[10px] font-black uppercase tracking-normal text-[var(--color-blue)]">
+                        {project.status}
+                      </span>
+                    </div>
+                    <p className="mt-2 text-xs font-bold uppercase tracking-normal text-[var(--color-accent)]">
+                      {project.role}
+                    </p>
+                    <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+                      {project.proof}
+                    </p>
+                    <p className="mt-3 text-xs font-black text-[var(--color-blue)]">
+                      {project.href
+                        ? "Visit the live site"
+                        : "Public launch coming soon"}
+                    </p>
+                  </>
+                );
+
+                return project.href ? (
+                  <a
+                    key={project.name}
+                    href={project.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() =>
+                      trackEvent("portfolio_click", {
+                        project: project.name,
+                        source: "services_hub",
+                      })
+                    }
+                    className="rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-4 transition hover:border-[var(--color-accent)] hover:shadow-lg"
+                  >
+                    {content}
+                  </a>
+                ) : (
+                  <div
+                    key={project.name}
+                    className="rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-4"
+                  >
+                    {content}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
