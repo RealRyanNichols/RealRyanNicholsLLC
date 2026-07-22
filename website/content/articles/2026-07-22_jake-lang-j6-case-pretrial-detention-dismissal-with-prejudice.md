@@ -5,7 +5,7 @@ author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-22T22:00:00Z"
 category: "J6 Case Files"
 slug: "jake-lang-j6-case-pretrial-detention-dismissal-with-prejudice"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Jake Lang J6 Case: Detention, Fischer and Dismissal"
 seo_description: "Read Jake Lang's documented January 6 case timeline: four years of pretrial detention, the Fischer obstruction rulings, no trial or conviction, and dismissal with prejudice."
