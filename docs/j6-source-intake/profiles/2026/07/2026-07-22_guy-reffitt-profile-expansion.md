@@ -22,7 +22,7 @@ The archive distinguishes court findings, government allegations, attributed sta
 
 ## Verified chronology
 
-- **January 19, 2021:** Reffitt was arrested. The existing DOJ-derived archive record lists this date.
+- **January 16, 2021:** Reffitt was arrested, according to the Justice Department's August 1, 2022 sentencing release. This corrects the earlier January 19 date carried in the imported archive record.
 - **March 8, 2022:** A jury found Reffitt guilty on five felony counts. The Justice Department described him as the first January 6 defendant to stand trial.
 - **August 1, 2022:** Judge Dabney L. Friedrich sentenced him to 87 months of imprisonment, three years of supervised release, and $2,000 restitution.
 - **April 10, 2024:** Judge Friedrich denied release pending appeal while addressing the effect of the D.C. Circuit's *Brock* sentencing decision.
@@ -44,7 +44,7 @@ The archive distinguishes court findings, government allegations, attributed sta
 
 - URL: https://www.justice.gov/usao-dc/pr/texas-man-sentenced-prison-actions-related-capitol-breach
 - Source class: primary government release
-- Supports: August 1, 2022 sentence and government account of the case
+- Supports: January 16, 2021 arrest date; August 1, 2022 sentence; government account of the case
 - URL SHA-256: `fc6b38f57fa8fc48e50f97ae3a6117c469fa63bb71e39c3bae4eecad6b0fa8a1`
 
 ### 3. April 10, 2024 district-court opinion
