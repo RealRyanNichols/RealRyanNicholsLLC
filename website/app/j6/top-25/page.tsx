@@ -28,6 +28,24 @@ export const metadata: Metadata = {
   },
 };
 
+type PersonRelation = {
+  slug: string | null;
+  photo_url: string | null;
+  role: string | null;
+};
+
+type CandidateRow = {
+  id: string;
+  slug: string;
+  display_name: string;
+  aliases: string[] | null;
+  seed_rank: number | null;
+  is_seeded: boolean;
+  case_person_id: string | null;
+  editorial_note: string | null;
+  case_people: PersonRelation | PersonRelation[] | null;
+};
+
 type Candidate = {
   id: string;
   slug: string;
@@ -74,8 +92,9 @@ export default async function J6Top25Page() {
     counts.set(row.candidate_id, (counts.get(row.candidate_id) ?? 0) + 1);
   }
 
-  const candidates: Candidate[] = (candidateRows ?? [])
-    .map((row: any) => {
+  const rows = (candidateRows ?? []) as CandidateRow[];
+  const candidates: Candidate[] = rows
+    .map((row) => {
       const profile = Array.isArray(row.case_people) ? row.case_people[0] : row.case_people;
       return {
         id: row.id,
