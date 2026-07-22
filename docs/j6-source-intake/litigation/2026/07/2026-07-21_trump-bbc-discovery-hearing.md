@@ -6,11 +6,12 @@ case_name: "Trump v. British Broadcasting Corporation et al."
 case_number: "1:25-cv-25894"
 court: "U.S. District Court for the Southern District of Florida"
 event_date: "2026-07-21"
-captured_at_utc: "2026-07-22T06:56:08Z"
+initial_capture_at_utc: "2026-07-22T06:56:08Z"
+last_verified_at_utc: "2026-07-22T19:00:58Z"
 related_people:
   - donald-j-trump
-capture_status: secondary_reporting_and_docket_metadata_preserved
-verification_status: native_july_21_order_pending
+capture_status: docket_metadata_and_multiple_secondary_reports_preserved
+verification_status: multi_source_corroborated_native_july_21_order_pending
 public_ref: J6-MEDIA-2026-07-21-TRUMP-BBC-DISCOVERY
 ---
 
@@ -20,11 +21,24 @@ public_ref: J6-MEDIA-2026-07-21-TRUMP-BBC-DISCOVERY
 
 President Donald J. Trump's defamation case against the BBC concerns a documentary edit of his January 6, 2021 Ellipse speech. The BBC previously acknowledged that separated portions of the speech had been spliced in a manner that created a mistaken impression that Trump made a direct call for violent action, while disputing that the edit created legal liability.
 
-## Fresh development
+## July 21 discovery development
 
-Public reporting published after a July 21, 2026 discovery hearing states that Magistrate Judge Enjoliqué A. Lett required Trump to produce financial information and permitted discovery directed to people in his circle concerning January 6. The public docket confirms that discovery disputes involving the Trump trust, third-party subpoenas concerning January 6, written discovery, and requests for admission were scheduled for hearing on July 21, 2026.
+The public docket confirms that Magistrate Judge Enjoliqué A. Lett scheduled four discovery disputes for hearing on July 21, 2026. They concerned:
 
-The native July 21 order or hearing transcript was not available through the public docket mirror at capture time. For that reason, the reported ruling is attributed to the reporting sources and is not represented here as a fully captured native court filing.
+- a subpoena to the Donald J. Trump Revocable Trust;
+- forty-seven third-party subpoenas concerning January 6, 2021;
+- Trump's responses and objections to document requests and interrogatories; and
+- Trump's responses and objections to requests for admission.
+
+Multiple reports published after the hearing independently state that the magistrate judge permitted financial discovery and allowed discovery directed to people in Trump's circle concerning January 6. The reporting describes the financial material as relevant because Trump's complaint placed alleged economic and reputational harm at issue. Reports also identify potential testimony or records sought from people including Donald Trump Jr., Steve Bannon, and Stephen Miller.
+
+These details remain attributed to the reporting sources. The archive has not yet captured a native July 21 written order, minute entry, or hearing transcript.
+
+## What this does and does not establish
+
+The reported discovery ruling concerns what information the parties may seek while litigating the case. It does not decide whether the BBC is liable for defamation, whether Trump suffered legally compensable harm, or whether any person acted unlawfully on January 6.
+
+The BBC's acknowledged editing problem and its legal defenses remain distinct issues. The underlying merits and jurisdictional arguments are unresolved.
 
 ## Sources and provenance
 
@@ -38,7 +52,19 @@ The native July 21 order or hearing transcript was not available through the pub
 
 - Canonical URL: https://www.theguardian.com/us-news/2026/jul/21/trump-financial-details-bbc-lawsuit
 - URL SHA-256: `cff29811031717337c67d1f5924c27002b8746aa8e1bb4f5bd6aa10c43461de5`
-- What it reports: the outcome of the July 21 discovery hearing, including financial discovery and third-party testimony concerning January 6.
+- What it reports: the reported financial-discovery ruling and third-party discovery concerning January 6.
+
+### The Times report
+
+- Canonical URL: https://www.thetimes.com/us/news-today/article/trump-bbc-lawsuit-ruling-financial-information-businesses-miami-sfwr7sw2p
+- URL SHA-256: `9533eddce42d764fd2b00654e104113648e54c8130a9019d51e2af8279b90d9d`
+- What it reports: corroboration that detailed business and financial information was ordered produced and that the BBC's discovery arguments concern claimed economic and reputational harm.
+
+### New York Post report
+
+- Canonical URL: https://nypost.com/2026/07/22/us-news/trump-must-hand-over-financial-information-in-10b-defamation-suit-against-bbc-judge-rules/
+- URL SHA-256: `12880b2a83a2ca7d8f5d9971db283808d3177c05567c7f182651f35295cac0b2`
+- What it reports: additional corroboration of the financial-discovery ruling and the continuing dispute over the scope of claimed damages.
 
 ### BBC apology/retraction wording reported by ABC Australia
 
@@ -48,9 +74,10 @@ The native July 21 order or hearing transcript was not available through the pub
 
 ## Evidence posture
 
-- **Verified from docket metadata:** the case, the subject of the discovery disputes, and the July 21 hearing date.
-- **Attributed secondary reporting:** the reported discovery rulings issued at the hearing.
-- **Pending:** native July 21 written order, minute entry, or transcript; file-byte hash; any exhibits admitted or discussed at the hearing.
+- **Verified from docket metadata:** the case identity, discovery subjects, and July 21 hearing date.
+- **Corroborated secondary reporting:** financial discovery was permitted and third-party January 6 discovery could proceed.
+- **Pending native capture:** written order, minute entry, audio or transcript, exact production deadlines, precise limits on each subpoena, and any exhibits discussed at the hearing.
+- **File integrity status:** URL hashes preserved; native court-file byte hashes remain unavailable.
 
 ## Profile connection
 
