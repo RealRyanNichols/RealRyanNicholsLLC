@@ -5,7 +5,7 @@ author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-22T18:00:00Z"
 category: "J6 Case Files"
 slug: "stewart-rhodes-j6-case-record-commutation-vacatur-request"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Stewart Rhodes J6 Case: Sentence, Commutation and Vacatur Request"
 seo_description: "Read Stewart Rhodes' documented January 6 case timeline: 2022 verdict, 18-year sentence, 2025 commutation and the DOJ's pending 2026 vacatur request."
