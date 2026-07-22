@@ -2,7 +2,7 @@
 title: "Stewart Rhodes J6 Case Record: Trial, 18-Year Sentence, Commutation and Vacatur Request"
 subtitle: "A source-backed timeline of Elmer Stewart Rhodes III's January 6 prosecution, jury verdict, sentence, presidential commutation, supervised-release ruling, and the Justice Department's 2026 request to vacate the convictions."
 author: "Real Ryan Nichols Editorial Team"
-date: "2026-07-22T18:00:00Z"
+date: "2026-07-22T18:17:49Z"
 category: "J6 Case Files"
 slug: "stewart-rhodes-j6-case-record-commutation-vacatur-request"
 status: "published"
