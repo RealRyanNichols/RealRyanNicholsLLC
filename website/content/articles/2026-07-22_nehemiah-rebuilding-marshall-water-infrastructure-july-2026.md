@@ -5,7 +5,7 @@ author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-22T17:30:00Z"
 category: "Faith & Today"
 slug: "nehemiah-rebuilding-marshall-water-infrastructure-july-2026"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Nehemiah and Marshall's Water System: Faithful Rebuilding"
 seo_description: "Nehemiah's rebuilding story meets Marshall's water infrastructure decisions. Read the Bible context, verified local facts, open questions, and next steps."
