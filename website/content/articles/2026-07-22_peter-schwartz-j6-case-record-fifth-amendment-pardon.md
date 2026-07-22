@@ -12,6 +12,8 @@ seo_description: "Read the documented Peter J. Schwartz January 6 case timeline:
 tags: "Peter Schwartz, Pete Schwartz, January 6, J6 case files, United States v. Schwartz, Fifth Amendment, Fischer v. United States, Donald Trump pardon, DOJ weaponization"
 ---
 
+*By the Real Ryan Nichols Editorial Team*
+
 Peter J. Schwartz's January 6 case cannot be understood from one headline or one number.
 
 Yes, the district court imposed a 170-month prison sentence in May 2023. But that was not the end of the legal record. On January 17, 2025, the U.S. Court of Appeals for the D.C. Circuit vacated Schwartz's obstruction conviction, ordered a new sentencing process, and held that law enforcement violated the Fifth Amendment when agents compelled him to unlock his phone. Three days later, President Donald J. Trump issued the January 6 clemency proclamation that fully pardoned Schwartz and ended his imprisonment.
