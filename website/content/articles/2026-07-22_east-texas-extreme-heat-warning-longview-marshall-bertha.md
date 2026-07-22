@@ -5,7 +5,7 @@ author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-22"
 category: "East Texas News"
 slug: "east-texas-extreme-heat-warning-longview-marshall-bertha-july-22-2026"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Extreme Heat Warning in Longview and Marshall"
 seo_description: "Gregg and Harrison counties are under an Extreme Heat Warning through 8 p.m. July 22. See the Longview forecast, Bertha outlook, risks, and safety steps."
