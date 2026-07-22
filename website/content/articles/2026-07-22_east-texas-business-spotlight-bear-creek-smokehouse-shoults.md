@@ -5,7 +5,7 @@ author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-22T16:00:00Z"
 category: "East Texas Business"
 slug: "east-texas-business-spotlight-bear-creek-smokehouse-robbie-tracy-shoults"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Bear Creek Smokehouse Owners: East Texas Business Spotlight"
 seo_description: "Meet Bear Creek Smokehouse co-owners Robbie and Tracy Shoults and learn how the Marshall-area family business has grown since 1943."
