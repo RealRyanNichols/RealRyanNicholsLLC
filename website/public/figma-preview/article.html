@@ -1,0 +1,119 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Same county. Same rule. Opposite outcome. · RealRyanNichols.com</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
+:root{--bg:#0B1B34;--deep:#071224;--darkest:#050D1C;--card:#122544;--raised:#1A3156;--line:#24406B;
+--text:#F5F7FA;--muted:#9FB0C7;--soft:#C7D2E0;--dim:#64748B;--gold:#E3B341;--red:#C0392B;
+--fact:#2F9E62;--stmt:#3B82F6;--infer:#8B5CF6;--auth:#D97706;--priv:#64748B;--sealed:#DC2626}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+header.site{position:sticky;top:0;z-index:50;background:var(--deep);border-bottom:1px solid var(--line)}
+header.site .wrap{display:flex;align-items:center;justify-content:space-between;height:72px}
+.logo{font-weight:800;letter-spacing:.08em;font-size:17px}
+nav{display:flex;gap:26px;align-items:center}
+nav a{color:var(--muted);font-size:14px;font-weight:500}
+nav a:hover,nav a.on{color:var(--text)}
+.btn{display:inline-block;border-radius:8px;padding:14px 26px;font-weight:700;font-size:14px;letter-spacing:.02em;transition:.15s}
+.btn-gold{background:var(--gold);color:var(--bg)}.btn-gold:hover{filter:brightness(1.08)}
+.btn-line{border:1.5px solid var(--muted);color:var(--text)}.btn-line:hover{border-color:var(--text)}
+.btn-red{background:var(--red);color:var(--text)}
+.btn-sm{padding:9px 18px;font-size:12px}
+.eyebrow{color:var(--gold);font-weight:600;font-size:12px;letter-spacing:.14em}
+.tag{display:inline-block;border-radius:999px;padding:6px 13px;font-size:10.5px;font-weight:600;letter-spacing:.08em;border:1px solid}
+.t-fact{color:var(--fact);border-color:var(--fact);background:rgba(47,158,98,.14)}
+.t-stmt{color:var(--stmt);border-color:var(--stmt);background:rgba(59,130,246,.14)}
+.t-infer{color:var(--infer);border-color:var(--infer);background:rgba(139,92,246,.14)}
+.t-auth{color:var(--auth);border-color:var(--auth);background:rgba(217,119,6,.14)}
+.t-priv{color:var(--priv);border-color:var(--priv);background:rgba(100,116,139,.16)}
+.t-sealed{color:var(--sealed);border-color:var(--sealed);background:rgba(220,38,38,.14)}
+.hero{text-align:center;padding:96px 24px}
+.hero h1{font-size:clamp(38px,6vw,60px);font-weight:800;line-height:1.08;margin:22px 0}
+.hero p.sub{color:var(--muted);font-size:18px;line-height:1.6;max-width:720px;margin:0 auto 28px}
+.trust{color:var(--dim);font-size:13px;margin-top:26px;font-weight:500}
+.band{padding:72px 0}.band-deep{background:var(--deep)}.band-dark{background:var(--darkest)}
+.band h2{font-size:32px;font-weight:700;margin-bottom:26px}
+.cards{display:grid;gap:22px}
+.c3{grid-template-columns:repeat(3,1fr)}.c4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:900px){.c3,.c4{grid-template-columns:1fr}nav{display:none}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;transition:.15s}
+.card:hover{border-color:var(--gold)}
+.card .img{height:170px;background:var(--raised)}
+.card .body{padding:20px 20px 24px;display:flex;flex-direction:column;gap:11px}
+.cat{font-size:11px;font-weight:600;letter-spacing:.1em}
+.card h3{font-size:19px;font-weight:700;line-height:1.28}
+.card p{color:var(--muted);font-size:14px;line-height:1.55}
+.meta{color:var(--dim);font-size:11px;letter-spacing:.05em;font-weight:500}
+.gold-band{background:var(--gold);color:var(--bg);text-align:center;padding:64px 24px}
+.gold-band h2{font-size:30px;font-weight:700;margin-bottom:10px}
+.gold-band p{font-size:16px;margin-bottom:24px}
+.form{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.form input{width:340px;max-width:80vw;padding:14px 18px;border-radius:8px;border:none;font-size:15px;font-family:inherit}
+.form .btn{background:var(--bg);color:var(--text)}
+footer.site{background:var(--darkest);padding:52px 0 36px;color:var(--muted)}
+footer.site .row{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:22px}
+footer.site .fl{font-weight:800;letter-spacing:.06em;color:var(--text)}
+footer.site .small{color:var(--dim);font-size:12.5px;line-height:1.8}
+.article{max-width:760px;margin:0 auto;padding:72px 24px}
+.article h1{font-size:clamp(32px,4.6vw,44px);font-weight:800;line-height:1.12;margin:16px 0}
+.article .dek{color:var(--muted);font-size:19px;line-height:1.55;margin-bottom:16px}
+.article .aimg{height:400px;background:var(--raised);border-radius:12px;margin:26px 0}
+.article h2{font-size:26px;font-weight:700;margin:34px 0 14px}
+.article p.body{color:var(--soft);font-size:17px;line-height:1.68;margin-bottom:18px}
+.tagrow{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.receipt{background:var(--card);border:1px solid var(--gold);border-radius:12px;padding:24px;margin:22px 0}
+.receipt .rl{color:var(--gold);font-size:11px;font-weight:600;letter-spacing:.1em;margin-bottom:12px}
+.receipt blockquote{font-size:18px;font-weight:500;line-height:1.5;margin-bottom:12px}
+.receipt .rn{color:var(--muted);font-size:13px;line-height:1.5}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:24px 0}
+@media(max-width:700px){.duo{grid-template-columns:1fr}}
+.duo .d{background:var(--card);border-radius:12px;padding:20px;border:1px solid}
+.duo .dl{font-size:12px;font-weight:600;letter-spacing:.1em;margin-bottom:10px}
+.duo p{color:var(--soft);font-size:14px;line-height:1.6}
+.event{display:flex;gap:24px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:16px}
+.event .date{color:var(--gold);font-weight:700;font-size:13px;letter-spacing:.04em;min-width:120px}
+.event h3{font-size:19px;font-weight:600;margin-bottom:7px}
+.event p{color:var(--muted);font-size:14px;line-height:1.55;margin-bottom:8px}
+.chips{display:flex;gap:12px;flex-wrap:wrap;margin:22px 0}
+.chip{border:1.5px solid var(--red);border-radius:8px;padding:10px 16px;font-size:12px;font-weight:600;letter-spacing:.06em}
+.fchips{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:22px}
+.fchip{border:1px solid var(--line);border-radius:999px;padding:8px 16px;font-size:13px;font-weight:600;color:var(--muted)}
+.fchip.on{background:var(--gold);color:var(--bg);border-color:var(--gold)}
+.search{display:flex;gap:12px;justify-content:center;margin-top:26px;flex-wrap:wrap}
+.search input{width:480px;max-width:82vw;background:var(--card);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:15px 20px;font-size:15px;font-family:inherit}
+.pcard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px 20px}
+.pcard .top{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.pcard .av{width:40px;height:40px;border-radius:50%;border:1.5px solid;flex:none}
+.pcard .k{font-size:10px;font-weight:600;letter-spacing:.1em}
+.pcard h3{font-size:17px;font-weight:700;margin-bottom:7px}
+.pcard p{color:var(--muted);font-size:13px;line-height:1.5}
+.offer{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:28px 26px;display:flex;flex-direction:column;gap:14px}
+.offer.feat{background:var(--raised);border:2px solid var(--gold)}
+.offer .price{font-size:30px;font-weight:800}
+.offer h3{font-size:18px;font-weight:700;line-height:1.3}
+.offer p{color:var(--muted);font-size:14px;line-height:1.55;flex:1}
+.verse{color:var(--dim);font-size:13px;font-style:italic}
+.center{text-align:center}
+</style></head><body><header class="site"><div class="wrap"><a class="logo" href="index.html">REAL RYAN NICHOLS</a><nav><a href="index.html" class="">Feed</a><a href="case.html" class="">The Case</a><a href="nexus.html" class="">J6 Nexus</a><a href="article.html" class="on">Watch</a><a href="work.html" class="">Work With Me</a></nav><a class="btn btn-gold btn-sm" href="support.html">SUPPORT THE RECORD</a></div></header>
+<article class="article">
+<div class="cat" style="color:var(--red)">INVESTIGATION &middot; BODYCAM / EVIDENCE STANDARD</div>
+<h1>Same county. Same rule.<br>Opposite outcome.</h1>
+<p class="dek">On July 13, 2025, Harrison County officers responded to a firearm-handling call and filed no charge. The bodycam should settle what the rumors cannot. Release it.</p>
+<div class="meta">BY RYAN NICHOLS &middot; JULY 2026 &middot; THE CASE &mdash; HARRISON COUNTY &middot; 9 MIN READ</div>
+<div class="aimg"></div>
+<h2>The setup</h2>
+<p class="body">Two calls. Two men. Two firearms. One county. In one case, deputies reviewed the scene, watched the video, and went home. No charge. In the other, the story got told for me &mdash; by rumor, by cropped screenshot, by people who were not there.</p>
+<div class="tagrow"><span class="tag t-fact">FACT</span><span class="tag t-stmt">RYAN STATEMENT</span><span class="tag t-auth">NEEDS AUTHENTICATION</span></div>
+<h2>The receipt</h2>
+<div class="receipt"><div class="rl">DOCUMENT &middot; CAD REPORT EXCERPT &mdash; JULY 13, 2025</div>
+<blockquote>&ldquo;Subject observed handling firearm. Determined no threat. No charges filed. Units cleared.&rdquo;</blockquote>
+<div class="rn">Source: public records request. Native file and metadata preserved in the source chain. NEEDS AUTHENTICATION for the underlying bodycam.</div></div>
+<div class="duo">
+<div class="d" style="border-color:var(--fact)"><div class="dl" style="color:var(--fact)">WHAT THIS PROVES</div><p>A comparable firearm call in the same county ended with no charge. The record of that outcome exists and is quoted above. The double-standard question is documented, not invented.</p></div>
+<div class="d" style="border-color:var(--auth)"><div class="dl" style="color:var(--auth)">WHAT THIS DOES NOT PROVE YET</div><p>It does not prove intent or motive. The bodycam itself has not been released. Until the tape is public, the comparison rests on the written record alone. Release the video. Either way, release it.</p></div></div>
+</article>
+<section class="band band-deep center"><h2>Put eyes on the record.</h2>
+<p style="color:var(--muted);max-width:640px;margin:0 auto 24px;line-height:1.6;font-size:15px">Do not threaten anyone. Do not harass anyone. Read it. Share it. Send receipts, evidence, witnesses. Send it to media and attorneys.</p>
+<a class="btn btn-gold" href="#">SHARE THIS ARTICLE</a> &nbsp; <a class="btn btn-line" href="#">SEND A TIP</a></section><footer class="site"><div class="wrap"><div class="row"><div class="fl">REAL RYAN NICHOLS</div>
+<div>Feed · The Case · J6 Nexus · Watch · The Book · Work With Me · Tell Your Story · Support</div></div>
+<div class="verse">&ldquo;You meant evil against me, but God meant it for good.&rdquo; &mdash; Genesis 50:20</div>
+<div class="small">&copy; 2026 RealRyanNichols.com &middot; Own your platform. &middot; Do not threaten anyone. Do not harass anyone. Read it. Share it. Send receipts.</div></div></footer></body></html>
