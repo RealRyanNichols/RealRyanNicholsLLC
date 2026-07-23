@@ -5,7 +5,7 @@ author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-23T20:28:00Z"
 category: "AI & Technology"
 slug: "gemini-notebook-secure-cloud-computer-code-execution-2026"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Gemini Notebook Adds Secure Cloud Code Execution"
 seo_description: "Google renamed NotebookLM to Gemini Notebook and added cloud code execution, Gemini 3.5 and new exports. See access, price, risks and one practical test."
