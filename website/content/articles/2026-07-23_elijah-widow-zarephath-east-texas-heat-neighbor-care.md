@@ -5,7 +5,7 @@ slug: "elijah-widow-zarephath-east-texas-heat-neighbor-care"
 date: "2026-07-23T17:50:00Z"
 author: "Real Ryan Nichols Editorial Team"
 category: "Faith & Today"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Elijah and the Widow: A Bible Lesson for East Texas Heat"
 seo_description: "The widow of Zarephath shared during drought. Here is what 1 Kings 17 teaches—and what East Texans can do during today’s heat advisory."
