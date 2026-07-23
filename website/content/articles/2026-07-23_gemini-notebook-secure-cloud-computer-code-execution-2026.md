@@ -3,6 +3,7 @@ title: "NotebookLM Is Now Gemini Notebook: What Its Secure Cloud Computer Can—
 subtitle: "Google has renamed NotebookLM, upgraded it to Gemini 3.5 and Antigravity, and begun giving notebooks a cloud computer that can run code. Here is who has access, what it costs, what remains unclear, and one useful test."
 author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-23T20:28:00Z"
+updated: "2026-07-23T20:48:00Z"
 category: "AI & Technology"
 slug: "gemini-notebook-secure-cloud-computer-code-execution-2026"
 status: "published"
