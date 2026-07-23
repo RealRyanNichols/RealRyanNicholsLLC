@@ -3,6 +3,7 @@ title: "Anthony Robert Williams J6 Case Record: Five-Year Sentence, Fischer Vaca
 subtitle: "A source-by-source account of a five-count jury verdict, the Supreme Court decision that changed the felony obstruction case, January 2025 clemency and the final dismissal order."
 author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-23"
+updated: "2026-07-23"
 category: "January 6"
 slug: "anthony-robert-williams-j6-trial-fischer-vacatur-pardon-dismissal"
 status: "published"
