@@ -5,7 +5,7 @@ author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-23T22:03:00Z"
 category: "January 6"
 slug: "daniel-ray-caldwell-j6-case-detention-plea-sentence-pardon"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Daniel Ray Caldwell J6 Case: Plea, Sentence and Pardon"
 seo_description: "Daniel Ray Caldwell’s verified J6 record: arrest, detention ruling, seven charged counts, one felony plea, 68-month sentence, and full pardon."
