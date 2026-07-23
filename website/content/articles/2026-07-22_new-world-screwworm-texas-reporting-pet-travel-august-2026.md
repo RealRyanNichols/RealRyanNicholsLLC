@@ -13,7 +13,7 @@ tags: "New World screwworm, Texas screwworm, Texas livestock, Texas ranchers, an
 ---
 
 *By the Real Ryan Nichols Editorial Team*  
-*Last verified: July 22, 2026, 8:15 p.m. CDT*
+*Last verified: July 22, 2026, 8:20 p.m. CDT*
 
 New World screwworm is no longer only a threat moving north through Mexico. It has been confirmed in Texas animals, and the most useful thing Texans can do now is learn what an infestation looks like, check wounds early and report a suspected case immediately.
 
