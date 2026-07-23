@@ -5,7 +5,7 @@ author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-23"
 category: "January 6"
 slug: "anthony-robert-williams-j6-trial-fischer-vacatur-pardon-dismissal"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Anthony Robert Williams J6 Case: Trial, Vacatur and Pardon"
 seo_description: "Anthony Robert Williams received a five-year J6 sentence before Fischer vacated the felony. Review the jury verdict, pardon and dismissed later charge."
