@@ -2,7 +2,7 @@
 title: "Elijah, the Widow and the Last Meal: What East Texas Heat Requires of Neighbors"
 subtitle: "The widow of Zarephath faced drought with almost nothing. Her story asks whether we will notice and serve neighbors carrying greater risk during dangerous heat."
 slug: "elijah-widow-zarephath-east-texas-heat-neighbor-care"
-date: "2026-07-23T17:50:00Z"
+date: "2026-07-23T17:53:30Z"
 author: "Real Ryan Nichols Editorial Team"
 category: "Faith & Today"
 status: "published"
