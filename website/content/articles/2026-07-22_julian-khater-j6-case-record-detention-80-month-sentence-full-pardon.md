@@ -159,8 +159,8 @@ Supportive coverage is not served by inventing a defense or minimizing a documen
 
 - Read the complete [Julian Khater profile](/case/people/julian-khater)
 - Compare co-defendant [George Pierre Tanios' profile](/case/people/george-tanios)
-- Review the [Brian Sicknick profile](/case/people/brian-sicknick) and the archive's medical-record source
-- See the clemency decision through the [Donald J. Trump profile](/case/people/donald-trump)
+- Review the archive's [Brian Sicknick medical-record source](/case/documents/brian-sicknick-medical-examiner-natural-causes-2021-04-19)
+- See the clemency decision through the [Donald J. Trump profile](/case/people/donald-j-trump)
 - Follow people, events and documents through the [J6 Case Nexus](/case/nexus)
 - Vote in the authenticated [Top 25 J6 Cases](/j6/top-25)
 - Browse the [January 6 people directory](/case?view=people)
