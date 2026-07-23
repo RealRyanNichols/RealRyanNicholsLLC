@@ -26,6 +26,36 @@ import { SITE } from "@/lib/site";
 
 export const revalidate = 300;
 
+function plainText(value: string): string {
+  return value
+    .replace(/!\[([^\]]*)\]\([^)]+\)/g, "$1")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/^\s{0,3}#{1,6}\s*/gm, "")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/[*_~`>#|]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function metadataDescription(
+  value: string | null | undefined,
+  fallback: string,
+  maxLength = 160,
+): string {
+  const cleaned = plainText(value || fallback);
+  if (cleaned.length <= maxLength) return cleaned;
+
+  const candidate = cleaned.slice(0, maxLength - 1);
+  const naturalBreak = candidate.replace(/\s+\S*$/, "").trim();
+  return `${naturalBreak || candidate.trim()}…`;
+}
+
+function profileLabel(name: string, isJ6Defendant: boolean, role?: string | null): string {
+  return isJ6Defendant
+    ? `${name} — January 6 case profile`
+    : `${name} — ${role ?? "person of record"}`;
+}
+
 export async function generateStaticParams() {
   const list = await getPeople();
   return list.map((p) => ({ slug: p.slug }));
@@ -39,25 +69,29 @@ export async function generateMetadata({
   const { slug } = await params;
   const p = await getPersonBySlug(slug);
   if (!p) return { title: "Not found" };
+
   const url = `${SITE.url}/case/people/${p.slug}`;
-  const isUnclaimedJ6er =
-    p.is_j6_defendant === true &&
-    (p.claim_status === "unclaimed" || p.claim_status === "pending");
-  const title = isUnclaimedJ6er
-    ? `Hey ${p.name} — your J6 Anti-Weaponization Case Builder profile is ready`
-    : `${p.name} · ${p.role ?? "person of record"}`;
-  const description = isUnclaimedJ6er
-    ? p.description
-      ? p.description.replace(/\s+/g, " ").slice(0, 200)
-      : `${p.name} is a January 6 defendant. This profile is ready to be claimed and built out. Free, forever, no gatekeeping.`
-    : p.description ?? `Person of record in United States v. Nichols.`;
+  const isJ6Profile = p.is_j6_defendant === true;
+  const title = isJ6Profile
+    ? `${p.name} | January 6 Case Profile`
+    : `${p.name} | ${p.role ?? "Person of Record"}`;
+  const fallbackDescription = isJ6Profile
+    ? `${p.name}'s January 6 case profile with sourced court records, timeline events, clemency status, related people, and archive connections.`
+    : `${p.name}'s sourced profile in the Real Ryan Nichols public case archive.`;
+  const description = metadataDescription(p.description, fallbackDescription);
   const ogUrl = `${SITE.url}/og/person/${p.slug}`;
+  const imageAlt = isJ6Profile
+    ? `${p.name} January 6 case profile social preview`
+    : `${p.name} public case-record profile social preview`;
   const ogImages = [
-    { url: ogUrl, width: 1200, height: 630, alt: p.name },
+    { url: ogUrl, width: 1200, height: 630, alt: imageAlt },
   ];
+
   return {
     title,
     description,
+    alternates: { canonical: url },
+    robots: { index: true, follow: true },
     openGraph: {
       type: "article",
       title,
@@ -71,7 +105,6 @@ export async function generateMetadata({
       description,
       images: [ogUrl],
     },
-    alternates: { canonical: url },
   };
 }
 
@@ -84,6 +117,14 @@ export default async function PersonPage({
   const p = await getPersonBySlug(slug);
   if (!p) notFound();
   const url = `${SITE.url}/case/people/${p.slug}`;
+  const isJ6Profile = p.is_j6_defendant === true;
+  const profileName = profileLabel(p.name, isJ6Profile, p.role);
+  const profileDescription = metadataDescription(
+    p.description,
+    isJ6Profile
+      ? `${p.name}'s January 6 case profile with sourced court records, timeline events, clemency status, related people, and archive connections.`
+      : `${p.name}'s sourced profile in the Real Ryan Nichols public case archive.`,
+  );
 
   // The subject of the entire site gets a bespoke flagship profile instead of
   // the generic person template.
@@ -109,7 +150,7 @@ export default async function PersonPage({
         "@type": "ProfilePage",
         "@id": `${url}#profile`,
         url,
-        name: `${p.name} — United States v. Nichols`,
+        name: `${p.name} — official record profile`,
         isPartOf: websiteRef(),
         mainEntity: {
           "@type": "Person",
@@ -146,14 +187,14 @@ export default async function PersonPage({
       "@type": "ProfilePage",
       "@id": `${url}#profile`,
       url,
-      name: `${p.name} — United States v. Nichols`,
+      name: profileName,
       isPartOf: websiteRef(),
       mainEntity: {
         "@type": "Person",
         name: p.name,
         url,
         ...(p.role ? { jobTitle: p.role } : {}),
-        ...(p.description ? { description: p.description } : {}),
+        description: profileDescription,
       },
     },
     breadcrumbLd([
@@ -198,7 +239,7 @@ export default async function PersonPage({
         <div className="mt-6 flex items-center gap-3">
           <ShareButton
             url={url}
-            title={`${p.name} — claim your J6 Anti-Weaponization Case Builder profile`}
+            title={profileName}
             slug={p.slug}
             caseKind="person"
           />
@@ -234,10 +275,14 @@ export default async function PersonPage({
   }
 
   const evidence = await getDocumentsForPerson(p.id);
+  const photoAlt = isJ6Profile
+    ? `${p.name}, shown for the January 6 case profile and source archive`
+    : `${p.name}, shown for the public case-record profile`;
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
       <CaseViewTracker type="person" slug={p.slug} />
+      <JsonLd data={personLd} />
 
       <nav className="text-sm text-[var(--color-muted)] mb-4">
         <Link href="/case" className="hover:underline">
@@ -269,7 +314,7 @@ export default async function PersonPage({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={p.photo_url}
-            alt={p.name}
+            alt={photoAlt}
             className="w-full max-h-[460px] object-cover"
           />
         </div>
@@ -284,7 +329,7 @@ export default async function PersonPage({
       <CaseInfoCard person={p} />
 
       <div className="mt-8 flex items-center gap-3">
-        <ShareButton url={url} title={`${p.name} — United States v. Nichols`} slug={p.slug} caseKind="person" />
+        <ShareButton url={url} title={profileName} slug={p.slug} caseKind="person" />
       </div>
 
       <div className="mt-4">
