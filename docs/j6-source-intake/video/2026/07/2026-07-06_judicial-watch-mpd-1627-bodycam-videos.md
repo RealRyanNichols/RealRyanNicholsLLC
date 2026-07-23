@@ -15,11 +15,13 @@ source_page_date: "2026-07-06"
 announcement_date: "2026-07-10"
 captured_at_utc: "2026-07-22T22:57:56Z"
 captured_at_america_chicago: "2026-07-22T17:57:56-05:00"
+manifest_capture_attempted_at_utc: "2026-07-23T00:02:09Z"
 reported_video_count: 1627
 reported_duration: "more than 1,000 hours"
-capture_status: source_collection_and_court_provenance_preserved
+capture_status: source_collection_and_court_provenance_preserved_manifest_extraction_blocked
 verification_status: verified_source_corpus_video_level_review_pending
 profile_mapping_status: pending_video_level_identification
+manifest_capture_status: client_rendered_catalog_not_exposed_in_server_parsed_html
 source_page_sha256: "ab7328e675dfab2ca55ec39e4ff41127e7ae90bb19a9b7833cf8de2905cfc68e"
 release_announcement_sha256: "07c3d22ad5bebbb90776ecc735b92850f10a9cd7694087b3b9f1ab6a4c5ab2c2"
 court_ruling_summary_sha256: "46cbe5fe165f23e981d3220a6fd84a5235e2f3ab0a0468b915e60f0972809e2d"
@@ -56,6 +58,14 @@ This record verifies the existence, stated size, source organization, originatin
 
 No January 6 defendant, witness, officer, location, time interval, use of force, medical event, or disputed factual claim should be connected to an individual clip until that clip is reviewed and preserved with its own identifier, runtime, source URL, timestamp range, and verification notes.
 
+## July 23 manifest-capture attempt
+
+The public catalog URL was re-verified. Its server-parsed HTML exposes the collection title, the reported 1,627-video total, sorting controls, and collection provenance, but it does not expose the individual video filenames or media URLs. The parsed page displays a client-side fallback stating that no videos were found, indicating that the manifest is loaded dynamically after page render.
+
+The archive runtime also encountered a transient DNS-resolution failure when attempting a direct binary/page download. Because the individual media manifest could not be extracted through the available capture path, no filename list, clip URL, runtime, file size, resolution, or file-content hash was added during this pass.
+
+This is a capture limitation, not evidence that the videos are unavailable to an ordinary browser session.
+
 ## Profile connections
 
 The collection is connected to **Officer Michael Fanone's archive profile** because the underlying records request expressly sought all of his January 6 body-camera footage. This connection does not imply that every released file depicts him.
@@ -64,6 +74,7 @@ Additional J6er-profile connections remain pending clip-level review. The archiv
 
 ## Required follow-up
 
+- Identify the browser-side JSON, API, script bundle, or media index used to populate the catalog.
 - Export or enumerate the full 1,627-file manifest.
 - Preserve every stable video URL and filename.
 - Record runtime, file size, resolution, upload date, and content type.
