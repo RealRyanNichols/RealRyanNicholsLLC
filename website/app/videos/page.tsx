@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { pageMetadata } from "@/lib/page-metadata";
-import { getCommentCount, getPublishedPosts } from "@/lib/posts";
+import { getCommentCounts, getPublishedPosts } from "@/lib/posts";
 import { PostCard } from "@/components/PostCard";
 import { LiveNowBanner } from "@/components/LiveNowBanner";
 import { getActiveLiveStream } from "@/lib/live";
@@ -63,10 +63,7 @@ export default async function VideosPage(props: {
     ? videos
     : allVideos.filter((p) => channelOf(p.category) !== "J6");
 
-  const counts = await Promise.all(
-    videos.map(async (p) => [p.id, await getCommentCount(p.id)] as const),
-  );
-  const countMap = new Map(counts);
+  const countMap = await getCommentCounts(videos.map((p) => p.id));
 
   // Machine-readable index of the site-owned videos (top 24) so engines see
   // real VideoObjects with thumbnails and durations, not just links.
