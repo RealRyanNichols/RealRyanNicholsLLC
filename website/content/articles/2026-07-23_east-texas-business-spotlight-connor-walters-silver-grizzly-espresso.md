@@ -5,7 +5,7 @@ author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-23"
 category: "East Texas Business"
 slug: "east-texas-business-spotlight-connor-walters-silver-grizzly-espresso"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Silver Grizzly Espresso Owner: East Texas Business Spotlight"
 seo_description: "Meet Silver Grizzly Espresso co-founder Connor Walters and learn how the Longview coffee shop built craft, community, and a downtown gathering place."
