@@ -2,7 +2,7 @@
 title: "Trump's Forced-Labor Tariffs Take Effect: What the 10%–12.5% Section 301 Duties Actually Cover"
 subtitle: "New duties now apply to imports from 60 economies. The rates, exemptions, legal basis, foreign objections and economic effects require more precision than the political slogans."
 author: "Real Ryan Nichols Editorial Team"
-date: "2026-07-24T11:39:00Z"
+date: "2026-07-24T11:40:10Z"
 category: "Politics"
 slug: "trump-forced-labor-tariffs-60-economies-section-301-july-24-2026"
 status: "published"
@@ -14,7 +14,7 @@ tags: "Trump tariffs, forced labor tariffs, Section 301, USTR, 60 economies, Jul
 ---
 
 *By the Real Ryan Nichols Editorial Team*  
-*Facts last checked: July 24, 2026, 6:45 a.m. Central*
+*Facts last checked: July 24, 2026, 6:40 a.m. Central*
 
 New United States tariffs tied to forced-labor import enforcement took effect at **12:01 a.m. Eastern on July 24, 2026**.
 
