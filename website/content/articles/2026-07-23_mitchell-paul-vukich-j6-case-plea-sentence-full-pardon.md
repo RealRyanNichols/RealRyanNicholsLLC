@@ -5,7 +5,7 @@ author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-24T02:32:00Z"
 category: "January 6"
 slug: "mitchell-paul-vukich-j6-case-plea-sentence-full-pardon"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Mitchell Vukich J6 Case: Plea, Sentence and Full Pardon"
 seo_description: "Mitchell Paul Vukich’s sourced J6 record: arrest, five initial allegations, one misdemeanor plea, 30-day sentence, and full pardon."
