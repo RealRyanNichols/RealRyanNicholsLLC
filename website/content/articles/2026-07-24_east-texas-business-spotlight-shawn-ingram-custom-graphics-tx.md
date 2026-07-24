@@ -5,7 +5,7 @@ author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-24T16:10:00Z"
 category: "East Texas Business"
 slug: "east-texas-business-spotlight-shawn-ingram-custom-graphics-tx"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Shawn Ingram & Custom Graphics TX | East Texas Spotlight"
 seo_description: "Meet Shawn Ingram of Custom Graphics TX, a Longview branding shop combining in-house production, local business connections and practical skills access."
