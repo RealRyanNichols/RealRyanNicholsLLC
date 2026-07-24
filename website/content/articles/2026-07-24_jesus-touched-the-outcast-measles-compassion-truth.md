@@ -5,7 +5,7 @@ author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-24T17:05:00Z"
 category: "Faith & Today"
 slug: "jesus-touched-the-outcast-measles-compassion-truth"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Jesus, the Outcast and Compassion During the 2026 Measles Surge"
 seo_description: "Mark 1 shows Jesus restoring an excluded man’s dignity. Here is how that lesson can guide truthful, compassionate action during the 2026 U.S. measles surge."
