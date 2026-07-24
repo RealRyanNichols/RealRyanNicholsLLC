@@ -8,15 +8,17 @@ appellate_case_number: 24-3006
 district_case_number: 1:22-cr-00200-1
 opinion_document_id: "2184223"
 page_count: 37
+file_mime: application/pdf
+file_size_bytes: 274971
 decided_at: "2026-07-21"
 initial_capture_at_utc: "2026-07-22T05:56:02Z"
-last_verified_at_utc: "2026-07-22T10:56:33Z"
+last_verified_at_utc: "2026-07-24T03:56:25Z"
 primary_source_url: "https://media.cadc.uscourts.gov/opinions/docs/2026/07/24-3006-2184223.pdf"
 opinions_archive_url: "https://media.cadc.uscourts.gov/opinions/bydate/thisweek"
 primary_source_url_sha256: "ac08a5fc4e0ca9dd98bf362ef5fc51e3eb12435e40b811867395816d3a4cf2e9"
 opinions_archive_url_sha256: "31953910fed6dd0382816b48f29525e3d7d1cfbe3935b5aee7c85ad99b16fd86"
-content_sha256: null
-capture_status: official_pdf_reachable_text_parsed_binary_copy_pending
+content_sha256: "888ab2e55efaa06894e1eaf1f46ea5dc72c7b0a0e2594b7021aa62d535f44520"
+capture_status: official_pdf_downloaded_parsed_and_hashed_archive_binary_copy_pending
 verification_status: verified_primary_source
 related_people:
   - peter-navarro
@@ -32,6 +34,9 @@ related_people:
 - Court opinion document ID: `2184223`
 - Decision date: July 21, 2026
 - Length: 37 pages
+- MIME type: `application/pdf`
+- File size: `274,971` bytes
+- File-content SHA-256: `888ab2e55efaa06894e1eaf1f46ea5dc72c7b0a0e2594b7021aa62d535f44520`
 - Panel: Judges Patricia Millett, Cornelia Pillard, and J. Michelle Childs
 - Opinion author: Judge Patricia Millett
 
@@ -62,8 +67,8 @@ The court's findings and legal conclusions are recorded as the official judicial
 
 ## Capture verification update
 
-The official D.C. Circuit archive now directly lists case `24-3006 — USA v. Peter Navarro` among the opinions released July 21, 2026, and links to the 37-page PDF carrying court document ID `2184223`. The official PDF remains reachable and machine-readable through the court endpoint.
+The official D.C. Circuit PDF was successfully downloaded on July 24, 2026. Its MIME type, byte size, page count, PDF properties, and file-content SHA-256 were verified. The file is a 37-page, unencrypted, optimized PDF version 1.7 with no embedded JavaScript or forms.
 
 ## Remaining capture limitation
 
-A second attempt to download the native PDF bytes into archive storage failed because the storage runtime could not resolve `media.cadc.uscourts.gov`, even though the court endpoint was reachable through the web retrieval channel. A cryptographic hash of the PDF file itself therefore remains unavailable. The canonical source URL, stable opinion identifier, page count, full parsed text access, and SHA-256 hashes of both source URLs are preserved. A native stored PDF and file-content hash remain the only outstanding capture items.
+A persistent archive-controlled binary copy remains pending. The official source URL, stable opinion identifier, parsed text, complete file metadata, and cryptographic file hash are now preserved.
