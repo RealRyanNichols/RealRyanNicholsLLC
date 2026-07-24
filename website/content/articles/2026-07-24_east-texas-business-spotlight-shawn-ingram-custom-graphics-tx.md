@@ -2,7 +2,7 @@
 title: "East Texas Business Spotlight: Shawn Ingram and Custom Graphics TX"
 subtitle: "A Longview production shop turns screen printing, embroidery and signage into practical branding—and its owner is using the workspace to widen access to real-world skills."
 author: "Real Ryan Nichols Editorial Team"
-date: "2026-07-24T16:10:00Z"
+date: "2026-07-24T16:25:20Z"
 category: "East Texas Business"
 slug: "east-texas-business-spotlight-shawn-ingram-custom-graphics-tx"
 status: "published"
