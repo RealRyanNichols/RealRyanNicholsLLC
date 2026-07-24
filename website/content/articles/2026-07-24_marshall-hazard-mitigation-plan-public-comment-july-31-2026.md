@@ -5,7 +5,7 @@ author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-24T14:45:00Z"
 category: "East Texas"
 slug: "marshall-hazard-mitigation-plan-public-comment-july-31-2026"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Marshall Hazard Plan: Comment by July 31, 2026"
 seo_description: "Marshall’s draft hazard plan proposes 19 resilience projects. See the priorities, incomplete data, public-comment deadline and how residents can respond."
