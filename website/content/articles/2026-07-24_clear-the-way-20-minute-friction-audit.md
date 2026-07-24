@@ -5,7 +5,7 @@ author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-24"
 category: "Motivation"
 slug: "clear-the-way-20-minute-friction-audit"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Feeling Stuck? Try the 20-Minute Friction Audit"
 seo_description: "Use this practical 20-minute friction audit to remove one obstacle, reduce resistance and begin the work you keep postponing."
