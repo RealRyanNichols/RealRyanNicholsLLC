@@ -3,10 +3,10 @@ title: "House Passes Iran War-Powers Resolution 214–208 as Senate Blocks Paral
 subtitle: "The House approved H.Con.Res.89, but the Senate rejected a 47–49 motion to free its own Iran resolution from committee. Here is what the two votes changed, what they did not, and what citizens can ask Congress next."
 author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-24T01:24:00Z"
-updated: "2026-07-24T01:24:00Z"
+updated: "2026-07-24T01:25:00Z"
 category: "Politics & Accountability"
 slug: "house-iran-war-powers-resolution-senate-blocks-july-23-2026"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Iran War Powers: House Passes, Senate Blocks Measure"
 seo_description: "The House passed an Iran war-powers resolution 214–208, while the Senate blocked a parallel measure 47–49. See what changed and what did not."
