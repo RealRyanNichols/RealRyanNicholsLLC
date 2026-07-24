@@ -135,18 +135,20 @@ export async function generateMetadata(props: {
 
   const metaTitle = override?.title ?? post.seo_title ?? displayTitle;
   const metaDescription = override?.description ?? excerpt;
+  const articleAuthor = post.byline_override?.trim() || SITE.author;
 
   const url = `${SITE.url}/posts/${post.slug}`;
   const meta: Metadata = {
     title: metaTitle,
     description: metaDescription,
+    authors: [{ name: articleAuthor }],
     openGraph: {
       type: "article",
       title: metaTitle,
       description: metaDescription,
       url,
       publishedTime: post.published_at ?? undefined,
-      authors: [SITE.author],
+      authors: [articleAuthor],
       images: [{ url: ogImage, width: ogWidth, height: ogHeight, alt: metaTitle }],
     },
     twitter: {
@@ -215,6 +217,7 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
     | null) ?? undefined;
 
   const displayTitle = post.title ?? (deriveExcerpt(post.body, null).slice(0, 80) || "Note");
+  const articleAuthor = post.byline_override?.trim() || SITE.author;
   const postUrl = `${SITE.url}/posts/${post.slug}`;
   const postShareImage = firstPostShareImage(post);
   const ldImage = ldOg?.image_url
@@ -235,9 +238,14 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
     headline: displayTitle,
     datePublished: post.published_at,
     dateModified: post.updated_at,
-    // Point into the site-wide entity graph (root layout) instead of
-    // re-declaring the author/publisher on every post.
-    author: personRef(),
+    author: post.byline_override?.trim()
+      ? {
+          "@type": "Organization",
+          "@id": `${SITE.url}/#editorial-team`,
+          name: articleAuthor,
+          url: SITE.url,
+        }
+      : personRef(),
     publisher: orgRef(),
     isPartOf: websiteRef(),
     mainEntityOfPage: `${SITE.url}/posts/${post.slug}`,
@@ -302,7 +310,7 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
           ) : null}
           <div className={post.title ? "mt-3 flex items-center justify-between gap-3 flex-wrap" : "flex items-center justify-between gap-3 flex-wrap"}>
             <div>
-              <p className="text-sm text-[var(--color-muted)]">By {SITE.author}</p>
+              <p className="text-sm text-[var(--color-muted)]">By {articleAuthor}</p>
             </div>
             <div className="flex items-center gap-3">
               <ShareButton url={postUrl} title={displayTitle} slug={post.slug} shares={post.shares_count ?? 0} compact />
