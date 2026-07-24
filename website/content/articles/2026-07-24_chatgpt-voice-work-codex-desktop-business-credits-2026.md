@@ -3,10 +3,10 @@ title: "ChatGPT Voice Now Controls Work and Codex on Desktop: Availability, Cred
 subtitle: "OpenAI has added a voice control layer for starting, steering and checking AI-agent tasks. The useful part is hands-free coordination. The detail to watch is that voice time and the work it launches are metered separately."
 author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-24T20:28:00Z"
-updated: "2026-07-24T20:28:00Z"
+updated: "2026-07-24T20:40:00Z"
 category: "AI & Technology"
 slug: "chatgpt-voice-work-codex-desktop-business-credits-2026"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "ChatGPT Voice for Work and Codex: Cost and Access"
 seo_description: "ChatGPT Voice can now steer Work and Codex on desktop. See current availability, the separate voice and task meters, risks and one safe test."
