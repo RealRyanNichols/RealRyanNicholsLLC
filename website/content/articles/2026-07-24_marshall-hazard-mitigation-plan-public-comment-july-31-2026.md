@@ -2,7 +2,7 @@
 title: "Marshall’s Hazard Mitigation Plan Is Open for Comment: 19 Projects—and Draft Gaps to Fix by July 31"
 subtitle: "The 67-page draft proposes drainage, water-system, warning, shelter, generator and heat-safety work, but residents should also flag incomplete and internally inconsistent sections before the deadline."
 author: "Real Ryan Nichols Editorial Team"
-date: "2026-07-24T14:45:00Z"
+date: "2026-07-24T14:50:41Z"
 category: "East Texas"
 slug: "marshall-hazard-mitigation-plan-public-comment-july-31-2026"
 status: "published"
