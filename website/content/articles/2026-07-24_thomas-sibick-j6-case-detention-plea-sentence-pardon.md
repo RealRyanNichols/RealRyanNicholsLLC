@@ -2,10 +2,10 @@
 title: "Thomas Frank Sibick J6 Case Record: Detention, Three-Count Plea, 50-Month Sentence and Full Pardon"
 subtitle: "A source-backed account of the charging record, detention appeal, release conditions, three-count plea, sentence, presidential pardon, and post-pardon interview."
 author: "Real Ryan Nichols Editorial Team"
-date: "2026-07-24T18:15:00Z"
+date: "2026-07-24T18:28:00Z"
 category: "January 6"
 slug: "thomas-sibick-j6-case-detention-plea-sentence-pardon"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Thomas Sibick J6 Case: Plea, Sentence and Full Pardon"
 seo_description: "Thomas Frank Sibick’s sourced J6 record: charges, detention appeal, three-count plea, 50-month sentence, full pardon, release and firsthand interview."
