@@ -2,7 +2,7 @@
 title: "Jesus Touched the Outcast: What Compassion Requires During a Measles Surge"
 subtitle: "Mark 1 does not give us a substitute for medicine. It gives us a clear picture of truth, courage and human dignity when illness makes people afraid."
 author: "Real Ryan Nichols Editorial Team"
-date: "2026-07-24T17:05:00Z"
+date: "2026-07-24T17:48:18Z"
 category: "Faith & Today"
 slug: "jesus-touched-the-outcast-measles-compassion-truth"
 status: "published"
