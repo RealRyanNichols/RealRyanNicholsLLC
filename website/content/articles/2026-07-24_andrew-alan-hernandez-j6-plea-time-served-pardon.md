@@ -5,7 +5,7 @@ author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-24T14:10:00Z"
 category: "January 6"
 slug: "andrew-alan-hernandez-j6-plea-time-served-pardon"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Andrew Alan Hernandez J6 Case: Plea, Time Served, Pardon"
 seo_description: "Andrew Alan Hernandez’s sourced J6 record: six charges, one obstruction plea, 18-month sentence, time-served reduction, full pardon, and later litigation."
