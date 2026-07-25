@@ -5,7 +5,7 @@ author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-25T17:25:00Z"
 category: "January 6"
 slug: "rebecca-lavrenz-j6-case-verdict-sentence-appeal-pardon"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Rebecca Lavrenz J6 Case: Verdict, Sentence, Appeal, Pardon"
 seo_description: "Rebecca Lavrenz’s sourced J6 record: four misdemeanor verdicts, reported probation and fine, D.C. Circuit appeal, and January 2025 full pardon."
