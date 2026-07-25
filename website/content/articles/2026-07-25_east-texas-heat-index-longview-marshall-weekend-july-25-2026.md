@@ -5,7 +5,7 @@ author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-25T14:30:00Z"
 category: "East Texas"
 slug: "east-texas-heat-index-longview-marshall-weekend-july-25-2026"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Longview and Marshall Heat Index Hits 102–105°F This Weekend"
 seo_description: "Longview and Marshall face heat-index values of 102–105°F this weekend despite no active heat alert. See the verified forecast, risks and practical steps."
