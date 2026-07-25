@@ -79,7 +79,14 @@ export async function generateMetadata({
     ? `${p.name}'s January 6 case profile with sourced court records, timeline events, clemency status, related people, and archive connections.`
     : `${p.name}'s sourced profile in the Real Ryan Nichols public case archive.`;
   const description = metadataDescription(p.description, fallbackDescription);
-  const ogUrl = `${SITE.url}/og/person/${p.slug}`;
+  const editorialByline =
+    p.slug === "alex-kirk-harkrider"
+      ? "Real Ryan Nichols Editorial Team"
+      : undefined;
+  const ogUrl =
+    p.slug === "alex-kirk-harkrider"
+      ? `${SITE.url}/uploads/alex-kirk-harkrider-j6-case-record-og.jpg`
+      : `${SITE.url}/og/person/${p.slug}`;
   const imageAlt = isJ6Profile
     ? `${p.name} January 6 case profile social preview`
     : `${p.name} public case-record profile social preview`;
@@ -92,11 +99,13 @@ export async function generateMetadata({
     description,
     alternates: { canonical: url },
     robots: { index: true, follow: true },
+    ...(editorialByline ? { authors: [{ name: editorialByline }] } : {}),
     openGraph: {
       type: "article",
       title,
       description,
       url,
+      ...(editorialByline ? { authors: [editorialByline] } : {}),
       images: ogImages,
     },
     twitter: {
@@ -118,6 +127,10 @@ export default async function PersonPage({
   if (!p) notFound();
   const url = `${SITE.url}/case/people/${p.slug}`;
   const isJ6Profile = p.is_j6_defendant === true;
+  const editorialByline =
+    p.slug === "alex-kirk-harkrider"
+      ? "Real Ryan Nichols Editorial Team"
+      : null;
   const profileName = profileLabel(p.name, isJ6Profile, p.role);
   const profileDescription = metadataDescription(
     p.description,
@@ -189,6 +202,16 @@ export default async function PersonPage({
       url,
       name: profileName,
       isPartOf: websiteRef(),
+      ...(editorialByline
+        ? {
+            author: {
+              "@type": "Organization",
+              name: editorialByline,
+              url: SITE.url,
+            },
+            dateModified: p.updated_at,
+          }
+        : {}),
       mainEntity: {
         "@type": "Person",
         name: p.name,
@@ -235,6 +258,12 @@ export default async function PersonPage({
           views={p.views_count}
           shares={p.shares_count}
         />
+
+        {editorialByline ? (
+          <p className="mt-4 text-sm text-[var(--color-muted)]">
+            By <span className="font-semibold text-[var(--color-ink)]">{editorialByline}</span>
+          </p>
+        ) : null}
 
         <div className="mt-6 flex items-center gap-3">
           <ShareButton
@@ -302,6 +331,11 @@ export default async function PersonPage({
       <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">
         {p.name}
       </h1>
+      {editorialByline ? (
+        <p className="mt-3 text-sm text-[var(--color-muted)]">
+          By <span className="font-semibold text-[var(--color-ink)]">{editorialByline}</span>
+        </p>
+      ) : null}
       {p.role ? (
         <p className="mt-1 text-base font-medium text-[var(--color-accent)]">
           {p.role}
