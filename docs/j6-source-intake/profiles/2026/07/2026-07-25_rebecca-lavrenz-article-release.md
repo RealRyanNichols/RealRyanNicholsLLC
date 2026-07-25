@@ -63,3 +63,62 @@ Final generation prompt:
 - Public image HTTP and content-type verification: pending
 - Article publication: blocked until public-image gate passes
 - Live metadata, structured-data, sitemap and final hash checks: pending
+
+## Publication recovery and live verification
+
+The staged article and final image were merged through GitHub PR `#399`.
+
+- Staging merge commit: `ebf53cc282985165a2d4bd3f43860d9997c8de9f`
+- Staging production deployment: `dpl_2QSmYVxDA8T12tCMpAhiwSPQeZgc`
+- Staging deployment state: `READY`
+
+The public image was then fetched from its exact intended URL on 2026-07-25:
+
+- HTTP status: 200
+- Content type: `image/jpeg`
+- Dimensions: 1200×630
+- Content length: 212,904 bytes
+- Live SHA-256: `95e2dc131549c00c28c383428f1368e7ffc6dacad1197604f5678669bc7b7e5f`
+- Committed SHA-256: `95e2dc131549c00c28c383428f1368e7ffc6dacad1197604f5678669bc7b7e5f`
+- Result: byte-for-byte match
+
+The article status was changed from draft to published only after that image gate passed.
+
+- Publication PR: `#400`
+- Publication merge commit: `afb6c275b87cf01068bbe47b76e2ba65c2c064bc`
+- Publication deployment: `dpl_6pawtj8M9D2bTRDqSKqkrWx7Nr1z`
+- Publication deployment state: `READY`
+
+The first live article request returned 404 because the repository-to-database publisher did not create the corresponding post row. The already approved article was restored through an idempotent Supabase transaction that:
+
+- created or updated exactly one `posts` row for the article slug;
+- preserved the Editorial Team byline;
+- installed the exact SEO title and description;
+- installed the exact OG URL;
+- stored the public-record source manifest and article tags; and
+- created or updated exactly one `page_og_images` mapping for the article path.
+
+Supabase verification:
+
+- Post ID: `37bc7fb0-b437-4844-8be4-ffc74ae570db`
+- Status: `published`
+- Approval status: `approved`
+- Byline override: `Real Ryan Nichols Editorial Team`
+- Body length: 16,256 characters
+- Page mapping: `/posts/rebecca-lavrenz-j6-case-verdict-sentence-appeal-pardon`
+- Mapped image: `https://realryannichols.com/uploads/rebecca-lavrenz-j6-case-record-og.jpg`
+- Mapped dimensions: 1200×630
+
+Live article verification on 2026-07-25:
+
+- HTTP status: 200
+- Canonical: exact article URL
+- Robots: `index, follow`
+- Visible byline: `Real Ryan Nichols Editorial Team`
+- Structured-data type: `NewsArticle`
+- Structured-data author: `Real Ryan Nichols Editorial Team`
+- Open Graph image: exact intended public image URL
+- X image: exact intended public image URL
+- Open Graph dimensions: 1200×630
+
+The sitemap route returned HTTP 200 before the repaired database row was incorporated into its prerendered output. This provenance-only commit is intended to trigger a fresh production build from the completed database state; exact sitemap inclusion remains the final release check.
