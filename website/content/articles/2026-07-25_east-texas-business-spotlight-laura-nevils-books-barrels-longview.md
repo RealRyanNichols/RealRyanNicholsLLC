@@ -9,6 +9,7 @@ status: "published"
 pinned: false
 seo_title: "Laura Nevils and Books & Barrels: East Texas Business Spotlight"
 seo_description: "Meet Books & Barrels owner Laura Nevils and learn how the downtown Longview bookstore supports readers, local authors, events, and community."
+og_image: "https://realryannichols.com/uploads/books-barrels-laura-nevils-east-texas-og.jpg"
 tags: "East Texas business, Longview Texas business, Books and Barrels, Books & Barrels, Laura Nevils, downtown Longview, independent bookstore, local authors, East Texas books, small business, business spotlight"
 ---
 
