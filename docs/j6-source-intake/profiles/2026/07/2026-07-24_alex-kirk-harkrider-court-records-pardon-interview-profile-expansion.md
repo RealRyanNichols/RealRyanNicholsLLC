@@ -106,6 +106,7 @@ The required topic-specific social asset was added without using a likeness, pho
 - Descriptive alt text: `Alex Kirk Harkrider January 6 case profile social preview`
 - Asset commit: `62d7843f78d97a74ab5e214b99a0542169ec6f0f`
 - Narrow metadata/byline commit: `5a4039e1b019a7bdb1d9525404846bb4d0aaf938`
+- Type-safe schema correction commit: `87f7692405163a8375e43f6e69b10aa04a392aae`
 - Editorial byline: `Real Ryan Nichols Editorial Team`
 
 A path-specific renderer override now uses the committed asset and editorial-team byline for this profile only. Other profiles and global layouts are unchanged.
