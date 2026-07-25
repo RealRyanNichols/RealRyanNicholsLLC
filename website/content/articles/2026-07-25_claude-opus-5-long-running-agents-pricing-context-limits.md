@@ -3,7 +3,7 @@ title: "Claude Opus 5 Is Here: Price, 1M Context, Agent Upgrades and the Limits 
 subtitle: "Anthropic's new Opus model targets long-running coding and professional work with a one-million-token context window, adaptive thinking and stronger verification. Here is what is available now, what it costs and what still requires human oversight."
 author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-25T20:31:00Z"
-updated: "2026-07-25T20:45:48Z"
+updated: "2026-07-25T20:51:22Z"
 category: "AI & Technology"
 slug: "claude-opus-5-long-running-agents-pricing-context-limits"
 status: "published"
