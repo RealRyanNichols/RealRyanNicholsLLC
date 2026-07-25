@@ -209,7 +209,6 @@ export default async function PersonPage({
               name: editorialByline,
               url: SITE.url,
             },
-            dateModified: p.updated_at,
           }
         : {}),
       mainEntity: {
