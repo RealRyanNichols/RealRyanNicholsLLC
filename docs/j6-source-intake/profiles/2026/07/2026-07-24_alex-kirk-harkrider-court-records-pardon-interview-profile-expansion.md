@@ -92,6 +92,24 @@ The filename date is retained as archive metadata and is not treated as the fili
 
 The KSLA/KLTV report records Harkrider's own post-release statements. These words are preserved as attributed firsthand material. They are not treated as independent proof of disputed facts concerning January 6.
 
+## Publication-gate repair and reporting correction — July 24, 2026
+
+A post-publication reconciliation found that a prior automated summary incorrectly described this profile as case `1:21-cr-00117-TFH`, assigned Judge Thomas F. Hogan, gave a February 18, 2021 arrest date, and described a January 20, 2023 jury verdict. Those statements were not present in this provenance record or the production database and are withdrawn. The preserved primary-source record and live profile support case `1:21-cr-00117-RCL`, Judge Royce C. Lamberth, a January 18, 2021 arrest, a January 2, 2024 stipulated bench trial, and May 23, 2024 sentencing.
+
+The required topic-specific social asset was added without using a likeness, photograph, official seal, fake filing, or invented evidence:
+
+- Repository path: `website/public/uploads/alex-kirk-harkrider-j6-case-record-og.jpg`
+- Intended public URL: `https://realryannichols.com/uploads/alex-kirk-harkrider-j6-case-record-og.jpg`
+- Format and dimensions: JPEG, 1200×630
+- Size: 239,072 bytes
+- SHA-256: `e7264efc1867d87ca28a3cb18d5ba058c1691a5ec60004bf6b0a5057568aaf19`
+- Descriptive alt text: `Alex Kirk Harkrider January 6 case profile social preview`
+- Asset commit: `62d7843f78d97a74ab5e214b99a0542169ec6f0f`
+- Narrow metadata/byline commit: `5a4039e1b019a7bdb1d9525404846bb4d0aaf938`
+- Editorial byline: `Real Ryan Nichols Editorial Team`
+
+A path-specific renderer override now uses the committed asset and editorial-team byline for this profile only. Other profiles and global layouts are unchanged.
+
 ## Remaining research and capture gaps
 
 - Complete CourtListener/RECAP or PACER docket through the pardon
