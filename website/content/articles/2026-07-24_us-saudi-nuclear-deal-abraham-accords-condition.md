@@ -3,10 +3,10 @@ title: "U.S.–Saudi Nuclear Deal Is Signed—but Trump Says It Depends on Israe
 subtitle: "A July 22 civil nuclear agreement is headed toward congressional review. Two days later, President Trump said there will be no uranium enrichment and the deal will not proceed unless Saudi Arabia joins the Abraham Accords."
 author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-25T01:03:00Z"
-updated: "2026-07-25T01:03:00Z"
+updated: "2026-07-25T01:16:30Z"
 category: "Politics & Accountability"
 slug: "us-saudi-nuclear-deal-abraham-accords-condition"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "U.S.–Saudi Nuclear Deal: What Is Signed and Unresolved"
 seo_description: "The U.S.–Saudi 123 nuclear agreement is signed, but Trump says it requires Israel normalization and bars enrichment. Here is what Congress must verify."
