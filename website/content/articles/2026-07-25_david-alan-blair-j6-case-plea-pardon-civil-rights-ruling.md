@@ -5,12 +5,13 @@ author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-25T14:15:00Z"
 category: "January 6"
 slug: "david-alan-blair-j6-case-plea-pardon-civil-rights-ruling"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "David Blair J6 Case: Plea, Pardon and 2026 Civil Ruling"
 seo_description: "David Alan Blair’s sourced J6 record: arrest, felony plea, reported five-month sentence, pardon, and a 2026 qualified-immunity civil-rights ruling."
 tags: "David Alan Blair, David Blair, January 6, J6 case record, United States v Blair, Blair v District of Columbia, qualified immunity, Amir H Ali, Christopher R Cooper, January 6 pardon, J6 Case Nexus"
 og_image: "https://realryannichols.com/uploads/david-blair-j6-qualified-immunity-civil-rights-og.jpg"
+og_image_sha256: "14a4058a845b604ec8b1f6c8ef0ad202d84af47841c73bfe2183b5eb787778d5"
 ---
 
 *By the Real Ryan Nichols Editorial Team*
@@ -103,10 +104,10 @@ This is why the archive treats “force could be found objectively unreasonable�
 
 - **January 6, 2021:** Blair is present at the U.S. Capitol; later criminal and civil filings address separate aspects of the day.
 - **February 17, 2021:** [Federal authorities arrest Blair](/case/events/david-blair-arrested-2021-02-17).
-- **March 29, 2022:** [Blair pleads guilty to interfering with law enforcement during a civil disorder](/case/events/david-blair-pleads-guilty-2022-03-29).
+- **March 29, 2022:** [Blair pleads guilty to interfering with law enforcement during a civil disorder](/case/events/david-blair-guilty-plea-2022-03-29).
 - **July 13, 2022:** [Judge Cooper imposes the sentence reported by the Associated Press](/case/events/david-blair-sentenced-2022-07-13).
 - **January 20, 2025:** [President Trump grants Blair a full pardon](/case/events/david-blair-pardoned-2025-01-20).
-- **July 21, 2026:** [Judge Ali issues the qualified-immunity opinion and remands the D.C.-law claims](/case/events/david-blair-qualified-immunity-ruling-2026-07-21).
+- **July 21, 2026:** [Judge Ali issues the qualified-immunity opinion and remands the D.C.-law claims](/case/events/david-blair-civil-rights-summary-judgment-remand-2026-07-21).
 
 ## What remains unresolved or uncaptured
 
@@ -127,7 +128,7 @@ Advocacy is strongest when it refuses false choices. Preserve the prosecution re
 ## Related profiles, documents and Case Nexus
 
 - [David Alan Blair profile](/case/people/david-blair)
-- [July 21, 2026 qualified-immunity opinion](/case/documents/david-blair-qualified-immunity-opinion-2026-07-21)
+- [July 21, 2026 qualified-immunity opinion](/case/documents/david-blair-excessive-force-qualified-immunity-opinion-2026-07-21)
 - [Donald J. Trump profile](/case/people/donald-j-trump), connected here only as the granting president
 - [Explore the J6 Case Nexus](/case/nexus) for connected people, events and documents
 - Compare [Daniel Caldwell’s detention, plea, sentence and pardon](/posts/daniel-ray-caldwell-j6-case-detention-plea-sentence-pardon)
