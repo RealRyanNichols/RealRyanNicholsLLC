@@ -44,12 +44,24 @@ The final JPEG contains no likeness, official seal, copied photograph, readable 
 - [x] Article and OG asset committed to the production repository.
 - [x] Production deployment for the asset reaches `READY`.
 - [x] Public OG URL returns HTTP 200 with an image content type.
-- [ ] Database post and exact `/posts/<slug>` OG mapping created.
+- [x] Database post and exact `/posts/<slug>` OG mapping created.
 - [x] Article changed from draft to published after the OG gate.
-- [ ] Final production deployment reaches `READY`.
-- [ ] Live article returns HTTP 200.
-- [ ] Canonical, robots, title, description, visible byline, structured-data author, Open Graph and X metadata verified.
-- [ ] Sitemap inclusion or freshness verified where supported.
+- [x] Final production deployment reaches `READY`.
+- [x] Live article returns HTTP 200.
+- [x] Canonical, robots, title, description, visible byline, structured-data author, Open Graph and X metadata verified.
+- [x] Sitemap inclusion and `lastmod` freshness verified.
+
+## Final verification
+
+- Production deployment: `dpl_DLenF9nGs5JZAcCa7Kir29NrNRtp`
+- Production commit: `769fe7ddc5ed441d77b1d4d901b8243ae0c6722e`
+- Article HTTP: `200`
+- OG HTTP and MIME: `200 image/jpeg`
+- Live OG dimensions: 1200×630
+- Live OG SHA-256: `45948e7580d7a37520c14e02cc29b767d7b3a568935be4f7b3d2f2b55714347d`
+- Exact article count for slug: 1
+- Sitemap `lastmod`: `2026-07-25T22:15:45.390928+00:00`
+- Indexing request: not submitted because no supported indexing connector was available.
 
 ## Remaining capture gaps
 
