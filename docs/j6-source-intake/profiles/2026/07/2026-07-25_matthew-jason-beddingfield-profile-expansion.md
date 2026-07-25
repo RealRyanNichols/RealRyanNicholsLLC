@@ -13,11 +13,13 @@
 - Arrest-date conflict preserved: the March 1, 2022 government detention motion says agents arrested Beddingfield on February 7, 2022; DOJ's February 8 announcement described the arrest as occurring "today."
 - Guilty plea: February 16, 2023, to Count Three, assaulting, resisting, or impeding certain officers under 18 U.S.C. § 111(a)(1).
 - Remaining eight indictment counts: dismissed on the government's motion pursuant to the plea agreement.
-- Sentence: July 11, 2023 — 38 months' imprisonment, 24 months' supervised release, $2,000 restitution, and $100 special assessment.
+- Sentence: July 11, 2023 — 38 months' imprisonment, 24 months' supervised release, and $2,000 restitution.
 - Clemency: full January 6 pardon effective January 20, 2025.
 - Office of the Pardon Attorney exact recipient-list entry: `BEDDINGFIELD, MATTHEW JASON`.
 
 Complaint allegations, government detention advocacy, defense positions, admitted plea facts, dismissed counts, sentence, and clemency are kept distinct. No legal event is treated as proof of moral character.
+
+**Correction recorded during verification:** an earlier working version included a $100 special assessment without a captured signed judgment or another source reviewed in this intake. That reference was removed from the profile, timeline, and provenance record pending primary-document confirmation.
 
 ## Native source capture
 
