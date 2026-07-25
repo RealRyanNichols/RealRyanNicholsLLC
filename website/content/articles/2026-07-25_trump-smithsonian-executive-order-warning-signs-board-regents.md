@@ -3,9 +3,10 @@ title: "Trump Orders Warning Signs Outside Smithsonian Museum: What the July 24 
 subtitle: "The order directs temporary signs on federal walkways, calls for funding and contract leverage, and escalates a fight over American history—but it does not itself rewrite a museum exhibit or dissolve the Smithsonian’s Board of Regents."
 author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-25T11:55:00Z"
+updated: "2026-07-25T11:58:00Z"
 category: "Politics"
 slug: "trump-smithsonian-executive-order-warning-signs-board-regents"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Trump Smithsonian Order: Warning Signs, Power and Limits"
 seo_description: "Trump ordered warning signs outside the Smithsonian’s American History museum. Here is what the July 24 order does, who governs the museum and what remains disputed."
