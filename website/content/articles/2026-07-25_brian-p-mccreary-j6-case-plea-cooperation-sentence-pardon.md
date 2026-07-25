@@ -5,7 +5,7 @@ author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-25T22:05:00Z"
 category: "January 6"
 slug: "brian-p-mccreary-j6-case-plea-cooperation-sentence-pardon"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Brian McCreary J6 Case: Plea, 42-Day Sentence, Pardon"
 seo_description: "Brian P. McCreary’s sourced J6 record: early FBI evidence submission, five charged counts, one-count plea, 42-day intermittent sentence and full pardon."

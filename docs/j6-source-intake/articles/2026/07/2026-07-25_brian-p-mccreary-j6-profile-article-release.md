@@ -41,11 +41,11 @@ The final JPEG contains no likeness, official seal, copied photograph, readable 
 - [x] Duplicate article and OG mapping check completed.
 - [x] Article drafted with Editorial Team byline, timeline, citations, Case Nexus, evidence submission, polls, report mechanism, sharing and optional list signup.
 - [x] Final OG image generated and locally verified as 1200×630 JPEG.
-- [ ] Article and OG asset committed to the production repository.
-- [ ] Production deployment for the asset reaches `READY`.
-- [ ] Public OG URL returns HTTP 200 with an image content type.
+- [x] Article and OG asset committed to the production repository.
+- [x] Production deployment for the asset reaches `READY`.
+- [x] Public OG URL returns HTTP 200 with an image content type.
 - [ ] Database post and exact `/posts/<slug>` OG mapping created.
-- [ ] Article changed from draft to published after the OG gate.
+- [x] Article changed from draft to published after the OG gate.
 - [ ] Final production deployment reaches `READY`.
 - [ ] Live article returns HTTP 200.
 - [ ] Canonical, robots, title, description, visible byline, structured-data author, Open Graph and X metadata verified.
