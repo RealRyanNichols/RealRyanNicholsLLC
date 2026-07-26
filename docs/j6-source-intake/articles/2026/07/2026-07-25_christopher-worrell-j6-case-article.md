@@ -61,6 +61,15 @@
 - Approved Supabase post inserted after a final duplicate check.
 - Exact `/posts/christopher-worrell-j6-case-trial-sentence-pardon-civil-case` page-image mapping installed.
 - Repository article advanced from draft to published.
-- Final production deployment, article metadata and sitemap verification remain pending.
+- Published repository commit: `bda09922a5d90d020e8dc0f2789dfa79bb21b875`.
+- Matching Vercel production deployment `dpl_A25itEW9unfD8Mr1geKyLhuoafNw` reached `READY`.
+- Live article returned HTTP 200.
+- Final public OG request returned HTTP 200 as `image/jpeg`, measured exactly 1200 × 630 and matched the committed SHA-256.
+- Exact canonical URL and `index, follow` robots metadata verified.
+- SEO title and description matched the intended values.
+- Visible byline and `NewsArticle` author both identify `Real Ryan Nichols Editorial Team`.
+- Open Graph and X metadata use the exact intended public OG URL and declare 1200 × 630 dimensions.
+- Sitemap returned HTTP 200 as XML and included the exact article URL with `lastmod` `2026-07-26T02:17:21.553859+00:00`.
+- Final duplicate check returned exactly one Worrell article record.
 
 No indexing, traffic or ranking result is claimed.
