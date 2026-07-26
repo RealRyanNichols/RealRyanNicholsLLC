@@ -19,6 +19,7 @@ This pass corrected the archive’s controlling case number and completed the st
 - Sentence added: 18 months’ imprisonment, 36 months’ supervised release, and $2,000 restitution.
 - Clemency clarified as a **full pardon**, not one of the proclamation’s fourteen named commutations.
 - Unsupported or overly broad role language was replaced with “January 6 case-file subject.”
+- An unverified complaint-filing date inherited from the earlier skeletal profile was removed rather than repeated without a controlling docket source.
 
 The profile now expressly distinguishes complaint allegations, admitted plea facts, government sentencing advocacy, the sentence imposed, and executive clemency.
 
@@ -102,9 +103,9 @@ Created five timeline events:
 
 The shared DOJ plea and sentencing sources were also connected to Kyle Kumer and William Stover because those records name all three men. The profile now has six connected source records, including the shared proclamation, and five timeline events.
 
-The substantial original profile description is 6,768 characters with SHA-256:
+The substantial original profile description is 6,654 characters with SHA-256:
 
-`79a65fe186a301e5008f155f02654b9deb9b783a6bb45b56bd7316ba618c846f`
+`23f9585af8954464345f643d7cf10174a8baaba6bec0a7b14ebf56ac22cfa7e8`
 
 Verified summary SHA-256:
 
