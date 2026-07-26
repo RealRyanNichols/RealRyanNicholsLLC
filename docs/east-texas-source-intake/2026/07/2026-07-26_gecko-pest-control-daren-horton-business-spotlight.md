@@ -256,7 +256,15 @@ Image boundary:
 - [x] Public image measures 1200 × 630 and matches the committed SHA-256
 - [x] Exact `/posts/<slug>` mapping installed
 - [x] Article published in production database
-- [ ] Final production deployment reaches `READY`
-- [ ] Live article returns HTTP 200
-- [ ] Canonical, robots, title, description, byline, structured-data author, OG, and X metadata verified
-- [ ] Exact sitemap inclusion verified
+- [x] Final production deployment `dpl_BreASs5zFKdmVke8EmgFuNafVVR3` reached `READY`
+- [x] Live article returns HTTP 200
+- [x] Canonical and `index, follow` robots metadata verified
+- [x] SEO title and description verified after a narrow per-record mapping correction
+- [x] Visible and metadata byline verified as `Real Ryan Nichols Editorial Team`
+- [x] `NewsArticle` structured-data author verified as `Real Ryan Nichols Editorial Team`
+- [x] Open Graph and X metadata use the exact committed image URL
+- [x] Polls, nomination form, share controls, and optional email/text-list call to action verified
+- [x] Exact sitemap inclusion verified with `lastmod` `2026-07-26T16:32:13.928043+00:00`
+- [x] Final duplicate check: one same-day East Texas Business post and one exact slug row
+
+No indexing, traffic, ranking, customer-result, or endorsement claim is made.
