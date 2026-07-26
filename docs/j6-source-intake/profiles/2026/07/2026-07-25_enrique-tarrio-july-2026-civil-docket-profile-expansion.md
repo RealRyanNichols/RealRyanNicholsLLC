@@ -1,7 +1,7 @@
 # Enrique Tarrio — criminal record, clemency, and July 2026 civil-docket expansion
 
 - **Intake reference:** J6-PROFILE-2026-07-25-ENRIQUE-TARRIO
-- **Captured/updated:** 2026-07-26T00:16:24Z
+- **Captured/updated:** 2026-07-26T00:18:44Z
 - **Primary profile:** `/case/people/enrique-tarrio`
 - **Criminal case:** *United States v. Nordean et al.*, D.D.C. No. `1:21-cr-00175-TJK`
 - **Civil case:** *Tarrio v. United States of America*, M.D. Fla. No. `6:25-cv-00998-ALG-DCI`
@@ -9,7 +9,7 @@
 
 ## Material additions
 
-The profile was expanded from approximately 1,100 to 6,730 characters and now separates:
+The profile was expanded from approximately 1,100 to 6,930 characters. A natural search-description lead now identifies the arrest, verdict, sentence, pardon, and latest civil-case update before the full sourced record. The profile separates:
 
 1. DOJ charging and trial descriptions from independent archive conclusions.
 2. The May 4, 2023 jury verdict from the September 5, 2023 sentence.
@@ -118,14 +118,23 @@ Seven new source records and seven new timeline events were added. The civil rec
 - `tarrio-redacted-exhibits-motion-2026-06-23`
 - `tarrio-leave-to-reply-denied-2026-07-09`
 
-## Database verification
+## Database and live metadata verification
 
 After the update:
 
-- Profile description length: 6,730 characters
+- Profile description length: 6,930 characters
 - Connected source records: 11
 - Connected timeline events: 10
-- Profile `updated_at`: 2026-07-26T00:16:24.727479Z
+- Profile `updated_at`: 2026-07-26T00:18:44.816597Z
+- Live profile returned HTTP 200.
+- Exact canonical URL and `index, follow` robots metadata were present.
+- Person-specific title, natural description, Open Graph, X metadata, descriptive OG alt text, `ProfilePage`, `Person`, and breadcrumb structured data were present.
+
+## Shared-renderer conflicts
+
+- Markdown headings and internal links render as plain preformatted text rather than semantic heading and anchor elements.
+- The shared unclaimed-profile template contains generalized promotional and constitutional-violation language broader than Tarrio's person-specific sourced record.
+- These shared defects were recorded but not changed during this profile-only intake.
 
 ## Remaining research and capture gaps
 
