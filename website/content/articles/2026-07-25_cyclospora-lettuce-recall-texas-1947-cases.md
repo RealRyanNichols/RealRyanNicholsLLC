@@ -5,7 +5,7 @@ author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-25"
 category: "Evening News"
 slug: "cyclospora-lettuce-recall-texas-1947-cases"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Cyclospora Lettuce Recall Reaches Texas: What to Check"
 seo_description: "FDA says recalled iceberg lettuce reached Texas while confirmed outbreak cases remain in nine other states. Check products, dates, symptoms and next steps."
@@ -104,4 +104,3 @@ For related public-safety coverage, read the [East Texas weekend heat guide](htt
 {{share}}
 
 Join the email or text list only if you choose. You can unsubscribe at any time.
-
