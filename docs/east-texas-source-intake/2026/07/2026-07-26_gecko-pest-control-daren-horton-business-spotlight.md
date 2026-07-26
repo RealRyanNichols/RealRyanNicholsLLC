@@ -6,6 +6,10 @@
 **Article slug:** `east-texas-business-spotlight-daren-horton-gecko-pest-control`  
 **Initial status:** Draft pending OG deployment gate
 
+**Published:** 2026-07-26T16:30:22.878644Z
+
+**Production post ID:** `043bbf85-5ef7-4659-a4e9-b9d84fbb19c5`
+
 ## Scope and editorial boundaries
 
 This record supports one independently prepared East Texas Business Spotlight concerning Gecko Pest Control and owner Daren G. Horton.
@@ -246,11 +250,12 @@ Image boundary:
 - [x] Same-day and subject duplicate checks completed
 - [x] Article drafted with Editorial Team byline
 - [x] Original 1200×630 asset generated and converted
-- [ ] Asset and draft committed to production repository
-- [ ] Asset deployment reaches `READY`
-- [ ] Public image returns HTTP 200 with image content type
-- [ ] Exact `/posts/<slug>` mapping installed
-- [ ] Article published in production database
+- [x] Asset and draft committed to production repository in PR #425
+- [x] Asset deployment `dpl_7eH92VxE8Pa6G3dN4uYXA8TTomxn` reached `READY`
+- [x] Public image returns HTTP 200 with `image/jpeg`
+- [x] Public image measures 1200 × 630 and matches the committed SHA-256
+- [x] Exact `/posts/<slug>` mapping installed
+- [x] Article published in production database
 - [ ] Final production deployment reaches `READY`
 - [ ] Live article returns HTTP 200
 - [ ] Canonical, robots, title, description, byline, structured-data author, OG, and X metadata verified

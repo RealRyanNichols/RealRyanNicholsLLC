@@ -5,7 +5,7 @@ author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-26"
 category: "East Texas Business"
 slug: "east-texas-business-spotlight-daren-horton-gecko-pest-control"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Daren Horton and Gecko Pest Control: East Texas Business Spotlight"
 seo_description: "Meet Gecko Pest Control owner Daren Horton and learn about the Marshall company's services, history, community work, licensing record, and customer checklist."
