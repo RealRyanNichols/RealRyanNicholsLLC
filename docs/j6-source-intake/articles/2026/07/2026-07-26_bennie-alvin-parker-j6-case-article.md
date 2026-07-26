@@ -62,9 +62,11 @@ The image is person-free and symbolic. It does not contain a fabricated likeness
 6. Live article HTTP 200: **complete**
 7. Public OG HTTP 200 with image content type: **complete — `image/jpeg`, 1200 × 630, live hash matches repository hash**
 8. Canonical, robots, title, description, byline, structured-data author, OG and X metadata: **complete**
-9. Sitemap inclusion/freshness: **pending publication**
+9. Sitemap inclusion/freshness: **complete — exact canonical route present with `lastmod` `2026-07-26T18:13:14.554661+00:00`**
 
 The exact `/posts/bennie-alvin-parker-j6-case-mixed-verdict-probation-pardon` mapping was installed before publication. The production post ID is `f4a8d0a9-2aad-409c-a26b-f1601a37b878`. The profile’s `news_links` field was updated with the canonical article URL.
+
+Repository publication was completed through PR #432, merge commit `1d78394b5d8a3c65b1da291321ef488f3641f4e6`. Its matching production deployment `dpl_BcYPqNR1rdY8caBm7Nzu7bmUYm6A` reached `READY`. Final checks on that deployment reconfirmed the article and image HTTP status, exact social URL, image MIME type and dimensions, canonical, `index, follow`, SEO title and description, visible Editorial Team byline, `NewsArticle` author, Open Graph metadata, X metadata, interaction controls and sitemap record.
 
 ## Remaining research gaps
 
