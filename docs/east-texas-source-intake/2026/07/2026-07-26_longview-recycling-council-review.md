@@ -3,7 +3,7 @@
 - Intake reference: `EAST-TEXAS-2026-07-26-LONGVIEW-RECYCLING`
 - Reviewed: 2026-07-26 America/Chicago
 - Article: `/posts/longview-recycling-council-review-july-30`
-- Publication state at intake: draft pending committed-image production gate
+- Publication state: published after committed-image production gate
 
 ## Duplicate check
 
@@ -40,15 +40,18 @@
 - Design: person-free East Texas curbside scene with a blue-lid cart, accepted material types, neutral July 30 calendar and generic council-review folder
 - Exclusions: no city seal, official notice, copied news graphic, person, branded product or predicted vote result
 
-## Release gates
+## Release verification
 
-- Commit the draft article, provenance record and final OG asset.
-- Wait for the matching production deployment to reach `READY`.
-- Verify the public OG URL returns HTTP 200 with an image content type and measures exactly 1200 × 630.
-- Insert one approved Supabase post and the exact `/posts/<slug>` OG mapping.
-- Mark the repository article published.
-- Wait for the final production deployment to reach `READY`.
-- Verify article HTTP 200, canonical, robots, title, description, visible byline, structured-data author, Open Graph and X metadata.
-- Verify sitemap inclusion and freshness.
+- Draft article, source ledger and final OG asset committed through GitHub PR #422.
+- Merge commit: `2fd5a27929ae93fa6d06ebb640f0aa2a627245b5`.
+- Matching Vercel production deployment `dpl_GmEyc3xyUGW6MLnYkvSBcmP2C4TZ` reached `READY`.
+- Public OG URL returned HTTP 200 with `content-type: image/jpeg`.
+- Live image measured exactly 1200 × 630.
+- Live and committed image SHA-256 values matched: `6ff0b33d471097b328ce11dc67dcaf90bb51c0082b31d7baf1dac47f8a27f179`.
+- Exactly one approved Supabase post was inserted.
+- Exact `/posts/longview-recycling-council-review-july-30` OG mapping was installed.
+- Live article returned HTTP 200.
+- Canonical URL, `index, follow`, title, description, visible Editorial Team byline, `NewsArticle` author, Open Graph and X metadata used the intended values and exact public OG URL.
+- Final repository status and sitemap freshness remained to be committed at the time of this update.
 
 No indexing, traffic or ranking result is claimed.

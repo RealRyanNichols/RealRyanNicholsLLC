@@ -5,7 +5,7 @@ author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-26T14:50:00Z"
 category: "East Texas"
 slug: "longview-recycling-council-review-july-30"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Longview Recycling Review July 30: Current Blue-Cart Rules"
 seo_description: "Longview City Council will review recycling July 30. See the current blue-cart rules, processing costs, open questions and how residents can respond."
