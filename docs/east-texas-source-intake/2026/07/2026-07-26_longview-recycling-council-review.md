@@ -1,0 +1,54 @@
+# Longview recycling council-review article release record
+
+- Intake reference: `EAST-TEXAS-2026-07-26-LONGVIEW-RECYCLING`
+- Reviewed: 2026-07-26 America/Chicago
+- Article: `/posts/longview-recycling-council-review-july-30`
+- Publication state at intake: draft pending committed-image production gate
+
+## Duplicate check
+
+- Supabase same-day query found no published East Texas article on July 26, 2026.
+- Recent East Texas coverage addressed weekend heat, Marshall hazard mitigation and business spotlights, not Longview's July 30 recycling review.
+- No matching article slug or page-specific OG mapping was present when the draft was prepared.
+
+## Source record
+
+| Source | Canonical URL | Verification status |
+|---|---|---|
+| July 30 Longview City Council master agenda | `https://www.longviewtexas.gov/AgendaCenter/ViewFile/Agenda/_07302026-2300` | 34-page official packet opened and reviewed July 26; establishes meeting time, location, citizen comment, discussion item and absence of an attached recycling action |
+| June 26 recycling update | `https://longviewtexas.gov/m/newsflash/home/detail/6480` | Official city notice reviewed July 26; establishes plastics #1, #2 and #5 as accepted and #3, #4, #6 and #7 as excluded |
+| Current recycling-program page | `https://www.longviewtexas.gov/2259/Recycling-Program` | Official city page reviewed July 26; establishes collection-day, accepted-material, cart and contact rules |
+| May 14 City Council minutes | `https://www.longviewtexas.gov/AgendaCenter/ViewFile/Minutes/_05142026-2253` | 26-page official minutes reviewed July 26; establishes MRF agreement, fees, contamination threshold, term and unanimous vote |
+| KLTV contamination report | `https://www.kltv.com/2025/10/24/longview-curbside-recycling-schedule-changes-fight-recycling-contamination/` | Credible local reporting reviewed July 26; used only as historical context for schedule change and contamination |
+
+## Verification boundaries
+
+- The agenda promises a discussion, not a vote or predetermined outcome.
+- No rate increase, program cancellation, enforcement change or new cart rule is claimed.
+- The May minutes and June notice are presented in sequence; no cause for the narrower plastics list is inferred.
+- Contract processing fees are not described as household sanitation rates.
+- Open questions are labeled as questions for the meeting rather than allegations.
+
+## Original OG asset
+
+- Repository path: `website/public/uploads/longview-recycling-council-review-july-30-og.jpg`
+- Intended public URL: `https://realryannichols.com/uploads/longview-recycling-council-review-july-30-og.jpg`
+- Dimensions: 1200 × 630
+- MIME: `image/jpeg`
+- File size: 222,037 bytes
+- SHA-256: `6ff0b33d471097b328ce11dc67dcaf90bb51c0082b31d7baf1dac47f8a27f179`
+- Design: person-free East Texas curbside scene with a blue-lid cart, accepted material types, neutral July 30 calendar and generic council-review folder
+- Exclusions: no city seal, official notice, copied news graphic, person, branded product or predicted vote result
+
+## Release gates
+
+- Commit the draft article, provenance record and final OG asset.
+- Wait for the matching production deployment to reach `READY`.
+- Verify the public OG URL returns HTTP 200 with an image content type and measures exactly 1200 × 630.
+- Insert one approved Supabase post and the exact `/posts/<slug>` OG mapping.
+- Mark the repository article published.
+- Wait for the final production deployment to reach `READY`.
+- Verify article HTTP 200, canonical, robots, title, description, visible byline, structured-data author, Open Graph and X metadata.
+- Verify sitemap inclusion and freshness.
+
+No indexing, traffic or ranking result is claimed.
