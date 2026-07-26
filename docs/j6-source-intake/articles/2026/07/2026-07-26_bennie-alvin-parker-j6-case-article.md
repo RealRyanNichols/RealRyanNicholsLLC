@@ -57,12 +57,14 @@ The image is person-free and symbolic. It does not contain a fabricated likeness
 1. Provenance and source records: **complete**
 2. Duplicate article check: **complete — no match**
 3. Article draft and metadata: **complete**
-4. OG asset committed to production repository: **pending merge**
-5. Matching production deployment READY: **pending**
-6. Live article HTTP 200: **pending publication**
-7. Public OG HTTP 200 with image content type: **pending deployment**
-8. Canonical, robots, title, description, byline, structured-data author, OG and X metadata: **pending publication**
+4. OG asset committed to production repository: **complete — PR #431, merge commit `8b33e786dc05310d3325555bd41555d2653f3d48`**
+5. Matching production deployment READY: **complete — `dpl_FVf8jTYUE4tca8zW2oGpFeetme3b`**
+6. Live article HTTP 200: **complete**
+7. Public OG HTTP 200 with image content type: **complete — `image/jpeg`, 1200 × 630, live hash matches repository hash**
+8. Canonical, robots, title, description, byline, structured-data author, OG and X metadata: **complete**
 9. Sitemap inclusion/freshness: **pending publication**
+
+The exact `/posts/bennie-alvin-parker-j6-case-mixed-verdict-probation-pardon` mapping was installed before publication. The production post ID is `f4a8d0a9-2aad-409c-a26b-f1601a37b878`. The profile’s `news_links` field was updated with the canonical article URL.
 
 ## Remaining research gaps
 

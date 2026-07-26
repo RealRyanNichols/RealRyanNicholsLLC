@@ -5,7 +5,7 @@ author: "Real Ryan Nichols Editorial Team"
 date: "2026-07-26T18:15:00Z"
 category: "January 6"
 slug: "bennie-alvin-parker-j6-case-mixed-verdict-probation-pardon"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Bennie Parker J6 Case: Verdict, Probation and Pardon"
 seo_description: "Bennie Alvin Parker’s sourced J6 record: a mixed jury verdict, five years of probation with home detention, no prison term, and a full pardon."
