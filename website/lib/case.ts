@@ -27,6 +27,15 @@ export type CasePerson = {
   agency: string | null;
   description: string | null;
   photo_url: string | null;
+  photo_alt_text: string | null;
+  photo_source_name: string | null;
+  photo_source_url: string | null;
+  photo_credit: string | null;
+  photo_rights_status: string | null;
+  photo_identity_status: string | null;
+  photo_verification_notes: string | null;
+  photo_verified_at: string | null;
+  photo_is_placeholder: boolean;
   views_count: number;
   shares_count: number;
   is_j6_defendant: boolean;
@@ -94,7 +103,7 @@ export type CaseDocument = {
 const GRIEVANCE_COLS =
   "id, slug, title, summary, body, category, severity, count, display_order, views_count, shares_count, og_image_url";
 const PERSON_COLS =
-  "id, slug, name, role, agency, description, photo_url, views_count, shares_count, is_j6_defendant, claim_status, claimed_by_user_id, claim_verified_at, case_number, court, judge_name, prosecutor_name, defense_attorney, arrest_date, plea_date, sentence_date, sentence_summary, disposition, charges, news_links, support_url";
+  "id, slug, name, role, agency, description, photo_url, photo_alt_text, photo_source_name, photo_source_url, photo_credit, photo_rights_status, photo_identity_status, photo_verification_notes, photo_verified_at, photo_is_placeholder, views_count, shares_count, is_j6_defendant, claim_status, claimed_by_user_id, claim_verified_at, case_number, court, judge_name, prosecutor_name, defense_attorney, arrest_date, plea_date, sentence_date, sentence_summary, disposition, charges, news_links, support_url";
 const EVENT_COLS =
   "id, slug, title, description, event_date, location, views_count, shares_count";
 const DOCUMENT_COLS =

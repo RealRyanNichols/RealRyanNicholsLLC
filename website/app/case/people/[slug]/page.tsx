@@ -18,6 +18,7 @@ import { CaseInfoCard } from "@/components/CaseInfoCard";
 import { ReactionBar } from "@/components/ReactionBar";
 import { RyanCaseProfile } from "@/components/RyanCaseProfile";
 import { OfficialDossier } from "@/components/OfficialDossier";
+import { J6ProfileImage } from "@/components/J6ProfileImage";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbLd, websiteRef } from "@/lib/jsonld";
 import { SUBJECT_SLUG } from "@/lib/bio";
@@ -250,6 +251,8 @@ export default async function PersonPage({
           </Link>
         </nav>
 
+        <J6ProfileImage person={p} />
+
         <ClaimMeHero
           name={p.name}
           slug={p.slug}
@@ -342,7 +345,9 @@ export default async function PersonPage({
         </p>
       ) : null}
 
-      {p.photo_url ? (
+      {p.is_j6_defendant ? (
+        <J6ProfileImage person={p} />
+      ) : p.photo_url ? (
         <div className="mt-5 overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-paper)]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
