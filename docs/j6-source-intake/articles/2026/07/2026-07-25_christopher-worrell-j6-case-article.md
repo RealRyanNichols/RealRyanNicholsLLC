@@ -7,7 +7,7 @@
 - Article: `/posts/christopher-worrell-j6-case-trial-sentence-pardon-civil-case`
 - Criminal case: *United States v. Worrell*, `1:21-cr-00292-RCL` (D.D.C.)
 - Civil case: *Sullivan v. United States*, `5:26-cv-00220-PGB-PRL` (M.D. Fla.)
-- Publication state at intake: draft pending committed-image production gate
+- Publication state at intake: published after committed-image production gate
 
 ## Resume and duplicate check
 
@@ -52,15 +52,15 @@
 - Design: person-free blank archive folders, abstract courthouse columns and a neutral timeline ending at a pause marker
 - Exclusions: no likeness, photograph, official seal, copied or fabricated filing, readable evidence, invented date, verdict symbol or family member
 
-## Remaining release gates
+## Release-gate progress
 
-- Commit the draft article, provenance record and final OG asset.
-- Wait for production deployment to reach `READY`.
-- Verify the public OG URL returns HTTP 200 as an image and is exactly 1200 × 630.
-- Insert the approved post and exact `/posts/<slug>` OG mapping.
-- Mark the repository article published.
-- Wait for the final production deployment to reach `READY`.
-- Verify article HTTP 200, canonical, robots, title, description, visible byline, `NewsArticle` author, Open Graph and X metadata.
-- Verify sitemap inclusion and freshness.
+- Draft article, provenance record and final OG asset committed in production commit `8659671ddf82422aad7424c574f119b112723f25`.
+- Matching production deployment reached `READY`.
+- Public OG URL returned HTTP 200 as `image/jpeg` at exactly 1200 × 630.
+- Live asset SHA-256 matched the committed file: `6a979e17442c81973e8c2b991285730c3879254b57f19f2cc23428de2d6c8f10`.
+- Approved Supabase post inserted after a final duplicate check.
+- Exact `/posts/christopher-worrell-j6-case-trial-sentence-pardon-civil-case` page-image mapping installed.
+- Repository article advanced from draft to published.
+- Final production deployment, article metadata and sitemap verification remain pending.
 
 No indexing, traffic or ranking result is claimed.

@@ -2,10 +2,10 @@
 title: "Christopher Worrell J6 Case Record: Bench Trial, 10-Year Sentence, Full Pardon and 2026 Civil Case"
 subtitle: "A source-backed account of Worrell’s seven-count bench-trial findings, sentence, January 2025 clemency and limited status as a proposed class member in a separate Federal Tort Claims Act case."
 author: "Real Ryan Nichols Editorial Team"
-date: "2026-07-26T02:20:00Z"
+date: "2026-07-26T02:17:21Z"
 category: "January 6"
 slug: "christopher-worrell-j6-case-trial-sentence-pardon-civil-case"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Christopher Worrell J6 Case: Trial, Pardon, Civil Suit"
 seo_description: "Christopher Worrell’s sourced J6 record: seven-count bench-trial findings, 10-year sentence, full pardon and proposed-class-member status in a stayed 2026 civil case."
