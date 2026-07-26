@@ -96,4 +96,14 @@ The current-news section is separately sourced. The article does not claim that 
 - Article published in the production database: `2026-07-26T17:45:17.340260Z`
 - Initial live verification: HTTP 200; exact canonical URL; `index, follow`; expected title and description; visible and structured-data author `Real Ryan Nichols Editorial Team`; exact Open Graph and X image URL; `NewsArticle` schema; poll, verified-resource submission, share controls and optional email/text call to action.
 - Publication-state verification timestamp: `2026-07-26T17:47:21Z`
-- Exact sitemap inclusion and final production-state recheck remain to be completed after the repository publication-state deployment.
+- Repository publication-state commit: `53776121d2f9fb1aadb3ef48f4defc014dc6e4d1`
+- Final production deployment: `dpl_843QdkK7Rge1x2PwLBigETZ8KsKb`
+- Final deployment state: `READY`
+- Final public verification timestamp: `2026-07-26T17:52:16Z`
+- Final article response: HTTP 200, `text/html; charset=utf-8`
+- Final image response: HTTP 200, `image/jpeg`
+- Final metadata: exact canonical URL; `index, follow`; no conflicting `X-Robots-Tag`; intended title and description; visible and structured-data author `Real Ryan Nichols Editorial Team`; exact Open Graph and X image URL; Open Graph dimensions 1200×630; `summary_large_image`; `NewsArticle` schema.
+- Final interaction checks: poll, verified-resource submission mechanism, share controls and optional consensual email/text call to action present.
+- Sitemap: exact article URL present with `lastmod` `2026-07-26T17:45:39.946671+00:00`.
+- Same-day duplicate check: exactly one published `Faith & Today` post on July 26, 2026.
+- No indexing, traffic or ranking result is claimed.
