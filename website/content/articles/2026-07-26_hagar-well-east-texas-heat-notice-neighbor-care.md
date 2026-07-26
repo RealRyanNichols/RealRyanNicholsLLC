@@ -5,7 +5,7 @@ slug: "hagar-well-east-texas-heat-notice-neighbor-care"
 date: "2026-07-26T17:36:18Z"
 author: "Real Ryan Nichols Editorial Team"
 category: "Faith & Today"
-status: "draft"
+status: "published"
 pinned: false
 seo_title: "Hagar at the Well: A Bible Lesson for East Texas Heat"
 seo_description: "Genesis 21 shows God seeing Hagar and Ishmael in the wilderness. Here is how that story can guide practical neighbor care during East Texas heat."

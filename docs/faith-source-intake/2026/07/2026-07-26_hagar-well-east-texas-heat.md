@@ -6,6 +6,7 @@
 - Prepared by: Real Ryan Nichols Editorial Team
 - Initial verification timestamp: `2026-07-26T17:36:18Z`
 - Publication status at initial commit: `draft`
+- Production publication status: `published`
 
 ## Scope and editorial boundary
 
@@ -84,7 +85,15 @@ The current-news section is separately sourced. The article does not claim that 
 
 ## Remaining verification
 
-- Record production commit and deployment IDs.
-- Record public image MIME type, dimensions and SHA-256.
-- Record live article status, canonical, robots, title, description, visible and structured-data author, Open Graph metadata, X metadata and exact image URL.
-- Confirm exact sitemap inclusion and refreshed `lastmod`.
+- Draft and image production commit: `590c6bae12278ae3af796bf6e5669803eb93f853`
+- Draft and image production deployment: `dpl_F1vfCpy4p8pLGs2pv2tNtU5qgnvE`
+- Deployment state before database publication: `READY`
+- Public image verification: HTTP 200, `image/jpeg`, 1200×630, 262,204 bytes
+- Public image SHA-256: `1d0c9af6f830a67a9aa59ae5d62a234d8223bc3ea78ff36b8b680ab45c15c45a`
+- Live and repository image hashes: exact match
+- Database post ID: `3ee274e8-8d19-4cbd-a643-be409cd44ea9`
+- Exact `page_og_images` path: `/posts/hagar-well-east-texas-heat-notice-neighbor-care`
+- Article published in the production database: `2026-07-26T17:45:17.340260Z`
+- Initial live verification: HTTP 200; exact canonical URL; `index, follow`; expected title and description; visible and structured-data author `Real Ryan Nichols Editorial Team`; exact Open Graph and X image URL; `NewsArticle` schema; poll, verified-resource submission, share controls and optional email/text call to action.
+- Publication-state verification timestamp: `2026-07-26T17:47:21Z`
+- Exact sitemap inclusion and final production-state recheck remain to be completed after the repository publication-state deployment.
