@@ -52,6 +52,8 @@
 - Exact `/posts/longview-recycling-council-review-july-30` OG mapping was installed.
 - Live article returned HTTP 200.
 - Canonical URL, `index, follow`, title, description, visible Editorial Team byline, `NewsArticle` author, Open Graph and X metadata used the intended values and exact public OG URL.
-- Final repository status and sitemap freshness remained to be committed at the time of this update.
+- Final repository publication state merged through GitHub PR #423, merge commit `948bc1c027900341b2d812242717f549fea6073b`.
+- Final Vercel production deployment `dpl_H9SEeauiSkEX1uRhYUQCnaLGmRQy` reached `READY`.
+- The exact article URL appears in the live sitemap with `lastmod` `2026-07-26T14:44:43.362234+00:00`.
 
 No indexing, traffic or ranking result is claimed.
