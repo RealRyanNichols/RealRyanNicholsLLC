@@ -15,6 +15,14 @@ traps that have actually bitten us — not things you can read straight from the
 - **Always get both green before committing or merging.** There is no separate test suite.
 - **Deploy = merge a PR to `main`** → Vercel builds production (~2–3 min). A new route/page is only live after a merge + build. DB/content changes are live immediately (no deploy).
 
+## Editorial cadence and automation guard
+- **Production article budget:** two scheduled flagship articles per Central Time day, at 9:00 a.m. and 5:00 p.m. A third is allowed only to recover a failed scheduled run or cover a verified, material breaking primary-record development.
+- **One article, one branch, one pull request per automated run.** Never bundle unrelated articles into one PR.
+- **Current editorial priority:** deep January 6 archive work—profiles, primary documents, evidence/video records, legal-procedure explainers, sourced timelines, case-status updates, and archive pillars.
+- Unattended agents must not create bulk “trending X,” sports, celebrity, generic motivation, or routine political-summary batches. Legacy bulk-content PRs require fresh, explicit owner approval before merge.
+- Before mutating GitHub, Supabase, or production, check for another active J6 branch, pull request, or deployment. Resume related unfinished work; otherwise defer instead of competing.
+- Every published flagship needs a distinct search intent, anti-cannibalization check, primary sources, meaningful internal archive links, documentary visuals with provenance, an article-specific 1200×630 OG image, and signed-out live verification.
+
 ## Boundaries
 **Always**
 - Verify `tsc --noEmit` + `eslint` pass before any commit/merge.
