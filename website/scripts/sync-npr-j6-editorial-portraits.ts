@@ -794,19 +794,18 @@ async function main() {
           `Reviewed profile name changed for ${person.id}: expected "${reviewedMatch.expectedProfileName}", found "${person.name}".`,
         );
       }
-      const reviewedNprMatches =
-        nprByName.get(normalizeFullName(reviewedMatch.nprName)) ?? [];
+      const reviewedNprMatches = (
+        nprByName.get(normalizeFullName(reviewedMatch.nprName)) ?? []
+      ).filter(
+        (candidate) =>
+          candidate.raw.photo_name === reviewedMatch.photoFilename,
+      );
       if (reviewedNprMatches.length !== 1) {
         throw new Error(
-          `Reviewed NPR identity "${reviewedMatch.nprName}" resolved to ${reviewedNprMatches.length} records.`,
+          `Reviewed NPR identity "${reviewedMatch.nprName}" with asset "${reviewedMatch.photoFilename}" resolved to ${reviewedNprMatches.length} records.`,
         );
       }
       record = reviewedNprMatches[0];
-      if (record.raw.photo_name !== reviewedMatch.photoFilename) {
-        throw new Error(
-          `Reviewed NPR asset changed for ${person.name}: expected "${reviewedMatch.photoFilename}", found "${record.raw.photo_name ?? "(missing)"}".`,
-        );
-      }
       reviewedMatches++;
       identityBasis = `a manually reviewed profile-to-NPR match corroborated by ${reviewedMatch.corroboration}. Profile id ${person.id}; NPR identity "${reviewedMatch.nprName}".`;
     } else {
