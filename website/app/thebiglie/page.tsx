@@ -24,13 +24,13 @@ const BODY = "text-base font-semibold leading-7 text-[#cfd9ea]";
 const STATS = [
   { n: "26,102", l: "Words written in a cell" },
   { n: "166", l: "Images from the record" },
-  { n: "14,000+", l: "Hours of footage reviewed" },
+  { n: "44,000+", l: "Hours that turned out to exist" },
   { n: "0", l: "Minutes of internet access" },
 ];
 
 const HAD = [
   { n: "01", t: "One laptop", d: "Court issued. Locked down. Loaded with the government's own discovery." },
-  { n: "02", t: "One evidence thumb drive", d: "14,000+ hours of bodycam, CCTV and crowd video. Everything I could prove came off of it." },
+  { n: "02", t: "One evidence thumb drive", d: "What I was told was 14,000+ hours of bodycam, CCTV and crowd video. Everything I could prove came off of it. The real number turned out to be far larger." },
   { n: "03", t: "Three books", d: "Whatever made it through the mail. Every outside source in this report is something I could hold in my hands." },
   { n: "04", t: "No internet", d: "Not restricted. None. I could not look anything up, check a date, or read the news." },
   { n: "05", t: "What was left of my sanity", d: "Solitary confinement. That is the honest fifth item and I am not going to dress it up." },
@@ -208,6 +208,75 @@ export default function TheBigLiePage() {
             <p className={`mt-4 ${BODY}`}>
               That matters more than anything else on this page, because everything in the
               next section was written before it was public.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* THE COUNT CHANGED */}
+      <section className={`border-b border-[#203a64] ${DARK}`}>
+        <div className="mx-auto max-w-4xl px-4 py-14 sm:px-6">
+          <p className={KICKER}>The number moved</p>
+          <h2 className={`mt-3 ${H2}`}>They told us 14,000 hours. It was not 14,000 hours.</h2>
+          <div className="mt-6 space-y-4">
+            <p className={BODY}>
+              Every time I say 14,000 hours in this report, that is the number I
+              had. It is what the government said existed, and I wrote the whole
+              thing believing it.
+            </p>
+            <p className={BODY}>
+              It was not the whole picture. The 14,000 hours covered noon to eight
+              PM on one single day, and only what the Capitol Police handed the
+              FBI. Out of that, the government produced half and withheld the
+              other half as not relevant to the case. What actually reached
+              defendants was 4,800 hours from 515 cameras.
+            </p>
+            <p className="font-display text-xl font-black leading-snug text-[#e1bd5b] sm:text-2xl">
+              In February 2023 my own motion put 41,000 hours on the record. In
+              November 2023 the House began releasing what it put at 44,000.
+            </p>
+            <p className={BODY}>
+              So what I was handed in that cell, and built this entire report out
+              of, was somewhere around a tenth of what existed. And 44,000 is only
+              what has been tracked and recovered.
+            </p>
+          </div>
+
+          <figure className="mt-10 overflow-hidden rounded-2xl border border-[#203a64] bg-[#0b1830]">
+            <img
+              src="/thebiglie/charts/footage-count.png"
+              alt="Bar chart comparing January 6 footage volume figures from 4,800 hours produced to defendants up to the 44,000 hour House total"
+              width={1100}
+              height={806}
+              className="block h-auto w-full"
+            />
+          </figure>
+
+          <figure className="mt-4 overflow-hidden rounded-2xl border border-[#203a64] bg-[#0b1830]">
+            <img
+              src="/thebiglie/charts/footage-scale.png"
+              alt="Grid of 1,833 squares, one per day of continuous video. 200 are marked as what reached defendants and 583 as what was said to exist."
+              width={1200}
+              height={1200}
+              className="block h-auto w-full"
+            />
+            <figcaption className="border-t border-[#203a64] px-5 py-3 text-xs font-semibold text-[#9fb2d0]">
+              Every square is one full day of continuous video. The red block is
+              what actually reached defendants. The blue is what I was told
+              existed. Everything below it existed the whole time.
+            </figcaption>
+          </figure>
+
+          <div className="mt-6 rounded-2xl border border-[#e0913f] bg-[#20150a] p-6">
+            <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[#e0913f]">
+              I did not change the report
+            </p>
+            <p className={`mt-3 ${BODY}`}>
+              The 14,000 figure stays exactly where it is on every page of the
+              report, because that is what I knew when I wrote it. I am telling
+              you here what the number turned out to be instead of quietly going
+              back and editing myself. That is the same rule I follow everywhere
+              else in this thing.
             </p>
           </div>
         </div>
