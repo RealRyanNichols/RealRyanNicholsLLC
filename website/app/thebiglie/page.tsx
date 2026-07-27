@@ -282,6 +282,75 @@ export default function TheBigLiePage() {
         </div>
       </section>
 
+      {/* ON THE RECORD, 2022 */}
+      <section className={`border-b border-[#203a64] ${DARK}`}>
+        <div className="mx-auto max-w-4xl px-4 py-14 sm:px-6">
+          <p className={KICKER}>July 21, 2022 &middot; on the record</p>
+          <h2 className={`mt-3 ${H2}`}>I said it in open court. A year later the number tripled.</h2>
+          <p className={`mt-4 max-w-2xl ${BODY}`}>
+            The number did not just quietly grow. We tracked it ourselves from
+            inside the jail, on the same evidence platform the government used to
+            serve us, and we said so to the judges. This is the transcript.
+          </p>
+
+          <figure className="mt-8 rounded-2xl border-2 border-[#8a93f8] bg-[#0b1830] p-6 sm:p-8">
+            <figcaption className="text-[11px] font-black uppercase tracking-[0.15em] text-[#8a93f8]">
+              Status conference before Judge Thomas F. Hogan &middot; ECF 113, page 14
+            </figcaption>
+            <blockquote className="mt-4 font-display text-lg font-black leading-relaxed text-[#fdf8ea] sm:text-xl">
+              &ldquo;The government said a couple status hearings ago that all the
+              evidence was uploaded. But we got a new download of evidence on
+              Evidence.com on May 31st, a ton of new videos. And so all the
+              evidence wasn&rsquo;t on Evidence.com like the government told
+              us.&rdquo;
+            </blockquote>
+            <p className="mt-5 text-sm font-semibold leading-relaxed text-[#cfd9ea]">
+              And a page later: &ldquo;If the January 6th hearing committee is
+              getting discovery that we don&rsquo;t have access to, what more do
+              they have that we don&rsquo;t have access to that could possibly
+              exonerate me? Because I&rsquo;ve already found exculpatory evidence
+              on body cam video.&rdquo;
+            </p>
+          </figure>
+
+          <div className="mt-4 rounded-2xl border border-[#e0533f] bg-[#210f0c] p-6">
+            <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[#e0533f]">
+              The court&rsquo;s answer
+            </p>
+            <blockquote className="mt-3 font-display text-lg font-black leading-relaxed text-[#fdf8ea]">
+              &ldquo;There&rsquo;s a lot of conspiracy theories and a lot of
+              theories you have, and we&rsquo;ll see what evidence is
+              produced.&rdquo;
+            </blockquote>
+          </div>
+
+          <p className={`mt-6 ${BODY}`}>
+            Sixteen months after that hearing, the House began releasing 44,000
+            hours. I was not theorizing. I was reading the file counts on the
+            screen they gave me.
+          </p>
+
+          <div className="mt-6 rounded-xl border border-[#203a64] bg-[#0b1830] p-5">
+            <p className={KICKER}>Pull it yourself</p>
+            <p className="mt-2 text-sm font-semibold leading-relaxed text-[#9fb2d0]">
+              United States v. Nichols &amp; Harkrider, No. 1:21-cr-00117 (D.D.C.),
+              ECF 113, transcript of the July 21, 2022 status conference. It is
+              free and public. I am not asking anybody to take my word for it.
+            </p>
+          </div>
+
+          <figure className="mt-10 overflow-hidden rounded-2xl border border-[#203a64] bg-[#0b1830]">
+            <img
+              src="/thebiglie/charts/review-time.png"
+              alt="Bar chart of how many days it takes to watch the January 6 discovery footage, against the 548 days Ryan Nichols was held awaiting trial"
+              width={1200}
+              height={1200}
+              className="block h-auto w-full"
+            />
+          </figure>
+        </div>
+      </section>
+
       {/* WHAT CAME TRUE */}
       <section className={`border-b border-[#203a64] ${DARK}`}>
         <div className="mx-auto max-w-4xl px-4 py-14 sm:px-6">
