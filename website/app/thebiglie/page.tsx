@@ -82,6 +82,17 @@ const INSIDE = [
   { k: "The unnamed", h: "Still no name on a docket", p: "People filmed working with police in the middle of a riot who were never identified or charged, even after we asked the government to name them in a motion." },
 ];
 
+const CHAPTERS = [
+  { n: "01", t: "Who Antifa actually is", d: "Not the cartoon, and not the denial either. The definitions, the history, and the sourcing, laid out from the three books I had.", tag: "Section 1" },
+  { n: "02", t: "The Campaign Plan", d: "Six steps. Four of them covert. Recruiting, indoctrination, sorting recruits, organizing direct action, then the two that happen in the open.", tag: "Section 1" },
+  { n: "03", t: "Red, Yellow, Green", d: "How people get sorted by what they are willing to do. The manuscript argues the least violent tier is the most dangerous one.", tag: "Section 1" },
+  { n: "04", t: "The Battle Plan", d: "Nine roles, five lessons, three objectives. Infiltrate. Agitate. Retaliate.", tag: "Section 1" },
+  { n: "05", t: "The events of January 6", d: "Where the playbook stops being theory and starts matching what I watched on the footage, hour by hour.", tag: "Section 2" },
+  { n: "06", t: "Nine roles, one afternoon", d: "Each role, and who filled it that day, with stills. One role is empty and I say so on the page.", tag: "Section 2" },
+  { n: "07", t: "Group 1 and Group 2", d: "The people who show up at the Ellipse in the morning and in the tunnel hours later. The ones who were never named.", tag: "Section 2" },
+  { n: "08", t: "What happened to me", d: "The Lower West Terrace tunnel. 7,390 words and 92 images. What I saw, what I heard officers say to each other, and what happened to the people beside me.", tag: "Section 2" },
+];
+
 const LABELS = [
   { t: "Fact", c: "#4cc38a", d: "It is in the record. Go pull it yourself." },
   { t: "Ryan's account", c: "#8a93f8", d: "I lived it. This is my word." },
@@ -699,6 +710,79 @@ export default function TheBigLiePage() {
               turns a theory into a documented question.
             </p>
           </figure>
+        </div>
+      </section>
+
+      {/* WHAT IS INSIDE - the book treatment */}
+      <section className={`border-b border-[#203a64] ${DARK}`}>
+        <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
+          <div className="grid gap-10 lg:grid-cols-[300px_minmax(0,1fr)] lg:gap-14">
+            <div className="lg:sticky lg:top-24 lg:self-start">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/uploads/biglie-cover.png"
+                alt="The BIG Lie, a report by Ryan Nichols"
+                width={1000}
+                height={1333}
+                className="w-full rounded-xl border border-white/15 shadow-2xl shadow-black/60"
+              />
+              <a
+                href="#get"
+                className="mt-5 block rounded-lg bg-[#e1bd5b] px-6 py-4 text-center text-sm font-black uppercase tracking-[0.08em] text-[#071126] transition hover:brightness-110"
+              >
+                Read It Free
+              </a>
+              <p className="mt-3 text-center text-xs font-semibold text-[#7b8db0]">
+                A name and an email. That is the whole price.
+              </p>
+            </div>
+
+            <div>
+              <p className={KICKER}>Inside the report</p>
+              <h2 className={`mt-3 ${H2}`}>Eight parts. One afternoon.</h2>
+              <p className={`mt-4 ${BODY}`}>
+                The first half is the playbook, built from the three books I had
+                in that cell. The second half is January 6 itself, matched against
+                it frame by frame, and then what happened to me in the tunnel.
+              </p>
+
+              <ol className="mt-8 space-y-3">
+                {CHAPTERS.map((c) => (
+                  <li
+                    key={c.n}
+                    className="flex gap-5 rounded-xl border border-[#203a64] bg-[#0b1830] p-5"
+                  >
+                    <span className="font-display text-xl font-black tabular-nums text-[#e1bd5b]">
+                      {c.n}
+                    </span>
+                    <span className="min-w-0">
+                      <span className="text-[9px] font-black uppercase tracking-[0.16em] text-[#7b8db0]">
+                        {c.tag}
+                      </span>
+                      <span className="mt-1 block font-display text-lg font-black text-[#fdf8ea]">
+                        {c.t}
+                      </span>
+                      <span className="mt-1 block text-sm font-semibold leading-relaxed text-[#9fb2d0]">
+                        {c.d}
+                      </span>
+                    </span>
+                  </li>
+                ))}
+              </ol>
+
+              <div className="mt-6 rounded-xl border border-[#4cc38a] bg-[#0b1f1a] p-5">
+                <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#4cc38a]">
+                  Also inside
+                </p>
+                <p className="mt-2 text-sm font-semibold leading-relaxed text-[#cfd9ea]">
+                  166 images pulled from the record. 12 charts. 25 endnotes so
+                  you can check me. And every claim carries a label telling you
+                  whether it is fact, my account, my inference, or something I
+                  believe and cannot prove yet.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
