@@ -1,0 +1,404 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-07-27T08:05:25.310Z",
+  "count": 18,
+  "review_policy": "Fail closed when the filing does not explicitly attribute a recognizable image to the named profile, when a group image is ambiguous, when the source is incomplete, or when the filing concerns a different person.",
+  "records": [
+    {
+      "profile_uuid": "ba33c8b5-708b-4352-87e2-6a5f8a6d24c7",
+      "slug": "eric-cramer",
+      "name": "Eric Cramer",
+      "case_number": "1:22-cr-339",
+      "source": {
+        "title": "Cramer - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1518546/download",
+        "sha256": "2bcfd4c22d877b3dbee8caae615df872880584aadd6f5034cfdf35d5a523f2ee",
+        "bytes": 1857672,
+        "pages": 13,
+        "acquisition": {
+          "capture_timestamp": "20240627115943",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1518546/dl",
+          "capture_digest": "U4UPWXUUXTT4MUDQ2M5IBPSJXSBF256C",
+          "fetch_url": "https://web.archive.org/web/20240627115943id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1518546/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "All defendant-attributed images obscure most of Cramer's face with a gaiter or mask; the filing does not contain a recognizable, unobscured portrait.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "cf5c7484-4d03-4ba3-8629-0689abe1af96",
+      "slug": "eric-munchel",
+      "name": "Eric Munchel",
+      "case_number": "1:21-cr-118",
+      "source": {
+        "title": "Munchel Eisenhart - Affidavit in Support",
+        "official_url": "https://www.justice.gov/opa/case-multi-defendant/file/1355811/download",
+        "sha256": "9d519e0612c24eb21ba2b5bcb256e0cd26249caa0e43e572c4901216431c14ad",
+        "bytes": 2936547,
+        "pages": 11,
+        "acquisition": {
+          "capture_timestamp": "20240507215750",
+          "capture_original_url": "https://www.justice.gov/opa/case-multi-defendant/file/1355811/dl",
+          "capture_digest": "AQWSEWSYJIJVWUSTFMZYUMRKRP5JO7RL",
+          "fetch_url": "https://web.archive.org/web/20240507215750id_/https://www.justice.gov/opa/case-multi-defendant/file/1355811/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The only reasonably clear face appears in an unlabeled two-person image naming Munchel and Eisenhart together; using it would require positional or gender inference. Other Munchel images are masked or too small.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "f38d9caa-d602-48f9-b591-e46a59a832f9",
+      "slug": "eric-bernewitz",
+      "name": "Eric Von Bernewitz",
+      "case_number": "1:21-cr-307",
+      "source": {
+        "title": "Von Bernewitz Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1393396/download",
+        "sha256": "cc5fdffe3f8c0471f00224a0f7136772a870263a0d2986ae237bbf5e0eddd08a",
+        "bytes": 204284,
+        "pages": 4,
+        "acquisition": {
+          "capture_timestamp": "20250305050328",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1393396/dl",
+          "capture_digest": "LI5IQSAUUAKC7KU5OGMQIU2O7HVXGYHA",
+          "fetch_url": "https://web.archive.org/web/20250305050328id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1393396/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The filing contains only distant overhead surveillance imagery without a recognizable face.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "60014c38-3f68-4425-af8a-2a96c112cc20",
+      "slug": "erik-herrera",
+      "name": "Erik Herrera",
+      "case_number": "1:21-cr-619",
+      "source": {
+        "title": "Herrera - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1526506/download",
+        "sha256": "62c33be9e50c09392ae4a75b3171613991cf31764dbdfb9f1019e1748160d9f9",
+        "bytes": 1211963,
+        "pages": 6,
+        "acquisition": {
+          "capture_timestamp": "20220923000847",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1526506/download",
+          "capture_digest": "GUJWLVKLA2WAPDFZZOVVXRCW6V5DGDW3",
+          "fetch_url": "https://web.archive.org/web/20220923000847id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1526506/download"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The attributable face is too small and soft in the filing screenshots to support a recognizable profile portrait.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "6173ff68-7b6c-44fe-a099-2f58e450fa9f",
+      "slug": "erik-rau",
+      "name": "Erik Rau",
+      "case_number": "1:21-cr-467",
+      "source": {
+        "title": "Rau Complaint & Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1412526/download",
+        "sha256": "7bdc007737b9fcb7c7e4f38c7a93b8e10254a175a9b3fc43785fb8dd781cd031",
+        "bytes": 3798656,
+        "pages": 6,
+        "acquisition": {
+          "capture_timestamp": "20240627115950",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1412526/dl",
+          "capture_digest": "QZEB227PDMH6VPNNMCHNRBE4WSDUFF42",
+          "fetch_url": "https://web.archive.org/web/20240627115950id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1412526/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The filing images show only tiny, partial, or low-resolution views and do not provide a recognizable portrait.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "1ee99e9d-13cf-44cb-99fe-cc85fd7ac516",
+      "slug": "fi-duong",
+      "name": "Fi Duong",
+      "case_number": "1:21-cr-00541-PLF",
+      "source": {
+        "title": "Fi Complaint and Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1409611/download",
+        "sha256": "35f6d2f923add8ff42ea0e89cc7d0850a4459ad6a5b6b98d8e19e4abee478441",
+        "bytes": 528276,
+        "pages": 15,
+        "acquisition": {
+          "capture_timestamp": "20240616122924",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1409611/dl",
+          "capture_digest": "G2TJKBPEPOYEJPQVJJRTPFZZEJZDMCZQ",
+          "fetch_url": "https://web.archive.org/web/20240616122924id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1409611/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The attributable images show Duong masked, from the back, or in distant surveillance; no recognizable unobscured face is available.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "8cb58c89-5f36-4216-8d1a-8fe5d774328c",
+      "slug": "francis-biondo",
+      "name": "Francis Gregory Biondo",
+      "case_number": "23MJ-00272",
+      "source": {
+        "title": "Biondo Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1598331/download",
+        "sha256": "e1dbd46e222f3008ed4dae1b7ed84f26e54b1dbe5851e3b832f073c4ec807a76",
+        "bytes": 2509069,
+        "pages": 5,
+        "acquisition": {
+          "capture_timestamp": "20250121165657",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1598331/dl",
+          "capture_digest": "4DTLNVOUWEK53G6JNMG3L3OM4PFD7M6F",
+          "fetch_url": "https://web.archive.org/web/20250121165657id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1598331/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The circled subjects are small, masked, or in side views that do not yield a recognizable portrait.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "01b2778f-d492-47bd-8ce9-13267492c4f8",
+      "slug": "gary-smith",
+      "name": "Gary Francis Smith",
+      "case_number": "1:22-mj-225",
+      "source": {
+        "title": "Smith - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1547591/download",
+        "sha256": "b6c4306d5c7d89b295fe28babfb68c7d7356ad5ef62b662d471add5551666e52",
+        "bytes": 872468,
+        "pages": 6,
+        "acquisition": {
+          "capture_timestamp": "20221028003400",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1547591/download",
+          "capture_digest": "QAEXTR3EBELM6PLOH2PSZFQRISC7QKFF",
+          "fetch_url": "https://web.archive.org/web/20221028003400id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1547591/download"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The filing's attributable views are masked, occluded, or too distant for a recognizable portrait.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "8fbb5cda-4aa3-484c-ad54-d3da5c8dabca",
+      "slug": "hunter-palm",
+      "name": "Hunter Palm",
+      "case_number": "1:21-cr-393",
+      "source": {
+        "title": "Palm Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1394516/download",
+        "sha256": "da94de30c7889595d17147d788f31463f38ee3400fd826c9c6123a87444ea9a3",
+        "bytes": 4198573,
+        "pages": 8,
+        "acquisition": {
+          "capture_timestamp": "20210520180434",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1394516/download",
+          "capture_digest": "XYSCZJNXRNAMAPOGQMBPGOBVI24OWZBU",
+          "fetch_url": "https://web.archive.org/web/20210520180434id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1394516/download"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The closest face is a motion-blurred video frame and is not sufficiently recognizable for profile use.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "c8a42fc5-f584-4b0e-9823-9e03d427ac40",
+      "slug": "israel-matson",
+      "name": "Israel Mark Matson",
+      "case_number": "23-mj-00170",
+      "source": {
+        "title": "Israel Matson Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1592756/download",
+        "sha256": "f23bb13e905cdbe672dcda001d4147a2ee9cba4c763338424fb44aa9850232be",
+        "bytes": 2027826,
+        "pages": 11,
+        "acquisition": {
+          "capture_timestamp": "20240831155912",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1592756/dl",
+          "capture_digest": "OZ62G5TOW5LDTMPJ7EO4DQFSY4FO7F7Y",
+          "fetch_url": "https://web.archive.org/web/20240831155912id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1592756/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The attributable person is too small and generally masked or obstructed in the filing images.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "f0c67b5c-d85d-4910-9e0a-f5be297242c1",
+      "slug": "jason-owens",
+      "name": "Jason Douglas Owens",
+      "case_number": "1:21-cr-286",
+      "source": {
+        "title": "Owens Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1388796/download",
+        "sha256": "cdba7cc84e32520b8de6e37390bef2e0e4bc2654a3fa54a6762f70af4525b6f6",
+        "bytes": 6282472,
+        "pages": 13,
+        "acquisition": {
+          "capture_timestamp": "20240327151703",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1388796/dl",
+          "capture_digest": "MS2TJWMVUS7RUHB2AKOB7UYOAJUIVENE",
+          "fetch_url": "https://web.archive.org/web/20240327151703id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1388796/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The clear portrait images on the relevant pages are explicitly Grady Owens, not Jason Owens. Jason's defendant-attributed images show his face covered or too distant, so publishing a portrait would create a wrong-person risk.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "35535ad5-62fe-4d21-84c7-a1eff1028255",
+      "slug": "jeffrey-schaefer",
+      "name": "Jeffrey Schaefer",
+      "case_number": "1:22-cr-69",
+      "source": {
+        "title": "Schaefer - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1481446/download",
+        "sha256": "9179f4437cb359a040fdb8f2827615a381a83cc8feea76a320207e29553fd387",
+        "bytes": 826382,
+        "pages": 8,
+        "acquisition": {
+          "capture_timestamp": "20240627120013",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1481446/dl",
+          "capture_digest": "47DHJQ52ZASUYVLFJGD6LEKWWK5JUPYU",
+          "fetch_url": "https://web.archive.org/web/20240627120013id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1481446/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The only close self-image has the lower face blocked by a phone; remaining images are too small or obscured for a recognizable portrait.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "5b669dbb-3a67-4996-b50e-afe0dc615e54",
+      "slug": "jeremy-grace",
+      "name": "Jeremy Grace",
+      "case_number": "1:21-cr-492",
+      "source": {
+        "title": "Grace Complaint & Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1398131/download",
+        "sha256": "6af99cc8d1912e5a2958eca387e135b9fdf318f34003ad5a3d67c9d1cbec5381",
+        "bytes": 1203732,
+        "pages": 8,
+        "acquisition": {
+          "capture_timestamp": "20240403125227",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1398131/dl",
+          "capture_digest": "XLVIRZAPTBJQZ2Z7UQETH2VF5HNJTVIX",
+          "fetch_url": "https://web.archive.org/web/20240403125227id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1398131/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "Grace's face is covered by a bandana in the attributable images.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "decfbb1c-6b22-498b-a69b-a232261a8bee",
+      "slug": "jeremy-baouche",
+      "name": "Jeremy K. Baouche",
+      "case_number": "1:21-cr-733",
+      "source": {
+        "title": "Baouche - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1528881/download",
+        "sha256": "6d1149999bdd6e613394ddd65b5cae9477f727af764b87d3e4ac8977f7930295",
+        "bytes": 428464,
+        "pages": 9,
+        "acquisition": {
+          "capture_timestamp": "20220923092205",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1528881/download",
+          "capture_digest": "TVXWJWODVRWHK67JXDBLEO4JNFEIR4LP",
+          "fetch_url": "https://web.archive.org/web/20220923092205id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1528881/download"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The only potential face is a very small, low-resolution screenshot that is not recognizable at profile-card scale.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "d48b0ece-2fbc-423a-9b5b-796341e3e0c2",
+      "slug": "jeremy-brown",
+      "name": "Jeremy Michael Brown",
+      "case_number": "1:21-mj-619",
+      "source": {
+        "title": "Brown Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1438141/download",
+        "sha256": "6c44ace608e423d44ee82ce4f622d2034ec98eb283357cc00813f4627e25c023",
+        "bytes": 1866425,
+        "pages": 18,
+        "acquisition": {
+          "capture_timestamp": "20240326062852",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1438141/dl",
+          "capture_digest": "2KG4XQD56AIGCZBZX7K362MCSYJ7OK7F",
+          "fetch_url": "https://web.archive.org/web/20240326062852id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1438141/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The filing contains distant or low-resolution news and crowd images; Brown's face is not sufficiently resolved for a recognizable portrait.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "03e4f136-ab70-425e-b756-517736b5408d",
+      "slug": "jolene-eicher",
+      "name": "Jolene Eicher",
+      "case_number": "1:22-mj-00016",
+      "source": {
+        "title": "Eicher - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1481616/download",
+        "sha256": "ae10512d8752e2302d2663c74e1817db9bb89b4d89d299e8210352d112ff7ee2",
+        "bytes": 1197610,
+        "pages": 9,
+        "acquisition": {
+          "capture_timestamp": "20240627120117",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1481616/dl",
+          "capture_digest": "YS4VVI2BSL2LIBPWWEPL7ADRBO6LOLL6",
+          "fetch_url": "https://web.archive.org/web/20240627120117id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1481616/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The Facebook profile photograph is too small to yield a recognizable profile image, and the video stills are similarly low resolution; no reliable portrait-scale derivative is available.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "9644f2b6-7e3b-49c3-81e8-f8e168f2f5d0",
+      "slug": "jonathan-rockholt",
+      "name": "Jonathan Rockholt",
+      "case_number": "1:22-mj-184",
+      "source": {
+        "title": "Rockholt - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1529811/download",
+        "sha256": "6fee3c360f0e6097c3f0818299b6c0b609546f0abe6e0ba6e09392bc2b892112",
+        "bytes": 8389056,
+        "pages": 40,
+        "acquisition": {
+          "capture_timestamp": "20220902093326",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1529811/download",
+          "capture_digest": "IXQMYW5KUTH3QD3B32MDP4YMNTQMMC4W",
+          "fetch_url": "https://web.archive.org/web/20220902093326id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1529811/download"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The defendant-attributed images show masks, gaiters, sunglasses, or distant profile views, and several identifications rest on multi-image resemblance comparisons rather than an unambiguous face-specific caption.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "024278a6-8254-4c2b-bd56-ecfa5dc44b4c",
+      "slug": "jordan-siemers",
+      "name": "Jordan Siemers",
+      "case_number": "1:22-mj-251",
+      "source": {
+        "title": "Siemers - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1555001/download",
+        "sha256": "6e568b88ed8139209390117331591ff642cc94fb4a1b21d3d33c5a9de79e58c3",
+        "bytes": 1284939,
+        "pages": 12,
+        "acquisition": {
+          "capture_timestamp": "20221207155351",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1555001/download",
+          "capture_digest": "2RMGG6GRKYL2NYSECJRSSWZPFKA7KQLB",
+          "fetch_url": "https://web.archive.org/web/20221207155351id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1555001/download"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "Siemers is identified in group images by clothing and relationship evidence, but her face is masked or too small; no recognizable portrait is available.",
+      "publishable": false
+    }
+  ]
+}

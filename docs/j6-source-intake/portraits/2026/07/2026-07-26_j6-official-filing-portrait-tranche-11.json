@@ -1,0 +1,1258 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-07-27T08:05:25.310Z",
+  "cohort": "First 50 current public J6 placeholder profiles in deterministic alphabetical order from E through L with preserved complaint, affidavit, or statement-of-facts PDFs",
+  "count": 32,
+  "review_policy": "Fail closed: publish only a recognizable frame with explicit person-specific attribution in the cited filing.",
+  "rights_boundary": "Documented editorial use only. Identity and provenance are established by the cited filing, but the filing does not establish copyright ownership, public-domain status, or a transferable license for its embedded images.",
+  "records": [
+    {
+      "profile_uuid": "0c498c3a-3f7e-434f-a587-72eb99ce2c42",
+      "slug": "edward-kelley",
+      "name": "Edward J. Kelley",
+      "case_number": "1:22-cr-00408-CKK; separate E.D. Tenn. No. 3:22-cr-00118-TAV-JEM-1",
+      "source": {
+        "title": "Kelley Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1499346/download",
+        "sha256": "44e3b554c1ed202991e6d776a19be3917bc499cf6988501d76b1dbfa52eb94cd",
+        "bytes": 5511593,
+        "pages": 14,
+        "acquisition": {
+          "capture_timestamp": "20240627120007",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1499346/dl",
+          "capture_digest": "GKGOXXFHEY36XUV55QHD6M6T2JXT4474",
+          "fetch_url": "https://web.archive.org/web/20240627120007id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1499346/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 3,
+        "printed_page": "Document 1-1, page 3 of 10",
+        "figure": "Lower-right image of Kelley in a red MAGA hat and black TCAPP shirt"
+      },
+      "attribution_text": "Paragraph 6 states that the affiant was familiar with Kelley's appearance from interviewing him and Tennessee DMV records and determined that the person in the January 5 and 6 photographs was Edward Kelley.",
+      "derivative": {
+        "sha256": "7d3d26d88569b209c92e6b1e885a564214c800591959f0497aebcf4230e3d453",
+        "bytes": 94047,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/edward-kelley-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Edward J. Kelley",
+      "credit": "Image embedded in Kelley Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. Paragraph 6 states that the affiant was familiar with Kelley's appearance from interviewing him and Tennessee DMV records and determined that the person in the January 5 and 6 photographs was Edward Kelley. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "2d3e0cd8-2ffc-417a-bfc7-cb394ef21624",
+      "slug": "edward-mcalanis",
+      "name": "Edward McAlanis",
+      "case_number": "1:21-cr-516",
+      "source": {
+        "title": "McAlanis Complaint",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1439611/download",
+        "sha256": "448d14e4a2e112eeca1709c7ad90e4e8cf900cc65372a143509b324eaca0c623",
+        "bytes": 666625,
+        "pages": 6,
+        "acquisition": {
+          "capture_timestamp": "20240627115946",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1439611/dl",
+          "capture_digest": "VIHGJZB7AG6ERCHD5PBVRQG3X7RNXEK4",
+          "fetch_url": "https://web.archive.org/web/20240627115946id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1439611/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 3,
+        "printed_page": "Document 1-1, page 2 of 5",
+        "figure": "Photo 1, McAlanis outside the U.S. Capitol"
+      },
+      "attribution_text": "The filing says a tipster who shared mutual friends with McAlanis provided Photos 1 and 2 and expressly describes Photo 1 as McAlanis outside the U.S. Capitol.",
+      "derivative": {
+        "sha256": "5ee91c3eec5526fb6e590e2fb593e95ebb188987323bc761d94fd079afc13c7b",
+        "bytes": 169856,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/edward-mcalanis-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Edward McAlanis",
+      "credit": "Image embedded in McAlanis Complaint, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing says a tipster who shared mutual friends with McAlanis provided Photos 1 and 2 and expressly describes Photo 1 as McAlanis outside the U.S. Capitol. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "e13452d8-4f27-4936-9107-f1f9f461370c",
+      "slug": "elijah-yazdani",
+      "name": "Elijah Yazdani",
+      "case_number": "1:21-cr-543",
+      "source": {
+        "title": "Yazdani Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1392641/download",
+        "sha256": "fd06368bb2020e48b9af6cb4ac81116d2e78516bdea83b5e7f7da9c1f5444e0c",
+        "bytes": 3263957,
+        "pages": 7,
+        "acquisition": {
+          "capture_timestamp": "20240627115913",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1392641/dl",
+          "capture_digest": "TNUM4FYZT3YUR3LBI2GUXGFV332BZMDG",
+          "fetch_url": "https://web.archive.org/web/20240627115913id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1392641/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 5,
+        "printed_page": "Document 1-1, page 5 of 7",
+        "figure": "Figure 5, front-facing still of Yazdani in a red cap"
+      },
+      "attribution_text": "The filing says Witness 1 was shown Figures 5 through 9 and positively identified the individual as Yazdani; the affiant also compared the filing images with Yazdani's driver's-license photograph.",
+      "derivative": {
+        "sha256": "1c381a3f0c1e4777b6631f00ce1a43996a05466d0dc94007936e34dc046ed7ed",
+        "bytes": 95996,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/elijah-yazdani-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Elijah Yazdani",
+      "credit": "Image embedded in Yazdani Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing says Witness 1 was shown Figures 5 through 9 and positively identified the individual as Yazdani; the affiant also compared the filing images with Yazdani's driver's-license photograph. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "e37704ef-5959-4a07-82c7-366258d9d1a3",
+      "slug": "elliot-bishai",
+      "name": "Elliot Bishai",
+      "case_number": "1:21-cr-282",
+      "source": {
+        "title": "Bishai & Irizarry - Statement of Facts Redacted",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1386286/download",
+        "sha256": "9766b387133ac68fb642978d4edf8f516ab12104a03cd24e3bd56559e360c373",
+        "bytes": 1070993,
+        "pages": 11,
+        "acquisition": {
+          "capture_timestamp": "20240627120001",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1386286/dl",
+          "capture_digest": "LKDN5IM55JMCYKTPR2CCG7ICNNMZUZ53",
+          "fetch_url": "https://web.archive.org/web/20240627120001id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1386286/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 6,
+        "printed_page": "Document 9-1, page 6 of 11",
+        "figure": "Figure Six, foreground person in red cap and red-and-black plaid shirt"
+      },
+      "attribution_text": "The filing states that the foreground person in Figure Six appears to be Bishai and is wearing the same clothing identified by three Civil Air Patrol witnesses who knew Bishai; a family member also confirmed that Bishai entered the Capitol and took selfies.",
+      "derivative": {
+        "sha256": "e9036ab93a1eac0fcfa309bf71c6cf959c17fa9ebd20b29095e4d4e66b0c4ecd",
+        "bytes": 91112,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/elliot-bishai-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Elliot Bishai",
+      "credit": "Image embedded in Bishai & Irizarry - Statement of Facts Redacted, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing states that the foreground person in Figure Six appears to be Bishai and is wearing the same clothing identified by three Civil Air Patrol witnesses who knew Bishai; a family member also confirmed that Bishai entered the Capitol and took selfies. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "be9d2446-80f5-4bbf-988f-79f0f5266082",
+      "slug": "elliot-resnick",
+      "name": "Elliot Resnick",
+      "case_number": "1:23-mj-58",
+      "source": {
+        "title": "Resnick - Complaint/SOF",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1582541/download",
+        "sha256": "a6880d237d6677efa7f808d0a8ff0c2ed21e47de31dfa45c1353343b19ba61c8",
+        "bytes": 9192280,
+        "pages": 19,
+        "acquisition": {
+          "capture_timestamp": "20240920175058",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1582541/dl",
+          "capture_digest": "GWSXVZ6ZGXR64LJWNTSGPY3OGJN4O7RN",
+          "fetch_url": "https://web.archive.org/web/20240920175058id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1582541/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 13,
+        "printed_page": "Document 1-1, page 16 of 22",
+        "figure": "Image 22, red-boxed person at the right edge of the MPD body-camera still"
+      },
+      "attribution_text": "The Image 22 caption expressly identifies the red-boxed person as Resnick and states that the MPD body-camera still shows Resnick on the Capitol's west side at approximately 4:18 p.m.",
+      "derivative": {
+        "sha256": "03eb7fbcc027128dc54d28062e46633d4efc6cb147529031f3ebbf38e5a21aba",
+        "bytes": 68315,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/elliot-resnick-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Elliot Resnick",
+      "credit": "Image embedded in Resnick - Complaint/SOF, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The Image 22 caption expressly identifies the red-boxed person as Resnick and states that the MPD body-camera still shows Resnick on the Capitol's west side at approximately 4:18 p.m. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "1a7ec10f-a4c8-4f51-bbba-e4b867d87f16",
+      "slug": "eric-cantrell",
+      "name": "Eric Andrew Cantrell",
+      "case_number": "1:22-mj-51",
+      "source": {
+        "title": "Cantrell Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1481976/download",
+        "sha256": "53645a3bc209ffe9938fced358e2b1d5f342cf0199b4d8a8afcb3333654ec5e9",
+        "bytes": 1276255,
+        "pages": 19,
+        "acquisition": {
+          "capture_timestamp": "20240628010206",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1481976/dl",
+          "capture_digest": "GCODNSCE2DIZ7WKPMQSQ4XQFKUXNZX4G",
+          "fetch_url": "https://web.archive.org/web/20240628010206id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1481976/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 11,
+        "printed_page": "Document 1-1, page 11 of 19",
+        "figure": "Exhibit 8, person in red rectangle wearing a plaid jacket and Carhartt hat"
+      },
+      "attribution_text": "The filing states that the person in the Exhibit 8 red rectangle is Eric Andrew Cantrell, based on comparison with his Indiana BMV photograph, and that Witness 1 also identified him.",
+      "derivative": {
+        "sha256": "90f51b4ff47fe3cf9d5e1c15e7e9e7a519b4ec1f59b165af382685cf088332ce",
+        "bytes": 145070,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/eric-cantrell-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Eric Andrew Cantrell",
+      "credit": "Image embedded in Cantrell Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing states that the person in the Exhibit 8 red rectangle is Eric Andrew Cantrell, based on comparison with his Indiana BMV photograph, and that Witness 1 also identified him. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "7bc8cbea-93c2-432a-a2e5-a7f5b30dc214",
+      "slug": "eric-bochene",
+      "name": "Eric Bochene",
+      "case_number": "1:21-cr-418",
+      "source": {
+        "title": "Bochene Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1394211/download",
+        "sha256": "4f66bb8faf18ac4fdf6e20a70ad0db8634c092c879bfdd79df0966bf25c21101",
+        "bytes": 557592,
+        "pages": 8,
+        "acquisition": {
+          "capture_timestamp": "20240627120043",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1394211/dl",
+          "capture_digest": "2P26FNO5X3XLGTTWVUNZBSOV555KYI5I",
+          "fetch_url": "https://web.archive.org/web/20240627120043id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1394211/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 6,
+        "printed_page": "PDF page index 6",
+        "figure": "Picture 4, Eric Bochene Facebook profile image"
+      },
+      "attribution_text": "The filing captions Picture 4 as the Bochene Facebook profile and displays the account name Eric Bochene with the profile photograph.",
+      "derivative": {
+        "sha256": "9817582cd7824f35d98004d14edcab98c1914af7dc37bf01a12ed8b416ce0569",
+        "bytes": 121530,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/eric-bochene-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Eric Bochene",
+      "credit": "Image embedded in Bochene Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing captions Picture 4 as the Bochene Facebook profile and displays the account name Eric Bochene with the profile photograph. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "f1713616-fd18-4f1d-9e5e-96aedd509bfe",
+      "slug": "eric-torrens",
+      "name": "Eric Chase Torrens",
+      "case_number": "1:21-cr-204",
+      "source": {
+        "title": "Torrens - Complaint & Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1371541/download",
+        "sha256": "302e69d7d33e42f7b23e431b16fa4ebdefbeb44c791c83ccb1f6c7d5e8a53fda",
+        "bytes": 483265,
+        "pages": 9,
+        "acquisition": {
+          "capture_timestamp": "20240403085247",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1371541/dl",
+          "capture_digest": "M42JXNJGT2DID6RL6BFO55VRVBVKUXOB",
+          "fetch_url": "https://web.archive.org/web/20240403085247id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1371541/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 4,
+        "printed_page": "Document 1-1, page 3 of 5",
+        "figure": "Enlarged still of the man in the fleece-lined white-and-gray hat"
+      },
+      "attribution_text": "The filing states that an informant acquainted with Torrens identified the still-image subject in the fleece-lined white-and-gray hat as Eric Chase Torrens.",
+      "derivative": {
+        "sha256": "30a682f2342eb41a56e6cb2c045f61b39300663052013a748ea0271c5bcd6c55",
+        "bytes": 70906,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/eric-torrens-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Eric Chase Torrens",
+      "credit": "Image embedded in Torrens - Complaint & Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing states that an informant acquainted with Torrens identified the still-image subject in the fleece-lined white-and-gray hat as Eric Chase Torrens. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "750b2fda-c8ec-4d67-a890-98b2d30c906d",
+      "slug": "ethan-seitz",
+      "name": "Ethan C. Seitz",
+      "case_number": "1:21-cr-279",
+      "source": {
+        "title": "Seitz Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1381451/download",
+        "sha256": "b1afcbc9688c8ec4e61dcfe13d9f58bea10c0db6aec01c2c5959822c1733dc0d",
+        "bytes": 2577897,
+        "pages": 8,
+        "acquisition": {
+          "capture_timestamp": "20240627120037",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1381451/dl",
+          "capture_digest": "O74GPQBC6AUA5JQJIZZSZ2HSSJ6ICYDE",
+          "fetch_url": "https://web.archive.org/web/20240627120037id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1381451/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 5,
+        "printed_page": "PDF page index 5",
+        "figure": "Red-circled seated person in the video still"
+      },
+      "attribution_text": "The filing says the video shows Seitz outside the Capitol and that, in a related interview, Seitz gave his name and described entering the building; the filing circles him in the still.",
+      "derivative": {
+        "sha256": "0f1589e7b9c7a1923b4875abd1fe6374a1d810d4e75da0a186900e490f961bcd",
+        "bytes": 108653,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/ethan-seitz-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Ethan C. Seitz",
+      "credit": "Image embedded in Seitz Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing says the video shows Seitz outside the Capitol and that, in a related interview, Seitz gave his name and described entering the building; the filing circles him in the still. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "5a0fda32-f0c9-4a65-aa5b-cca370cb56af",
+      "slug": "ezekiel-stecher",
+      "name": "Ezekiel Kurt Stecher",
+      "case_number": "1:21-cr-720",
+      "source": {
+        "title": "Stecher Complaint & Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1393756/download",
+        "sha256": "7db4a1231a2b32f6c1be0283219aed19395e0f80218967ba913afcdeb962f26d",
+        "bytes": 856614,
+        "pages": 10,
+        "acquisition": {
+          "capture_timestamp": "20240627115952",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1393756/dl",
+          "capture_digest": "4OGNBZLZSYAAJENO7ZB3YRY6QRHLHHMB",
+          "fetch_url": "https://web.archive.org/web/20240627115952id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1393756/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 4,
+        "printed_page": "Document 1-1, page 3 of 9",
+        "figure": "Left-hand person in gray hood in the witness-identified still"
+      },
+      "attribution_text": "The filing says a witness who had known Stecher for more than ten years was shown this still and positively identified Ezekiel Stecher, known to the witness as Zeke.",
+      "derivative": {
+        "sha256": "6099c4279a1b0ecf9f488348a41deba9838994fb8b38a089faa0583caece9b0c",
+        "bytes": 99520,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/ezekiel-stecher-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Ezekiel Kurt Stecher",
+      "credit": "Image embedded in Stecher Complaint & Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing says a witness who had known Stecher for more than ten years was shown this still and positively identified Ezekiel Stecher, known to the witness as Zeke. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "015410ef-48d1-4a05-9439-7d9ea26508a5",
+      "slug": "grayson-sherrill",
+      "name": "Grayson Sherrill",
+      "case_number": "1:21-cr-282",
+      "source": {
+        "title": "Sherrill - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1379331/download",
+        "sha256": "f4eac8e519e5ba8421b8e7e26988c1f1075e0a25c97da015302c71f9023cc3e8",
+        "bytes": 700366,
+        "pages": 7,
+        "acquisition": {
+          "capture_timestamp": "20240328191845",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1379331/dl",
+          "capture_digest": "R6M3KIF2TZSONPCU337ZPUQJTXMXGFNA",
+          "fetch_url": "https://web.archive.org/web/20240328191845id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1379331/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 3,
+        "printed_page": "Document 1-1, page 3 of 7",
+        "figure": "Figure Two, Sherrill in a red sweatshirt by a statue"
+      },
+      "attribution_text": "The filing says Witness One provided Figure Two and Witness Two, a family member, independently identified the person shown as Sherrill.",
+      "derivative": {
+        "sha256": "802401ad65aa68226e6eaa9e5c2682d29e0215baf92a7721dcd0868b2e862b36",
+        "bytes": 161391,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/grayson-sherrill-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Grayson Sherrill",
+      "credit": "Image embedded in Sherrill - Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing says Witness One provided Figure Two and Witness Two, a family member, independently identified the person shown as Sherrill. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "b99a9e8b-a956-40a2-8d03-ad8f7cbb1892",
+      "slug": "greg-rubenacker",
+      "name": "Greg Rubenacker",
+      "case_number": "1:21-cr-193",
+      "source": {
+        "title": "Rubenacker - Complaint & Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1371506/download",
+        "sha256": "43f214857261f503be0f931a2d02b9b7a05096f6fd2707c795cdc3f2eac44024",
+        "bytes": 3733656,
+        "pages": 7,
+        "acquisition": {
+          "capture_timestamp": "20240130054240",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1371506/dl",
+          "capture_digest": "BWC6JJ7HEMHZFBXVLSMBADMV5RLX2THR",
+          "fetch_url": "https://web.archive.org/web/20240130054240id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1371506/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 6,
+        "printed_page": "Document 1-1, page 5 of 6",
+        "figure": "Figure Three, right-hand Snapchat still"
+      },
+      "attribution_text": "The filing identifies the Snapchat username as Greg Rubenacker and states that Rubenacker shows his face while recording himself inside the Capitol Rotunda.",
+      "derivative": {
+        "sha256": "a9bd0c08fe6daf37d2a3dd5a164660b37ddc5b950783394bb9f8f27c7a40df66",
+        "bytes": 85051,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/greg-rubenacker-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Greg Rubenacker",
+      "credit": "Image embedded in Rubenacker - Complaint & Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing identifies the Snapchat username as Greg Rubenacker and states that Rubenacker shows his face while recording himself inside the Capitol Rotunda. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "f9ad8d22-8fe9-4654-994e-650ed0fb7a40",
+      "slug": "gregory-purdy",
+      "name": "Gregory Richard Purdy",
+      "case_number": "1:21-mj-644",
+      "source": {
+        "title": "Purdy et al Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1458956/download",
+        "sha256": "92e54b6a88945c14ed9f7e402d16b5ce3bb91f423a402e99cadcdb087defcf60",
+        "bytes": 2481317,
+        "pages": 27,
+        "acquisition": {
+          "capture_timestamp": "20240627115909",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1458956/dl",
+          "capture_digest": "SWPCAVST6DAQ4U5WXWC7LWNBXVBMU4BN",
+          "fetch_url": "https://web.archive.org/web/20240627115909id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1458956/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 2,
+        "printed_page": "Document 1-1, page 2 of 27",
+        "figure": "Figure 1, Purdy in red-white-and-blue jacket and red cap"
+      },
+      "attribution_text": "The filing says Witness 1 identified the Instagram account user GREGG54321 as Gregory Richard Purdy and that Purdy is the person shown in Figure 1.",
+      "derivative": {
+        "sha256": "4915d9d4daabd30af47e2956cb1911429907a0dff223f2e1be8e5768620ca9f7",
+        "bytes": 111993,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/gregory-purdy-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Gregory Richard Purdy",
+      "credit": "Image embedded in Purdy et al Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing says Witness 1 identified the Instagram account user GREGG54321 as Gregory Richard Purdy and that Purdy is the person shown in Figure 1. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "0371d790-2d27-4590-b4b5-44c0531e5e63",
+      "slug": "hatchet-speed",
+      "name": "Hatchet M. Speed",
+      "case_number": "1:22-cr-00244-TNM-1 (D.D.C.); 1:22-cr-00165-MSN-1 / 23-4308 (E.D. Va. / 4th Cir.)",
+      "source": {
+        "title": "Speed - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1514551/download",
+        "sha256": "db5ac61e460753591cda9a672e64ab9e08a8ea697397b9b17da59aa7e7f8289d",
+        "bytes": 5953066,
+        "pages": 11,
+        "acquisition": {
+          "capture_timestamp": "20240326061528",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1514551/dl",
+          "capture_digest": "O2NDUOUCA2DEP7AR5RFXXR7HFJPGUERU",
+          "fetch_url": "https://web.archive.org/web/20240326061528id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1514551/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 6,
+        "printed_page": "Document 1-1, page 6 of 11",
+        "figure": "Figure 2, left-hand full-body photograph"
+      },
+      "attribution_text": "The filing identifies the Figure 2 person as Speed after describing witness, records, and driver-license comparison evidence specific to Hatchet M. Speed.",
+      "derivative": {
+        "sha256": "0c9e2a62c9d82a485fbc19fbbeafaab7e4a23e87560d39e348a83f6c647d2c1b",
+        "bytes": 138456,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/hatchet-speed-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Hatchet M. Speed",
+      "credit": "Image embedded in Speed - Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing identifies the Figure 2 person as Speed after describing witness, records, and driver-license comparison evidence specific to Hatchet M. Speed. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "352ad101-fd90-457b-a544-1fc9a7e9723a",
+      "slug": "jake-maxwell",
+      "name": "Jake Maxwell",
+      "case_number": "1:22-mj-00025",
+      "source": {
+        "title": "Maxwell Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1473291/download",
+        "sha256": "5872404ebd54bed3ccbf4035a3d62bb12b411ab72f300c531ed9ff8518521904",
+        "bytes": 1198857,
+        "pages": 10,
+        "acquisition": {
+          "capture_timestamp": "20240331121140",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1473291/dl",
+          "capture_digest": "FBVP4X2CUBWGRKWKGOYVMAYFF7CU45NE",
+          "fetch_url": "https://web.archive.org/web/20240331121140id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1473291/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 4,
+        "printed_page": "PDF page index 4",
+        "figure": "Red-boxed face in MPD body-camera still"
+      },
+      "attribution_text": "The filing labels the red-boxed person MAXWELL and the adjoining text expressly describes Maxwell's conduct in the depicted struggle.",
+      "derivative": {
+        "sha256": "b151074a5d8256ece3d6bd750e25f07902b89c41173d1379e826b169109e0852",
+        "bytes": 93037,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/jake-maxwell-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Jake Maxwell",
+      "credit": "Image embedded in Maxwell Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing labels the red-boxed person MAXWELL and the adjoining text expressly describes Maxwell's conduct in the depicted struggle. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "1c4555f3-bfcf-496f-a8e4-219b2e8cf944",
+      "slug": "jalise-middleton",
+      "name": "Jalise Middleton",
+      "case_number": "21-cr-367",
+      "source": {
+        "title": "mmiddleton-sof.pdf",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1388961/download",
+        "sha256": "6db19478bac305537e2e8e1ce3cc1e352012b4ba2fca5febcc0c1c794324a769",
+        "bytes": 2237255,
+        "pages": 15,
+        "acquisition": {
+          "capture_timestamp": "20240214004352",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1388961/dl",
+          "capture_digest": "ZFEDXFNREOJSDISHZKLFSXLXHGWURV2N",
+          "fetch_url": "https://web.archive.org/web/20240214004352id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1388961/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 12,
+        "printed_page": "Document 1-1, page 12 of 15",
+        "figure": "Left-hand aftermath photograph posted by JMIDDLETON"
+      },
+      "attribution_text": "The filing states that JMIDDLETON posted this photograph to her Facebook account and claimed that it depicted her face after being pepper sprayed.",
+      "derivative": {
+        "sha256": "928f51487d3be3c77bc54853634a1e260b3ece9fae6745ddb9bd029517bef7fa",
+        "bytes": 103240,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/jalise-middleton-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Jalise Middleton",
+      "credit": "Image embedded in mmiddleton-sof.pdf, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing states that JMIDDLETON posted this photograph to her Facebook account and claimed that it depicted her face after being pepper sprayed. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "33ac6ada-476a-40da-9edb-7d5e73b681af",
+      "slug": "james-haffner",
+      "name": "James Haffner",
+      "case_number": "1:21-mj-672",
+      "source": {
+        "title": "Haffner Loehrke Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1459171/download",
+        "sha256": "51423f263871201f9c0a66dc4fe235df4f26363f8403ddd836922121fce9e2f2",
+        "bytes": 20120710,
+        "pages": 25,
+        "acquisition": {
+          "capture_timestamp": "20240524204404",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1459171/dl",
+          "capture_digest": "YYGH6KMF4B3D7OXVW4LZ3LOLI62SGP6I",
+          "fetch_url": "https://web.archive.org/web/20240524204404id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1459171/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 23,
+        "printed_page": "PDF page index 23, paragraph 38",
+        "figure": "Lower social-media photograph from Haffner's wife's account"
+      },
+      "attribution_text": "Paragraph 38 says Haffner's wife's account contains multiple photographs of a person who appears to be Haffner and is identical in all material respects to the person the affiant had already identified as Haffner.",
+      "derivative": {
+        "sha256": "025f479f8ae8407521595aa2ec4c58f80e07eb37f49d9b5dbaa853b89c2e7bc4",
+        "bytes": 129838,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/james-haffner-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of James Haffner",
+      "credit": "Image embedded in Haffner Loehrke Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. Paragraph 38 says Haffner's wife's account contains multiple photographs of a person who appears to be Haffner and is identical in all material respects to the person the affiant had already identified as Haffner. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "e21b670e-f189-4573-9d64-a25c47da1520",
+      "slug": "james-little",
+      "name": "James Little",
+      "case_number": "1:21-cr-315",
+      "source": {
+        "title": "Little Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1385926/download",
+        "sha256": "da13ab95f666cc9cff2e39be886a6593605212de0086ed360fd7ee5dc7ff6eca",
+        "bytes": 1990927,
+        "pages": 5,
+        "acquisition": {
+          "capture_timestamp": "20240511094318",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1385926/dl",
+          "capture_digest": "PJUVHFZUW6CJW7QHCIS3JB76WPQT53XI",
+          "fetch_url": "https://web.archive.org/web/20240511094318id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1385926/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 4,
+        "printed_page": "Document 1-1, page 4 of 5",
+        "figure": "Left-hand close-up at top of page"
+      },
+      "attribution_text": "The filing presents the close-ups as photographs of Little and states that an FBI-recorded interview and Capitol images identified the pictured person as James Little.",
+      "derivative": {
+        "sha256": "7734b5a8574c21c771b2fb5d6ac2ee342b94d91e85f123834253b90d09af04c7",
+        "bytes": 78624,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/james-little-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of James Little",
+      "credit": "Image embedded in Little Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing presents the close-ups as photographs of Little and states that an FBI-recorded interview and Capitol images identified the pictured person as James Little. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "29134606-5836-4ff4-9fd8-a6cee251a1c2",
+      "slug": "james-robinson",
+      "name": "James Robinson",
+      "case_number": "1:22-cr-267",
+      "source": {
+        "title": "Robinson - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1525366/download",
+        "sha256": "3e86a0bc52867acba3783dada771262f834b211a38ea53f04379339a85809383",
+        "bytes": 610673,
+        "pages": 10,
+        "acquisition": {
+          "capture_timestamp": "20220816072415",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1525366/download",
+          "capture_digest": "3MZLKC2MEJJEODAE35YYLOYTMNR3OCSL",
+          "fetch_url": "https://web.archive.org/web/20220816072415id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1525366/download"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 5,
+        "printed_page": "Document 1-1, page 5 of 10",
+        "figure": "Top surveillance still, yellow-circled person"
+      },
+      "attribution_text": "The filing captions the yellow-circled person as Robinson and states that a witness who had known him for fifteen years positively identified him.",
+      "derivative": {
+        "sha256": "959ce45464a233a57cadad835b92345660312d0530017f3e19ad5116c367b6ac",
+        "bytes": 114031,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/james-robinson-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of James Robinson",
+      "credit": "Image embedded in Robinson - Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing captions the yellow-circled person as Robinson and states that a witness who had known him for fifteen years positively identified him. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "b6300f5c-7e29-4692-aba6-60cf1b34320f",
+      "slug": "james-brooks",
+      "name": "James Wayne Brooks",
+      "case_number": "1:22-cr-18",
+      "source": {
+        "title": "Brooks - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1481136/download",
+        "sha256": "f7780adb96ac49bf74e4754f61cbff5e207f343fe1891a34c9f5de107be01a1b",
+        "bytes": 1177875,
+        "pages": 10,
+        "acquisition": {
+          "capture_timestamp": "20240627115909",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1481136/dl",
+          "capture_digest": "BRTJHDQWCNCDCUM7VNY4L6MPQLYZIHPL",
+          "fetch_url": "https://web.archive.org/web/20240627115909id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1481136/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 3,
+        "printed_page": "Document 1-1, page 3 of 10",
+        "figure": "Upper solo image from Brooks's Facebook page"
+      },
+      "attribution_text": "The filing identifies the images as posts from Brooks's Facebook page and compares them with Brooks's Tennessee driver's-license photograph.",
+      "derivative": {
+        "sha256": "af1c074c71bfbfdd3b38c6e915eb011119b89aac254af87c25e4c71899f1bb6f",
+        "bytes": 74203,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/james-brooks-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of James Wayne Brooks",
+      "credit": "Image embedded in Brooks - Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing identifies the images as posts from Brooks's Facebook page and compares them with Brooks's Tennessee driver's-license photograph. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "8ca26700-6cf9-4b5a-ab1b-351edebdcab3",
+      "slug": "jared-cantrell",
+      "name": "Jared Paul Cantrell",
+      "case_number": "1:22-mj-51",
+      "source": {
+        "title": "Cantrell Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1481936/download",
+        "sha256": "53645a3bc209ffe9938fced358e2b1d5f342cf0199b4d8a8afcb3333654ec5e9",
+        "bytes": 1276255,
+        "pages": 19,
+        "acquisition": {
+          "capture_timestamp": "20240627120017",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1481936/dl",
+          "capture_digest": "GCODNSCE2DIZ7WKPMQSQ4XQFKUXNZX4G",
+          "fetch_url": "https://web.archive.org/web/20240627120017id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1481936/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 3,
+        "printed_page": "Document 1-1, page 3 of 19",
+        "figure": "Exhibit 1, Jared Paul Cantrell Instagram selfie"
+      },
+      "attribution_text": "The filing states that Exhibit 1 was posted to Jared Paul Cantrell's personal Instagram account and that Witness 1, who knew him, identified Cantrell in the related exhibit sequence.",
+      "derivative": {
+        "sha256": "d3343263ad6f1fec6ad6e564f18dec6c84b8e4a6534de7b956a44dde55f634b8",
+        "bytes": 111372,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/jared-cantrell-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Jared Paul Cantrell",
+      "credit": "Image embedded in Cantrell Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing states that Exhibit 1 was posted to Jared Paul Cantrell's personal Instagram account and that Witness 1, who knew him, identified Cantrell in the related exhibit sequence. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "e5d87f69-116b-4169-93ee-4662f8e4b5d5",
+      "slug": "jeffrey-register",
+      "name": "Jeffrey Register",
+      "case_number": "1:21-cr-349",
+      "source": {
+        "title": "Register Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1389961/download",
+        "sha256": "1933f085fe4220f09a26d07b4f5e4bfbb309b48446f93ba3a94b1d841e128775",
+        "bytes": 744092,
+        "pages": 8,
+        "acquisition": {
+          "capture_timestamp": "20240627115932",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1389961/dl",
+          "capture_digest": "Z5YXX73Z5LCZ3XMA2VQHU77HPT7RASPA",
+          "fetch_url": "https://web.archive.org/web/20240627115932id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1389961/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 3,
+        "printed_page": "Document 1-1, page 3 of 8",
+        "figure": "Top video still, red-circled person"
+      },
+      "attribution_text": "The filing says Register is circled in red in the page's three images and specifically describes the clothing and face-visible still.",
+      "derivative": {
+        "sha256": "e7809f807767ec9d0d7549133f4429cddb2dbb16f40fc0f1d3758e2432b1fadc",
+        "bytes": 80367,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/jeffrey-register-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Jeffrey Register",
+      "credit": "Image embedded in Register Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing says Register is circled in red in the page's three images and specifically describes the clothing and face-visible still. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "a74aada3-84e3-4159-a8a6-647b8eeb3565",
+      "slug": "jennifer-horvath",
+      "name": "Jennifer Horvath",
+      "case_number": "1:22-cr-192",
+      "source": {
+        "title": "Horvath - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1499091/download",
+        "sha256": "0b63ed3d826fd956b39d90e367edc2279067570b0c89faeea73f18ffbecef248",
+        "bytes": 898828,
+        "pages": 8,
+        "acquisition": {
+          "capture_timestamp": "20240622160005",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1499091/dl",
+          "capture_digest": "YXPIB6AXTKLASHSE3DWVCBLGKBEIEYWS",
+          "fetch_url": "https://web.archive.org/web/20240622160005id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1499091/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 3,
+        "printed_page": "Document 1-1, page 3 of 8",
+        "figure": "Video still of woman in red cap holding a phone"
+      },
+      "attribution_text": "The filing says a colleague with personal knowledge of Horvath's appearance reviewed this image and identified the woman in the red cap as Jennifer Horvath.",
+      "derivative": {
+        "sha256": "f6d4152084d78775cd8d0b8fc250a3c2cfea0c97acee75790395832a12b1d4cd",
+        "bytes": 88316,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/jennifer-horvath-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Jennifer Horvath",
+      "credit": "Image embedded in Horvath - Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing says a colleague with personal knowledge of Horvath's appearance reviewed this image and identified the woman in the red cap as Jennifer Horvath. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "0402ec30-9341-4052-9b40-78dcbacdd324",
+      "slug": "jeremiah-carollo",
+      "name": "Jeremiah Carollo",
+      "case_number": "1:22-cr-44",
+      "source": {
+        "title": "Carollo - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1481606/download",
+        "sha256": "916cede7655bbf0242d814186637b89ce8bce2710a5ab3a704d007ae86acc8ba",
+        "bytes": 483363,
+        "pages": 8,
+        "acquisition": {
+          "capture_timestamp": "20240523072204",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1481606/dl",
+          "capture_digest": "RF53ADU3NAHCLURZSXP4IBCDPYVWJALL",
+          "fetch_url": "https://web.archive.org/web/20240523072204id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1481606/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 5,
+        "printed_page": "Document 1-1, page 5 of 8",
+        "figure": "Photo 2, person labeled Jeremiah Carollo"
+      },
+      "attribution_text": "The filing places a person-specific Jeremiah Carollo label directly on the red-boxed face in Photo 2 after describing driver-license comparisons for the named Carollo defendants.",
+      "derivative": {
+        "sha256": "5ddd7ea4702e891b307b646ac715783e973c83674a4eb5bed4d4e75b7c334c1e",
+        "bytes": 88471,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/jeremiah-carollo-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Jeremiah Carollo",
+      "credit": "Image embedded in Carollo - Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing places a person-specific Jeremiah Carollo label directly on the red-boxed face in Photo 2 after describing driver-license comparisons for the named Carollo defendants. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "5a6c9a82-7ce9-46df-b04e-c1cb036ab810",
+      "slug": "jesse-watson",
+      "name": "Jesse Watson",
+      "case_number": "1:22-mj-222",
+      "source": {
+        "title": "Watson - Affidavit",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1545616/download",
+        "sha256": "78a317962519a01d010a48495bc9755630743907f9cda10f6fa172709e0a8e5c",
+        "bytes": 7047910,
+        "pages": 24,
+        "acquisition": {
+          "capture_timestamp": "20221027063632",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1545616/download",
+          "capture_digest": "6XB3VFP2PW24N2RTL7UJGSMBIP7JGXWU",
+          "fetch_url": "https://web.archive.org/web/20221027063632id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1545616/download"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 6,
+        "printed_page": "Document 1-1, page 6 of 24",
+        "figure": "Image 1, upper portrait in red knit cap"
+      },
+      "attribution_text": "The filing presents Image 1 as Watson and states that a subsequent public video captured Watson identifying himself by name.",
+      "derivative": {
+        "sha256": "76093bf3b84b2d559c89371407e54c62375883e26ff1b528e81bed0664323be7",
+        "bytes": 110355,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/jesse-watson-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Jesse Watson",
+      "credit": "Image embedded in Watson - Affidavit, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing presents Image 1 as Watson and states that a subsequent public video captured Watson identifying himself by name. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "1e826742-2235-4bfb-9839-11b0a23de928",
+      "slug": "john-andries",
+      "name": "John Daniel Andries",
+      "case_number": "1:21-cr-93",
+      "source": {
+        "title": "Andries - Complaint, Statement of Facts, & Information",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1371276/download",
+        "sha256": "7755d882740795472e6b95970c4d42cccaa8348d1dceed550b003ec6f7cbd219",
+        "bytes": 3275901,
+        "pages": 11,
+        "acquisition": {
+          "capture_timestamp": "20240627120004",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1371276/dl",
+          "capture_digest": "MFYBH2JSMCWOFFNHNP4WCLULAPGKNKSG",
+          "fetch_url": "https://web.archive.org/web/20240627120004id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1371276/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 5,
+        "printed_page": "Document 1-1, page 4 of 7",
+        "figure": "Lower surveillance still, person beneath red arrow"
+      },
+      "attribution_text": "The filing states that the lower USCP still shows Andries entering through a broken window and identifies him with the red arrow.",
+      "derivative": {
+        "sha256": "95432c0acc73d2dfbbeb67e50ad68c3f3120c8d82b482c16a0f28d6ea4699294",
+        "bytes": 104426,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/john-andries-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of John Daniel Andries",
+      "credit": "Image embedded in Andries - Complaint, Statement of Facts, & Information, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing states that the lower USCP still shows Andries entering through a broken window and identifies him with the red arrow. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "5b5b80ea-44f1-47e4-b2c8-d3bae435f377",
+      "slug": "john-crowley",
+      "name": "John Edward Crowley",
+      "case_number": "1:22-mj-184",
+      "source": {
+        "title": "Crowley - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1529796/download",
+        "sha256": "6fee3c360f0e6097c3f0818299b6c0b609546f0abe6e0ba6e09392bc2b892112",
+        "bytes": 8389056,
+        "pages": 40,
+        "acquisition": {
+          "capture_timestamp": "20220902094757",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1529796/download",
+          "capture_digest": "IXQMYW5KUTH3QD3B32MDP4YMNTQMMC4W",
+          "fetch_url": "https://web.archive.org/web/20220902094757id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1529796/download"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 11,
+        "printed_page": "Document 5-1, page 11 of 40",
+        "figure": "Upper-right filing image under the John Edward Crowley heading"
+      },
+      "attribution_text": "The John Edward Crowley section says the page contains images of Crowley from Capitol surveillance and open-source videos; witness and driver-license evidence later identifies him.",
+      "derivative": {
+        "sha256": "7eedbcd0ee100973d88f6cb6229be2bf3a04be1911de63b9fbb1799fc645ac1c",
+        "bytes": 119945,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/john-crowley-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of John Edward Crowley",
+      "credit": "Image embedded in Crowley - Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The John Edward Crowley section says the page contains images of Crowley from Capitol surveillance and open-source videos; witness and driver-license evidence later identifies him. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "26e174c6-a909-4e71-a7d4-73f91a6b1d73",
+      "slug": "john-juran",
+      "name": "John Juran",
+      "case_number": "21-cr-419",
+      "source": {
+        "title": "Juran Complaint & Affidavit",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1395351/download",
+        "sha256": "894ef226d5fe7ca0c640b91ec04064c8979aa7a49471866a75e250af55ed5069",
+        "bytes": 1000242,
+        "pages": 10,
+        "acquisition": {
+          "capture_timestamp": "20240330175717",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1395351/dl",
+          "capture_digest": "KBWJLWDGU7MU7XJFGFCA3QINTHWF6QVN",
+          "fetch_url": "https://web.archive.org/web/20240330175717id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1395351/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 4,
+        "printed_page": "PDF page index 4, Photo 1",
+        "figure": "Photo 1, New York DMV photograph"
+      },
+      "attribution_text": "The filing states that Photo 1 is a known image of Juran obtained from the New York State Department of Motor Vehicles.",
+      "derivative": {
+        "sha256": "bbbdfb1a5e672049d9978b3923bb71e4b2bb045a8ce2c9472b0369f57651b461",
+        "bytes": 94011,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/john-juran-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of John Juran",
+      "credit": "Image embedded in Juran Complaint & Affidavit, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing states that Photo 1 is a known image of Juran obtained from the New York State Department of Motor Vehicles. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "31a290e3-003a-4642-908a-74354c298ec0",
+      "slug": "john-cameron",
+      "name": "John M. Cameron",
+      "case_number": "1:22-cr-17",
+      "source": {
+        "title": "Cameron - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1481126/download",
+        "sha256": "eee4c8b4d964ae29e0b62dc0eca28c9ff1acee0d1c87fde427b2e570efcfec09",
+        "bytes": 416704,
+        "pages": 6,
+        "acquisition": {
+          "capture_timestamp": "20250121162018",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1481126/dl",
+          "capture_digest": "2ED5QCDFP7BTPFLKDHW5JS7NIIRHQMHT",
+          "fetch_url": "https://web.archive.org/web/20250121162018id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1481126/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 4,
+        "printed_page": "Document 1-1, page 4 of 6",
+        "figure": "Figure 4, John Cameron Facebook self-post"
+      },
+      "attribution_text": "The filing identifies the Facebook account as John Cameron's and presents Figure 4 as an image Cameron posted of himself.",
+      "derivative": {
+        "sha256": "074765a0eb2165de3e412ca8c8ab5d8d06766b8be8348647e7798c2f2433c88a",
+        "bytes": 85186,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/john-cameron-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of John M. Cameron",
+      "credit": "Image embedded in Cameron - Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing identifies the Facebook account as John Cameron's and presents Figure 4 as an image Cameron posted of himself. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "ea0b5c01-9e98-4175-bf53-f9a47d8eac88",
+      "slug": "jon-mott",
+      "name": "Jon Thomas Mott",
+      "case_number": "1:21-cr-464",
+      "source": {
+        "title": "Mott Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1394311/download",
+        "sha256": "7b85ba6892422dbacdb69718f1ffe624e5fa4cd1e204b29d906562758a2750dd",
+        "bytes": 5430875,
+        "pages": 10,
+        "acquisition": {
+          "capture_timestamp": "20210514195350",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1394311/download",
+          "capture_digest": "TVKN4XXCMRUP6F53PQY5H36KLG5YEAAI",
+          "fetch_url": "https://web.archive.org/web/20210514195350id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1394311/download"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 2,
+        "printed_page": "PDF page index 2",
+        "figure": "Red-circled Freedom News video still"
+      },
+      "attribution_text": "The filing states that the Freedom News video records a person later identified as Jon Thomas Mott and places a red circle around him in the still.",
+      "derivative": {
+        "sha256": "479efb84114d70d912406557ec8a38cab5d504665edea4ed27d109d97818ee0a",
+        "bytes": 130789,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/jon-mott-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Jon Thomas Mott",
+      "credit": "Image embedded in Mott Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing states that the Freedom News video records a person later identified as Jon Thomas Mott and places a red circle around him in the still. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "6042c004-bf65-4448-8a59-6fe3d086f203",
+      "slug": "jonathan-copeland",
+      "name": "Jonathan Joseph Copeland",
+      "case_number": "1:22-mj-195",
+      "source": {
+        "title": "Copeland - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1528781/download",
+        "sha256": "e274b03ea0b3b1451077ded685f9d679c41fe9ee29c4d9dcff178edfe7ecaa84",
+        "bytes": 1841121,
+        "pages": 16,
+        "acquisition": {
+          "capture_timestamp": "20220902094123",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1528781/download",
+          "capture_digest": "YLANC7EAOJHUUYDMVWQCPATD7OSOPXQR",
+          "fetch_url": "https://web.archive.org/web/20220902094123id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1528781/download"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 2,
+        "printed_page": "Document 1-1, page 2 of 16",
+        "figure": "Figure 1, left FBI AOM photograph"
+      },
+      "attribution_text": "The filing says two witnesses identified Copeland and that Witness 2 specifically contacted the FBI about the person in Photograph 192, reproduced as Figure 1.",
+      "derivative": {
+        "sha256": "8863d9f692da4c5fe8d82bb56c94c49244e0edcc9c03f6244a677266dd27de79",
+        "bytes": 85046,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/jonathan-copeland-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Jonathan Joseph Copeland",
+      "credit": "Image embedded in Copeland - Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing says two witnesses identified Copeland and that Witness 2 specifically contacted the FBI about the person in Photograph 192, reproduced as Figure 1. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "1144d87f-cdc2-4708-a32c-71c777d0d575",
+      "slug": "joseph-howe",
+      "name": "Joseph Howe",
+      "case_number": "1:22-mj-231",
+      "source": {
+        "title": "Howe - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1548736/download",
+        "sha256": "ff09ecfcdf733dd2692643a4b3d9c9e28415e1173f41b7d559e7a238a2d0ff42",
+        "bytes": 1121491,
+        "pages": 18,
+        "acquisition": {
+          "capture_timestamp": "20221110210744",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1548736/download",
+          "capture_digest": "WNMMCO6DR6EOGIXDLZVBFPPY2VMQSFYW",
+          "fetch_url": "https://web.archive.org/web/20221110210744id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1548736/download"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 3,
+        "printed_page": "Document 1-1, page 3 of 18",
+        "figure": "Left video still of Howe in blue knit cap and camouflage jacket"
+      },
+      "attribution_text": "The filing expressly states that the video showed Howe and describes him in the left still; the adjacent transcript attributes his on-camera statements by name.",
+      "derivative": {
+        "sha256": "84399db5ef5e77ea09be28c1eaa24b7e4aa1e084805f2abfbb84bbdb9932d960",
+        "bytes": 110060,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the cited filing image, rendered at 300 dpi and resized to 800x1000 JPEG; no generative content.",
+        "public_path": "/uploads/j6-profiles/joseph-howe-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Joseph Howe",
+      "credit": "Image embedded in Howe - Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing expressly states that the video showed Howe and describes him in the left still; the adjacent transcript attributes his on-camera statements by name. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    }
+  ]
+}
