@@ -17,6 +17,7 @@
  * Default: dry run
  * Apply:   npx tsx scripts/sync-npr-j6-editorial-portraits.ts --apply
  * Report:  add --summary=/path/to/summary.json
+ * Patches: add --patches=/path/to/validated-patches.json
  *
  * Required env:
  *   NEXT_PUBLIC_SUPABASE_URL
@@ -38,6 +39,9 @@ const APPLY = args.has("--apply");
 const SUMMARY_PATH = process.argv
   .find((arg) => arg.startsWith("--summary="))
   ?.slice("--summary=".length);
+const PATCHES_PATH = process.argv
+  .find((arg) => arg.startsWith("--patches="))
+  ?.slice("--patches=".length);
 const VALIDATION_CONCURRENCY = 12;
 const UPDATE_BATCH_SIZE = 25;
 const REQUEST_TIMEOUT_MS = 20_000;
@@ -654,6 +658,36 @@ async function writeSummary(summary: SyncSummary): Promise<void> {
   console.log(`Summary written to ${SUMMARY_PATH}`);
 }
 
+async function writeValidatedPatches(
+  candidates: ValidatedCandidate[],
+): Promise<void> {
+  if (!PATCHES_PATH) return;
+  await mkdir(dirname(PATCHES_PATH), { recursive: true });
+  await writeFile(
+    PATCHES_PATH,
+    `${JSON.stringify(
+      candidates.map((candidate) => ({
+        id: candidate.person.id,
+        name: candidate.person.name,
+        expected: {
+          visibility: "public",
+          is_j6_defendant: true,
+          photo_is_placeholder: true,
+          photo_rights_status: "portrait-needed",
+          photo_identity_status: "placeholder",
+        },
+        patch: portraitPatch(candidate),
+      })),
+      null,
+      2,
+    )}\n`,
+    "utf8",
+  );
+  console.log(
+    `Validated patch payload written to ${PATCHES_PATH} (${candidates.length} profiles).`,
+  );
+}
+
 async function main() {
   if (APPLY && args.has("--dry-run")) {
     throw new Error("Choose either --apply or --dry-run, not both.");
@@ -752,6 +786,8 @@ async function main() {
     .map(({ name, url, reason }) => ({ name, url, reason }));
   skipped.invalidRemoteImage = validationFailures.length;
 
+  await writeValidatedPatches(validated);
+
   let updated = 0;
   let stale = 0;
   if (APPLY) {
@@ -782,6 +818,12 @@ async function main() {
 
   await writeSummary(summary);
   console.log(JSON.stringify(summary, null, 2));
+
+  if (APPLY && stale > 0) {
+    throw new Error(
+      `Portrait sync rejected ${stale} stale or unauthorized writes; expected ${validated.length} updates, applied ${updated}.`,
+    );
+  }
 }
 
 main().catch((error) => {
