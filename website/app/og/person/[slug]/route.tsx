@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { getPersonBySlug } from "@/lib/case";
+import { hasDisplayableJ6Portrait } from "@/lib/j6-portrait";
 import { ogEmbeddableImage } from "@/lib/og-embed";
 
 export const runtime = "nodejs";
@@ -34,7 +35,9 @@ export async function GET(
   // When a photo is set, the share card *is* the photo with a caption bar.
   // Embed it via ogEmbeddableImage — a relative photo_url (like Ryan's
   // /uploads/… path) makes ImageResponse throw a 500 otherwise.
-  const photo = await ogEmbeddableImage(p.photo_url);
+  const photo = await ogEmbeddableImage(
+    !isJ6 || hasDisplayableJ6Portrait(p) ? p.photo_url : null,
+  );
   if (photo) {
     return new ImageResponse(
       (

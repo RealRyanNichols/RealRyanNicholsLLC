@@ -17,7 +17,10 @@ type Result = {
   claim_status: "unclaimed" | "verified" | "pending" | null;
   blurb: string;
   image_url: string;
-  image_kind: "portrait" | "archive-card";
+  image_kind: "portrait" | "editorial-portrait" | "archive-card";
+  image_alt: string;
+  image_label: string;
+  image_caption: string;
 };
 
 const STATUS_LABEL: Record<string, string> = {
@@ -147,18 +150,27 @@ export function FindYourCase({ embed = false }: { embed?: boolean }) {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={r.image_url}
-                    alt={
-                      r.image_kind === "portrait"
-                        ? `${r.name} profile photograph`
-                        : `Archive identity card for ${r.name}; portrait needed`
-                    }
+                    alt={r.image_alt}
+                    title={r.image_caption}
                     className={[
                       "h-full w-full",
-                      r.image_kind === "portrait"
+                      r.image_kind !== "archive-card"
                         ? "object-cover object-top"
                         : "object-contain",
                     ].join(" ")}
                   />
+                  <span
+                    className={[
+                      "absolute inset-x-1 bottom-1 rounded px-1 py-0.5 text-center text-[7px] font-black uppercase tracking-wide shadow",
+                      r.image_kind === "portrait"
+                        ? "bg-emerald-800 text-white"
+                        : r.image_kind === "editorial-portrait"
+                          ? "bg-amber-700 text-white"
+                          : "bg-[#071123]/95 text-[#e1bd5b]",
+                    ].join(" ")}
+                  >
+                    {r.image_label}
+                  </span>
                 </a>
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-start justify-between gap-2">

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
-import { isClearedJ6Portrait } from "@/lib/j6-portrait";
+import { getJ6PortraitKind } from "@/lib/j6-portrait";
 
 export const runtime = "nodejs";
 export const revalidate = 0;
@@ -26,7 +26,7 @@ export async function GET(req: Request) {
   const { data, count } = await supabase
     .from("case_people")
     .select(
-      "slug, name, role, case_number, claim_status, description, photo_url, photo_is_placeholder, photo_identity_status, photo_rights_status, photo_verified_at",
+      "slug, name, role, case_number, claim_status, description, photo_url, photo_alt_text, photo_source_name, photo_credit, photo_is_placeholder, photo_identity_status, photo_rights_status, photo_verified_at",
       { count: "exact" },
     )
     .eq("visibility", "public")
@@ -36,7 +36,9 @@ export async function GET(req: Request) {
     .limit(12);
 
   const results = (data ?? []).map((p) => {
-    const hasClearedPortrait = isClearedJ6Portrait(p);
+    const portraitKind = getJ6PortraitKind(p);
+    const hasPublishedPortrait = portraitKind !== "placeholder";
+    const isEditorialPortrait = portraitKind === "editorial";
     return {
       slug: p.slug,
       name: p.name,
@@ -45,10 +47,32 @@ export async function GET(req: Request) {
       claim_status: p.claim_status,
       // A short teaser only — the full story lives on the profile page.
       blurb: (p.description ?? "").replace(/\s+/g, " ").trim().slice(0, 140),
-      image_url: hasClearedPortrait
+      image_url: hasPublishedPortrait
         ? p.photo_url
         : `/api/j6/profile-image/${p.slug}`,
-      image_kind: hasClearedPortrait ? "portrait" : "archive-card",
+      image_kind:
+        portraitKind === "cleared"
+          ? "portrait"
+          : isEditorialPortrait
+            ? "editorial-portrait"
+            : "archive-card",
+      image_alt:
+        p.photo_alt_text ||
+        (hasPublishedPortrait
+          ? `${p.name} profile photograph`
+          : `Archive identity card for ${p.name}; portrait needed`),
+      image_label:
+        portraitKind === "cleared"
+          ? "Verified portrait"
+          : isEditorialPortrait
+            ? "Documented editorial use"
+            : "Portrait needed",
+      image_caption:
+        portraitKind === "cleared"
+          ? p.photo_credit || p.photo_source_name || "Verified archive portrait."
+          : isEditorialPortrait
+            ? `${p.photo_credit || p.photo_source_name || "Source documented."} Published for archive identification and reporting; reuse rights are not represented as cleared.`
+            : "Archive card; not a photograph.",
     };
   });
 

@@ -14,6 +14,12 @@ export async function POST(request: Request) {
   if (!own.ok) {
     return NextResponse.json({ error: own.error }, { status: own.status });
   }
+  if (form.get("publication_rights_attested") !== "true") {
+    return NextResponse.json(
+      { error: "Confirm that you own the photograph or may publish it." },
+      { status: 400 },
+    );
+  }
   const file = form.get("file") as File | null;
   if (!file) {
     return NextResponse.json({ error: "No file uploaded." }, { status: 400 });
@@ -48,9 +54,22 @@ export async function POST(request: Request) {
   const { data: pub } = own.supabase.storage
     .from("case-media")
     .getPublicUrl(storagePath);
+  const verifiedAt = new Date().toISOString();
   const { error: updErr } = await own.supabase
     .from("case_people")
-    .update({ photo_url: pub.publicUrl })
+    .update({
+      photo_url: pub.publicUrl,
+      photo_alt_text: `${own.person.name} profile photograph in the January 6 case archive`,
+      photo_source_name: `${own.person.name} (verified profile owner)`,
+      photo_source_url: pub.publicUrl,
+      photo_credit: "Owner-supplied photograph",
+      photo_rights_status: "owner-approved",
+      photo_identity_status: "verified",
+      photo_verification_notes:
+        "Uploaded and approved for publication by the verified owner of this profile.",
+      photo_verified_at: verifiedAt,
+      photo_is_placeholder: false,
+    })
     .eq("id", own.person.id);
   if (updErr) {
     return NextResponse.json(

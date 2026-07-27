@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { CasePerson } from "@/lib/case";
-import { isClearedJ6Portrait } from "@/lib/j6-portrait";
+import { getJ6PortraitKind } from "@/lib/j6-portrait";
 
 export function J6ProfileImage({
   person,
@@ -9,15 +9,37 @@ export function J6ProfileImage({
   person: CasePerson;
   variant?: "detail" | "card";
 }) {
-  const hasClearedPortrait = isClearedJ6Portrait(person);
-  const imageUrl = hasClearedPortrait
+  const portraitKind = getJ6PortraitKind(person);
+  const hasPublishedPortrait = portraitKind !== "placeholder";
+  const isEditorialPortrait = portraitKind === "editorial";
+  const imageUrl = hasPublishedPortrait
     ? person.photo_url!
     : `/api/j6/profile-image/${person.slug}`;
   const alt =
     person.photo_alt_text ||
-    (hasClearedPortrait
+    (portraitKind === "cleared"
       ? `${person.name} profile photograph in the January 6 case archive`
-      : `Archive identity card for ${person.name}; verified portrait not yet available`);
+      : isEditorialPortrait
+        ? `${person.name} source-documented editorial photograph in the January 6 case archive`
+        : `Archive identity card for ${person.name}; verified portrait not yet available`);
+  const cardBadge =
+    portraitKind === "cleared"
+      ? "Verified portrait"
+      : isEditorialPortrait
+        ? "Documented editorial use"
+        : "Portrait needed";
+  const detailBadge =
+    portraitKind === "cleared"
+      ? "Verified profile photograph"
+      : isEditorialPortrait
+        ? "Documented editorial-use image"
+        : "Archive card · not a photograph";
+  const badgeClass =
+    portraitKind === "cleared"
+      ? "bg-emerald-800 text-white"
+      : isEditorialPortrait
+        ? "bg-amber-700 text-white"
+        : "bg-[#071123] text-[#e1bd5b]";
 
   if (variant === "card") {
     return (
@@ -28,7 +50,7 @@ export function J6ProfileImage({
           alt={alt}
           className={[
             "h-full w-full",
-            hasClearedPortrait
+            hasPublishedPortrait
               ? "object-cover object-top"
               : "bg-[#071123] object-contain",
           ].join(" ")}
@@ -36,12 +58,10 @@ export function J6ProfileImage({
         <span
           className={[
             "absolute bottom-3 left-3 rounded-full px-2.5 py-1 text-[9px] font-black uppercase tracking-wider shadow",
-            hasClearedPortrait
-              ? "bg-emerald-800 text-white"
-              : "bg-[#071123]/95 text-[#e1bd5b]",
+            badgeClass,
           ].join(" ")}
         >
-          {hasClearedPortrait ? "Verified portrait" : "Portrait needed"}
+          {cardBadge}
         </span>
       </div>
     );
@@ -56,7 +76,7 @@ export function J6ProfileImage({
           alt={alt}
           className={[
             "w-full object-cover",
-            hasClearedPortrait
+            hasPublishedPortrait
               ? "max-h-[560px] object-top"
               : "max-h-[560px] bg-[#071123] object-contain",
           ].join(" ")}
@@ -64,23 +84,21 @@ export function J6ProfileImage({
         <span
           className={[
             "absolute left-3 top-3 rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-wider shadow",
-            hasClearedPortrait
-              ? "bg-emerald-800 text-white"
-              : "bg-[#071123] text-[#e1bd5b]",
+            badgeClass,
           ].join(" ")}
         >
-          {hasClearedPortrait
-            ? "Verified profile photograph"
-            : "Archive card · not a photograph"}
+          {detailBadge}
         </span>
       </div>
       <figcaption className="flex flex-col gap-2 border-t border-[var(--color-line)] px-4 py-3 text-xs leading-relaxed text-[var(--color-muted)] sm:flex-row sm:items-center sm:justify-between">
         <span>
-          {hasClearedPortrait
+          {portraitKind === "cleared"
             ? person.photo_credit || person.photo_source_name || "Verified archive portrait."
-            : "A verified, rights-cleared likeness has not been approved for this profile yet."}
+            : isEditorialPortrait
+              ? `${person.photo_credit || person.photo_source_name || "Source documented."} Published for archive identification and reporting; reuse rights are not represented as cleared.`
+              : "A verified, rights-cleared likeness has not been approved for this profile yet."}
         </span>
-        {!hasClearedPortrait ? (
+        {!hasPublishedPortrait ? (
           <Link
             href={`/case/people/${person.slug}/suggest`}
             className="shrink-0 font-black text-[var(--color-accent)] hover:underline"
