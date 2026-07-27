@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
+import { isClearedJ6Portrait } from "@/lib/j6-portrait";
 
 export const runtime = "nodejs";
 export const revalidate = 0;
@@ -25,7 +26,7 @@ export async function GET(req: Request) {
   const { data, count } = await supabase
     .from("case_people")
     .select(
-      "slug, name, role, case_number, claim_status, description, photo_url",
+      "slug, name, role, case_number, claim_status, description, photo_url, photo_is_placeholder, photo_identity_status, photo_rights_status, photo_verified_at",
       { count: "exact" },
     )
     .eq("visibility", "public")
@@ -34,16 +35,22 @@ export async function GET(req: Request) {
     .order("name", { ascending: true })
     .limit(12);
 
-  const results = (data ?? []).map((p) => ({
-    slug: p.slug,
-    name: p.name,
-    role: p.role,
-    case_number: p.case_number,
-    claim_status: p.claim_status,
-    // A short teaser only — the full story lives on the profile page.
-    blurb: (p.description ?? "").replace(/\s+/g, " ").trim().slice(0, 140),
-    has_photo: Boolean(p.photo_url),
-  }));
+  const results = (data ?? []).map((p) => {
+    const hasClearedPortrait = isClearedJ6Portrait(p);
+    return {
+      slug: p.slug,
+      name: p.name,
+      role: p.role,
+      case_number: p.case_number,
+      claim_status: p.claim_status,
+      // A short teaser only — the full story lives on the profile page.
+      blurb: (p.description ?? "").replace(/\s+/g, " ").trim().slice(0, 140),
+      image_url: hasClearedPortrait
+        ? p.photo_url
+        : `/api/j6/profile-image/${p.slug}`,
+      image_kind: hasClearedPortrait ? "portrait" : "archive-card",
+    };
+  });
 
   return NextResponse.json(
     { results, total: count ?? results.length },
