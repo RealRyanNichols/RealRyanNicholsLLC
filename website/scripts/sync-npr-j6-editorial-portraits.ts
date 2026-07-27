@@ -17,6 +17,7 @@
  * Default: dry run
  * Apply:   npx tsx scripts/sync-npr-j6-editorial-portraits.ts --apply
  * Report:  add --summary=/path/to/summary.json
+ * Patches: add --patches=/path/to/validated-patches.json
  *
  * Required env:
  *   NEXT_PUBLIC_SUPABASE_URL
@@ -38,6 +39,9 @@ const APPLY = args.has("--apply");
 const SUMMARY_PATH = process.argv
   .find((arg) => arg.startsWith("--summary="))
   ?.slice("--summary=".length);
+const PATCHES_PATH = process.argv
+  .find((arg) => arg.startsWith("--patches="))
+  ?.slice("--patches=".length);
 const VALIDATION_CONCURRENCY = 12;
 const UPDATE_BATCH_SIZE = 25;
 const REQUEST_TIMEOUT_MS = 20_000;
@@ -53,6 +57,42 @@ if (!SUPABASE_URL || !SERVICE_KEY) {
   throw new Error(
     "Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY.",
   );
+}
+
+function assertServiceRoleKey(key: string): void {
+  const fix =
+    "Use the service_role (legacy) or sb_secret_… (new) key for this Supabase project.";
+  if (key.startsWith("sb_secret_")) return;
+  if (key.startsWith("sb_publishable_")) {
+    throw new Error(
+      `SUPABASE_SERVICE_ROLE_KEY is a publishable key, not a privileged secret key. ${fix}`,
+    );
+  }
+
+  try {
+    const payload = JSON.parse(
+      Buffer.from(key.split(".")[1], "base64url").toString("utf8"),
+    ) as { role?: string };
+    if (payload.role !== "service_role") {
+      throw new Error(
+        `SUPABASE_SERVICE_ROLE_KEY has role "${payload.role ?? "missing"}", not "service_role". ${fix}`,
+      );
+    }
+  } catch (error) {
+    if (
+      error instanceof Error &&
+      error.message.startsWith("SUPABASE_SERVICE_ROLE_KEY has role")
+    ) {
+      throw error;
+    }
+    throw new Error(
+      `SUPABASE_SERVICE_ROLE_KEY is not a service_role JWT or an sb_secret_… key. ${fix}`,
+    );
+  }
+}
+
+if (APPLY) {
+  assertServiceRoleKey(SERVICE_KEY);
 }
 
 const supabase = createClient(SUPABASE_URL, SERVICE_KEY, {
@@ -654,9 +694,51 @@ async function writeSummary(summary: SyncSummary): Promise<void> {
   console.log(`Summary written to ${SUMMARY_PATH}`);
 }
 
+async function writeValidatedPatches(
+  candidates: ValidatedCandidate[],
+): Promise<void> {
+  if (!PATCHES_PATH) return;
+  await mkdir(dirname(PATCHES_PATH), { recursive: true });
+  await writeFile(
+    PATCHES_PATH,
+    `${JSON.stringify(
+      candidates.map((candidate) => ({
+        id: candidate.person.id,
+        name: candidate.person.name,
+        expected: {
+          visibility: "public",
+          is_j6_defendant: true,
+          photo_is_placeholder: true,
+          photo_rights_status: "portrait-needed",
+          photo_identity_status: "placeholder",
+        },
+        patch: portraitPatch(candidate),
+      })),
+      null,
+      2,
+    )}\n`,
+    "utf8",
+  );
+  console.log(
+    `Validated patch payload written to ${PATCHES_PATH} (${candidates.length} profiles).`,
+  );
+}
+
 async function main() {
   if (APPLY && args.has("--dry-run")) {
     throw new Error("Choose either --apply or --dry-run, not both.");
+  }
+
+  if (APPLY) {
+    const { error } = await supabase.auth.admin.listUsers({
+      page: 1,
+      perPage: 1,
+    });
+    if (error) {
+      throw new Error(
+        "Supabase privileged-key preflight failed; portrait writes were not attempted.",
+      );
+    }
   }
 
   const [{ records, photoCreditLine, liveCreditExceptions }, people] =
@@ -752,6 +834,8 @@ async function main() {
     .map(({ name, url, reason }) => ({ name, url, reason }));
   skipped.invalidRemoteImage = validationFailures.length;
 
+  await writeValidatedPatches(validated);
+
   let updated = 0;
   let stale = 0;
   if (APPLY) {
@@ -782,6 +866,12 @@ async function main() {
 
   await writeSummary(summary);
   console.log(JSON.stringify(summary, null, 2));
+
+  if (APPLY && stale > 0) {
+    throw new Error(
+      `Portrait sync rejected ${stale} stale or unauthorized writes; expected ${validated.length} updates, applied ${updated}.`,
+    );
+  }
 }
 
 main().catch((error) => {
