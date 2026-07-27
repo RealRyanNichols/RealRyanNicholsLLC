@@ -16,7 +16,8 @@ type Result = {
   case_number: string | null;
   claim_status: "unclaimed" | "verified" | "pending" | null;
   blurb: string;
-  has_photo: boolean;
+  image_url: string;
+  image_kind: "portrait" | "archive-card";
 };
 
 const STATUS_LABEL: Record<string, string> = {
@@ -135,47 +136,74 @@ export function FindYourCase({ embed = false }: { embed?: boolean }) {
               key={r.slug}
               className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-3.5"
             >
-              <div className="flex flex-wrap items-start justify-between gap-2">
-                <div className="min-w-0">
-                  <a
-                    href={`https://realryannichols.com/case/people/${r.slug}`}
-                    target={target}
-                    rel={embed ? "noopener noreferrer" : undefined}
-                    className="text-base font-black text-[var(--color-ink)] underline-offset-2 hover:underline"
-                  >
-                    {r.name}
-                  </a>
-                  <p className="mt-0.5 text-xs font-semibold text-[var(--color-muted)]">
-                    {r.case_number ? `Case ${r.case_number} · ` : ""}
-                    {STATUS_LABEL[r.claim_status ?? ""] ?? "On the record"}
-                  </p>
-                </div>
-                <div className="flex shrink-0 gap-2">
-                  {r.claim_status === "unclaimed" ? (
-                    <a
-                      href={`https://realryannichols.com/case/people/${r.slug}/claim`}
-                      target={target}
-                      rel={embed ? "noopener noreferrer" : undefined}
-                      className="rounded-md bg-[var(--color-navy)] px-3 py-1.5 text-xs font-black text-[#fdf8ea] transition hover:bg-[var(--color-blue-strong)]"
-                    >
-                      This you? Claim it free
-                    </a>
+              <div className="flex gap-3">
+                <a
+                  href={`https://realryannichols.com/case/people/${r.slug}`}
+                  target={target}
+                  rel={embed ? "noopener noreferrer" : undefined}
+                  className="relative h-24 w-20 shrink-0 overflow-hidden rounded-lg border border-[var(--color-line)] bg-[#071123]"
+                  aria-label={`Open ${r.name}'s free public profile`}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={r.image_url}
+                    alt={
+                      r.image_kind === "portrait"
+                        ? `${r.name} profile photograph`
+                        : `Archive identity card for ${r.name}; portrait needed`
+                    }
+                    className={[
+                      "h-full w-full",
+                      r.image_kind === "portrait"
+                        ? "object-cover object-top"
+                        : "object-contain",
+                    ].join(" ")}
+                  />
+                </a>
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <a
+                        href={`https://realryannichols.com/case/people/${r.slug}`}
+                        target={target}
+                        rel={embed ? "noopener noreferrer" : undefined}
+                        className="text-base font-black text-[var(--color-ink)] underline-offset-2 hover:underline"
+                      >
+                        {r.name}
+                      </a>
+                      <p className="mt-0.5 text-xs font-semibold text-[var(--color-muted)]">
+                        {r.case_number ? `Case ${r.case_number} · ` : ""}
+                        {STATUS_LABEL[r.claim_status ?? ""] ?? "On the record"}
+                      </p>
+                    </div>
+                    <div className="flex shrink-0 gap-2">
+                      {r.claim_status === "unclaimed" ? (
+                        <a
+                          href={`https://realryannichols.com/case/people/${r.slug}/claim`}
+                          target={target}
+                          rel={embed ? "noopener noreferrer" : undefined}
+                          className="rounded-md bg-[var(--color-navy)] px-3 py-1.5 text-xs font-black text-[#fdf8ea] transition hover:bg-[var(--color-blue-strong)]"
+                        >
+                          This you? Claim it free
+                        </a>
+                      ) : null}
+                      <button
+                        type="button"
+                        onClick={() => share(r)}
+                        className="rounded-md border border-[var(--color-navy)]/40 px-3 py-1.5 text-xs font-bold text-[var(--color-navy)] transition hover:border-[var(--color-navy)]"
+                        aria-live="polite"
+                      >
+                        {copiedSlug === r.slug ? "Link copied ✓" : "Share"}
+                      </button>
+                    </div>
+                  </div>
+                  {r.blurb ? (
+                    <p className="mt-1.5 line-clamp-2 text-sm leading-snug text-[var(--color-ink-soft)]">
+                      {r.blurb}
+                    </p>
                   ) : null}
-                  <button
-                    type="button"
-                    onClick={() => share(r)}
-                    className="rounded-md border border-[var(--color-navy)]/40 px-3 py-1.5 text-xs font-bold text-[var(--color-navy)] transition hover:border-[var(--color-navy)]"
-                    aria-live="polite"
-                  >
-                    {copiedSlug === r.slug ? "Link copied ✓" : "Share"}
-                  </button>
                 </div>
               </div>
-              {r.blurb ? (
-                <p className="mt-1.5 line-clamp-2 text-sm leading-snug text-[var(--color-ink-soft)]">
-                  {r.blurb}
-                </p>
-              ) : null}
             </li>
           ))}
         </ul>
