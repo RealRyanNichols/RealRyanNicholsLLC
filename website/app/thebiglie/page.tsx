@@ -336,6 +336,82 @@ export default function TheBigLiePage() {
         </div>
       </section>
 
+      {/* THE PRESERVATION GAP */}
+      <section className={`border-b border-[#203a64] ${DARK}`}>
+        <div className="mx-auto max-w-4xl px-4 py-14 sm:px-6">
+          <p className={KICKER}>Follow the dates</p>
+          <h2 className={`mt-3 ${H2}`}>28,386 hours that should not have survived.</h2>
+          <p className={`mt-4 max-w-2xl ${BODY}`}>
+            This is not a theory. It is a calendar, and the calendar does not
+            work.
+          </p>
+
+          <div className="mt-7 space-y-4">
+            <p className={BODY}>
+              Capitol Police footage deletes itself after 30 days. The only
+              preservation anybody ever swore to was eight hours, noon to eight
+              PM on January 6.
+            </p>
+            <p className={BODY}>
+              So every hour from January 3, 4 and 5, and the morning of January
+              6, should have deleted itself by around February 5, 2021.
+            </p>
+            <p className={BODY}>
+              The Select Committee that later received 28,386 hours of exactly
+              that footage did not exist until June 30, 2021.
+            </p>
+            <p className="font-display text-xl font-black leading-snug text-[#e1bd5b] sm:text-2xl">
+              Five months after it should have been gone.
+            </p>
+            <p className={BODY}>
+              Which means somebody preserved it, in January of 2021, before the
+              clock ran out. There is no preservation order in the public record.
+              No litigation hold. No directive. The only transfer documents in
+              evidence are two Information Sharing Agreements dated January 10
+              and 11, and they govern who controls the footage, not what gets
+              saved. They name no date range at all.
+            </p>
+          </div>
+
+          <figure className="mt-8 overflow-hidden rounded-2xl border border-[#203a64] bg-[#0b1830]">
+            <img
+              src="/thebiglie/charts/preservation-gap.png"
+              alt="Timeline showing 28,386 hours of January 3 to 6 footage passing a 30-day deletion deadline in February 2021, five months before the Select Committee that received it existed"
+              width={1200} height={1200}
+              className="block h-auto w-full"
+            />
+          </figure>
+
+          <div className="mt-6 rounded-2xl border-2 border-[#e1bd5b] bg-[#1a1608] p-6 sm:p-8">
+            <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[#e1bd5b]">
+              The question nobody has answered
+            </p>
+            <p className="mt-3 font-display text-xl font-black leading-snug text-[#fdf8ea] sm:text-2xl">
+              Who gave the instruction to preserve those days, and on what date?
+            </p>
+            <p className="mt-3 text-sm font-semibold leading-relaxed text-[#cfd9ea]">
+              Sixty nine percent of everything the Select Committee received sits
+              outside the only preservation window anyone has ever sworn to. Per
+              camera that is 51 hours. Somebody made that call in January 2021
+              and there is no document in the public record that says who.
+            </p>
+          </div>
+
+          <div className="mt-4 rounded-xl border border-[#203a64] bg-[#0b1830] p-5">
+            <p className={KICKER}>What I am not saying</p>
+            <p className="mt-2 text-sm font-semibold leading-relaxed text-[#9fb2d0]">
+              I am not saying anything was destroyed on purpose. I have no
+              document that says that and I will not pretend I do. What I have is
+              an accounting gap. Somebody made a preservation decision that saved
+              two thirds of what Congress later worked from, and no sworn
+              statement in three years has explained it. That is a fair question
+              to ask out loud, and it is the kind of question that gets answered
+              only when somebody asks it.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* THE 30-DAY CLOCK */}
       <section className={`border-b border-[#203a64] ${DARK}`}>
         <div className="mx-auto max-w-4xl px-4 py-14 sm:px-6">
