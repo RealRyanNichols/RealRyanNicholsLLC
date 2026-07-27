@@ -282,6 +282,100 @@ export default function TheBigLiePage() {
         </div>
       </section>
 
+      {/* SWORN */}
+      <section className={`border-b border-[#203a64] ${DARK}`}>
+        <div className="mx-auto max-w-4xl px-4 py-14 sm:px-6">
+          <p className={KICKER}>Their witness. Their oath. Their numbers.</p>
+          <h2 className={`mt-3 ${H2}`}>41,057 hours, sworn under penalty of perjury.</h2>
+          <p className={`mt-4 max-w-2xl ${BODY}`}>
+            I do not need anybody to take my word for the real number. The
+            Capitol Police General Counsel swore to it himself, in March 2023,
+            in a declaration that was filed into my own case file.
+          </p>
+          <p className={`mt-4 max-w-2xl ${BODY}`}>
+            12,671 hours for the window they kept talking about. Then another
+            28,386 hours for January 3, 4 and 5, and the morning of January 6
+            before any of it started. Add them up.
+          </p>
+
+          <figure className="mt-8 overflow-hidden rounded-2xl border border-[#203a64] bg-[#0b1830]">
+            <img
+              src="/thebiglie/charts/sworn-41057.png"
+              alt="Chart showing 12,671 plus 28,386 equals 41,057 sworn hours against the 14,000 the government defended"
+              width={1200} height={760}
+              className="block h-auto w-full"
+            />
+          </figure>
+
+          <div className="mt-6 rounded-2xl border-2 border-[#e1bd5b] bg-[#1a1608] p-6 sm:p-8">
+            <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[#e1bd5b]">
+              The footnote that ends the argument
+            </p>
+            <blockquote className="mt-3 font-display text-lg font-black leading-relaxed text-[#fdf8ea] sm:text-xl">
+              &ldquo;In response to later requests from both committees, the
+              Department provided footage from the entire 24-hour period for
+              January 6, 2021.&rdquo;
+            </blockquote>
+            <p className="mt-3 text-sm font-semibold leading-relaxed text-[#cfd9ea]">
+              Sworn in November 2022. Fifteen months before the House began
+              releasing forty thousand hours. While the government spent 2023
+              defending 14,000 as the universe, its own declarant had already
+              testified that the committees held the whole day.
+            </p>
+          </div>
+
+          <div className="mt-4 rounded-2xl border border-[#e0913f] bg-[#20150a] p-6">
+            <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[#e0913f]">
+              And the clock that decided what survived
+            </p>
+            <blockquote className="mt-3 font-display text-lg font-black leading-relaxed text-[#fdf8ea]">
+              &ldquo;Without affirmative preservation, all Department footage is
+              automatically purged within 30 days.&rdquo;
+            </blockquote>
+          </div>
+        </div>
+      </section>
+
+      {/* CAMERA GAP */}
+      <section className={`border-b border-[#203a64] ${DARK}`}>
+        <div className="mx-auto max-w-4xl px-4 py-14 sm:px-6">
+          <p className={KICKER}>Simple division</p>
+          <h2 className={`mt-3 ${H2}`}>About 1,800 cameras existed. They produced 650.</h2>
+          <p className={`mt-4 max-w-2xl ${BODY}`}>
+            You do not need a theory for this one. You need a calculator. If
+            14,000 hours were recorded in an eight hour window, that takes at
+            least 1,750 cameras running. The sworn 12,671 hours works out to
+            1,584. The Capitol Police&rsquo;s own press release says the command
+            center has access to roughly 1,800.
+          </p>
+          <p className="mt-4 font-display text-xl font-black leading-snug text-[#e1bd5b] sm:text-2xl">
+            Three numbers, none of them mine, all landing in the same place. The
+            government produced 650 cameras in discovery.
+          </p>
+
+          <figure className="mt-8 overflow-hidden rounded-2xl border border-[#203a64] bg-[#0b1830]">
+            <img
+              src="/thebiglie/charts/camera-gap.png"
+              alt="Grid of 1,800 squares, one per Capitol security camera, with 650 lit as produced in discovery"
+              width={1200} height={1200}
+              className="block h-auto w-full"
+            />
+          </figure>
+
+          <div className="mt-6 rounded-xl border border-[#203a64] bg-[#0b1830] p-5">
+            <p className={KICKER}>What I will not overstate</p>
+            <p className="mt-2 text-sm font-semibold leading-relaxed text-[#9fb2d0]">
+              No court has ever ruled that footage was wrongly withheld, and my
+              own motions on this were denied. A judge called my camera argument
+              speculation. What I can tell you is that the government was given
+              two chances in open filings to dispute the camera count and never
+              did, and that nobody has ever produced an inventory. That is where
+              the record actually stands.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* ON THE RECORD, 2022 */}
       <section className={`border-b border-[#203a64] ${DARK}`}>
         <div className="mx-auto max-w-4xl px-4 py-14 sm:px-6">
