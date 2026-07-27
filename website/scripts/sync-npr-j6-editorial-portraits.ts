@@ -4,7 +4,8 @@
  *
  * This is intentionally not a general fuzzy-photo importer:
  *   - public J6 profiles only;
- *   - exact, unique normalized full-name matches on both sides;
+ *   - exact, unique normalized full-name matches, or an explicit reviewed
+ *     profile-id/name/NPR-name/asset mapping with case-record corroboration;
  *   - existing cleared or non-placeholder photos are never replaced;
  *   - every person named in NPR's non-DOJ photo-credit exceptions is skipped;
  *   - the remote asset must return a successful image response whose bytes
@@ -33,6 +34,10 @@ import {
   normalizeNprJ6Record,
   type NormalizedNprJ6Record,
 } from "../lib/npr-j6-archive";
+import {
+  REVIEWED_NPR_PORTRAIT_MATCHES,
+  type ReviewedNprPortraitMatch,
+} from "../lib/j6-reviewed-npr-portrait-matches";
 
 const args = new Set(process.argv.slice(2));
 const APPLY = args.has("--apply");
@@ -127,6 +132,7 @@ type CreditException = {
 type PortraitCandidate = {
   person: CasePersonPortrait;
   record: NormalizedNprJ6Record;
+  identityBasis: string;
 };
 
 type ValidatedCandidate = PortraitCandidate & {
@@ -152,6 +158,7 @@ type SyncSummary = {
     nprRecordsWithPhoto: number;
     publicJ6Profiles: number;
     exactUniqueMatches: number;
+    reviewedMatches: number;
     eligiblePlaceholders: number;
     validatedImages: number;
     updatedProfiles: number;
@@ -625,7 +632,7 @@ async function mapWithConcurrency<T, R>(
 }
 
 function portraitPatch(candidate: ValidatedCandidate): Record<string, unknown> {
-  const { person, record, validation } = candidate;
+  const { person, record, validation, identityBasis } = candidate;
   return {
     photo_url: record.photoUrl,
     photo_alt_text: `${person.name} profile photograph from NPR's January 6 archive`,
@@ -637,7 +644,7 @@ function portraitPatch(candidate: ValidatedCandidate): Record<string, unknown> {
     photo_rights_status: "documented-editorial-use",
     photo_identity_status: "verified",
     photo_verification_notes: [
-      "Identity: exact unique normalized full-name match between this public J6 profile and one published NPR archive record.",
+      `Identity: ${identityBasis}`,
       `Remote asset validated ${validation.validatedAt} with HTTP ${validation.httpStatus}, ${validation.contentType}, and a matching file signature.`,
       "Source: NPR's database-wide credit line attributes non-exception photographs to the Department of Justice; this sync excludes every separately named source in that credit line.",
       "Rights: documented editorial use only; this is not a public-domain or license determination.",
@@ -745,6 +752,13 @@ async function main() {
     await Promise.all([fetchNprSource(), fetchAllPublicJ6Profiles()]);
   const nprByName = groupByNormalizedName(records, (record) => record.name);
   const peopleByName = groupByNormalizedName(people, (person) => person.name);
+  const reviewedByProfileId = new Map<string, ReviewedNprPortraitMatch>();
+  for (const match of REVIEWED_NPR_PORTRAIT_MATCHES) {
+    if (reviewedByProfileId.has(match.profileId)) {
+      throw new Error(`Duplicate reviewed portrait profile id ${match.profileId}.`);
+    }
+    reviewedByProfileId.set(match.profileId, match);
+  }
   const exceptionNames = new Set(
     liveCreditExceptions.map((exception) =>
       normalizeFullName(exception.name),
@@ -763,6 +777,7 @@ async function main() {
   };
   const candidates: PortraitCandidate[] = [];
   let exactUniqueMatches = 0;
+  let reviewedMatches = 0;
 
   for (const person of people) {
     if (isProtectedPortrait(person)) {
@@ -770,29 +785,57 @@ async function main() {
       continue;
     }
 
-    const normalizedName = normalizeFullName(person.name);
-    if ((peopleByName.get(normalizedName)?.length ?? 0) !== 1) {
-      skipped.duplicatePublicProfileName++;
-      continue;
+    const reviewedMatch = reviewedByProfileId.get(person.id);
+    let record: NormalizedNprJ6Record;
+    let identityBasis: string;
+    if (reviewedMatch) {
+      if (person.name !== reviewedMatch.expectedProfileName) {
+        throw new Error(
+          `Reviewed profile name changed for ${person.id}: expected "${reviewedMatch.expectedProfileName}", found "${person.name}".`,
+        );
+      }
+      const reviewedNprMatches =
+        nprByName.get(normalizeFullName(reviewedMatch.nprName)) ?? [];
+      if (reviewedNprMatches.length !== 1) {
+        throw new Error(
+          `Reviewed NPR identity "${reviewedMatch.nprName}" resolved to ${reviewedNprMatches.length} records.`,
+        );
+      }
+      record = reviewedNprMatches[0];
+      if (record.raw.photo_name !== reviewedMatch.photoFilename) {
+        throw new Error(
+          `Reviewed NPR asset changed for ${person.name}: expected "${reviewedMatch.photoFilename}", found "${record.raw.photo_name ?? "(missing)"}".`,
+        );
+      }
+      reviewedMatches++;
+      identityBasis = `a manually reviewed profile-to-NPR match corroborated by ${reviewedMatch.corroboration}. Profile id ${person.id}; NPR identity "${reviewedMatch.nprName}".`;
+    } else {
+      const normalizedName = normalizeFullName(person.name);
+      if ((peopleByName.get(normalizedName)?.length ?? 0) !== 1) {
+        skipped.duplicatePublicProfileName++;
+        continue;
+      }
+
+      const nprMatches = nprByName.get(normalizedName);
+      if (!nprMatches || nprMatches.length === 0) {
+        skipped.noExactNprMatch++;
+        continue;
+      }
+      if (nprMatches.length !== 1) {
+        skipped.duplicateNprName++;
+        continue;
+      }
+      exactUniqueMatches++;
+      record = nprMatches[0];
+      identityBasis =
+        "an exact unique normalized full-name match between this public J6 profile and one published NPR archive record.";
     }
 
-    const nprMatches = nprByName.get(normalizedName);
-    if (!nprMatches || nprMatches.length === 0) {
-      skipped.noExactNprMatch++;
-      continue;
-    }
-    if (nprMatches.length !== 1) {
-      skipped.duplicateNprName++;
-      continue;
-    }
-    exactUniqueMatches++;
-
-    if (exceptionNames.has(normalizedName)) {
+    if (exceptionNames.has(normalizeFullName(record.name))) {
       skipped.namedCreditException++;
       continue;
     }
 
-    const record = nprMatches[0];
     if (!record.photoUrl) {
       skipped.noNprPhoto++;
       continue;
@@ -801,7 +844,7 @@ async function main() {
       skipped.ineligibleVisualState++;
       continue;
     }
-    candidates.push({ person, record });
+    candidates.push({ person, record, identityBasis });
   }
 
   console.log(
@@ -810,6 +853,7 @@ async function main() {
       `publicJ6=${people.length}`,
       `nprPublished=${records.length}`,
       `exactUnique=${exactUniqueMatches}`,
+      `reviewed=${reviewedMatches}`,
       `eligible=${candidates.length}`,
     ].join(" "),
   );
@@ -848,12 +892,13 @@ async function main() {
     sourceUrl: NPR_J6_ARCHIVE_URL,
     sourcePhotoCreditLine: photoCreditLine,
     semantics:
-      "Exact unique normalized full-name matches; remote low-resolution image; documented editorial use only; no public-domain or license claim.",
+      "Exact unique normalized full-name matches or explicit reviewed identity mappings; remote low-resolution image; documented editorial use only; no public-domain or license claim.",
     totals: {
       nprPublishedRecords: records.length,
       nprRecordsWithPhoto: records.filter((record) => record.photoUrl).length,
       publicJ6Profiles: people.length,
       exactUniqueMatches,
+      reviewedMatches,
       eligiblePlaceholders: candidates.length,
       validatedImages: validated.length,
       updatedProfiles: updated,
