@@ -70,6 +70,16 @@ export function BigLieGate({ source = "thebiglie" }: { source?: string }) {
         }
       }
 
+      // Fire day 1 of the 30-day series immediately. Fire-and-forget.
+      try {
+        void fetch("/api/biglie/enroll", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
+      } catch {
+        // The daily cron enrolls anyone this misses.
+      }
       trackEvent("biglie_signup_success", { source });
       setDone(true);
     } catch {
