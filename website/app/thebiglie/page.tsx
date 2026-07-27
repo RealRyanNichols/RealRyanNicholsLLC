@@ -336,6 +336,70 @@ export default function TheBigLiePage() {
         </div>
       </section>
 
+      {/* THE 30-DAY CLOCK */}
+      <section className={`border-b border-[#203a64] ${DARK}`}>
+        <div className="mx-auto max-w-4xl px-4 py-14 sm:px-6">
+          <p className={KICKER}>The part nobody talks about</p>
+          <h2 className={`mt-3 ${H2}`}>The footage deletes itself.</h2>
+          <p className={`mt-4 max-w-2xl ${BODY}`}>
+            This is the line I cannot get out of my head, and it is sworn, in the
+            same declaration as everything else on this page.
+          </p>
+
+          <div className="mt-6 rounded-2xl border-2 border-[#e0913f] bg-[#20150a] p-6 sm:p-8">
+            <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[#e0913f]">
+              USCP General Counsel Thomas DiBiase &middot; ECF 71-1, footnote 1
+            </p>
+            <blockquote className="mt-3 font-display text-xl font-black leading-relaxed text-[#fdf8ea] sm:text-2xl">
+              &ldquo;Without affirmative preservation, all Department footage is
+              automatically purged within 30 days.&rdquo;
+            </blockquote>
+          </div>
+
+          <div className="mt-6 space-y-4">
+            <p className={BODY}>
+              Nobody has to decide to destroy anything. Nobody signs an order. The
+              clock does it.
+            </p>
+            <p className={BODY}>
+              What got preserved immediately was eight hours. Noon to eight PM on
+              January 6. That was the entire first decision. Everything else that
+              exists today, the full 24 hours of January 6, and January 3, 4 and
+              5, survived only because a committee came back later and asked for
+              it, and every one of those requests was running against a deadline
+              nobody set on purpose.
+            </p>
+            <p className="font-display text-xl font-black leading-snug text-[#e1bd5b] sm:text-2xl">
+              Whatever nobody thought to ask for in time is gone. No order, no
+              log, and no way to ever know what it was.
+            </p>
+          </div>
+
+          <figure className="mt-8 overflow-hidden rounded-2xl border border-[#203a64] bg-[#0b1830]">
+            <img
+              src="/thebiglie/charts/purge-clock.png"
+              alt="Timeline showing that Capitol Police footage auto-deletes after 30 days, with the purge deadline for each date from December 28 2020 through January 6 2021"
+              width={1200} height={1200}
+              className="block h-auto w-full"
+            />
+          </figure>
+
+          <div className="mt-6 rounded-xl border border-[#203a64] bg-[#0b1830] p-5">
+            <p className={KICKER}>Where the honest edge is</p>
+            <p className="mt-2 text-sm font-semibold leading-relaxed text-[#9fb2d0]">
+              I am not telling you footage was destroyed to hide something. I have
+              no evidence of that and I am not going to pretend otherwise. What I
+              am telling you is that a 30 day automatic purge means the record of
+              the most examined day in modern American history was decided by what
+              somebody remembered to ask for inside one month. That is a fact
+              about the system, sworn by the government&rsquo;s own lawyer, and it
+              should bother everybody regardless of what they think about
+              January 6.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* CAMERA GAP */}
       <section className={`border-b border-[#203a64] ${DARK}`}>
         <div className="mx-auto max-w-4xl px-4 py-14 sm:px-6">
