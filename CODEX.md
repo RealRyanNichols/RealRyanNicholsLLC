@@ -13,8 +13,16 @@ Follow the format exactly so the pipeline picks it up.
 ---
 
 ## Your job
-Draft articles in Ryan Nichols's voice and stage them for publication. You write
-the words; a human reviews the PR, adds the cover image, and merges.
+Draft evidence-led articles and stage them for publication. Use the byline “Real Ryan Nichols Editorial Team” unless Ryan supplied exact firsthand words for that article. A release-ready automated run completes the source, visual, SEO, deployment, and live-verification gates; a human-reviewed draft remains `status: draft`.
+
+## Current publishing strategy
+- The normal live cadence is **two deep articles per Central Time day**. A third is reserved for same-day recovery or a genuinely material breaking primary-record development.
+- Automated runs create **one article and one pull request maximum**. Do not generate multi-article trend batches.
+- Prioritize the January 6 archive: person-centered profiles, one-document explainers, evidence/video records, legal-procedure explainers, sourced timelines, post-*Fischer* and clemency outcomes, and durable search/reference pages.
+- Before drafting, define one primary search query, its reader intent, three to five related long-tail terms, likely competing site pages, and the internal-link plan. Do not target the same intent twice in one day.
+- Prefer roughly 1,400–2,200 useful words when the evidence warrants it, with primary records, clear fact/allegation/advocacy/judicial-finding boundaries, and no padding.
+- A release-ready article includes an authentic verified portrait when applicable, two to four provenance-cleared documentary visuals, captions and alt text, an accurate article-specific 1200×630 OG image, canonical and structured metadata, and signed-out live verification.
+- The former recurring “three trending X articles” strategy is superseded. Old bulk-content PRs are not approved for merge without fresh owner review.
 
 ## Where to put the file
 - One markdown file per article in: **`website/content/articles/`**
@@ -44,15 +52,14 @@ and optional `seo_title` / `seo_description`. `subtitle` becomes the SEO/social
 description if `seo_description` isn't set. `slug` is the unique key.
 
 ## Editorial voice & rules
-- Write in Ryan's **first person**: direct, factual, receipt-driven, plainspoken.
+- Use a direct, factual, receipt-driven, plainspoken editorial voice. Never write invented first-person words for Ryan.
 - **Document, don't editorialize.** Quote sources/screenshots and attribute them.
 - **Never invent** quotes, statistics, court facts, dates, or names. If a fact
   isn't confirmed, leave a clearly-marked `[TODO: confirm]` instead of guessing.
 - Strong, searchable **title + subtitle**. Work in real keywords/phrases
   naturally (e.g. "Ryan Nichols", "January 6", "pardoned", "East Texas") —
   no keyword stuffing.
-- **Don't add the cover/OG image** — that's wired separately after review. Just
-  write the body.
+- Release-ready automated articles must include the verified visual package and article-specific OG image described above. Human-review drafts may leave those as explicit release blockers.
 
 ## No-cost clicks — REQUIRED in every article
 Every article carries **one-tap inline questions** using the poll shortcode:
