@@ -24,6 +24,7 @@ import {
 import { getDocumentsForPerson } from "@/lib/case";
 import { getPublishedPosts } from "@/lib/posts";
 import { SUBJECT_SLUG } from "@/lib/bio";
+import { J6ProfileImage } from "@/components/J6ProfileImage";
 
 export const revalidate = 300;
 
@@ -994,12 +995,12 @@ function J6DefendantsView({
         : `${shownTotal.toLocaleString()} J6 claims pending review`;
   const lead =
     j6Filter === "all"
-      ? "The public directory, ordered A–Z. Search a name, case number, or role; open the profile; then contribute a source if the record is incomplete."
+      ? "The free public directory, ordered A–Z. Search a name, case number, or role, then select any person to open the full profile."
       : j6Filter === "unclaimed"
-      ? "Profiles ready for the defendant to claim and build out. Every claim is checked against the DOJ docket and public record before approval."
+      ? "Public profiles that are free for anyone to read and ready for the named person to claim. Claims are verified before editing access is granted."
       : j6Filter === "verified"
-        ? "Defendants who have claimed and verified their profile. Their case archive is theirs."
-        : "Claims submitted and awaiting Ryan's review.";
+        ? "Public profiles whose owners have completed identity verification."
+        : "Public profiles with ownership claims awaiting review.";
   return (
     <div id="j6-profile-list" className="scroll-mt-24">
       <div className="mb-5 overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)]">
@@ -1071,12 +1072,20 @@ function J6DefendantsView({
         />
       </div>
 
+      <div className="mb-4 rounded-xl border border-[var(--color-success)]/40 bg-[var(--color-success-soft)] px-4 py-3 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+        <strong className="text-[var(--color-ink)]">
+          Every J6 profile is public and free to view.
+        </strong>{" "}
+        An account is only required to claim a profile, manage a claimed
+        profile, or suggest a correction.
+      </div>
+
       {people.length === 0 ? (
         <p className="text-sm text-[var(--color-muted)] italic py-10 text-center">
           No profiles in this bucket yet.
         </p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {people.map((p) => {
             const badge =
               p.claim_status === "verified"
@@ -1084,75 +1093,44 @@ function J6DefendantsView({
                 : p.claim_status === "pending"
                   ? { label: "Claim pending", bg: "var(--color-blue)" }
                   : { label: "Ready to claim", bg: "var(--color-support)" };
-            const claimHref = `/case/people/${p.slug}/claim`;
             return (
-              <article
+              <Link
                 key={p.id}
-                className="flex min-h-[210px] flex-col rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 transition hover:border-[var(--color-blue)]"
+                href={`/case/people/${p.slug}`}
+                aria-label={`View ${p.name}'s free public January 6 profile`}
+                className="group flex min-h-full flex-col overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] transition hover:-translate-y-0.5 hover:border-[var(--color-blue)] hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blue)]"
               >
-                <div className="flex items-start justify-between gap-2">
-                  <h3 className="text-base font-bold tracking-tight leading-tight">
-                    {p.name}
-                  </h3>
-                  <span
-                    className="rounded-md px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider whitespace-nowrap text-[var(--color-paper)]"
-                    style={{ background: badge.bg }}
-                  >
-                    {badge.label}
-                  </span>
-                </div>
-                {p.role ? (
-                  <p className="mt-1 text-xs text-[var(--color-muted)] leading-tight">
-                    {p.role}
-                  </p>
-                ) : null}
-                <div className="mt-3 grid grid-cols-2 gap-2 text-[11px] text-[var(--color-muted)]">
-                  <span className="rounded-md border border-[var(--color-line-soft)] bg-[var(--color-paper)] px-2 py-1">
-                    {p.case_number ?? "Case # needed"}
-                  </span>
-                  <span className="rounded-md border border-[var(--color-line-soft)] bg-[var(--color-paper)] px-2 py-1 text-right">
-                    {p.views_count.toLocaleString()} views
-                  </span>
-                </div>
-                <div className="mt-auto pt-4">
-                  {p.claim_status === "unclaimed" ? (
-                    <Link
-                      href={claimHref}
-                      className="block rounded-lg bg-[var(--color-blue)] px-3 py-2.5 text-center text-sm font-black text-[var(--color-paper)] transition hover:bg-[var(--color-blue-strong)]"
+                <J6ProfileImage person={p} variant="card" />
+                <div className="flex flex-1 flex-col p-4">
+                  <div className="flex items-start justify-between gap-2">
+                    <h3 className="text-lg font-black leading-tight tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-blue)]">
+                      {p.name}
+                    </h3>
+                    <span
+                      className="whitespace-nowrap rounded-md px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--color-paper)]"
+                      style={{ background: badge.bg }}
                     >
-                      Claim + build case →
-                    </Link>
-                  ) : p.claim_status === "pending" ? (
-                    <Link
-                      href={`/case/people/${p.slug}`}
-                      className="block rounded-lg bg-[var(--color-blue-soft)] px-3 py-2.5 text-center text-sm font-black text-[var(--color-blue)] transition hover:bg-[var(--color-blue)] hover:text-[var(--color-paper)]"
-                    >
-                      View pending profile →
-                    </Link>
-                  ) : (
-                    <Link
-                      href={`/case/people/${p.slug}`}
-                      className="block rounded-lg bg-[var(--color-success)] px-3 py-2.5 text-center text-sm font-black text-[var(--color-paper)] transition hover:opacity-90"
-                    >
-                      Open verified file →
-                    </Link>
-                  )}
-                  <div className="mt-2 grid grid-cols-2 gap-2">
-                    <Link
-                      href={`/case/people/${p.slug}`}
-                      className="rounded-lg border border-[var(--color-line)] px-3 py-2 text-center text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
-                    >
-                      Profile
-                    </Link>
-                    <Link
-                      href={`/submit?type=j6&about=${encodeURIComponent(p.name)}`}
-                      className="rounded-lg border border-[var(--color-line)] px-3 py-2 text-center text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
-                    >
-                      Tip
-                    </Link>
+                      {badge.label}
+                    </span>
                   </div>
+                  {p.role ? (
+                    <p className="mt-1 text-sm leading-snug text-[var(--color-muted)]">
+                      {p.role}
+                    </p>
+                  ) : null}
+                  <div className="mt-4 grid grid-cols-2 gap-2 text-[11px] text-[var(--color-muted)]">
+                    <span className="rounded-md border border-[var(--color-line-soft)] bg-[var(--color-paper)] px-2 py-1">
+                      {p.case_number ?? "Case # needed"}
+                    </span>
+                    <span className="rounded-md border border-[var(--color-line-soft)] bg-[var(--color-paper)] px-2 py-1 text-right">
+                      {p.views_count.toLocaleString()} views
+                    </span>
+                  </div>
+                  <span className="mt-auto pt-4 text-sm font-black text-[var(--color-blue)]">
+                    View free public profile →
+                  </span>
                 </div>
-              </article>
+              </Link>
             );
           })}
         </div>

@@ -19,10 +19,17 @@ const ONBOARDING_BYPASS_EXACT = new Set<string>([
   "/robots.txt",
   "/sitemap.xml",
   "/rss.xml",
+  "/case",
+  "/case/people",
+  "/j6",
 ]);
 
 function shouldBypassOnboarding(pathname: string): boolean {
   if (ONBOARDING_BYPASS_EXACT.has(pathname)) return true;
+  // Public J6 person pages must remain readable even if a visitor happens to
+  // have a half-finished account session. Claim and suggestion subroutes do
+  // not match this single-segment pattern and remain protected.
+  if (/^\/case\/people\/[^/]+\/?$/.test(pathname)) return true;
   for (const prefix of ONBOARDING_BYPASS_PREFIXES) {
     if (pathname.startsWith(prefix)) return true;
   }

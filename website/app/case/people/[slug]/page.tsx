@@ -2,18 +2,17 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
+  type CasePerson,
   getPeople,
   getPersonBySlug,
   getDocumentsForPerson,
   getCaseTotals,
 } from "@/lib/case";
 import { getPublishedPosts } from "@/lib/posts";
-import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { ShareButton } from "@/components/ShareButton";
 import { CaseStats } from "@/components/CaseStats";
 import { CaseViewTracker } from "@/components/CaseViewTracker";
 import { EvidenceGrid } from "@/components/EvidenceGrid";
-import { ClaimMeHero, ClaimMeFooter } from "@/components/ClaimMeHero";
 import { CaseInfoCard } from "@/components/CaseInfoCard";
 import { ReactionBar } from "@/components/ReactionBar";
 import { RyanCaseProfile } from "@/components/RyanCaseProfile";
@@ -227,84 +226,6 @@ export default async function PersonPage({
     ]),
   ];
 
-  const isUnclaimedJ6er =
-    p.is_j6_defendant === true &&
-    (p.claim_status === "unclaimed" || p.claim_status === "pending");
-
-  if (isUnclaimedJ6er) {
-    const supabase = await getSupabaseServerClient();
-    const { data: auth } = await supabase.auth.getUser();
-    const signedIn = !!auth.user;
-
-    return (
-      <article className="mx-auto max-w-3xl px-4 py-10">
-        <CaseViewTracker type="person" slug={p.slug} />
-        <JsonLd data={personLd} />
-
-        <nav className="text-sm text-[var(--color-muted)] mb-4">
-          <Link href="/case" className="hover:underline">
-            ← J6 Case
-          </Link>{" "}
-          ·{" "}
-          <Link href="/j6" className="hover:underline">
-            The mission
-          </Link>
-        </nav>
-
-        <J6ProfileImage person={p} />
-
-        <ClaimMeHero
-          name={p.name}
-          slug={p.slug}
-          signedIn={signedIn}
-          views={p.views_count}
-          shares={p.shares_count}
-        />
-
-        {editorialByline ? (
-          <p className="mt-4 text-sm text-[var(--color-muted)]">
-            By <span className="font-semibold text-[var(--color-ink)]">{editorialByline}</span>
-          </p>
-        ) : null}
-
-        <div className="mt-6 flex items-center gap-3">
-          <ShareButton
-            url={url}
-            title={profileName}
-            slug={p.slug}
-            caseKind="person"
-          />
-        </div>
-
-        <div className="mt-6">
-          <ReactionBar
-            targetType="person"
-            targetId={p.slug}
-            prompt={`Stand with ${p.name} — tap to react, no signup`}
-          />
-        </div>
-
-        {/* The record this profile already holds — researched, sourced, and
-            waiting for its owner. This is what makes the page worth finding,
-            sharing, and claiming. */}
-        {p.description ? (
-          <section className="mt-10">
-            <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[var(--color-navy)]">
-              The record, so far
-            </p>
-            <p className="mt-3 whitespace-pre-wrap text-base leading-relaxed text-[var(--color-ink-soft)] sm:text-lg">
-              {p.description}
-            </p>
-          </section>
-        ) : null}
-
-        <CaseInfoCard person={p} />
-
-        <ClaimMeFooter name={p.name} />
-      </article>
-    );
-  }
-
   const evidence = await getDocumentsForPerson(p.id);
   const photoAlt = isJ6Profile
     ? `${p.name}, shown for the January 6 case profile and source archive`
@@ -326,8 +247,12 @@ export default async function PersonPage({
       </nav>
 
       <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
-        {p.is_j6_defendant && p.claim_status === "verified"
-          ? "Verified J6 defendant"
+        {p.is_j6_defendant
+          ? p.claim_status === "verified"
+            ? "Public January 6 profile · verified owner"
+            : p.claim_status === "pending"
+              ? "Public January 6 profile · claim under review"
+              : "Public January 6 profile · ready to claim"
           : "Person of record"}
       </p>
       <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">
@@ -365,6 +290,7 @@ export default async function PersonPage({
       ) : null}
 
       <CaseInfoCard person={p} />
+      {p.is_j6_defendant ? <J6ProfileAccess person={p} /> : null}
 
       <div className="mt-8 flex items-center gap-3">
         <ShareButton url={url} title={profileName} slug={p.slug} caseKind="person" />
@@ -416,5 +342,57 @@ export default async function PersonPage({
       </section>
 
     </article>
+  );
+}
+
+function J6ProfileAccess({ person }: { person: CasePerson }) {
+  const claimable = person.claim_status === "unclaimed";
+  const pending = person.claim_status === "pending";
+
+  return (
+    <section className="mt-8 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-success)]">
+        Public knowledge · no paywall
+      </p>
+      <h2 className="mt-1 text-xl font-black tracking-tight">
+        This profile is free for anyone to read.
+      </h2>
+      <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+        Sign-in is only required to claim ownership, manage a claimed profile,
+        or suggest a factual correction. Reading and sharing the public record
+        never requires an account.
+      </p>
+      <div className="mt-4 flex flex-wrap gap-2">
+        {claimable ? (
+          <Link
+            href={`/case/people/${person.slug}/claim`}
+            className="rounded-lg bg-[var(--color-blue)] px-4 py-2.5 text-sm font-black text-[var(--color-paper)] transition hover:bg-[var(--color-blue-strong)]"
+          >
+            Claim this profile
+          </Link>
+        ) : pending ? (
+          <span className="rounded-lg border border-[var(--color-blue)] bg-[var(--color-blue-soft)] px-4 py-2.5 text-sm font-black text-[var(--color-blue)]">
+            Ownership claim under review
+          </span>
+        ) : (
+          <Link
+            href="/account"
+            className="rounded-lg bg-[var(--color-success)] px-4 py-2.5 text-sm font-black text-[var(--color-paper)] transition hover:opacity-90"
+          >
+            Manage claimed profile
+          </Link>
+        )}
+        <Link
+          href={`/case/people/${person.slug}/suggest`}
+          className="rounded-lg border border-[var(--color-line)] px-4 py-2.5 text-sm font-black text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+        >
+          Suggest a correction
+        </Link>
+      </div>
+      <p className="mt-3 text-xs text-[var(--color-muted)]">
+        A free account is required for either action so submissions remain tied
+        to a real person and can be reviewed.
+      </p>
+    </section>
   );
 }
