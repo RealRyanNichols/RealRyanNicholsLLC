@@ -82,8 +82,8 @@ const LABELS = [
 
 export default function TheBigLiePage() {
   return (
-    <article className="rrn-page bg-[#071126] text-[#fdf8ea]">
-      <section className="border-b border-[#203a64]">
+    <article className="rrn-page">
+      <section className="border-b border-[#203a64] bg-[#071126] text-[#fdf8ea]">
         <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:py-20">
           <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_440px] lg:gap-14">
             <div>
@@ -133,7 +133,7 @@ export default function TheBigLiePage() {
         </div>
       </section>
 
-      <section className="border-b border-[#203a64]">
+      <section className="border-b border-[#203a64] bg-[#071126] text-[#fdf8ea]">
         <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
           <h2 className="font-display text-3xl font-black sm:text-4xl">
             Read that again.
@@ -158,7 +158,7 @@ export default function TheBigLiePage() {
         </div>
       </section>
 
-      <section className="border-b border-[#203a64]">
+      <section className="border-b border-[#203a64] bg-[#071126] text-[#fdf8ea]">
         <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
           <h2 className="font-display text-3xl font-black sm:text-4xl">
             The receipt
@@ -206,7 +206,7 @@ export default function TheBigLiePage() {
         </div>
       </section>
 
-      <section className="border-b border-[#203a64]">
+      <section className="border-b border-[#203a64] bg-[#071126] text-[#fdf8ea]">
         <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
           <h2 className="text-center font-display text-3xl font-black sm:text-4xl">
             Twelve charts that show you what I saw
@@ -234,7 +234,7 @@ export default function TheBigLiePage() {
         </div>
       </section>
 
-      <section className="border-b border-[#203a64]">
+      <section className="border-b border-[#203a64] bg-[#071126] text-[#fdf8ea]">
         <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
           <h2 className="font-display text-3xl font-black sm:text-4xl">
             What is inside
@@ -276,7 +276,7 @@ export default function TheBigLiePage() {
         </div>
       </section>
 
-      <section>
+      <section className="bg-[#071126] text-[#fdf8ea]">
         <div className="mx-auto max-w-3xl px-4 py-14 text-center sm:px-6">
           <h2 className="font-display text-3xl font-black sm:text-4xl">
             This report is the front door.
