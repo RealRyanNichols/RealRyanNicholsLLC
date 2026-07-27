@@ -4,5 +4,5 @@ import { redirect } from "next/navigation";
 // The bare URL used to 404; send visitors to the people/clue hub instead so
 // the case section has no dead ends.
 export default function CasePeopleIndex() {
-  redirect("/case/nexus");
+  redirect("/case?view=people");
 }
