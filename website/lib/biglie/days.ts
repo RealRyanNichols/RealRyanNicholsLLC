@@ -6,7 +6,7 @@ const LANDING = `${SITE.url}/thebiglie`;
 const BOOK = `${SITE.url}/book`;
 const TIPS = `${SITE.url}/tell-your-story`;
 
-const readBtn = { label: "Open The Report", href: REPORT, kind: "gold" as const };
+const readBtn = { label: "Open The Report", href: REPORT, kind: "solid" as const };
 const bookBtn = { label: "See Fighting Shadows", href: BOOK, kind: "ghost" as const };
 const tipsBtn = { label: "Send Receipts", href: TIPS, kind: "ghost" as const };
 const shareBtn = { label: "Share The BIG Lie", href: LANDING, kind: "ghost" as const };
@@ -28,7 +28,7 @@ export const DAYS: EmailDay[] = [
       { type: "p", text: "Thank you for putting your name on this. It matters more than you know." },
       { type: "p", text: "The BIG Lie is the report I wrote in solitary confinement, on a court issued laptop, off the government's own evidence. No internet. No library. Just what I could watch on that drive and reason out on paper." },
       { type: "buttons", buttons: [readBtn] },
-      { type: "callout", kicker: "For the next 30 days", color: "gold", text: "One email a day from me. Not spam. A guided walk through what I found, what I lived, and what has come true since. Stories, the receipts, the charts, and a few questions only you can answer. Stay with it and by day 30 you will understand January 6 in a way almost nobody does." },
+      { type: "callout", kicker: "For the next 30 days", text: "One email a day from me. Not spam. A guided walk through what I found, what I lived, and what has come true since. Stories, the receipts, the charts, and a few questions only you can answer. Stay with it and by day 30 you will understand January 6 in a way almost nobody does." },
       { type: "poll", poll: { questionKey: "who_are_you", prompt: "First, so I know who I am writing to. Which one fits you best?", options: [
         { key: "j6_family", label: "A J6 defendant, or family of one" },
         { key: "journalist", label: "A journalist or researcher" },
@@ -47,12 +47,15 @@ export const DAYS: EmailDay[] = [
     title: "What I had to work with.",
     blocks: [
       { type: "p", text: "People assume a report like this comes out of a newsroom, or a law office, with a team and a budget. Here is the honest inventory of what I built The BIG Lie with." },
-      { type: "p", text: "<b>One court issued laptop.</b> Locked down. Loaded with the government's own discovery." },
-      { type: "p", text: "<b>One evidence thumb drive.</b> 14,000+ hours of bodycam, CCTV and crowd video. Everything I could prove came off of it." },
-      { type: "p", text: "<b>Three books.</b> Whatever made it through the mail. Every outside source in this report is something I could hold in my hands." },
-      { type: "p", text: "<b>No internet.</b> Not restricted. None. I could not look anything up, check a date, or read the news." },
-      { type: "lead", text: "And what was left of my sanity, in solitary confinement. That is the honest fifth item and I am not going to dress it up." },
-      { type: "callout", kicker: "Why this matters", color: "blue", text: "Every single claim in this report had to survive being produced under those conditions. That is not a weakness. It is why it holds up." },
+      { type: "numbers", items: [
+        { n: "01", t: "One court issued laptop", d: "Locked down. Loaded with the government's own discovery." },
+        { n: "02", t: "One evidence thumb drive", d: "14,000+ hours of bodycam, CCTV and crowd video. Everything I could prove came off of it." },
+        { n: "03", t: "Three books", d: "Whatever made it through the mail. Every outside source in this report is something I could hold in my hands." },
+        { n: "04", t: "No internet", d: "Not restricted. None. I could not look anything up, check a date, or read the news." },
+        { n: "05", t: "What was left of my sanity", d: "Solitary confinement. That is the honest fifth item and I am not going to dress it up." },
+      ] },
+      { type: "chart", src: "what-i-had", alt: "What I had to work with", caption: "Chart 01 from the report." },
+      { type: "callout", kicker: "Why this matters", text: "Every single claim in this report had to survive being produced under those conditions. That is not a weakness. It is why it holds up." },
       { type: "buttons", buttons: [readBtn] },
     ],
   },
@@ -85,6 +88,7 @@ export const DAYS: EmailDay[] = [
       { type: "p", text: "I was in the Lower West Terrace tunnel. I was sprayed and beaten in there alongside men and women who are still not the same." },
       { type: "p", text: "I heard officers warn other officers that what they were doing was going to kill somebody. You can hear it yourself on the bodycam. You can watch officers trying to wave other officers off." },
       { type: "quote", text: "The tape is the tape. The bodycam does not change its story.", cite: "This is why I keep asking for the video and not the summary of the video." },
+      { type: "chart", src: "tunnel-timeline", alt: "The tunnel timeline", caption: "Four and a half hours end to end. Gold is a documented time. Blue is mine, off the footage." },
       { type: "buttons", buttons: [readBtn] },
     ],
   },
@@ -98,7 +102,7 @@ export const DAYS: EmailDay[] = [
       { type: "p", text: "Rosanne Boyland died at the mouth of that tunnel. I was near enough to that spot to carry it with me." },
       { type: "p", text: "There is video of an officer striking her with a stick while she lay motionless on the ground. The Metropolitan Police reviewed it internally and called the force objectively reasonable. Nobody was charged." },
       { type: "then_now", then: "I wrote that what happened to her was not investigated the way a death should be.", now: "Her own family were denied the full autopsy report and have said publicly they were shut out of the investigation.", tag: "On the record" },
-      { type: "callout", kicker: "Handle with care", color: "gold", text: "Her family are real people carrying real grief. I do not use her name to score points. I use it because the record deserves to be seen and her family deserve answers. If you share this, share it with that in mind." },
+      { type: "callout", kicker: "Handle with care", text: "Her family are real people carrying real grief. I do not use her name to score points. I use it because the record deserves to be seen and her family deserve answers. If you share this, share it with that in mind." },
       { type: "buttons", buttons: [readBtn] },
     ],
   },
@@ -142,7 +146,8 @@ export const DAYS: EmailDay[] = [
     blocks: [
       { type: "p", text: "The framework in this report is not something I invented in a cell to feel better. It is a documented playbook with a long history. Three objectives. Infiltrate. Agitate. Retaliate." },
       { type: "p", text: "I laid it out from the books I had and then I matched it, role by role, against what I watched in the footage." },
-      { type: "callout", kicker: "How to read me", color: "blue", text: "When I connect that playbook to that afternoon, I label it as my conclusion, not as a court finding. You will always know which is which. That honesty is the whole method." },
+      { type: "chart", src: "campaign-plan", alt: "The campaign plan", caption: "Six steps. Four covert, two overt." },
+      { type: "callout", kicker: "How to read me", text: "When I connect that playbook to that afternoon, I label it as my conclusion, not as a court finding. You will always know which is which. That honesty is the whole method." },
       { type: "buttons", buttons: [readBtn] },
     ],
   },
@@ -155,6 +160,7 @@ export const DAYS: EmailDay[] = [
     blocks: [
       { type: "p", text: "The playbook has nine roles. Medical support. Scanner and app operators. Agitators. Barricade builders. Suppliers. And more." },
       { type: "p", text: "In the report I take each one and show you who filled it that day, with stills from the footage and the exact question each one raises." },
+      { type: "chart", src: "nine-roles", alt: "Nine roles, one afternoon", caption: "Chart 10. Look at the bottom row." },
       { type: "lead", text: "Tomorrow I am going to show you the one role that was empty. It is the most important thing on the whole chart." },
       { type: "buttons", buttons: [readBtn] },
     ],
@@ -168,8 +174,9 @@ export const DAYS: EmailDay[] = [
     blocks: [
       { type: "p", text: "The playbook has a role for fire. Setting fires to drain police resources and create chaos. It is a documented part of how these operations work." },
       { type: "lead", text: "On January 6, that role was empty. Fire did not appear. And I say so, right on the chart, in plain words." },
+      { type: "band", text: "The empty row is the most credible thing in the report." },
       { type: "p", text: "I could have hidden that. It would have made my case look tidier. I left it because a record you can trust is a record that tells you what is missing." },
-      { type: "callout", kicker: "This is why", color: "green", text: "When a man shows you the hole in his own argument, that is when you can believe the rest of it. That empty role is the most credible thing in the report." },
+      { type: "callout", kicker: "This is why", text: "When a man shows you the hole in his own argument, that is when you can believe the rest of it. That empty role is the most credible thing in the report." },
       { type: "poll", poll: { questionKey: "honesty_matters", prompt: "Does it build or break your trust when I show you the gap in my own case?", options: [
         { key: "builds", label: "Builds it. That is rare." },
         { key: "neutral", label: "Neutral" },
@@ -198,6 +205,7 @@ export const DAYS: EmailDay[] = [
     blocks: [
       { type: "then_now", then: "I wrote that the Proud Boys had been infiltrated, and that the informants inside would surface eventually.", now: "At the 2023 sedition trial, defense filings referenced as many as eight or nine informants in that orbit. One marched in with the Kansas City chapter, texted his handler while it happened, and rode home with Billy Chrestman. He was never charged.", tag: "Came out after I wrote it" },
       { type: "stat", value: "55 months", label: "What Chrestman got. The informant beside him got nothing." },
+      { type: "chart", src: "connection-web", alt: "The connection web", caption: "Every line is labeled with what the relationship actually is." },
       { type: "p", text: "Same crowd. Same building. One man goes to prison for years. The other goes home. The difference is who he was working for." },
       { type: "buttons", buttons: [readBtn] },
     ],
@@ -228,7 +236,8 @@ export const DAYS: EmailDay[] = [
     blocks: [
       { type: "p", text: "If you only look at one chart in the report, look at this one." },
       { type: "p", text: "Same building. Same afternoon. Mostly the same tunnel. At the top of the chart, 78 months in prison. At the bottom, never charged at all." },
-      { type: "callout", kicker: "Every number is sourced", color: "green", text: "Each figure comes from a Justice Department release or a public court docket. The endnotes tell you which. I am not asking you to take my word for a single number." },
+      { type: "chart", src: "sentencing-disparity", alt: "The sentencing disparity", caption: "Chart 05. Every number from a DOJ release or a public docket." },
+      { type: "callout", kicker: "Every number is sourced", text: "Each figure comes from a Justice Department release or a public court docket. The endnotes tell you which. I am not asking you to take my word for a single number." },
       { type: "buttons", buttons: [readBtn, shareBtn] },
     ],
   },
@@ -243,6 +252,7 @@ export const DAYS: EmailDay[] = [
       { type: "p", text: "The man they call RedFace45 made contact with a police line with a shield. Arrested two and a half years later, and only after citizens did the identification work themselves." },
       { type: "p", text: "The man called PippiLongScarf was filmed inside that tunnel handing items to police. Never identified. Never charged. We asked the government to name him in a motion. Still nothing." },
       { type: "lead", text: "The gap between those bars is the whole argument. You do not need me to explain it. You just need to look." },
+      { type: "chart", src: "days-until-arrest", alt: "Days until arrest", caption: "Two of those bars run off the edge of the chart. They were never arrested at all." },
       { type: "buttons", buttons: [readBtn] },
     ],
   },
@@ -255,7 +265,7 @@ export const DAYS: EmailDay[] = [
     blocks: [
       { type: "p", text: "There are people in that footage, on camera, working with police in the middle of a riot, who were never identified and never charged." },
       { type: "p", text: "We asked the government to name one of them in a court motion. The answer was silence." },
-      { type: "callout", kicker: "The absence is the evidence", color: "blue", text: "I cannot tell you who they are. Nobody can, because nobody with the power to name them has. That silence, documented and dated, is itself the point." },
+      { type: "callout", kicker: "The absence is the evidence", text: "I cannot tell you who they are. Nobody can, because nobody with the power to name them has. That silence, documented and dated, is itself the point." },
       { type: "buttons", buttons: [readBtn] },
     ],
   },
@@ -268,6 +278,7 @@ export const DAYS: EmailDay[] = [
     blocks: [
       { type: "p", text: "This is the chart I could describe to a cellmate but could never show anybody. Now it is drawn." },
       { type: "p", text: "Green is who informed. Blue is who was never identified. Red is who the hammer came down on. Every single line is labeled with what the relationship actually is, so nobody can accuse me of drawing a connection I did not earn." },
+      { type: "chart", src: "connection-web", alt: "The connection web" },
       { type: "poll", poll: { questionKey: "share_intent", prompt: "Have you shared any of this yet, or thought about it?", options: [
         { key: "shared", label: "Already shared it" },
         { key: "will", label: "I will after I read the full report" },
@@ -343,7 +354,7 @@ export const DAYS: EmailDay[] = [
       { type: "p", text: "There is a lot in this report I would say differently today. I know more now. Some of it I would sharpen. A few names I would think harder about." },
       { type: "lead", text: "I left it alone anyway." },
       { type: "p", text: "I fixed spelling and formatting, and where the public record has corrected me since, I say so on the page instead of quietly editing myself. You are reading what a man wrote in a cell in 2021, not what he wishes he had written in 2026." },
-      { type: "callout", kicker: "The standard", color: "gold", text: "That is the only version worth publishing. Anything else is just me marking my own homework." },
+      { type: "callout", kicker: "The standard", text: "That is the only version worth publishing. Anything else is just me marking my own homework." },
     ],
   },
   {
@@ -359,6 +370,7 @@ export const DAYS: EmailDay[] = [
       { type: "p", text: "<b>Documented inference.</b> My conclusion, and I mark it as mine." },
       { type: "p", text: "<b>Needs authentication.</b> I believe it. I cannot prove it yet." },
       { type: "lead", text: "Every claim in the report wears one of those four tags. Now watch how much of what you read everywhere else refuses to tell you which one it is." },
+      { type: "band", text: "Once you can see the labels, you cannot unsee them." },
       { type: "buttons", buttons: [readBtn] },
     ],
   },
@@ -372,6 +384,7 @@ export const DAYS: EmailDay[] = [
       { type: "p", text: "14,000 hours of footage is 583 days of continuous video. A year and seven months of never looking away." },
       { type: "p", text: "I had all of it in that cell. What the public was shown on the news would not fill a single square on the chart I built to show you the scale." },
       { type: "lead", text: "They had the whole haystack. They showed you a few frames. I watched the haystack." },
+      { type: "chart", src: "14000-hours", alt: "What 14,000 hours looks like", caption: "583 squares. One day of continuous video each." },
       { type: "buttons", buttons: [readBtn] },
     ],
   },
@@ -384,7 +397,7 @@ export const DAYS: EmailDay[] = [
     blocks: [
       { type: "p", text: "This report exists because the government handed me its own evidence and I had the time to watch all of it. Most people who saw something that day have nowhere to put it." },
       { type: "p", text: "I built a place to put it. J6 defendants and families. Witnesses. Jail staff. Courthouse workers. East Texans. If you saw something, recorded something, or were handed something, it goes in the record." },
-      { type: "callout", kicker: "How it works", color: "green", text: "You can send it without your name. Anonymous tips get labeled Needs Authentication and nothing publishes off an anonymous tip alone. Everything gets verified before anything runs." },
+      { type: "callout", kicker: "How it works", text: "You can send it without your name. Anonymous tips get labeled Needs Authentication and nothing publishes off an anonymous tip alone. Everything gets verified before anything runs." },
       { type: "poll", poll: { questionKey: "have_receipts", prompt: "Do you have something the record should see?", options: [
         { key: "yes_have", label: "Yes, I have something" },
         { key: "know_someone", label: "I know someone who does" },
@@ -404,7 +417,7 @@ export const DAYS: EmailDay[] = [
       { type: "p", text: "You have been reading what I could prove from a cell. There is a second half, and it is what they did to me to keep me in that cell." },
       { type: "p", text: "Fighting Shadows is the memoir. Years in custody. Solitary. Forced medical treatment. Due process violations a federal judge acknowledged on the record. The pardon that came years too late. And the part nobody writes about, which is rebuilding a life with your name already destroyed." },
       { type: "p", text: "Same method as the report. Labeled. Sourced. No claim bigger than what I can back." },
-      { type: "buttons", buttons: [{ label: "Pre-order Fighting Shadows", href: BOOK, kind: "gold" }] },
+      { type: "buttons", buttons: [{ label: "Pre-order Fighting Shadows", href: BOOK, kind: "solid" }] },
       { type: "poll", poll: { questionKey: "book_interest", prompt: "Would you want the memoir?", options: [
         { key: "preorder_now", label: "Yes, taking me to pre-order" },
         { key: "when_out", label: "Tell me when it is out" },
@@ -465,9 +478,9 @@ export const DAYS: EmailDay[] = [
       { type: "p", text: "Thirty days. You did not look away. That already puts you ahead of almost everyone who has an opinion about January 6." },
       { type: "h", text: "What you did over these 30 days" },
       { type: "p", text: "You read a report written in solitary with a laptop, a thumb drive, three books, and no internet. You saw what came true after it was written. You learned to read a record by its labels. And you know what happened in that tunnel." },
-      { type: "callout", kicker: "You are not a spectator anymore", color: "green", text: "You are on the list. You know the method. You have the receipts. Whatever moved you most, that is your part of this to carry." },
+      { type: "callout", kicker: "You are not a spectator anymore", text: "You are on the list. You know the method. You have the receipts. Whatever moved you most, that is your part of this to carry." },
       { type: "lead", text: "This is not the end. When there is a new filing, new footage, a records request that came back, you will hear it from me first, before any platform decides whether to show it to you." },
-      { type: "buttons", buttons: [{ label: "Pre-order Fighting Shadows", href: BOOK, kind: "gold" }, shareBtn, tipsBtn] },
+      { type: "buttons", buttons: [{ label: "Pre-order Fighting Shadows", href: BOOK, kind: "solid" }, shareBtn, tipsBtn] },
       { type: "p", text: "Thank you for standing on the record with me. Do not threaten anyone. Do not harass anyone. Read it. Share it. Send receipts." },
     ],
   },
