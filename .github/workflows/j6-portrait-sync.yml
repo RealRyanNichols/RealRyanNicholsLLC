@@ -45,7 +45,6 @@ jobs:
     env:
       NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      SUMMARY_PATH: ${{ runner.temp }}/j6-portrait-sync-summary.json
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -56,10 +55,10 @@ jobs:
       - run: npm ci
       - name: Apply on main
         if: github.event_name == 'push' || inputs.apply == true
-        run: npx tsx scripts/sync-npr-j6-editorial-portraits.ts --apply --summary="$SUMMARY_PATH"
+        run: npx tsx scripts/sync-npr-j6-editorial-portraits.ts --apply --summary="$RUNNER_TEMP/j6-portrait-sync-summary.json"
       - name: Pull request or manual dry run
         if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.apply != true)
-        run: npx tsx scripts/sync-npr-j6-editorial-portraits.ts --dry-run --summary="$SUMMARY_PATH"
+        run: npx tsx scripts/sync-npr-j6-editorial-portraits.ts --dry-run --summary="$RUNNER_TEMP/j6-portrait-sync-summary.json"
       - name: Upload audit summary
         if: always()
         uses: actions/upload-artifact@v4
