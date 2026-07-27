@@ -25,10 +25,20 @@ const CATEGORIES: { value: Category; label: string; blurb: string }[] = [
 export function TipForm({
   defaultCategory = "national",
   subjectDefault,
-}: { defaultCategory?: Category; subjectDefault?: string } = {}) {
+  profileSlug,
+  submitterEmailDefault,
+}: {
+  defaultCategory?: Category;
+  subjectDefault?: string;
+  profileSlug?: string;
+  submitterEmailDefault?: string;
+} = {}) {
+  const isProfileSuggestion = Boolean(profileSlug);
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [category, setCategory] = useState<Category>(defaultCategory);
+  const [category, setCategory] = useState<Category>(
+    isProfileSuggestion ? "j6" : defaultCategory,
+  );
   const [shareStatus, setShareStatus] = useState<"idle" | "copied">("idle");
   const [receipt, setReceipt] = useState<{
     publicRef: string | null;
@@ -106,7 +116,8 @@ export function TipForm({
       .filter((s) => /^https?:\/\//i.test(s));
 
     const payload = {
-      category,
+      category: isProfileSuggestion ? "j6" : category,
+      profile_slug: profileSlug ?? null,
       location: String(fd.get("location") ?? "").trim() || null,
       submitter_name: String(fd.get("submitter_name") ?? "").trim() || null,
       submitter_email: String(fd.get("submitter_email") ?? "").trim() || "",
@@ -164,7 +175,9 @@ export function TipForm({
     return (
       <div className="rounded-lg border-2 border-[var(--color-accent)] bg-[var(--color-surface)] p-6">
         <h2 className="font-display text-2xl font-bold tracking-normal">
-          Tip received and logged.
+          {isProfileSuggestion
+            ? "Profile update received for review."
+            : "Tip received and logged."}
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
           It is now in Ryan&apos;s review queue and on the public-safe intake
@@ -280,45 +293,62 @@ export function TipForm({
   return (
     <form action="/api/tips" method="post" onSubmit={onSubmit} className="space-y-4">
       {/* What kind of tip — turns the J6 line into a full newsroom intake. */}
-      <div>
-        <label className="block text-sm font-semibold mb-1.5">
-          What kind of tip is this?
-          <span className="text-[var(--color-accent)] ml-1">*</span>
-        </label>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-          {CATEGORIES.map((c) => (
-            <button
-              key={c.value}
-              type="button"
-              onClick={() => {
-                setCategory(c.value);
-                trackEvent("tip_category_select", { category: c.value });
-              }}
-              aria-pressed={category === c.value}
-              className={[
-                "min-h-12 rounded-lg border-2 px-3 py-2 text-left text-sm font-bold transition",
-                category === c.value
-                  ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
-                  : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)]",
-              ].join(" ")}
-            >
-              {c.label}
-            </button>
-          ))}
+      {isProfileSuggestion ? (
+        <div className="rounded-lg border border-[var(--color-success)] bg-[var(--color-success-soft)] px-4 py-3">
+          <p className="text-xs font-black uppercase tracking-wider text-[var(--color-success)]">
+            Signed-in profile suggestion
+          </p>
+          <p className="mt-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+            This submission is tied to your account and will be reviewed before
+            anything changes on the public profile.
+          </p>
         </div>
-        <p className="mt-1.5 text-xs text-[var(--color-muted)]">
-          {CATEGORIES.find((c) => c.value === category)?.blurb}
-        </p>
-      </div>
+      ) : (
+        <div>
+          <label className="block text-sm font-semibold mb-1.5">
+            What kind of tip is this?
+            <span className="text-[var(--color-accent)] ml-1">*</span>
+          </label>
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+            {CATEGORIES.map((c) => (
+              <button
+                key={c.value}
+                type="button"
+                onClick={() => {
+                  setCategory(c.value);
+                  trackEvent("tip_category_select", { category: c.value });
+                }}
+                aria-pressed={category === c.value}
+                className={[
+                  "min-h-12 rounded-lg border-2 px-3 py-2 text-left text-sm font-bold transition",
+                  category === c.value
+                    ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
+                    : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)]",
+                ].join(" ")}
+              >
+                {c.label}
+              </button>
+            ))}
+          </div>
+          <p className="mt-1.5 text-xs text-[var(--color-muted)]">
+            {CATEGORIES.find((c) => c.value === category)?.blurb}
+          </p>
+        </div>
+      )}
 
       <Field
         key={isJ6 ? "subj-j6" : "subj-news"}
-        label={subjectLabel}
+        label={isProfileSuggestion ? "Profile" : subjectLabel}
         name="defendant_name"
         required={isJ6}
         placeholder={subjectPlaceholder}
-        hint={subjectHint}
+        hint={
+          isProfileSuggestion
+            ? "The suggestion will be attached to this exact public profile."
+            : subjectHint
+        }
         defaultValue={subjectDefault}
+        readOnly={isProfileSuggestion}
       />
 
       {category === "local" ? (
@@ -331,7 +361,11 @@ export function TipForm({
       ) : null}
 
       <Field
-        label="The story / evidence"
+        label={
+          isProfileSuggestion
+            ? "What should be corrected or added?"
+            : "The story / evidence"
+        }
         name="narrative"
         required
         textarea
@@ -363,6 +397,8 @@ export function TipForm({
           type="email"
           placeholder="Optional"
           hint="Only used to follow up. Not added to any list. Not made public."
+          defaultValue={submitterEmailDefault}
+          readOnly={isProfileSuggestion && Boolean(submitterEmailDefault)}
         />
       </div>
 
@@ -391,12 +427,17 @@ export function TipForm({
         disabled={status === "submitting"}
         className="w-full rounded-lg border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-white px-5 py-4 font-bold text-lg hover:bg-[var(--color-accent-strong)] transition disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {status === "submitting" ? "Sending..." : "Send tip"}
+        {status === "submitting"
+          ? "Sending..."
+          : isProfileSuggestion
+            ? "Submit profile update for review"
+            : "Send tip"}
       </button>
 
       <p className="text-xs text-[var(--color-muted)] text-center">
-        Tips are reviewed by hand. We do not store your IP — only a one-way
-        hash for rate limiting.
+        {isProfileSuggestion
+          ? "Profile suggestions are reviewed by hand and never change the public record automatically."
+          : "Tips are reviewed by hand. We do not store your IP — only a one-way hash for rate limiting."}
       </p>
     </form>
   );
@@ -412,6 +453,7 @@ function Field({
   placeholder,
   hint,
   defaultValue,
+  readOnly,
 }: {
   label: string;
   name: string;
@@ -422,6 +464,7 @@ function Field({
   placeholder?: string;
   hint?: string;
   defaultValue?: string;
+  readOnly?: boolean;
 }) {
   const id = `tip-${name}`;
   const baseCls =
@@ -440,6 +483,7 @@ function Field({
           rows={rows ?? 4}
           placeholder={placeholder}
           defaultValue={defaultValue}
+          readOnly={readOnly}
           className={`${baseCls} font-sans resize-y`}
         />
       ) : (
@@ -450,6 +494,7 @@ function Field({
           required={required}
           placeholder={placeholder}
           defaultValue={defaultValue}
+          readOnly={readOnly}
           className={baseCls}
         />
       )}
