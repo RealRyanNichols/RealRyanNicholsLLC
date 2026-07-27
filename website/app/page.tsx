@@ -86,7 +86,10 @@ export default async function HomePage({
                 // fold), so its capture surfaces are woven into the feed at
                 // spaced breaks too — lg:hidden here, hidden lg:block in the
                 // aside, so nothing renders twice on the same screen.
-                i === 0 ? (
+                // Poll rides AFTER the fourth post now — Ryan's call: let
+                // people breathe through the top of the feed before we ask
+                // them anything.
+                i === 3 ? (
                   <FeedPoll key="home-poll" className="my-8" />
                 ) : null,
                 i === 1 ? (
