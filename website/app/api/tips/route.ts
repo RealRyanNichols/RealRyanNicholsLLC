@@ -4,6 +4,7 @@ import { createHash } from "crypto";
 import { sendAdminAlert } from "@/lib/admin-email-alerts";
 import { buildIntakeRoutePlan } from "@/lib/intake-routing";
 import { getSupabaseServiceClient } from "@/lib/supabase/service";
+import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { SITE } from "@/lib/site";
 
 const schema = z
@@ -18,6 +19,12 @@ const schema = z
       .or(z.literal("")),
     // Subject is required for J6 case tips (whose case), optional for news.
     defendant_name: z.string().max(200).optional().or(z.literal("")),
+    profile_slug: z
+      .string()
+      .max(120)
+      .regex(/^[a-z0-9-]+$/, "Invalid profile.")
+      .optional()
+      .nullable(),
     narrative: z
       .string()
       .min(20, "Tell us a bit more — at least a couple sentences.")
@@ -57,6 +64,24 @@ export async function POST(request: Request) {
     );
   }
 
+  let authenticatedUser: {
+    email?: string;
+    user_metadata?: Record<string, unknown>;
+  } | null = null;
+  if (parsed.data.profile_slug) {
+    const authClient = await getSupabaseServerClient();
+    const {
+      data: { user },
+    } = await authClient.auth.getUser();
+    if (!user) {
+      return NextResponse.json(
+        { error: "Sign in before suggesting a profile change." },
+        { status: 401 },
+      );
+    }
+    authenticatedUser = user;
+  }
+
   const ipHash = hashIp(clientIp(request));
   let supabase: ReturnType<typeof getSupabaseServiceClient>;
   try {
@@ -66,6 +91,24 @@ export async function POST(request: Request) {
       { error: "Tip intake is not configured yet." },
       { status: 503 },
     );
+  }
+
+  let subjectName = parsed.data.defendant_name?.trim() || null;
+  if (parsed.data.profile_slug) {
+    const { data: profile } = await supabase
+      .from("case_people")
+      .select("name")
+      .eq("slug", parsed.data.profile_slug)
+      .eq("visibility", "public")
+      .eq("is_j6_defendant", true)
+      .maybeSingle();
+    if (!profile?.name) {
+      return NextResponse.json(
+        { error: "That public profile was not found." },
+        { status: 404 },
+      );
+    }
+    subjectName = profile.name;
   }
 
   const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
@@ -83,15 +126,30 @@ export async function POST(request: Request) {
   }
 
   const emailIn =
-    parsed.data.submitter_email && parsed.data.submitter_email.length > 0
+    authenticatedUser?.email ||
+    (parsed.data.submitter_email && parsed.data.submitter_email.length > 0
       ? parsed.data.submitter_email
-      : null;
+      : null);
+  const metadataName =
+    authenticatedUser?.user_metadata &&
+    (authenticatedUser.user_metadata.full_name ||
+      authenticatedUser.user_metadata.display_name);
+  const submitterName =
+    (typeof metadataName === "string" && metadataName.trim()) ||
+    parsed.data.submitter_name?.trim() ||
+    null;
+  const profileUrl = parsed.data.profile_slug
+    ? `${SITE.url}/case/people/${parsed.data.profile_slug}`
+    : null;
+  const urlsForRecord = Array.from(
+    new Set([profileUrl, ...(parsed.data.urls ?? [])].filter(Boolean)),
+  ) as string[];
   const routePlan = buildIntakeRoutePlan({
     category: parsed.data.category,
-    subject: parsed.data.defendant_name,
+    subject: subjectName,
     location: parsed.data.location,
     narrative: parsed.data.narrative,
-    urls: parsed.data.urls ?? [],
+    urls: urlsForRecord,
   });
 
   const { data: savedTip, error } = await supabase
@@ -99,11 +157,11 @@ export async function POST(request: Request) {
     .insert({
       category: parsed.data.category,
       location: parsed.data.location?.trim() || null,
-      submitter_name: parsed.data.submitter_name?.trim() || null,
+      submitter_name: submitterName,
       submitter_email: emailIn?.trim() ?? null,
-      defendant_name: parsed.data.defendant_name?.trim() || null,
+      defendant_name: subjectName,
       narrative: parsed.data.narrative.trim(),
-      urls: parsed.data.urls ?? [],
+      urls: urlsForRecord,
       ip_hash: ipHash,
       status: "pending",
       route_kind: routePlan.kind,
@@ -142,11 +200,14 @@ export async function POST(request: Request) {
     s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   const lines = [
     `Category: ${d.category}`,
-    d.defendant_name ? `Subject/Case: ${d.defendant_name.trim()}` : null,
+    subjectName ? `Subject/Case: ${subjectName}` : null,
+    profileUrl ? `Profile: ${profileUrl}` : null,
     d.location ? `Location: ${d.location.trim()}` : null,
-    d.submitter_name ? `From: ${d.submitter_name.trim()}` : "From: (anonymous)",
+    submitterName ? `From: ${submitterName}` : "From: (anonymous)",
     emailIn ? `Reply-to: ${emailIn.trim()}` : "Reply-to: (none given)",
-    d.urls && d.urls.length ? `Links submitted: ${d.urls.length}` : "Links submitted: 0",
+    urlsForRecord.length
+      ? `Links submitted: ${urlsForRecord.length}`
+      : "Links submitted: 0",
     publicRef ? `Public intake ref: ${publicRef}` : null,
     `Auto route: ${routePlan.label} (${routePlan.urgency}, ${routePlan.score})`,
   ].filter(Boolean) as string[];
@@ -165,7 +226,7 @@ export async function POST(request: Request) {
     `<p style="font-family:sans-serif;color:#555">The narrative is stored in admin and is not copied into this email.</p>` +
     `<p><a href="${SITE.url}/admin/tips?filter=pending">Review and approve in admin →</a></p>`;
   const alert = await sendAdminAlert({
-    subject: `New tip: ${d.category}${d.defendant_name ? ` — ${d.defendant_name.trim()}` : ""}`,
+    subject: `${profileUrl ? "Profile update" : "New tip"}: ${d.category}${subjectName ? ` — ${subjectName}` : ""}`,
     html,
     text,
     replyTo: emailIn?.trim() ?? null,
