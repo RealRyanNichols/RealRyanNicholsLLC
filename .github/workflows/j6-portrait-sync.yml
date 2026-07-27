@@ -53,11 +53,11 @@ jobs:
           cache: npm
           cache-dependency-path: website/package-lock.json
       - run: npm ci
-      - name: Apply on main
-        if: github.event_name == 'push' || inputs.apply == true
+      - name: Apply on explicit manual run
+        if: github.event_name == 'workflow_dispatch' && inputs.apply == true
         run: npx tsx scripts/sync-npr-j6-editorial-portraits.ts --apply --summary="$RUNNER_TEMP/j6-portrait-sync-summary.json" --patches="$RUNNER_TEMP/j6-portrait-sync-patches.json"
-      - name: Pull request or manual dry run
-        if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.apply != true)
+      - name: Pull request, push, or manual dry run
+        if: github.event_name == 'pull_request' || github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.apply != true)
         run: npx tsx scripts/sync-npr-j6-editorial-portraits.ts --dry-run --summary="$RUNNER_TEMP/j6-portrait-sync-summary.json" --patches="$RUNNER_TEMP/j6-portrait-sync-patches.json"
       - name: Upload audit package
         if: always()
