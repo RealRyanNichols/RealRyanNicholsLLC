@@ -1,0 +1,580 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-07-27T07:59:07.269Z",
+  "count": 26,
+  "review_policy": "Fail closed when the filing does not explicitly attribute a recognizable image to the named profile, when a group image is ambiguous, when the source is incomplete, or when the filing concerns a different person.",
+  "records": [
+    {
+      "profile_uuid": "18e5e41e-5c1c-454e-a50d-226440049df5",
+      "slug": "mark-middleton",
+      "name": "Mark Middleton",
+      "case_number": "21-cr-367",
+      "source": {
+        "title": "Middleton, Mark - Complaint",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1388956/download",
+        "sha256": "b7b6cade6bf30ae847fb564fba047f1d676f72e9625d9b91f8d4d2dda6db23e1",
+        "bytes": 123692,
+        "pages": 1,
+        "acquisition": {
+          "capture_timestamp": "20240306160006",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1388956/download",
+          "capture_digest": "XI3O633IEUK7G6VU632S3WDKYAQBAKV2",
+          "fetch_url": "https://web.archive.org/web/20240306160006id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1388956/download"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The exact archived DOJ URL resolves to a one-page criminal complaint with no attached affidavit, statement of facts, or defendant photograph. There is no face to crop.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "8fc68bb8-ff61-4274-b679-71813611c2d2",
+      "slug": "mark-nealy",
+      "name": "Mark Nealy",
+      "case_number": "23-mj-121",
+      "source": {
+        "title": "Nealy Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1588376/download",
+        "sha256": "02ab1efedd5b7d3183e04ff30af106cb1fc030d3bf08ff47873b7306f1992e98",
+        "bytes": 351956,
+        "pages": 6,
+        "acquisition": {
+          "capture_timestamp": "20240805033402",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1588376/dl",
+          "capture_digest": "VUGX2VU6Z6EBBGGERRNAIUFHHQO73FQE",
+          "fetch_url": "https://web.archive.org/web/20240805033402id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1588376/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The filing identifies Nealy in distant surveillance/crowd frames, but his face is too small and indistinct for a recognizable portrait-grade derivative.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "cf4abb8e-467b-4a52-a6e7-f0ac923c1193",
+      "slug": "mark-waynick",
+      "name": "Mark Waynick",
+      "case_number": "1:22-mj-28",
+      "source": {
+        "title": "Waynick Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1475371/download",
+        "sha256": "c563cdec5fc9c378624d1d60b66aebb2b307692a973bbdbd6628e3ceab06eea3",
+        "bytes": 2089287,
+        "pages": 17,
+        "acquisition": {
+          "capture_timestamp": "20250206030327",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1475371/dl",
+          "capture_digest": "GFG36ONWIXIQP2R4IMAGKEBOCSQY4B3V",
+          "fetch_url": "https://web.archive.org/web/20250206030327id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1475371/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The filing marks Waynick in a large crowd, but the only person-specific face is a tiny circled thumbnail that remains nonrecognizable when enlarged.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "ef99cd67-d53d-4a6e-8a4d-1fd4fd4eee04",
+      "slug": "matthew-martin",
+      "name": "Matthew Martin",
+      "case_number": "1:21-cr-394",
+      "source": {
+        "title": "Martin Complaint",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1388941/download",
+        "sha256": "967422db9d7749d7ce5dba0d59265ec80e1302a90c145bf3cba1010513532b87",
+        "bytes": 5698031,
+        "pages": 9,
+        "acquisition": {
+          "capture_timestamp": "20210422205803",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1388941/download",
+          "capture_digest": "ATQIUFQTIKNP343DRO7BKW6WR57EC3GN",
+          "fetch_url": "https://web.archive.org/web/20210422205803id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1388941/download"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The filing identifies Martin, but the available close frame substantially covers his face with a TRUMP mask; the remaining frames are not recognizable portrait sources.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "61a6d68c-c4c6-4c46-9233-559cae1f519a",
+      "slug": "matthew-purdy",
+      "name": "Matthew Purdy",
+      "case_number": "1:21-mj-644",
+      "source": {
+        "title": "Purdy et al Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1458956/download",
+        "sha256": "92e54b6a88945c14ed9f7e402d16b5ce3bb91f423a402e99cadcdb087defcf60",
+        "bytes": 2481317,
+        "pages": 27,
+        "acquisition": {
+          "capture_timestamp": "20250204074334",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1458956/dl",
+          "capture_digest": "SWPCAVST6DAQ4U5WXWC7LWNBXVBMU4BN",
+          "fetch_url": "https://web.archive.org/web/20250204074334id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1458956/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "Wrong-person guard: Figure 1 is Gregory Richard Purdy, not Matthew Purdy. The filing identifies Matthew only as PERSON 1 in Figure 6 and later distant frames, where his face is covered by a blue mask or too small. No safe Matthew-specific portrait is available.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "6787a5ba-987b-4736-a830-36dff7b91bb9",
+      "slug": "micajah-jackson",
+      "name": "Micajah Joel Jackson",
+      "case_number": "1:21-cr-484",
+      "source": {
+        "title": "Jackson, Micajah Noel - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1395291/download",
+        "sha256": "b6aa5f6bfbfb09233d869771b8e4b79a65499560306c9c267dc9e10575ae1f6a",
+        "bytes": 3555591,
+        "pages": 17,
+        "acquisition": {
+          "capture_timestamp": "20250524022548",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1395291/dl",
+          "capture_digest": "AFLR26AY4LS4LKNGSGVY6ASRY54RPCKQ",
+          "fetch_url": "https://web.archive.org/web/20250524022548id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1395291/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The filing explicitly attributes the mirror selfie to Micajah Jackson, but the embedded image is only 129×123 pixels and the face is too blurred and indistinct to be recognizable.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "0cdc99c2-2e02-4414-a977-7a7fb8f6349b",
+      "slug": "michael-gianos",
+      "name": "Michael Gianos",
+      "case_number": "1:21-mj-665",
+      "source": {
+        "title": "Myers Gianos Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1459076/download",
+        "sha256": "d3def9154cd3df8c279b1fefbecc251659213018010c0d26bf6509ff178e4c2e",
+        "bytes": 2313650,
+        "pages": 33,
+        "acquisition": {
+          "capture_timestamp": "20250204053349",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1459076/dl",
+          "capture_digest": "5Z2LG36I5WHU5THRDEHULSX5UKAIFTL3",
+          "fetch_url": "https://web.archive.org/web/20250204053349id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1459076/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The filing supports Gianos’s identity but does not provide an unambiguous, recognizable Gianos portrait. The usable close social-media image on the reviewed page depicts the co-defendant Rachel Myers, not Gianos.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "f68ef074-1e0e-45f1-a9c3-dda10419355a",
+      "slug": "michael-mccormick",
+      "name": "Michael Gwynn McCormick",
+      "case_number": "1:21-cr-710",
+      "source": {
+        "title": "McCormick Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1459006/download",
+        "sha256": "7c65cbbe30ac36386f789800b50708ce56f26851d8851f246041b5fc3612b54e",
+        "bytes": 574505,
+        "pages": 5,
+        "acquisition": {
+          "capture_timestamp": "20250204062323",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1459006/dl",
+          "capture_digest": "3ZHRE6CXLXZ7D5L2EBCDDBEUX2EFMM5E",
+          "fetch_url": "https://web.archive.org/web/20250204062323id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1459006/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The filing locates McCormick in distant and circled crowd/surveillance frames, but no frame contains a recognizable portrait-grade face.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "90bc3d40-810f-4bc6-bc5e-ec2ac4d044d1",
+      "slug": "michael-dillon",
+      "name": "Michael John Dillon",
+      "case_number": "1:23-mj-32",
+      "source": {
+        "title": "Dillon - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1567976/download",
+        "sha256": "0c00835ba9969dc4fc1427af8394730cbb821310ec509b65ec6f53b4874804e9",
+        "bytes": 6785688,
+        "pages": 11,
+        "acquisition": {
+          "capture_timestamp": "20250204073107",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1567976/dl",
+          "capture_digest": "DKJSBIZ3ESIUN4ATXKP4RSGA75UYZK3Q",
+          "fetch_url": "https://web.archive.org/web/20250204073107id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1567976/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The filing identifies Dillon by clothing and witness recognition, but the beige-cap face in the available surveillance frames is shadowed, low-resolution, and not recognizable enough for a profile portrait.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "b1dbbc9a-a629-4d09-9fa6-c4b4083d2be1",
+      "slug": "michael-rusyn",
+      "name": "Michael Joseph Rusyn",
+      "case_number": "1:21-cr-303",
+      "source": {
+        "title": "Rusyn Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1432551/download",
+        "sha256": "4530f87f1cf7d9eb46c6e885180f53260795ce9f6e9580af2506a3b9a673986c",
+        "bytes": 298663,
+        "pages": 6,
+        "acquisition": {
+          "capture_timestamp": "20250524023317",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1432551/dl",
+          "capture_digest": "HQOD2VYJIMYAQU2TFJ4GGYRUL56TKGYS",
+          "fetch_url": "https://web.archive.org/web/20250524023317id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1432551/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "Source mismatch: although the archive title says “Rusyn Statement of Facts,” the exact official URL’s preserved PDF is a signed Statement of Offense with no embedded face photographs. No portrait is available from this source.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "49dedf32-07a2-407e-bd81-5039a6d4ec74",
+      "slug": "michael-hardin",
+      "name": "Michael Lee Hardin",
+      "case_number": "1:21-cr-280",
+      "source": {
+        "title": "Hardin Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1382936/download",
+        "sha256": "95eaa65da6f7b823b125c9410f20bbb500e9d3dba884311eb961b5c9be3ce8f3",
+        "bytes": 1402275,
+        "pages": 6,
+        "acquisition": {
+          "capture_timestamp": "20240627120035",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1382936/dl",
+          "capture_digest": "B6NSYVTBBDPIYT5GJH4XAH7H3GTSHDFF",
+          "fetch_url": "https://web.archive.org/web/20240627120035id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1382936/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The filing identifies Hardin in distant circled surveillance imagery, but his face is too small and indistinct for a recognizable portrait.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "fc2a5abf-9f61-45f3-aaa7-d74e097f501e",
+      "slug": "michael-perkins",
+      "name": "Michael Steven Perkins",
+      "case_number": "1:21-mj-499",
+      "source": {
+        "title": "Pollock et al. Complaint & Affidavit",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1410336/download",
+        "sha256": "ea46aa07bee79f616fa63f8730ff6d76c1c8058632f384c7d2bb26b75b4c3443",
+        "bytes": 38146630,
+        "pages": 54,
+        "acquisition": {
+          "capture_timestamp": "20250113005312",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1410336/dl",
+          "capture_digest": "226CYC7KSKVJFFLOKO37Y3VMQMZC7SJC",
+          "fetch_url": "https://web.archive.org/web/20250113005312id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1410336/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The filing identifies Perkins, but the only potentially usable close frame covers his face with a knit hat and blue-white gaiter. No recognizable uncovered portrait is available.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "9798f990-545a-4cba-8713-78d4b6ea6fa7",
+      "slug": "michael-curzio",
+      "name": "Michael Thomas Curzio",
+      "case_number": "1:21-cr-41",
+      "source": {
+        "title": "Curzio Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1417966/download",
+        "sha256": "aa6093ea2149cde4b1ff0036f305ef97a3dc88d7f9d131380b0fa28fd898967c",
+        "bytes": 1552442,
+        "pages": 5,
+        "acquisition": {
+          "capture_timestamp": "20250524021822",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1417966/dl",
+          "capture_digest": "UYFLZONTH2LKWER72C2UTPDF7A3KNMG7",
+          "fetch_url": "https://web.archive.org/web/20250524021822id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1417966/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "Source mismatch: although the archive title says “Curzio Statement of Facts,” the exact official URL’s preserved PDF is a signed Statement of Offense with no embedded face photographs. No portrait is available from this source.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "280bfa8f-2d8b-475c-95eb-722cb7dcdb65",
+      "slug": "nester-lynnwood",
+      "name": "Nester Lynnwood",
+      "case_number": "1:22-mj-104",
+      "source": {
+        "title": "Nester - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1507516/download",
+        "sha256": "805cecba0d6928d4e48be59ced66f6a671f3f641224be351c7beded36f3bda19",
+        "bytes": 1759345,
+        "pages": 13,
+        "acquisition": {
+          "capture_timestamp": "20250206013348",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1507516/dl",
+          "capture_digest": "3AQRTEN7FDS4VJNKNMFLDGWCMRGUVNBA",
+          "fetch_url": "https://web.archive.org/web/20250206013348id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1507516/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "Duplicate-profile guard: “Nester Lynnwood” is a reversed-name duplicate of Lynnwood Nester, whose canonical profile already has a verified portrait. A second derivative was not created for the malformed duplicate record.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "6faa4a07-6167-49f3-9679-c0ebe41f2a84",
+      "slug": "nicholas-krauss",
+      "name": "Nicholas Krauss",
+      "case_number": "1:22-mj-252",
+      "source": {
+        "title": "Krauss - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1551966/download",
+        "sha256": "809502f05a8b3078f3077563ce1af3d6b9ed1f7657ad544b389d17a21dcd2149",
+        "bytes": 924718,
+        "pages": 7,
+        "acquisition": {
+          "capture_timestamp": "20221128002703",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1551966/download",
+          "capture_digest": "NPXJGJLZBVAGHUAZXJ2OSKCQZZ6K674O",
+          "fetch_url": "https://web.archive.org/web/20221128002703id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1551966/download"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The filing identifies Krauss only in masked or hooded group images. His face is covered, and no recognizable unmasked portrait can be isolated.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "73e40891-1af5-4788-9950-9b010c5dfa42",
+      "slug": "paul-rae",
+      "name": "Paul Rae",
+      "case_number": "1:21-cr-378",
+      "source": {
+        "title": "Rae Affidavit in Support",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1381166/download",
+        "sha256": "34216a60d326aec22f670bde0120c8cf8499c5638ee1806bc0a84078b75671b8",
+        "bytes": 6128418,
+        "pages": 16,
+        "acquisition": {
+          "capture_timestamp": "20240809155020",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1381166/dl",
+          "capture_digest": "OY2ISLN3CNTAVJMSN54KJKVVFQIPEP2A",
+          "fetch_url": "https://web.archive.org/web/20240809155020id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1381166/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "Fail-closed attribution guard: the filing's clearest single-person frame on page 10 has no person-specific caption or adjacent wording that explicitly says the pictured man is Rae. The later expressly attributed group image shows Rae only as a small cap-and-sunglasses face. No safely attributable portrait-grade crop is available.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "aead3af2-0af6-4a35-a2e6-d59e2c00a28b",
+      "slug": "paul-bernewitz",
+      "name": "Paul Von Bernewitz",
+      "case_number": "21-cr-307",
+      "source": {
+        "title": "Von Bernewitz Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1393396/download",
+        "sha256": "cc5fdffe3f8c0471f00224a0f7136772a870263a0d2986ae237bbf5e0eddd08a",
+        "bytes": 204284,
+        "pages": 4,
+        "acquisition": {
+          "capture_timestamp": "20250524023641",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1393396/dl",
+          "capture_digest": "LI5IQSAUUAKC7KU5OGMQIU2O7HVXGYHA",
+          "fetch_url": "https://web.archive.org/web/20250524023641id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1393396/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The filing's sole person-specific photograph shows Von Bernewitz from the rear/oblique side while seated in the Senate Gallery. It does not show a recognizable face.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "1c98ab03-47f7-4821-9e5c-6faaa83593e2",
+      "slug": "philip-kramer",
+      "name": "Philip Edward Kramer",
+      "case_number": "1:21-cr-413",
+      "source": {
+        "title": "Kramer Complaint & Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1393626/download",
+        "sha256": "fea704e40aa2e467a805c22574f9b86685f7213f1b408cdeb73713e82fcb2fa5",
+        "bytes": 1863575,
+        "pages": 11,
+        "acquisition": {
+          "capture_timestamp": "20240627115920",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1393626/dl",
+          "capture_digest": "AVTYD5V3AI2ZDCRLRVWO7KHWYNQXZ5K3",
+          "fetch_url": "https://web.archive.org/web/20240627115920id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1393626/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The LinkedIn profile image is a tiny helmeted cyclist whose face is not recognizable, while the Capitol images show Kramer at distance with his face obscured by a hat or angle. No safe portrait source is available.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "19c33c1b-9c02-48ac-8518-6d158ca78b1a",
+      "slug": "rachel-myers",
+      "name": "Rachel Myers",
+      "case_number": "1:22-cr-74",
+      "source": {
+        "title": "Myers Gianos Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1459076/download",
+        "sha256": "d3def9154cd3df8c279b1fefbecc251659213018010c0d26bf6509ff178e4c2e",
+        "bytes": 2313650,
+        "pages": 33,
+        "acquisition": {
+          "capture_timestamp": "20250204053349",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1459076/dl",
+          "capture_digest": "5Z2LG36I5WHU5THRDEHULSX5UKAIFTL3",
+          "fetch_url": "https://web.archive.org/web/20250204053349id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1459076/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The filing identifies Myers mainly by clothing, platinum hair, scarf, and backpack in distant, overhead, or rear-view footage. The only expressly Myers-specific final image shows her from behind. No recognizable face is available.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "8cc6e5fc-8889-4f15-9f6a-100632f71b82",
+      "slug": "raechel-genco",
+      "name": "Raechel Genco",
+      "case_number": "1:22-cr-62",
+      "source": {
+        "title": "Genco - Complaint & Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1371391/download",
+        "sha256": "ace4e4e4f9f2a86d266e05dd6ba0023f7e03583149012b7ef0c13b4270bc3e50",
+        "bytes": 712030,
+        "pages": 6,
+        "acquisition": {
+          "capture_timestamp": null,
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1371391/dl",
+          "capture_digest": null,
+          "fetch_url": "https://web.archive.org/web/20231201000000id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1371391/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The filing explicitly identifies Genco, but the only frontal person-specific face is an approximately 60-pixel, motion-blurred detail partially obscured by a scarf. It fails the recognizable portrait-resolution threshold.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "ecf91cf7-eb95-4b12-aa5a-a68fb17ee7e6",
+      "slug": "rafael-valadez",
+      "name": "Rafael Valadez Jr.",
+      "case_number": "1:21-cr-695",
+      "source": {
+        "title": "Valadez Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1458971/download",
+        "sha256": "d50368fda0424587a150019913177bf37eec064e1f8c5ca2f2e4f35e81be3f3f",
+        "bytes": 463909,
+        "pages": 5,
+        "acquisition": {
+          "capture_timestamp": "20250206060051",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1458971/dl",
+          "capture_digest": "U2MF7IW2AKYWHYMZ5CDKOVLACJ7IVITO",
+          "fetch_url": "https://web.archive.org/web/20250206060051id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1458971/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The filing identifies Valadez by a white cowboy hat and clothing in phone and CCTV footage, but all views are distant, top-down, rear-facing, or hat-obscured. No recognizable face can be isolated.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "13eb4467-b86f-4297-bc11-a94d9c5fd311",
+      "slug": "raul-jarrin",
+      "name": "Raul Eduardo Jarrin",
+      "case_number": "1:22-mj-45",
+      "source": {
+        "title": "Jarrin Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1481476/download",
+        "sha256": "4550bfc72cd09844fa6e03c4e3de9e2ae0e06d7a18847051f3ea64cecc85e7b4",
+        "bytes": 1390397,
+        "pages": 8,
+        "acquisition": {
+          "capture_timestamp": null,
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1481476/dl",
+          "capture_digest": null,
+          "fetch_url": "https://web.archive.org/web/20231201000000id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1481476/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The filing identifies Jarrin by a red jacket, red knit cap, and backpack, but the available frames are overhead, rear-facing, or too distant to show a recognizable face.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "ce9e2c0c-4721-4369-b983-3e620ff3bc8f",
+      "slug": "richard-barnard",
+      "name": "Richard Franklin Barnard III",
+      "case_number": "1:21-cr-235",
+      "source": {
+        "title": "Barnard & Witcher - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1378401/download",
+        "sha256": "c9071ab48e07b8aed6b0b740731f51c38a9366e60f3736ba02e25c3d997515be",
+        "bytes": 508928,
+        "pages": 7,
+        "acquisition": {
+          "capture_timestamp": null,
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1378401/dl",
+          "capture_digest": null,
+          "fetch_url": "https://web.archive.org/web/20231201000000id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1378401/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "Wrong-person guard: Figure 1 expressly identifies Barnard as the left-hand man, whose face is covered by a USMC-pattern mask; the clear unmasked man on the right is Witcher. Later Barnard images remain masked, rear-facing, or side-obscured.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "5585fb54-e64f-4782-9084-afd3c0d7aa11",
+      "slug": "richard-escalera",
+      "name": "Richard J. Escalera",
+      "case_number": "1:22-mj-224",
+      "source": {
+        "title": "Escalera - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1546281/download",
+        "sha256": "5e63587e82dca253118da731e27742469e8cc16adaf4f05cbb0ab3b30c796e8d",
+        "bytes": 656009,
+        "pages": 7,
+        "acquisition": {
+          "capture_timestamp": null,
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1546281/download",
+          "capture_digest": null,
+          "fetch_url": "https://web.archive.org/web/20231201000000id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1546281/download"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "All Escalera-specific frames are distant CCTV or crowd views with a hood, mask, or downward angle. None contains a recognizable face suitable for a profile portrait.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "3cdaa583-641a-49b4-8234-12f2b90983bc",
+      "slug": "robert-ballesteros",
+      "name": "Robert Ballesteros",
+      "case_number": "1:21-cr-580",
+      "source": {
+        "title": "Ballesteros - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1378371/download",
+        "sha256": "c5081e052ca0c974a91c23e4c687b1e4bc14adef30d2562bd7b1dfa3d85192db",
+        "bytes": 340572,
+        "pages": 4,
+        "acquisition": {
+          "capture_timestamp": null,
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1378371/dl",
+          "capture_digest": null,
+          "fetch_url": "https://web.archive.org/web/20231201000000id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1378371/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The closest defendant-supplied selfie covers Ballesteros's lower face with a black mask. The remaining imagery is distant or rear-facing, so no unmasked recognizable portrait is available.",
+      "publishable": false
+    },
+    {
+      "profile_uuid": "b21bee65-5788-48c8-a5db-7b8c0186d473",
+      "slug": "robert-petrosh",
+      "name": "Robert Lee Petrosh Jr.",
+      "case_number": "1:21-cr-347",
+      "source": {
+        "title": "Petrosh Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1392101/download",
+        "sha256": "7ff979b2dd9a171912e2a58c0371f872a10c01497c480e32b5cb9bac4c22eb12",
+        "bytes": 1587053,
+        "pages": 4,
+        "acquisition": {
+          "capture_timestamp": null,
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1392101/dl",
+          "capture_digest": null,
+          "fetch_url": "https://web.archive.org/web/20231201000000id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1392101/dl"
+        }
+      },
+      "decision": "reject_no_publishable_portrait",
+      "reason": "The filing's marked images show Petrosh wearing a black face mask or from distant overhead CCTV. No frame exposes enough of his face for a recognizable portrait.",
+      "publishable": false
+    }
+  ]
+}
