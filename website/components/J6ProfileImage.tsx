@@ -2,7 +2,13 @@ import Link from "next/link";
 import type { CasePerson } from "@/lib/case";
 import { isClearedJ6Portrait } from "@/lib/j6-portrait";
 
-export function J6ProfileImage({ person }: { person: CasePerson }) {
+export function J6ProfileImage({
+  person,
+  variant = "detail",
+}: {
+  person: CasePerson;
+  variant?: "detail" | "card";
+}) {
   const hasClearedPortrait = isClearedJ6Portrait(person);
   const imageUrl = hasClearedPortrait
     ? person.photo_url!
@@ -12,6 +18,34 @@ export function J6ProfileImage({ person }: { person: CasePerson }) {
     (hasClearedPortrait
       ? `${person.name} profile photograph in the January 6 case archive`
       : `Archive identity card for ${person.name}; verified portrait not yet available`);
+
+  if (variant === "card") {
+    return (
+      <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#071123]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={imageUrl}
+          alt={alt}
+          className={[
+            "h-full w-full",
+            hasClearedPortrait
+              ? "object-cover object-top"
+              : "bg-[#071123] object-contain",
+          ].join(" ")}
+        />
+        <span
+          className={[
+            "absolute bottom-3 left-3 rounded-full px-2.5 py-1 text-[9px] font-black uppercase tracking-wider shadow",
+            hasClearedPortrait
+              ? "bg-emerald-800 text-white"
+              : "bg-[#071123]/95 text-[#e1bd5b]",
+          ].join(" ")}
+        >
+          {hasClearedPortrait ? "Verified portrait" : "Portrait needed"}
+        </span>
+      </div>
+    );
+  }
 
   return (
     <figure className="mt-5 overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-paper)]">
@@ -48,10 +82,10 @@ export function J6ProfileImage({ person }: { person: CasePerson }) {
         </span>
         {!hasClearedPortrait ? (
           <Link
-            href={`/submit?type=j6&about=${encodeURIComponent(person.name)}`}
+            href={`/case/people/${person.slug}/suggest`}
             className="shrink-0 font-black text-[var(--color-accent)] hover:underline"
           >
-            Submit a verified portrait →
+            Suggest a verified portrait →
           </Link>
         ) : person.photo_source_url ? (
           <a
