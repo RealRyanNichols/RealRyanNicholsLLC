@@ -580,6 +580,7 @@ function PhotoUploadForm({ personId }: { personId: string }) {
     const fd = new FormData();
     fd.append("person_id", personId);
     fd.append("file", file);
+    fd.append("publication_rights_attested", "true");
     fd.append("title", title.trim());
     if (caption.trim()) fd.append("caption", caption.trim());
     try {
@@ -781,6 +782,7 @@ function AvatarUploadForm({
 }) {
   const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
+  const [rightsAttested, setRightsAttested] = useState(false);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
 
@@ -791,11 +793,16 @@ function AvatarUploadForm({
       setMsg("Pick an image.");
       return;
     }
+    if (!rightsAttested) {
+      setMsg("Confirm that you own the photograph or may publish it.");
+      return;
+    }
     setBusy(true);
     setMsg(null);
     const fd = new FormData();
     fd.append("person_id", personId);
     fd.append("file", file);
+    fd.append("publication_rights_attested", String(rightsAttested));
     try {
       const res = await fetch("/api/account/j6/avatar", {
         method: "POST",
@@ -808,6 +815,7 @@ function AvatarUploadForm({
       }
       setMsg("Profile photo updated. Live on your public profile.");
       setFile(null);
+      setRightsAttested(false);
       router.refresh();
     } catch {
       setMsg("Network error.");
@@ -839,6 +847,21 @@ function AvatarUploadForm({
         onChange={(e) => setFile(e.target.files?.[0] ?? null)}
         className="w-full text-sm file:mr-3 file:rounded-md file:border-0 file:bg-[var(--color-accent)] file:text-[var(--color-paper)] file:font-bold file:px-3 file:py-1.5 file:hover:bg-[var(--color-accent-strong)]"
       />
+      <label className="flex items-start gap-2 text-xs leading-relaxed text-[var(--color-muted)]">
+        <input
+          type="checkbox"
+          name="publication_rights_attested"
+          value="true"
+          checked={rightsAttested}
+          onChange={(e) => setRightsAttested(e.target.checked)}
+          required
+          className="mt-0.5"
+        />
+        <span>
+          I own this photograph or have permission to publish it on my public
+          profile.
+        </span>
+      </label>
       {msg ? <p className="text-sm text-[var(--color-accent)]">{msg}</p> : null}
       <button
         type="submit"
