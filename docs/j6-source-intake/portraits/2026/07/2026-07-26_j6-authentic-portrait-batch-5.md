@@ -22,6 +22,10 @@ Those guards prevent the migration from overwriting a better or concurrently ver
 
 The profile photograph is not presented as a booking photograph or a new portrait session. It is accurately credited as a crop from the FBI’s AFO #94 evidence-video composite.
 
+## Deployment sequencing
+
+The static portrait must return successfully from the production image URL before the guarded database migration is applied. This asset-first sequence prevents the public profile from pointing to a file that production cannot yet serve.
+
 ## Withheld candidates and resume cursor
 
 Julian Khater was reviewed from two United States Capitol Police body-camera videos hosted by Wikimedia Commons as public-domain federal works. The video captions identify Khater and use a red arrow to track him, and DOJ separately identifies him as FBI seeking-information photograph #190. The reviewed frames show him too far from the camera for a truthful profile portrait, so no image was extracted.
