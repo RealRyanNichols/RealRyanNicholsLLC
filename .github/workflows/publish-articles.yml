@@ -5,6 +5,10 @@ name: publish-articles
 # in, merge to main, and it goes live. Works for Codex, Claude Code, or Ryan.
 # Re-uses the same Supabase secrets as the courtlistener/doj pipelines.
 
+concurrency:
+  group: publish-articles-production
+  cancel-in-progress: true
+
 on:
   push:
     branches: [main]
@@ -17,6 +21,8 @@ permissions:
 
 jobs:
   publish:
+    # Manual recovery may only replay the authoritative production branch.
+    if: github.event_name == 'push' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     defaults:
