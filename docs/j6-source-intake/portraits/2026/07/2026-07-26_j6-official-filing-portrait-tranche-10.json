@@ -1,0 +1,946 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-07-27T07:59:07.269Z",
+  "cohort": "First 50 deterministic M-Z slug order among public J6 placeholder profiles with a DOJ complaint, affidavit, or statement-of-facts source.",
+  "count": 24,
+  "review_policy": "Fail closed: publish only a recognizable frame with explicit person-specific attribution in the cited filing.",
+  "rights_boundary": "Documented editorial use only. Identity and provenance are established by the cited filing, but the filing does not establish copyright ownership, public-domain status, or a transferable license for its embedded images.",
+  "records": [
+    {
+      "profile_uuid": "7e0c97bc-da24-4ebc-be8f-ec99b7e1a7f2",
+      "slug": "mahailya-pryer",
+      "name": "Mahailya Pryer",
+      "case_number": "1:21-cr-667",
+      "source": {
+        "title": "Hentschel and Pryer Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1457716/download",
+        "sha256": "25cacb4b0de0ad0e8a90091edf994ed90c9204f16da68c968033ffb85608da51",
+        "bytes": 1116761,
+        "pages": 14,
+        "acquisition": {
+          "capture_timestamp": "20250206033910",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1457716/dl",
+          "capture_digest": "OP2KO3RFJMIKKVQFLQQJ7VV2YL6KOTF6",
+          "fetch_url": "https://web.archive.org/web/20250206033910id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1457716/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 5,
+        "printed_page": "PDF page 5",
+        "figure": "Image 3, left-hand woman wearing the red-white-blue “45” stocking hat"
+      },
+      "attribution_text": "The filing describes the woman on the left in Image 3 as wearing the red-white-blue stocking hat marked “45” and says that, after witness interviews and meeting her in person, the affiant identified her as Mahailya Pryer.",
+      "derivative": {
+        "sha256": "602b9ce2a2f604364d4e7f90b53ac0f6e71f63271e8bdf9332ca64ec546ae780",
+        "bytes": 88467,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific 4:5 crop from the cited filing image, resized to 800x1000 JPEG with mild source-pixel sharpening; no generative content.",
+        "public_path": "/uploads/j6-profiles/mahailya-pryer-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Mahailya Pryer",
+      "credit": "Image embedded in Hentschel and Pryer Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing’s person-specific wording and figure placement. The filing describes the woman on the left in Image 3 as wearing the red-white-blue stocking hat marked “45” and says that, after witness interviews and meeting her in person, the affiant identified her as Mahailya Pryer. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "1c9ae9fe-7be4-4be7-b596-9efdad4a7542",
+      "slug": "mandy-robinson-hand",
+      "name": "Mandy Robinson-Hand",
+      "case_number": "1:22-cr-111",
+      "source": {
+        "title": "Robinson-Hand Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1482891/download",
+        "sha256": "9bc6b7e42e06b76a0fdfbb74252507b472de17936cc847096960602b0bc728a9",
+        "bytes": 756841,
+        "pages": 10,
+        "acquisition": {
+          "capture_timestamp": "20250206180046",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1482891/dl",
+          "capture_digest": "OGUXE6QMHT5X5YSO46ME754UQHBOKPMO",
+          "fetch_url": "https://web.archive.org/web/20250206180046id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1482891/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 3,
+        "printed_page": "PDF page 3",
+        "figure": "CCTV composite, lower-left woman"
+      },
+      "attribution_text": "A witness who knew Hand and Robinson-Hand through personal interactions positively identified both people in the CCTV screenshots. The filing separately describes Robinson-Hand as the brown-haired woman in a red shirt, black hooded jacket, ripped blue jeans, and dark sneakers.",
+      "derivative": {
+        "sha256": "ad14b56a5130392f5276955c128015b7555c63f38c7e3b0c5a8c511eb8b920ff",
+        "bytes": 82942,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific 4:5 crop from the cited filing image, resized to 800x1000 JPEG with mild source-pixel sharpening; no generative content.",
+        "public_path": "/uploads/j6-profiles/mandy-robinson-hand-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Mandy Robinson-Hand",
+      "credit": "Image embedded in Robinson-Hand Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing’s person-specific wording and figure placement. A witness who knew Hand and Robinson-Hand through personal interactions positively identified both people in the CCTV screenshots. The filing separately describes Robinson-Hand as the brown-haired woman in a red shirt, black hooded jacket, ripped blue jeans, and dark sneakers. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "09e66919-60d5-48a1-8f26-d5f92cf5b31b",
+      "slug": "marc-bru",
+      "name": "Marc Bru",
+      "case_number": "21-cr-352",
+      "source": {
+        "title": "Bru Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1382591/download",
+        "sha256": "2000ca988ca77a4b306151c933043414140dd298a1649f384519c3714ab9d56e",
+        "bytes": 1945686,
+        "pages": 15,
+        "acquisition": {
+          "capture_timestamp": "20250524021600",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1382591/dl",
+          "capture_digest": "A2B4KX4QCLZQGXYKX7Z345NNFBDEWVYC",
+          "fetch_url": "https://web.archive.org/web/20250524021600id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1382591/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 3,
+        "printed_page": "Document 1-1, page 3",
+        "figure": "Facebook profile screenshot under the name Marc Bru"
+      },
+      "attribution_text": "The filing says two tipsters recognized the person in the Facebook profile screenshot as Marc Bru and that the affiant compared the photographs with Bru’s Washington Department of Licensing photograph and believed they showed the same person.",
+      "derivative": {
+        "sha256": "9f8936ed5547bcd8f52de692545159e39557e5978f6f2d09d836f79ca84cac55",
+        "bytes": 89317,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific 4:5 crop from the cited filing image, resized to 800x1000 JPEG with mild source-pixel sharpening; no generative content.",
+        "public_path": "/uploads/j6-profiles/marc-bru-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Marc Bru",
+      "credit": "Image embedded in Bru Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing’s person-specific wording and figure placement. The filing says two tipsters recognized the person in the Facebook profile screenshot as Marc Bru and that the affiant compared the photographs with Bru’s Washington Department of Licensing photograph and believed they showed the same person. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "cb92c029-e2e3-43b2-9897-a2dbc641d964",
+      "slug": "marilyn-fassell",
+      "name": "Marilyn Fassell",
+      "case_number": "1:21-cr-692",
+      "source": {
+        "title": "Fassell - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1520861/download",
+        "sha256": "078585950af6f1be7eb15f93d0fb4c97883afb4f3d51386c5c6b34c962049c92",
+        "bytes": 544303,
+        "pages": 7,
+        "acquisition": {
+          "capture_timestamp": "20250206074455",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1520861/dl",
+          "capture_digest": "HX6SGC7O3M3KTZ44HJR3Z5I4W5IY4BAL",
+          "fetch_url": "https://web.archive.org/web/20250206074455id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1520861/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 4,
+        "printed_page": "Document 1-1, page 4",
+        "figure": "Selfie-style cigarette photograph"
+      },
+      "attribution_text": "The filing states that Marilyn Fassell took this selfie-style photograph of herself smoking a cigarette and that a witness who knew the couple confirmed it was the same photograph previously shown to her.",
+      "derivative": {
+        "sha256": "d5ab073646c7df2127dc45b6798fce4caf42fc82ca960377e183df26a064ecbd",
+        "bytes": 70225,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific 4:5 crop from the cited filing image, resized to 800x1000 JPEG with mild source-pixel sharpening; no generative content.",
+        "public_path": "/uploads/j6-profiles/marilyn-fassell-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Marilyn Fassell",
+      "credit": "Image embedded in Fassell - Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing’s person-specific wording and figure placement. The filing states that Marilyn Fassell took this selfie-style photograph of herself smoking a cigarette and that a witness who knew the couple confirmed it was the same photograph previously shown to her. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "4dd69a3d-8706-4706-a1b8-58567265abe5",
+      "slug": "mark-ponder",
+      "name": "Mark K. Ponder",
+      "case_number": "1:21-cr-259",
+      "source": {
+        "title": "Ponder - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1379091/download",
+        "sha256": "f237fd1b4f1c81c2d83a2a12bfe283bb066b39c721586a711b50949fd0fa1634",
+        "bytes": 777747,
+        "pages": 11,
+        "acquisition": {
+          "capture_timestamp": "20250524023146",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1379091/dl",
+          "capture_digest": "6KZBN2ZPG4NSYVVIEMVC3F5PUKL5NTW7",
+          "fetch_url": "https://web.archive.org/web/20250524023146id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1379091/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 9,
+        "printed_page": "PDF page 9",
+        "figure": "Body-worn-camera frame during identity-document review"
+      },
+      "attribution_text": "The filing states that officers arrested the person later identified as Mark Ponder, reviewed identification taken from him, and that the body-worn-camera frame depicts that identity-document review.",
+      "derivative": {
+        "sha256": "7b62d79a8cfe8d04b417f63372d859873c1607c4055aa7f8fe7ed4503e9c25e5",
+        "bytes": 108313,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific 4:5 crop from the cited filing image, resized to 800x1000 JPEG with mild source-pixel sharpening; no generative content.",
+        "public_path": "/uploads/j6-profiles/mark-ponder-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Mark K. Ponder",
+      "credit": "Image embedded in Ponder - Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing’s person-specific wording and figure placement. The filing states that officers arrested the person later identified as Mark Ponder, reviewed identification taken from him, and that the body-worn-camera frame depicts that identity-document review. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "4bf60e5b-ebc1-40e0-82c2-9ce87f4754e2",
+      "slug": "mark-rebegila",
+      "name": "Mark Roger Rebegila",
+      "case_number": "1:21-cr-283",
+      "source": {
+        "title": "Rebegila - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1379146/download",
+        "sha256": "ddf60e8b57a2aea9d633984e83d23cb602a29d2161adcbaa11e12297451df1e4",
+        "bytes": 751380,
+        "pages": 6,
+        "acquisition": {
+          "capture_timestamp": "20250524023224",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1379146/dl",
+          "capture_digest": "PS57AE46EV27MWQNI4YZMVM3TVRDIN44",
+          "fetch_url": "https://web.archive.org/web/20250524023224id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1379146/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 3,
+        "printed_page": "Document 1-1, page 3 of 6",
+        "figure": "Defendant-supplied photograph, right-hand man"
+      },
+      "attribution_text": "The filing says the photograph was sent by Rebegila as a photograph of himself and expressly identifies Rebegila as the person on the right wearing a dark blue jacket and Trump 2020 stocking cap.",
+      "derivative": {
+        "sha256": "9426f55633e0354ffcff02e12ed8803c90f4756f91fca8dfcf880cac38189f85",
+        "bytes": 88255,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific 4:5 crop from the cited filing image, resized to 800x1000 JPEG with mild source-pixel sharpening; no generative content.",
+        "public_path": "/uploads/j6-profiles/mark-rebegila-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Mark Roger Rebegila",
+      "credit": "Image embedded in Rebegila - Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing’s person-specific wording and figure placement. The filing says the photograph was sent by Rebegila as a photograph of himself and expressly identifies Rebegila as the person on the right wearing a dark blue jacket and Trump 2020 stocking cap. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "a6471429-8282-4167-8428-4a58779988a7",
+      "slug": "matthew-baggott",
+      "name": "Matthew Baggott",
+      "case_number": "1:21-cr-411",
+      "source": {
+        "title": "Parks Baggott Complaint & Affidavit",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1401226/download",
+        "sha256": "fbe95b1a8bd9a78c29ef57eca3a82bc93ae430f190480299f8e01aa3196ffc7f",
+        "bytes": 1068110,
+        "pages": 15,
+        "acquisition": {
+          "capture_timestamp": "20250123105239",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1401226/dl",
+          "capture_digest": "SQLVZ62J3HW3JGHUMNV5WNXKKNQ47IOM",
+          "fetch_url": "https://web.archive.org/web/20250123105239id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1401226/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 11,
+        "printed_page": "PDF page 11",
+        "figure": "Paragraph 16 Capitol-surveillance image, red sweatshirt and dark cap"
+      },
+      "attribution_text": "A witness who knew Stewart Parks identified the red-sweatshirt, dark-cap person as Matthew Baggott. The affiant then compared that person with Baggott’s driver-license photograph and stated that the images in paragraphs 14 and 16 depict Matthew Baggott.",
+      "derivative": {
+        "sha256": "90e11ac3afdab57ecb31972cb9cd1f646839f029e351ead8cc2c330e63bc5a37",
+        "bytes": 66748,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific 4:5 crop from the cited filing image, resized to 800x1000 JPEG with mild source-pixel sharpening; no generative content.",
+        "public_path": "/uploads/j6-profiles/matthew-baggott-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Matthew Baggott",
+      "credit": "Image embedded in Parks Baggott Complaint & Affidavit, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing’s person-specific wording and figure placement. A witness who knew Stewart Parks identified the red-sweatshirt, dark-cap person as Matthew Baggott. The affiant then compared that person with Baggott’s driver-license photograph and stated that the images in paragraphs 14 and 16 depict Matthew Baggott. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "5876f8fa-a21b-4799-835f-9cef6429f08a",
+      "slug": "michael-brock",
+      "name": "Michael Leon Brock",
+      "case_number": "1:21-mj-527",
+      "source": {
+        "title": "Brock Complaint & Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1413551/download",
+        "sha256": "4be4bc2da701a0a45ba159aa77f3607329573617ed7fe4d053c7952c16e2711f",
+        "bytes": 453118,
+        "pages": 6,
+        "acquisition": {
+          "capture_timestamp": "20250227130649",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1413551/dl",
+          "capture_digest": "ZRO7CUVDHFYXWR4KVHBAXPUIUEP3JUS6",
+          "fetch_url": "https://web.archive.org/web/20250227130649id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1413551/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 3,
+        "printed_page": "PDF page 3",
+        "figure": "Figure One, yellow-circled man in green hoodie"
+      },
+      "attribution_text": "The filing identifies the yellow-circled man in Figure One as Michael Leon Brock. Two confidential witnesses who had known Brock for approximately twenty years and two years, respectively, separately identified the same circled person as Brock.",
+      "derivative": {
+        "sha256": "22c9641e3c1a143270ddd06901313ce6c7c6ea478d7f77a750a1934c5c87f8aa",
+        "bytes": 93071,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific 4:5 crop from the cited filing image, resized to 800x1000 JPEG with mild source-pixel sharpening; no generative content.",
+        "public_path": "/uploads/j6-profiles/michael-brock-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Michael Leon Brock",
+      "credit": "Image embedded in Brock Complaint & Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing’s person-specific wording and figure placement. The filing identifies the yellow-circled man in Figure One as Michael Leon Brock. Two confidential witnesses who had known Brock for approximately twenty years and two years, respectively, separately identified the same circled person as Brock. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "bcc5819c-4bb6-4656-99d1-0a4b2bf9a068",
+      "slug": "michael-pomeroy",
+      "name": "Michael Pomeroy",
+      "case_number": "1:22-mj-104",
+      "source": {
+        "title": "Pomeroy - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1507526/download",
+        "sha256": "805cecba0d6928d4e48be59ced66f6a671f3f641224be351c7beded36f3bda19",
+        "bytes": 1759345,
+        "pages": 13,
+        "acquisition": {
+          "capture_timestamp": "20250206064425",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1507526/dl",
+          "capture_digest": "3AQRTEN7FDS4VJNKNMFLDGWCMRGUVNBA",
+          "fetch_url": "https://web.archive.org/web/20250206064425id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1507526/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 3,
+        "printed_page": "Document 1-1, page 3 of 13",
+        "figure": "Free PA group photograph, second person from the left"
+      },
+      "attribution_text": "The filing reproduces the group photograph twice and expressly states that Michael Pomeroy is the person circled in red in the second copy, the second person from the left.",
+      "derivative": {
+        "sha256": "63658be9b3e7dca7fa2331a2bd17594b2ef9c90ad7ad00ff3406c7013f81ee7a",
+        "bytes": 93893,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific 4:5 crop from the cited filing image, resized to 800x1000 JPEG with mild source-pixel sharpening; no generative content.",
+        "public_path": "/uploads/j6-profiles/michael-pomeroy-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Michael Pomeroy",
+      "credit": "Image embedded in Pomeroy - Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing’s person-specific wording and figure placement. The filing reproduces the group photograph twice and expressly states that Michael Pomeroy is the person circled in red in the second copy, the second person from the left. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "b231204a-6902-47de-8921-3d0136c6aea5",
+      "slug": "michael-timbrook",
+      "name": "Michael Timbrook",
+      "case_number": "1:21-cr-361",
+      "source": {
+        "title": "Timbrook Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1388356/download",
+        "sha256": "f2dad8bfdb199bda06976f193ad64cde36c19c6fd95fd6fcf137f0ef77900f30",
+        "bytes": 974478,
+        "pages": 5,
+        "acquisition": {
+          "capture_timestamp": "20250524023555",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1388356/dl",
+          "capture_digest": "YSY3ZNSA5SOOUNVYZHV23ZMASIHOCQOM",
+          "fetch_url": "https://web.archive.org/web/20250524023555id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1388356/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 2,
+        "printed_page": "PDF page 2",
+        "figure": "Figure 1, red-boxed man in orange beanie"
+      },
+      "attribution_text": "The filing identifies the red-boxed person in Figure 1 as the person law enforcement had probable cause to believe was Michael Timbrook. A tipster later identified Timbrook from Figure 1, and the affiant then interviewed Timbrook.",
+      "derivative": {
+        "sha256": "c61dcfee963ab0342741e3624817724688d74305949009ac95d63cf4f608b9b5",
+        "bytes": 87234,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific 4:5 crop from the cited filing image, resized to 800x1000 JPEG with mild source-pixel sharpening; no generative content.",
+        "public_path": "/uploads/j6-profiles/michael-timbrook-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Michael Timbrook",
+      "credit": "Image embedded in Timbrook Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing’s person-specific wording and figure placement. The filing identifies the red-boxed person in Figure 1 as the person law enforcement had probable cause to believe was Michael Timbrook. A tipster later identified Timbrook from Figure 1, and the affiant then interviewed Timbrook. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "65ef6560-8157-4d2e-b4cb-e9ef23cd5738",
+      "slug": "nicholas-fuller",
+      "name": "Nicholas John Fuller",
+      "case_number": "23-mj-122",
+      "source": {
+        "title": "Fuller Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1593096/download",
+        "sha256": "d742fdac00d57ad4c8cc733e605c1221196a4e075202e4e54c5ff6e3d5540b6d",
+        "bytes": 7343620,
+        "pages": 21,
+        "acquisition": {
+          "capture_timestamp": "20250206064015",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1593096/dl",
+          "capture_digest": "SIDPXS6QD4G74O5XDVEYXG6FFGJNUDHL",
+          "fetch_url": "https://web.archive.org/web/20250206064015id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1593096/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 11,
+        "printed_page": "PDF page 11",
+        "figure": "Exhibit G, lower-right body-worn-camera frame"
+      },
+      "attribution_text": "The filing states that investigators received information identifying #415-AFO as Nicholas Fuller, compared the footage with a current Minnesota driver-license photograph, and obtained an independent identification from a county sheriff’s deputy who recognized the person in Exhibits F1–F4 and G as Nicholas Fuller.",
+      "derivative": {
+        "sha256": "ee571f748874c944b4ac94c8e87dc5d052b4ab771ae1befe80dbd21bdef59f8c",
+        "bytes": 83727,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific 4:5 crop from the cited filing image, resized to 800x1000 JPEG with mild source-pixel sharpening; no generative content.",
+        "public_path": "/uploads/j6-profiles/nicholas-fuller-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Nicholas John Fuller",
+      "credit": "Image embedded in Fuller Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed.",
+      "verification_note": "Manually reviewed against the filing’s person-specific wording and figure placement. The filing states that investigators received information identifying #415-AFO as Nicholas Fuller, compared the footage with a current Minnesota driver-license photograph, and obtained an independent identification from a county sheriff’s deputy who recognized the person in Exhibits F1–F4 and G as Nicholas Fuller. Identity is treated as verified for documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true
+    },
+    {
+      "profile_uuid": "f8dafed1-2aa2-4892-9ddf-ea73f7b6e830",
+      "slug": "nicholas-languerand",
+      "name": "Nicholas John Languerand",
+      "case_number": "21-cr-353",
+      "source": {
+        "title": "Languerand Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1388821/download",
+        "sha256": "7302048a8ff8ca5d38ac7d1a9750c2a7a91285b09a2b31b5fff459d6a93d4596",
+        "bytes": 2895977,
+        "pages": 6,
+        "acquisition": {
+          "capture_timestamp": "20240831175640",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1388821/dl",
+          "capture_digest": "TFYKMEI3TRIW3UKR2ZUB25PD74TRCXII",
+          "fetch_url": "https://web.archive.org/web/20240831175640id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1388821/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 2,
+        "printed_page": "PDF page 2",
+        "figure": "Instagram self-portrait posted by the account blesthisimmunity_17"
+      },
+      "attribution_text": "A witness who knew Nicholas Languerand personally told the FBI that he posted this picture of himself. The filing then expressly states that Languerand can be seen in the pictured Instagram post and describes his face, red knit hat, clothing, and Capitol background.",
+      "derivative": {
+        "sha256": "f6c76a70e5ba4b6ad7753f1832f4bb45de1685d80d23546dda3622523b20ccd9",
+        "bytes": 126800,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific crop from the filing's embedded Instagram image; 390x423 source-pixel crop at +0+174, resized and centered over a blurred source-pixel backdrop at 800x1000. No generative changes.",
+        "public_path": "/uploads/j6-profiles/nicholas-languerand-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Nicholas John Languerand",
+      "credit": "Image embedded in Languerand Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. A witness who knew Nicholas Languerand personally told the FBI that he posted this picture of himself. The filing then expressly states that Languerand can be seen in the pictured Instagram post and describes his face, red knit hat, clothing, and Capitol background. Identity is treated as verified for contextual documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true,
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed."
+    },
+    {
+      "profile_uuid": "95aa415a-2f82-4555-8dc1-7c07792ce037",
+      "slug": "nicholas-hendrix",
+      "name": "Nicholas Patrick Hendrix",
+      "case_number": "1:21-cr-426",
+      "source": {
+        "title": "Hendrix Complaint & Affidavit",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1404506/download",
+        "sha256": "945d38e5e8b8528ff4d001339717f79badeea322672a2de320012707af981cda",
+        "bytes": 727705,
+        "pages": 7,
+        "acquisition": {
+          "capture_timestamp": "20250524022443",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1404506/dl",
+          "capture_digest": "P7P3YB76CXF5VG6I6A5BPL3GKBKMRAPX",
+          "fetch_url": "https://web.archive.org/web/20250524022443id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1404506/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 4,
+        "printed_page": "Document 1-1, page 4",
+        "figure": "Top photograph captioned “Photograph of HENDRIX from his phone taken on January 6, 2021”"
+      },
+      "attribution_text": "The filing directly captions the full-length image as a photograph of Hendrix recovered from his phone and taken on January 6, 2021.",
+      "derivative": {
+        "sha256": "3cf904bbd11ceefa7ee48dd6ee525c015db4f4a9e50f9dfb25be85f3b7f60fbb",
+        "bytes": 123341,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific 178x390 source-pixel crop from the filing's embedded photograph, resized and centered over a blurred source-pixel backdrop at 800x1000. No generative changes.",
+        "public_path": "/uploads/j6-profiles/nicholas-hendrix-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Nicholas Patrick Hendrix",
+      "credit": "Image embedded in Hendrix Complaint & Affidavit, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing directly captions the full-length image as a photograph of Hendrix recovered from his phone and taken on January 6, 2021. Identity is treated as verified for contextual documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true,
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed."
+    },
+    {
+      "profile_uuid": "f47264d2-43a8-4f7c-8ddc-abe93151489d",
+      "slug": "patrick-king",
+      "name": "Patrick John King",
+      "case_number": "1:22-mj-63",
+      "source": {
+        "title": "King Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1488266/download",
+        "sha256": "9d3edb34eb437edbcf1d88bdbdae5c57be1fd2445df9c9b412b1023539d55e05",
+        "bytes": 734125,
+        "pages": 8,
+        "acquisition": {
+          "capture_timestamp": "20250206065202",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1488266/dl",
+          "capture_digest": "XARE6RQD32NQYLG6TBLUCVMJQ63IVCX7",
+          "fetch_url": "https://web.archive.org/web/20250206065202id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1488266/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 5,
+        "printed_page": "Document 1-1, page 5 of 8",
+        "figure": "Figure 6, close-up surveillance screen capture"
+      },
+      "attribution_text": "The filing calls Figure 6 a close-up screen capture of King's face. Witness 1, who had known King since middle school, positively identified King in Figures 2, 4, and 6.",
+      "derivative": {
+        "sha256": "b35cf35624d876aab2e4c912b47e7afd842b35875930613a80cf63ce8cf4684c",
+        "bytes": 65736,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Full 192x241 source image used without person substitution, resized and centered over a blurred source-pixel backdrop at 800x1000. No generative changes.",
+        "public_path": "/uploads/j6-profiles/patrick-king-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Patrick John King",
+      "credit": "Image embedded in King Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing calls Figure 6 a close-up screen capture of King's face. Witness 1, who had known King since middle school, positively identified King in Figures 2, 4, and 6. Identity is treated as verified for contextual documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true,
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed."
+    },
+    {
+      "profile_uuid": "445a171c-a355-4183-ab1b-8d347c57b047",
+      "slug": "paul-kovacik",
+      "name": "Paul Edward Kovacik",
+      "case_number": "1:22-mj-100",
+      "source": {
+        "title": "Kovacik - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1516081/download",
+        "sha256": "6c1ddf7b5b6679ed05f6c55559e88de1525f5380704bc0f632df303d9938c742",
+        "bytes": 1321935,
+        "pages": 10,
+        "acquisition": {
+          "capture_timestamp": "20250206005433",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1516081/dl",
+          "capture_digest": "LMI7ZZSTMNETOWZV3JS7MNEPT5UPV2KE",
+          "fetch_url": "https://web.archive.org/web/20250206005433id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1516081/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 10,
+        "printed_page": "Document 1-1, page 10 of 10",
+        "figure": "Figure 17, booking photographs of Paul Kovacik"
+      },
+      "attribution_text": "Figure 17 is expressly captioned as booking photographs of Paul Kovacik from the Wisconsin Department of Corrections. The filing also states that an MPD officer identified the Capitol subject as Kovacik and that the affiant compared the booking images with the Capitol and body-camera imagery.",
+      "derivative": {
+        "sha256": "e68ddb7acefbaa3d0b89cb459c44139347998829754ca9a705051b8424b04de1",
+        "bytes": 72450,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "First frontal booking image isolated with a 180x268 source-pixel crop at +3+0, resized and centered over a blurred source-pixel backdrop at 800x1000. No generative changes.",
+        "public_path": "/uploads/j6-profiles/paul-kovacik-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Paul Edward Kovacik",
+      "credit": "Image embedded in Kovacik - Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. Figure 17 is expressly captioned as booking photographs of Paul Kovacik from the Wisconsin Department of Corrections. The filing also states that an MPD officer identified the Capitol subject as Kovacik and that the affiant compared the booking images with the Capitol and body-camera imagery. Identity is treated as verified for contextual documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true,
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed."
+    },
+    {
+      "profile_uuid": "f1a04505-18da-40af-b428-44d195d1c62a",
+      "slug": "pauline-bauer",
+      "name": "Pauline Bauer",
+      "case_number": "21-cr-386",
+      "source": {
+        "title": "Bauer Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1395396/download",
+        "sha256": "aa5812995182a89b1aedf378582742554c170ad2e609a71f995f62e60a31f2c9",
+        "bytes": 7536799,
+        "pages": 15,
+        "acquisition": {
+          "capture_timestamp": "20240627120407",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1395396/dl",
+          "capture_digest": "OSRUDRNQCAIJV2IUBPED6UW4RGHMZT3O",
+          "fetch_url": "https://web.archive.org/web/20240627120407id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1395396/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 13,
+        "printed_page": "PDF page 13",
+        "figure": "Upper MPD body-worn-camera still"
+      },
+      "attribution_text": "The filing states that MPD body-worn cameras recorded a person inside the Rotunda later identified as Pauline Bauer and introduces the displayed stills as frames of Bauer speaking during the confrontation.",
+      "derivative": {
+        "sha256": "d6167146368b5922872ae47f6ff2c9ad3e25ddac0bbc0824ba560addd40edab0",
+        "bytes": 78167,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific 450x430 crop at +300+280 from the rendered official filing page, resized and centered over a blurred source-pixel backdrop at 800x1000. No generative changes.",
+        "public_path": "/uploads/j6-profiles/pauline-bauer-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Pauline Bauer",
+      "credit": "Image embedded in Bauer Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing states that MPD body-worn cameras recorded a person inside the Rotunda later identified as Pauline Bauer and introduces the displayed stills as frames of Bauer speaking during the confrontation. Identity is treated as verified for contextual documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true,
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed."
+    },
+    {
+      "profile_uuid": "65167259-2069-4c89-90dd-a6ba2c481aa9",
+      "slug": "peter-schwartz",
+      "name": "Peter J. Schwartz",
+      "case_number": "1:21-cr-00178-APM-1; D.C. Cir. No. 23-3075",
+      "source": {
+        "title": "Schwartz, Peter - Complaint & Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1364696/download",
+        "sha256": "ef6509820e1183aa23004c0c5dcd987fd1a272b2dd90351a7050ea6b792a55f4",
+        "bytes": 1219372,
+        "pages": 9,
+        "acquisition": {
+          "capture_timestamp": "20250524023354",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1364696/dl",
+          "capture_digest": "CCMWATCFCLYMNUYGAWEX5AQ5MI5IHLZY",
+          "fetch_url": "https://web.archive.org/web/20250524023354id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1364696/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 4,
+        "printed_page": "Document 1-1, page 4",
+        "figure": "Action 8 video frame, center photograph with red oval"
+      },
+      "attribution_text": "The filing states that the affiant observed Peter Schwartz in the Action 8 video, describes his distinctive checked shirt, and says the displayed screen captures show Schwartz approaching and leaving the west terrace tunnel.",
+      "derivative": {
+        "sha256": "424e5c03004758e209cd26ba7a5dbec769e017d3777e1cb545127655e2572a8a",
+        "bytes": 93919,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific 330x330 crop at +580+545 from the rendered official filing page, resized and centered over a blurred source-pixel backdrop at 800x1000. No generative changes.",
+        "public_path": "/uploads/j6-profiles/peter-schwartz-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Peter J. Schwartz",
+      "credit": "Image embedded in Schwartz, Peter - Complaint & Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing states that the affiant observed Peter Schwartz in the Action 8 video, describes his distinctive checked shirt, and says the displayed screen captures show Schwartz approaching and leaving the west terrace tunnel. Identity is treated as verified for contextual documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true,
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed."
+    },
+    {
+      "profile_uuid": "31a809b7-1c90-46f3-b46f-a236c13a8636",
+      "slug": "philip-grillo",
+      "name": "Philip Sean Grillo",
+      "case_number": "1:21-mj-245",
+      "source": {
+        "title": "Grillo - Complaint & Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1371396/download",
+        "sha256": "9c6f4bcc4803c7d3c510cfc109bb8b6a76b8d32d2e1ebc0258795f52c86e10a8",
+        "bytes": 659904,
+        "pages": 14,
+        "acquisition": {
+          "capture_timestamp": "20250524022354",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1371396/dl",
+          "capture_digest": "XN4G2ANL4K53RO24DXKDVY3SNELQYA3Z",
+          "fetch_url": "https://web.archive.org/web/20250524022354id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1371396/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 4,
+        "printed_page": "Document 1-1, page 3 of 13",
+        "figure": "WITNESS 2 CNN close-up supplied to the FBI"
+      },
+      "attribution_text": "The filing says Witness 2, who had known Grillo for decades and knew his face, identified Grillo in CNN footage. It says the red oval was inserted by the affiant to identify Grillo and displays the supplied close-up.",
+      "derivative": {
+        "sha256": "5c030ac29d0e025960136ea65c4b43162198f29e8a55acd79e011efa0679100f",
+        "bytes": 95540,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific 185x226 source-pixel crop at +0+0, resized and centered over a blurred source-pixel backdrop at 800x1000. No generative changes.",
+        "public_path": "/uploads/j6-profiles/philip-grillo-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Philip Sean Grillo",
+      "credit": "Image embedded in Grillo - Complaint & Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing says Witness 2, who had known Grillo for decades and knew his face, identified Grillo in CNN footage. It says the red oval was inserted by the affiant to identify Grillo and displays the supplied close-up. Identity is treated as verified for contextual documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true,
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed."
+    },
+    {
+      "profile_uuid": "b21f1333-f210-4bac-97d9-516f89ee27d9",
+      "slug": "phillip-bromley",
+      "name": "Phillip Andrew Bromley",
+      "case_number": "1:21-cr-250",
+      "source": {
+        "title": "Bromley - Complaint & Affidavit",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1371306/download",
+        "sha256": "0f8fa0a6c7f0b7820d55950a5a177e4f68ae5a8b4aa8d4f39119056a2817cc5f",
+        "bytes": 529265,
+        "pages": 9,
+        "acquisition": {
+          "capture_timestamp": "20250524021551",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1371306/dl",
+          "capture_digest": "3GDXFY65ZVF2RKDFQGF6BF2O6QWYW6SQ",
+          "fetch_url": "https://web.archive.org/web/20250524021551id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1371306/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 6,
+        "printed_page": "Document 1-1, page 5 of 8",
+        "figure": "Video 1 still of Bromley providing his narrative"
+      },
+      "attribution_text": "The filing introduces the stills as images of Bromley while he provides his narrative, records that he states his name is Phillip Bromley, and says the affiant compared the speaker with Bromley's Alabama driver's-license photograph.",
+      "derivative": {
+        "sha256": "8fa4a7deb6bf16a339c3968efedc2cb433434828c05cece90d496d0796b174b5",
+        "bytes": 101692,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific 381x560 source-pixel crop at +0+0, resized and centered over a blurred source-pixel backdrop at 800x1000. No generative changes.",
+        "public_path": "/uploads/j6-profiles/phillip-bromley-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Phillip Andrew Bromley",
+      "credit": "Image embedded in Bromley - Complaint & Affidavit, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing introduces the stills as images of Bromley while he provides his narrative, records that he states his name is Phillip Bromley, and says the affiant compared the speaker with Bromley's Alabama driver's-license photograph. Identity is treated as verified for contextual documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true,
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed."
+    },
+    {
+      "profile_uuid": "56d80e4c-df00-468b-9124-25c983a0ac76",
+      "slug": "quentin-cantrell",
+      "name": "Quentin G. Cantrell",
+      "case_number": "1:22-mj-51",
+      "source": {
+        "title": "Cantrell Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1481966/download",
+        "sha256": "53645a3bc209ffe9938fced358e2b1d5f342cf0199b4d8a8afcb3333654ec5e9",
+        "bytes": 1276255,
+        "pages": 19,
+        "acquisition": {
+          "capture_timestamp": "20250206074126",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1481966/dl",
+          "capture_digest": "GCODNSCE2DIZ7WKPMQSQ4XQFKUXNZX4G",
+          "fetch_url": "https://web.archive.org/web/20250206074126id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1481966/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 4,
+        "printed_page": "Document 1-1, page 4 of 19",
+        "figure": "Exhibit 2, left-hand person"
+      },
+      "attribution_text": "The filing says Witness 1 positively identified the person on the left as Quentin Cantrell. The affiant states that he recognized Quentin because he met him during the investigation and compared the image with Quentin's Indiana Bureau of Motor Vehicles photograph.",
+      "derivative": {
+        "sha256": "222aa70a0416dfca97a3a98290f19e19c45d180dc1f021373e8b3a67ba6721ac",
+        "bytes": 94611,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Left-hand person isolated with a 320x600 source-pixel crop at +0+650, resized and centered over a blurred source-pixel backdrop at 800x1000. No generative changes.",
+        "public_path": "/uploads/j6-profiles/quentin-cantrell-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Quentin G. Cantrell",
+      "credit": "Image embedded in Cantrell Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing says Witness 1 positively identified the person on the left as Quentin Cantrell. The affiant states that he recognized Quentin because he met him during the investigation and compared the image with Quentin's Indiana Bureau of Motor Vehicles photograph. Identity is treated as verified for contextual documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true,
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed."
+    },
+    {
+      "profile_uuid": "7a00efa5-4f44-42f1-8061-6e72fa7ae539",
+      "slug": "ralph-celentano",
+      "name": "Ralph Celentano",
+      "case_number": "1:22-mj-47",
+      "source": {
+        "title": "Celentano Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1481351/download",
+        "sha256": "9395fddbde07a1d10aa3b2630da70e5b87dc3da5f589f9e93901108ed54919d9",
+        "bytes": 905923,
+        "pages": 11,
+        "acquisition": {
+          "capture_timestamp": "20250207000022",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1481351/dl",
+          "capture_digest": "6XUQMKTWXJM77SC6QTV4TTZOCXOXOFVJ",
+          "fetch_url": "https://web.archive.org/web/20250207000022id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1481351/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 4,
+        "printed_page": "Document 1-1, page 4 of 11",
+        "figure": "Image 4"
+      },
+      "attribution_text": "The filing states that two people who knew Celentano positively identified him in the displayed photographs and that the affiant compared those images with Celentano's New York driver's-license photograph.",
+      "derivative": {
+        "sha256": "c15144ae28684a77e499acc7ad8d5a1f33ce2b1313fe16551d78d730b08c2d55",
+        "bytes": 76589,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific 300x272 source-pixel crop at +25+0 from Image 4, resized and centered over a blurred source-pixel backdrop at 800x1000. No generative changes.",
+        "public_path": "/uploads/j6-profiles/ralph-celentano-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Ralph Celentano",
+      "credit": "Image embedded in Celentano Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing states that two people who knew Celentano positively identified him in the displayed photographs and that the affiant compared those images with Celentano's New York driver's-license photograph. Identity is treated as verified for contextual documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true,
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed."
+    },
+    {
+      "profile_uuid": "1831dd8e-3ce4-4fdd-affa-dab03dbc73ee",
+      "slug": "ralph-kahler",
+      "name": "Ralph Kahler",
+      "case_number": "23-mj-152",
+      "source": {
+        "title": "Kahler Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1591061/download",
+        "sha256": "f667eb57bde88413949bc26eebbb058cdca4d67575de56157651e6e6f7345e1a",
+        "bytes": 1337891,
+        "pages": 7,
+        "acquisition": {
+          "capture_timestamp": "20240831195518",
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1591061/dl",
+          "capture_digest": "HXU6QMCZ246ZANWKCZYP7Q5RHVK37VGE",
+          "fetch_url": "https://web.archive.org/web/20240831195518id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1591061/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 2,
+        "printed_page": "PDF page 2",
+        "figure": "Image 1, R. KAHler expressly circled in green"
+      },
+      "attribution_text": "Image 1 expressly identifies R. Kahler as the green-circled person. The filing later states that law-enforcement officers compared the Capitol imagery with known photographs and identified R. Kahler as the person shown.",
+      "derivative": {
+        "sha256": "d93f13eec1485043c9c80da6e453503987a368b040de59192cae2f04f5509956",
+        "bytes": 83605,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific 120x150 source-pixel crop isolating the green-circled R. Kahler face in Image 1, resized to 800x1000 JPEG with mild source-pixel sharpening; no generative content.",
+        "public_path": "/uploads/j6-profiles/ralph-kahler-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Ralph Kahler",
+      "credit": "Image embedded in Kahler Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. Image 1 expressly identifies R. Kahler as the green-circled person. The filing later states that law-enforcement officers compared the Capitol imagery with known photographs and identified R. Kahler as the person shown. Identity is treated as verified for contextual documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true,
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed."
+    },
+    {
+      "profile_uuid": "5d42cb22-33fa-492b-a1b9-71bca7a99ef1",
+      "slug": "rebecca-lavrenz",
+      "name": "Rebecca Lavrenz",
+      "case_number": "1:23-cr-00066-ZMF-1",
+      "source": {
+        "title": "Lavrenz - Statement of Facts",
+        "official_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1560707/download",
+        "sha256": "330250e3f7d8105bf8356c054d2fc81ed1df19734012449c8a52171773daa7e9",
+        "bytes": 2070965,
+        "pages": 5,
+        "acquisition": {
+          "capture_timestamp": null,
+          "capture_original_url": "https://www.justice.gov/usao-dc/case-multi-defendant/file/1560707/dl",
+          "capture_digest": null,
+          "fetch_url": "https://web.archive.org/web/20231201000000id_/https://www.justice.gov/usao-dc/case-multi-defendant/file/1560707/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 2,
+        "printed_page": "Document 1-1, page 2 of 5",
+        "figure": "Defendant-provided Capitol photograph, yellow-circled person"
+      },
+      "attribution_text": "The filing states that Lavrenz provided this photograph to agents and identified herself as the only person facing the camera while wearing a red scarf and white hat.",
+      "derivative": {
+        "sha256": "bcd3b9080b7c6396f199f61688243b8e704b4f817ea6ca0cb0531f97cb83df5b",
+        "bytes": 137801,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific 450x500 crop at +320+1080 from the rendered official filing page, resized and centered over a blurred source-pixel backdrop at 800x1000. No generative changes.",
+        "public_path": "/uploads/j6-profiles/rebecca-lavrenz-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Rebecca Lavrenz",
+      "credit": "Image embedded in Lavrenz - Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing states that Lavrenz provided this photograph to agents and identified herself as the only person facing the camera while wearing a red scarf and white hat. Identity is treated as verified for contextual documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true,
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed."
+    },
+    {
+      "profile_uuid": "a67933a4-6aaa-4a11-822f-395afd182b3e",
+      "slug": "robert-fairchild",
+      "name": "Robert Flynt Fairchild Jr.",
+      "case_number": "21-cr-551",
+      "source": {
+        "title": "Fairchild Complaint & Statement of Facts",
+        "official_url": "https://www.justice.gov/opa/case-multi-defendant/file/1428251/download",
+        "sha256": "2e980802f62c9a62f99e97be2d8371757252a4aafc852bae612a834594b1bb49",
+        "bytes": 6398779,
+        "pages": 11,
+        "acquisition": {
+          "capture_timestamp": null,
+          "capture_original_url": "https://www.justice.gov/opa/case-multi-defendant/file/1428251/dl",
+          "capture_digest": null,
+          "fetch_url": "https://web.archive.org/web/20231201000000id_/https://www.justice.gov/opa/case-multi-defendant/file/1428251/dl"
+        }
+      },
+      "image_locator": {
+        "pdf_page_index": 6,
+        "printed_page": "PDF page 6",
+        "figure": "Exhibit C, upper body-worn-camera frame"
+      },
+      "attribution_text": "The filing states that Exhibit C shows Fairchild at the West Plaza security barriers. It also says a Georgia law-enforcement officer identified Fairchild in the source photographs and that the affiant compared those images with Fairchild's Florida driver's-license photograph.",
+      "derivative": {
+        "sha256": "5b00f81450f40c76c374554a91b9fa54ab5252818f64528b09b7db289714a91c",
+        "bytes": 105492,
+        "width": 800,
+        "height": 1000,
+        "mime_type": "image/jpeg",
+        "transformation": "Person-specific 510x610 crop at +420+320 from the rendered official filing page, resized and centered over a blurred source-pixel backdrop at 800x1000. No generative changes.",
+        "public_path": "/uploads/j6-profiles/robert-fairchild-filing.jpg"
+      },
+      "alt_text": "Verified filing photograph of Robert Flynt Fairchild Jr.",
+      "credit": "Image embedded in Fairchild Complaint & Statement of Facts, filed in U.S. District Court; derivative crop by RealRyanNichols.com.",
+      "verification_note": "Manually reviewed against the filing's person-specific wording and figure placement. The filing states that Exhibit C shows Fairchild at the West Plaza security barriers. It also says a Georgia law-enforcement officer identified Fairchild in the source photographs and that the affiant compared those images with Fairchild's Florida driver's-license photograph. Identity is treated as verified for contextual documentary display; copyright or reuse-license status is not inferred.",
+      "publishable": true,
+      "rights_note": "Identity and provenance are documented by the cited court filing. The filing does not establish copyright ownership, a public-domain dedication, or a reusable license for the embedded source image. Use only as a contextual editorial/documentary derivative with the filing citation and this rights warning; do not label it public domain or freely licensed."
+    }
+  ]
+}
