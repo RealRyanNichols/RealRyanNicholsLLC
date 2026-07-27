@@ -132,7 +132,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
               href="/search"
               aria-label="Search"
               aria-current={isActive(pathname, "/search") ? "page" : undefined}
-              className="inline-flex h-9 items-center gap-1.5 rounded-full border border-[var(--color-line)] px-3 text-xs font-semibold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-soft)] hover:text-[var(--color-accent)]"
+              className="inline-flex h-9 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-[var(--color-line)] px-3 text-xs font-semibold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-soft)] hover:text-[var(--color-accent)]"
             >
               <MagnifierIcon />
               <span>Search</span>
@@ -146,20 +146,20 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
 
             <Link
               href="/#talk"
-              className="btn-accent ml-2 inline-flex items-center px-4 py-1.5 text-xs"
+              className="btn-accent ml-2 inline-flex shrink-0 items-center whitespace-nowrap px-4 py-1.5 text-xs"
             >
               Talk to Ryan
             </Link>
             <Link
               href="/#join"
-              className="btn-support ml-2 inline-flex items-center py-1.5 text-xs"
+              className="btn-support ml-2 inline-flex shrink-0 items-center whitespace-nowrap px-4 py-1.5 text-xs"
             >
               Join
             </Link>
             {isAdmin ? (
               <Link
                 href="/admin/new"
-                className="ml-3 inline-flex items-center gap-1 text-xs font-medium text-[var(--color-muted)] underline decoration-[var(--color-line)] underline-offset-4 transition hover:text-[var(--color-navy)] hover:decoration-[var(--color-navy)]"
+                className="ml-3 inline-flex shrink-0 items-center gap-1 whitespace-nowrap text-xs font-medium text-[var(--color-muted)] underline decoration-[var(--color-line)] underline-offset-4 transition hover:text-[var(--color-navy)] hover:decoration-[var(--color-navy)]"
                 aria-label="Write a new post"
               >
                 <PencilIcon />
@@ -169,7 +169,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             {signedIn ? (
               <Link
                 href={officeHref}
-                className="ml-3 inline-flex items-center text-xs font-medium text-[var(--color-muted)] underline decoration-[var(--color-line)] underline-offset-4 transition hover:text-[var(--color-navy)] hover:decoration-[var(--color-navy)]"
+                className="ml-3 inline-flex shrink-0 items-center whitespace-nowrap text-xs font-medium text-[var(--color-muted)] underline decoration-[var(--color-line)] underline-offset-4 transition hover:text-[var(--color-navy)] hover:decoration-[var(--color-navy)]"
                 aria-label={officeLabel}
               >
                 {officeLabel}
@@ -178,7 +178,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             {!signedIn ? (
               <Link
                 href="/login"
-                className="ml-3 inline-flex items-center text-xs font-medium text-[var(--color-muted)] underline decoration-[var(--color-line)] underline-offset-4 transition hover:text-[var(--color-navy)] hover:decoration-[var(--color-navy)]"
+                className="ml-3 inline-flex shrink-0 items-center whitespace-nowrap text-xs font-medium text-[var(--color-muted)] underline decoration-[var(--color-line)] underline-offset-4 transition hover:text-[var(--color-navy)] hover:decoration-[var(--color-navy)]"
               >
                 Sign in
               </Link>
