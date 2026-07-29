@@ -1,9 +1,8 @@
 name: publish-articles
 
-# Publishes any markdown article in website/content/articles/ to the live site
-# (Supabase posts table) whenever one is added or changed on main. Drop a file
-# in, merge to main, and it goes live. Works for Codex, Claude Code, or Ryan.
-# Re-uses the same Supabase secrets as the courtlistener/doj pipelines.
+# Publishes markdown articles to the live posts table after merge to main.
+# The publisher performs a complete preflight before any write and refuses to
+# publish a new live article without an article-specific 1200×630 OG image.
 
 concurrency:
   group: publish-articles-production
@@ -14,6 +13,8 @@ on:
     branches: [main]
     paths:
       - "website/content/articles/**"
+      - "website/public/social-cards/**"
+      - "website/scripts/publish-articles.ts"
   workflow_dispatch: {}
 
 permissions:
@@ -21,7 +22,6 @@ permissions:
 
 jobs:
   publish:
-    # Manual recovery may only replay the authoritative production branch.
     if: github.event_name == 'push' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -39,4 +39,5 @@ jobs:
           cache: npm
           cache-dependency-path: website/package-lock.json
       - run: npm ci
-      - run: npx tsx scripts/publish-articles.ts
+      - name: Publish articles (fails closed without a 1200x630 OG image)
+        run: npx tsx scripts/publish-articles.ts
