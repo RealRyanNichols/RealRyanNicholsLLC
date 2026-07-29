@@ -24,6 +24,8 @@ Draft evidence-led articles and stage them for publication. Use the byline “Re
 - Before drafting, define one primary search query, its reader intent, three to five related long-tail terms, likely competing site pages, and the internal-link plan. Do not target the same intent twice in one day.
 - Prefer roughly 1,400–2,200 useful words when the evidence warrants it, with primary records, clear fact/allegation/advocacy/judicial-finding boundaries, and no padding.
 - A release-ready article includes an authentic verified portrait when applicable, two to four provenance-cleared documentary visuals, captions and alt text, an accurate article-specific 1200×630 OG image, canonical and structured metadata, and signed-out live verification.
+- Art-direct every OG image from the article itself. Use an identifying headline and a story-specific visual concept, palette, composition, and typography treatment. Do not turn unrelated articles into one batch template by repeating the same color field, split layout, accent bar, or type hierarchy.
+- Before release, compare the new OG image with the site's recent cards at social-preview size. Reject it if the artwork could be swapped onto another article without looking obviously wrong, or if a batch reads like one interchangeable campaign. A shared site identity may be subtle; the story must remain visually dominant.
 - The former recurring “three trending X articles” strategy is superseded. Old bulk-content PRs are not approved for merge without fresh owner review.
 
 ## Where to put the files
