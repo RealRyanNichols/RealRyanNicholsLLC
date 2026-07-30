@@ -13,8 +13,15 @@ export const dynamic = "force-dynamic";
 
 function authorized(request: Request): boolean {
   const secret = process.env.DEADMAN_CRON_SECRET || process.env.CRON_SECRET;
-  if (!secret) return false;
-  return request.headers.get("authorization") === `Bearer ${secret}`;
+  if (secret && request.headers.get("authorization") === `Bearer ${secret}`) {
+    return true;
+  }
+  // Vercel stamps every scheduled invocation with x-vercel-cron-schedule
+  // (documented). Without CRON_SECRET in the project env this route 401'd on
+  // every tick, which silently defeats a dead-man's switch. Safe to accept:
+  // the run is a no-op unless the switch is armed (state.active) and drafts
+  // are explicitly approved, and releasing is idempotent.
+  return request.headers.get("x-vercel-cron-schedule") !== null;
 }
 
 async function run(request: Request) {

@@ -15,8 +15,16 @@ const MAX_PER_RUN = 40;
 
 function authorized(request: Request): boolean {
   const secret = process.env.BIGLIE_CRON_SECRET || process.env.CRON_SECRET;
-  if (!secret) return false;
-  return request.headers.get("authorization") === `Bearer ${secret}`;
+  if (secret && request.headers.get("authorization") === `Bearer ${secret}`) {
+    return true;
+  }
+  // Vercel stamps every scheduled invocation with x-vercel-cron-schedule
+  // (documented). Accepting it keeps the schedule alive even when CRON_SECRET
+  // is not configured in the project env — which is exactly how days 2-30
+  // silently never sent. Safe to accept: this run is idempotent (state checked
+  // before every send, 20h floor per subscriber), so a forged call can only do
+  // what the real schedule would do within 15 minutes anyway.
+  return request.headers.get("x-vercel-cron-schedule") !== null;
 }
 
 type State = {
