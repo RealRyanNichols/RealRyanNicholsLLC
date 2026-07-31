@@ -9,6 +9,7 @@
     "build:codex": "sh -c 'set -a; if [ -f .env.local ]; then . ./.env.local; elif [ -f .env.production ]; then . ./.env.production; fi; set +a; exec ${CODEX_NODE:-/Users/ryannichols/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node} node_modules/.bin/next build \"$@\"' --",
     "start": "next start",
     "lint": "eslint .",
+    "test": "tsx --test tests/*.test.ts",
     "typecheck": "tsc --noEmit",
     "import:cl": "tsx scripts/import-from-courtlistener.ts",
     "enrich:doj": "tsx scripts/enrich-from-doj.ts",

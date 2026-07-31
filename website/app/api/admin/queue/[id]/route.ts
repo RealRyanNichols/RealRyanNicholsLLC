@@ -6,6 +6,7 @@ import {
   isSupabaseServiceConfigured,
 } from "@/lib/supabase/service";
 import { pingIndexNow } from "@/lib/indexnow";
+import { recordPostLinks } from "@/lib/post-links";
 
 // Content-queue actions. Publishing is deliberately HUMAN-ONLY: queue rows
 // carry requires_manual_review as a hard stop for automated paths, and this
@@ -155,6 +156,8 @@ export async function PATCH(
 
   // Tell the engines the moment it's live (fire-and-forget).
   void pingIndexNow([`/posts/${post.slug}`, "/"]);
+  // Record the internal link graph for the fresh post.
+  void recordPostLinks(post.id);
 
   return NextResponse.json({ ok: true, post_slug: post.slug });
 }

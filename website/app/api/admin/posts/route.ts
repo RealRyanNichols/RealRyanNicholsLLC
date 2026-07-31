@@ -5,6 +5,7 @@ import { getMuxClient, isMuxConfigured } from "@/lib/mux";
 import { getVideoConfigStatus } from "@/lib/video-config";
 import { SITE } from "@/lib/site";
 import { pingIndexNow } from "@/lib/indexnow";
+import { recordPostLinks } from "@/lib/post-links";
 
 const mediaItemSchema = z.object({
   url: z.string().url(),
@@ -230,6 +231,8 @@ export async function POST(request: Request) {
   // Tell the engines the moment something new goes live (fire-and-forget).
   if (input.status === "published" && post.slug) {
     void pingIndexNow([`/posts/${post.slug}`, "/"]);
+    // Record the internal link graph (related blocks + inline /posts/ links).
+    void recordPostLinks(post.id);
   }
 
   let sourceTipUpdated = false;

@@ -9,6 +9,14 @@ import { PollCard } from "./PollCard";
 import { InlineReportForm } from "./InlineReportForm";
 import { DemandAction } from "./DemandAction";
 import { ShareRow } from "./ShareRow";
+import { Receipt } from "./article/Receipt";
+import { ArticleChart } from "./article/ArticleChart";
+import { ArticleFigure } from "./article/ArticleFigure";
+import { ArticleEmbed } from "./article/ArticleEmbed";
+import { Callout } from "./article/Callout";
+import { RelatedPosts } from "./article/RelatedPosts";
+import { parseBodySegments, type ShortcodeBlock } from "@/lib/shortcodes";
+import { linkFirstMentions } from "@/lib/entity-links";
 
 const TWEET_RE = /^https?:\/\/(x\.com|twitter\.com)\/[^/]+\/status\/\d+/i;
 const FB_POST_RE =
@@ -235,8 +243,35 @@ function ReceiptStack({ arg }: { arg?: string }) {
   );
 }
 
-function Shortcode({ kind, arg, ctx }: { kind: string; arg?: string; ctx: Ctx }) {
+function Shortcode({
+  kind,
+  arg,
+  json,
+  ctx,
+}: {
+  kind: string;
+  arg?: string;
+  json?: Record<string, unknown>;
+  ctx: Ctx;
+}) {
   switch (kind) {
+    // ---- The article-richness vocabulary (JSON or pipe payloads). ----
+    case "receipt":
+      return json ? <Receipt value={json} /> : null;
+    case "chart":
+      return json ? <ArticleChart value={json} /> : null;
+    case "figure":
+      return json ? <ArticleFigure value={json} /> : null;
+    case "embed":
+      return json ? <ArticleEmbed value={json} /> : null;
+    case "callout": {
+      const args = (arg ?? "").split("|").map((s) => s.trim());
+      return <Callout args={args} />;
+    }
+    case "related": {
+      const slugs = (arg ?? "").split("|").map((s) => s.trim()).filter(Boolean);
+      return <RelatedPosts slugs={slugs} />;
+    }
     case "casebanner":
       return <CaseBanner arg={arg} />;
     case "receiptgrid":
@@ -357,6 +392,62 @@ function Shortcode({ kind, arg, ctx }: { kind: string; arg?: string; ctx: Ctx })
   }
 }
 
+const KNOWN_SHORTCODES = new Set([
+  "receipt",
+  "chart",
+  "figure",
+  "embed",
+  "callout",
+  "related",
+  "casebanner",
+  "receiptgrid",
+  "receiptstack",
+  "donate",
+  "book",
+  "preorder",
+  "fund",
+  "impact",
+  "share",
+  "report",
+  "poll",
+  "react",
+  "demand",
+  "video",
+]);
+
+// One shortcode block from the pre-markdown parser. Unknown names and broken
+// JSON render as literal text so a typo is VISIBLE in the admin preview and
+// never crashes or silently vanishes on the article page.
+function BlockSegment({
+  block,
+  interactive,
+  ctx,
+}: {
+  block: ShortcodeBlock;
+  interactive: boolean;
+  ctx: Ctx;
+}) {
+  const known = KNOWN_SHORTCODES.has(block.name);
+  const broken = block.parsed.type === "invalid";
+  if (!known || broken) {
+    if (!interactive) return null; // feed cards hide tokens entirely
+    return (
+      <p className="my-4 whitespace-pre-wrap break-words rounded-md border border-dashed border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 font-mono text-xs text-[var(--color-ink-soft)]">
+        {block.raw}
+      </p>
+    );
+  }
+  if (!interactive) return null;
+  return (
+    <Shortcode
+      kind={block.name}
+      arg={block.payload}
+      json={block.parsed.type === "json" ? block.parsed.value : undefined}
+      ctx={ctx}
+    />
+  );
+}
+
 export function PostBody({
   body,
   interactive = false,
@@ -371,36 +462,64 @@ export function PostBody({
   title?: string;
 }) {
   const ctx: Ctx = { postId, slug, title };
+
+  // 1. Split the body into markdown chunks and shortcode blocks BEFORE
+  //    markdown rendering, so JSON payloads can span lines and fenced code
+  //    can show a shortcode without running it.
+  const segments = parseBodySegments(body);
+
+  // 2. Auto-link the first mention of known entities (article view only —
+  //    feed cards are already links themselves).
+  const mdChunks = segments.filter((s) => s.kind === "markdown").map((s) => s.text);
+  const linkedChunks = interactive ? linkFirstMentions(mdChunks).chunks : mdChunks;
+  let mdIndex = -1;
+
+  const markdownComponents = {
+    p({ node, children }: { node?: unknown; children?: ReactNode }) {
+      const n = node as HastNode | undefined;
+      const href = soleTweetHref(n);
+      if (href) return <TweetEmbed url={href} />;
+      const fbHref = soleFacebookHref(n);
+      if (fbHref) return interactive ? <FacebookEmbed url={fbHref} /> : null;
+      // Fallback for legacy inline/indented tokens the block parser skipped.
+      const m = nodeText(n).trim().match(SHORTCODE_RE);
+      if (m) {
+        if (!interactive) return null;
+        return <Shortcode kind={m[1].toLowerCase()} arg={m[2]?.trim()} ctx={ctx} />;
+      }
+      return <p>{children}</p>;
+    },
+    a({ href, children }: { href?: string; children?: ReactNode }) {
+      const url = typeof href === "string" ? href : "";
+      const internal = url.startsWith("/") || url.startsWith("#");
+      return (
+        <a
+          href={url}
+          {...(internal ? {} : { target: "_blank", rel: "noopener noreferrer" })}
+        >
+          {children}
+        </a>
+      );
+    },
+  };
+
   return (
     <div className="prose-body">
-      <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
-        components={{
-          p({ node, children }) {
-            const n = node as HastNode | undefined;
-            const href = soleTweetHref(n);
-            if (href) return <TweetEmbed url={href} />;
-            const fbHref = soleFacebookHref(n);
-            if (fbHref) return interactive ? <FacebookEmbed url={fbHref} /> : null;
-            const m = nodeText(n).trim().match(SHORTCODE_RE);
-            if (m) {
-              // Hide the token entirely in feed cards / previews.
-              if (!interactive) return null;
-              return <Shortcode kind={m[1].toLowerCase()} arg={m[2]?.trim()} ctx={ctx} />;
-            }
-            return <p>{children}</p>;
-          },
-          a({ href, children }) {
-            return (
-              <a href={href} target="_blank" rel="noopener noreferrer">
-                {children}
-              </a>
-            );
-          },
-        }}
-      >
-        {body}
-      </ReactMarkdown>
+      {segments.map((seg, i) => {
+        if (seg.kind === "block") {
+          return (
+            <BlockSegment key={i} block={seg} interactive={interactive} ctx={ctx} />
+          );
+        }
+        mdIndex += 1;
+        const text = linkedChunks[mdIndex] ?? seg.text;
+        if (!text.trim()) return null;
+        return (
+          <ReactMarkdown key={i} remarkPlugins={[remarkGfm]} components={markdownComponents}>
+            {text}
+          </ReactMarkdown>
+        );
+      })}
     </div>
   );
 }

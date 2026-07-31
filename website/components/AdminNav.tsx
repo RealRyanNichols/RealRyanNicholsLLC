@@ -35,6 +35,7 @@ const MORE: AdminItem[] = [
   { href: "/admin/imports", label: "Imports" },
   { href: "/admin/invoices", label: "Invoices" },
   { href: "/admin/leads", label: "Leads" },
+  { href: "/admin/links", label: "Link graph" },
   { href: "/admin/live", label: "Live streams" },
   { href: "/admin/messages", label: "Private mail" },
   { href: "/admin/og-images", label: "Share images" },

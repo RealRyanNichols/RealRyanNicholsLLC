@@ -3,6 +3,7 @@ import { z } from "zod";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { getDirectVideoUrl } from "@/lib/direct-video";
 import { pingIndexNow } from "@/lib/indexnow";
+import { recordPostLinks } from "@/lib/post-links";
 
 const patchSchema = z
   .object({
@@ -92,6 +93,8 @@ export async function PATCH(
   // Tell the engines the post is live (fire-and-forget).
   if (publishedSlug) {
     void pingIndexNow([`/posts/${publishedSlug}`, "/"]);
+    // Refresh the internal link graph for this post.
+    void recordPostLinks(id);
   }
   return NextResponse.json({ ok: true });
 }
