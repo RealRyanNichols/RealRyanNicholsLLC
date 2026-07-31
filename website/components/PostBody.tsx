@@ -391,8 +391,40 @@ export function PostBody({
             return <p>{children}</p>;
           },
           a({ href, children }) {
+            const url = typeof href === "string" ? href : "";
+            // A bare media link — a raw .mp4/.mov or a Supabase post-videos
+            // bucket URL — gets a clear navy "watch" chip instead of a plain
+            // red text link. (Real video posts go through the Mux player; this
+            // is only for videos pasted directly into an article body.) The
+            // .not-prose wrapper opts the anchor out of prose link styling.
+            const isVideo =
+              /\.(mp4|mov|m4v|webm)(?:\?|#|$)/i.test(url) ||
+              /\/post-videos\//.test(url);
+            if (isVideo) {
+              return (
+                <span className="not-prose">
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="my-2 inline-flex items-center gap-2 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm font-black text-[var(--color-navy)] no-underline transition hover:border-[var(--color-gold)]"
+                  >
+                    <span
+                      aria-hidden
+                      className="grid h-6 w-6 place-items-center rounded-full bg-[var(--color-navy)] text-[11px] text-[#fdf8ea]"
+                    >
+                      ▶
+                    </span>
+                    Watch the video
+                    <span aria-hidden className="text-[var(--color-gold)]">
+                      →
+                    </span>
+                  </a>
+                </span>
+              );
+            }
             return (
-              <a href={href} target="_blank" rel="noopener noreferrer">
+              <a href={url} target="_blank" rel="noopener noreferrer">
                 {children}
               </a>
             );

@@ -299,7 +299,7 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
             )}
           </div>
           {displayTitle ? (
-            <h1 className="font-display text-4xl font-black leading-[1.03] tracking-normal sm:text-5xl">
+            <h1 className="font-display text-4xl font-black leading-[1.05] tracking-tight text-[var(--color-ink)] sm:text-5xl">
               {displayTitle}
             </h1>
           ) : null}
