@@ -13,8 +13,6 @@ export const metadata: Metadata = {
   alternates: { canonical: `${SITE.url}/thebiglie` },
   openGraph: { type: "website", title, description, url: `${SITE.url}/thebiglie` },
   twitter: { card: "summary_large_image", title, description },
-  // REVIEW GATE: remove this line to publish to search engines.
-  robots: { index: false, follow: false },
 };
 
 const H2 = "font-display text-3xl font-black text-[#fdf8ea] sm:text-4xl";
