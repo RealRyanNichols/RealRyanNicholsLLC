@@ -54,9 +54,8 @@ const STEPS = [
   {
     n: "07",
     t: "A profile builds in Notion",
-    d: "Each answer writes a segment and a recommended next action to your Subscriber Profiles database.",
-    live: false,
-    note: "Needs NOTION_API_KEY + NOTION_BIGLIE_DB in Vercel",
+    d: "Each answer writes a segment and a recommended next action to your Subscriber Profiles database in Notion.",
+    live: true,
   },
   {
     n: "08",
