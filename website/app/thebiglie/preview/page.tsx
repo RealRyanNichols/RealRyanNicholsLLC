@@ -134,9 +134,6 @@ export default async function PreviewPage({
                 <p className="mt-2 text-sm font-semibold leading-relaxed text-[#9fb2d0]">
                   {s.d}
                 </p>
-                {s.note && (
-                  <p className="mt-2 text-xs font-bold text-[#e0913f]">{s.note}</p>
-                )}
                 {s.href && (
                   <a
                     href={s.href}
