@@ -15,6 +15,7 @@ type AdminItem = {
 const DAILY: AdminItem[] = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/posts", label: "Posts" },
+  { href: "/admin/social", label: "Social Studio" },
   { href: "/admin/inbox", label: "Inbox" },
   { href: "/admin/orders", label: "Money" },
   { href: "/admin/analytics", label: "Stats" },

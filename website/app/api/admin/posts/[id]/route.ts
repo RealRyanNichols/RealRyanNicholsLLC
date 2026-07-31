@@ -4,6 +4,7 @@ import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { getDirectVideoUrl } from "@/lib/direct-video";
 import { pingIndexNow } from "@/lib/indexnow";
 import { recordPostLinks } from "@/lib/post-links";
+import { generateSocialPosts } from "@/lib/social-studio";
 
 const patchSchema = z
   .object({
@@ -95,6 +96,8 @@ export async function PATCH(
     void pingIndexNow([`/posts/${publishedSlug}`, "/"]);
     // Refresh the internal link graph for this post.
     void recordPostLinks(id);
+    // Social Studio: draft the four platform posts on publish.
+    void generateSocialPosts(id);
   }
   return NextResponse.json({ ok: true });
 }

@@ -7,6 +7,7 @@ import {
 } from "@/lib/supabase/service";
 import { pingIndexNow } from "@/lib/indexnow";
 import { recordPostLinks } from "@/lib/post-links";
+import { generateSocialPosts } from "@/lib/social-studio";
 
 // Content-queue actions. Publishing is deliberately HUMAN-ONLY: queue rows
 // carry requires_manual_review as a hard stop for automated paths, and this
@@ -158,6 +159,8 @@ export async function PATCH(
   void pingIndexNow([`/posts/${post.slug}`, "/"]);
   // Record the internal link graph for the fresh post.
   void recordPostLinks(post.id);
+  // Social Studio: draft the four platform posts for the fresh article.
+  void generateSocialPosts(post.id);
 
   return NextResponse.json({ ok: true, post_slug: post.slug });
 }

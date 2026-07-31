@@ -19,6 +19,7 @@ import { breadcrumbLd, orgRef, personRef, websiteRef } from "@/lib/jsonld";
 import { NotifySubscribersButton } from "@/components/NotifySubscribersButton";
 import { PostMain } from "@/components/PostMain";
 import { StoryTipCTA } from "@/components/StoryTipCTA";
+import { WhatLinksHere } from "@/components/article/WhatLinksHere";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { SITE } from "@/lib/site";
 import { muxThumbnailUrl } from "@/lib/mux";
@@ -344,6 +345,9 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
 
         <ViewTracker slug={post.slug} />
         <PostMain post={post} />
+
+        {/* Inbound half of the link graph: which articles cite this one. */}
+        <WhatLinksHere postId={post.id} />
 
         {/* Give a reader the strongest relevant next click while the story is
             still fresh. Sales, signup, reactions, and comments remain below. */}
