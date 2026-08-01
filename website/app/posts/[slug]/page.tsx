@@ -121,6 +121,11 @@ export async function generateMetadata(props: {
     ogImage = absoluteUrl(override.image_url);
     ogWidth = override.width ?? 1200;
     ogHeight = override.height ?? 630;
+  } else if (post.og_image_url?.trim()) {
+    // The purpose-built 1200x630 share card written by the thumbnail
+    // pipeline (Supabase storage). Beats incidental article photos; only an
+    // explicit admin override outranks it.
+    ogImage = absoluteUrl(post.og_image_url.trim());
   } else if (postShareImage) {
     // The selected article thumbnail should be the social thumbnail too.
     // This covers text articles, photos, videos with custom thumbnails,
@@ -223,11 +228,13 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
   const postShareImage = firstPostShareImage(post);
   const ldImage = ldOg?.image_url
     ? absoluteUrl(ldOg.image_url)
-    : postShareImage
-      ? absoluteUrl(postShareImage)
-      : post.type === "video" && post.mux_playback_id
-        ? muxThumbnailUrl(post.mux_playback_id, { width: 1200, time: 1 })
-        : null;
+    : post.og_image_url?.trim()
+      ? absoluteUrl(post.og_image_url.trim())
+      : postShareImage
+        ? absoluteUrl(postShareImage)
+        : post.type === "video" && post.mux_playback_id
+          ? muxThumbnailUrl(post.mux_playback_id, { width: 1200, time: 1 })
+          : null;
   const articleLd = {
     "@context": "https://schema.org",
     "@type":

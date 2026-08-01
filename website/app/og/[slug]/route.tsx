@@ -78,6 +78,12 @@ export async function GET(
         </div>
       </div>
     ),
-    { width: 1200, height: 630 }
+    {
+      width: 1200,
+      height: 630,
+      // next/og defaults to immutable + max-age=31536000, which froze a bad
+      // card into scraper caches for a YEAR. One hour keeps mistakes fixable.
+      headers: { "Cache-Control": "public, max-age=3600" },
+    }
   );
 }

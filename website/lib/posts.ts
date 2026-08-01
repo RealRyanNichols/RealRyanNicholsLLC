@@ -3,7 +3,7 @@ import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import type { Post } from "@/lib/types";
 
 export const POST_COLUMNS =
-  "id, slug, type, title, body, seo_title, seo_description, image_urls, media, mux_asset_id, mux_upload_id, mux_playback_id, mux_status, duration_seconds, thumbnail_url, pinned, status, author_id, byline_override, category, tags, published_at, created_at, updated_at, views_count, shares_count, inbound_shares_count";
+  "id, slug, type, title, body, seo_title, seo_description, image_urls, media, mux_asset_id, mux_upload_id, mux_playback_id, mux_status, duration_seconds, thumbnail_url, og_image_url, pinned, status, author_id, byline_override, category, tags, published_at, created_at, updated_at, views_count, shares_count, inbound_shares_count";
 
 export async function getPublishedPosts(
   opts: { sort?: "latest" | "trending"; limit?: number } = {}

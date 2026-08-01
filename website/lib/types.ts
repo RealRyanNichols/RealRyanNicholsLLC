@@ -42,6 +42,9 @@ export type Post = {
   mux_status: MuxStatus | null;
   duration_seconds: number | null;
   thumbnail_url: string | null;
+  /** Purpose-built 1200x630 share card (Supabase storage URL); written by
+   * the thumbnail pipeline. Preferred for og:image when present. */
+  og_image_url: string | null;
   pinned: boolean;
   status: PostStatus;
   author_id: string | null;
