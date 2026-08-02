@@ -81,6 +81,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         url: SITE.url,
         image: `${SITE.url}/og/site`,
         sameAs: ["https://x.com/RealRyanNichols"],
+        sameAs: [
+          "https://x.com/RealRyanNichols",
+          "https://www.facebook.com/RealRyanNichols",
+          "https://www.youtube.com/@RealRyanNicholsLLC",
+          "https://www.instagram.com/realryannichols",
+          "https://www.tiktok.com/@realryannichols",
+        ],
       },
       {
         "@type": "Organization",
