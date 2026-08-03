@@ -65,12 +65,13 @@ export default async function AdminLinksPage() {
         Orphans leak traffic
       </h1>
       <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
-        A published post nothing links to is a dead end in the archive. Add a{" "}
+        A published post nothing links to is a dead end in the archive. The
+        visible Read Next rail now honors this graph, and publishing creates a
+        topic-matched inbound link automatically. You can still add a{" "}
         <code className="rounded bg-[var(--color-surface-2)] px-1 py-0.5 font-mono text-xs">
           {"{{related: ...}}"}
         </code>{" "}
-        block or an inline link from a sibling article to bring each one into
-        the web. Edges are recorded automatically on every publish.
+        block or an inline link when you want to curate the connection by hand.
       </p>
 
       <section className="mt-6 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] px-5 py-4">
