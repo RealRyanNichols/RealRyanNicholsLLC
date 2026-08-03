@@ -231,8 +231,9 @@ export async function POST(request: Request) {
   // Tell the engines the moment something new goes live (fire-and-forget).
   if (input.status === "published" && post.slug) {
     void pingIndexNow([`/posts/${post.slug}`, "/"]);
-    // Record the internal link graph (related blocks + inline /posts/ links).
-    void recordPostLinks(post.id);
+    // Record the internal graph before the request finishes so the published
+    // post always receives a real inbound Read Next link.
+    await recordPostLinks(post.id);
   }
 
   let sourceTipUpdated = false;
