@@ -94,8 +94,9 @@ export async function PATCH(
   // Tell the engines the post is live (fire-and-forget).
   if (publishedSlug) {
     void pingIndexNow([`/posts/${publishedSlug}`, "/"]);
-    // Refresh the internal link graph for this post.
-    void recordPostLinks(id);
+    // Refresh the internal link graph before the request finishes so a
+    // serverless shutdown cannot leave the published post orphaned.
+    await recordPostLinks(id);
     // Social Studio: draft the four platform posts on publish.
     void generateSocialPosts(id);
   }
