@@ -220,7 +220,12 @@ function PostCardBody({
   // as the card visual suppresses the thumbnail but then truncates before the
   // embed, leaving a text-only row. Only render body visuals when no assigned
   // card image exists.
-  const cardImage = post.thumbnail_url ?? fallbackImage ?? null;
+  // The purpose-built OG asset is also valid feed art. Some posts are created
+  // directly in the CMS and historically received og_image_url without a
+  // duplicated thumbnail_url; ignoring it produced a text-only card even
+  // though the post already had a complete social image.
+  const cardImage =
+    post.thumbnail_url ?? post.og_image_url ?? fallbackImage ?? null;
   return (
     <>
       <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">
