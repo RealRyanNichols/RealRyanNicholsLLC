@@ -157,8 +157,9 @@ export async function PATCH(
 
   // Tell the engines the moment it's live (fire-and-forget).
   void pingIndexNow([`/posts/${post.slug}`, "/"]);
-  // Record the internal link graph for the fresh post.
-  void recordPostLinks(post.id);
+  // Record the internal graph before the request finishes so the published
+  // post always receives a real inbound Read Next link.
+  await recordPostLinks(post.id);
   // Social Studio: draft the four platform posts for the fresh article.
   void generateSocialPosts(post.id);
 
