@@ -185,22 +185,35 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
   }
 
   const path = `/posts/${post.slug}`;
-  const [allPosts, commentCount, pulseRes, ldOg] = await Promise.all([
+  const [allPosts, commentCount, pulseRes, ldOg, automaticLinksRes] = await Promise.all([
     getPublishedPosts(),
     getCommentCount(post.id),
     supabase.rpc("post_live_pulse", { p_path: path }),
     getOgImage(path),
+    supabase
+      .from("post_links")
+      .select("to_post_id, created_at")
+      .eq("from_post_id", post.id)
+      .eq("kind", "auto")
+      .order("created_at", { ascending: false })
+      .limit(4),
   ]);
-  const readNext = allPosts
+  const postById = new Map(allPosts.map((candidate) => [candidate.id, candidate]));
+  const automaticReadNext = (automaticLinksRes.data ?? [])
+    .map((edge) => postById.get(edge.to_post_id as string))
+    .filter((candidate): candidate is Post => Boolean(candidate));
+  const automaticIds = new Set(automaticReadNext.map((candidate) => candidate.id));
+  const scoredReadNext = allPosts
     .filter((p) => p.id !== post.id)
+    .filter((p) => !automaticIds.has(p.id))
     .map((candidate, index) => ({
       candidate,
       index,
       score: relatedPostScore(post, candidate),
     }))
     .sort((a, b) => b.score - a.score || a.index - b.index)
-    .slice(0, 4)
     .map(({ candidate }) => candidate);
+  const readNext = [...automaticReadNext, ...scoredReadNext].slice(0, 4);
   const caseHaystack = [post.title, post.category, ...(post.tags ?? [])]
     .filter(Boolean)
     .join(" ");
