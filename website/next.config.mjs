@@ -20,6 +20,19 @@ const SECURITY_HEADERS = [
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  // lib/og-embed.ts reads local /public images at runtime via a dynamic
+  // fs.readFile() to inline them as data URIs for OG cards. Because that
+  // path isn't statically analyzable, Next's file tracer conservatively
+  // bundles the ENTIRE public/ directory (246MB+ and growing with every
+  // article's social card) into every function that imports it — og/case
+  // alone hit 250.59MB, over Vercel's 250MB uncompressed function limit.
+  // ogEmbeddableImage() already falls back to fetching the image over
+  // HTTP when the local file isn't bundled (see its try/catch), so it's
+  // safe to exclude public/** from every function's trace outright rather
+  // than keep shaving individual image files to stay under the cap.
+  outputFileTracingExcludes: {
+    "*": ["public/**"],
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "rpchhzncxigczfojfdtc.supabase.co" },
