@@ -13,6 +13,7 @@ export async function getPublishedPosts(
     .from("posts")
     .select(POST_COLUMNS)
     .eq("status", "published")
+    .lte("published_at", new Date().toISOString())
     .order("pinned", { ascending: false });
   query =
     opts.sort === "trending"
