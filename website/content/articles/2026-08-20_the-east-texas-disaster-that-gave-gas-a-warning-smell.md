@@ -15,6 +15,8 @@ tags: "New London school, East Texas history, natural gas, odorization, Railroad
 
 *By the Real Ryan Nichols Editorial Team*
 
+![An East Texas school silhouette with the words The Disaster That Gave Gas a Warning Smell](https://realryanichols.com/social-cards/2026-08-20/the-east-texas-disaster-that-gave-gas-a-warning-smell.jpg)
+
 The warning smell people associate with natural gas is not the gas itself.
 
 It is a warning added on purpose.
