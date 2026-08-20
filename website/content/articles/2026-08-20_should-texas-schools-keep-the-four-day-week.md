@@ -15,6 +15,8 @@ tags: "Texas schools, four-day school week, rural education, teacher recruitment
 
 *By the Real Ryan Nichols Editorial Team*
 
+![A quiet Texas school hallway with the words Should Texas Schools Keep the Four-Day Week?](https://realryanichols.com/social-cards/2026-08-20/should-texas-schools-keep-the-four-day-week.jpg)
+
 The four-day school week is no longer a strange experiment at the edge of Texas education.
 
 It has become a real operating choice, especially for rural districts trying to recruit teachers without matching the salaries available in larger systems.
