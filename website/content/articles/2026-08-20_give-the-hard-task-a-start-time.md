@@ -15,6 +15,8 @@ tags: "discipline, hard tasks, starting, procrastination, focus, next step, forw
 
 *By the Real Ryan Nichols Editorial Team*
 
+![A desk clock beside a notebook with the words Give the Hard Task a Start Time](https://realryanichols.com/social-cards/2026-08-20/give-the-hard-task-a-start-time.jpg)
+
 The hard task has probably heard enough speeches.
 
 You have explained why it matters. You have pictured the relief of finishing it. You may have promised yourself that tomorrow will be different.
