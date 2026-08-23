@@ -25,6 +25,7 @@ import { getDocumentsForPerson } from "@/lib/case";
 import { getPublishedPosts } from "@/lib/posts";
 import { SUBJECT_SLUG } from "@/lib/bio";
 import { J6ProfileImage } from "@/components/J6ProfileImage";
+import { BookCtaBand } from "@/components/BookCtaBand";
 
 export const revalidate = 300;
 
@@ -484,6 +485,15 @@ export default async function CasePage({
         <div className="mt-6">
           <J6Banner />
         </div>
+
+        {/* The book. /case is by far the highest-traffic page on the site —
+            on Aug 22 it took 475 of the 504 visitors X sent, while only 30
+            reached /book/preorder, and 8 of those 30 bought. The archive was
+            doing its job and then handing the reader nowhere to go. This is
+            the same BookCtaBand already used on home, /support, /impact,
+            /tools and every post, so the archive keeps its voice and the
+            reader gets a door. */}
+        <BookCtaBand className="mt-8" />
 
         <p className="mt-3 text-xs text-[var(--color-muted)]">
           How this archive sources, labels, and corrects what it publishes —{" "}
