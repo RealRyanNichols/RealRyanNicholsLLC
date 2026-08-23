@@ -11,6 +11,7 @@ import { EvidenceGrid } from "@/components/EvidenceGrid";
 import { ReactionBar } from "@/components/ReactionBar";
 import { ReadingProgress } from "@/components/ReadingProgress";
 import { JsonLd } from "@/components/JsonLd";
+import { BookCtaBand } from "@/components/BookCtaBand";
 import { PERSON_ID, personRef, websiteRef } from "@/lib/jsonld";
 import { SITE } from "@/lib/site";
 import type { Post } from "@/lib/types";
@@ -314,6 +315,14 @@ export function RyanCaseProfile({
           Enter the archive →
         </Link>
       </div>
+
+      {/* The book, placed where the readers actually are. Scroll telemetry on
+          /case for the 48h to 2026-08-23: of 1,882 views, 826 (44%) stopped
+          inside the first 10% and only 205 (11%) ever got past 60%. A CTA at
+          the bottom of this profile would be read by almost nobody. This sits
+          right after the hook and before Chapter One, around 15-20% depth,
+          which roughly 55% of readers still reach. */}
+      <BookCtaBand className="mt-8" />
 
       {/* ---- Who he is, before the government ---- */}
       <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
