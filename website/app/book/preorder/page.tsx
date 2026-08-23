@@ -62,6 +62,33 @@ export default function BookPreorderPage() {
                 Pick the edition that fits — every one helps put the full record
                 in public view.
               </p>
+
+              {/* Above-the-fold buy. In the 24h to 2026-08-23, 166 of 387
+                  pre-order page visitors (43%) left at 1% scroll or less.
+                  They landed on a headline, a cover and a countdown with no
+                  price and nothing to click. Of the ~93 who made it past
+                  halfway, 31 bought. The page was selling fine, it just
+                  never asked. */}
+              <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:items-center">
+                <Link
+                  href="#book-offers"
+                  className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)]"
+                >
+                  Pre-order now
+                  <span className="ml-2">{priceLabel}</span>
+                  {listLabel ? (
+                    <span className="ml-2 text-sm font-bold line-through opacity-70">
+                      {listLabel}
+                    </span>
+                  ) : null}
+                </Link>
+                <Link
+                  href="#book-offers"
+                  className="inline-flex min-h-12 items-center justify-center rounded-lg border border-white/20 bg-white/[0.06] px-6 py-3 text-base font-black text-[#fdf8ea] transition hover:bg-white/10"
+                >
+                  See all editions
+                </Link>
+              </div>
             </div>
             <div className="order-first mx-auto w-full max-w-[200px] sm:max-w-[240px] lg:order-none lg:max-w-none">
               {/* eslint-disable-next-line @next/next/no-img-element */}
