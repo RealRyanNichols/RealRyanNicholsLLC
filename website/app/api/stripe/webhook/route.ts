@@ -4,6 +4,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { requireStripe } from "@/lib/stripe";
 import { getSupabaseServiceClient } from "@/lib/supabase/service";
 import { recordDonationFromSession } from "@/lib/donations";
+import { triggerBookBuyerAutomation } from "@/lib/book-buyer-automation";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -198,7 +199,7 @@ async function handleBookPreorder(
 
   // Idempotent on the session id (in addition to the event-level dedupe above),
   // and `ignoreDuplicates` keeps the original download token if this re-runs.
-  await supabase.from("book_orders").upsert(
+  const { error: orderError } = await supabase.from("book_orders").upsert(
     {
       stripe_checkout_session_id: session.id,
       stripe_payment_intent_id:
@@ -236,6 +237,22 @@ async function handleBookPreorder(
     },
     { onConflict: "stripe_checkout_session_id", ignoreDuplicates: true },
   );
+
+  if (orderError) throw orderError;
+
+  const automation = await triggerBookBuyerAutomation({
+    email: details?.email,
+    edition: slug,
+    orderId: session.id,
+    amountCents: session.amount_total,
+  });
+  if (!automation.sent) {
+    console.warn("book_buyer_automation_not_triggered", {
+      orderId: session.id,
+      reason: automation.reason,
+      ...("error" in automation ? { error: automation.error } : {}),
+    });
+  }
 }
 
 async function handleBlueprintPurchase(
