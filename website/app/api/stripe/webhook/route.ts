@@ -218,6 +218,18 @@ async function handleBookPreorder(
       download_token: randomBytes(24).toString("hex"),
       supporter_name_opt_in: Boolean(supporterName),
       supporter_display_name: supporterName,
+      attribution: {
+        source: session.metadata?.attribution_source || null,
+        medium: session.metadata?.attribution_medium || null,
+        campaign: session.metadata?.attribution_campaign || null,
+        content: session.metadata?.attribution_content || null,
+        term: session.metadata?.attribution_term || null,
+        click_id: session.metadata?.attribution_click_id || null,
+        landing_path: session.metadata?.attribution_landing_path || null,
+        referrer_host: session.metadata?.attribution_referrer_host || null,
+        session_id: session.metadata?.analytics_session_id || null,
+        visitor_id: session.metadata?.analytics_visitor_id || null,
+      },
       notes: isPhysical
         ? "Physical edition — shipping address collected at checkout (see the Stripe session)."
         : null,

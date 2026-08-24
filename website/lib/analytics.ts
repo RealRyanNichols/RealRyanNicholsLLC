@@ -9,6 +9,8 @@ import { getVisitorId } from "@/lib/client-ids";
 // also carries the persistent visitor_id, so a person is tracked across
 // sessions, not just within one visit.
 type Props = Record<string, string | number | boolean | null>;
+const X_PURCHASE_EVENT_ID =
+  process.env.NEXT_PUBLIC_TWITTER_PURCHASE_EVENT_ID;
 
 export function trackEvent(name: string, props: Props = {}): void {
   if (typeof window === "undefined") return;
@@ -19,7 +21,14 @@ export function trackEvent(name: string, props: Props = {}): void {
     /* noop */
   }
   try {
-    window.fbq?.("trackCustom", name, props);
+    if (name === "purchase") {
+      window.fbq?.("track", "Purchase", {
+        value: props.value ?? props.amount ?? 0,
+        currency: props.currency ?? "USD",
+      });
+    } else {
+      window.fbq?.("trackCustom", name, props);
+    }
   } catch {
     /* noop */
   }
@@ -29,12 +38,22 @@ export function trackEvent(name: string, props: Props = {}): void {
     /* noop */
   }
   try {
-    window.ttq?.track?.(name, props);
+    window.ttq?.track?.(name === "purchase" ? "CompletePayment" : name, props);
   } catch {
     /* noop */
   }
   try {
-    window.twq?.("event", name, props);
+    if (name === "purchase") {
+      if (X_PURCHASE_EVENT_ID) {
+        window.twq?.("event", X_PURCHASE_EVENT_ID, {
+          value: props.value ?? props.amount ?? 0,
+          currency: props.currency ?? "USD",
+          conversion_id: props.event_id ?? null,
+        });
+      }
+    } else {
+      window.twq?.("event", name, props);
+    }
   } catch {
     /* noop */
   }

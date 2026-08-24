@@ -22,12 +22,15 @@ create table if not exists public.book_orders (
   last_downloaded_at timestamptz,
   supporter_name_opt_in boolean not null default false,
   supporter_display_name text,
+  attribution jsonb not null default '{}'::jsonb,
   notes text
 );
 
 create index if not exists book_orders_customer_email_idx on public.book_orders (customer_email);
 create index if not exists book_orders_product_slug_idx on public.book_orders (product_slug);
 create index if not exists book_orders_payment_status_idx on public.book_orders (payment_status);
+create index if not exists book_orders_attribution_source_idx
+  on public.book_orders ((attribution->>'source'));
 
 -- RLS on, no policies: service-role only (the webhook), matching the schema.
 alter table public.book_orders enable row level security;

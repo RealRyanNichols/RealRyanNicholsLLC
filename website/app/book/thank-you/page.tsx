@@ -4,6 +4,8 @@ import { BOOK, BOOK_TIERS, formatUsd, tierPriceUsd, tierSale, type BookTierSlug 
 import { SITE } from "@/lib/site";
 import { BookBuyButton } from "@/components/BookBuyButton";
 import { BookShare } from "@/components/BookShare";
+import { PurchaseTracker } from "@/components/PurchaseTracker";
+import { requireStripe } from "@/lib/stripe";
 import {
   getSupabaseServiceClient,
   isSupabaseServiceConfigured,
@@ -45,21 +47,64 @@ const ORDER: BookTierSlug[] = [
 
 async function getOrder(
   sessionId?: string,
-): Promise<{ slug: BookTierSlug | null; email: string | null }> {
-  if (!sessionId || !isSupabaseServiceConfigured()) {
-    return { slug: null, email: null };
+): Promise<{
+  slug: BookTierSlug | null;
+  email: string | null;
+  amount: number | null;
+  currency: string | null;
+}> {
+  if (!sessionId) {
+    return { slug: null, email: null, amount: null, currency: null };
   }
-  const supabase = getSupabaseServiceClient();
-  const { data } = await supabase
-    .from("book_orders")
-    .select("product_slug, customer_email")
-    .eq("stripe_checkout_session_id", sessionId)
-    .maybeSingle();
-  const slug = data?.product_slug as BookTierSlug | undefined;
-  return {
-    slug: slug && ORDER.includes(slug) ? slug : null,
-    email: (data?.customer_email as string | undefined) ?? null,
-  };
+
+  if (isSupabaseServiceConfigured()) {
+    const supabase = getSupabaseServiceClient();
+    const { data } = await supabase
+      .from("book_orders")
+      .select("product_slug, customer_email, amount_paid, currency, payment_status")
+      .eq("stripe_checkout_session_id", sessionId)
+      .maybeSingle();
+    if (data) {
+      const slug = data.product_slug as BookTierSlug | undefined;
+      return {
+        slug: slug && ORDER.includes(slug) ? slug : null,
+        email: (data.customer_email as string | undefined) ?? null,
+        amount:
+          data.payment_status === "paid" && typeof data.amount_paid === "number"
+            ? data.amount_paid / 100
+            : null,
+        currency: (data.currency as string | undefined) ?? null,
+      };
+    }
+  }
+
+  // The webhook can finish a moment after Stripe redirects the buyer. Read
+  // the completed session as a safe fallback so the purchase conversion is
+  // not lost on that first receipt-page view.
+  if (process.env.STRIPE_SECRET_KEY) {
+    try {
+      const session = await requireStripe().checkout.sessions.retrieve(sessionId);
+      if (
+        session.metadata?.kind === "book_preorder" &&
+        session.payment_status === "paid"
+      ) {
+        const slug = session.metadata.product_slug as BookTierSlug | undefined;
+        return {
+          slug: slug && ORDER.includes(slug) ? slug : null,
+          email: session.customer_details?.email ?? null,
+          amount:
+            typeof session.amount_total === "number"
+              ? session.amount_total / 100
+              : null,
+          currency: session.currency ?? null,
+        };
+      }
+    } catch {
+      // Keep the receipt usable even if Stripe is temporarily unavailable.
+    }
+  }
+
+  return { slug: null, email: null, amount: null, currency: null };
 }
 
 export default async function BookThankYouPage({
@@ -68,7 +113,7 @@ export default async function BookThankYouPage({
   searchParams: Promise<{ session_id?: string }>;
 }) {
   const { session_id } = await searchParams;
-  const { slug: bought, email: orderEmail } = await getOrder(session_id);
+  const { slug: bought, email: orderEmail, amount, currency } = await getOrder(session_id);
 
   // Upsell the next edition up. If we can't tell what they bought yet (the
   // webhook may not have landed), softly offer the Founding edition — unless
@@ -87,6 +132,14 @@ export default async function BookThankYouPage({
 
   return (
     <article className="rrn-page">
+      {session_id && amount !== null ? (
+        <PurchaseTracker
+          amount={amount}
+          currency={currency ?? "USD"}
+          eventId={`book_${session_id}`}
+          kind={bought ? `book_${bought}` : "book_preorder"}
+        />
+      ) : null}
       <section className="bg-[#071126] text-[#fdf8ea]">
         <div className="mx-auto max-w-2xl px-4 py-16 text-center sm:px-6 lg:py-20">
           <p className="text-xs font-black uppercase tracking-[0.24em] text-[#e1bd5b]">
