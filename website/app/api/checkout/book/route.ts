@@ -7,7 +7,29 @@ import { BOOK, BOOK_TIERS, tierPriceUsd, type BookTierSlug } from "@/lib/book";
 export const runtime = "nodejs";
 
 const SLUGS = BOOK_TIERS.map((t) => t.slug) as [BookTierSlug, ...BookTierSlug[]];
-const schema = z.object({ slug: z.enum(SLUGS) });
+const nullableShort = z.string().trim().max(180).nullable();
+const schema = z.object({
+  slug: z.enum(SLUGS),
+  sessionId: z.string().trim().min(8).max(64).nullable().optional(),
+  visitorId: z.string().trim().min(8).max(80).nullable().optional(),
+  attribution: z
+    .object({
+      source: nullableShort,
+      medium: nullableShort,
+      campaign: nullableShort,
+      content: nullableShort,
+      term: nullableShort,
+      clickId: nullableShort,
+      landingPath: z.string().trim().min(1).max(360),
+      referrerHost: nullableShort,
+    })
+    .nullable()
+    .optional(),
+});
+
+function metadataValue(value: string | null | undefined): string {
+  return value?.slice(0, 480) ?? "";
+}
 
 // Tiers that ship a physical copy need a shipping address + phone.
 const PHYSICAL: Set<BookTierSlug> = new Set([
@@ -44,6 +66,7 @@ export async function POST(request: Request) {
 
   const isPhysical = PHYSICAL.has(tier.slug);
   const stripe = requireStripe();
+  const attribution = parsed.data.attribution;
 
   try {
     const session = await stripe.checkout.sessions.create({
@@ -91,6 +114,16 @@ export async function POST(request: Request) {
         product_slug: tier.slug,
         product_name: tier.name,
         amount_usd: String(tierPriceUsd(tier)),
+        attribution_source: metadataValue(attribution?.source),
+        attribution_medium: metadataValue(attribution?.medium),
+        attribution_campaign: metadataValue(attribution?.campaign),
+        attribution_content: metadataValue(attribution?.content),
+        attribution_term: metadataValue(attribution?.term),
+        attribution_click_id: metadataValue(attribution?.clickId),
+        attribution_landing_path: metadataValue(attribution?.landingPath),
+        attribution_referrer_host: metadataValue(attribution?.referrerHost),
+        analytics_session_id: metadataValue(parsed.data.sessionId),
+        analytics_visitor_id: metadataValue(parsed.data.visitorId),
       },
     });
 

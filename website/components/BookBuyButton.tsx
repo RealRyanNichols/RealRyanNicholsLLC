@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { trackEvent } from "@/lib/analytics";
+import { getFirstTouchAttribution } from "@/lib/acquisition";
+import { getSessionId, getVisitorId } from "@/lib/client-ids";
 
 /**
  * Starts a Stripe Checkout session for a book tier and redirects to it.
@@ -23,12 +25,24 @@ export function BookBuyButton({
     if (busy) return;
     setBusy(true);
     setError(null);
-    trackEvent("book_checkout_start", { slug });
+    const attribution = getFirstTouchAttribution();
+    trackEvent("book_checkout_start", {
+      slug,
+      source: attribution?.source ?? null,
+      medium: attribution?.medium ?? null,
+      campaign: attribution?.campaign ?? null,
+      content: attribution?.content ?? null,
+    });
     try {
       const res = await fetch("/api/checkout/book", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ slug }),
+        body: JSON.stringify({
+          slug,
+          attribution,
+          sessionId: getSessionId(),
+          visitorId: getVisitorId(),
+        }),
       });
       const json = (await res.json().catch(() => ({}))) as {
         url?: string;

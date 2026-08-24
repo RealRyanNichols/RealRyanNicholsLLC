@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { getSessionId, getVisitorId } from "@/lib/client-ids";
+import { captureFirstTouchAttribution } from "@/lib/acquisition";
 
 function getScrollPct(): number {
   if (typeof window === "undefined") return 0;
@@ -58,6 +59,10 @@ export function PageViewTracker() {
     scrollMaxRef.current = 0;
     lastFlushRef.current = 0;
     const firedMilestones = new Set<number>();
+
+    // Preserve the first campaign touch so a visitor can move through the
+    // site before starting Checkout without losing the ad/source context.
+    captureFirstTouchAttribution();
 
     // Initial view → /api/track-pageview. The route reads Vercel's geo
     // headers + computes the first-party visitor hash and creates the
