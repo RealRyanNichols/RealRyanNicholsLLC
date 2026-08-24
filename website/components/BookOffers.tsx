@@ -57,7 +57,7 @@ export function BookOffers({
           >
             {featured ? (
               <span className="absolute -top-3 left-5 rounded-full bg-[var(--color-accent)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--color-paper)]">
-                Most chosen
+                Best physical edition
               </span>
             ) : sale.onSale ? (
               <span className="absolute -top-3 left-5 rounded-full bg-[var(--color-accent)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--color-paper)]">
