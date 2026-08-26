@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 import {
   getDeadmanState,
-  releaseApprovedDeadmanDrafts,
-  saveDeadmanState,
+  releaseNextDeadmanUpdate,
 } from "@/lib/deadman";
 import {
   getSupabaseServiceClient,
@@ -37,17 +36,14 @@ async function run(request: Request) {
 
   const supabase = getSupabaseServiceClient();
   const state = await getDeadmanState(supabase);
-  if (!state.active) {
+  if (!state.active || !state.incident_id) {
     return NextResponse.json({ ok: true, active: false, released: 0 });
   }
 
-  const release = await releaseApprovedDeadmanDrafts(supabase);
-  const now = new Date().toISOString();
-  await saveDeadmanState(supabase, {
-    ...state,
-    last_release_at: now,
-    total_released: state.total_released + release.released,
-  });
+  const release = await releaseNextDeadmanUpdate(
+    supabase,
+    state.incident_id,
+  );
 
   return NextResponse.json({
     ok: true,
@@ -55,6 +51,8 @@ async function run(request: Request) {
     released: release.released,
     blocked: release.blocked,
     scanned: release.scanned,
+    reason: release.reason,
+    next_eligible_at: release.next_eligible_at,
   });
 }
 

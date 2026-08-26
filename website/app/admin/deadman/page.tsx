@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { formatDistanceToNowStrict } from "date-fns";
 import { DeadmanSwitchForm } from "@/components/DeadmanSwitchForm";
-import { DEADMAN_QUEUE_CATEGORY, getDeadmanState } from "@/lib/deadman";
+import { getDeadmanState } from "@/lib/deadman";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
@@ -28,17 +28,15 @@ export default async function AdminDeadmanPage() {
   }
 
   const state = await getDeadmanState(supabase);
-  const [{ count: queued }, { count: released }] = await Promise.all([
+  const [{ count: ready }, { count: released }] = await Promise.all([
     supabase
-      .from("posts")
+      .from("deadman_updates")
       .select("id", { count: "exact", head: true })
-      .eq("status", "draft")
-      .eq("category", DEADMAN_QUEUE_CATEGORY),
+      .eq("status", "ready"),
     supabase
-      .from("posts")
+      .from("deadman_updates")
       .select("id", { count: "exact", head: true })
       .eq("status", "published")
-      .eq("category", DEADMAN_QUEUE_CATEGORY),
   ]);
 
   return (
@@ -53,37 +51,36 @@ export default async function AdminDeadmanPage() {
           </h1>
           <p className="mt-4 max-w-3xl text-sm leading-relaxed text-[var(--color-ink-soft)]">
             This is built to protect the record without violating trust. It
-            releases only drafts explicitly marked with category{" "}
-            <code>{DEADMAN_QUEUE_CATEGORY}</code>. It never releases private
-            messages, tips, contact info, evidence uploads, or unreviewed
-            submissions.
+            publishes a verified first bulletin immediately, then one
+            source-labeled status update at the top of each hour. The response
+            worker creates the updates; it does not wait for owner-approved
+            drafts. It never releases private messages, tips, contact info,
+            sealed material, or evidence uploads.
           </p>
           <div className="mt-5 grid gap-3 sm:grid-cols-3">
             <Stat label="Switch" value={state.active ? "Active" : "Off"} tone={state.active ? "red" : "green"} />
-            <Stat label="Approved drafts" value={queued ?? 0} tone={(queued ?? 0) > 0 ? "gold" : "plain"} />
+            <Stat label="Ready updates" value={ready ?? 0} tone={(ready ?? 0) > 0 ? "gold" : "plain"} />
             <Stat label="Released" value={state.total_released || released || 0} tone="blue" />
           </div>
           <div className="mt-6 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
             <h2 className="font-display text-2xl font-black tracking-normal">
-              How to stage safe material
+              How hourly reporting works
             </h2>
             <ol className="mt-3 space-y-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-              <li>1. Create or edit a post and save it as a draft.</li>
-              <li>
-                2. Mark it for release from the posts admin row, or set its
-                category to <code>{DEADMAN_QUEUE_CATEGORY}</code>.
-              </li>
-              <li>
-                3. Keep anything private, unverified, identifying, or legally
-                risky out of this queue.
-              </li>
+              <li>1. A trusted contact or authoritative record confirms custody.</li>
+              <li>2. The first sourced bulletin publishes immediately.</li>
+              <li>3. Codex researches and publishes a timestamped update at each hour, including a no-new-information bulletin when appropriate.</li>
+              <li>4. X and Facebook captions are prepared for each public article and logged until successfully posted.</li>
             </ol>
           </div>
         </section>
 
         <aside>
-          <DeadmanSwitchForm />
+          <DeadmanSwitchForm allowReverse />
           <div className="mt-4 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] p-4 text-xs leading-relaxed text-[var(--color-muted)]">
+            <p>
+              Incident: {state.incident_code ?? "none"}
+            </p>
             <p>
               Last activated: {state.activated_at ? timeAgo(state.activated_at) : "never"}
             </p>
