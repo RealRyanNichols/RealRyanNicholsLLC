@@ -224,6 +224,101 @@ export function getDeadmanActivators(): DeadmanActivator[] {
   );
 }
 
+type DeadmanAuthConfig = {
+  secretSalt: string;
+  activators: DeadmanActivator[];
+  reversalHash: string;
+};
+
+async function getDeadmanAuthConfig(
+  supabase: AnySupabase,
+): Promise<DeadmanAuthConfig | null> {
+  const envActivators = getDeadmanActivators();
+  const envSalt = process.env.DEADMAN_SECRET_SALT?.trim();
+  const envReversalHash = process.env.DEADMAN_REVERSAL_HASH?.trim().toLowerCase();
+  if (
+    envSalt &&
+    envSalt.length >= 16 &&
+    envActivators.length > 0 &&
+    envReversalHash &&
+    /^[a-f0-9]{64}$/.test(envReversalHash)
+  ) {
+    return {
+      secretSalt: envSalt,
+      activators: envActivators,
+      reversalHash: envReversalHash,
+    };
+  }
+
+  const { data, error } = await supabase
+    .from("deadman_auth_config")
+    .select("secret_salt, activators, reversal_hash")
+    .eq("id", "primary")
+    .maybeSingle();
+  if (error || !data) return null;
+
+  const activators = parseDeadmanActivators(JSON.stringify(data.activators));
+  const secretSalt =
+    typeof data.secret_salt === "string" ? data.secret_salt.trim() : "";
+  const reversalHash =
+    typeof data.reversal_hash === "string"
+      ? data.reversal_hash.trim().toLowerCase()
+      : "";
+  if (
+    secretSalt.length < 16 ||
+    activators.length === 0 ||
+    !/^[a-f0-9]{64}$/.test(reversalHash)
+  ) {
+    return null;
+  }
+  return { secretSalt, activators, reversalHash };
+}
+
+export async function deadmanKeysConfiguredFor(
+  supabase: AnySupabase,
+): Promise<boolean> {
+  return (await getDeadmanAuthConfig(supabase)) !== null;
+}
+
+export async function verifyDeadmanCodeFor(
+  supabase: AnySupabase,
+  action: "activate" | "reverse",
+  code: string,
+  activatorId?: string,
+): Promise<DeadmanCodeVerification> {
+  if (code.length < 16) return { valid: false };
+  const config = await getDeadmanAuthConfig(supabase);
+  if (!config) return { valid: false };
+
+  let expected: string;
+  let actorId: string;
+  let actorLabel: string;
+  if (action === "reverse") {
+    expected = config.reversalHash;
+    actorId = "owner-reversal";
+    actorLabel = "Owner reversal code";
+  } else {
+    const activator = config.activators.find(
+      (item) => item.active && item.id === activatorId,
+    );
+    if (!activator) return { valid: false };
+    expected = activator.hash;
+    actorId = activator.id;
+    actorLabel = activator.label;
+  }
+
+  const actual = crypto
+    .createHash("sha256")
+    .update(`${config.secretSalt}:${code}`)
+    .digest("hex");
+  const expectedBuffer = Buffer.from(expected, "hex");
+  const actualBuffer = Buffer.from(actual, "hex");
+  if (expectedBuffer.length !== actualBuffer.length) return { valid: false };
+  return crypto.timingSafeEqual(expectedBuffer, actualBuffer)
+    ? { valid: true, actor_id: actorId, actor_label: actorLabel }
+    : { valid: false };
+}
+
 export function hashDeadmanCode(code: string): string {
   const salt = process.env.DEADMAN_SECRET_SALT;
   if (!salt) throw new Error("DEADMAN_SECRET_SALT is not configured.");
