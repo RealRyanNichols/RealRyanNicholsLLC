@@ -180,5 +180,8 @@ export function validateDeadmanAccountabilityDraft(
   return { ok: errors.length === 0, errors };
 }
 
-export const EAST_MOUNTAIN_RESEARCH_NOTICE =
-  "East Mountain is a prioritized research lead. No misconduct conclusion is asserted unless and until source records establish the relevant event, decision-makers, and connection to the present custody issue.";
+export const EVIDENCE_NETWORK_RESEARCH_NOTICE =
+  "Every named matter may be investigated internally. No misconduct, coordination, or cross-incident conclusion is publishable unless reviewed sources establish the people, events, public relevance, and claimed connection, and the legal and privacy gates are open.";
+
+/** @deprecated Use the evidence-network notice for all private research leads. */
+export const EAST_MOUNTAIN_RESEARCH_NOTICE = EVIDENCE_NETWORK_RESEARCH_NOTICE;

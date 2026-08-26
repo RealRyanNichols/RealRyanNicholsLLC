@@ -4,6 +4,7 @@ import {
   buildInitialCustodyBulletin,
   deadmanReleaseDue,
   parseDeadmanActivators,
+  releaseNextDeadmanUpdate,
 } from "../lib/deadman";
 
 test("parseDeadmanActivators accepts valid unique hashed contacts and fails closed", () => {
@@ -33,6 +34,46 @@ test("deadmanReleaseDue allows at most one release per calendar hour", () => {
     deadmanReleaseDue("2026-08-26T15:00:00.000Z", now),
     false,
   );
+});
+
+test("release retries bounded evidence-gate races using the stable database signal", async () => {
+  let releaseCalls = 0;
+  let reconcileCalls = 0;
+  const supabase = {
+    rpc: async (name: string) => {
+      if (name === "reconcile_deadman_evidence_network_queue") {
+        reconcileCalls += 1;
+        return { data: 1, error: null };
+      }
+      releaseCalls += 1;
+      if (releaseCalls < 3) {
+        return {
+          data: null,
+          error: {
+            code: "P0001",
+            hint: "deadman_evidence_network_gate",
+            message: "Evidence-network publication gate rejected this update.",
+          },
+        };
+      }
+      return {
+        data: [{
+          released_update_id: "update-1",
+          released_post_id: "post-1",
+          ready_count: 0,
+          reason: "released",
+          next_eligible_at: "2026-08-26T16:00:00.000Z",
+        }],
+        error: null,
+      };
+    },
+  };
+
+  const result = await releaseNextDeadmanUpdate(supabase as never, "incident-1");
+  assert.equal(reconcileCalls, 3);
+  assert.equal(releaseCalls, 3);
+  assert.equal(result.blocked, 3);
+  assert.deepEqual(result.released_ids, ["update-1"]);
 });
 
 test("initial bulletin labels advocacy and unresolved facts", () => {

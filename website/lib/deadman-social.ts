@@ -61,15 +61,25 @@ export async function dispatchNextDeadmanXPost(
     };
   }
 
-  const { data: incident, error: incidentError } = await supabase
-    .from("deadman_incidents")
-    .select("status, public_release_authorized")
-    .eq("id", claimed.incident_id)
-    .maybeSingle();
+  const [incidentResult, dispatchResult] = await Promise.all([
+    supabase
+      .from("deadman_incidents")
+      .select("status, public_release_authorized")
+      .eq("id", claimed.incident_id)
+      .maybeSingle(),
+    supabase
+      .from("deadman_social_dispatches")
+      .select("status")
+      .eq("id", claimed.id)
+      .maybeSingle(),
+  ]);
+  const incident = incidentResult.data;
   if (
-    incidentError ||
+    incidentResult.error ||
+    dispatchResult.error ||
     incident?.status !== "active" ||
-    incident.public_release_authorized !== true
+    incident.public_release_authorized !== true ||
+    dispatchResult.data?.status !== "posting"
   ) {
     const now = new Date().toISOString();
     await supabase
@@ -91,53 +101,9 @@ export async function dispatchNextDeadmanXPost(
     };
   }
 
+  let published: Awaited<ReturnType<typeof publishXPost>>;
   try {
-    const published = await publishXPost(claimed.body, credentials);
-    const now = new Date().toISOString();
-    const { error: ackError } = await supabase
-      .from("deadman_social_dispatches")
-      .update({
-        status: "posted",
-        posted_at: now,
-        external_url: published.url,
-        error: null,
-        updated_at: now,
-      })
-      .eq("id", claimed.id)
-      .eq("status", "posting");
-
-    if (ackError) {
-      // Leave the row in `posting`: the external mutation succeeded and an
-      // automatic retry could create a duplicate post.
-      return {
-        configured: true,
-        claimed: true,
-        posted: true,
-        dispatch_id: claimed.id,
-        external_url: published.url,
-        reason: "posted_but_audit_ack_failed",
-      };
-    }
-
-    await supabase.from("deadman_event_log").insert({
-      incident_id: claimed.incident_id,
-      event_type: "social_dispatch_posted",
-      actor_id: "deadman-x-api",
-      detail: {
-        dispatch_id: claimed.id,
-        update_id: claimed.update_id,
-        platform: "x",
-        external_url: published.url,
-      },
-    });
-    return {
-      configured: true,
-      claimed: true,
-      posted: true,
-      dispatch_id: claimed.id,
-      external_url: published.url,
-      reason: "posted",
-    };
+    published = await publishXPost(claimed.body, credentials);
   } catch (publishError) {
     const message = safeError(publishError);
     const now = new Date().toISOString();
@@ -166,4 +132,83 @@ export async function dispatchNextDeadmanXPost(
       reason: "x_publish_failed",
     };
   }
+
+  const now = new Date().toISOString();
+  try {
+    const { error: ackError, count: ackCount } = await supabase
+      .from("deadman_social_dispatches")
+      .update({
+        status: "posted",
+        posted_at: now,
+        external_url: published.url,
+        error: null,
+        updated_at: now,
+      }, { count: "exact" })
+      .eq("id", claimed.id)
+      .in("status", ["posting", "skipped"]);
+
+    if (ackError || ackCount !== 1) {
+      // Preserve the non-retryable state (`posting` or a concurrent reversal's
+      // `skipped`): the external mutation succeeded, so retrying could duplicate it.
+      return {
+        configured: true,
+        claimed: true,
+        posted: true,
+        dispatch_id: claimed.id,
+        external_url: published.url,
+        reason: "posted_but_audit_ack_failed",
+      };
+    }
+  } catch {
+    return {
+      configured: true,
+      claimed: true,
+      posted: true,
+      dispatch_id: claimed.id,
+      external_url: published.url,
+      reason: "posted_but_audit_ack_failed",
+    };
+  }
+
+  try {
+    const { error: eventError } = await supabase.from("deadman_event_log").insert({
+      incident_id: claimed.incident_id,
+      event_type: "social_dispatch_posted",
+      actor_id: "deadman-x-api",
+      detail: {
+        dispatch_id: claimed.id,
+        update_id: claimed.update_id,
+        platform: "x",
+        external_url: published.url,
+      },
+    });
+    if (eventError) {
+      return {
+        configured: true,
+        claimed: true,
+        posted: true,
+        dispatch_id: claimed.id,
+        external_url: published.url,
+        reason: "posted_but_event_log_failed",
+      };
+    }
+  } catch {
+    return {
+      configured: true,
+      claimed: true,
+      posted: true,
+      dispatch_id: claimed.id,
+      external_url: published.url,
+      reason: "posted_but_event_log_failed",
+    };
+  }
+
+  return {
+    configured: true,
+    claimed: true,
+    posted: true,
+    dispatch_id: claimed.id,
+    external_url: published.url,
+    reason: "posted",
+  };
 }

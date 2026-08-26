@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  EVIDENCE_NETWORK_RESEARCH_NOTICE,
   DEADMAN_REQUIRED_HEADINGS,
   validateDeadmanAccountabilityDraft,
   type DeadmanAccountabilityDraft,
@@ -88,4 +89,10 @@ test("private-person targeting and sensitive details are rejected", () => {
   const result = validateDeadmanAccountabilityDraft(draft);
   assert.equal(result.ok, false);
   assert.match(result.errors.join(" "), /prohibited private-person targeting/i);
+});
+
+test("the research notice permits broad investigation without asserting a connection", () => {
+  assert.match(EVIDENCE_NETWORK_RESEARCH_NOTICE, /every named matter may be investigated/i);
+  assert.match(EVIDENCE_NETWORK_RESEARCH_NOTICE, /no misconduct, coordination, or cross-incident conclusion is publishable/i);
+  assert.match(EVIDENCE_NETWORK_RESEARCH_NOTICE, /reviewed sources establish/i);
 });
