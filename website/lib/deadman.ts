@@ -233,6 +233,28 @@ type DeadmanAuthConfig = {
 async function getDeadmanAuthConfig(
   supabase: AnySupabase,
 ): Promise<DeadmanAuthConfig | null> {
+  const { data, error } = await supabase
+    .from("deadman_auth_config")
+    .select("secret_salt, activators, reversal_hash")
+    .eq("id", "primary")
+    .maybeSingle();
+  if (!error && data) {
+    const activators = parseDeadmanActivators(JSON.stringify(data.activators));
+    const secretSalt =
+      typeof data.secret_salt === "string" ? data.secret_salt.trim() : "";
+    const reversalHash =
+      typeof data.reversal_hash === "string"
+        ? data.reversal_hash.trim().toLowerCase()
+        : "";
+    if (
+      secretSalt.length >= 16 &&
+      activators.length > 0 &&
+      /^[a-f0-9]{64}$/.test(reversalHash)
+    ) {
+      return { secretSalt, activators, reversalHash };
+    }
+  }
+
   const envActivators = getDeadmanActivators();
   const envSalt = process.env.DEADMAN_SECRET_SALT?.trim();
   const envReversalHash = process.env.DEADMAN_REVERSAL_HASH?.trim().toLowerCase();
@@ -249,29 +271,7 @@ async function getDeadmanAuthConfig(
       reversalHash: envReversalHash,
     };
   }
-
-  const { data, error } = await supabase
-    .from("deadman_auth_config")
-    .select("secret_salt, activators, reversal_hash")
-    .eq("id", "primary")
-    .maybeSingle();
-  if (error || !data) return null;
-
-  const activators = parseDeadmanActivators(JSON.stringify(data.activators));
-  const secretSalt =
-    typeof data.secret_salt === "string" ? data.secret_salt.trim() : "";
-  const reversalHash =
-    typeof data.reversal_hash === "string"
-      ? data.reversal_hash.trim().toLowerCase()
-      : "";
-  if (
-    secretSalt.length < 16 ||
-    activators.length === 0 ||
-    !/^[a-f0-9]{64}$/.test(reversalHash)
-  ) {
-    return null;
-  }
-  return { secretSalt, activators, reversalHash };
+  return null;
 }
 
 export async function deadmanKeysConfiguredFor(
