@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DeadmanSwitchForm } from "@/components/DeadmanSwitchForm";
+import { deadmanCronSecretConfigured } from "@/lib/cron-auth";
 
 export const metadata: Metadata = {
   title: "Deadman Switch",
@@ -22,10 +23,18 @@ export default function DeadmanPage() {
         private contact ID, a unique code, an authoritative custody source, and
         an express public-release attestation.
       </p>
-      <div className="mt-5 grid gap-3 sm:grid-cols-3">
+      <div className="mt-5 grid gap-3 sm:grid-cols-2">
         <Guardrail title="Verified trigger" text="Official record or direct authoritative confirmation." />
         <Guardrail title="Hourly update" text="One source-labeled status post at the top of every hour." />
         <Guardrail title="Private stays private" text="No tips, messages, credentials, children, or sealed material." />
+        <Guardrail
+          title="Scheduler security"
+          text={
+            deadmanCronSecretConfigured()
+              ? "Exact bearer authentication is configured for both hourly workers."
+              : "Hourly worker authentication needs configuration before activation."
+          }
+        />
       </div>
       <div className="mt-6">
         <DeadmanSwitchForm />

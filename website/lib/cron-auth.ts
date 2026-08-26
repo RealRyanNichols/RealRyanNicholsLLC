@@ -20,3 +20,9 @@ export function isAuthorizedDeadmanCron(
   const authorization = request.headers.get("authorization") ?? "";
   return constantTimeEqual(authorization, `Bearer ${configured}`);
 }
+
+export function deadmanCronSecretConfigured(
+  secret = process.env.DEADMAN_CRON_SECRET || process.env.CRON_SECRET,
+): boolean {
+  return (secret?.trim().length ?? 0) >= 16;
+}
