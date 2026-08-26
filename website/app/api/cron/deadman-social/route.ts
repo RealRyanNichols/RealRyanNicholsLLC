@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { dispatchNextDeadmanXPost } from "@/lib/deadman-social";
+import { isAuthorizedDeadmanCron } from "@/lib/cron-auth";
 import {
   getSupabaseServiceClient,
   isSupabaseServiceConfigured,
@@ -8,16 +9,8 @@ import {
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-function authorized(request: Request): boolean {
-  const secret = process.env.DEADMAN_CRON_SECRET || process.env.CRON_SECRET;
-  if (secret && request.headers.get("authorization") === `Bearer ${secret}`) {
-    return true;
-  }
-  return request.headers.get("x-vercel-cron-schedule") !== null;
-}
-
 async function run(request: Request) {
-  if (!authorized(request)) {
+  if (!isAuthorizedDeadmanCron(request)) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   }
   if (!isSupabaseServiceConfigured()) {

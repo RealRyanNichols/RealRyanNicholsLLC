@@ -28,7 +28,15 @@ export default async function AdminDeadmanPage() {
   }
 
   const state = await getDeadmanState(supabase);
-  const [{ count: ready }, { count: released }] = await Promise.all([
+  const stalePostingCutoff = new Date(Date.now() - 10 * 60 * 1000).toISOString();
+  const [
+    { count: ready },
+    { count: released },
+    { data: researchLeads },
+    { count: failedSocial },
+    { count: stuckSocial },
+    { count: responseRequests },
+  ] = await Promise.all([
     supabase
       .from("deadman_updates")
       .select("id", { count: "exact", head: true })
@@ -36,7 +44,24 @@ export default async function AdminDeadmanPage() {
     supabase
       .from("deadman_updates")
       .select("id", { count: "exact", head: true })
-      .eq("status", "published")
+      .eq("status", "published"),
+    supabase
+      .from("deadman_research_leads")
+      .select("topic_key, title, status, priority, publication_ready, publication_gate_note")
+      .order("priority", { ascending: false }),
+    supabase
+      .from("deadman_social_dispatches")
+      .select("id", { count: "exact", head: true })
+      .eq("status", "failed"),
+    supabase
+      .from("deadman_social_dispatches")
+      .select("id", { count: "exact", head: true })
+      .eq("status", "posting")
+      .lt("last_attempt_at", stalePostingCutoff),
+    supabase
+      .from("deadman_updates")
+      .select("id", { count: "exact", head: true })
+      .eq("official_response_status", "requested"),
   ]);
 
   return (
@@ -61,6 +86,9 @@ export default async function AdminDeadmanPage() {
             <Stat label="Switch" value={state.active ? "Active" : "Off"} tone={state.active ? "red" : "green"} />
             <Stat label="Ready updates" value={ready ?? 0} tone={(ready ?? 0) > 0 ? "gold" : "plain"} />
             <Stat label="Released" value={state.total_released || released || 0} tone="blue" />
+            <Stat label="Research leads" value={researchLeads?.length ?? 0} tone="plain" />
+            <Stat label="Official replies due" value={responseRequests ?? 0} tone={(responseRequests ?? 0) > 0 ? "gold" : "plain"} />
+            <Stat label="Social attention" value={(failedSocial ?? 0) + (stuckSocial ?? 0)} tone={(failedSocial ?? 0) + (stuckSocial ?? 0) > 0 ? "red" : "green"} />
           </div>
           <div className="mt-6 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
             <h2 className="font-display text-2xl font-black tracking-normal">
@@ -72,6 +100,42 @@ export default async function AdminDeadmanPage() {
               <li>3. Codex researches and publishes a timestamped update at each hour, including a no-new-information bulletin when appropriate.</li>
               <li>4. X and Facebook captions are prepared for each public article and logged until successfully posted.</li>
             </ol>
+          </div>
+          <div className="mt-6 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+            <h2 className="font-display text-2xl font-black tracking-normal">
+              Evidence-led accountability queue
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+              Every public update must separate verified facts, attributed
+              allegations, editorial inferences, advocacy, and unanswered
+              questions. A named person requires a sourced public role. Private
+              leads cannot publish until their gate is affirmatively opened.
+            </p>
+            <div className="mt-4 space-y-3">
+              {(researchLeads ?? []).map((lead) => (
+                <section
+                  key={lead.topic_key}
+                  className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] p-4"
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <h3 className="text-sm font-black text-[var(--color-ink)]">
+                      {lead.title}
+                    </h3>
+                    <span className="rounded-full border border-[var(--color-line)] px-2 py-1 text-[10px] font-black uppercase tracking-normal text-[var(--color-muted)]">
+                      {lead.publication_ready ? "publication ready" : lead.status.replaceAll("_", " ")}
+                    </span>
+                  </div>
+                  <p className="mt-2 text-xs leading-relaxed text-[var(--color-muted)]">
+                    {lead.publication_gate_note}
+                  </p>
+                </section>
+              ))}
+            </div>
+            <p className="mt-4 text-xs text-[var(--color-muted)]">
+              Failed social dispatches: {failedSocial ?? 0} · ambiguous/stuck
+              dispatches: {stuckSocial ?? 0}. Ambiguous deliveries are held for
+              reconciliation so an automatic retry cannot create duplicates.
+            </p>
           </div>
         </section>
 

@@ -397,7 +397,11 @@ export async function releaseNextDeadmanUpdate(
 }
 
 function safePublicText(value: string | null | undefined, max: number): string {
-  return (value ?? "").replace(/[\u0000-\u001f\u007f]/g, " ").trim().slice(0, max);
+  return (value ?? "")
+    .replace(/[\u0000-\u001f\u007f]/g, " ")
+    .replace(/[\\`*_\[\]()<>{}|]/g, "\\$&")
+    .trim()
+    .slice(0, max);
 }
 
 function markdownLink(url: string | null | undefined): string | null {
@@ -421,7 +425,6 @@ export function buildInitialCustodyBulletin(input: {
 }): { title: string; body: string; seoDescription: string } {
   const agency = safePublicText(input.agency, 160);
   const facility = safePublicText(input.facility, 160);
-  const summary = safePublicText(input.publicSummary, 1200);
   const source = markdownLink(input.sourceUrl);
   const label = DEADMAN_CONFIRMATION_LABELS[input.confirmationType];
   const reportedWhere = [agency, facility].filter(Boolean).join(" · ");
@@ -436,30 +439,32 @@ export function buildInitialCustodyBulletin(input: {
   const seoDescription =
     "Verified Ryan Nichols custody status, Harrison County accountability questions, due process concerns, exculpatory evidence, and an hourly public timeline.";
   const lines = [
-    "This is the first public bulletin in the custody-response record for **Ryan Nichols**. It will be corrected or expanded as original records become available.",
+    "This is the first public bulletin in the custody-response record for **Ryan Nichols**. Every public decision in this matter will be documented, sourced, timestamped, and corrected when the record requires it.",
     "",
-    "## What is confirmed",
+    "## Verified facts",
     "",
     `At **${time} Central Time**, an authorized emergency contact activated this protocol after checking a **${label}**.`,
     reportedWhere ? `The reported agency or facility is **${reportedWhere}**.` : "The agency and facility have not yet been confirmed for publication.",
     "",
-    "## What the authorized contact reported",
-    "",
-    `> ${summary || "Custody was confirmed. The stated basis and supporting records are still being collected."}`,
-    "",
     source ?? "A public source link was not available at activation. The source record is being preserved privately for verification.",
     "",
-    "## Ryan's stated position",
+    "The activating contact's full report is preserved in the private incident log. It is not copied into this article because a trusted contact's free-form description is not, by itself, proof of every detail it may contain.",
     "",
-    "Before this meeting, Ryan stated that taking him into custody would be lawfare, political persecution, and unfair treatment. That is **Ryan's position and this site's advocacy view**. It is not presented as a judicial finding. The reporting that follows will compare the government's stated basis with the controlling orders, release conditions, docket, recordings, and other original records.",
+    "## Official account and allegations",
     "",
-    "## Harrison County accountability",
+    "No complete public official explanation for the detention has yet been verified for this bulletin. Any alleged violation, charge, or government account will be attributed to the office or record that states it; an allegation will not be rewritten as an established fact.",
     "",
-    "The public deserves to know which Harrison County office or official requested, authorized, approved, enforced, or failed to prevent any detention; what legal authority was cited; what evidence was reviewed; and what notice and opportunity to respond Ryan received. This site will identify public officials when their office, authority, action, or inaction is supported by a public record. It is this site's position that any official who enabled an unjustified detention should answer publicly for that decision.",
+    "## Evidence, contradictions, and unanswered questions",
     "",
-    "## What remains unknown",
+    "The exact legal basis, operative order, alleged violation, booking information, counsel's response, and next hearing must be confirmed from original sources. The reporting will compare the government's stated basis against controlling orders, release conditions, docket entries, recordings, exculpatory evidence, favorable context, and contrary evidence. A social-media post is not a substitute for a court or custody record.",
     "",
-    "The exact legal basis, operative order, alleged violation, booking information, counsel's response, and next hearing must be confirmed from original sources. An official allegation is not automatically a proven fact, and a social-media post is not a substitute for a court or custody record.",
+    "## Accountability notice",
+    "",
+    "Harrison County must answer a direct set of public questions: which office or official requested, authorized, approved, enforced, or failed to prevent this detention; what authority was cited; what evidence was reviewed; and what notice and opportunity to respond Ryan received. Public officials are on notice that their documented actions, omissions, and explanations will be quoted, compared with the governing record, and preserved. Individuals will be named only when a reliable source establishes their public role and relevant conduct.",
+    "",
+    "## Advocacy position",
+    "",
+    "Before this meeting, Ryan described any unjustified detention as lawfare, political persecution, and unfair treatment. That is **Ryan's stated position and this site's advocacy**, not a judicial finding. This site calls for Ryan's immediate release unless the government can produce a lawful, transparent, and documented basis for holding him. If public officials enabled an unjustified detention, this site demands public answers and lawful accountability.",
     "",
     "{{poll: What verified material can you help locate? | Court or docket record | Booking information | Original eyewitness material | I can share this update}}",
     "",

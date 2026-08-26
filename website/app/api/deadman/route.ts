@@ -9,7 +9,15 @@ import {
 } from "@/lib/deadman";
 import { dispatchNextDeadmanXPost } from "@/lib/deadman-social";
 import { DEADMAN_CONFIRMATION_TYPES } from "@/lib/deadman-constants";
+import {
+  DEADMAN_EDITORIAL_MODE,
+  type DeadmanClaimLabels,
+  type DeadmanEvidenceStrength,
+  type DeadmanPublicSource,
+  validateDeadmanAccountabilityDraft,
+} from "@/lib/deadman-editorial";
 import { sendAdminAlert } from "@/lib/admin-email-alerts";
+import { pingIndexNow } from "@/lib/indexnow";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { SITE } from "@/lib/site";
 import {
@@ -217,9 +225,9 @@ async function activateSwitch(
       public_release_authorized: false,
       reported_at: nowIso,
       metadata: {
-        protocol_version: 2,
+        protocol_version: 3,
         cadence: "top_of_every_hour",
-        editorial_mode: "defense_advocacy_with_source_labels",
+        editorial_mode: DEADMAN_EDITORIAL_MODE,
       },
     })
     .select("id, incident_code")
@@ -261,14 +269,75 @@ async function activateSwitch(
       .eq("id", incident.id);
     if (activateError) throw activateError;
 
-    const sources = input.source_url
-      ? [{ url: input.source_url, type: input.confirmation_type }]
+    const sources: DeadmanPublicSource[] = input.source_url
+      ? [{ id: "activation-confirmation", url: input.source_url, type: input.confirmation_type }]
       : [
           {
+            id: "activation-confirmation",
             type: input.confirmation_type,
             note: "Direct authoritative confirmation preserved in the private incident record.",
           },
         ];
+    const evidenceStrength: DeadmanEvidenceStrength =
+      input.confirmation_type === "official_booking_record" ||
+      input.confirmation_type === "filed_court_order" ||
+      input.confirmation_type === "custodial_agency_confirmation"
+        ? "primary_record"
+        : "direct_confirmation";
+    const claimLabels: DeadmanClaimLabels = {
+      verified_facts: [
+        {
+          id: "fact-activation",
+          claim: `A trusted contact activated the custody protocol after checking a ${input.confirmation_type}.`,
+          source_ids: ["activation-confirmation"],
+        },
+      ],
+      attributed_allegations: [],
+      editorial_inferences: [],
+      advocacy_positions: [
+        {
+          id: "advocacy-release",
+          claim: "This site calls for Ryan's release unless the government establishes a lawful and documented basis for detention.",
+        },
+      ],
+      unresolved_questions: [
+        {
+          id: "question-legal-basis",
+          claim: "Which office and official supplied the operative legal basis for detention?",
+        },
+      ],
+    };
+    const factBasis = {
+      editorial_mode: DEADMAN_EDITORIAL_MODE,
+      evidence_strength: evidenceStrength,
+      accountability_targets: ["Harrison County public agencies"],
+      related_topics: [
+        "custody legal basis",
+        "Harrison County decision chain",
+        "East Mountain research lead",
+        "exculpatory evidence",
+      ],
+      official_response_status: "requested",
+      claim_labels: claimLabels,
+      confirmation_type: input.confirmation_type,
+      confirmation_summary_private: true,
+      confirmed_at: nowIso,
+      agency: input.agency?.trim() || null,
+      facility: input.facility?.trim() || null,
+    };
+    const editorialValidation = validateDeadmanAccountabilityDraft({
+      title: bulletin.title,
+      body: bulletin.body,
+      evidenceStrength,
+      sources,
+      claimLabels,
+      accountabilityTargets: factBasis.accountability_targets,
+    });
+    if (!editorialValidation.ok) {
+      throw new Error(
+        `Initial bulletin failed accountability validation: ${editorialValidation.errors.join(" ")}`,
+      );
+    }
     const { data: updateId, error: stageError } = await supabase.rpc(
       "stage_deadman_update",
       {
@@ -278,17 +347,11 @@ async function activateSwitch(
         p_body: bulletin.body,
         p_source_classification: input.confirmation_type,
         p_public_record_sources: sources,
-        p_fact_basis: {
-          confirmation_type: input.confirmation_type,
-          confirmation_summary: input.confirmation_summary,
-          confirmed_at: nowIso,
-          agency: input.agency?.trim() || null,
-          facility: input.facility?.trim() || null,
-        },
+        p_fact_basis: factBasis,
         p_seo_description: bulletin.seoDescription,
         p_created_by: `trusted-contact:${verification.actor_id}`,
-        p_x_post: `Verified custody response activated for Ryan Nichols. We are documenting public records, due process concerns, exculpatory evidence, and Harrison County's role hour by hour. Read and share: ${publicUrl}`,
-        p_facebook_post: `A verified custody response has been activated for Ryan Nichols.\n\nWe are documenting the public record, due process concerns, exculpatory evidence, and Harrison County's role hour by hour. Read the source-labeled update, share it, and help preserve relevant public records. Do not harass anyone.\n\n${publicUrl}`,
+        p_x_post: `Verified custody response: Harrison County must show the lawful, documented basis for holding Ryan Nichols—or release him. Every public decision will be sourced and preserved. Read and share: ${publicUrl}`,
+        p_facebook_post: `A verified custody response has been activated for Ryan Nichols.\n\nHarrison County must identify the lawful, documented basis for holding him—or release him. We will preserve the public decision chain, compare official claims with source records, publish exculpatory evidence and contradictions, and request answers from the responsible public offices.\n\nRead and share the source-labeled record. Ask factual questions, submit original records, and do not threaten, harass, dox, or target private people.\n\n${publicUrl}`,
       },
     );
     if (stageError || typeof updateId !== "string") {
@@ -308,6 +371,9 @@ async function activateSwitch(
     });
 
     const release = await releaseNextDeadmanUpdate(supabase, incident.id);
+    if (release.released_ids.includes(updateId)) {
+      await pingIndexNow([`/posts/${slug}`, "/", "/sitemap.xml"]);
+    }
     const social = await dispatchNextDeadmanXPost(supabase).catch(() => null);
     await sendAdminAlert({
       subject: `Deadman's Switch activated · ${incident.incident_code}`,

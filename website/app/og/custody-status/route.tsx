@@ -112,7 +112,7 @@ export async function GET(request: Request) {
             lineHeight: 1.35,
           }}
         >
-          Public records, due process, exculpatory evidence, and what officials did next.
+          Every public decision sourced. Every contradiction preserved. Public answers demanded.
         </div>
       </div>
 
@@ -128,7 +128,7 @@ export async function GET(request: Request) {
           fontWeight: 700,
         }}
       >
-        <div style={{ display: "flex" }}>Emergency editorial record</div>
+        <div style={{ display: "flex" }}>Evidence-led accountability record</div>
         <div style={{ display: "flex", color: "#fff8e8" }}>realryannichols.com</div>
       </div>
     </div>,
