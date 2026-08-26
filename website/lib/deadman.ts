@@ -1,13 +1,22 @@
 import crypto from "node:crypto";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import {
+  DEADMAN_CONFIRMATION_LABELS,
   DEADMAN_QUEUE_CATEGORY,
+  DEADMAN_RELEASE_BATCH_SIZE,
+  DEADMAN_RELEASE_INTERVAL_MINUTES,
   DEADMAN_STATE_SLUG,
+  type DeadmanConfirmationType,
 } from "@/lib/deadman-constants";
-import { getDirectVideoUrl } from "@/lib/direct-video";
 
-export { DEADMAN_QUEUE_CATEGORY, DEADMAN_STATE_SLUG };
-export const DEADMAN_BATCH_SIZE = 25;
+export {
+  DEADMAN_CONFIRMATION_LABELS,
+  DEADMAN_QUEUE_CATEGORY,
+  DEADMAN_RELEASE_INTERVAL_MINUTES,
+  DEADMAN_STATE_SLUG,
+};
+export type { DeadmanConfirmationType };
+export const DEADMAN_BATCH_SIZE = DEADMAN_RELEASE_BATCH_SIZE;
 
 const SYSTEM_AUTHOR_ID =
   process.env.POSTS_AUTHOR_ID || "6792cdcd-2465-4a3a-9c49-4e270eaf79fa";
@@ -16,6 +25,10 @@ type AnySupabase = SupabaseClient;
 
 export type DeadmanState = {
   active: boolean;
+  incident_id: string | null;
+  incident_code: string | null;
+  activated_by: string | null;
+  confirmation_type: DeadmanConfirmationType | null;
   activated_at: string | null;
   reversed_at: string | null;
   last_release_at: string | null;
@@ -23,13 +36,11 @@ export type DeadmanState = {
   message: string;
 };
 
-type DeadmanPostRow = {
+export type DeadmanActivator = {
   id: string;
-  type: string | null;
-  media: unknown;
-  mux_status: string | null;
-  mux_playback_id: string | null;
-  published_at: string | null;
+  label: string;
+  hash: string;
+  active: boolean;
 };
 
 export type DeadmanReleaseResult = {
@@ -37,17 +48,24 @@ export type DeadmanReleaseResult = {
   released: number;
   blocked: number;
   released_ids: string[];
+  released_post_ids: string[];
+  reason: string;
+  next_eligible_at: string | null;
 };
 
 export function defaultDeadmanState(): DeadmanState {
   return {
     active: false,
+    incident_id: null,
+    incident_code: null,
+    activated_by: null,
+    confirmation_type: null,
     activated_at: null,
     reversed_at: null,
     last_release_at: null,
     total_released: 0,
     message:
-      "Emergency publishing mode is limited to public-release-approved drafts only. Private tips, messages, uploads, contact details, and unreviewed submissions are never released by this switch.",
+      "Emergency publishing is off. When active, the custody-response worker publishes one source-labeled status update at the top of each hour. Private tips, messages, contact details, and sealed material are never released.",
   };
 }
 
@@ -70,6 +88,32 @@ export function parseDeadmanState(raw: string | null | undefined): DeadmanState 
 }
 
 export async function getDeadmanState(supabase: AnySupabase): Promise<DeadmanState> {
+  const { data: incident, error: incidentError } = await supabase
+    .from("deadman_incidents")
+    .select(
+      "id, incident_code, status, activator_id, confirmation_type, activated_at, resolved_at, last_release_at, total_released",
+    )
+    .order("reported_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (!incidentError && incident) {
+    return {
+      ...defaultDeadmanState(),
+      active: incident.status === "active",
+      incident_id: incident.id,
+      incident_code: incident.incident_code,
+      activated_by: incident.activator_id,
+      confirmation_type: incident.confirmation_type as DeadmanConfirmationType,
+      activated_at: incident.activated_at,
+      reversed_at: incident.resolved_at,
+      last_release_at: incident.last_release_at,
+      total_released: incident.total_released ?? 0,
+    };
+  }
+
+  // Backward-compatible fallback for deployments where the v2 migration has
+  // not landed yet. New activations always use deadman_incidents.
   const { data } = await supabase
     .from("posts")
     .select("body")
@@ -121,10 +165,62 @@ export async function saveDeadmanState(
 }
 
 export function deadmanKeysConfigured(): boolean {
+  const activators = getDeadmanActivators();
   return !!(
     process.env.DEADMAN_SECRET_SALT &&
-    process.env.DEADMAN_ACTIVATION_HASH &&
+    activators.length > 0 &&
     process.env.DEADMAN_REVERSAL_HASH
+  );
+}
+
+export function parseDeadmanActivators(
+  raw: string | null | undefined,
+  legacyHash?: string | null,
+): DeadmanActivator[] {
+  const parsed: DeadmanActivator[] = [];
+  if (raw) {
+    try {
+      const values = JSON.parse(raw) as unknown;
+      if (Array.isArray(values)) {
+        for (const value of values) {
+          if (!value || typeof value !== "object") continue;
+          const item = value as Record<string, unknown>;
+          const id = typeof item.id === "string" ? item.id.trim() : "";
+          const label = typeof item.label === "string" ? item.label.trim() : "";
+          const hash = typeof item.hash === "string" ? item.hash.trim().toLowerCase() : "";
+          const active = item.active !== false;
+          if (
+            /^[a-z0-9][a-z0-9_-]{1,39}$/i.test(id) &&
+            label.length >= 2 &&
+            label.length <= 100 &&
+            /^[a-f0-9]{64}$/.test(hash)
+          ) {
+            parsed.push({ id, label, hash, active });
+          }
+        }
+      }
+    } catch {
+      // A malformed env value fails closed. The legacy entry below may still
+      // keep an existing installation reachable during migration.
+    }
+  }
+  if (legacyHash && /^[a-f0-9]{64}$/i.test(legacyHash)) {
+    parsed.push({
+      id: "legacy",
+      label: "Legacy trusted contact",
+      hash: legacyHash.toLowerCase(),
+      active: true,
+    });
+  }
+  return parsed.filter(
+    (item, index, all) => all.findIndex((candidate) => candidate.id === item.id) === index,
+  );
+}
+
+export function getDeadmanActivators(): DeadmanActivator[] {
+  return parseDeadmanActivators(
+    process.env.DEADMAN_ACTIVATORS_JSON,
+    process.env.DEADMAN_ACTIVATION_HASH,
   );
 }
 
@@ -134,73 +230,153 @@ export function hashDeadmanCode(code: string): string {
   return crypto.createHash("sha256").update(`${salt}:${code}`).digest("hex");
 }
 
+export type DeadmanCodeVerification =
+  | { valid: true; actor_id: string; actor_label: string }
+  | { valid: false };
+
 export function verifyDeadmanCode(
   action: "activate" | "reverse",
   code: string,
-): boolean {
-  if (!deadmanKeysConfigured() || code.length < 16) return false;
-  const expected =
-    action === "activate"
-      ? process.env.DEADMAN_ACTIVATION_HASH
-      : process.env.DEADMAN_REVERSAL_HASH;
-  if (!expected || !/^[a-f0-9]{64}$/i.test(expected)) return false;
+  activatorId?: string,
+): DeadmanCodeVerification {
+  if (!deadmanKeysConfigured() || code.length < 16) return { valid: false };
+  let expected: string | undefined;
+  let actorId: string;
+  let actorLabel: string;
+
+  if (action === "reverse") {
+    expected = process.env.DEADMAN_REVERSAL_HASH;
+    actorId = "owner-reversal";
+    actorLabel = "Owner reversal code";
+  } else {
+    const activator = getDeadmanActivators().find(
+      (item) => item.active && item.id === activatorId,
+    );
+    if (!activator) return { valid: false };
+    expected = activator.hash;
+    actorId = activator.id;
+    actorLabel = activator.label;
+  }
+  if (!expected || !/^[a-f0-9]{64}$/i.test(expected)) return { valid: false };
 
   const actual = hashDeadmanCode(code);
   const expectedBuffer = Buffer.from(expected.toLowerCase(), "hex");
   const actualBuffer = Buffer.from(actual, "hex");
-  if (expectedBuffer.length !== actualBuffer.length) return false;
-  return crypto.timingSafeEqual(expectedBuffer, actualBuffer);
+  if (expectedBuffer.length !== actualBuffer.length) return { valid: false };
+  return crypto.timingSafeEqual(expectedBuffer, actualBuffer)
+    ? { valid: true, actor_id: actorId, actor_label: actorLabel }
+    : { valid: false };
 }
 
-function postCanBeReleased(row: DeadmanPostRow): boolean {
-  if (row.type !== "video") return true;
-  return (
-    (!!row.mux_playback_id && row.mux_status === "ready") ||
-    !!getDirectVideoUrl(row.media as Parameters<typeof getDirectVideoUrl>[0])
-  );
+export function deadmanReleaseDue(
+  lastReleaseAt: string | null,
+  now = new Date(),
+): boolean {
+  if (!lastReleaseAt) return true;
+  const last = new Date(lastReleaseAt).getTime();
+  if (!Number.isFinite(last)) return true;
+  return new Date(last).toISOString().slice(0, 13) !== now.toISOString().slice(0, 13);
 }
 
-export async function releaseApprovedDeadmanDrafts(
+export async function releaseNextDeadmanUpdate(
   supabase: AnySupabase,
-  batchSize = DEADMAN_BATCH_SIZE,
+  incidentId: string,
 ): Promise<DeadmanReleaseResult> {
-  const { data, error } = await supabase
-    .from("posts")
-    .select("id, type, media, mux_status, mux_playback_id, published_at")
-    .eq("status", "draft")
-    .eq("category", DEADMAN_QUEUE_CATEGORY)
-    .neq("slug", DEADMAN_STATE_SLUG)
-    .order("created_at", { ascending: true })
-    .limit(batchSize);
+  const { data, error } = await supabase.rpc("release_next_deadman_update", {
+    p_incident_id: incidentId,
+  });
   if (error) throw error;
-
-  const rows = (data ?? []) as DeadmanPostRow[];
-  const publishable = rows.filter(postCanBeReleased);
-  const ids = publishable.map((row) => row.id);
-  if (ids.length === 0) {
-    return {
-      scanned: rows.length,
-      released: 0,
-      blocked: rows.length,
-      released_ids: [],
-    };
-  }
-
-  const now = new Date().toISOString();
-  const { error: updateError } = await supabase
-    .from("posts")
-    .update({
-      status: "published",
-      published_at: now,
-      updated_at: now,
-    })
-    .in("id", ids);
-  if (updateError) throw updateError;
-
+  const result = Array.isArray(data) ? data[0] : data;
+  const releasedUpdateId = result?.released_update_id as string | null | undefined;
+  const releasedPostId = result?.released_post_id as string | null | undefined;
   return {
-    scanned: rows.length,
-    released: ids.length,
-    blocked: rows.length - ids.length,
-    released_ids: ids,
+    scanned: Number(result?.ready_count ?? 0),
+    released: releasedUpdateId ? 1 : 0,
+    blocked: 0,
+    released_ids: releasedUpdateId ? [releasedUpdateId] : [],
+    released_post_ids: releasedPostId ? [releasedPostId] : [],
+    reason: String(result?.reason ?? "unknown"),
+    next_eligible_at:
+      typeof result?.next_eligible_at === "string" ? result.next_eligible_at : null,
   };
+}
+
+function safePublicText(value: string | null | undefined, max: number): string {
+  return (value ?? "").replace(/[\u0000-\u001f\u007f]/g, " ").trim().slice(0, max);
+}
+
+function markdownLink(url: string | null | undefined): string | null {
+  if (!url) return null;
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol !== "https:" && parsed.protocol !== "http:") return null;
+    return `[Open the cited confirmation source](${parsed.toString()})`;
+  } catch {
+    return null;
+  }
+}
+
+export function buildInitialCustodyBulletin(input: {
+  confirmedAt: string;
+  confirmationType: DeadmanConfirmationType;
+  agency?: string | null;
+  facility?: string | null;
+  publicSummary: string;
+  sourceUrl?: string | null;
+}): { title: string; body: string; seoDescription: string } {
+  const agency = safePublicText(input.agency, 160);
+  const facility = safePublicText(input.facility, 160);
+  const summary = safePublicText(input.publicSummary, 1200);
+  const source = markdownLink(input.sourceUrl);
+  const label = DEADMAN_CONFIRMATION_LABELS[input.confirmationType];
+  const reportedWhere = [agency, facility].filter(Boolean).join(" · ");
+  const time = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/Chicago",
+    dateStyle: "long",
+    timeStyle: "short",
+  }).format(new Date(input.confirmedAt));
+
+  const title =
+    "Ryan Nichols custody update: verified status and Harrison County accountability";
+  const seoDescription =
+    "Verified Ryan Nichols custody status, Harrison County accountability questions, due process concerns, exculpatory evidence, and an hourly public timeline.";
+  const lines = [
+    "This is the first public bulletin in the custody-response record for **Ryan Nichols**. It will be corrected or expanded as original records become available.",
+    "",
+    "## What is confirmed",
+    "",
+    `At **${time} Central Time**, an authorized emergency contact activated this protocol after checking a **${label}**.`,
+    reportedWhere ? `The reported agency or facility is **${reportedWhere}**.` : "The agency and facility have not yet been confirmed for publication.",
+    "",
+    "## What the authorized contact reported",
+    "",
+    `> ${summary || "Custody was confirmed. The stated basis and supporting records are still being collected."}`,
+    "",
+    source ?? "A public source link was not available at activation. The source record is being preserved privately for verification.",
+    "",
+    "## Ryan's stated position",
+    "",
+    "Before this meeting, Ryan stated that taking him into custody would be lawfare, political persecution, and unfair treatment. That is **Ryan's position and this site's advocacy view**. It is not presented as a judicial finding. The reporting that follows will compare the government's stated basis with the controlling orders, release conditions, docket, recordings, and other original records.",
+    "",
+    "## Harrison County accountability",
+    "",
+    "The public deserves to know which Harrison County office or official requested, authorized, approved, enforced, or failed to prevent any detention; what legal authority was cited; what evidence was reviewed; and what notice and opportunity to respond Ryan received. This site will identify public officials when their office, authority, action, or inaction is supported by a public record. It is this site's position that any official who enabled an unjustified detention should answer publicly for that decision.",
+    "",
+    "## What remains unknown",
+    "",
+    "The exact legal basis, operative order, alleged violation, booking information, counsel's response, and next hearing must be confirmed from original sources. An official allegation is not automatically a proven fact, and a social-media post is not a substitute for a court or custody record.",
+    "",
+    "{{poll: What verified material can you help locate? | Court or docket record | Booking information | Original eyewitness material | I can share this update}}",
+    "",
+    "## How to help lawfully",
+    "",
+    "Share this page with local and national journalists, civil-liberties groups, veteran communities, and elected representatives. Preserve original public records and submit source material through the site's evidence form. Ask specific, factual questions. Do not threaten, harass, dox, contact children, target witnesses, or publish private addresses or sealed information.",
+    "",
+    "{{report: Ryan Nichols custody response}}",
+    "",
+    "{{poll: Will you stick to verified information as this develops? | Yes | I will check sources | I can submit records}}",
+    "",
+    "{{share}}",
+  ];
+  return { title, body: lines.join("\n"), seoDescription };
 }

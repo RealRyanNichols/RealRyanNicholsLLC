@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
 import { POST_VIDEO_BUCKET, POST_VIDEO_MAX_BYTES, formatBytes } from "@/lib/direct-video";
-import { DEADMAN_QUEUE_CATEGORY } from "@/lib/deadman-constants";
 import { VIDEO_CHANNELS } from "@/lib/video-channels";
 import type { VideoConfigStatus } from "@/lib/video-config";
 
@@ -219,15 +218,11 @@ function TextForm({
   const [saveAsDraft, setSaveAsDraft] = useState(
     initial?.status === "draft" || Boolean(prefill),
   );
-  const [deadmanApproved, setDeadmanApproved] = useState(
-    initial?.category === DEADMAN_QUEUE_CATEGORY,
-  );
-
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setState({ kind: "submitting", label: editing ? "Saving…" : "Publishing…" });
-    const status = saveAsDraft || deadmanApproved ? "draft" : "published";
-    const postCategory = deadmanApproved ? DEADMAN_QUEUE_CATEGORY : category.trim() || null;
+    const status = saveAsDraft ? "draft" : "published";
+    const postCategory = category.trim() || null;
     try {
       if (editing && initial) {
         await patchPost(initial.id, { title, body, pinned, status, category: postCategory });
@@ -305,27 +300,8 @@ function TextForm({
           </span>
         </span>
       </label>
-      <label className="flex items-start gap-2 text-sm mb-4 rounded-md border border-[#d8ad43] bg-[#fff5d6] p-3">
-        <input
-          type="checkbox"
-          checked={deadmanApproved}
-          onChange={(e) => {
-            setDeadmanApproved(e.target.checked);
-            if (e.target.checked) setSaveAsDraft(true);
-          }}
-          className="mt-1"
-        />
-        <span>
-          Public-release approved for deadman switch
-          <span className="block text-xs text-[var(--color-muted)]">
-            This marks the post category as <code>{DEADMAN_QUEUE_CATEGORY}</code>.
-            Do not use this for private tips, messages, contact info, uploads,
-            or unreviewed allegations.
-          </span>
-        </span>
-      </label>
       <SubmitButton state={state}>
-        {editing ? "Save changes" : statusLabel(saveAsDraft || deadmanApproved, "essay")}
+        {editing ? "Save changes" : statusLabel(saveAsDraft, "essay")}
       </SubmitButton>
       <ErrorBanner state={state} />
       <ProgressBar state={state} />
@@ -339,15 +315,11 @@ function NoteForm({ initial }: { initial?: ComposeInitial } = {}) {
   const [state, setState] = useState<State>({ kind: "idle" });
   const [body, setBody] = useState(initial?.body ?? "");
   const [saveAsDraft, setSaveAsDraft] = useState(initial?.status === "draft");
-  const [deadmanApproved, setDeadmanApproved] = useState(
-    initial?.category === DEADMAN_QUEUE_CATEGORY,
-  );
-
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setState({ kind: "submitting", label: editing ? "Saving…" : "Posting…" });
-    const status = saveAsDraft || deadmanApproved ? "draft" : "published";
-    const category = deadmanApproved ? DEADMAN_QUEUE_CATEGORY : null;
+    const status = saveAsDraft ? "draft" : "published";
+    const category = null;
     try {
       if (editing && initial) {
         await patchPost(initial.id, { body, status, category });
@@ -388,26 +360,8 @@ function NoteForm({ initial }: { initial?: ComposeInitial } = {}) {
           </span>
         </span>
       </label>
-      <label className="flex items-start gap-2 text-sm mb-4 rounded-md border border-[#d8ad43] bg-[#fff5d6] p-3">
-        <input
-          type="checkbox"
-          checked={deadmanApproved}
-          onChange={(e) => {
-            setDeadmanApproved(e.target.checked);
-            if (e.target.checked) setSaveAsDraft(true);
-          }}
-          className="mt-1"
-        />
-        <span>
-          Public-release approved for deadman switch
-          <span className="block text-xs text-[var(--color-muted)]">
-            This marks the post category as <code>{DEADMAN_QUEUE_CATEGORY}</code>.
-            Keep private and unreviewed material out of this queue.
-          </span>
-        </span>
-      </label>
       <SubmitButton state={state}>
-        {editing ? "Save changes" : statusLabel(saveAsDraft || deadmanApproved, "note")}
+        {editing ? "Save changes" : statusLabel(saveAsDraft, "note")}
       </SubmitButton>
       <ErrorBanner state={state} />
       <ProgressBar state={state} />
