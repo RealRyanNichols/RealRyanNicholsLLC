@@ -39,9 +39,11 @@ test("publishXPost sends JSON and returns a canonical status URL", async () => {
 
   const result = await publishXPost("Update", credentials, fakeFetch);
   assert.equal(result.url, "https://x.com/RealRyanNichols/status/12345");
-  assert.equal(request?.url, "https://api.x.com/2/tweets");
-  assert.equal(request?.init?.body, JSON.stringify({ text: "Update" }));
-  assert.match(String(new Headers(request?.init?.headers).get("authorization")), /^OAuth /);
+  const sentRequest = request as { url: string; init?: RequestInit } | null;
+  assert.ok(sentRequest);
+  assert.equal(sentRequest.url, "https://api.x.com/2/tweets");
+  assert.equal(sentRequest.init?.body, JSON.stringify({ text: "Update" }));
+  assert.match(String(new Headers(sentRequest.init?.headers).get("authorization")), /^OAuth /);
 });
 
 test("publishXPost refuses text over the X limit before sending", async () => {
