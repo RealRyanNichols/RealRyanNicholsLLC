@@ -5,6 +5,10 @@
       "schedule": "0 * * * *"
     },
     {
+      "path": "/api/cron/deadman-social",
+      "schedule": "*/5 * * * *"
+    },
+    {
       "path": "/api/cron/biglie-daily",
       "schedule": "*/15 * * * *"
     }

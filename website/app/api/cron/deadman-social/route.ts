@@ -1,14 +1,11 @@
 import { NextResponse } from "next/server";
-import {
-  getDeadmanState,
-  releaseNextDeadmanUpdate,
-} from "@/lib/deadman";
 import { dispatchNextDeadmanXPost } from "@/lib/deadman-social";
 import {
   getSupabaseServiceClient,
   isSupabaseServiceConfigured,
 } from "@/lib/supabase/service";
 
+export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 function authorized(request: Request): boolean {
@@ -16,9 +13,6 @@ function authorized(request: Request): boolean {
   if (secret && request.headers.get("authorization") === `Bearer ${secret}`) {
     return true;
   }
-  // Vercel stamps every scheduled invocation with x-vercel-cron-schedule.
-  // The run is a no-op unless an authenticated activation has armed the
-  // switch, and the database release operation is idempotent per hour.
   return request.headers.get("x-vercel-cron-schedule") !== null;
 }
 
@@ -33,28 +27,8 @@ async function run(request: Request) {
     );
   }
 
-  const supabase = getSupabaseServiceClient();
-  const state = await getDeadmanState(supabase);
-  if (!state.active || !state.incident_id) {
-    return NextResponse.json({ ok: true, active: false, released: 0 });
-  }
-
-  const release = await releaseNextDeadmanUpdate(
-    supabase,
-    state.incident_id,
-  );
-  const social = await dispatchNextDeadmanXPost(supabase).catch(() => null);
-
-  return NextResponse.json({
-    ok: true,
-    active: true,
-    released: release.released,
-    blocked: release.blocked,
-    scanned: release.scanned,
-    reason: release.reason,
-    next_eligible_at: release.next_eligible_at,
-    x_dispatch: social,
-  });
+  const result = await dispatchNextDeadmanXPost(getSupabaseServiceClient());
+  return NextResponse.json({ ok: true, platform: "x", ...result });
 }
 
 export async function GET(request: Request) {

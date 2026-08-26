@@ -7,6 +7,7 @@ import {
   releaseNextDeadmanUpdate,
   verifyDeadmanCode,
 } from "@/lib/deadman";
+import { dispatchNextDeadmanXPost } from "@/lib/deadman-social";
 import { DEADMAN_CONFIRMATION_TYPES } from "@/lib/deadman-constants";
 import { sendAdminAlert } from "@/lib/admin-email-alerts";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -302,6 +303,7 @@ async function activateSwitch(
     });
 
     const release = await releaseNextDeadmanUpdate(supabase, incident.id);
+    const social = await dispatchNextDeadmanXPost(supabase).catch(() => null);
     await sendAdminAlert({
       subject: `Deadman's Switch activated · ${incident.incident_code}`,
       text: [
@@ -323,6 +325,7 @@ async function activateSwitch(
       incident_code: incident.incident_code,
       public_url: release.released_ids.includes(updateId) ? publicUrl : null,
       next_eligible_at: release.next_eligible_at,
+      x_dispatch: social,
       message:
         "Verified-custody response activated. The initial source-labeled bulletin was published and hourly reporting is live.",
     });
