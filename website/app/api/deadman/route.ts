@@ -126,33 +126,75 @@ async function reverseSwitch(
     .from("deadman_incidents")
     .update({
       status: "resolved",
+      public_release_authorized: false,
       resolved_at: now,
       resolution_summary: input.resolution_summary,
       updated_at: now,
     })
-    .eq("id", incident.id);
+    .eq("id", incident.id)
+    .in("status", ["verifying", "active"]);
   if (error) throw error;
+
+  const [withdrawResult, socialResult] = await Promise.all([
+    supabase
+      .from("deadman_updates")
+      .update({
+        status: "withdrawn",
+        correction_summary: "Withdrawn because the emergency incident was resolved.",
+      }, { count: "exact" })
+      .eq("incident_id", incident.id)
+      .eq("status", "ready"),
+    supabase
+      .from("deadman_social_dispatches")
+      .update({
+        status: "skipped",
+        error: "Skipped because the emergency incident was resolved before dispatch.",
+        updated_at: now,
+      }, { count: "exact" })
+      .eq("incident_id", incident.id)
+      .in("status", ["ready", "failed", "posting"]),
+  ]);
+  const cleanupIssues = [
+    withdrawResult.error ? "ready_update_cleanup" : null,
+    socialResult.error ? "social_dispatch_cleanup" : null,
+  ].filter((value): value is string => value !== null);
 
   await recordEvent(supabase, {
     incidentId: incident.id,
     eventType: "switch_reversed",
     actorId: verification.actor_id,
     fingerprint,
-    detail: { resolution_summary: input.resolution_summary },
+    detail: {
+      resolution_summary: input.resolution_summary,
+      withdrawn_updates: withdrawResult.count ?? 0,
+      skipped_social_dispatches: socialResult.count ?? 0,
+      cleanup_attention: cleanupIssues,
+    },
   });
+  if (cleanupIssues.length) {
+    await recordEvent(supabase, {
+      incidentId: incident.id,
+      eventType: "switch_reversal_cleanup_attention",
+      actorId: verification.actor_id,
+      fingerprint,
+      detail: { failed_cleanup_steps: cleanupIssues },
+    });
+  }
 
   await sendAdminAlert({
     subject: `Deadman's Switch reversed · ${incident.incident_code}`,
     text: `The emergency publishing switch was turned off.\n\nIncident: ${incident.incident_code}\nResolution: ${input.resolution_summary}`,
     html: `<p>The emergency publishing switch was turned off.</p><p><strong>Incident:</strong> ${escapeHtml(incident.incident_code)}</p><p><strong>Resolution:</strong> ${escapeHtml(input.resolution_summary)}</p>`,
-  });
+  }).catch(() => null);
 
   return NextResponse.json({
     ok: true,
     active: false,
     released: 0,
     incident_code: incident.incident_code,
-    message: "Emergency publishing is off. Published records remain intact.",
+    message: cleanupIssues.length
+      ? "Emergency publishing is off. Published records remain intact; a private queue-cleanup task was logged for attention."
+      : "Emergency publishing is off. Published records remain intact.",
   });
 }
 
@@ -244,6 +286,8 @@ async function activateSwitch(
     throw incidentError ?? new Error("Could not create the incident record.");
   }
 
+  let stagedUpdateId: string | null = null;
+  let plannedPublicUrl: string | null = null;
   try {
     const bulletin = buildInitialCustodyBulletin({
       confirmedAt: nowIso,
@@ -258,7 +302,8 @@ async function activateSwitch(
       .at(-1)!
       .toLowerCase()}`;
     const publicUrl = `${SITE.url}/posts/${slug}`;
-    const { error: activateError } = await supabase
+    plannedPublicUrl = publicUrl;
+    const { data: activatedIncident, error: activateError } = await supabase
       .from("deadman_incidents")
       .update({
         status: "active",
@@ -266,8 +311,13 @@ async function activateSwitch(
         activated_at: nowIso,
         updated_at: nowIso,
       })
-      .eq("id", incident.id);
-    if (activateError) throw activateError;
+      .eq("id", incident.id)
+      .eq("status", "verifying")
+      .select("id")
+      .maybeSingle();
+    if (activateError || !activatedIncident) {
+      throw activateError ?? new Error("The incident was resolved before activation completed.");
+    }
 
     const sources: DeadmanPublicSource[] = input.source_url
       ? [{ id: "activation-confirmation", url: input.source_url, type: input.confirmation_type }]
@@ -314,7 +364,7 @@ async function activateSwitch(
       related_topics: [
         "custody legal basis",
         "Harrison County decision chain",
-        "East Mountain research lead",
+        "source-gated evidence review",
         "exculpatory evidence",
       ],
       official_response_status: "requested",
@@ -357,6 +407,7 @@ async function activateSwitch(
     if (stageError || typeof updateId !== "string") {
       throw stageError ?? new Error("Could not stage the initial custody bulletin.");
     }
+    stagedUpdateId = updateId;
 
     await recordEvent(supabase, {
       incidentId: incident.id,
@@ -371,22 +422,43 @@ async function activateSwitch(
     });
 
     const release = await releaseNextDeadmanUpdate(supabase, incident.id);
-    if (release.released_ids.includes(updateId)) {
-      await pingIndexNow([`/posts/${slug}`, "/", "/sitemap.xml"]);
+    if (!release.released_ids.includes(updateId)) {
+      throw new Error("The initial custody bulletin did not pass the atomic release step.");
     }
-    const social = await dispatchNextDeadmanXPost(supabase).catch(() => null);
-    await sendAdminAlert({
-      subject: `Deadman's Switch activated · ${incident.incident_code}`,
-      text: [
-        "The verified-custody protocol was activated by a trusted contact.",
-        `Incident: ${incident.incident_code}`,
-        `Activator: ${verification.actor_label}`,
-        `Confirmation: ${input.confirmation_type}`,
-        `Initial bulletin: ${publicUrl}`,
-        "Review the private incident record and preserve all original sources.",
-      ].join("\n"),
-      html: `<p><strong>The verified-custody protocol was activated by a trusted contact.</strong></p><p><strong>Incident:</strong> ${escapeHtml(incident.incident_code)}<br/><strong>Activator:</strong> ${escapeHtml(verification.actor_label)}<br/><strong>Confirmation:</strong> ${escapeHtml(input.confirmation_type)}</p><p><a href="${escapeHtml(publicUrl)}">Open the initial bulletin</a></p><p>Review the private incident record and preserve all original sources.</p>`,
-    });
+
+    const [indexing, socialResult, alert] = await Promise.allSettled([
+      pingIndexNow([`/posts/${slug}`, "/", "/sitemap.xml"]),
+      dispatchNextDeadmanXPost(supabase),
+      sendAdminAlert({
+        subject: `Deadman's Switch activated · ${incident.incident_code}`,
+        text: [
+          "The verified-custody protocol was activated by a trusted contact.",
+          `Incident: ${incident.incident_code}`,
+          `Activator: ${verification.actor_label}`,
+          `Confirmation: ${input.confirmation_type}`,
+          `Initial bulletin: ${publicUrl}`,
+          "Review the private incident record and preserve all original sources.",
+        ].join("\n"),
+        html: `<p><strong>The verified-custody protocol was activated by a trusted contact.</strong></p><p><strong>Incident:</strong> ${escapeHtml(incident.incident_code)}<br/><strong>Activator:</strong> ${escapeHtml(verification.actor_label)}<br/><strong>Confirmation:</strong> ${escapeHtml(input.confirmation_type)}</p><p><a href="${escapeHtml(publicUrl)}">Open the initial bulletin</a></p><p>Review the private incident record and preserve all original sources.</p>`,
+      }),
+    ]);
+    const sideEffects: Array<[string, PromiseSettledResult<unknown>]> = [
+      ["indexing", indexing],
+      ["x_dispatch", socialResult],
+      ["admin_alert", alert],
+    ];
+    const sideEffectFailures = sideEffects
+      .filter(([, result]) => result.status === "rejected")
+      .map(([name]) => name);
+    if (sideEffectFailures.length) {
+      await recordEvent(supabase, {
+        incidentId: incident.id,
+        eventType: "activation_side_effect_attention",
+        actorId: "deadman-activation-worker",
+        detail: { failed_side_effects: sideEffectFailures },
+      });
+    }
+    const social = socialResult.status === "fulfilled" ? socialResult.value : null;
 
     return NextResponse.json({
       ok: true,
@@ -394,7 +466,7 @@ async function activateSwitch(
       released: release.released,
       blocked: release.blocked,
       incident_code: incident.incident_code,
-      public_url: release.released_ids.includes(updateId) ? publicUrl : null,
+      public_url: publicUrl,
       next_eligible_at: release.next_eligible_at,
       x_dispatch: social,
       message:
@@ -402,6 +474,96 @@ async function activateSwitch(
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Activation failed.";
+    if (stagedUpdateId) {
+      const [committedUpdateResult, incidentStateResult] = await Promise.all([
+        supabase
+          .from("deadman_updates")
+          .select("status, post_id")
+          .eq("id", stagedUpdateId)
+          .maybeSingle(),
+        supabase
+          .from("deadman_incidents")
+          .select("status, public_release_authorized")
+          .eq("id", incident.id)
+          .maybeSingle(),
+      ]);
+      if (
+        committedUpdateResult.error ||
+        incidentStateResult.error ||
+        !incidentStateResult.data
+      ) {
+        await recordEvent(supabase, {
+          incidentId: incident.id,
+          eventType: "activation_commit_status_attention",
+          actorId: verification.actor_id,
+          fingerprint,
+          detail: { error: message, initial_update_id: stagedUpdateId },
+        });
+        return NextResponse.json(
+          {
+            ok: false,
+            released: 0,
+            incident_code: incident.incident_code,
+            public_url: null,
+            message:
+              "Activation completion could not be confirmed. The incident was left unchanged for safe reconciliation.",
+          },
+          { status: 202 },
+        );
+      }
+      const committedUpdate = committedUpdateResult.data;
+      const incidentStillActive =
+        incidentStateResult.data.status === "active" &&
+        incidentStateResult.data.public_release_authorized === true;
+      if (committedUpdate?.status === "published") {
+        await recordEvent(supabase, {
+          incidentId: incident.id,
+          eventType: "activation_post_commit_attention",
+          actorId: verification.actor_id,
+          fingerprint,
+          detail: { error: message, initial_update_id: stagedUpdateId },
+        });
+        return NextResponse.json({
+          ok: true,
+          active: incidentStillActive,
+          released: 1,
+          incident_code: incident.incident_code,
+          public_url: plannedPublicUrl,
+          message: incidentStillActive
+            ? "The initial bulletin is live. A non-public follow-up task needs attention, but the active incident was preserved."
+            : "The initial bulletin was published before the reversal completed. The incident is off and no further releases are authorized.",
+        });
+      }
+      const { error: withdrawError } = await supabase
+        .from("deadman_updates")
+        .update({
+          status: "withdrawn",
+          correction_summary:
+            "Withdrawn because activation failed before the initial bulletin was published.",
+        })
+        .eq("id", stagedUpdateId)
+        .eq("status", "ready");
+      if (withdrawError) {
+        await recordEvent(supabase, {
+          incidentId: incident.id,
+          eventType: "activation_failed_queue_cleanup_attention",
+          actorId: verification.actor_id,
+          fingerprint,
+          detail: { initial_update_id: stagedUpdateId },
+        });
+      }
+      if (!incidentStillActive) {
+        return NextResponse.json({
+          ok: true,
+          active: false,
+          released: 0,
+          incident_code: incident.incident_code,
+          public_url: null,
+          message:
+            "The reversal completed before the initial bulletin published. The incident remains off.",
+        });
+      }
+    }
     await supabase
       .from("deadman_incidents")
       .update({
@@ -410,7 +572,8 @@ async function activateSwitch(
         resolution_summary: message,
         updated_at: new Date().toISOString(),
       })
-      .eq("id", incident.id);
+      .eq("id", incident.id)
+      .in("status", ["verifying", "active"]);
     await recordEvent(supabase, {
       incidentId: incident.id,
       eventType: "activation_failed",

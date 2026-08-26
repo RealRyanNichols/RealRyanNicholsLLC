@@ -377,9 +377,45 @@ export async function releaseNextDeadmanUpdate(
   supabase: AnySupabase,
   incidentId: string,
 ): Promise<DeadmanReleaseResult> {
-  const { data, error } = await supabase.rpc("release_next_deadman_update", {
-    p_incident_id: incidentId,
-  });
+  const reconcile = async () => {
+    const { data, error } = await supabase.rpc(
+      "reconcile_deadman_evidence_network_queue",
+      { p_incident_id: incidentId },
+    );
+    if (error) throw error;
+    return Number(data ?? 0);
+  };
+
+  const isEvidenceGateError = (error: {
+    code?: string | null;
+    hint?: string | null;
+    message?: string | null;
+  } | null): boolean =>
+    !!error &&
+    ((error.code === "P0001" && error.hint === "deadman_evidence_network_gate") ||
+      error.message?.includes("Evidence-network publication gate rejected") === true);
+
+  type ReleaseRow = {
+    released_update_id?: string | null;
+    released_post_id?: string | null;
+    ready_count?: number | string | null;
+    reason?: string | null;
+    next_eligible_at?: string | null;
+  };
+  let blocked = 0;
+  let data: ReleaseRow | ReleaseRow[] | null = null;
+  let error: {
+    code?: string | null;
+    hint?: string | null;
+    message?: string | null;
+  } | null = null;
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    blocked += await reconcile();
+    ({ data, error } = await supabase.rpc("release_next_deadman_update", {
+      p_incident_id: incidentId,
+    }));
+    if (!isEvidenceGateError(error)) break;
+  }
   if (error) throw error;
   const result = Array.isArray(data) ? data[0] : data;
   const releasedUpdateId = result?.released_update_id as string | null | undefined;
@@ -387,7 +423,7 @@ export async function releaseNextDeadmanUpdate(
   return {
     scanned: Number(result?.ready_count ?? 0),
     released: releasedUpdateId ? 1 : 0,
-    blocked: 0,
+    blocked,
     released_ids: releasedUpdateId ? [releasedUpdateId] : [],
     released_post_ids: releasedPostId ? [releasedPostId] : [],
     reason: String(result?.reason ?? "unknown"),

@@ -34,17 +34,36 @@ async function run(request: Request) {
     supabase,
     state.incident_id,
   );
+  let releasedSlug: string | null = null;
+  let releaseLookupFailed = false;
   if (release.released_ids[0]) {
-    const { data: releasedUpdate } = await supabase
+    const { data: releasedUpdate, error: releasedUpdateError } = await supabase
       .from("deadman_updates")
       .select("slug")
       .eq("id", release.released_ids[0])
       .maybeSingle();
-    if (releasedUpdate?.slug) {
-      await pingIndexNow([`/posts/${releasedUpdate.slug}`, "/", "/sitemap.xml"]);
-    }
+    releasedSlug = releasedUpdate?.slug ?? null;
+    releaseLookupFailed = !!releasedUpdateError || !releasedSlug;
   }
-  const social = await dispatchNextDeadmanXPost(supabase).catch(() => null);
+  const [indexingResult, socialResult] = await Promise.allSettled([
+    releasedSlug
+      ? pingIndexNow([`/posts/${releasedSlug}`, "/", "/sitemap.xml"])
+      : Promise.resolve(null),
+    dispatchNextDeadmanXPost(supabase),
+  ]);
+  const sideEffectFailures = [
+    releaseLookupFailed || indexingResult.status === "rejected" ? "indexing" : null,
+    socialResult.status === "rejected" ? "x_dispatch" : null,
+  ].filter((value): value is string => value !== null);
+  if (sideEffectFailures.length) {
+    await supabase.from("deadman_event_log").insert({
+      incident_id: state.incident_id,
+      event_type: "hourly_release_side_effect_attention",
+      actor_id: "deadman-release-worker",
+      detail: { failed_side_effects: sideEffectFailures },
+    });
+  }
+  const social = socialResult.status === "fulfilled" ? socialResult.value : null;
 
   return NextResponse.json({
     ok: true,
