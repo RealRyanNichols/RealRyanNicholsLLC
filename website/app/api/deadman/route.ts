@@ -3,9 +3,9 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import {
   buildInitialCustodyBulletin,
-  deadmanKeysConfigured,
+  deadmanKeysConfiguredFor,
   releaseNextDeadmanUpdate,
-  verifyDeadmanCode,
+  verifyDeadmanCodeFor,
 } from "@/lib/deadman";
 import { dispatchNextDeadmanXPost } from "@/lib/deadman-social";
 import { DEADMAN_CONFIRMATION_TYPES } from "@/lib/deadman-constants";
@@ -86,7 +86,7 @@ async function reverseSwitch(
   input: z.infer<typeof reverseSchema>,
   fingerprint: string,
 ) {
-  const verification = verifyDeadmanCode("reverse", input.code);
+  const verification = await verifyDeadmanCodeFor(supabase, "reverse", input.code);
   if (!verification.valid) {
     await recordEvent(supabase, {
       eventType: "invalid_reversal_code",
@@ -160,7 +160,12 @@ async function activateSwitch(
     );
   }
 
-  const verification = verifyDeadmanCode("activate", input.code, input.activator_id);
+  const verification = await verifyDeadmanCodeFor(
+    supabase,
+    "activate",
+    input.code,
+    input.activator_id,
+  );
   if (!verification.valid) {
     await recordEvent(supabase, {
       eventType: "invalid_activation_code",
@@ -352,7 +357,15 @@ async function activateSwitch(
 }
 
 export async function POST(request: Request) {
-  if (!deadmanKeysConfigured() || !isSupabaseServiceConfigured()) {
+  if (!isSupabaseServiceConfigured()) {
+    return NextResponse.json(
+      { error: "Deadman's Switch is not fully configured." },
+      { status: 503 },
+    );
+  }
+
+  const supabase = getSupabaseServiceClient();
+  if (!(await deadmanKeysConfiguredFor(supabase))) {
     return NextResponse.json(
       { error: "Deadman's Switch is not fully configured." },
       { status: 503 },
@@ -386,7 +399,6 @@ export async function POST(request: Request) {
     );
   }
 
-  const supabase = getSupabaseServiceClient();
   try {
     if (parsed.data.action === "reverse") {
       return await reverseSwitch(supabase, parsed.data, rate.ipHash);
