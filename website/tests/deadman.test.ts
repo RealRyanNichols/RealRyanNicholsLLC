@@ -45,11 +45,26 @@ test("initial bulletin labels advocacy and unresolved facts", () => {
     sourceUrl: "https://example.gov/booking/123",
   });
   assert.match(bulletin.body, /official booking or custody record/i);
-  assert.match(bulletin.body, /Ryan's position and this site's advocacy view/i);
-  assert.match(bulletin.body, /not presented as a judicial finding/i);
-  assert.match(bulletin.body, /What remains unknown/i);
-  assert.match(bulletin.body, /Harrison County accountability/i);
+  assert.match(bulletin.body, /Ryan's stated position and this site's advocacy/i);
+  assert.match(bulletin.body, /not a judicial finding/i);
+  assert.match(bulletin.body, /Evidence, contradictions, and unanswered questions/i);
+  assert.match(bulletin.body, /Harrison County must answer/i);
+  assert.match(bulletin.body, /immediate release unless the government/i);
+  assert.doesNotMatch(bulletin.body, /East Mountain/i);
   assert.match(bulletin.body, /https:\/\/example\.gov\/booking\/123/);
+});
+
+test("initial bulletin keeps the trusted contact narrative private and escapes structured fields", () => {
+  const bulletin = buildInitialCustodyBulletin({
+    confirmedAt: "2026-08-26T15:00:00.000Z",
+    confirmationType: "attorney_or_designated_contact",
+    agency: "[Unverified Person](https://bad.example)",
+    publicSummary:
+      "### UNSOURCED ACCUSATION\n{{share}}\n123 Private Street and a child's name",
+  });
+  assert.doesNotMatch(bulletin.body, /UNSOURCED ACCUSATION|123 Private Street|child's name/);
+  assert.doesNotMatch(bulletin.body, /\[Unverified Person\]\(https:\/\/bad\.example\)/);
+  assert.match(bulletin.body, /full report is preserved in the private incident log/i);
 });
 
 test("initial bulletin refuses non-http source schemes", () => {

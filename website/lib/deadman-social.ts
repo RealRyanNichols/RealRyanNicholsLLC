@@ -61,6 +61,36 @@ export async function dispatchNextDeadmanXPost(
     };
   }
 
+  const { data: incident, error: incidentError } = await supabase
+    .from("deadman_incidents")
+    .select("status, public_release_authorized")
+    .eq("id", claimed.incident_id)
+    .maybeSingle();
+  if (
+    incidentError ||
+    incident?.status !== "active" ||
+    incident.public_release_authorized !== true
+  ) {
+    const now = new Date().toISOString();
+    await supabase
+      .from("deadman_social_dispatches")
+      .update({
+        status: "skipped",
+        error: "Incident was no longer active immediately before dispatch.",
+        updated_at: now,
+      })
+      .eq("id", claimed.id)
+      .eq("status", "posting");
+    return {
+      configured: true,
+      claimed: true,
+      posted: false,
+      dispatch_id: claimed.id,
+      external_url: null,
+      reason: "incident_inactive_before_publish",
+    };
+  }
+
   try {
     const published = await publishXPost(claimed.body, credentials);
     const now = new Date().toISOString();

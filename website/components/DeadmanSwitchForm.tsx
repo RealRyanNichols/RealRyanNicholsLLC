@@ -171,7 +171,7 @@ export function DeadmanSwitchForm({ allowReverse = false }: { allowReverse?: boo
 
           <Field
             label="What did you confirm?"
-            hint="One factual sentence is enough. It appears in the first public update."
+            hint="One factual sentence is enough. The full wording stays in the private incident log; the public bulletin uses only structured, source-labeled facts."
           >
             <textarea
               required
@@ -240,7 +240,9 @@ export function DeadmanSwitchForm({ allowReverse = false }: { allowReverse?: boo
 
           <p className="rounded-lg border border-red-700/30 bg-red-700/5 p-3 text-xs leading-relaxed">
             Pressing activate confirms that you personally verified custody and
-            authorizes the public status bulletin and approved article queue.
+            authorizes the immediate bulletin and hourly release pipeline. Do
+            not enter private addresses, children&apos;s names, sealed material,
+            threats, or accusations you cannot source.
           </p>
         </div>
       ) : (
