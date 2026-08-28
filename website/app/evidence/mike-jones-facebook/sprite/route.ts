@@ -14,7 +14,7 @@ const encoded = chunk0 + chunk1 + chunk2 + chunk3 + chunk4 + chunk5 + chunk6 + c
 export function GET() {
   const bytes = Buffer.from(encoded, "base64");
 
-  return new Response(bytes, {
+  return new Response(new Uint8Array(bytes), {
     headers: {
       "Content-Type": "image/webp",
       "Content-Length": String(bytes.length),
