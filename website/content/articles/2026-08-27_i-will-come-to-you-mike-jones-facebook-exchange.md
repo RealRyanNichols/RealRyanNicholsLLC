@@ -1,183 +1,194 @@
 ---
-title: "\"I Will Come to You\": The Facebook Exchange I’m Putting on the Record"
-subtitle: "A commenter demanded proof before allegations could be discussed, then invoked an allegation against me and later told me, \"I will come to you!!!\" This is the screenshot-backed sequence."
+title: "\"I Will Come to You\": Four Screenshots From a Facebook Exchange I’m Putting on the Record"
+subtitle: "A demand for a conviction. A separate accusation without one. Then the words \"I will come to you!!!\" Here is the full screenshot-backed sequence."
 author: "Ryan Nichols"
 date: "2026-08-28T00:58:00Z"
 category: "Wall of Shame"
 slug: "i-will-come-to-you-mike-jones-facebook-exchange"
 status: "published"
 pinned: false
-seo_title: "\"I Will Come to You\": Mike Jones Facebook Exchange With Ryan Nichols"
-seo_description: "Screenshots document a Facebook dispute over reported allegations involving Marion County Judge Leward LaFleur and a later comment telling Ryan Nichols, \"I will come to you!!!\""
-tags: "East Texas, Marion County, Leward LaFleur, Mike Jones, Facebook, public record, threats, accountability"
+seo_title: "\"I Will Come to You\": Mike Jones Facebook Exchange"
+seo_description: "Four Facebook screenshots document a dispute over reported allegations involving Marion County Judge Leward LaFleur and a later comment telling Ryan Nichols, \"I will come to you!!!\""
+tags: "East Texas, Marion County, Leward LaFleur, Mike Jones, Facebook, public record, threats, accountability, election season, independent journalism"
 ---
 
-**This is a public-record preservation post. It is not a call for anyone to contact, threaten, harass, dox, mass-report, or target Mike Jones, Judge Leward J. LaFleur, or anyone else mentioned here.**
+**This is a public-record preservation report. It is not a call for anyone to contact, threaten, harass, dox, mass-report, or target Mike Jones, Judge Leward J. LaFleur, their families, or anyone else mentioned here.**
 
-I am publishing this because the sequence matters.
+I am not going to threaten anyone back.
 
-A man came onto my Facebook post and accused me of slander because I was discussing publicly reported allegations involving Marion County Judge Leward J. LaFleur. He demanded a judgment of conviction or a court disposition as if an allegation cannot be discussed unless a conviction already exists.
+I am going to do what a reporter is supposed to do: preserve the original statements, show the screenshots, label allegations accurately, include denials, explain the context, and let the public inspect the record for itself.
 
-Then, in the same exchange, he brought up an allegation against me that he knew was not a conviction.
+That is what this page now does.
 
-Later, after I asked him a hard question on one of his own posts, he wrote:
+{{casebanner: FOUR SCREENSHOTS. ONE PUBLIC RECORD. | The exchange began under my post about publicly reported allegations involving Marion County Judge Leward J. LaFleur. It moved from a demand for a conviction, to a separate accusation without one, and then to the words “I will come to you!!!” | 4 original screenshots | Allegations and denials labeled | No retaliation}}
 
-> **“you really are stupid as you look. I’m not the one bitch boy, I will come to you!!! You better do your homework before you take this test!!!!”**
+## Why I am publishing the complete exchange
 
-I am not making a legal conclusion that those words constitute a criminal threat. I am saying plainly that I read **“I will come to you!!!”** together with **“before you take this test!!!!”** as threatening and intimidating behavior.
+People can disagree with me. They can challenge my wording, demand documents, criticize my reporting, defend a public official, or say I am wrong. That is public debate.
 
-That behavior is now part of the public record too.
+What should not be normalized is the move from disagreement to intimidation.
 
-## First, what is actually reported about Judge LaFleur
+The four screenshots below show the sequence from the beginning. I am not asking readers to rely on my memory or a paraphrase. I am putting the visible conversation directly into the article so the record can be reviewed in order.
 
-This article is not declaring Leward LaFleur guilty of a crime.
+The screenshots also preserve my own original wording. My Facebook post used a blunt label. The more precise language for this report is that serious allegations were publicly reported and denied. An allegation is not a conviction, and this article does not declare Judge LaFleur guilty of a crime.
 
-Local news outlets reported in April 2026 that allegations of unwanted or inappropriate sexual touching had been made against the Marion County judge following a 2025 Halloween party. [KLTV reported that an adult and a teenager made allegations and that LaFleur denied both allegations](https://www.kltv.com/2026/04/21/marion-county-judge-denies-allegations-unwanted-touching-halloween-party/).
+## What public reporting says about Judge LaFleur
 
-Additional reporting said the first allegation was treated as a Class C assault matter involving a minor, that Marion County recused itself, that the matter went to another jurisdiction, and that a second adult allegation was later identified during the review. [KETK reporting republished by AOL described that procedural history](https://www.aol.com/news/marion-county-judge-pushes-back-212823586.html).
+Local news outlets reported in April 2026 that allegations of unwanted or inappropriate sexual touching had been made against Marion County Judge Leward J. LaFleur following a 2025 Halloween party. [KLTV reported that an adult and a teenager made allegations and that LaFleur denied both allegations](https://www.kltv.com/2026/04/21/marion-county-judge-denies-allegations-unwanted-touching-halloween-party/).
+
+Additional reporting described a first allegation treated as a Class C assault matter involving a minor, Marion County’s recusal, a referral outside the county, and a second adult allegation identified during the review. [KETK reporting republished by AOL described that procedural history](https://www.aol.com/news/marion-county-judge-pushes-back-212823586.html).
 
 The [Marion County government website](https://www.co.marion.tx.us/page/marion.County.Judge) identifies Leward J. LaFleur as the county judge.
 
-Those are the facts I can responsibly state from public sources: allegations were reported, they were serious enough to generate law-enforcement and legal review, and LaFleur publicly denied them.
+The responsible description is narrow and clear:
 
-**An allegation is not a conviction. A denial is not proof that an allegation never existed. Both things can be true at the same time.**
+- Allegations were publicly reported.
+- LaFleur publicly denied them.
+- A reported allegation is not a conviction.
+- The absence of a conviction does not erase the fact that an allegation, referral, document, or public controversy existed.
 
-## Then Mike Jones showed up demanding a conviction
+That distinction is central to everything that followed.
 
-On my Facebook post, Mike Jones wrote:
+## Receipt 1: Mike Jones demanded a conviction
+
+Under my original Facebook post, Mike Jones wrote:
 
 > **“I want to see the Judgement of Conviction or a Certificate Court Disposition. If you can’t provide proof, why are y’all slandering? That’s like a bunch of high school BS”**
 
-My response was simple. I had not told him there was a conviction. I said there were multiple witness statements, including statements involving children.
+His position was clear. He treated a judgment of conviction or court disposition as the threshold for discussing the matter.
 
-I also posted a document in the thread that I had previously received and discussed as part of the public controversy surrounding the matter.
+This first screenshot preserves my original post and his first response in the same frame.
 
-Mike then replied that the document was not a conviction and was only a press release of accusations.
+{{receiptstack: /evidence/mike-jones-facebook/receipt-1::Receipt 1: The original post and the demand for a conviction::My original Facebook post appears above Mike Jones’s first response demanding a judgment of conviction or court disposition before the allegations could be discussed. The screenshot documents the exchange. It does not independently prove the underlying allegations.::Primary source}}
 
-Again, that was never my claim.
+## Receipt 2: I said witness statements, not conviction
 
-The distinction matters because public officials do not become immune from public scrutiny simply because an investigation, allegation, referral, or complaint has not yet produced a conviction. The responsible standard is to label allegations accurately, source them, include denials, and avoid pretending an unresolved accusation is a proven fact.
+I responded that I had referred to multiple witness statements, including statements involving children. I also posted the document visible in the thread.
 
-That is the standard I am applying here.
+Mike replied that the document was not a conviction and described it as a press release of accusations.
 
-## Then he did the exact thing he said I should not do
+Again, I had not told him it was a conviction.
 
-After telling me that an accusation without a conviction should not be discussed, Mike wrote this about me:
+Then he wrote:
 
 > **“Didn’t you pull a gun on a guy at church?”**
 
-That was an accusation directed at me, in public, without him attaching a judgment of conviction or court disposition.
+That was a separate accusation directed at me. He did not attach a judgment of conviction or court disposition to it before raising it publicly.
 
-I replied that this was what BJ Fletcher had said publicly, that I disputed that characterization of what happened, and that I had not been indicted on that allegation at the time of the exchange.
+I replied that the statement repeated what BJ Fletcher had said publicly, that I disputed that characterization of what happened, and that I had not been indicted on that allegation at the time of the exchange.
 
-Whether someone agrees with me or not, the contradiction is visible in the screenshots.
+The contradiction is visible without exaggeration. The standard he demanded for discussing LaFleur disappeared when he wanted to raise an accusation against me.
 
-His rule for LaFleur was: **no conviction, stop talking about the accusation.**
+{{receiptstack: /evidence/mike-jones-facebook/receipt-2::Receipt 2: The witness-statement dispute and a separate accusation::I answered that I had referred to multiple witness statements, not a conviction, and posted the document visible in the thread. Mike Jones then raised a separate allegation against me without attaching the conviction standard he had just demanded.::Primary source}}
 
-His rule for me was: **bring up an accusation anyway.**
+{{callout: key | If the rule is “no conviction means no public discussion,” that rule cannot disappear when the accusation is aimed at someone you dislike.}}
 
-That is the double standard I was pointing out.
+## Receipt 3: The double-standard dispute continued
 
-{{callout: key | If the rule is “no conviction means no public discussion,” that rule cannot magically disappear when the accusation is aimed at someone you dislike.}}
+The next screenshot preserves the continuation.
 
-## I asked him a hard question on his own post
+I repeated that I had not claimed there was a conviction. I also responded to the accusation against me and said I had not been indicted for the conduct as he characterized it.
 
-After that exchange, I went to one of Mike’s posts and asked him a pointed question about responsibility for an alleged over-serving incident involving a Longview ISD teacher and a fatal crash.
+Mike then wrote:
 
-My exact Facebook comment began:
+> **“so you wasn’t indicted, neither was he. So why are you slandering?”**
 
-> **“Aren’t y’all responsible for killing a Longview ISD teacher and a nurse for over serving the Longview ISD teacher and allowing her to drive home?”**
+That comment captures the disagreement.
 
-That was my question. **This article is not independently establishing the underlying allegation in that question as fact.** I am including it because it is necessary context for the response that came next.
+My position is not that an allegation equals guilt. My position is that the existence of a publicly reported allegation, witness statement, referral, or official document can be reported as long as it is labeled honestly and the denial is included.
 
-Mike first replied:
+His position appeared to be that the allegation involving LaFleur should not be discussed without an indictment or conviction, even while he had just raised an unadjudicated accusation against me.
+
+{{receiptstack: /evidence/mike-jones-facebook/receipt-3::Receipt 3: The double-standard argument in full::This screenshot preserves the continuation of the dispute over accusations, indictments, and whether the same evidentiary standard was being applied to everyone.::Primary source}}
+
+## Receipt 4: “I will come to you!!!”
+
+After the first exchange, I went to one of Mike Jones’s posts and asked a pointed question about alleged responsibility for an over-serving incident involving a Longview ISD teacher and a fatal crash.
+
+The screenshot preserves my exact question. **This article is not independently establishing the allegation inside that question as fact.** It is included because it is necessary context for the replies that came next.
+
+Mike first wrote:
 
 > **“nope do your homework fucking idiot”**
 
-Then he followed with the comment I am preserving here:
+He then wrote:
 
 > **“you really are stupid as you look. I’m not the one bitch boy, I will come to you!!! You better do your homework before you take this test!!!!”**
 
-That is where this stopped being an ordinary argument to me.
+That is the statement I read as threatening and intimidating.
 
-## “I will come to you” is the part people should see
+I am not declaring that Mike Jones committed a criminal offense. That is a legal conclusion for law enforcement, prosecutors, courts, or a jury after reviewing the full circumstances.
 
-People can insult me. People can tell me I am wrong. People can demand documents. People can defend a judge. People can attack my credibility. That is public debate.
+I am reporting what he wrote and how I understood it in context.
 
-But when someone moves from **“do your homework”** to **“I will come to you!!!”** and then says **“before you take this test!!!!”**, I am going to preserve it.
+The public can read the exact words for itself.
 
-Again, I am not declaring that Mike Jones committed a criminal offense. That is not my call to make.
+{{receiptstack: /evidence/mike-jones-facebook/receipt-4::Receipt 4: The reply I read as threatening and intimidating::After I challenged Mike Jones on his own post, he wrote “I will come to you!!!” and “You better do your homework before you take this test!!!!” I am preserving those exact words. I am not making a legal finding that they constitute a criminal threat.::Primary source}}
 
-I am calling the behavior what I believe it is in ordinary English: **threatening and intimidating behavior.**
+## Why this matters during election season
 
-If he meant something harmless, the words can be read by everyone exactly as he wrote them and he can explain them himself.
+Public scrutiny becomes more important when voters are deciding who should hold power.
 
-I do not need to exaggerate them. I do not need to add anything to them.
+A sitting county judge exercises public authority. Questions about reported allegations, law-enforcement referrals, witness statements, official documents, recusal decisions, and the handling of a matter are legitimate subjects of public interest.
 
-The quote is enough.
+That does not give anyone permission to invent facts or declare guilt without proof.
 
-## Why this matters beyond one Facebook argument
+It does mean that “there was no conviction” cannot be used as a magic phrase to erase a publicly reported controversy. Journalists routinely report allegations, investigations, denials, referrals, dismissals, indictments, acquittals, and convictions as different stages with different meanings.
 
-The larger issue is accountability.
+The duty is accuracy, not silence.
 
-When allegations involve a sitting county judge, people in the community are allowed to ask what happened, what was investigated, where the matter went, what witnesses said, what documents exist, and whether the process was handled properly.
+It also matters because this exchange reflects a broader pattern many people experience when they speak publicly about politics, government, or powerful local figures. The response often moves quickly from disagreement to personal accusations, insults, or language meant to make the speaker back down.
 
-That does not mean declaring guilt before proof.
+The answer is not retaliation.
 
-It means refusing to confuse **“not convicted”** with **“nothing may be discussed.”**
+The answer is documentation.
 
-And it means applying the same standard to everyone.
+## What the screenshots establish
 
-If someone tells me I cannot discuss a sourced allegation because there is no conviction, then immediately repeats an allegation against me without a conviction, that contradiction deserves to be documented.
+The screenshots establish that the following words appeared in the preserved Facebook exchange:
 
-If the same person later tells me **“I will come to you!!!”** after I challenge him, that deserves to be documented too.
+- Mike Jones demanded a judgment of conviction or court disposition while accusing others of slander.
+- I responded that I had referred to multiple witness statements, not a conviction.
+- Mike raised a separate accusation against me without presenting the conviction standard he had demanded.
+- The argument continued over whether the same standard was being applied consistently.
+- Mike later wrote **“I will come to you!!!”** and **“You better do your homework before you take this test!!!!”**
 
-Especially when the public is paying closer attention to local officials and local government, sunlight matters more than tribal loyalty.
+## What the screenshots do not establish by themselves
 
-## What these screenshots prove, and what they do not
+The screenshots do not, by themselves, prove:
 
-The screenshots I preserved show the public Facebook exchange as it appeared on my account.
+- That Judge LaFleur committed the conduct alleged against him.
+- That my question about the alleged over-serving incident was factually established.
+- That the separate allegation Mike raised against me occurred as he characterized it.
+- That Mike’s words satisfy the legal elements of a criminal threat.
+- That every person defending LaFleur endorses intimidation or wrongdoing.
 
-They show Mike Jones asking for a judgment of conviction or court disposition before accepting discussion of the allegations surrounding LaFleur.
+Those limitations are part of honest reporting. They do not weaken the record. They define it.
 
-They show him bringing up the church accusation against me during the same exchange.
+## My response is publication, not retaliation
 
-They show him later writing **“I will come to you!!!”** and **“You better do your homework before you take this test!!!!”**
+I am not going to threaten Mike Jones back.
 
-They do **not** prove that Mike committed a criminal threat.
+I am not asking anyone else to threaten him, contact him, harass him, dox him, mass-report him, confront him, contact Judge LaFleur, or involve anyone’s family.
 
-They do **not** prove the allegation I raised in my question on his post.
+My response is to preserve the evidence, identify what is allegation and what is documented fact, include the denials, publish the original screenshots, and keep the record where it cannot be quietly rewritten later.
 
-They do **not** prove Judge LaFleur committed the conduct alleged against him.
+If Mike intended the words **“I will come to you!!!”** and **“before you take this test!!!!”** in a harmless way, he is free to explain what he meant.
 
-Independent reporting does establish that allegations involving LaFleur were publicly reported and that he denied them.
+The screenshot will remain available so readers can evaluate the explanation against the original statement.
 
-Those distinctions are not weakness. They are what a record is supposed to look like.
+That is accountability without retaliation.
+
+That is independent journalism.
+
+That is the record.
+
+— Ryan Nichols
 
 {{related: every-day-they-tell-me-to-die | the-receipts-wall-every-threat-x-let-stay-up}}
 
-## My standard is simple
-
-If there is an allegation, call it an allegation.
-
-If there is a denial, include the denial.
-
-If there is a document, show the document.
-
-If there is a conviction, say there is a conviction.
-
-If there is not a conviction, do not pretend there is one.
-
-And if someone tells you **“I will come to you!!!”** in the middle of a hostile public exchange, preserve the screenshot.
-
-That is what I did.
-
-**Do not contact Mike Jones on my behalf. Do not threaten him. Do not harass him. Do not contact Judge LaFleur or his family on my behalf. If you have relevant public records or direct links to the posts, send the receipts to me instead.**
-
-I will keep building the record where it cannot be rewritten later.
-
-— Ryan
+{{share}}
 
 ---
 
-*Evidence note: The Facebook quotations in this article are transcribed from screenshots preserved by Ryan Nichols on August 27, 2026. Native Facebook post embeds will be added when the direct public post permalinks are available. The external reporting linked above is included to distinguish publicly reported allegations from proven findings.*
+*Evidence note: The Facebook screenshots were supplied and preserved by Ryan Nichols from the visible exchange on August 27, 2026. They were compressed for web delivery, but the visible wording was not rewritten or altered. Quotations were transcribed from the screenshots. External reporting is linked to distinguish publicly reported allegations from proven findings and to include Judge LaFleur’s denial.*

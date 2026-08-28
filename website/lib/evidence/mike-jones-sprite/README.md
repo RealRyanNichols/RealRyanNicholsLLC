@@ -1,0 +1,1 @@
+Generated binary evidence sprite chunks for the Mike Jones Facebook record article. The source screenshots are preserved in chronological order by the rendering component.
