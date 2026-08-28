@@ -14,9 +14,15 @@ export function SignupForm({
   // Default keeps the historical look everywhere; the homepage passes the
   // gold money treatment so the capture form pops out of the sidebar.
   className = "rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5",
+  // Copy rotates daily from lib/modules.ts. Defaults keep the original
+  // wording anywhere the caller does not pass its own.
+  kicker = "Get updates",
+  blurb,
 }: {
   emailEnabled?: boolean;
   className?: string;
+  kicker?: string;
+  blurb?: string;
 }) {
   const [state, setState] = useState<State>({ kind: "idle" });
   const [email, setEmail] = useState("");
@@ -70,12 +76,13 @@ export function SignupForm({
   return (
     <form onSubmit={onSubmit} className={className}>
       <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] mb-2">
-        Get updates
+        {kicker}
       </p>
       <p className="text-sm text-[var(--color-ink-soft)] mb-3">
-        {emailEnabled
-          ? "No algorithm. No platform. Straight to your inbox or phone when there's something new — fill in whichever you prefer."
-          : "No algorithm. No platform. Drop your number and I'll text you the moment there's something new."}
+        {blurb ??
+          (emailEnabled
+            ? "No algorithm. No platform. Straight to your inbox or phone when there's something new — fill in whichever you prefer."
+            : "No algorithm. No platform. Drop your number and I'll text you the moment there's something new.")}
       </p>
       <div className="space-y-2">
         {emailEnabled ? (

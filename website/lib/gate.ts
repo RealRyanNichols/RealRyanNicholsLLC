@@ -1,5 +1,6 @@
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { RECORD_COOKIE, readRecordKey } from "@/lib/record-key";
 
 // The archive is free. It is not anonymous.
 //
@@ -27,7 +28,7 @@ const CRAWLER = new RegExp(
 
 export type GateState = {
   open: boolean;
-  reason: "crawler" | "member" | "locked";
+  reason: "crawler" | "member" | "unlocked" | "locked";
   signedIn: boolean;
   unconfirmed: boolean;
 };
@@ -43,6 +44,18 @@ export async function getGateState(): Promise<GateState> {
 
   if (ua && CRAWLER.test(ua)) {
     return { open: true, reason: "crawler", signedIn: false, unconfirmed: false };
+  }
+
+  // The archive key. One email on the document itself opens the whole
+  // archive — no account, no password, no confirmation click. See
+  // lib/record-key.ts and /api/record-unlock.
+  try {
+    const jar = await cookies();
+    if (readRecordKey(jar.get(RECORD_COOKIE)?.value)) {
+      return { open: true, reason: "unlocked", signedIn: false, unconfirmed: false };
+    }
+  } catch {
+    // cookies() unavailable in a static context — fall through.
   }
 
   try {

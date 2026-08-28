@@ -13,6 +13,18 @@ import { FeedPoll } from "@/components/FeedPoll";
 import { LiveNowBanner } from "@/components/LiveNowBanner";
 import { getActiveLiveStream } from "@/lib/live";
 import { SITE } from "@/lib/site";
+import { pickForToday } from "@/lib/rotation";
+import {
+  ABOUT_COPY,
+  FEED_SLOTS,
+  GTKY_KICKERS,
+  MONEY_SHELL_DESKTOP,
+  MONEY_SHELL_MOBILE,
+  SIGNUP_COPY,
+  TIP_COPY,
+  WORK_COPY,
+  type Copy,
+} from "@/lib/modules";
 import Link from "next/link";
 
 export const revalidate = 60;
@@ -34,6 +46,18 @@ export default async function HomePage({
   const ogMap = new Map(ogImages.map((o) => [o.path, o.image_url]));
   const countMap = await getCommentCounts(posts.map((p) => p.id));
   const emailSignupEnabled = SITE.emailCaptureEnabled;
+
+  // Today's front porch. The feed below never rotates — these do: the copy
+  // on every asking block, the accent it carries, and where it sits between
+  // the posts. Different offsets so they do not all turn over on one beat.
+  const slots = pickForToday(FEED_SLOTS, 0);
+  const signupCopy = pickForToday(SIGNUP_COPY, 0);
+  const tipCopy = pickForToday(TIP_COPY, 2);
+  const workCopy = pickForToday(WORK_COPY, 4);
+  const aboutCopy = pickForToday(ABOUT_COPY, 1);
+  const gtkyKicker = pickForToday(GTKY_KICKERS, 5);
+  const moneyShell = pickForToday(MONEY_SHELL_DESKTOP, 0);
+  const moneyShellMobile = pickForToday(MONEY_SHELL_MOBILE, 0);
 
   // Pinned posts float to the top of the feed; everything else follows in
   // chronological order. getPublishedPosts already returns them pinned-first
@@ -89,16 +113,17 @@ export default async function HomePage({
                 // Poll rides AFTER the fourth post now — Ryan's call: let
                 // people breathe through the top of the feed before we ask
                 // them anything.
-                i === 3 ? (
+                i === slots.poll ? (
                   <FeedPoll key="home-poll" className="my-8" />
                 ) : null,
-                i === 1 ? (
+                i === slots.gtky ? (
                   <GetToKnowYou
                     key="home-gtky-mobile"
+                    kicker={gtkyKicker}
                     className="lg:hidden my-8 rounded-2xl bg-[var(--color-surface)] p-5"
                   />
                 ) : null,
-                i === 2 ? (
+                i === slots.work ? (
                   // Donations retired — this slot sells the other offer:
                   // paid builds and investigations (/services).
                   <aside
@@ -106,15 +131,13 @@ export default async function HomePage({
                     className="my-8 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
                   >
                     <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
-                      Work with Ryan
+                      {workCopy.kicker}
                     </p>
                     <p className="mt-2 text-lg font-bold tracking-tight text-[var(--color-ink)]">
-                      Want a site like this one — feed, evidence wall, store,
-                      the works?
+                      {workCopy.headline}
                     </p>
                     <p className="mt-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-                      Ryan builds them on the same stack that runs this page.
-                      Sites, dashboards, and sourced investigations.
+                      {workCopy.blurb}
                     </p>
                     <Link
                       href="/services"
@@ -124,24 +147,30 @@ export default async function HomePage({
                     </Link>
                   </aside>
                 ) : null,
-                i === 4 ? (
+                i === slots.verse ? (
                   <VerseSidebar
                     key="home-verse-mobile"
                     className="lg:hidden my-8 rounded-2xl bg-[var(--color-surface)] p-5"
                   />
                 ) : null,
-                i === 5 ? (
+                i === slots.signup ? (
                   <SignupForm
                     key="home-signup-mobile"
                     emailEnabled={emailSignupEnabled}
-                    className="lg:hidden my-8 rounded-2xl border-2 border-[var(--color-support)] bg-[var(--color-paper)] p-5 shadow-[0_0_26px_var(--color-support-glow)]"
+                    kicker={signupCopy.kicker}
+                    blurb={signupCopy.blurb}
+                    className={moneyShellMobile}
                   />
                 ) : null,
-                i === 6 ? (
+                i === slots.book ? (
                   <BookCtaBand key="home-book" className="my-8" />
                 ) : null,
-                i === 8 ? (
-                  <TipLineCard key="home-tip-mobile" className="lg:hidden my-8" />
+                i === slots.tip ? (
+                  <TipLineCard
+                    key="home-tip-mobile"
+                    copy={tipCopy}
+                    className="lg:hidden my-8"
+                  />
                 ) : null,
               ])}
             </div>
@@ -159,27 +188,29 @@ export default async function HomePage({
           the gold accent treatment; everything else sits quiet — borderless
           on --color-surface — so the cards stop blurring into one another. */}
       <aside className="space-y-5">
-        <GetToKnowYou className="hidden lg:block rounded-2xl bg-[var(--color-surface)] p-5" />
+        <GetToKnowYou
+          kicker={gtkyKicker}
+          className="hidden lg:block rounded-2xl bg-[var(--color-surface)] p-5"
+        />
         <VerseSidebar className="hidden lg:block rounded-2xl bg-[var(--color-surface)] p-5" />
         <SignupForm
           emailEnabled={emailSignupEnabled}
-          className="hidden lg:block rounded-2xl border-2 border-[var(--color-support)] bg-[var(--color-paper)] p-5 shadow-[0_0_26px_var(--color-support-glow)]"
+          kicker={signupCopy.kicker}
+          blurb={signupCopy.blurb}
+          className={moneyShell}
         />
 
         {/* Book waitlist cross-promo — funnel the feed into /book */}
         <BookPromo className="shadow-[0_0_26px_var(--color-support-glow)]" />
 
         {/* Send-a-tip CTA — quiet card, blue only as the label cue */}
-        <TipLineCard className="hidden lg:block" />
+        <TipLineCard copy={tipCopy} className="hidden lg:block" />
 
         <div className="rounded-2xl bg-[var(--color-surface)] p-5 text-sm text-[var(--color-ink-soft)]">
           <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] mb-2">
-            About this site
+            {aboutCopy.kicker}
           </p>
-          <p>
-            This is a domain I own and a feed I write. No algorithm. No throttling.
-            Just my words, on my front porch.
-          </p>
+          <p>{aboutCopy.blurb}</p>
           <p className="mt-3">
             <Link
               href="/about"
@@ -194,22 +225,25 @@ export default async function HomePage({
   );
 }
 
-function TipLineCard({ className = "" }: { className?: string }) {
+function TipLineCard({
+  className = "",
+  copy,
+}: {
+  className?: string;
+  copy: Copy;
+}) {
   return (
     <Link
       href="/submit"
       className={`block rounded-2xl bg-[var(--color-surface)] p-5 transition hover:bg-[var(--color-blue-soft)] ${className}`}
     >
       <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-blue)]">
-        The tip line
+        {copy.kicker}
       </p>
       <p className="mt-1.5 text-base font-bold text-[var(--color-ink)] leading-tight">
-        Got a story? Send it.
+        {copy.headline}
       </p>
-      <p className="mt-1 text-xs text-[var(--color-ink-soft)]">
-        Local, national, worldwide — or a J6 case. Anonymous, free. Ryan
-        reads every one. →
-      </p>
+      <p className="mt-1 text-xs text-[var(--color-ink-soft)]">{copy.blurb}</p>
     </Link>
   );
 }

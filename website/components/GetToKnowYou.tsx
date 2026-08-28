@@ -77,8 +77,12 @@ export function GetToKnowYou({
   // Default keeps the historical look everywhere; the homepage passes a
   // quieter shell so the sidebar's money surfaces stand out instead.
   className = "rounded-2xl border border-[var(--color-accent)]/40 bg-[var(--color-paper)] p-5 shadow-sm",
+  // Rotates daily from lib/modules.ts so the same reader is not greeted
+  // with the identical line every visit.
+  kicker = "Let me get to know you",
 }: {
   className?: string;
+  kicker?: string;
 }) {
   const [show, setShow] = useState(false);
   const [i, setI] = useState(0);
@@ -147,7 +151,7 @@ export function GetToKnowYou({
     <section className={className}>
       <div className="flex items-start justify-between gap-3">
         <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-accent)]">
-          {done ? "Thanks for that" : "Let me get to know you"}
+          {done ? "Thanks for that" : kicker}
         </p>
         {!done ? (
           <button
