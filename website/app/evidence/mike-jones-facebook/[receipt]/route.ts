@@ -36,7 +36,7 @@ export async function GET(
     .webp({ quality: 90, effort: 5 })
     .toBuffer();
 
-  return new Response(bytes, {
+  return new Response(new Uint8Array(bytes), {
     headers: {
       "Content-Type": "image/webp",
       "Content-Length": String(bytes.length),
