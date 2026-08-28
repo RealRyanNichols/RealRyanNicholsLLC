@@ -5,7 +5,7 @@ export const runtime = "nodejs";
 export async function GET() {
   const bytes = await renderMikeJonesFacebookOg(1200, 630);
 
-  return new Response(bytes, {
+  return new Response(new Uint8Array(bytes), {
     headers: {
       "Content-Type": "image/jpeg",
       "Content-Length": String(bytes.length),
