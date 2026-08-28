@@ -74,8 +74,8 @@ export async function renderMikeJonesFacebookReportOg(width: number, height: num
 
       <rect x="${shotX - border}" y="${shotY - border}" width="${shotW + border * 2}" height="${shotH + border * 2}" rx="${radius + border}" fill="#e1bd5b" filter="url(#shadow)"/>
 
-      <rect x="${rightX}" y="${s(47)}" width="${s(326)}" height="${s(33)}" rx="${s(16)}" fill="#e1bd5b"/>
-      <text x="${rightX + s(18)}" y="${s(69)}" fill="#061023" font-family="${font}" font-size="${s(15)}" font-weight="900" letter-spacing="${s(1.4)}">SCREENSHOT-BACKED PUBLIC RECORD</text>
+      <rect x="${rightX}" y="${s(47)}" width="${s(350)}" height="${s(33)}" rx="${s(16)}" fill="#b4232f"/>
+      <text x="${rightX + s(18)}" y="${s(69)}" fill="#ffffff" font-family="${font}" font-size="${s(13)}" font-weight="900" letter-spacing="${s(1.1)}">DOCUMENTED. PUBLIC. UNFILTERED.</text>
 
       <text x="${rightX}" y="${s(154)}" fill="#fdf8ea" font-family="${font}" font-size="${s(78)}" font-weight="900" letter-spacing="-${s(3)}">“I WILL</text>
       <text x="${rightX}" y="${s(229)}" fill="#fdf8ea" font-family="${font}" font-size="${s(78)}" font-weight="900" letter-spacing="-${s(3)}">COME TO</text>
@@ -89,17 +89,11 @@ export async function renderMikeJonesFacebookReportOg(width: number, height: num
       <text x="${rightX}" y="${s(460)}" fill="#cfd9ea" font-family="${font}" font-size="${s(18)}" font-weight="600">A demand for a conviction. An accusation without one.</text>
       <text x="${rightX}" y="${s(485)}" fill="#cfd9ea" font-family="${font}" font-size="${s(18)}" font-weight="600">Then these words, preserved exactly as posted.</text>
 
-      <g font-family="${font}" font-size="${s(12)}" font-weight="900" letter-spacing="${s(0.8)}">
-        <rect x="${rightX}" y="${s(514)}" width="${s(179)}" height="${s(31)}" rx="${s(15)}" fill="#ffffff" opacity="0.09"/>
-        <text x="${rightX + s(14)}" y="${s(535)}" fill="#fdf8ea">4 ORIGINAL SCREENSHOTS</text>
-        <rect x="${rightX + s(190)}" y="${s(514)}" width="${s(166)}" height="${s(31)}" rx="${s(15)}" fill="#ffffff" opacity="0.09"/>
-        <text x="${rightX + s(204)}" y="${s(535)}" fill="#fdf8ea">DENIALS INCLUDED</text>
-        <rect x="${rightX + s(367)}" y="${s(514)}" width="${s(159)}" height="${s(31)}" rx="${s(15)}" fill="#ffffff" opacity="0.09"/>
-        <text x="${rightX + s(381)}" y="${s(535)}" fill="#fdf8ea">NO RETALIATION</text>
-      </g>
+      <rect x="${rightX}" y="${s(514)}" width="${s(470)}" height="${s(31)}" rx="${s(15)}" fill="#ffffff" opacity="0.09"/>
+      <text x="${rightX + s(16)}" y="${s(535)}" fill="#fdf8ea" font-family="${font}" font-size="${s(12)}" font-weight="900" letter-spacing="${s(0.8)}">THREATS • DOUBLE STANDARDS • PUBLIC RECORD</text>
 
       <line x1="${rightX}" y1="${s(568)}" x2="${rightX + rightW}" y2="${s(568)}" stroke="#ffffff" stroke-opacity="0.2" stroke-width="${Math.max(1, s(1))}"/>
-      <text x="${rightX}" y="${s(596)}" fill="#cfd9ea" font-family="${font}" font-size="${s(14)}" font-weight="800" letter-spacing="${s(0.8)}">RYAN NICHOLS · EAST TEXAS · AUGUST 2026</text>
+      <text x="${rightX}" y="${s(596)}" fill="#cfd9ea" font-family="${font}" font-size="${s(14)}" font-weight="800" letter-spacing="${s(0.8)}">BY RYAN NICHOLS</text>
       <text x="${rightX + rightW}" y="${s(596)}" text-anchor="end" fill="#e1bd5b" font-family="${font}" font-size="${s(14)}" font-weight="900" letter-spacing="${s(0.8)}">REALRYANNICHOLS.COM</text>
     </svg>
   `);
