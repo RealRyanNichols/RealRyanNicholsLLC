@@ -85,9 +85,7 @@ I apply the same standard to myself that I apply to anyone else: accurately desc
 
 ## Then I challenged him on his own post
 
-The next part needs the same honesty. On one of Mike’s posts, I wrote a pointed question that itself alleged over-serving and responsibility for two deaths. I have not independently verified that premise, and this article does not present it as fact. I reproduce the exact question only because it is necessary context for Mike’s reply:
-
-That comment captures the disagreement.
+The next part needs the same honesty. On one of Mike’s posts, I wrote a pointed question that itself alleged over-serving and responsibility for two deaths. I have not independently verified that premise, and this article does not present it as fact. I reproduce the exact question only because it is necessary context for Mike’s reply.
 
 Mike first replied:
 
@@ -133,7 +131,7 @@ Public scrutiny should be evidence-based. Public disagreement should remain disa
 
 ## What the screenshots prove, and what they do not
 
-The four screenshots document that:
+The four original screenshots document that:
 
 - Mike requested a judgment of conviction or court disposition.
 - Mike then referenced an accusation against me in the same thread.
@@ -165,6 +163,72 @@ If someone makes an intimidating public statement, preserve the statement.
 
 People can read the screenshots and decide for themselves.
 
+---
+
+## Update — August 28, 2026: The response continued after publication
+
+After I published this article and shared the receipts publicly, the exchange did not end. Mike Jones continued responding in the comment section, moved the dispute onto an unrelated business post of mine, and published a separate Facebook post about the May 10 Oak Grove Baptist Church allegation.
+
+I am adding the new screenshots below for the same reason I published the original four: **not to retaliate, but to preserve what was actually said.**
+
+### Exhibit 5: “not a threat … it’s a promise!!!!”
+
+In the comments under my post, another commenter accused Mike of stalking me. Mike denied that accusation. In the same reply, he wrote, as displayed in the screenshot:
+
+> **“Everything I said to his sissy ass was not a threat by it’s a promise!!!!”**
+
+That wording matters because it came after the earlier **“I will come to you!!!”** statement that this article originally documented.
+
+I am not making a criminal-law determination about what the phrase means. I am preserving the exact phrasing and explaining why, in context, I view the continued rhetoric as escalating and intimidating rather than ordinary political disagreement.
+
+{{receiptstack: /uploads/mike-jones-facebook-exchange/05-continued-response-promise.webp::Facebook comment where Mike Jones says his earlier words were “not a threat” and “a promise”::Exhibit 5. After publication, Mike Jones denied stalking and wrote that what he had said was “not a threat” but “a promise.” The wording is reproduced as shown; this article does not make a criminal finding.::Update exhibit}}
+
+### Exhibit 6: “FAFO!!! Let’s do this … I’m not hard to find.”
+
+Mike continued in the same comment section and again raised the church allegation against me. He then wrote:
+
+> **“FAFO!!! Let’s do this bitch boy!! You know I live in Jefferson I’m not hard to find.”**
+
+Once again, I am not labeling that sentence a crime. I am documenting a continuing public exchange in which the language became more confrontational after the original article was already live.
+
+{{receiptstack: /uploads/mike-jones-facebook-exchange/06-continued-response-fafo.webp::Facebook comment from Mike Jones containing “FAFO,” “Let’s do this,” and “I’m not hard to find”::Exhibit 6. The continued Facebook response includes “FAFO!!! Let’s do this” and “I’m not hard to find.” It is preserved here as part of the chronology, without a criminal-law conclusion.::Update exhibit}}
+
+### Exhibit 7: The dispute moved onto an unrelated business post
+
+The response then appeared under an unrelated post of mine about The LeadFlow Pro. Mike commented:
+
+> **“Are you going to show people how to loose everything like you did to your wife lol she smoked your ass”**
+
+That comment is not evidence of a crime, and I am not presenting it as one. Its relevance is narrower: the dispute had moved beyond the original LaFleur discussion and into unrelated content about my business and personal life.
+
+{{receiptstack: /uploads/mike-jones-facebook-exchange/07-leadflow-comment.webp::Mike Jones commenting on an unrelated Ryan Nichols LeadFlow Pro Facebook post::Exhibit 7. After the original dispute, Mike Jones appeared under an unrelated business post and made a personal comment about my former marriage.::Update exhibit}}
+
+### Exhibit 8: A separate Facebook post about the church allegation
+
+Mike also published a separate Facebook post linking a KLTV report whose visible headline says I was **“accused”** of reaching for a gun during the May 10 church dispute.
+
+In Mike’s own text above that link, he wrote that people could not go to church without **“an idiot pulling a gun on them.”** Below the post, he added:
+
+> **“And I mean every word Ryan Nichols”**
+
+This is exactly why the allegation-versus-conviction distinction in the original article matters. A news headline saying a person was **accused** of conduct is not itself a conviction or adjudication that the conduct occurred. I disputed that characterization in the original exchange. This update does not claim a current grand-jury or trial disposition that has not been independently verified through a dated official record.
+
+The point is not that Mike is forbidden from discussing allegations about me. He is free to cite reporting, criticize me, and argue his position. The point is that he originally objected to public discussion of allegations involving LaFleur because there was no conviction, while continuing to discuss an unresolved allegation involving me in categorical terms.
+
+{{receiptstack: /uploads/mike-jones-facebook-exchange/08-separate-facebook-post.webp::Mike Jones Facebook post linking KLTV reporting about the May 10 church allegation and saying he means every word::Exhibit 8. Mike Jones published a separate post linking a KLTV article whose headline describes an accusation, while his accompanying text states the allegation as fact. This article preserves the distinction between accusation and adjudicated fact.::Update exhibit}}
+
+### Why I am adding this update
+
+This update does not change my response.
+
+I am not going to threaten Mike back. I am not asking anyone else to contact him, confront him, threaten him, harass him, dox him, or mass-report him.
+
+What the additional screenshots establish is simply that the public exchange continued after publication and expanded into additional comments and posts. The public can see those words in their original context and decide what they think about them.
+
+**I will not threaten him back. I will document it.**
+
+{{callout: key | The answer to escalating online rhetoric is not retaliation. Preserve the receipts, state what they show, state what they do not show, and let the public inspect the record.}}
+
 {{poll: If an online exchange feels threatening, what is your first move? | Save the screenshots | Step away | Make a report | Ask for help}}
 
 Do not contact, harass, threaten, dox, mass-report, or confront Mike Jones, Judge LaFleur, or their families on my behalf. If you possess relevant public records or original evidence, [submit it through the website](/submit) so it can be reviewed and preserved responsibly.
@@ -179,4 +243,4 @@ Do not contact, harass, threaten, dox, mass-report, or confront Mike Jones, Judg
 
 ---
 
-*Evidence note: The four Facebook screenshots are reproduced from the original files Ryan Nichols supplied for publication. The screenshots display relative Facebook timestamps; this article does not assign exact dates or times to individual comments. Quotations retain the spelling, capitalization, punctuation, and profanity visible in the images. External reporting is linked to distinguish publicly reported allegations from proven findings.*
+*Evidence note: Exhibits 1–4 reproduce the original Facebook screenshots supplied for the first publication. Exhibits 5–8 were added from additional screenshots supplied after publication and cropped for web presentation to focus on the relevant visible comments or post; the quoted wording was not rewritten. Facebook timestamps shown in the images are relative. Quotations retain the spelling, capitalization, punctuation, and profanity visible in the screenshots. External reporting is linked or described only to distinguish public allegations from proven findings.*
