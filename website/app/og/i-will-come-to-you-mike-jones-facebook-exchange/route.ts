@@ -1,9 +1,9 @@
-import { renderMikeJonesFacebookOg } from "@/lib/og/mike-jones-facebook";
+import { renderMikeJonesFacebookReportOg } from "@/lib/og/mike-jones-facebook-repaired";
 
 export const runtime = "nodejs";
 
 export async function GET() {
-  const bytes = await renderMikeJonesFacebookOg(1200, 630);
+  const bytes = await renderMikeJonesFacebookReportOg(1200, 630);
 
   return new Response(new Uint8Array(bytes), {
     headers: {
