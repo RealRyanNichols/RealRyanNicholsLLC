@@ -5,10 +5,15 @@ import {
   buildInitialCustodyBulletin,
   deadmanKeysConfiguredFor,
   releaseNextDeadmanUpdate,
+  type DeadmanCodeVerification,
   verifyDeadmanCodeFor,
 } from "@/lib/deadman";
 import { dispatchNextDeadmanXPost } from "@/lib/deadman-social";
-import { DEADMAN_CONFIRMATION_TYPES } from "@/lib/deadman-constants";
+import {
+  DEADMAN_CONFIRMATION_LABELS,
+  DEADMAN_CONFIRMATION_TYPES,
+  type DeadmanConfirmationType,
+} from "@/lib/deadman-constants";
 import {
   DEADMAN_EDITORIAL_MODE,
   type DeadmanClaimLabels,
@@ -17,6 +22,7 @@ import {
   validateDeadmanAccountabilityDraft,
 } from "@/lib/deadman-editorial";
 import { sendAdminAlert } from "@/lib/admin-email-alerts";
+import { requireAdminApi } from "@/lib/admin-guard";
 import { pingIndexNow } from "@/lib/indexnow";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { SITE } from "@/lib/site";
@@ -46,13 +52,49 @@ const reverseSchema = z.object({
   resolution_summary: z.string().min(10).max(1200),
 });
 
-const schema = z.discriminatedUnion("action", [activateSchema, reverseSchema]);
+const triggerSourceSchema = z.object({
+  url: z.string().url().max(1000),
+  publisher: z.string().min(2).max(160).optional(),
+  headline: z.string().min(3).max(300).optional(),
+  published_at: z.string().max(80).optional(),
+});
 
-function sourceUrlRequired(type: z.infer<typeof activateSchema>["confirmation_type"]): boolean {
+const adminActivateSchema = z.object({
+  action: z.literal("admin_activate"),
+  confirmed: z.literal(true),
+  trigger_sources: z.array(triggerSourceSchema).max(5).optional(),
+});
+
+const adminReverseSchema = z.object({
+  action: z.literal("admin_reverse"),
+  confirmed: z.literal(true),
+});
+
+const schema = z.discriminatedUnion("action", [
+  activateSchema,
+  reverseSchema,
+  adminActivateSchema,
+  adminReverseSchema,
+]);
+
+type VerifiedActor = Extract<DeadmanCodeVerification, { valid: true }>;
+type TriggerSource = z.infer<typeof triggerSourceSchema>;
+type ActivateInput = {
+  confirmation_type: DeadmanConfirmationType;
+  confirmation_summary: string;
+  source_url?: string;
+  agency?: string;
+  facility?: string;
+  trigger_sources?: TriggerSource[];
+};
+type ReverseInput = { resolution_summary: string };
+
+function sourceUrlRequired(type: DeadmanConfirmationType): boolean {
   return (
     type === "official_booking_record" ||
     type === "filed_court_order" ||
-    type === "custodial_agency_confirmation"
+    type === "custodial_agency_confirmation" ||
+    type === "credible_current_reporting"
   );
 }
 
@@ -91,19 +133,10 @@ async function recordEvent(
 
 async function reverseSwitch(
   supabase: ReturnType<typeof getSupabaseServiceClient>,
-  input: z.infer<typeof reverseSchema>,
+  input: ReverseInput,
   fingerprint: string,
+  verification: VerifiedActor,
 ) {
-  const verification = await verifyDeadmanCodeFor(supabase, "reverse", input.code);
-  if (!verification.valid) {
-    await recordEvent(supabase, {
-      eventType: "invalid_reversal_code",
-      actorId: "unknown",
-      fingerprint,
-    });
-    return NextResponse.json({ error: "Invalid code." }, { status: 403 });
-  }
-
   const { data: incident } = await supabase
     .from("deadman_incidents")
     .select("id, incident_code")
@@ -200,29 +233,17 @@ async function reverseSwitch(
 
 async function activateSwitch(
   supabase: ReturnType<typeof getSupabaseServiceClient>,
-  input: z.infer<typeof activateSchema>,
+  input: ActivateInput,
   fingerprint: string,
+  verification: VerifiedActor,
 ) {
-  if (sourceUrlRequired(input.confirmation_type) && !input.source_url) {
+  const triggerSources = input.trigger_sources ?? [];
+  const primarySourceUrl = input.source_url || triggerSources[0]?.url;
+  if (sourceUrlRequired(input.confirmation_type) && !primarySourceUrl) {
     return NextResponse.json(
       { error: "A public source URL is required for this confirmation type." },
       { status: 400 },
     );
-  }
-
-  const verification = await verifyDeadmanCodeFor(
-    supabase,
-    "activate",
-    input.code,
-    input.activator_id,
-  );
-  if (!verification.valid) {
-    await recordEvent(supabase, {
-      eventType: "invalid_activation_code",
-      actorId: input.activator_id || "unknown",
-      fingerprint,
-    });
-    return NextResponse.json({ error: "Invalid contact ID or code." }, { status: 403 });
   }
 
   const { data: existing } = await supabase
@@ -261,7 +282,7 @@ async function activateSwitch(
       activator_label: verification.actor_label,
       confirmation_type: input.confirmation_type,
       confirmation_summary: input.confirmation_summary,
-      source_url: input.source_url || null,
+      source_url: primarySourceUrl || null,
       agency: input.agency?.trim() || null,
       facility: input.facility?.trim() || null,
       public_release_authorized: false,
@@ -270,6 +291,10 @@ async function activateSwitch(
         protocol_version: 3,
         cadence: "top_of_every_hour",
         editorial_mode: DEADMAN_EDITORIAL_MODE,
+        activation_channel: verification.actor_id.startsWith("admin:")
+          ? "authenticated_admin_toggle"
+          : "trusted_contact_code",
+        trigger_sources: triggerSources,
       },
     })
     .select("id, incident_code")
@@ -295,7 +320,7 @@ async function activateSwitch(
       agency: input.agency,
       facility: input.facility,
       publicSummary: input.confirmation_summary,
-      sourceUrl: input.source_url,
+      sourceUrl: primarySourceUrl,
     });
     const slug = `custody-response-${nowIso.slice(0, 10)}-${incident.incident_code
       .split("-")
@@ -319,27 +344,44 @@ async function activateSwitch(
       throw activateError ?? new Error("The incident was resolved before activation completed.");
     }
 
-    const sources: DeadmanPublicSource[] = input.source_url
-      ? [{ id: "activation-confirmation", url: input.source_url, type: input.confirmation_type }]
+    const sources: DeadmanPublicSource[] = triggerSources.length
+      ? triggerSources.map((source, index) => ({
+          id: `activation-report-${index + 1}`,
+          url: source.url,
+          type: input.confirmation_type,
+          note: [source.publisher, source.headline, source.published_at]
+            .filter(Boolean)
+            .join(" · ") || undefined,
+        }))
+      : primarySourceUrl
+        ? [{ id: "activation-confirmation", url: primarySourceUrl, type: input.confirmation_type }]
       : [
           {
             id: "activation-confirmation",
             type: input.confirmation_type,
-            note: "Direct authoritative confirmation preserved in the private incident record.",
+            note: "Authenticated manual confirmation preserved in the private incident record.",
           },
         ];
     const evidenceStrength: DeadmanEvidenceStrength =
-      input.confirmation_type === "official_booking_record" ||
+      input.confirmation_type === "credible_current_reporting"
+        ? sources.length >= 2
+          ? "corroborated"
+          : "single_public_source"
+        : input.confirmation_type === "official_booking_record" ||
       input.confirmation_type === "filed_court_order" ||
       input.confirmation_type === "custodial_agency_confirmation"
         ? "primary_record"
         : "direct_confirmation";
+    const actorDescription = verification.actor_id.startsWith("admin:")
+      ? "An authenticated site administrator"
+      : "A trusted contact";
+    const confirmationLabel = DEADMAN_CONFIRMATION_LABELS[input.confirmation_type];
     const claimLabels: DeadmanClaimLabels = {
       verified_facts: [
         {
           id: "fact-activation",
-          claim: `A trusted contact activated the custody protocol after checking a ${input.confirmation_type}.`,
-          source_ids: ["activation-confirmation"],
+          claim: `${actorDescription} activated the custody protocol after double confirmation using ${confirmationLabel}.`,
+          source_ids: sources.map((source) => source.id),
         },
       ],
       attributed_allegations: [],
@@ -374,6 +416,7 @@ async function activateSwitch(
       confirmed_at: nowIso,
       agency: input.agency?.trim() || null,
       facility: input.facility?.trim() || null,
+      trigger_sources: triggerSources,
     };
     const editorialValidation = validateDeadmanAccountabilityDraft({
       title: bulletin.title,
@@ -399,7 +442,7 @@ async function activateSwitch(
         p_public_record_sources: sources,
         p_fact_basis: factBasis,
         p_seo_description: bulletin.seoDescription,
-        p_created_by: `trusted-contact:${verification.actor_id}`,
+        p_created_by: verification.actor_id,
         p_x_post: `Verified custody response: Harrison County must show the lawful, documented basis for holding Ryan Nichols—or release him. Every public decision will be sourced and preserved. Read and share: ${publicUrl}`,
         p_facebook_post: `A verified custody response has been activated for Ryan Nichols.\n\nHarrison County must identify the lawful, documented basis for holding him—or release him. We will preserve the public decision chain, compare official claims with source records, publish exculpatory evidence and contradictions, and request answers from the responsible public offices.\n\nRead and share the source-labeled record. Ask factual questions, submit original records, and do not threaten, harass, dox, or target private people.\n\n${publicUrl}`,
       },
@@ -416,7 +459,8 @@ async function activateSwitch(
       fingerprint,
       detail: {
         confirmation_type: input.confirmation_type,
-        source_url: input.source_url || null,
+        source_url: primarySourceUrl || null,
+        trigger_sources: triggerSources,
         initial_update_id: updateId,
       },
     });
@@ -432,14 +476,14 @@ async function activateSwitch(
       sendAdminAlert({
         subject: `Deadman's Switch activated · ${incident.incident_code}`,
         text: [
-          "The verified-custody protocol was activated by a trusted contact.",
+          "The custody-response protocol was activated by an authorized operator.",
           `Incident: ${incident.incident_code}`,
           `Activator: ${verification.actor_label}`,
           `Confirmation: ${input.confirmation_type}`,
           `Initial bulletin: ${publicUrl}`,
           "Review the private incident record and preserve all original sources.",
         ].join("\n"),
-        html: `<p><strong>The verified-custody protocol was activated by a trusted contact.</strong></p><p><strong>Incident:</strong> ${escapeHtml(incident.incident_code)}<br/><strong>Activator:</strong> ${escapeHtml(verification.actor_label)}<br/><strong>Confirmation:</strong> ${escapeHtml(input.confirmation_type)}</p><p><a href="${escapeHtml(publicUrl)}">Open the initial bulletin</a></p><p>Review the private incident record and preserve all original sources.</p>`,
+        html: `<p><strong>The custody-response protocol was activated by an authorized operator.</strong></p><p><strong>Incident:</strong> ${escapeHtml(incident.incident_code)}<br/><strong>Activator:</strong> ${escapeHtml(verification.actor_label)}<br/><strong>Confirmation:</strong> ${escapeHtml(input.confirmation_type)}</p><p><a href="${escapeHtml(publicUrl)}">Open the initial bulletin</a></p><p>Review the private incident record and preserve all original sources.</p>`,
       }),
     ]);
     const sideEffects: Array<[string, PromiseSettledResult<unknown>]> = [
@@ -470,7 +514,7 @@ async function activateSwitch(
       next_eligible_at: release.next_eligible_at,
       x_dispatch: social,
       message:
-        "Verified-custody response activated. The initial source-labeled bulletin was published and hourly reporting is live.",
+        "Custody response activated. The initial source-labeled bulletin was published and hourly reporting is live.",
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Activation failed.";
@@ -594,13 +638,6 @@ export async function POST(request: Request) {
   }
 
   const supabase = getSupabaseServiceClient();
-  if (!(await deadmanKeysConfiguredFor(supabase))) {
-    return NextResponse.json(
-      { error: "Deadman's Switch is not fully configured." },
-      { status: 503 },
-    );
-  }
-
   const rate = await checkRateLimit({
     request,
     bucket: "deadman-v2",
@@ -629,10 +666,119 @@ export async function POST(request: Request) {
   }
 
   try {
-    if (parsed.data.action === "reverse") {
-      return await reverseSwitch(supabase, parsed.data, rate.ipHash);
+    if (
+      parsed.data.action === "admin_activate" ||
+      parsed.data.action === "admin_reverse"
+    ) {
+      const admin = await requireAdminApi();
+      if (!admin.ok) {
+        return NextResponse.json(
+          { error: admin.error },
+          { status: admin.status },
+        );
+      }
+      const verification: VerifiedActor = {
+        valid: true,
+        actor_id: `admin:${admin.userId}`,
+        actor_label: "Authenticated site administrator",
+      };
+      if (parsed.data.action === "admin_reverse") {
+        return await reverseSwitch(
+          supabase,
+          {
+            resolution_summary:
+              "An authenticated site administrator turned off the emergency publishing switch after double confirmation.",
+          },
+          rate.ipHash,
+          verification,
+        );
+      }
+
+      const triggerSources = (parsed.data.trigger_sources ?? []).filter(
+        (source, index, all) =>
+          all.findIndex((candidate) => candidate.url === source.url) === index,
+      );
+      const publishers = Array.from(
+        new Set(
+          triggerSources
+            .map((source) => source.publisher?.trim())
+            .filter((value): value is string => Boolean(value)),
+        ),
+      );
+      return await activateSwitch(
+        supabase,
+        {
+          confirmation_type: triggerSources.length
+            ? "credible_current_reporting"
+            : "authenticated_admin_confirmation",
+          confirmation_summary: triggerSources.length
+            ? `The authenticated administrator activated after reviewing current reporting${publishers.length ? ` from ${publishers.join(", ")}` : ""}.`
+            : "The authenticated administrator manually activated the custody-response system after double confirmation.",
+          source_url: triggerSources[0]?.url,
+          trigger_sources: triggerSources,
+        },
+        rate.ipHash,
+        verification,
+      );
     }
-    return await activateSwitch(supabase, parsed.data, rate.ipHash);
+
+    if (!(await deadmanKeysConfiguredFor(supabase))) {
+      return NextResponse.json(
+        { error: "Deadman's Switch is not fully configured." },
+        { status: 503 },
+      );
+    }
+
+    if (parsed.data.action === "reverse") {
+      const verification = await verifyDeadmanCodeFor(
+        supabase,
+        "reverse",
+        parsed.data.code,
+      );
+      if (!verification.valid) {
+        await recordEvent(supabase, {
+          eventType: "invalid_reversal_code",
+          actorId: "unknown",
+          fingerprint: rate.ipHash,
+        });
+        return NextResponse.json({ error: "Invalid code." }, { status: 403 });
+      }
+      return await reverseSwitch(
+        supabase,
+        { resolution_summary: parsed.data.resolution_summary },
+        rate.ipHash,
+        verification,
+      );
+    }
+    const verification = await verifyDeadmanCodeFor(
+      supabase,
+      "activate",
+      parsed.data.code,
+      parsed.data.activator_id,
+    );
+    if (!verification.valid) {
+      await recordEvent(supabase, {
+        eventType: "invalid_activation_code",
+        actorId: parsed.data.activator_id || "unknown",
+        fingerprint: rate.ipHash,
+      });
+      return NextResponse.json(
+        { error: "Invalid contact ID or code." },
+        { status: 403 },
+      );
+    }
+    return await activateSwitch(
+      supabase,
+      {
+        confirmation_type: parsed.data.confirmation_type,
+        confirmation_summary: parsed.data.confirmation_summary,
+        source_url: parsed.data.source_url,
+        agency: parsed.data.agency,
+        facility: parsed.data.facility,
+      },
+      rate.ipHash,
+      verification,
+    );
   } catch (error) {
     console.error(
       "deadman_v2_request_failed",
