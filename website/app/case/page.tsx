@@ -57,12 +57,14 @@ export async function generateMetadata({
   const ogImageUrl = override?.image_url ?? settings.case_og_url ?? autoOg;
 
   const title = override?.title ?? "The J6 Case";
+  // Default title includes "Ryan Nichols" so /case ranks for "ryan nichols january 6"
+  const defaultTitle = "Ryan Nichols — The J6 Case Archive";
   const description = override?.description ?? CASE_DESCRIPTION;
   const fullTitle = override?.title ?? CASE_TITLE;
   const canonicalUrl = `${SITE.url}${canonical}`;
 
   return {
-    title,
+    title: override?.title ?? defaultTitle,
     description,
     openGraph: {
       type: "article",
