@@ -118,3 +118,27 @@ test("initial bulletin refuses non-http source schemes", () => {
   assert.doesNotMatch(bulletin.body, /javascript:/i);
   assert.match(bulletin.body, /public source link was not available/i);
 });
+
+test("signed-in admin activation is labeled without inventing an official source", () => {
+  const bulletin = buildInitialCustodyBulletin({
+    confirmedAt: "2026-09-02T20:00:00.000Z",
+    confirmationType: "authenticated_admin_confirmation",
+    publicSummary: "An authenticated administrator double-confirmed activation.",
+  });
+  assert.match(bulletin.body, /authenticated administrator confirmation/i);
+  assert.match(bulletin.body, /authorized operator activated/i);
+  assert.match(bulletin.body, /public source link was not available/i);
+  assert.doesNotMatch(bulletin.body, /official booking record lists/i);
+});
+
+test("current newsroom reporting can be cited as the activation basis", () => {
+  const bulletin = buildInitialCustodyBulletin({
+    confirmedAt: "2026-09-02T20:00:00.000Z",
+    confirmationType: "credible_current_reporting",
+    publicSummary: "Established local newsrooms reported current custody.",
+    sourceUrl: "https://example-news.test/current-report",
+  });
+  assert.match(bulletin.body, /corroborated current reporting/i);
+  assert.match(bulletin.body, /https:\/\/example-news\.test\/current-report/);
+  assert.match(bulletin.body, /single repost or social-media tag is not proof/i);
+});

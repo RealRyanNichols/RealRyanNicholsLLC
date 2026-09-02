@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { formatDistanceToNowStrict } from "date-fns";
-import { DeadmanSwitchForm } from "@/components/DeadmanSwitchForm";
+import { AdminDeadmanToggle } from "@/components/AdminDeadmanToggle";
 import { getDeadmanState } from "@/lib/deadman";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 
@@ -139,12 +139,11 @@ export default async function AdminDeadmanPage() {
             Emergency publishing switch
           </h1>
           <p className="mt-4 max-w-3xl text-sm leading-relaxed text-[var(--color-ink-soft)]">
-            This is built to protect the record without violating trust. It
-            publishes a verified first bulletin immediately, then one
-            source-labeled status update at the top of each hour. The response
-            worker creates the updates; it does not wait for owner-approved
-            drafts. It never releases private messages, tips, contact info,
-            sealed material, or evidence uploads.
+            The signed-in admin control is intentionally simple: click once,
+            then confirm once. Turning it on publishes the first custody
+            bulletin immediately and starts one source-labeled update at the
+            top of each hour. It never releases private messages, tips, contact
+            information, sealed material, or evidence uploads.
           </p>
           <div className="mt-5 grid gap-3 sm:grid-cols-3">
             <Stat label="Switch" value={state.active ? "Active" : "Off"} tone={state.active ? "red" : "green"} />
@@ -161,7 +160,7 @@ export default async function AdminDeadmanPage() {
               How hourly reporting works
             </h2>
             <ol className="mt-3 space-y-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-              <li>1. A trusted contact or authoritative record confirms custody.</li>
+              <li>1. A signed-in admin double-confirms the switch, a trusted contact uses the fallback, or the monitor finds corroborated current reporting.</li>
               <li>2. The first sourced bulletin publishes immediately.</li>
               <li>3. Codex researches and publishes a timestamped update at each hour, including a no-new-information bulletin when appropriate.</li>
               <li>4. X and Facebook captions are prepared for each public article and logged until successfully posted.</li>
@@ -301,7 +300,7 @@ export default async function AdminDeadmanPage() {
         </section>
 
         <aside>
-          <DeadmanSwitchForm allowReverse />
+          <AdminDeadmanToggle active={state.active} />
           <div className="mt-4 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] p-4 text-xs leading-relaxed text-[var(--color-muted)]">
             <p>
               Incident: {state.incident_code ?? "none"}

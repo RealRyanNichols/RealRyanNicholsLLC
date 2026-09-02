@@ -9,6 +9,8 @@ export const DEADMAN_CONFIRMATION_TYPES = [
   "attorney_or_designated_contact",
   "authenticated_contact_from_custody",
   "custodial_agency_confirmation",
+  "credible_current_reporting",
+  "authenticated_admin_confirmation",
 ] as const;
 
 export type DeadmanConfirmationType =
@@ -25,4 +27,8 @@ export const DEADMAN_CONFIRMATION_LABELS: Record<
   authenticated_contact_from_custody:
     "direct authenticated communication from custody",
   custodial_agency_confirmation: "direct confirmation from the custodial agency",
+  credible_current_reporting:
+    "corroborated current reporting from established news outlets",
+  authenticated_admin_confirmation:
+    "authenticated administrator confirmation",
 };
