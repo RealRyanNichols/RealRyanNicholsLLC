@@ -1,20 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { trackEvent } from "@/lib/analytics";
 
-const FALLBACK_URL = "https://realryannichols.com/";
+const SITE_ORIGIN = "https://realryannichols.com";
 const SHARE_TEXT = "Read this. Check the receipts yourself.";
 
 // Interactive "spread it" row. Sharing IS the ask — the site sells, it does
 // not solicit. Uses the live page URL so it works on any post.
 export function ShareRow() {
-  const [url, setUrl] = useState(FALLBACK_URL);
+  const pathname = usePathname();
+  const url = `${SITE_ORIGIN}${pathname || "/"}`;
   const [copied, setCopied] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") setUrl(window.location.href.split("#")[0]);
-  }, []);
 
   function copy() {
     navigator.clipboard
