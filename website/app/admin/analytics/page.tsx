@@ -4,7 +4,10 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { format, formatDistanceToNowStrict, subDays } from "date-fns";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { fetchSiteTotals } from "@/lib/site-totals";
 import { WorldMap } from "@/components/WorldMap";
+import { DailyBars, DAILY_BARS_MOBILE_MAX } from "@/components/DailyBars";
+import { CappedSampleStrip } from "@/components/CappedSampleStrip";
 import { flagFor, nameFor } from "@/lib/country-coords";
 import { normalizeVideoChannel } from "@/lib/video-channels";
 import { ReachBySource } from "@/components/ReachBySource";
@@ -71,6 +74,11 @@ export default async function AdminAnalyticsPage({
   const now = new Date();
   const sevenDaysAgo = subDays(now, 7).toISOString();
   const thirtyDaysAgo = subDays(now, 30).toISOString();
+
+  // The one live number. Every "live" tile on this page — Command Center,
+  // Scoreboard, Live sessions, Geography — shows this same integer.
+  const siteTotals = await fetchSiteTotals(supabase);
+  const liveNow = siteTotals?.live_now ?? 0;
 
   // Pull in parallel
   const [
@@ -243,10 +251,10 @@ export default async function AdminAnalyticsPage({
       </p>
 
       {/* 0. MAX COMMAND CENTER — live operating read before the scorecards */}
-      <CommandCenter />
+      <CommandCenter liveNow={liveNow} />
 
       {/* 1. ATTENTION SCOREBOARD — above the fold, the few numbers that matter */}
-      <Scoreboard />
+      <Scoreboard liveNow={liveNow} />
 
       {/* 1b. VISUAL INTELLIGENCE WALL — charts for pattern recognition */}
       <VisualIntelligenceWall excludeSelf={excludeSelf} />
@@ -407,7 +415,7 @@ export default async function AdminAnalyticsPage({
         title="Live sessions (last 24 hours)"
         summary="Active visitors now, top pages with dwell + scroll, click targets, recent sessions."
       >
-        <LiveSessions />
+        <LiveSessions liveNow={liveNow} />
       </CollapsibleSection>
 
       <CollapsibleSection
@@ -415,7 +423,7 @@ export default async function AdminAnalyticsPage({
         title="Geography — who's reading"
         summary="World map, top countries, cities, referrers, and live visitors right now."
       >
-        <Geography />
+        <Geography liveNow={liveNow} />
       </CollapsibleSection>
 
       <CollapsibleSection
@@ -571,10 +579,10 @@ function shortPath(path: string): string {
 
 function colorBySource(key: string): string {
   const map: Record<string, string> = {
-    human: "#e1bd5b",
+    human: "var(--color-gold-bright)",
     "search-bot": "#7fa9e3",
     "ai-bot": "#c8a3ff",
-    "social-bot": "#e4c66a",
+    "social-bot": "var(--color-gold-light)",
     "uptime-bot": "#9fb0ca",
     unknown: "#6f7f99",
   };
@@ -595,9 +603,9 @@ function sourceLabel(key: string): string {
 
 function deviceColor(key: string): string {
   const map: Record<string, string> = {
-    mobile: "#e1bd5b",
+    mobile: "var(--color-gold-bright)",
     desktop: "#7fa9e3",
-    tablet: "#e4c66a",
+    tablet: "var(--color-gold-light)",
     bot: "#c8a3ff",
     unknown: "#6f7f99",
   };
@@ -709,7 +717,7 @@ async function VisualIntelligenceWall({ excludeSelf }: { excludeSelf: boolean })
     {
       name: "Read halfway",
       value: scroll50 ?? 0,
-      fill: "#e1bd5b",
+      fill: "var(--color-gold-bright)",
       hint: "People who stayed long enough to hit 50% scroll.",
     },
     {
@@ -721,31 +729,31 @@ async function VisualIntelligenceWall({ excludeSelf }: { excludeSelf: boolean })
     {
       name: "Commented / reacted",
       value: comments ?? 0,
-      fill: "#e4c66a",
+      fill: "var(--color-gold-light)",
       hint: "Public proof that turns readers into participants.",
     },
     {
       name: "Joined alerts",
       value: subscribeWins ?? 0,
-      fill: "#e1bd5b",
+      fill: "var(--color-gold-bright)",
       hint: "Return traffic captured by email/SMS events.",
     },
     {
       name: "Sent a tip",
       value: tipWins ?? 0,
-      fill: "#e1bd5b",
+      fill: "var(--color-gold-bright)",
       hint: "Story/data intake completed.",
     },
     {
       name: "Support saved",
       value: supportSaved ?? 0,
-      fill: "#e4c66a",
+      fill: "var(--color-gold-light)",
       hint: `${fmt(supportIntents30)} support intents in the last 30 days.`,
     },
     {
       name: "Checkout / donate",
       value: checkoutOpen ?? 0,
-      fill: "#e4c66a",
+      fill: "var(--color-gold-light)",
       hint: "Money-path clicks. Gold means funding action.",
     },
     {
@@ -840,15 +848,25 @@ async function VisualIntelligenceWall({ excludeSelf }: { excludeSelf: boolean })
     }. ${supportText}`;
 
   return (
-    <AdminVisualAnalytics
-      daily={daily}
-      sourceMix={sourceMix.length ? sourceMix : [{ name: "No source data", value: 1, color: "#6f7f99" }]}
-      deviceMix={deviceMix.length ? deviceMix : [{ name: "No device data", value: 1, color: "#6f7f99" }]}
-      funnel={funnel}
-      content={content.length ? content : [{ name: "No paths", views: 0, actions: 0 }]}
-      systems={systems}
-      insight={insight}
-    />
+    <>
+      <AdminVisualAnalytics
+        daily={daily}
+        sourceMix={sourceMix.length ? sourceMix : [{ name: "No source data", value: 1, color: "#6f7f99" }]}
+        deviceMix={deviceMix.length ? deviceMix : [{ name: "No device data", value: 1, color: "#6f7f99" }]}
+        funnel={funnel}
+        content={content.length ? content : [{ name: "No paths", views: 0, actions: 0 }]}
+        systems={systems}
+        insight={insight}
+      />
+      {/* The "Actions" bars in "Top pages as a picture" are counted from a
+          row sample; everything else on the wall is an RPC aggregate or an
+          exact count. */}
+      <CappedSampleStrip
+        className="mt-2"
+        windowLabel="7d · actions by page"
+        samples={[{ label: "events", rows: (eventPathRows ?? []).length }]}
+      />
+    </>
   );
 }
 
@@ -896,26 +914,22 @@ function commandTone(value: number, goodAt: number, watchAt: number): Tone {
   return "leak";
 }
 
-async function CommandCenter() {
+// `liveNow` is site_totals().live_now, fetched once by the page and shared by
+// every live tile so they can never disagree.
+async function CommandCenter({ liveNow }: { liveNow: number }) {
   const supabase = await getSupabaseServerClient();
   const now = new Date();
-  const fiveMinAgo = new Date(now.getTime() - 5 * 60 * 1000).toISOString();
   const sevenDaysAgo = subDays(now, 7).toISOString();
   const thirtyDaysAgo = subDays(now, 30).toISOString();
 
   const [
-    { count: liveNow },
     { count: views7 },
     { count: views30 },
     { count: events7 },
-    { data: liveRowsRaw },
+    { data: hotNowRaw },
     { data: views7Raw },
     { data: events7Raw },
   ] = await Promise.all([
-    supabase
-      .from("page_views")
-      .select("id", { count: "exact", head: true })
-      .gte("last_activity_at", fiveMinAgo),
     supabase
       .from("page_views")
       .select("id", { count: "exact", head: true })
@@ -928,12 +942,11 @@ async function CommandCenter() {
       .from("page_events")
       .select("id", { count: "exact", head: true })
       .gte("at", sevenDaysAgo),
-    supabase
-      .from("page_views")
-      .select("path, country, region, city, referrer_host, device_kind, started_at, last_activity_at, scroll_max")
-      .gte("last_activity_at", fiveMinAgo)
-      .order("last_activity_at", { ascending: false })
-      .limit(50),
+    // Same RPC the public "Hot now" ticker uses: top paths by distinct live
+    // sessions, over the same five-minute window as live_now.
+    supabase.rpc("hot_right_now"),
+    // Row samples for the percentages below. PostgREST caps these at 1,000
+    // rows however large the limit; the amber strip under the tiles says so.
     supabase
       .from("page_views")
       .select("path, country, region, city, referrer_host, device_kind, started_at, last_activity_at, scroll_max")
@@ -948,7 +961,7 @@ async function CommandCenter() {
       .limit(5000),
   ]);
 
-  const liveRows = (liveRowsRaw ?? []) as CommandViewRow[];
+  const hotNow = (Array.isArray(hotNowRaw) ? hotNowRaw : []) as { path: string; viewers: number }[];
   const viewRows = (views7Raw ?? []) as CommandViewRow[];
   const eventRows = (events7Raw ?? []) as CommandEventRow[];
   const viewSampleCount = viewRows.length;
@@ -968,7 +981,7 @@ async function CommandCenter() {
         : row.country,
     ),
   );
-  const livePath = topEntry(liveRows.map((row) => row.path));
+  const livePath = hotNow[0] ? { label: hotNow[0].path, n: Number(hotNow[0].viewers) } : null;
 
   const shares = countCommandKinds(eventRows, ["share_platform", "share_native", "share_copy"]);
   const shareMenus = countCommandKinds(eventRows, ["share_menu_open"]);
@@ -1031,7 +1044,7 @@ async function CommandCenter() {
       <div className="border-b border-white/10 px-4 py-3 sm:px-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
+            <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
               Max analytics command center
             </p>
             <h2 className="mt-1 text-xl font-black tracking-tight">
@@ -1040,7 +1053,7 @@ async function CommandCenter() {
           </div>
           <Link
             href="/the-map-room"
-            className="rounded-full border border-[#e1bd5b]/40 bg-[#e1bd5b]/10 px-4 py-2 text-xs font-black uppercase tracking-wider text-[#e1bd5b] transition hover:bg-[#e1bd5b] hover:text-[#0b1428]"
+            className="rounded-full border border-[var(--color-gold-bright)]/40 bg-[var(--color-gold-bright)]/10 px-4 py-2 text-xs font-black uppercase tracking-wider text-[var(--color-gold-bright)] transition hover:bg-[var(--color-gold-bright)] hover:text-[#0b1428]"
           >
             Open live radar
           </Link>
@@ -1050,9 +1063,9 @@ async function CommandCenter() {
       <div className="grid gap-px bg-white/10 md:grid-cols-4">
         <CommandMetric
           label="Live pulse"
-          value={fmt(liveNow)}
+          value={String(liveNow)}
           sub={livePath ? `Hot now: ${livePath.label}` : "No active path yet"}
-          tone={(liveNow ?? 0) > 0 ? "healthy" : "neutral"}
+          tone={liveNow > 0 ? "healthy" : "neutral"}
         />
         <CommandMetric
           label="U.S. center"
@@ -1085,7 +1098,7 @@ async function CommandCenter() {
                 {topPath?.label ?? "No path data yet"}
               </h3>
             </div>
-            <span className="rounded-full bg-[#e1bd5b] px-3 py-1 text-xs font-black text-[#0b1428]">
+            <span className="rounded-full bg-[var(--color-gold-bright)] px-3 py-1 text-xs font-black text-[#0b1428]">
               {fmt(topPath?.n ?? 0)} views
             </span>
           </div>
@@ -1105,11 +1118,11 @@ async function CommandCenter() {
               <Link
                 key={item.label}
                 href={item.href}
-                className="block rounded-lg border border-white/10 bg-[#101a31] p-3 transition hover:border-[#e1bd5b]"
+                className="block rounded-lg border border-white/10 bg-[#101a31] p-3 transition hover:border-[var(--color-gold-bright)]"
               >
                 <div className="flex items-center justify-between gap-3">
                   <span className="text-sm font-black">{item.label}</span>
-                  <span className="font-mono text-xs font-black text-[#e1bd5b]">
+                  <span className="font-mono text-xs font-black text-[var(--color-gold-bright)]">
                     {item.value}%
                   </span>
                 </div>
@@ -1122,10 +1135,22 @@ async function CommandCenter() {
         </div>
       </div>
 
+      <div className="px-4 pb-4 sm:px-5">
+        <CappedSampleStrip
+          windowLabel="7d"
+          samples={[
+            { label: "page views", rows: viewRows.length },
+            { label: "events", rows: eventRows.length },
+          ]}
+        />
+      </div>
+
       <p className="border-t border-white/10 px-4 py-3 text-xs text-[#a9b7d0] sm:px-5">
         Max mode uses the first-party stream already collected here: page views,
         dwell, scroll, clicks, outbound clicks, acquisition, shares, tips,
         support intent, subscriptions, video and live events. No IPs are shown.
+        Live pulse is site_totals().live_now — distinct sessions active in the
+        last five minutes — the same integer every live tile on the site shows.
       </p>
     </section>
   );
@@ -1173,8 +1198,8 @@ const TONE_STYLES: Record<Tone, { value: string; chip: string }> = {
     chip: "bg-[var(--color-success)]/15 text-[var(--color-success)]",
   },
   watch: {
-    value: "text-[#b45309]",
-    chip: "bg-[#b45309]/15 text-[#b45309]",
+    value: "text-[var(--color-amber)]",
+    chip: "bg-[var(--color-amber)]/15 text-[var(--color-amber)]",
   },
   leak: {
     value: "text-[var(--color-danger)]",
@@ -1235,9 +1260,8 @@ function ScoreTile({
   );
 }
 
-async function Scoreboard() {
+async function Scoreboard({ liveNow }: { liveNow: number }) {
   const supabase = await getSupabaseServerClient();
-  const fiveMinAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
   const day1 = subDays(new Date(), 1).toISOString();
   const day2 = subDays(new Date(), 2).toISOString();
   const day7 = subDays(new Date(), 7).toISOString();
@@ -1253,7 +1277,6 @@ async function Scoreboard() {
       .in("kind", kinds);
 
   const [
-    { count: liveNow },
     { count: views24 },
     { count: viewsPrev24 },
     { count: views7 },
@@ -1263,10 +1286,6 @@ async function Scoreboard() {
     { count: capAttempt },
     { count: capSuccess },
   ] = await Promise.all([
-    supabase
-      .from("page_views")
-      .select("session_id", { count: "exact", head: true })
-      .gte("last_activity_at", fiveMinAgo),
     supabase
       .from("page_views")
       .select("id", { count: "exact", head: true })
@@ -1326,9 +1345,9 @@ async function Scoreboard() {
         <ScoreTile
           href="#live-sessions"
           label="Live now"
-          value={String(liveNow ?? 0)}
-          tone={(liveNow ?? 0) > 0 ? "healthy" : "neutral"}
-          note="Active in the last 5 minutes."
+          value={String(liveNow)}
+          tone={liveNow > 0 ? "healthy" : "neutral"}
+          note="Distinct sessions active in the last 5 minutes."
         />
         <ScoreTile
           href="#trend"
@@ -1474,6 +1493,8 @@ async function TrendBars() {
   const rows = (Array.isArray(data) ? data : []) as { day: string; views: number }[];
   const max = rows.reduce((m, r) => Math.max(m, r.views ?? 0), 0);
   const total = rows.reduce((s, r) => s + (r.views ?? 0), 0);
+  const mobileRows = rows.slice(-DAILY_BARS_MOBILE_MAX);
+  const mobileTotal = mobileRows.reduce((s, r) => s + (r.views ?? 0), 0);
   const peak = rows.reduce(
     (best, r) => ((r.views ?? 0) > best.views ? { day: r.day, views: r.views ?? 0 } : best),
     { day: "", views: 0 },
@@ -1486,10 +1507,18 @@ async function TrendBars() {
     >
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="text-lg font-bold tracking-tight">Daily page views — last 30 days</h2>
+          <h2 className="text-lg font-bold tracking-tight">
+            Daily page views — <span className="sm:hidden">last {DAILY_BARS_MOBILE_MAX} days</span>
+            <span className="hidden sm:inline">last 30 days</span>
+          </h2>
           <p className="mt-1 text-xs text-[var(--color-muted)]">
             One bar per day (America/Chicago). Each bar is total page views that day —
-            humans and bots. {total.toLocaleString()} views over 30 days
+            humans and bots.{" "}
+            <span className="sm:hidden">
+              {mobileTotal.toLocaleString()} views over the last {DAILY_BARS_MOBILE_MAX} days
+              ({total.toLocaleString()} over 30; widen the screen for every day)
+            </span>
+            <span className="hidden sm:inline">{total.toLocaleString()} views over 30 days</span>
             {peak.views > 0
               ? `, peaking at ${peak.views.toLocaleString()} on ${format(new Date(`${peak.day}T12:00:00`), "MMM d")}`
               : ""}
@@ -1506,40 +1535,15 @@ async function TrendBars() {
           No page views recorded in the last 30 days yet.
         </p>
       ) : (
-        <div className="mt-5 flex items-end gap-1 sm:gap-1.5 h-44">
-          {rows.map((r, i) => {
-            const h = max > 0 ? Math.max(2, Math.round((r.views / max) * 100)) : 0;
-            const d = new Date(`${r.day}T12:00:00`);
-            // Past ~16 bars the per-bar value labels collide, so drop them when
-            // dense and thin the date labels to every third day. The exact value
-            // still lives in each bar's hover title.
-            const dense = rows.length > 16;
-            const showDate = !dense || i % 3 === 0 || i === rows.length - 1;
-            return (
-              <div key={r.day} className="flex-1 flex flex-col items-center justify-end h-full min-w-0">
-                {!dense ? (
-                  <span className="mb-1 text-[9px] sm:text-[10px] font-bold tabular-nums text-[var(--color-ink-soft)]">
-                    {r.views >= 1000 ? fmt(r.views) : r.views}
-                  </span>
-                ) : null}
-                <div
-                  className="w-full rounded-t bg-[var(--color-accent)] transition-all"
-                  style={{ height: `${h}%` }}
-                  title={`${format(d, "EEE MMM d")}: ${r.views.toLocaleString()} views`}
-                />
-                <span
-                  className={`mt-1 text-[9px] sm:text-[10px] tabular-nums text-[var(--color-muted)] whitespace-nowrap ${showDate ? "" : "opacity-0"}`}
-                >
-                  {format(d, "M/d")}
-                </span>
-              </div>
-            );
-          })}
+        <div className="mt-5">
+          {/* Shared daily-bars rules: 14 bars on phones, 30 wider, every bar
+              at least 4% tall, exact value in the hover title. */}
+          <DailyBars rows={rows} />
         </div>
       )}
       <p className="mt-3 text-xs text-[var(--color-muted)]">
-        Today&apos;s bar is partial — it only counts views so far. Tracking began
-        May 20, 2026, so days before that read zero.
+        Today&apos;s bar is partial — it only counts views logged up to this
+        moment. Tracking began May 20, 2026, so days before that read zero.
       </p>
     </section>
   );
@@ -1573,7 +1577,7 @@ function FunnelRow({
   let dropTone = "text-[var(--color-muted)]";
   if (stepPct !== null) {
     if (stepPct >= 60) dropTone = "text-[var(--color-success)]";
-    else if (stepPct >= 25) dropTone = "text-[#b45309]";
+    else if (stepPct >= 25) dropTone = "text-[var(--color-amber)]";
     else dropTone = "text-[var(--color-danger)]";
   }
   return (
@@ -2177,11 +2181,21 @@ async function AttentionFunnel() {
   return (
     <div>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <Stat label="Views (24h)" value={fmt(views24)} sub={`${fmt(events24.length)} events`} />
-        <Stat label="Views (7d)" value={fmt(views7)} sub={`${fmt(events7.length)} events`} />
+        <Stat label="Views (24h)" value={fmt(views24)} sub={`${fmt(events24.length)} sampled events`} />
+        <Stat label="Views (7d)" value={fmt(views7)} sub={`${fmt(events7.length)} sampled events`} />
         <Stat label="Shares (7d)" value={fmt(shares7)} sub={`${fmt(shareOpens7)} menus opened`} />
         <Stat label="Public actions" value={fmt(commentSends7 + reactions7)} sub="comments + reactions" />
       </div>
+
+      <CappedSampleStrip
+        className="mt-3"
+        windowLabel="24h / 7d"
+        samples={[
+          { label: "events (24h)", rows: events24.length },
+          { label: "events (7d)", rows: events7.length },
+          { label: "page views (7d)", rows: (views7Raw ?? []).length },
+        ]}
+      />
 
       <div className="mt-5">
         <div className="flex flex-wrap items-end justify-between gap-3">
@@ -2330,10 +2344,16 @@ async function NexusAttention() {
 
       <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
         <Stat href="/case/nexus" label="Nexus views" value={fmt(views7)} sub={`${fmt(views30)} in 30d`} />
-        <Stat label="Nexus events" value={fmt(eventRows.length)} sub="last 7d" />
+        <Stat label="Nexus events" value={fmt(eventRows.length)} sub="last 7d · sampled" />
         <Stat label="Node selects" value={fmt(nodeSelects)} sub="graph/search clicks" />
         <Stat label="Searches" value={fmt(searches)} sub="queries without raw text" />
       </div>
+
+      <CappedSampleStrip
+        className="mt-3"
+        windowLabel="7d"
+        samples={[{ label: "nexus events", rows: eventRows.length }]}
+      />
 
       <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
         <div>
@@ -2384,23 +2404,23 @@ async function NexusAttention() {
   );
 }
 
-async function LiveSessions() {
+async function LiveSessions({ liveNow }: { liveNow: number }) {
   const supabase = await getSupabaseServerClient();
-  const fiveMinAgo = subDays(new Date(), 0);
-  fiveMinAgo.setMinutes(fiveMinAgo.getMinutes() - 5);
   const oneDayAgo = subDays(new Date(), 1);
 
   const [
-    { count: activeNow },
+    { count: views24hTotal },
     { count: sessions24h },
     { data: views24h },
     { data: topClicks },
     { data: recentSessions },
   ] = await Promise.all([
+    // Exact count for the tile. The row sample below is capped at 1,000 and
+    // must never be shown as the total.
     supabase
       .from("page_views")
       .select("id", { count: "exact", head: true })
-      .gte("last_activity_at", fiveMinAgo.toISOString()),
+      .gte("started_at", oneDayAgo.toISOString()),
     supabase
       .from("page_views")
       .select("session_id", { count: "exact", head: true })
@@ -2409,6 +2429,7 @@ async function LiveSessions() {
       .from("page_views")
       .select("path, started_at, last_activity_at, scroll_max")
       .gte("started_at", oneDayAgo.toISOString())
+      .order("started_at", { ascending: false })
       .limit(1000),
     supabase
       .from("page_events")
@@ -2476,11 +2497,20 @@ async function LiveSessions() {
   return (
     <div>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <Stat label="Active now" value={String(activeNow ?? 0)} sub="last 5 min" />
-        <Stat label="Page views (24h)" value={String(views24h?.length ?? 0)} />
+        <Stat label="Active now" value={String(liveNow)} sub="distinct sessions · last 5 min" />
+        <Stat label="Page views (24h)" value={fmt(views24hTotal)} sub="exact count" />
         <Stat label="Sessions (24h)" value={String(sessions24h ?? 0)} sub="unique" />
-        <Stat label="Avg dwell" value={`${avgDwellSec}s`} sub="per page view" />
+        <Stat label="Avg dwell" value={`${avgDwellSec}s`} sub="per sampled page view" />
       </div>
+
+      <CappedSampleStrip
+        className="mt-3"
+        windowLabel="24h"
+        samples={[
+          { label: "page views", rows: views24h?.length ?? 0 },
+          { label: "click events", rows: topClicks?.length ?? 0 },
+        ]}
+      />
 
       <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-5">
         <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
@@ -2612,7 +2642,7 @@ async function LiveSessions() {
   );
 }
 
-async function Geography() {
+async function Geography({ liveNow }: { liveNow: number }) {
   const supabase = await getSupabaseServerClient();
   const [{ data: sum7 }, { data: sum30 }, { data: live }] = await Promise.all([
     supabase.rpc("analytics_summary", { days: 7 }),
@@ -2658,7 +2688,7 @@ async function Geography() {
         one-way hash.
       </p>
       <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <Stat label="Live right now" value={fmt(s7.live_now ?? 0)} sub="last 5 min" />
+        <Stat label="Live right now" value={String(liveNow)} sub="distinct sessions · last 5 min" />
         <Stat
           label="Unique visitors (7d)"
           value={fmt(s7.unique_visitors ?? 0)}

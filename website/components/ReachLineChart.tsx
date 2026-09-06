@@ -25,7 +25,7 @@ export type ReachDay = {
 
 const SERIES: { key: keyof ReachDay; label: string; color: string }[] = [
   { key: "human", label: "Humans", color: "#fb923c" },
-  { key: "search", label: "Search bots", color: "#38bdf8" },
+  { key: "search", label: "Search bots", color: "var(--color-sky)" },
   { key: "ai", label: "AI agents", color: "#c084fc" },
   { key: "social", label: "Social previews", color: "#34d399" },
   { key: "uptime", label: "Uptime / tools", color: "#cbd5e1" },

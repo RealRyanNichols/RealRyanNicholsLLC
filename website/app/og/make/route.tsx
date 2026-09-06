@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { ogEmbeddableImage } from "@/lib/og-embed";
+import { PALETTE } from "@/lib/palette";
 
 export const runtime = "nodejs";
 export const revalidate = 3600;
@@ -20,7 +21,7 @@ const STYLES = {
     bg: "#071126",
     headline: "#ffffff",
     sub: "#a9b7d0",
-    gold: "#e1bd5b",
+    gold: PALETTE.goldBright,
     footer: "#f6efdf",
     statLabel: "#7c8aa6",
   },

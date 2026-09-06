@@ -61,7 +61,7 @@ export function ArticleEmbed({ value }: { value: Record<string, unknown> }) {
   return (
     <figure className="not-prose my-8 overflow-hidden rounded-lg border border-[#0b1b34]/25 bg-[#0b1b34] text-[#f4efe4]">
       <div className="flex items-center justify-between gap-3 border-b border-[#f4efe4]/10 px-4 py-2.5">
-        <span className="text-[11px] font-black uppercase tracking-[0.16em] text-[#e1bd5b]">
+        <span className="text-[11px] font-black uppercase tracking-[0.16em] text-[var(--color-gold-bright)]">
           {PLATFORM_NAMES[platform]}
         </span>
         <a
@@ -95,7 +95,7 @@ export function ArticleEmbed({ value }: { value: Record<string, unknown> }) {
             <button
               type="button"
               onClick={() => setLoaded(true)}
-              className="inline-flex min-h-11 items-center rounded-md bg-[#e1bd5b] px-5 text-sm font-black text-[#061020] transition hover:bg-[#f0d48a]"
+              className="inline-flex min-h-11 items-center rounded-md bg-[var(--color-gold-bright)] px-5 text-sm font-black text-[#061020] transition hover:bg-[#f0d48a]"
             >
               Load this post
             </button>
@@ -104,7 +104,7 @@ export function ArticleEmbed({ value }: { value: Record<string, unknown> }) {
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-11 items-center rounded-md bg-[#e1bd5b] px-5 text-sm font-black text-[#061020] transition hover:bg-[#f0d48a]"
+              className="inline-flex min-h-11 items-center rounded-md bg-[var(--color-gold-bright)] px-5 text-sm font-black text-[#061020] transition hover:bg-[#f0d48a]"
             >
               Open on {PLATFORM_NAMES[platform].split(" ")[0]}
             </a>

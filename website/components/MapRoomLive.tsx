@@ -1,32 +1,40 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
-import { LiveVisitorRadar } from "@/components/LiveVisitorRadar";
+import { normalizeSiteTotals, type SiteTotals } from "@/lib/site-totals";
+import type { RadarPing } from "@/lib/radar-pings";
+import { RadarFrame } from "@/components/RadarFrame";
 import { HotRightNow } from "@/components/HotRightNow";
 
-type Totals = {
-  defendants: number;
-  defendants_verified: number;
-  documents: number;
-  grievances: number;
-  events: number;
-  days_since_pardon: number;
-  days_since_dismissal: number;
-  live_now: number;
-  countries_now: number;
-};
+// The map layer is client-only: it carries d3-geo plus two atlases, and the
+// old server-rendered version put a 900KB path string into every page load.
+// The RadarFrame around it is server-rendered with the live headline, so a
+// visitor with JavaScript off still sees the real number.
+const LiveVisitorRadar = dynamic(
+  () => import("@/components/LiveVisitorRadar").then((m) => ({ default: m.LiveVisitorRadar })),
+  {
+    ssr: false,
+    loading: () => (
+      <p className="pointer-events-none absolute bottom-2 left-3 z-10 text-[9px] font-mono uppercase tracking-wider text-[#7c8aa6]">
+        Loading live map…
+      </p>
+    ),
+  },
+);
 
 // The live wing of the Map Room. Polls site_totals every 20s so the
-// counters stay fresh; the radar component polls its own ping feed on a
-// 10s cadence. Server renders the first paint via the parent page; this
-// component takes over once mounted.
+// headline and counters stay fresh; the radar polls its own ping feed on a
+// 10s cadence. The parent page renders the first paint from the same RPC.
 export function MapRoomLive({
   initialTotals,
+  initialPings,
 }: {
-  initialTotals: Totals;
+  initialTotals: SiteTotals;
+  initialPings: RadarPing[];
 }) {
-  const [totals, setTotals] = useState<Totals>(initialTotals);
+  const [totals, setTotals] = useState<SiteTotals>(initialTotals);
 
   useEffect(() => {
     let mounted = true;
@@ -35,7 +43,7 @@ export function MapRoomLive({
     async function pull() {
       const { data } = await supabase.rpc("site_totals");
       if (!mounted) return;
-      if (data) setTotals(data as Totals);
+      if (data) setTotals(normalizeSiteTotals(data));
     }
     const id = window.setInterval(pull, 20_000);
     void pull();
@@ -48,11 +56,12 @@ export function MapRoomLive({
   return (
     <div className="space-y-5">
       {/* Interactive live radar — every active visitor is an individual
-          ping. Pan with drag, zoom with wheel / +- buttons, click a
-          ping to see that visitor's full activity trail (which pages
-          they've viewed and how long they stayed on each). Public, no
-          PII (city-level geo only, session ids hashed). */}
-      <LiveVisitorRadar initial={[]} />
+          ping at city/state resolution. Drag or one-finger pan, pinch or
+          wheel to zoom, tap a ping for its city and state. No trails, no
+          session detail, no PII. */}
+      <RadarFrame liveNow={totals.live_now} countriesNow={totals.countries_now}>
+        <LiveVisitorRadar initial={initialPings} />
+      </RadarFrame>
 
       {/* The permanent four — counters that don't move much but anchor
           the page's weight. Big, confident, tabular. */}

@@ -238,7 +238,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
               <Link
                 href="/#talk"
                 onClick={() => setOpen(false)}
-                className="flex min-h-12 items-center justify-center rounded-lg bg-[#e1bd5b] px-4 py-3 text-sm font-bold text-[#071126] transition hover:brightness-105"
+                className="flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-gold-bright)] px-4 py-3 text-sm font-bold text-[#071126] transition hover:brightness-105"
               >
                 Talk to Ryan
               </Link>
@@ -251,7 +251,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
                     className={[
                       "min-h-[5rem] rounded-lg border px-3 py-3 transition",
                       isActive(pathname, d.href)
-                        ? "border-[#e1bd5b] bg-[#e1bd5b]/12"
+                        ? "border-[var(--color-gold-bright)] bg-[var(--color-gold-bright)]/12"
                         : "border-white/10 bg-white/5 hover:border-[#d8c89e] hover:bg-white/10",
                     ].join(" ")}
                   >
@@ -268,7 +268,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
               {isAdmin ? (
                 <Link
                   href="/admin/new"
-                  className="flex min-h-12 items-center justify-center gap-2 rounded-lg border border-[#e1bd5b]/60 px-4 py-3 text-sm font-bold text-[#e1bd5b] transition hover:bg-[#e1bd5b]/10"
+                  className="flex min-h-12 items-center justify-center gap-2 rounded-lg border border-[var(--color-gold-bright)]/60 px-4 py-3 text-sm font-bold text-[var(--color-gold-bright)] transition hover:bg-[var(--color-gold-bright)]/10"
                 >
                   <PencilIcon />
                   New Post
@@ -295,14 +295,14 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
               </div>
 
               {isAdmin ? (
-                <details className="rounded-lg border border-[#e1bd5b]/30 bg-[#e1bd5b]/10">
+                <details className="rounded-lg border border-[var(--color-gold-bright)]/30 bg-[var(--color-gold-bright)]/10">
                   <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between px-3 py-2 text-sm font-black text-[#fdf8ea] [&::-webkit-details-marker]:hidden">
                     Admin shortcuts
-                    <span className="text-[#e1bd5b]" aria-hidden>
+                    <span className="text-[var(--color-gold-bright)]" aria-hidden>
                       +
                     </span>
                   </summary>
-                  <div className="grid grid-cols-2 gap-1.5 border-t border-[#e1bd5b]/20 p-2">
+                  <div className="grid grid-cols-2 gap-1.5 border-t border-[var(--color-gold-bright)]/20 p-2">
                     {MOBILE_ADMIN_LINKS.map((item) => (
                       <Link
                         key={item.href}

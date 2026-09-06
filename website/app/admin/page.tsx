@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { formatDistanceToNowStrict } from "date-fns";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { fetchSiteTotals } from "@/lib/site-totals";
 import { PendingProfileActions } from "@/components/PendingProfileActions";
 import {
   getIntegrationHealth,
@@ -41,8 +42,13 @@ export default async function AdminHomePage() {
   const fiveMinAgo = new Date(now.getTime() - 5 * 60 * 1000).toISOString();
   const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000).toISOString();
 
+  // One definition of "live" across the site: site_totals().live_now counts
+  // distinct sessions active in the last five minutes. Counting page_views
+  // rows here double-counted anyone with two tabs open.
+  const siteTotals = await fetchSiteTotals(supabase);
+  const activeNow = siteTotals?.live_now ?? 0;
+
   const [
-    { count: activeNow },
     { count: views24h },
     { count: pendingProfiles },
     { count: activeProfiles },
@@ -55,10 +61,6 @@ export default async function AdminHomePage() {
     { data: pendingProfilesList },
     { data: recentSessions },
   ] = await Promise.all([
-    supabase
-      .from("page_views")
-      .select("id", { count: "exact", head: true })
-      .gte("last_activity_at", fiveMinAgo),
     supabase
       .from("page_views")
       .select("id", { count: "exact", head: true })

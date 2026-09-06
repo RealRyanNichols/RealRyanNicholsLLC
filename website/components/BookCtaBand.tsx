@@ -24,12 +24,12 @@ export function BookCtaBand({ className = "" }: { className?: string }) {
     >
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-[#e1bd5b]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-gold-bright)]">
             {BOOK.title} · Pre-order
           </p>
           <h2 className="mt-1 font-display text-2xl font-black leading-tight tracking-tight text-[#fdf8ea] sm:text-3xl">
             Early access for{" "}
-            <span className="text-[#e1bd5b]">{price}</span>
+            <span className="text-[var(--color-gold-bright)]">{price}</span>
             {list ? (
               <span className="ml-2 align-middle text-base font-bold text-[#cfd9ea] line-through">
                 {list}

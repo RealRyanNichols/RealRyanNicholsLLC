@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { AdminEmailTestButton } from "@/components/AdminEmailTestButton";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { fetchSiteTotals } from "@/lib/site-totals";
 import {
   getSupabaseServiceClient,
   isSupabaseServiceConfigured,
@@ -233,7 +234,6 @@ async function getOperationalHealth(
   supabase: AdminSupabase,
 ): Promise<OperationalHealth> {
   const now = new Date();
-  const fiveMinAgo = new Date(now.getTime() - 5 * 60 * 1000).toISOString();
   const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000).toISOString();
   const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000).toISOString();
   const sevenDaysAgo = new Date(
@@ -272,12 +272,13 @@ async function getOperationalHealth(
     invoiceRowsMetric,
     latestArrival,
   ] = await Promise.all([
-    safeCount(
-      "Active page views",
-      supabase
-        .from("page_views")
-        .select("id", { count: "exact", head: true })
-        .gte("last_activity_at", fiveMinAgo),
+    // "Live now" is site_totals().live_now everywhere on the site: distinct
+    // sessions active in the last five minutes, never a raw row count.
+    fetchSiteTotals(supabase).then(
+      (totals): CountMetric =>
+        totals
+          ? { value: totals.live_now, error: null }
+          : { value: null, error: "Live now: site_totals() returned no data." },
     ),
     safeCount(
       "Page arrivals last hour",

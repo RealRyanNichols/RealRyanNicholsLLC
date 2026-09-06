@@ -43,7 +43,7 @@ export function BookLibraryCard({
           />
         </div>
         <div className="mt-3 sm:mt-0">
-          <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
+          <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
             Your library
           </p>
           <h2 className="mt-1 font-display text-2xl font-black tracking-tight text-[#fdf8ea]">
@@ -57,7 +57,7 @@ export function BookLibraryCard({
               {chips.map((c) => (
                 <span
                   key={c}
-                  className="rounded-full border border-[#e1bd5b]/40 bg-[#e1bd5b]/10 px-2.5 py-0.5 text-[11px] font-bold text-[#e1bd5b]"
+                  className="rounded-full border border-[var(--color-gold-bright)]/40 bg-[var(--color-gold-bright)]/10 px-2.5 py-0.5 text-[11px] font-bold text-[var(--color-gold-bright)]"
                 >
                   {c}
                 </span>
@@ -80,7 +80,7 @@ export function BookLibraryCard({
             <div className="mt-4 flex flex-col gap-3 sm:flex-row">
               <a
                 href={`/book/download/${token}/file`}
-                className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[#e1bd5b] px-6 py-3 text-sm font-black text-[#071126] transition hover:bg-[#a7efc4]"
+                className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-gold-bright)] px-6 py-3 text-sm font-black text-[#071126] transition hover:bg-[#a7efc4]"
               >
                 Download the book
               </a>
@@ -96,10 +96,10 @@ export function BookLibraryCard({
           <div className="rounded-xl border border-white/12 bg-white/[0.05] p-5">
             <div className="flex items-center gap-2">
               <span className="relative flex h-2.5 w-2.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#7fe3a9] opacity-75" />
-                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#7fe3a9]" />
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-live)] opacity-75" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[var(--color-live)]" />
               </span>
-              <p className="text-xs font-black uppercase tracking-[0.16em] text-[#7fe3a9]">
+              <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--color-live)]">
                 Reserved for you
               </p>
             </div>

@@ -123,7 +123,7 @@ export function PathPicker({ variant = "band" }: { variant?: Variant }) {
     <div className="w-full">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className={`text-[10px] font-black uppercase tracking-[0.18em] ${dark ? "text-[#e1bd5b]" : "text-[var(--color-navy)]"}`}>
+          <p className={`text-[10px] font-black uppercase tracking-[0.18em] ${dark ? "text-[var(--color-gold-bright)]" : "text-[var(--color-navy)]"}`}>
             {step === "intent" ? "Welcome — glad you're here" : "One more thing"}
           </p>
           <h2 className={`mt-0.5 font-display text-lg font-bold tracking-tight sm:text-xl ${dark ? "text-[#fdf8ea]" : "text-[var(--color-ink)]"}`}>
@@ -152,11 +152,11 @@ export function PathPicker({ variant = "band" }: { variant?: Variant }) {
               onClick={() => pickIntent(d)}
               className={
                 dark
-                  ? "group rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-left transition hover:border-[#e1bd5b] hover:bg-[#e1bd5b]/10"
+                  ? "group rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-left transition hover:border-[var(--color-gold-bright)] hover:bg-[var(--color-gold-bright)]/10"
                   : "group rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-3 text-left transition hover:border-[var(--color-navy)] hover:bg-[var(--color-blue-soft)]"
               }
             >
-              <span className={`block text-sm font-bold ${dark ? "text-[#fdf8ea] group-hover:text-[#e1bd5b]" : "text-[var(--color-ink)] group-hover:text-[var(--color-navy)]"}`}>
+              <span className={`block text-sm font-bold ${dark ? "text-[#fdf8ea] group-hover:text-[var(--color-gold-bright)]" : "text-[var(--color-ink)] group-hover:text-[var(--color-navy)]"}`}>
                 {d.label}
               </span>
               <span className={`mt-0.5 block text-xs ${dark ? "text-[#cfd9ea]" : "text-[var(--color-ink-soft)]"}`}>{d.sub}</span>
@@ -172,7 +172,7 @@ export function PathPicker({ variant = "band" }: { variant?: Variant }) {
               onClick={() => pickSource(s.key)}
               className={
                 dark
-                  ? "rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-bold text-[#fdf8ea] transition hover:border-[#e1bd5b] hover:text-[#e1bd5b]"
+                  ? "rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-bold text-[#fdf8ea] transition hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)]"
                   : "rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3.5 py-1.5 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-navy)] hover:text-[var(--color-navy)]"
               }
             >
@@ -187,7 +187,7 @@ export function PathPicker({ variant = "band" }: { variant?: Variant }) {
   if (variant === "overlay") {
     return (
       <div className="fixed inset-x-0 bottom-0 z-40 px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] sm:px-4">
-        <div className="mx-auto max-w-xl rounded-2xl border border-[#e1bd5b]/40 bg-[#0b1b34]/[0.97] p-4 shadow-2xl backdrop-blur-xl sm:p-5">
+        <div className="mx-auto max-w-xl rounded-2xl border border-[var(--color-gold-bright)]/40 bg-[#0b1b34]/[0.97] p-4 shadow-2xl backdrop-blur-xl sm:p-5">
           {inner}
         </div>
       </div>

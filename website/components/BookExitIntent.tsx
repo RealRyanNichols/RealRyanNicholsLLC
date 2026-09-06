@@ -47,7 +47,7 @@ export function BookExitIntent({
       onClick={() => setOpen(false)}
     >
       <div
-        className="relative w-full max-w-md rounded-2xl border border-[#e1bd5b]/50 bg-[#0b1b34] p-6 shadow-2xl"
+        className="relative w-full max-w-md rounded-2xl border border-[var(--color-gold-bright)]/50 bg-[#0b1b34] p-6 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -58,7 +58,7 @@ export function BookExitIntent({
         >
           ×
         </button>
-        <p className="text-xs font-black uppercase tracking-[0.2em] text-[#e1bd5b]">
+        <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-gold-bright)]">
           Before you go
         </p>
         <h2 className="mt-2 font-display text-2xl font-black leading-tight text-[#fdf8ea]">
@@ -70,13 +70,13 @@ export function BookExitIntent({
           {listLabel ? (
             <span className="line-through opacity-60">{listLabel}</span>
           ) : null}{" "}
-          <span className="font-black text-[#e1bd5b]">{priceLabel}</span> for early
+          <span className="font-black text-[var(--color-gold-bright)]">{priceLabel}</span> for early
           supporters. Lock it in before it goes.
         </p>
         <Link
           href="/book/preorder"
           onClick={() => setOpen(false)}
-          className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-[#e1bd5b] px-5 py-3 text-base font-black text-[#0b1b34] transition hover:brightness-105"
+          className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--color-gold-bright)] px-5 py-3 text-base font-black text-[#0b1b34] transition hover:brightness-105"
         >
           Pre-order for {priceLabel}
         </Link>

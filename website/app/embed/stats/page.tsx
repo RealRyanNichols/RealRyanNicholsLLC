@@ -40,8 +40,8 @@ export default async function StatsEmbedPage() {
       rel="noopener noreferrer"
       className="block overflow-hidden rounded-lg border border-[#1f2f55] bg-[#071126] no-underline"
     >
-      <div className="flex items-center justify-between gap-3 border-b border-[#e1bd5b]/20 px-4 py-2">
-        <span className="text-[10px] font-black uppercase tracking-[0.18em] text-[#e1bd5b]">
+      <div className="flex items-center justify-between gap-3 border-b border-[var(--color-gold-bright)]/20 px-4 py-2">
+        <span className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-gold-bright)]">
           The J6 Case Archive · live
         </span>
         <span className="text-[10px] font-bold text-[#a9b7d0]">

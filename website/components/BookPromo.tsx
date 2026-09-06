@@ -10,7 +10,7 @@ export function BookPromo({ className = "" }: { className?: string }) {
   return (
     <Link
       href="/book"
-      className={`group block rounded-2xl border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] transition hover:border-[#e1bd5b]/60 ${className}`}
+      className={`group block rounded-2xl border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] transition hover:border-[var(--color-gold-bright)]/60 ${className}`}
     >
       <div className="flex items-center gap-4">
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -22,7 +22,7 @@ export function BookPromo({ className = "" }: { className?: string }) {
           className="w-16 shrink-0 rounded border border-white/15 shadow-lg shadow-black/40"
         />
         <div className="min-w-0">
-          <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#e1bd5b]">
+          <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-gold-bright)]">
             Pre-order · The book
           </p>
           <p className="mt-0.5 font-display text-xl font-black leading-none tracking-tight text-[#fdf8ea]">
@@ -30,9 +30,9 @@ export function BookPromo({ className = "" }: { className?: string }) {
           </p>
           <p className="mt-1.5 text-xs font-semibold leading-snug text-[#cfd9ea]">
             Read the opening chapter{" "}
-            <span className="font-black text-[#e1bd5b]">free</span> — early
+            <span className="font-black text-[var(--color-gold-bright)]">free</span> — early
             access from $17.76.{" "}
-            <span className="whitespace-nowrap text-[#e1bd5b] group-hover:underline">
+            <span className="whitespace-nowrap text-[var(--color-gold-bright)] group-hover:underline">
               Get the book →
             </span>
           </p>

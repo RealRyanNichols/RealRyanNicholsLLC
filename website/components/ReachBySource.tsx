@@ -22,6 +22,10 @@ type Overview = {
   recent?: { path: string; ua_class: string; country: string | null; referrer_host: string | null; is_self: boolean; at: string }[];
 };
 
+// One window for the whole section: the RPC call below, the heading, and
+// the "Total reach" tile all say the same number of days.
+const REACH_WINDOW_DAYS = 90;
+
 const CLASS_META: { key: string; label: string; color: string }[] = [
   { key: "human", label: "Humans", color: "var(--color-accent)" },
   { key: "search-bot", label: "Search bots", color: "#3b82f6" },
@@ -41,7 +45,7 @@ function fmt(n: number | null | undefined): string {
 export async function ReachBySource({ excludeSelf }: { excludeSelf: boolean }) {
   const supabase = await getSupabaseServerClient();
   const { data } = await supabase.rpc("arrivals_overview", {
-    p_days: 90,
+    p_days: REACH_WINDOW_DAYS,
     p_exclude_self: excludeSelf,
   });
   const o = (data ?? {}) as Overview;
@@ -63,7 +67,7 @@ export async function ReachBySource({ excludeSelf }: { excludeSelf: boolean }) {
     >
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2 className="text-lg font-bold tracking-tight">Reach by source · last 90 days</h2>
+          <h2 className="text-lg font-bold tracking-tight">Reach by source · last {REACH_WINDOW_DAYS} days</h2>
           <p className="mt-1 text-xs text-[var(--color-muted)] max-w-xl">
             The audit-honest view, straight from edge middleware. Every successful
             page-load is one arrival — humans, AI agents, social link-previews,
@@ -88,7 +92,7 @@ export async function ReachBySource({ excludeSelf }: { excludeSelf: boolean }) {
       </div>
 
       <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <MiniStat label="Total reach (14d)" value={fmt(total)} sub={`${fmt(o.self_total)} were your own`} />
+        <MiniStat label={`Total reach (${REACH_WINDOW_DAYS}d)`} value={fmt(total)} sub={`${fmt(o.self_total)} were your own`} />
         <MiniStat label="Human" value={fmt(humanTotal)} sub={pct(humanTotal, total)} />
         <MiniStat label="Bots / agents" value={fmt(botTotal)} sub={pct(botTotal, total)} />
         <MiniStat label="AI agents" value={fmt(byClass["ai-bot"])} sub={pct(byClass["ai-bot"] ?? 0, total)} />

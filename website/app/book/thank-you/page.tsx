@@ -142,7 +142,7 @@ export default async function BookThankYouPage({
       ) : null}
       <section className="bg-[#071126] text-[#fdf8ea]">
         <div className="mx-auto max-w-2xl px-4 py-16 text-center sm:px-6 lg:py-20">
-          <p className="text-xs font-black uppercase tracking-[0.24em] text-[#e1bd5b]">
+          <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
             {BOOK.title}
           </p>
           <h1 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-[#fdf8ea] sm:text-6xl">
@@ -179,7 +179,7 @@ export default async function BookThankYouPage({
 
         {/* Account access — where the digital copy is delivered */}
         <div className="mt-6 overflow-hidden rounded-xl border-2 border-[#203a64] bg-[#071126] p-5 text-[#fdf8ea] shadow-md sm:p-6">
-          <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
+          <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
             Your account
           </p>
           <h2 className="mt-1 font-display text-2xl font-black tracking-tight text-[#fdf8ea]">
@@ -198,7 +198,7 @@ export default async function BookThankYouPage({
           </p>
           <Link
             href="/login?mode=magic&next=/account"
-            className="mt-4 inline-flex min-h-12 items-center justify-center rounded-lg bg-[#e1bd5b] px-6 py-3 text-sm font-black text-[#071126] transition hover:bg-[#a7efc4]"
+            className="mt-4 inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-gold-bright)] px-6 py-3 text-sm font-black text-[#071126] transition hover:bg-[#a7efc4]"
           >
             Access your copy →
           </Link>

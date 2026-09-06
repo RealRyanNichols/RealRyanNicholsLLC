@@ -42,7 +42,7 @@ export default function BookUpdatesPage() {
       {/* Hero */}
       <section className="border-b border-[#203a64] bg-[#071126] text-[#fdf8ea]">
         <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:py-14">
-          <p className="text-xs font-black uppercase tracking-[0.24em] text-[#e1bd5b]">
+          <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
             {BOOK.title} · Updates
           </p>
           <h1 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-[#fdf8ea] sm:text-6xl">
@@ -102,7 +102,7 @@ export default function BookUpdatesPage() {
             <BookEmailSignup source="book_updates" tone="dark" />
           </div>
           <p className="mt-6 text-center text-sm text-[#cfd9ea]">
-            <Link href="/book" className="font-semibold underline hover:text-[#e1bd5b]">
+            <Link href="/book" className="font-semibold underline hover:text-[var(--color-gold-bright)]">
               ← Back to the book
             </Link>
           </p>

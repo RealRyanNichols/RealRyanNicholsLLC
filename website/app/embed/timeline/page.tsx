@@ -25,15 +25,15 @@ export default async function TimelineEmbedPage() {
 
   return (
     <div className="overflow-hidden rounded-lg border border-[#1f2f55] bg-[#071126]">
-      <div className="flex items-center justify-between gap-3 border-b border-[#e1bd5b]/20 px-4 py-2">
-        <span className="text-[10px] font-black uppercase tracking-[0.18em] text-[#e1bd5b]">
+      <div className="flex items-center justify-between gap-3 border-b border-[var(--color-gold-bright)]/20 px-4 py-2">
+        <span className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-gold-bright)]">
           United States v. Nichols · timeline
         </span>
         <a
           href="https://realryannichols.com/case/timeline"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[10px] font-bold text-[#a9b7d0] no-underline hover:text-[#e1bd5b]"
+          className="text-[10px] font-bold text-[#a9b7d0] no-underline hover:text-[var(--color-gold-bright)]"
         >
           Full timeline →
         </a>
@@ -50,7 +50,7 @@ export default async function TimelineEmbedPage() {
               <span className="block font-mono text-[10px] font-bold text-[#7fa9e3]">
                 {e.event_date}
               </span>
-              <span className="mt-0.5 block text-sm font-bold leading-snug text-[#f4efe4] group-hover:text-[#e1bd5b]">
+              <span className="mt-0.5 block text-sm font-bold leading-snug text-[#f4efe4] group-hover:text-[var(--color-gold-bright)]">
                 {e.title}
               </span>
             </a>

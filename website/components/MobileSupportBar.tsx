@@ -51,7 +51,7 @@ export function MobileSupportBar() {
         <Link
           href="/#join"
           data-track="mobile-bar-join"
-          className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[#e1bd5b] bg-[#e1bd5b]/15 px-1 text-center text-xs font-black text-[var(--color-navy)]"
+          className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[var(--color-gold-bright)] bg-[var(--color-gold-bright)]/15 px-1 text-center text-xs font-black text-[var(--color-navy)]"
         >
           Join
         </Link>

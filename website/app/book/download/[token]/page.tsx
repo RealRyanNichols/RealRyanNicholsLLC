@@ -54,7 +54,7 @@ export default async function BookDownloadPage({
     return (
       <Shell>
         <div className="text-center">
-          <p className="text-xs font-black uppercase tracking-[0.24em] text-[#e1bd5b]">
+          <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
             {BOOK.title}
           </p>
           <h1 className="mt-3 font-display text-4xl font-black leading-tight tracking-tight text-[#fdf8ea] sm:text-5xl">
@@ -87,7 +87,7 @@ export default async function BookDownloadPage({
     return (
       <Shell>
         <div className="text-center">
-          <p className="text-xs font-black uppercase tracking-[0.24em] text-[#e1bd5b]">
+          <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
             {BOOK.title}
           </p>
           <h1 className="mt-3 font-display text-4xl font-black leading-tight tracking-tight text-[#fdf8ea] sm:text-5xl">
@@ -115,7 +115,7 @@ export default async function BookDownloadPage({
 
   return (
     <Shell>
-      <p className="text-xs font-black uppercase tracking-[0.24em] text-[#e1bd5b]">
+      <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
         {BOOK.title} · Your download
       </p>
       <h1 className="mt-3 font-display text-4xl font-black leading-tight tracking-tight text-[#fdf8ea] sm:text-5xl">
@@ -182,7 +182,7 @@ export default async function BookDownloadPage({
       </div>
 
       <p className="mt-6 text-center text-sm text-[#cfd9ea]">
-        <Link href="/book" className="font-semibold underline hover:text-[#e1bd5b]">
+        <Link href="/book" className="font-semibold underline hover:text-[var(--color-gold-bright)]">
           ← Back to the book
         </Link>
       </p>

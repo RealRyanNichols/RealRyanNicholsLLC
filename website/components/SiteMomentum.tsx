@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
+import { EMPTY_SITE_TOTALS, fetchSiteTotals } from "@/lib/site-totals";
 
 // Live momentum panel used above the feed and on the J6 mission page.
 // Each tile drills into a real list — if you can show a number, you can
@@ -10,23 +11,14 @@ export async function SiteMomentum({ variant = "wide" }: { variant?: "wide" | "c
   // Server-side aggregation (site_totals RPC) — accurate past PostgREST's
   // 1000-row fetch cap. Counting/summing rows in JS undercounted once
   // case_people (1571) and case_documents (1044) passed 1000.
-  const { data: rpc } = await supabase.rpc("site_totals");
-  const t = (rpc ?? {}) as {
-    defendants_unclaimed?: number;
-    defendants_verified?: number;
-    documents?: number;
-    grievances?: number;
-    total_views?: number;
-    total_shares?: number;
-    days_since_pardon?: number;
-  };
-  const profilesReady = t.defendants_unclaimed ?? 0;
-  const profilesClaimed = t.defendants_verified ?? 0;
-  const documents = t.documents ?? 0;
-  const grievances = t.grievances ?? 0;
-  const totalViews = t.total_views ?? 0;
-  const totalShares = t.total_shares ?? 0;
-  const daysSincePardon = t.days_since_pardon ?? 0;
+  const t = (await fetchSiteTotals(supabase)) ?? EMPTY_SITE_TOTALS;
+  const profilesReady = t.defendants_unclaimed;
+  const profilesClaimed = t.defendants_verified;
+  const documents = t.documents;
+  const grievances = t.grievances;
+  const totalViews = t.total_views;
+  const totalShares = t.total_shares;
+  const daysSincePardon = t.days_since_pardon;
 
   type Tile = {
     label: string;
@@ -40,7 +32,7 @@ export async function SiteMomentum({ variant = "wide" }: { variant?: "wide" | "c
       ? [
           { label: "Profiles ready", value: profilesReady ?? 0, tone: "blue", href: "/case?view=people&filter=unclaimed" },
           { label: "Documents", value: documents ?? 0, tone: "ink", href: "/case?view=documents" },
-          { label: "Total views", value: totalViews, tone: "accent", href: "/?sort=trending" },
+          { label: "Total reach", value: totalViews, tone: "accent", href: "/?sort=trending" },
           { label: "Days since pardon", value: daysSincePardon, tone: "ink" },
         ]
       : [
@@ -50,7 +42,9 @@ export async function SiteMomentum({ variant = "wide" }: { variant?: "wide" | "c
           // t.grievances counts DOCUMENTED PATTERNS (34), not the 267 forms
           // Ryan filed — label it as what it is so the number reads true.
           { label: "Grievance patterns", value: grievances ?? 0, tone: "ink", href: "/case?view=grievances" },
-          { label: "Total views", value: totalViews, tone: "accent", href: "/?sort=trending" },
+          // Same counter /about/numbers documents as "Total reach": every
+          // successful load, humans and bots alike. The label says so.
+          { label: "Total reach", value: totalViews, tone: "accent", href: "/?sort=trending" },
           { label: "Total shares", value: totalShares, tone: "accent", href: "/?sort=trending" },
         ];
 

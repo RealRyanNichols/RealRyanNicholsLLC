@@ -59,7 +59,7 @@ export default function BookStartPage() {
       <section className="border-b border-[#203a64] bg-[#071126] text-[#fdf8ea]">
         <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-14 lg:py-20">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.24em] text-[#e1bd5b]">
+            <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
               Independent memoir · Built in public
             </p>
             <h1 className="mt-4 max-w-3xl font-display text-4xl font-black leading-[1.02] tracking-tight text-[#fdf8ea] sm:text-6xl">
@@ -74,7 +74,7 @@ export default function BookStartPage() {
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="#editions"
-                className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[#e1bd5b] px-6 py-3 text-base font-black text-[#071126] transition hover:bg-[#a7efc4]"
+                className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-gold-bright)] px-6 py-3 text-base font-black text-[#071126] transition hover:bg-[#a7efc4]"
               >
                 Read it first · from {startingPrice}
               </Link>

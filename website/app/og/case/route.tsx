@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 import { getCaseTotals } from "@/lib/case";
 import { ogEmbeddableImage } from "@/lib/og-embed";
+import { PALETTE } from "@/lib/palette";
 
 export const runtime = "nodejs";
 export const revalidate = 3600;
@@ -84,7 +85,7 @@ export async function GET(req: Request) {
             left: 0,
             width: 1200,
             height: 8,
-            background: "#e1bd5b",
+            background: PALETTE.goldBright,
             display: "flex",
           }}
         />
@@ -99,10 +100,10 @@ export async function GET(req: Request) {
             fontWeight: 700,
             letterSpacing: "0.16em",
             textTransform: "uppercase",
-            color: "#e1bd5b",
+            color: PALETTE.goldBright,
           }}
         >
-          <div style={{ display: "flex", width: 14, height: 14, borderRadius: 7, background: "#e1bd5b" }} />
+          <div style={{ display: "flex", width: 14, height: 14, borderRadius: 7, background: PALETTE.goldBright }} />
           {copy.kicker}
         </div>
 
@@ -121,7 +122,7 @@ export async function GET(req: Request) {
           <div style={{ display: "flex", gap: 48 }}>
             {stats.map(([n, label]) => (
               <div key={label} style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                <div style={{ display: "flex", fontSize: 52, fontWeight: 800, color: "#e1bd5b" }}>{n}</div>
+                <div style={{ display: "flex", fontSize: 52, fontWeight: 800, color: PALETTE.goldBright }}>{n}</div>
                 <div
                   style={{
                     display: "flex",
@@ -145,7 +146,7 @@ export async function GET(req: Request) {
                 src={mark}
                 width={64}
                 height={64}
-                style={{ width: 64, height: 64, borderRadius: 32, border: "2px solid #e1bd5b" }}
+                style={{ width: 64, height: 64, borderRadius: 32, border: `2px solid ${PALETTE.goldBright}` }}
               />
             ) : null}
             <div style={{ display: "flex", fontSize: 24, fontWeight: 700, color: "#f6efdf" }}>

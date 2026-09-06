@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import {
   Bar,
   BarChart,
@@ -13,6 +14,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { DAILY_BARS_MOBILE_MAX } from "@/components/DailyBars";
 
 const tooltipStyle = {
   borderRadius: 8,
@@ -22,6 +24,20 @@ const tooltipStyle = {
   color: "var(--color-ink)",
 };
 
+// Same breakpoint as Tailwind's `sm`, so this chart and the server-rendered
+// DailyBars agree on when a screen is "narrow".
+function useNarrowScreen(): boolean {
+  const [narrow, setNarrow] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639px)");
+    const sync = () => setNarrow(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+  return narrow;
+}
+
 // ─── Views + unique visitors trend ────────────────────────────────────────
 export type TrendDay = {
   day: string;
@@ -30,10 +46,18 @@ export type TrendDay = {
   sessions: number;
 };
 
+// The chart body is ~250px tall once axes and legend take their share; 10px
+// is the 4% floor every daily bar on the site keeps, so a quiet day still
+// reads as a day.
+const MIN_BAR_PX = 10;
+
 export function VisitorTrendChart({ data }: { data: TrendDay[] }) {
-  const rows = data.map((d) => ({ ...d, label: d.day.slice(5) }));
+  const narrow = useNarrowScreen();
+  // Phones get the most recent 14 days; wider screens get every row.
+  const visible = narrow ? data.slice(-DAILY_BARS_MOBILE_MAX) : data;
+  const rows = visible.map((d) => ({ ...d, label: d.day.slice(5) }));
   return (
-    <div className="h-72 w-full">
+    <div className="h-72 w-full" data-visitor-trend data-bars={rows.length}>
       <ResponsiveContainer width="100%" height="100%">
         <ComposedChart data={rows} margin={{ top: 8, right: 8, bottom: 0, left: -18 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.07)" vertical={false} />
@@ -46,11 +70,18 @@ export function VisitorTrendChart({ data }: { data: TrendDay[] }) {
           <YAxis tick={{ fontSize: 10 }} width={44} />
           <Tooltip contentStyle={tooltipStyle} cursor={{ fill: "rgba(0,0,0,0.04)" }} />
           <Legend wrapperStyle={{ fontSize: 12 }} />
-          <Bar dataKey="views" name="Views" fill="#e1bd5b" radius={[3, 3, 0, 0]} maxBarSize={26} />
+          <Bar
+            dataKey="views"
+            name="Views"
+            fill="var(--color-gold-bright)"
+            radius={[3, 3, 0, 0]}
+            maxBarSize={26}
+            minPointSize={MIN_BAR_PX}
+          />
           <Line
             dataKey="visitors"
             name="Unique visitors"
-            stroke="#2f7d54"
+            stroke="var(--color-green-deep)"
             strokeWidth={2.5}
             dot={false}
           />
@@ -64,14 +95,14 @@ export function VisitorTrendChart({ data }: { data: TrendDay[] }) {
 export type SourceRow = { source: string; views: number; visitors: number };
 
 function sourceColor(source: string): string {
-  if (source === "Facebook") return "#4267B2";
+  if (source === "Facebook") return "var(--color-brand-facebook)";
   if (source.startsWith("X")) return "#111827";
-  if (source.includes("Google")) return "#34a853";
+  if (source.includes("Google")) return "var(--color-brand-google)";
   if (source.startsWith("Direct")) return "#9ca3af";
-  if (source === "Internal links") return "#d8c89e";
-  if (source.includes("search")) return "#38bdf8";
-  if (source === "Instagram") return "#E1306C";
-  if (source === "Truth Social") return "#e1bd5b";
+  if (source === "Internal links") return "var(--color-line)";
+  if (source.includes("search")) return "var(--color-sky)";
+  if (source === "Instagram") return "var(--color-brand-instagram)";
+  if (source === "Truth Social") return "var(--color-gold-bright)";
   if (source === "Gab") return "#28a745";
   return "#7fa9e3";
 }
@@ -132,8 +163,11 @@ export function ActivityHeatmap({ data }: { data: HeatCell[] }) {
             {Array.from({ length: 24 }).map((_, hour) => {
               const v = grid.get(`${dow}-${hour}`) ?? 0;
               const t = v / max;
+              const pct = Math.round((0.16 + t * 0.84) * 100);
               const bg =
-                v === 0 ? "var(--color-surface)" : `rgba(225, 189, 91, ${0.16 + t * 0.84})`;
+                v === 0
+                  ? "var(--color-surface)"
+                  : `color-mix(in srgb, var(--color-gold-bright) ${pct}%, transparent)`;
               return (
                 <div
                   key={hour}

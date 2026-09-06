@@ -12,7 +12,7 @@ export function ReceiptImage({ src, alt }: { src: string; alt: string }) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="mt-4 block w-full cursor-zoom-in overflow-hidden rounded-md border border-[#e1bd5b]/30 bg-black"
+        className="mt-4 block w-full cursor-zoom-in overflow-hidden rounded-md border border-[var(--color-gold-bright)]/30 bg-black"
         aria-label="Open exhibit image full size"
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
