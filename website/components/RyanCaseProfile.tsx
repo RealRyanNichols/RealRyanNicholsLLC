@@ -176,11 +176,11 @@ export function RyanCaseProfile({
       <ReadingProgress />
 
       <nav className="text-sm text-[var(--color-muted)] mb-2">
-        <Link href="/case" className="hover:underline">
+        <Link href="/case" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
           ← J6 Case
         </Link>{" "}
         ·{" "}
-        <Link href="/case?view=people" className="hover:underline">
+        <Link href="/case?view=people" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
           All people
         </Link>
       </nav>
@@ -310,7 +310,7 @@ export function RyanCaseProfile({
         </p>
         <Link
           href="/j6"
-          className="shrink-0 text-sm font-bold text-[var(--color-navy)] hover:underline"
+          className="inline-flex min-h-11 shrink-0 items-center text-sm font-bold text-[var(--color-navy)] hover:underline sm:min-h-0"
         >
           Enter the archive →
         </Link>

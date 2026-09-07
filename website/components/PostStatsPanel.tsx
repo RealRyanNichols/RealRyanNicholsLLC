@@ -109,12 +109,16 @@ function Row({
 function InfoTip({ text }: { text: string }) {
   return (
     <span className="relative inline-flex group shrink-0">
+      {/* The visible "i" stays 16px; on phones the button around it is a
+          44px hit box pulled in with negative margins so layout is unchanged. */}
       <button
         type="button"
         aria-label={text}
-        className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-[var(--color-line)] text-[10px] font-bold leading-none text-[var(--color-muted)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] focus:outline-none focus:border-[var(--color-accent)] cursor-help"
+        className="group/tip -m-3.5 inline-flex h-11 w-11 shrink-0 items-center justify-center focus:outline-none cursor-help sm:m-0 sm:h-4 sm:w-4"
       >
-        i
+        <span className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-[var(--color-line)] text-[10px] font-bold leading-none text-[var(--color-muted)] group-hover/tip:border-[var(--color-accent)] group-hover/tip:text-[var(--color-accent)] group-focus/tip:border-[var(--color-accent)]">
+          i
+        </span>
       </button>
       <span
         role="tooltip"

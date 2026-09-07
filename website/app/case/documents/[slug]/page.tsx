@@ -78,11 +78,11 @@ export default async function DocumentPage({
       />
 
       <nav className="text-sm text-[var(--color-muted)] mb-4">
-        <Link href="/case" className="hover:underline">
+        <Link href="/case" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
           ← J6 Case
         </Link>{" "}
         ·{" "}
-        <Link href="/case?view=documents" className="hover:underline">
+        <Link href="/case?view=documents" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
           All documents
         </Link>
       </nav>
@@ -181,7 +181,7 @@ export default async function DocumentPage({
                 href={d.external_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-semibold text-[var(--color-accent)] underline"
+                className="inline-flex min-h-11 items-center font-semibold text-[var(--color-accent)] underline sm:min-h-0"
               >
                 Open at the source →
               </a>

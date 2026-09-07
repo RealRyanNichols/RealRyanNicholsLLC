@@ -76,11 +76,11 @@ export function OfficialDossier({
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
       <nav className="mb-5 text-sm text-[var(--color-muted)]">
-        <Link href="/case" className="hover:underline">
+        <Link href="/case" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
           ← J6 Case
         </Link>{" "}
         ·{" "}
-        <Link href="/case?view=people" className="hover:underline">
+        <Link href="/case?view=people" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
           All people
         </Link>
       </nav>

@@ -97,7 +97,7 @@ export default async function VideosPage(props: {
       <JsonLd data={videoListLd} />
       <LiveNowBanner stream={activeLiveStream} />
       <nav className="mb-5 text-sm text-[var(--color-muted)]">
-        <Link href="/" className="hover:underline">
+        <Link href="/" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
           Back to feed
         </Link>
       </nav>
@@ -216,7 +216,7 @@ function FilterChip({
       href={href}
       aria-current={active ? "page" : undefined}
       className={[
-        "rounded-full border px-3 py-1.5 text-xs font-bold transition",
+        "inline-flex min-h-11 items-center rounded-full border px-3 py-1.5 text-xs font-bold transition sm:min-h-0",
         active
           ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)]"
           : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]",

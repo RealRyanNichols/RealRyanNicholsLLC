@@ -148,7 +148,7 @@ export function ReactionBar({
               aria-pressed={active}
               onClick={() => toggle(kind)}
               className={[
-                "inline-flex items-center gap-1 rounded-full border px-2.5 py-1.5 text-sm transition select-none",
+                "inline-flex min-h-11 min-w-11 items-center justify-center gap-1 rounded-full border px-2.5 py-1.5 text-sm transition select-none sm:min-h-0 sm:min-w-0",
                 active
                   ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent)] font-bold"
                   : "border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)]",

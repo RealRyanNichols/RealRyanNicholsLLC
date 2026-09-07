@@ -97,7 +97,7 @@ export default async function DamagesPage() {
   return (
     <article className="mx-auto max-w-4xl px-4 py-10 print:py-0">
       <nav className="text-sm text-[var(--color-muted)] mb-4 print:hidden">
-        <Link href="/case" className="hover:underline">
+        <Link href="/case" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
           ← J6 Case
         </Link>
       </nav>
@@ -144,7 +144,7 @@ export default async function DamagesPage() {
               <div className="mt-3 print:hidden">
                 <Link
                   href={`/case/grievances/${d.sourceSlug}`}
-                  className="text-xs font-semibold text-[var(--color-accent)] hover:underline"
+                  className="inline-flex min-h-11 items-center text-xs font-semibold text-[var(--color-accent)] hover:underline"
                 >
                   See the evidence →
                 </Link>

@@ -68,7 +68,7 @@ export function BookStickyBuyBar({
               setClosed(true);
             }}
             aria-label="Dismiss"
-            className="shrink-0 px-1 text-xl leading-none text-[var(--color-muted)] hover:text-[var(--color-ink)]"
+            className="grid h-11 w-11 shrink-0 place-items-center text-xl leading-none text-[var(--color-muted)] hover:text-[var(--color-ink)]"
           >
             ×
           </button>

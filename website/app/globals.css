@@ -458,6 +458,47 @@ body[data-mobile-menu-open="true"] .rrn-mobile-support-bar {
   display: none;
 }
 
+/* Phone floors. Micro-labels and chips are designed for desktop density;
+   under 640px nothing renders below 11px, and small form fields sit at 16px
+   so iOS Safari does not zoom the whole page when one is focused. Unlayered
+   on purpose so they beat the arbitrary-value utilities baked into markup;
+   sm: variants are separate classes and keep the designed size. */
+@media (max-width: 639px) {
+  .text-\[8px\],
+  .text-\[9px\],
+  .text-\[10px\] {
+    font-size: 11px;
+  }
+
+  input.text-xs,
+  input.text-sm,
+  textarea.text-xs,
+  textarea.text-sm,
+  select.text-xs,
+  select.text-sm {
+    font-size: 16px;
+  }
+
+  /* Every typed field is a full-height thumb target. Checkbox and radio
+     inputs keep their size; their <label> carries the tap area. */
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]):not([type="hidden"]),
+  select,
+  textarea {
+    min-height: 44px;
+  }
+
+  /* The site's button language (navy primary, gold-rule secondary) is
+     40px at text-sm with py-2.5; on phones every one is a full thumb. */
+  .btn-accent,
+  .btn-support,
+  .btn-blue {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+  }
+}
+
 @media (min-width: 640px) {
   .rrn-hero-inner {
     padding-left: 1.5rem;

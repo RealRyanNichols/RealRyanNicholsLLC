@@ -111,13 +111,13 @@ export async function ProfileHero() {
         <div className="mt-3 flex flex-wrap items-center gap-2 sm:hidden">
           <Link
             href="/start-here"
-            className="btn-accent inline-flex items-center rounded-full px-4 py-1.5 text-xs transition"
+            className="btn-accent inline-flex min-h-11 items-center rounded-full px-5 py-1.5 text-sm transition"
           >
             Start Here
           </Link>
           <Link
             href="/book/preorder"
-            className="btn-support inline-flex items-center rounded-full px-4 py-1.5 text-xs font-semibold transition"
+            className="btn-support inline-flex min-h-11 items-center rounded-full px-4 py-1.5 text-sm font-semibold transition"
           >
             Get the Book
           </Link>
@@ -127,7 +127,7 @@ export async function ProfileHero() {
             front and center. Most people come to read; the "four doors" are one
             tap away for those who want them. Native <details>, no client JS. */}
         <details className="group/doors mt-4 border-t border-[var(--color-line)] pt-3.5">
-          <summary className="flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
+          <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden sm:min-h-0">
             <span className="text-[11px] font-black uppercase tracking-[0.16em] text-[var(--color-muted)]">
               What brings you here?
             </span>

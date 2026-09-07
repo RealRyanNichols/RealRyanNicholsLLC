@@ -70,7 +70,7 @@ export default async function LivePage() {
   return (
     <main className="mx-auto max-w-6xl px-4 py-8">
       <nav className="mb-5 text-sm text-[var(--color-muted)]">
-        <Link href="/" className="hover:underline">
+        <Link href="/" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
           Back to feed
         </Link>
       </nav>

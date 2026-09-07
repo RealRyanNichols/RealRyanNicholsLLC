@@ -55,18 +55,18 @@ export function Footer() {
           <SignupForm emailEnabled={SITE.emailCaptureEnabled} />
         </div>
 
-        <div className="grid gap-8 sm:grid-cols-3">
+        <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
           {COLUMNS.map((col) => (
             <nav key={col.heading} aria-label={col.heading}>
               <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--color-ink-soft)]">
                 {col.heading}
               </p>
-              <ul className="mt-3 grid gap-2">
+              <ul className="mt-2 grid gap-0 sm:mt-3 sm:gap-2">
                 {col.links.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="font-semibold text-[var(--color-ink-soft)] transition hover:text-[var(--color-accent)]"
+                      className="inline-flex min-h-11 items-center font-semibold text-[var(--color-ink-soft)] transition hover:text-[var(--color-accent)] sm:min-h-0"
                     >
                       {link.label}
                     </Link>
@@ -78,16 +78,16 @@ export function Footer() {
         </div>
 
         <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-[var(--color-line)] pt-5 text-xs">
-          <Link className="hover:text-[var(--color-accent)]" href="/privacy">
+          <Link className="inline-flex min-h-11 min-w-11 items-center justify-center hover:text-[var(--color-accent)] sm:min-h-0 sm:min-w-0" href="/privacy">
             Privacy
           </Link>
-          <Link className="hover:text-[var(--color-accent)]" href="/community-rules">
+          <Link className="inline-flex min-h-11 min-w-11 items-center justify-center hover:text-[var(--color-accent)] sm:min-h-0 sm:min-w-0" href="/community-rules">
             Community rules
           </Link>
-          <Link className="hover:text-[var(--color-accent)]" href="/editorial-standards">
+          <Link className="inline-flex min-h-11 min-w-11 items-center justify-center hover:text-[var(--color-accent)] sm:min-h-0 sm:min-w-0" href="/editorial-standards">
             Editorial standards
           </Link>
-          <Link className="hover:text-[var(--color-accent)]" href="/rss.xml">
+          <Link className="inline-flex min-h-11 min-w-11 items-center justify-center hover:text-[var(--color-accent)] sm:min-h-0 sm:min-w-0" href="/rss.xml">
             RSS
           </Link>
           <span className="ml-auto">

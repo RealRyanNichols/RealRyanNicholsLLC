@@ -303,7 +303,7 @@ export default async function SalvagedDojRecordPage({
                           href={`https://web.archive.org/web/2023/https://www.justice.gov${u.startsWith("/") ? u : "/" + u}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="rounded-full border border-[var(--color-line)] hover:border-[var(--color-accent)] px-2.5 py-1 text-[11px] font-bold text-[var(--color-ink)] hover:text-[var(--color-accent)]"
+                          className="inline-flex min-h-11 items-center rounded-full border border-[var(--color-line)] hover:border-[var(--color-accent)] px-2.5 py-1 text-[11px] font-bold text-[var(--color-ink)] hover:text-[var(--color-accent)] sm:min-h-0"
                         >
                           📄 {r.doc_titles?.[i]?.slice(0, 50) ?? "Document"}
                         </a>

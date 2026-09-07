@@ -64,7 +64,7 @@ export function PostCard({
         <div className="flex items-center gap-2">
           <Link
             href={`/posts/${post.slug}`}
-            className="text-[var(--color-accent)] hover:underline underline-offset-4 font-semibold whitespace-nowrap"
+            className="inline-flex min-h-11 items-center px-1 text-[var(--color-accent)] hover:underline underline-offset-4 font-semibold whitespace-nowrap sm:min-h-0"
           >
             {post.type === "video" ? "Watch →" : "Read →"}
           </Link>

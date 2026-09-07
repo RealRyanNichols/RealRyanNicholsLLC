@@ -145,12 +145,13 @@ export function FloatingShareBar({
       {/* Mobile: the same vertical "scroller" as desktop, but pinned to the
           right edge and kept thin/translucent so the words still read past it. */}
       <div
-        className={`fixed right-1.5 top-1/2 z-40 flex -translate-y-1/2 flex-col items-center gap-1.5 rounded-full border border-[var(--color-line)] bg-[var(--color-surface)]/90 p-1.5 shadow-xl backdrop-blur transition-all duration-300 md:hidden ${
+        className={`fixed right-1 top-1/2 z-40 flex -translate-y-1/2 flex-col items-center gap-1 rounded-full border border-[var(--color-line)] bg-[var(--color-surface)]/90 p-1 shadow-xl backdrop-blur transition-all duration-300 md:hidden ${
           visible ? "opacity-100 translate-x-0" : "pointer-events-none translate-x-6 opacity-0"
         }`}
         aria-label="Share this page"
       >
-        <Channels cls="h-8 w-8 text-sm" />
+        {/* Full 44px thumbs; the bar stays translucent so text reads past it. */}
+        <Channels cls="h-11 w-11 text-base" />
         {count > 0 ? countPill : null}
       </div>
     </>

@@ -78,11 +78,11 @@ export default function CaseBuilderPage() {
       />
 
       <nav className="mb-4 text-sm text-[var(--color-muted)]">
-        <Link href="/services" className="hover:underline">
+        <Link href="/services" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
           ← Work with Ryan
         </Link>{" "}
         ·{" "}
-        <Link href="/case" className="hover:underline">
+        <Link href="/case" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
           The live example
         </Link>
       </nav>

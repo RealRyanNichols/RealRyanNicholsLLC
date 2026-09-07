@@ -450,7 +450,7 @@ function OfferSalesPage({
         <div className="relative mx-auto grid max-w-6xl gap-5 px-4 py-7 sm:px-6 sm:py-9 lg:min-h-[70vh] lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-center">
           <div>
             <nav className="mb-4 text-sm font-bold text-[var(--color-blue)]">
-              <Link href="/store" className="hover:underline">
+              <Link href="/store" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
                 &lt;- Store
               </Link>
             </nav>
@@ -871,7 +871,7 @@ function StrategyCallPage({
         <div className="relative mx-auto grid max-w-6xl gap-5 px-4 py-7 sm:px-6 sm:py-9 lg:min-h-[72vh] lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.48fr)] lg:items-center">
           <div className="max-w-4xl">
             <nav className="mb-4 text-sm font-bold text-[var(--color-blue)]">
-              <Link href="/store" className="hover:underline">
+              <Link href="/store" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
                 &lt;- Store
               </Link>
             </nav>

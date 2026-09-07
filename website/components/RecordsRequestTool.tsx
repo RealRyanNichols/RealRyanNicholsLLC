@@ -282,7 +282,7 @@ export function RecordsRequestTool() {
                 key={r.key}
                 type="button"
                 onClick={() => toggle(r.key)}
-                className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-left text-sm transition ${
+                className={`flex min-h-11 items-center gap-2 rounded-lg border px-3 py-2 text-left text-sm transition ${
                   picked.has(r.key)
                     ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-ink)]"
                     : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)]"
@@ -345,14 +345,14 @@ export function RecordsRequestTool() {
             <button
               type="button"
               onClick={copy}
-              className="rounded-full bg-[var(--color-accent)] px-4 py-1.5 text-xs font-bold text-white transition hover:brightness-105"
+              className="min-h-11 rounded-full bg-[var(--color-accent)] px-4 py-1.5 text-xs font-bold text-white transition hover:brightness-105 sm:min-h-0"
             >
               {copied ? "Copied ✓" : "Copy"}
             </button>
             <button
               type="button"
               onClick={download}
-              className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-1.5 text-xs font-bold text-[var(--color-ink)] transition hover:border-[var(--color-accent)]"
+              className="min-h-11 rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-1.5 text-xs font-bold text-[var(--color-ink)] transition hover:border-[var(--color-accent)] sm:min-h-0"
             >
               Download
             </button>
