@@ -522,9 +522,9 @@ export function RyanCaseProfile({
               {"doc" in e && e.doc ? (
                 <Link
                   href={e.doc}
-                  className="mt-1 inline-block text-xs font-bold text-[var(--color-navy)] hover:underline"
+                  className="mt-1 inline-flex min-h-11 items-center text-xs font-bold text-[var(--color-navy)] hover:underline sm:min-h-0"
                 >
-                  Read →
+                  Read <span aria-hidden>→</span>
                 </Link>
               ) : null}
             </li>
@@ -664,9 +664,9 @@ export function RyanCaseProfile({
               {"paper" in item && item.paper ? (
                 <Link
                   href={item.paper.href}
-                  className="mt-2 inline-block text-xs font-bold text-[var(--color-navy)] hover:underline"
+                  className="mt-2 inline-flex min-h-11 items-center text-xs font-bold text-[var(--color-navy)] hover:underline sm:min-h-0"
                 >
-                  {item.paper.label} →
+                  {item.paper.label} <span aria-hidden>→</span>
                 </Link>
               ) : null}
             </div>
