@@ -6,6 +6,7 @@ import { getFuelBill, markFuelIntentPaid } from "@/lib/fuel-server";
 import { tierForAmount, usdWhole } from "@/lib/fuel";
 import { PurchaseTracker } from "@/components/PurchaseTracker";
 import { SignupForm } from "@/components/SignupForm";
+import { ShareRail } from "@/components/ShareRail";
 import { SITE } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
@@ -87,11 +88,25 @@ export default async function FuelThanksPage({
         <SignupForm emailEnabled={SITE.emailCaptureEnabled} />
       </div>
 
+      <div className="mt-8">
+        <p className="mb-3 text-sm font-bold text-[var(--color-ink)]">
+          Tell one person you fueled it. That is the second-biggest thing you can do.
+        </p>
+        <ShareRail
+          url={`${SITE.url}/fuel`}
+          title="I just fueled the machine. Ryan Nichols pays for every article, filing, and map on his site by the token. You can too:"
+          variant="compact"
+        />
+      </div>
+
       <div className="mt-8 flex flex-wrap gap-4 text-sm font-semibold">
-        <Link href="/the-map-room" className="text-[var(--color-accent)] underline underline-offset-4">
+        <Link href="/fuel#fuel-wall" className="inline-flex min-h-11 items-center text-[var(--color-accent)] underline underline-offset-4 sm:min-h-0">
+          See the Fuel wall →
+        </Link>
+        <Link href="/the-map-room" className="inline-flex min-h-11 items-center text-[var(--color-accent)] underline underline-offset-4 sm:min-h-0">
           Watch the machine run: the Map Room →
         </Link>
-        <Link href="/" className="text-[var(--color-accent)] underline underline-offset-4">
+        <Link href="/" className="inline-flex min-h-11 items-center text-[var(--color-accent)] underline underline-offset-4 sm:min-h-0">
           ← Back to the feed
         </Link>
       </div>

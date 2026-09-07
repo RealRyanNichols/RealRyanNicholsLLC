@@ -3,6 +3,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type Stripe from "stripe";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { getSupabaseServiceClient, isSupabaseServiceConfigured } from "@/lib/supabase/service";
+import { fetchSiteTotals } from "@/lib/site-totals";
 import {
   FUEL_CAMPAIGN,
   FUEL_PURPOSE,
@@ -32,6 +33,38 @@ export async function getFuelBill(): Promise<FuelBill> {
   const items = fuelBillItems(all);
   const billCents = fuelBillCents(all);
   return { items, billCents, tiers: resolveTiers(billCents) };
+}
+
+// What the machine produced, for the receipts block on /fuel. Only real
+// counts: published posts in the last 30 days and the site_totals snapshot
+// (defendant profiles, documents, total reach). Anything that cannot be read
+// comes back null or 0 and the page leaves that tile out.
+export type MachineOutput = {
+  posts30: number | null;
+  defendants: number;
+  documents: number;
+  totalViews: number;
+};
+
+export async function getMachineOutput(): Promise<MachineOutput> {
+  const supabase = getSupabaseStaticClient();
+  const now = new Date();
+  const since = new Date(now.getTime() - 30 * 86_400_000).toISOString();
+  const [posts, totals] = await Promise.all([
+    supabase
+      .from("posts")
+      .select("id", { count: "exact", head: true })
+      .eq("status", "published")
+      .lte("published_at", now.toISOString())
+      .gte("published_at", since),
+    fetchSiteTotals(supabase),
+  ]);
+  return {
+    posts30: posts.error ? null : (posts.count ?? 0),
+    defendants: totals?.defendants ?? 0,
+    documents: totals?.documents ?? 0,
+    totalViews: totals?.total_views ?? 0,
+  };
 }
 
 export type FuelRaised = {

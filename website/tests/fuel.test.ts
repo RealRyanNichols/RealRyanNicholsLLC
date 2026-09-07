@@ -3,9 +3,12 @@ import assert from "node:assert/strict";
 import {
   FUEL_FLOOR_CENTS,
   FUEL_MAX_CENTS,
+  daysLeftInMonth,
   formatFuelMessage,
   fuelBillCents,
   fuelBillItems,
+  fuelDuration,
+  monthName,
   parseFuelMessage,
   resolveFuelAmount,
   resolveTiers,
@@ -55,6 +58,24 @@ test("the floor and ceiling hold, and unknown tiers are refused", () => {
   const byTier = resolveFuelAmount(tiers, { tier: "article" });
   assert.ok(byTier.ok);
   assert.equal(byTier.amountCents, 50000);
+});
+
+test("a gift is measured in machine time against the real bill, never a typed number", () => {
+  const bill = 130000; // $1,300 a month => $43.33 a day
+  assert.equal(fuelDuration(2000, bill), "about 11 hours of the machine");
+  assert.equal(fuelDuration(5000, bill), "about a day of the machine");
+  assert.equal(fuelDuration(10000, bill), "about 2 days of the machine");
+  assert.equal(fuelDuration(50000, bill), "about 12 days of the machine");
+  assert.equal(fuelDuration(130000, bill), "a full month of the machine");
+  assert.equal(fuelDuration(2000, 0), null);
+  assert.equal(fuelDuration(0, bill), null);
+});
+
+test("the month meter counts the days left in UTC", () => {
+  assert.equal(daysLeftInMonth(new Date("2026-09-07T12:00:00Z")), 23);
+  assert.equal(daysLeftInMonth(new Date("2026-02-28T12:00:00Z")), 0);
+  assert.equal(daysLeftInMonth(new Date("2028-02-28T12:00:00Z")), 1);
+  assert.equal(monthName(new Date("2026-09-07T12:00:00Z")), "September");
 });
 
 test("fuel notes round-trip through the support_intents message field", () => {
