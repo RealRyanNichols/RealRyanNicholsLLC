@@ -80,10 +80,41 @@ export function LiveVisitorRadar({ initial }: { initial: RadarPing[] }) {
 
   // ── pan + zoom ─────────────────────────────────────────────────────
   const svgRef = useRef<SVGSVGElement | null>(null);
-  const [view, setView] = useState<RadarView>(US_VIEW);
+  const [view, setViewState] = useState<RadarView>(US_VIEW);
+  // Pointer handlers fire between React commits, so they read the latest
+  // view from this ref rather than the render closure; a pinch that hands
+  // off to a one-finger pan would otherwise seed itself one update stale.
+  const viewRef = useRef<RadarView>(US_VIEW);
+  const setView = useCallback((next: RadarView | ((v: RadarView) => RadarView)) => {
+    setViewState((v) => {
+      const resolved = typeof next === "function" ? next(v) : next;
+      viewRef.current = resolved;
+      return resolved;
+    });
+  }, []);
   const [dragging, setDragging] = useState(false);
   const pointers = useRef(new Map<number, { x: number; y: number }>());
   const gesture = useRef<Gesture | null>(null);
+
+  // CSS pixels per viewBox unit at the current rendered size, so dots and
+  // tap targets keep a constant on-screen size (a 44px hit target on a
+  // 390px phone as much as on a 1440px desktop). preserveAspectRatio is
+  // "meet", so the smaller axis ratio wins.
+  const [pxPerUnit, setPxPerUnit] = useState(1);
+  useEffect(() => {
+    const el = svgRef.current;
+    if (!el) return;
+    const measure = () => {
+      const rect = el.getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0) {
+        setPxPerUnit(Math.min(rect.width / W, rect.height / H));
+      }
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   const clamp = useCallback((next: RadarView): RadarView => {
     const scale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, next.scale));
@@ -117,7 +148,7 @@ export function LiveVisitorRadar({ initial }: { initial: RadarPing[] }) {
         });
       });
     },
-    [clamp],
+    [clamp, setView],
   );
 
   // Wheel zoom needs a non-passive listener: React registers wheel as
@@ -150,6 +181,7 @@ export function LiveVisitorRadar({ initial }: { initial: RadarPing[] }) {
     svgRef.current?.setPointerCapture?.(e.pointerId);
     pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
     const active = Array.from(pointers.current.values());
+    const current = viewRef.current;
     if (active.length >= 2) {
       const [a, b] = active;
       gesture.current = {
@@ -157,15 +189,15 @@ export function LiveVisitorRadar({ initial }: { initial: RadarPing[] }) {
         startDist: Math.hypot(a.x - b.x, a.y - b.y) || 1,
         startMidX: (a.x + b.x) / 2,
         startMidY: (a.y + b.y) / 2,
-        init: view,
+        init: current,
       };
     } else {
       gesture.current = {
         kind: "pan",
         startX: e.clientX,
         startY: e.clientY,
-        initX: view.x,
-        initY: view.y,
+        initX: current.x,
+        initY: current.y,
       };
     }
     setDragging(true);
@@ -220,12 +252,13 @@ export function LiveVisitorRadar({ initial }: { initial: RadarPing[] }) {
     } else if (active.length === 1) {
       // Pinch ended with one finger still down: continue as a pan from here.
       const [a] = active;
+      const current = viewRef.current;
       gesture.current = {
         kind: "pan",
         startX: a.x,
         startY: a.y,
-        initX: view.x,
-        initY: view.y,
+        initX: current.x,
+        initY: current.y,
       };
     }
   }
@@ -254,10 +287,14 @@ export function LiveVisitorRadar({ initial }: { initial: RadarPing[] }) {
     [pings],
   );
 
-  // Scale the dot radius INVERSELY to zoom so dots stay readable.
-  const dotR = 4 / view.scale;
-  const ringR = 7 / view.scale;
-  const strokeW = 1 / view.scale;
+  // Radii in viewBox units that render at a constant CSS-pixel size
+  // whatever the zoom or the screen width: 4px dot, 7px ring, 22px (44px
+  // diameter) invisible hit target.
+  const unitsPerPx = 1 / (pxPerUnit * view.scale);
+  const dotR = 4 * unitsPerPx;
+  const ringR = 7 * unitsPerPx;
+  const hitR = 22 * unitsPerPx;
+  const strokeW = 1 * unitsPerPx;
   const isUsView = view.scale > 1.2;
 
   // The radar's transform: scale around center, then pan.
@@ -278,7 +315,7 @@ export function LiveVisitorRadar({ initial }: { initial: RadarPing[] }) {
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
-        role="img"
+        role="group"
         aria-label="Live map of active visitors. Each dot is one visitor at city and state resolution. Drag to pan, pinch or scroll to zoom, tap a dot to see its city and state."
       >
         <defs>
@@ -335,8 +372,8 @@ export function LiveVisitorRadar({ initial }: { initial: RadarPing[] }) {
                 }}
                 style={{ cursor: "pointer" }}
               >
-                {/* Generous invisible hit target so a fingertip can land it. */}
-                <circle cx={x} cy={y} r={Math.max(ringR * 2, 22 / view.scale)} fill="transparent" />
+                {/* Invisible 44px hit target so a fingertip can land it. */}
+                <circle data-ping-hit cx={x} cy={y} r={hitR} fill="transparent" />
                 <circle
                   cx={x}
                   cy={y}
@@ -400,6 +437,15 @@ export function LiveVisitorRadar({ initial }: { initial: RadarPing[] }) {
           −
         </button>
       </div>
+
+      {/* Screen readers get the same city/state list the dots carry. */}
+      {projected.length > 0 ? (
+        <ul className="sr-only" aria-label="Visitors on the map, by city and state">
+          {projected.map(({ p }) => (
+            <li key={p.ping_id}>{pingLabel(p)}</li>
+          ))}
+        </ul>
+      ) : null}
 
       {/* Selected ping: city and state only. Tap anywhere on it to dismiss. */}
       {selected ? (

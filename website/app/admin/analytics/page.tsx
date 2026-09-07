@@ -859,12 +859,15 @@ async function VisualIntelligenceWall({ excludeSelf }: { excludeSelf: boolean })
         insight={insight}
       />
       {/* The "Actions" bars in "Top pages as a picture" are counted from a
-          row sample; everything else on the wall is an RPC aggregate or an
-          exact count. */}
+          row sample, and the Receivables system line sums an invoice sample;
+          everything else on the wall is an RPC aggregate or an exact count. */}
       <CappedSampleStrip
         className="mt-2"
-        windowLabel="7d · actions by page"
-        samples={[{ label: "events", rows: (eventPathRows ?? []).length }]}
+        windowLabel="7d · actions by page, open invoices"
+        samples={[
+          { label: "events", rows: (eventPathRows ?? []).length },
+          { label: "open/failed invoices", rows: (invoiceRows ?? []).length, cap: 50 },
+        ]}
       />
     </>
   );
@@ -2837,7 +2840,12 @@ async function Geography({ liveNow }: { liveNow: number }) {
 
         <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
           <h3 className="text-base font-bold tracking-tight">
-            Live visitors right now ({liveList.length})
+            Live visitors right now ({liveNow})
+            {liveList.length < liveNow ? (
+              <span className="ml-2 text-xs font-normal text-[var(--color-muted)]">
+                showing {liveList.length}
+              </span>
+            ) : null}
           </h3>
           <p className="mt-1 text-xs text-[var(--color-muted)]">
             One row per session active in the last 5 minutes, current

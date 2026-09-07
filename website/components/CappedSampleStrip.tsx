@@ -11,6 +11,9 @@ export type CappedSample = {
   label: string;
   // Rows actually returned.
   rows: number;
+  // The ceiling for this sample when the query asked for fewer rows than
+  // PostgREST's cap (e.g. `.limit(50)` on invoices).
+  cap?: number;
 };
 
 export function CappedSampleStrip({
@@ -24,7 +27,8 @@ export function CappedSampleStrip({
   cap?: number;
   className?: string;
 }) {
-  const hit = samples.some((s) => s.rows >= cap);
+  const capFor = (s: CappedSample) => Math.min(s.cap ?? cap, cap);
+  const hit = samples.some((s) => s.rows >= capFor(s));
   return (
     <div
       data-capped-sample
@@ -35,8 +39,8 @@ export function CappedSampleStrip({
       <span className="font-black uppercase tracking-wider">Capped sample · {windowLabel}</span>
       {samples.map((s) => (
         <span key={s.label} className="tabular-nums">
-          {s.label}: {s.rows.toLocaleString()} of up to {cap.toLocaleString()} rows
-          {s.rows >= cap ? " (cap hit)" : ""}
+          {s.label}: {s.rows.toLocaleString()} of up to {capFor(s).toLocaleString()} rows
+          {s.rows >= capFor(s) ? " (cap hit)" : ""}
         </span>
       ))}
       <span className="basis-full">

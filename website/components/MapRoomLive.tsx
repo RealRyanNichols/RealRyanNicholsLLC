@@ -17,7 +17,10 @@ const LiveVisitorRadar = dynamic(
   {
     ssr: false,
     loading: () => (
-      <p className="pointer-events-none absolute bottom-2 left-3 z-10 text-[9px] font-mono uppercase tracking-wider text-[#7c8aa6]">
+      <p
+        data-radar-loading
+        className="pointer-events-none absolute bottom-2 left-3 z-10 text-[9px] font-mono uppercase tracking-wider text-[#7c8aa6]"
+      >
         Loading live map…
       </p>
     ),

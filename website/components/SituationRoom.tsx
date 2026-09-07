@@ -7,6 +7,7 @@ import { SITE } from "@/lib/site";
 import { HotRightNow } from "./HotRightNow";
 import { RallyReactions } from "./RallyReactions";
 import { burstConfetti } from "@/lib/confetti";
+import { normalizeSiteTotals } from "@/lib/site-totals";
 import { RadarFrame } from "./RadarFrame";
 
 // The world-map radar is heavy (d3-geo + two atlases). Load it only on open,
@@ -17,7 +18,10 @@ const LiveVisitorRadar = dynamic(
   {
     ssr: false,
     loading: () => (
-      <p className="pointer-events-none absolute bottom-2 left-3 z-10 text-[9px] font-mono uppercase tracking-wider text-[#8194b4]">
+      <p
+        data-radar-loading
+        className="pointer-events-none absolute bottom-2 left-3 z-10 text-[9px] font-mono uppercase tracking-wider text-[#8194b4]"
+      >
         Loading live map…
       </p>
     ),
@@ -238,7 +242,7 @@ export function SituationRoom({
         fetch("/api/rally/raised").then((x) => x.json()).catch(() => null),
       ]);
       if (!mounted) return;
-      if (totals.data) setT(totals.data as SiteTotals);
+      if (totals.data) setT(normalizeSiteTotals(totals.data));
       if (Array.isArray(rally.data) && rally.data[0]) setR(rally.data[0] as Rally);
       if (Array.isArray(rc.data)) setRecent(rc.data as Recent[]);
       if (Array.isArray(ms.data)) setMilestones(ms.data as Milestone[]);

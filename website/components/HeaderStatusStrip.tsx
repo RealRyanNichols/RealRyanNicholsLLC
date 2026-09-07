@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
 import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
 import { BOOK_TIERS, formatUsd, tierPriceUsd, tierSale } from "@/lib/book";
+import { normalizeSiteTotals } from "@/lib/site-totals";
 
 // The full board only loads when someone opens it (it pulls in the world map).
 const SituationRoom = dynamic(
@@ -52,7 +53,7 @@ export function HeaderStatusStrip() {
     const supabase = getSupabaseBrowserClient();
     async function pull() {
       const { data } = await supabase.rpc("site_totals");
-      if (mounted && data) setT(data as Totals);
+      if (mounted && data) setT(normalizeSiteTotals(data));
     }
     void pull();
     const id = window.setInterval(pull, 30_000);

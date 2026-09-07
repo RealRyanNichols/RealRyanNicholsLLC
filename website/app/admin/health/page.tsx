@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AdminEmailTestButton } from "@/components/AdminEmailTestButton";
+import { CappedSampleStrip } from "@/components/CappedSampleStrip";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { fetchSiteTotals } from "@/lib/site-totals";
 import {
@@ -200,6 +201,12 @@ export default async function AdminHealthPage() {
           <Pulse n={usd(ops.receivableCents)} label="receivable" />
           <Pulse n={metricText(ops.stripeEvents7d)} label="stripe events · 7d" />
         </div>
+        {/* Receivable and overdue are summed from a newest-50 invoice sample. */}
+        <CappedSampleStrip
+          className="mt-3"
+          windowLabel="open invoices"
+          samples={[{ label: "draft/open/failed invoices", rows: ops.invoiceRows.length, cap: 50 }]}
+        />
         <p className="mt-3 text-[11px] text-[var(--color-muted)]">
           Updated {formatTime(ops.generatedAt)}. Keys and secrets are never
           shown here — only whether a service is on.

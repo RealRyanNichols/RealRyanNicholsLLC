@@ -41,6 +41,9 @@ export function RadarFrame({
       </div>
 
       <noscript>
+        {/* next/dynamic still server-renders its loading fallback; hide it
+            when scripts are off so it cannot overlap this note. */}
+        <style>{`[data-radar-loading]{display:none}`}</style>
         <p className="absolute bottom-3 left-3 right-3 z-10 text-[11px] text-[#a9b7d0]">
           The count above is live. Turn on JavaScript to see where each visitor
           is reading from.
