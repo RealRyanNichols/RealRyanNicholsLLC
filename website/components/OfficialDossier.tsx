@@ -13,6 +13,7 @@ import { ClaimChip, CLAIM_INK } from "@/components/case/ClaimChip";
 const BLURB: Record<ClaimLabel, string> = {
   FACT: "Verifiable, uncontested.",
   RECORD: "Stated on the court record.",
+  DOCUMENTED: "Preserved in a named exhibit on file.",
   "RYAN STATEMENT": "Ryan's own account.",
   "DOCUMENTED INFERENCE": "Drawn from disclosed, sourced facts.",
   "NEEDS AUTHENTICATION": "Real and load-bearing, not yet verified.",
@@ -21,6 +22,7 @@ const BLURB: Record<ClaimLabel, string> = {
 const ORDER: ClaimLabel[] = [
   "FACT",
   "RECORD",
+  "DOCUMENTED",
   "RYAN STATEMENT",
   "DOCUMENTED INFERENCE",
   "NEEDS AUTHENTICATION",
