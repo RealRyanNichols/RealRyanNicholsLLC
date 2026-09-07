@@ -9,7 +9,14 @@ import { getFuelBill, getFuelStatus, getMachineOutput } from "@/lib/fuel-server"
 import { getPublishedSupporters } from "@/lib/supporters";
 import { getCaseTotals } from "@/lib/case";
 import { SITE } from "@/lib/site";
-import { FUEL_FLOOR_CENTS, FUEL_MONTHLY, parseFuelMessage, usdWhole } from "@/lib/fuel";
+import {
+  FUEL_FLOOR_CENTS,
+  FUEL_MONTHLY,
+  FUEL_TIME_FLOOR_CENTS,
+  parseFuelMessage,
+  timeTiers,
+  usdWhole,
+} from "@/lib/fuel";
 
 export const dynamic = "force-dynamic";
 
@@ -30,6 +37,69 @@ const SITES_BUILT = [
   { name: "The LeadFlow Pro", href: "https://theleadflowpro.com", note: "Where client builds are delivered" },
   { name: "RepWatchr", href: "/store", note: "Reputation watch tool" },
   { name: "SellerProof", href: "/store", note: "Seller verification tool" },
+];
+
+// How one article works, in Ryan's own order: search, share card, title,
+// subheadline, description, click, proof, action, reach.
+const BILLBOARD = [
+  { t: "Search", s: "Someone types the words in the headline" },
+  { t: "Share card", s: "One picture, a few words, its own story" },
+  { t: "Title", s: "The promise" },
+  { t: "Subheadline", s: "The stakes" },
+  { t: "Description", s: "The line under the picture" },
+  { t: "Click", s: "They are on my land now, not a feed" },
+  { t: "Proof", s: "Records, dates, screenshots, data" },
+  { t: "Action", s: "Forms, buttons, links, the ask" },
+  { t: "Reach", s: "One more reader, for as long as it ranks" },
+];
+
+// What comes out of the machine besides articles. Only real routes.
+const MACHINE_DOES = [
+  {
+    title: "Websites",
+    body: "A whole site, start to finish, on a domain you own. The school site further down this page is one.",
+    href: "/services",
+    cta: "See the builds",
+  },
+  {
+    title: "Funnels and lead systems",
+    body: "Pages that capture a call, a signup, or a sale, then follow up without you.",
+    href: "/services",
+    cta: "How a build works",
+  },
+  {
+    title: "Tools",
+    body: "The Records & Bodycam Request Generator, share cards, embeds. Free, no signup.",
+    href: "/tools",
+    cta: "Use them",
+  },
+  {
+    title: "Investigations and research",
+    body: "Screenshots, filings, timelines, and public records turned into a case file nobody can wave away.",
+    href: "/case-builder",
+    cta: "Build a case file",
+  },
+  {
+    title: "Connecting people",
+    body: "A free profile for every J6 defendant, and a place to tell your story when nobody else will run it.",
+    href: "/tell-your-story",
+    cta: "Tell yours",
+  },
+  {
+    title: "Answers",
+    body: "A question you did not know how to find the answer to, researched and answered in public.",
+    href: "#fuel-time",
+    cta: `Ask one at ${usdWhole(FUEL_TIME_FLOOR_CENTS)}`,
+  },
+];
+
+// Sticker prices behind the ledger, read off the vendors' own pages on the
+// date below. Update the date when you re-check them; never guess a price.
+const PRICES_CHECKED = "September 7, 2026";
+const STICKER = [
+  "Claude Max: $100 a month for 5x Pro usage, $200 a month for 20x, each with a five-hour session limit and a weekly limit. Past those, usage credits at standard API rates.",
+  "Claude Fable 5.1 by the token: $10 per million in, $50 per million out.",
+  "ChatGPT Pro: $100 a month for 5x Plus usage, $200 for 20x. Past the limit, extra credits, metered by the token.",
 ];
 
 export default async function FuelPage({
@@ -69,6 +139,13 @@ export default async function FuelPage({
       ? { value: output.totalViews, label: "total reach, every page ever loaded", href: "/the-map-room", cta: "Watch it live" }
       : null,
   ].filter((r): r is { value: number; label: string; href: string; cta: string } => r !== null);
+
+  // The tiers that buy Ryan's time, plus the monthly Keeper lane.
+  const timeRows = [
+    ...timeTiers(bill.tiers).map((t) => ({ ...t, monthly: false })),
+    { ...FUEL_MONTHLY, monthly: true },
+  ].sort((a, b) => a.amountCents - b.amountCents || (a.monthly ? 1 : -1));
+  const floor = usdWhole(FUEL_TIME_FLOOR_CENTS);
 
   return (
     <main className="pb-16">
@@ -145,6 +222,80 @@ export default async function FuelPage({
             </div>
           </section>
         ) : null}
+
+        {/* ── Why articles ─────────────────────────────────────────────── */}
+        <section className="mt-12" aria-labelledby="fuel-why-articles">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">Why articles</p>
+          <h2 id="fuel-why-articles" className="mt-1 font-display text-2xl font-bold tracking-tight sm:text-3xl">
+            A post dies in a day. An article is an evergreen billboard.
+          </h2>
+          <div className="mt-4 grid gap-6 lg:grid-cols-[1.15fr_1fr] lg:items-start">
+            <div className="space-y-3 text-base leading-relaxed text-[var(--color-ink-soft)]">
+              <p>
+                A post on a feed reaches a sliver of the people who follow you, for about a day, and then it is
+                gone. An article on my own domain is there the next time anyone on earth types those words into
+                Google. Nobody throttles it. Nobody deletes it. It gets indexed, it ranks, and it keeps working
+                while I sleep.
+              </p>
+              <p>
+                Here is how one works. Somebody searches the words in the headline. The share card comes up and
+                tells its own story in one picture and a few words. Then the title. Then the subheadline. Then the
+                description under the picture. They click. Inside is the proof: the records, the dates, the
+                screenshots, the data. Data tells a story. Then the forms, the buttons, the links, and the call to
+                action that turn a reader into a share, a signup, a call, or a sale.
+              </p>
+              <p>
+                <strong className="text-[var(--color-ink)]">That is one reader the feed was never going to give me.</strong>{" "}
+                {output.posts30 !== null && output.posts30 > 0
+                  ? `Do it ${output.posts30.toLocaleString("en-US")} times in thirty days, like the last thirty,`
+                  : "Do it every day,"}{" "}
+                and you have an archive that widens the audience on its own.
+              </p>
+              <p>
+                Give me your information and I do the same thing for you. Researched. Written the right way.
+                Published on a domain that already ranks. Wired with the forms and buttons that make it pay.{" "}
+                <a href="#fuel-time" className="font-bold text-[var(--color-accent)] underline underline-offset-4">
+                  That starts at {floor}.
+                </a>
+              </p>
+            </div>
+            <ol className="grid grid-cols-3 gap-2" aria-label="How one article works">
+              {BILLBOARD.map((s, i) => (
+                <li key={s.t} className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-2.5 sm:p-3">
+                  <span className="font-display text-2xl font-black tabular-nums text-[var(--color-accent)]">{i + 1}</span>
+                  <span className="mt-0.5 block text-xs font-bold leading-tight text-[var(--color-ink)] sm:text-sm">{s.t}</span>
+                  <span className="mt-1 block text-[11px] leading-snug text-[var(--color-muted)]">{s.s}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+
+        {/* ── Not just articles ────────────────────────────────────────── */}
+        <section className="mt-12" aria-labelledby="fuel-more">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">Not just articles</p>
+          <h2 id="fuel-more" className="mt-1 font-display text-2xl font-bold tracking-tight sm:text-3xl">
+            Articles are one thing that comes out of the machine.
+          </h2>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--color-ink-soft)]">
+            I build sites. I build funnels. I build tools. I run investigations and research. I connect people who
+            need each other. I find answers to questions you did not know how to ask. All of it runs on the same
+            tokens.
+          </p>
+          <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {MACHINE_DOES.map((m) => (
+              <li key={m.title}>
+                <Link href={m.href} className="qa-tile group flex h-full flex-col p-4">
+                  <span className="text-sm font-black text-[var(--color-ink)]">{m.title}</span>
+                  <span className="mt-1 flex-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">{m.body}</span>
+                  <span className="mt-3 text-xs font-black uppercase tracking-wider text-[var(--color-accent)] transition group-hover:underline">
+                    {m.cta} →
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
 
         {/* ── The good the fuel did ─────────────────────────────────────── */}
         {archives.length > 0 ? (
@@ -242,6 +393,16 @@ export default async function FuelPage({
             Same line items I publish on the funding ledger. They change when the bill changes, not when
             I feel like it.
           </p>
+          <div className="mt-4 rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-3 sm:p-4">
+            <p className="text-[11px] font-black uppercase tracking-wider text-[var(--color-muted)]">
+              What the tools cost at the sticker · checked {PRICES_CHECKED}
+            </p>
+            <ul className="mt-2 space-y-1.5 text-xs leading-relaxed text-[var(--color-ink-soft)]">
+              {STICKER.map((s) => (
+                <li key={s}>{s}</li>
+              ))}
+            </ul>
+          </div>
         </section>
 
         {/* ── Why I ask ─────────────────────────────────────────────────── */}
@@ -303,6 +464,61 @@ export default async function FuelPage({
               </li>
             </ul>
           </div>
+        </section>
+
+        {/* ── $50 and up: my time ──────────────────────────────────────── */}
+        <section id="fuel-time" className="mt-12 scroll-mt-24" aria-labelledby="fuel-time-title">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">The deal</p>
+          <h2 id="fuel-time-title" className="mt-1 font-display text-2xl font-bold tracking-tight sm:text-3xl">
+            Under {floor}, you fuel the machine. {floor} and up, you get me.
+          </h2>
+          <p className="mt-2 max-w-2xl text-base leading-relaxed text-[var(--color-ink-soft)]">
+            Writing an article takes real time. The research. The pictures. The back and forth with you until it
+            is right. I do not do that for five dollars, and I will not pretend to. Under {floor}, your fuel keeps
+            the machine running and your name goes on the wall. At {floor} and up, part of the tank is my time,
+            and this is exactly what you get.
+          </p>
+          <ol className="mt-5 grid gap-3 md:grid-cols-2">
+            {timeRows.map((t) => (
+              <li
+                key={`${t.slug}-${t.monthly ? "m" : "o"}`}
+                className={`rounded-2xl border-2 p-4 sm:p-5 ${
+                  t.featured
+                    ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)]/40"
+                    : t.monthly
+                      ? "border-[var(--color-navy)] bg-[var(--color-blue-soft)]/50"
+                      : "border-[var(--color-line)] bg-[var(--color-surface)]"
+                }`}
+              >
+                <div className="flex flex-wrap items-baseline justify-between gap-2">
+                  <p className="font-display text-2xl font-black tabular-nums tracking-tight text-[var(--color-ink)]">
+                    {usdWhole(t.amountCents)}
+                    {t.monthly ? <span className="text-sm font-bold text-[var(--color-muted)]">/mo</span> : null}
+                  </p>
+                  <p className="text-[11px] font-black uppercase tracking-wider text-[var(--color-muted)]">{t.title}</p>
+                </div>
+                <ul className="mt-2 space-y-1.5 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+                  {t.gets.map((g) => (
+                    <li key={g} className="flex gap-2">
+                      <span className="text-[var(--color-accent)]" aria-hidden>
+                        ✓
+                      </span>
+                      <span>{g}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  href={`/fuel?tier=${t.slug}#fuel`}
+                  className="mt-3 inline-flex min-h-11 items-center text-sm font-bold text-[var(--color-accent)] underline underline-offset-4 sm:min-h-0"
+                >
+                  {t.monthly ? `Start ${usdWhole(t.amountCents)} a month` : `Fuel ${usdWhole(t.amountCents)}`} →
+                </Link>
+              </li>
+            ))}
+          </ol>
+          <p className="mt-3 text-xs leading-relaxed text-[var(--color-muted)]">
+            Every tier includes everything under it. Your name on the wall is optional.
+          </p>
         </section>
 
         {/* ── The form ─────────────────────────────────────────────────── */}

@@ -4,6 +4,8 @@ import {
   FUEL_FLOOR_CENTS,
   FUEL_MAX_CENTS,
   FUEL_MONTHLY,
+  FUEL_TIME_FLOOR_CENTS,
+  timeTiers,
   articlesLabel,
   daysLeftInMonth,
   fuelArticlesAtPace,
@@ -106,4 +108,17 @@ test("fuel notes round-trip through the support_intents message field", () => {
   assert.deepEqual(parseFuelMessage(formatFuelMessage("Spark", "")), { tier: "Spark", ask: "" });
   assert.equal(parseFuelMessage("Keep going, Ryan."), null);
   assert.equal(parseFuelMessage(null), null);
+});
+
+test("$50 is the floor for anything that costs Ryan's time", () => {
+  assert.equal(FUEL_TIME_FLOOR_CENTS, 5_000);
+  const tiers = resolveTiers(130_000);
+  const time = timeTiers(tiers);
+  assert.ok(time.length > 0);
+  assert.ok(time.every((t) => t.amountCents >= FUEL_TIME_FLOOR_CENTS));
+  assert.ok(time.some((t) => t.slug === "day"));
+  assert.ok(time.some((t) => t.slug === "article"));
+  assert.ok(!time.some((t) => t.slug === "spark"));
+  assert.ok(!time.some((t) => t.slug === "shift"));
+  assert.ok(FUEL_MONTHLY.amountCents >= FUEL_TIME_FLOOR_CENTS);
 });

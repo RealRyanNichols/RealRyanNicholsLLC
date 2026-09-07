@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ServicesHub } from "@/components/ServicesHub";
+import { FuelBand } from "@/components/FuelBand";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -71,6 +72,12 @@ export default function ServicesPage() {
                 Browse the store →
               </span>
             </Link>
+          </div>
+
+          {/* Not hiring today? The free side of the same machine runs on
+              tokens, and the fuel page trades them for work. */}
+          <div className="mt-8">
+            <FuelBand />
           </div>
         </div>
       </section>

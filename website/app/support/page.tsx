@@ -77,8 +77,10 @@ export default function SupportPage() {
           Fuel the machine. Get work back.
         </p>
         <p className="mt-1.5 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-          A question answered in public. A letter in the mail. An article on the
-          topic you pick. Every tier is a trade, and the bill is published.
+          Under $50 fuels the machine and puts your name on the wall. $50 and up
+          buys Ryan&apos;s time: a question answered in public, a letter in the
+          mail, an article on the topic you pick. Every tier is a trade, and the
+          bill is published.
         </p>
         <span className="mt-3 inline-block text-sm font-bold text-[var(--color-accent)]">See the tiers →</span>
       </Link>
