@@ -9,6 +9,8 @@ import { CaseInfoCard } from "@/components/CaseInfoCard";
 import { CaseStats } from "@/components/CaseStats";
 import { CaseHero } from "@/components/case/CaseHero";
 import { CaseStatCards } from "@/components/case/CaseStatCards";
+import { CaseChapterNav } from "@/components/case/CaseChapterNav";
+import { ChapterHeader, Eyebrow } from "@/components/case/ChapterHeader";
 import { EvidenceGrid } from "@/components/EvidenceGrid";
 import { ReactionBar } from "@/components/ReactionBar";
 import { ReadingProgress } from "@/components/ReadingProgress";
@@ -178,7 +180,17 @@ export function RyanCaseProfile({
   ];
 
   return (
-    <article className="mx-auto max-w-4xl px-4 py-10">
+    // From lg up the story gets a spine: a sticky chapter rail in a narrow
+    // left column, the record in the right. Below lg the rail is gone and
+    // the chip row under the hero carries the chapters instead.
+    <article className="mx-auto max-w-4xl px-4 py-10 lg:grid lg:max-w-6xl lg:grid-cols-[11rem_minmax(0,56rem)] lg:justify-center lg:gap-10">
+      <aside className="hidden lg:block">
+        <div className="sticky top-24">
+          <CaseChapterNav variant="rail" />
+        </div>
+      </aside>
+
+      <div className="min-w-0">
       <JsonLd data={profileLd} />
       <CaseViewTracker type="person" slug={person.slug} />
       <ReadingProgress />
@@ -200,6 +212,12 @@ export function RyanCaseProfile({
 
       {/* ---- Four numbers, each a door to its proof ---- */}
       <CaseStatCards totals={totals} className="mt-4" />
+
+      {/* The spine on a phone: the chapters as a scrollable chip row, in
+          flow under the hero. The desktop rail lives in the left column. */}
+      <div className="mt-5 lg:hidden">
+        <CaseChapterNav variant="chips" />
+      </div>
 
       {/* The two doors as the return rail, when this page is /case itself. */}
       {rail ? <div className="mt-8">{rail}</div> : null}
@@ -247,9 +265,7 @@ export function RyanCaseProfile({
 
       {/* ---- The line that should stop you ---- */}
       <aside className="mt-6 rounded-2xl border-2 border-[var(--color-navy)]/30 bg-[var(--color-blue-soft)]/40 p-6 sm:p-8">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-navy)] font-bold">
-          On the record
-        </p>
+        <Eyebrow>On the record</Eyebrow>
         <p className="mt-2 text-xl sm:text-2xl font-bold tracking-tight font-display leading-snug text-[var(--color-ink)]">
           A federal judge acknowledged — out loud, on the record — that his
           due-process rights had been violated. He stayed in anyway.
@@ -287,24 +303,16 @@ export function RyanCaseProfile({
 
       {/* ---- Who he is, before the government ---- */}
       <section id="chapter-one" className="mt-12 scroll-mt-24 border-t-2 border-[var(--color-line)] pt-10">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-navy)] font-bold">
-          Chapter One · Before the case — the man behind the file
-        </p>
-        <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
-          Two decades running toward the disaster.
-        </h2>
-        <p className="mt-3 text-base text-[var(--color-ink-soft)] leading-relaxed max-w-2xl">
-          Long before he was a case number, Ryan was the man wading into
-          floodwater to pull strangers out. A U.S. Marine, then a civilian
-          search-and-rescue volunteer across more than two dozen hurricane
-          deployments.
-        </p>
+        <ChapterHeader
+          n="One"
+          label="Before the case — the man behind the file"
+          title="Two decades running toward the disaster."
+          subtitle="Long before he was a case number, Ryan was the man wading into floodwater to pull strangers out. A U.S. Marine, then a civilian search-and-rescue volunteer across more than two dozen hurricane deployments."
+        />
 
         {/* Service record */}
         <div className="mt-6 rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6">
-          <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-navy)] font-bold">
-            Service record · USMC 2010–2014
-          </p>
+          <Eyebrow>Service record · USMC 2010–2014</Eyebrow>
           <h3 className="mt-1 text-xl font-bold tracking-tight font-display">
             United States Marine Corps
           </h3>
@@ -337,9 +345,7 @@ export function RyanCaseProfile({
 
         {/* Operations timeline */}
         <div className="mt-8">
-          <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-navy)] font-bold">
-            Search & rescue · the operations log
-          </p>
+          <Eyebrow>Search & rescue · the operations log</Eyebrow>
           <h3 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight font-display">
             Two dozen-plus deployments. A partial record.
           </h3>
@@ -441,13 +447,13 @@ export function RyanCaseProfile({
       <CaseInfoCard person={person} />
 
       {/* ---- The J6 case, start to finish ---- */}
-      <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-navy)] font-bold">
-          Chapter Two · The case, start to finish
-        </p>
-        <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
-          Arrested. Convicted. Pardoned.
-        </h2>
+      <section id="chapter-two" className="mt-12 scroll-mt-24 border-t-2 border-[var(--color-line)] pt-10">
+        <ChapterHeader
+          n="Two"
+          label="The case, start to finish"
+          title="Arrested. Convicted. Pardoned."
+          subtitle="From the arrest in the Eastern District of Texas to the dismissal with prejudice, in order, with the paper where it exists."
+        />
         <ol className="mt-5 relative border-l-2 border-[var(--color-line)] ml-3 space-y-5">
           {[
             { date: "Jan 18, 2021", title: "Arrested", detail: "Taken into custody in the Eastern District of Texas." },
@@ -521,16 +527,15 @@ export function RyanCaseProfile({
       </section>
 
       {/* ---- The detention record — the documented account ---- */}
-      <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-navy)] font-bold">
-          Chapter Three · The detention record — {totals.daysArrestToPardon.toLocaleString()} days, arrest to pardon
-        </p>
-        <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
-          Not memoir. Paper.
-        </h2>
+      <section id="chapter-three" className="mt-12 scroll-mt-24 border-t-2 border-[var(--color-line)] pt-10">
+        <ChapterHeader
+          n="Three"
+          label={`The detention record — ${totals.daysArrestToPardon.toLocaleString("en-US")} days, arrest to pardon`}
+          title="Not memoir. Paper."
+          subtitle="What happened between arrest and pardon is not a story he tells — it is a file he built, one exhibit at a time, from inside."
+        />
         <p className="mt-2 text-sm text-[var(--color-ink-soft)] max-w-2xl leading-relaxed">
-          What happened between arrest and pardon is not a story he tells — it is
-          a file he built, one exhibit at a time, from inside. Every entry below
+          Every entry below
           carries an exhibit number from the master archive or lives in the{" "}
           <Link href="/case?view=documents" className="text-[var(--color-navy)] font-semibold hover:underline">
             public document record
@@ -749,17 +754,13 @@ export function RyanCaseProfile({
 
       {/* ---- On the record now (latest dispatches) ---- */}
       {titledPosts.length > 0 ? (
-        <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
-          <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-navy)] font-bold">
-            Chapter Four · On the record now
-          </p>
-          <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
-            He didn&apos;t go quiet. He built a newsroom.
-          </h2>
-          <p className="mt-3 text-base text-[var(--color-ink-soft)] leading-relaxed max-w-2xl">
-            Ryan reports on his own case — and the weaponization of the justice
-            system — as an independent investigative journalist. The latest:
-          </p>
+        <section id="chapter-four" className="mt-12 scroll-mt-24 border-t-2 border-[var(--color-line)] pt-10">
+          <ChapterHeader
+            n="Four"
+            label="On the record now"
+            title="He didn't go quiet. He built a newsroom."
+            subtitle="Ryan reports on his own case — and the weaponization of the justice system — as an independent investigative journalist. The latest:"
+          />
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
             {titledPosts.map((p) => (
               <Link
@@ -800,11 +801,9 @@ export function RyanCaseProfile({
       ) : null}
 
       {/* ---- Evidence on file ---- */}
-      <section className="mt-12 border-t border-[var(--color-line)] pt-8">
+      <section id="evidence" className="mt-12 scroll-mt-24 border-t border-[var(--color-line)] pt-8">
         <div className="border-l-2 border-[var(--color-navy)] pl-4 mb-5">
-          <p className="text-[10px] uppercase tracking-wider text-[var(--color-navy)] font-bold">
-            Evidence on file
-          </p>
+          <Eyebrow>Evidence on file</Eyebrow>
           <h2 className="text-lg sm:text-xl font-bold tracking-tight">
             {evidence.length === 0
               ? "Linked from the wider record"
@@ -848,9 +847,7 @@ export function RyanCaseProfile({
 
       {/* ---- The full record · a directory into every part of the case ---- */}
       <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-navy)] font-bold">
-          The full record
-        </p>
+        <Eyebrow>The full record</Eyebrow>
         <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
           Everything is public. Walk it yourself.
         </h2>
@@ -889,9 +886,7 @@ export function RyanCaseProfile({
 
       {/* ---- Study this case — the researcher's on-ramp ---- */}
       <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-navy)] font-bold">
-          Study this case
-        </p>
+        <Eyebrow>Study this case</Eyebrow>
         <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
           Built to be checked, cited, and taught.
         </h2>
@@ -936,9 +931,7 @@ export function RyanCaseProfile({
 
       {/* ---- Case Builder — this page is the product demo ---- */}
       <section className="mt-12 rounded-2xl border-2 border-[var(--color-navy)] bg-[var(--color-surface)] p-6 sm:p-8">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-navy)] font-bold">
-          Case Builder
-        </p>
+        <Eyebrow>Case Builder</Eyebrow>
         <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
           Fighting a case the public should see? He builds these.
         </h2>
@@ -968,9 +961,7 @@ export function RyanCaseProfile({
       {/* ---- Closing CTA · stand with him ---- */}
       <section className="mt-12">
         <div className="rounded-3xl border-2 border-[var(--color-navy)] bg-[var(--color-blue-soft)]/40 p-6 sm:p-10 text-center">
-          <p className="text-[11px] uppercase tracking-[0.25em] text-[var(--color-navy)] font-bold">
-            Stand with him
-          </p>
+          <Eyebrow>Stand with him</Eyebrow>
           <h2 className="mt-2 text-2xl sm:text-4xl font-bold tracking-tight font-display leading-[1.06] max-w-2xl mx-auto">
             He kept the receipts. Help keep them public.
           </h2>
@@ -1004,6 +995,7 @@ export function RyanCaseProfile({
           </div>
         </div>
       </section>
+      </div>
     </article>
   );
 }
