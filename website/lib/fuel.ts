@@ -24,8 +24,12 @@ export const FUEL_CAMPAIGN = "fuel";
 export const FUEL_PURPOSE = "site";
 export const FUEL_MESSAGE_PREFIX = "Token Fund";
 
-export const FUEL_FLOOR_CENTS = 2_000;
+// $5 floor: Stripe's card fee on $5 is well under a dollar, so nine dollars
+// in ten still reach the machine. Below that the fee starts winning.
+export const FUEL_FLOOR_CENTS = 500;
 export const FUEL_MAX_CENTS = 500_000;
+
+export type FuelCadence = "once" | "monthly";
 
 export type FuelTier = {
   slug: string;
@@ -45,10 +49,18 @@ export type ResolvedFuelTier = Omit<FuelTier, "amountCents"> & { amountCents: nu
 export const FUEL_TIERS: FuelTier[] = [
   {
     slug: "spark",
+    amountCents: 500,
+    title: "A spark",
+    blurb: "Keeps the machine running through one build session.",
+    gets: ["Your name on the Fuel wall, or stay anonymous"],
+    askLabel: "Anything you want me to know (optional)",
+  },
+  {
+    slug: "shift",
     amountCents: 2_000,
-    title: "Spark",
-    blurb: "Keeps the machine running through a build session.",
-    gets: ["Your name on the Fuel wall, or stay anonymous", "My thanks, in writing"],
+    title: "A shift",
+    blurb: "Half a day of articles, maps, and archive work.",
+    gets: ["My thanks, in writing"],
     askLabel: "Anything you want me to know (optional)",
   },
   {
@@ -64,7 +76,7 @@ export const FUEL_TIERS: FuelTier[] = [
     amountCents: 10_000,
     title: "Founding fuel",
     blurb: "The people who kept the lights on when it counted.",
-    gets: ["A personal letter from me, on paper, in the mail"],
+    gets: ["A personal letter from me, on paper, in the mail", "The Founding mark next to your name on the wall"],
     askLabel: "Where to send the letter, and anything you want me to know",
   },
   {
@@ -90,6 +102,21 @@ export const FUEL_TIERS: FuelTier[] = [
     askRequired: true,
   },
 ];
+
+// The monthly lane. One recurring amount, billed by Stripe every month until
+// the supporter stops it. It is not in FUEL_TIERS because it is a cadence,
+// not a size; the checkout route resolves it by slug.
+export const FUEL_MONTHLY: ResolvedFuelTier = {
+  slug: "keeper",
+  amountCents: 5_000,
+  title: "Keeper",
+  blurb: "A day of the machine, every month, until you say stop.",
+  gets: [
+    "Your name pinned in the Keepers row at the top of the Fuel wall, every month you keep it running",
+    "Everything a day of builds gets: one question, answered in public",
+  ],
+  askLabel: "Your question, or anything you want me to know",
+};
 
 export type FundingItem = {
   label: string;
@@ -168,6 +195,21 @@ export function fuelDuration(amountCents: number, billCents: number): string | n
   if (days >= 0.9) return "about a day of the machine";
   const hours = Math.max(1, Math.round(days * 24));
   return `about ${hours} hour${hours === 1 ? "" : "s"} of the machine`;
+}
+
+// Articles a gift covers at the last 30 days' pace: the real bill divided
+// by the real count of posts published in that window. Null without both.
+export function fuelArticlesAtPace(amountCents: number, billCents: number, posts30: number | null): number | null {
+  if (!(billCents > 0) || !(amountCents > 0) || posts30 === null || !(posts30 > 0)) return null;
+  const perArticleCents = billCents / posts30;
+  return amountCents / perArticleCents;
+}
+
+export function articlesLabel(n: number | null): string | null {
+  if (n === null) return null;
+  if (n < 0.75) return "part of an article";
+  if (n < 1.5) return "about 1 article";
+  return `about ${Math.round(n)} articles`;
 }
 
 // Calendar helpers for the month meter (UTC, matching getFuelRaised).

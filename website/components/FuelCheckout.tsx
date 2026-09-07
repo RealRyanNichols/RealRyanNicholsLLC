@@ -5,28 +5,37 @@ import { trackEvent } from "@/lib/analytics";
 import {
   FUEL_FLOOR_CENTS,
   FUEL_MAX_CENTS,
+  FUEL_MONTHLY,
+  articlesLabel,
+  fuelArticlesAtPace,
   fuelDuration,
   tierForAmount,
   usdWhole,
+  type FuelCadence,
   type ResolvedFuelTier,
 } from "@/lib/fuel";
-import { FUEL_PICK_EVENT } from "@/components/FuelQuickPick";
+import { FUEL_PICK_EVENT, type FuelPick } from "@/components/FuelQuickPick";
 
-// The Token Fund form. Three steps on one screen: pick the fuel, say who you
-// are, say what you want, then Stripe. Every control is at least 44px tall.
+// The Token Fund form. Three steps on one screen: pick the fuel (once or
+// monthly), say who you are, say what you want, then Stripe. Every control is
+// at least 44px tall.
 export function FuelCheckout({
   tiers,
   paymentsConfigured,
   billCents,
+  posts30 = null,
   initialTier = null,
 }: {
   tiers: ResolvedFuelTier[];
   paymentsConfigured: boolean;
   billCents: number;
+  posts30?: number | null;
   initialTier?: string | null;
 }) {
   const featured = tiers.find((t) => t.featured) ?? tiers[0] ?? null;
+  const startMonthly = initialTier === FUEL_MONTHLY.slug;
   const startSlug = tiers.some((t) => t.slug === initialTier) ? initialTier : (featured?.slug ?? null);
+  const [cadence, setCadence] = useState<FuelCadence>(startMonthly ? "monthly" : "once");
   const [tierSlug, setTierSlug] = useState<string | null>(startSlug);
   const [custom, setCustom] = useState("");
   const [name, setName] = useState("");
@@ -37,11 +46,17 @@ export function FuelCheckout({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // The hero's quick-pick buttons select a tier here without a reload.
+  // The hero's quick-pick buttons select here without a reload.
   useEffect(() => {
     function onPick(e: Event) {
-      const slug = (e as CustomEvent<string | null>).detail;
-      setTierSlug(slug && tiers.some((t) => t.slug === slug) ? slug : null);
+      const pick = (e as CustomEvent<FuelPick>).detail;
+      if (pick.cadence === "monthly") {
+        setCadence("monthly");
+        return;
+      }
+      setCadence("once");
+      const slug = pick.slug && tiers.some((t) => t.slug === pick.slug) ? pick.slug : null;
+      setTierSlug(slug);
       setCustom("");
       if (!slug) {
         window.setTimeout(() => {
@@ -53,26 +68,34 @@ export function FuelCheckout({
     return () => window.removeEventListener(FUEL_PICK_EVENT, onPick);
   }, [tiers]);
 
+  const monthly = cadence === "monthly";
   const customCents = custom.trim() ? Math.round(Number(custom) * 100) : NaN;
-  const selected: ResolvedFuelTier | null = tierSlug
-    ? (tiers.find((t) => t.slug === tierSlug) ?? null)
-    : Number.isFinite(customCents)
-      ? tierForAmount(tiers, customCents)
-      : null;
-  const amountCents = tierSlug ? (selected?.amountCents ?? 0) : customCents;
+  const selected: ResolvedFuelTier | null = monthly
+    ? FUEL_MONTHLY
+    : tierSlug
+      ? (tiers.find((t) => t.slug === tierSlug) ?? null)
+      : Number.isFinite(customCents)
+        ? tierForAmount(tiers, customCents)
+        : null;
+  const amountCents = monthly ? FUEL_MONTHLY.amountCents : tierSlug ? (selected?.amountCents ?? 0) : customCents;
   const askRequired = !!selected?.askRequired;
   const haveAmount = Number.isFinite(amountCents) && amountCents > 0;
   const duration = haveAmount ? fuelDuration(amountCents, billCents) : null;
-  const earned = selected ? tiers.filter((t) => t.amountCents <= selected.amountCents).flatMap((t) => t.gets) : [];
+  const articles = haveAmount ? articlesLabel(fuelArticlesAtPace(amountCents, billCents, posts30)) : null;
+  const earned = monthly
+    ? FUEL_MONTHLY.gets
+    : selected
+      ? tiers.filter((t) => t.amountCents <= selected.amountCents).flatMap((t) => t.gets)
+      : [];
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
-    if (!tierSlug && !Number.isFinite(customCents)) {
+    if (!monthly && !tierSlug && !Number.isFinite(customCents)) {
       setError("Pick a tier or enter an amount.");
       return;
     }
-    if (!tierSlug && customCents < FUEL_FLOOR_CENTS) {
+    if (!monthly && !tierSlug && customCents < FUEL_FLOOR_CENTS) {
       setError(`The floor is ${usdWhole(FUEL_FLOOR_CENTS)}. Below that, card fees eat the gift.`);
       return;
     }
@@ -81,14 +104,16 @@ export function FuelCheckout({
       return;
     }
     setBusy(true);
-    trackEvent("support_intent_attempt", { source: "fuel", tier: tierSlug ?? "custom", amount: amountCents / 100 });
+    const tierLabel = monthly ? FUEL_MONTHLY.slug : (tierSlug ?? "custom");
+    trackEvent("support_intent_attempt", { source: "fuel", tier: tierLabel, cadence, amount: amountCents / 100 });
     try {
       const res = await fetch("/api/checkout/fuel", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          tier: tierSlug,
-          amount_cents: tierSlug ? null : customCents,
+          tier: monthly ? FUEL_MONTHLY.slug : tierSlug,
+          amount_cents: monthly || tierSlug ? null : customCents,
+          cadence,
           display_name: name,
           email,
           ask,
@@ -103,7 +128,7 @@ export function FuelCheckout({
         setBusy(false);
         return;
       }
-      trackEvent("support_checkout_open", { source: "fuel", tier: tierSlug ?? "custom", amount: amountCents / 100 });
+      trackEvent("support_checkout_open", { source: "fuel", tier: tierLabel, cadence, amount: amountCents / 100 });
       window.location.href = json.url;
     } catch {
       trackEvent("support_intent_failed", { source: "fuel", reason: "network" });
@@ -120,103 +145,158 @@ export function FuelCheckout({
       {/* Step 1: the fuel */}
       <div>
         <StepLabel n={1}>Pick your fuel</StepLabel>
-        <div className="mt-3 grid gap-3 sm:grid-cols-2" role="radiogroup" aria-label="Pick an amount">
-          {tiers.map((t) => {
-            const on = tierSlug === t.slug;
-            const time = fuelDuration(t.amountCents, billCents);
-            return (
-              <button
-                key={t.slug}
-                type="button"
-                role="radio"
-                aria-checked={on}
-                data-fuel-tier={t.slug}
-                onClick={() => {
-                  setTierSlug(t.slug);
-                  setCustom("");
-                }}
-                className={`relative min-h-11 rounded-2xl border-2 p-4 text-left transition ${
-                  on
-                    ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] shadow-md"
-                    : "border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-accent)]"
-                }`}
-              >
-                <div className="flex items-baseline justify-between gap-3">
-                  <span className="font-display text-3xl font-black tabular-nums tracking-tight text-[var(--color-ink)]">
-                    {usdWhole(t.amountCents)}
-                  </span>
-                  {t.featured ? (
-                    <span className="rounded-full bg-[var(--color-accent)] px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-[var(--color-paper)]">
-                      Most asked for
-                    </span>
-                  ) : null}
-                </div>
-                <p className="mt-1 text-base font-bold text-[var(--color-ink)]">{t.title}</p>
-                {time ? (
-                  <p className="mt-0.5 text-xs font-black uppercase tracking-wider text-[var(--color-accent)]">
-                    {time}
-                  </p>
-                ) : null}
-                <p className="mt-1.5 text-sm text-[var(--color-ink-soft)]">{t.blurb}</p>
-                <ul className="mt-2 space-y-1 text-sm text-[var(--color-ink-soft)]">
-                  {t.gets.map((g) => (
-                    <li key={g} className="flex gap-2">
-                      <span className="text-[var(--color-accent)]" aria-hidden>
-                        ✓
-                      </span>
-                      <span>{g}</span>
-                    </li>
-                  ))}
-                </ul>
-                {on ? (
-                  <span className="absolute right-4 top-4 hidden text-xs font-black uppercase tracking-wider text-[var(--color-accent)] sm:block">
-                    {t.featured ? "" : "Selected"}
-                  </span>
-                ) : null}
-              </button>
-            );
-          })}
 
-          {/* Custom amount */}
-          <label
-            className={`flex min-h-11 flex-col justify-center rounded-2xl border-2 p-4 transition ${
-              !tierSlug
-                ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] shadow-md"
-                : "border-[var(--color-line)] bg-[var(--color-surface)]"
+        {/* Once or monthly */}
+        <div className="mt-3 grid grid-cols-2 gap-2 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface-2)] p-1" role="radiogroup" aria-label="One time or monthly">
+          <button
+            type="button"
+            role="radio"
+            aria-checked={!monthly}
+            data-fuel-cadence="once"
+            onClick={() => setCadence("once")}
+            className={`min-h-11 rounded-lg px-3 text-sm font-black transition ${
+              !monthly ? "bg-[var(--color-navy)] text-[var(--color-paper)] shadow" : "text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]"
             }`}
           >
-            <span className="text-base font-bold text-[var(--color-ink)]">Your own amount</span>
-            <span className="mt-0.5 text-sm text-[var(--color-ink-soft)]">
-              {usdWhole(FUEL_FLOOR_CENTS)} floor, {usdWhole(FUEL_MAX_CENTS)} ceiling. You get the highest tier your amount reaches.
-            </span>
-            <span className="mt-3 flex items-center gap-2">
-              <span className="text-lg font-bold text-[var(--color-ink)]">$</span>
-              <input
-                type="number"
-                inputMode="numeric"
-                min={FUEL_FLOOR_CENTS / 100}
-                max={FUEL_MAX_CENTS / 100}
-                step={1}
-                value={custom}
-                onFocus={() => setTierSlug(null)}
-                onChange={(e) => {
-                  setTierSlug(null);
-                  setCustom(e.target.value);
-                }}
-                placeholder="0"
-                aria-label="Custom amount in dollars"
-                data-fuel-custom
-                className={field}
-              />
-            </span>
-            {!tierSlug && Number.isFinite(customCents) && customCents >= FUEL_FLOOR_CENTS ? (
-              <span className="mt-2 text-xs font-black uppercase tracking-wider text-[var(--color-accent)]">
-                {fuelDuration(customCents, billCents) ?? ""}
-                {selected ? ` · ${selected.title} tier` : ""}
-              </span>
-            ) : null}
-          </label>
+            One time
+          </button>
+          <button
+            type="button"
+            role="radio"
+            aria-checked={monthly}
+            data-fuel-cadence="monthly"
+            onClick={() => setCadence("monthly")}
+            className={`min-h-11 rounded-lg px-3 text-sm font-black transition ${
+              monthly ? "bg-[var(--color-navy)] text-[var(--color-paper)] shadow" : "text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]"
+            }`}
+          >
+            Monthly · {usdWhole(FUEL_MONTHLY.amountCents)}
+          </button>
         </div>
+
+        {monthly ? (
+          <div className="mt-3 rounded-2xl border-2 border-[var(--color-navy)] bg-[var(--color-blue-soft)]/60 p-4 sm:p-5" data-fuel-keeper>
+            <div className="flex items-baseline justify-between gap-3">
+              <span className="font-display text-3xl font-black tabular-nums tracking-tight text-[var(--color-ink)]">
+                {usdWhole(FUEL_MONTHLY.amountCents)}
+                <span className="text-base font-bold text-[var(--color-muted)]"> a month</span>
+              </span>
+              <span className="rounded-full bg-[var(--color-navy)] px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-[var(--color-paper)]">
+                {FUEL_MONTHLY.title}
+              </span>
+            </div>
+            <p className="mt-1 text-base font-bold text-[var(--color-ink)]">{FUEL_MONTHLY.blurb}</p>
+            {fuelDuration(FUEL_MONTHLY.amountCents, billCents) ? (
+              <p className="mt-0.5 text-xs font-black uppercase tracking-wider text-[var(--color-navy)]">
+                {fuelDuration(FUEL_MONTHLY.amountCents, billCents)}, every month
+              </p>
+            ) : null}
+            <ul className="mt-2 space-y-1 text-sm text-[var(--color-ink-soft)]">
+              {FUEL_MONTHLY.gets.map((g) => (
+                <li key={g} className="flex gap-2">
+                  <span className="text-[var(--color-accent)]" aria-hidden>
+                    ✓
+                  </span>
+                  <span>{g}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3 text-xs text-[var(--color-muted)]">
+              Stripe bills it monthly. Stop it any time by writing to me, and the last month is the last charge.
+            </p>
+          </div>
+        ) : (
+          <div className="mt-3 grid gap-3 sm:grid-cols-2" role="radiogroup" aria-label="Pick an amount">
+            {tiers.map((t) => {
+              const on = tierSlug === t.slug;
+              const time = fuelDuration(t.amountCents, billCents);
+              return (
+                <button
+                  key={t.slug}
+                  type="button"
+                  role="radio"
+                  aria-checked={on}
+                  data-fuel-tier={t.slug}
+                  onClick={() => {
+                    setTierSlug(t.slug);
+                    setCustom("");
+                  }}
+                  className={`relative min-h-11 rounded-2xl border-2 p-4 text-left transition ${
+                    on
+                      ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] shadow-md"
+                      : "border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-accent)]"
+                  }`}
+                >
+                  <div className="flex items-baseline justify-between gap-3">
+                    <span className="font-display text-3xl font-black tabular-nums tracking-tight text-[var(--color-ink)]">
+                      {usdWhole(t.amountCents)}
+                    </span>
+                    {t.featured ? (
+                      <span className="rounded-full bg-[var(--color-accent)] px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-[var(--color-paper)]">
+                        Most asked for
+                      </span>
+                    ) : null}
+                  </div>
+                  <p className="mt-1 text-base font-bold text-[var(--color-ink)]">{t.title}</p>
+                  {time ? (
+                    <p className="mt-0.5 text-xs font-black uppercase tracking-wider text-[var(--color-accent)]">{time}</p>
+                  ) : null}
+                  <p className="mt-1.5 text-sm text-[var(--color-ink-soft)]">{t.blurb}</p>
+                  <ul className="mt-2 space-y-1 text-sm text-[var(--color-ink-soft)]">
+                    {t.gets.map((g) => (
+                      <li key={g} className="flex gap-2">
+                        <span className="text-[var(--color-accent)]" aria-hidden>
+                          ✓
+                        </span>
+                        <span>{g}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </button>
+              );
+            })}
+
+            {/* Custom amount */}
+            <label
+              className={`flex min-h-11 flex-col justify-center rounded-2xl border-2 p-4 transition ${
+                !tierSlug
+                  ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] shadow-md"
+                  : "border-[var(--color-line)] bg-[var(--color-surface)]"
+              }`}
+            >
+              <span className="text-base font-bold text-[var(--color-ink)]">Your own amount</span>
+              <span className="mt-0.5 text-sm text-[var(--color-ink-soft)]">
+                {usdWhole(FUEL_FLOOR_CENTS)} floor, {usdWhole(FUEL_MAX_CENTS)} ceiling. You get the highest tier your amount reaches.
+              </span>
+              <span className="mt-3 flex items-center gap-2">
+                <span className="text-lg font-bold text-[var(--color-ink)]">$</span>
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  min={FUEL_FLOOR_CENTS / 100}
+                  max={FUEL_MAX_CENTS / 100}
+                  step={1}
+                  value={custom}
+                  onFocus={() => setTierSlug(null)}
+                  onChange={(e) => {
+                    setTierSlug(null);
+                    setCustom(e.target.value);
+                  }}
+                  placeholder="0"
+                  aria-label="Custom amount in dollars"
+                  data-fuel-custom
+                  className={field}
+                />
+              </span>
+              {!tierSlug && Number.isFinite(customCents) && customCents >= FUEL_FLOOR_CENTS ? (
+                <span className="mt-2 text-xs font-black uppercase tracking-wider text-[var(--color-accent)]">
+                  {fuelDuration(customCents, billCents) ?? ""}
+                  {selected ? ` · ${selected.title} tier` : ""}
+                </span>
+              ) : null}
+            </label>
+          </div>
+        )}
       </div>
 
       {/* Step 2: who you are */}
@@ -274,7 +354,11 @@ export function FuelCheckout({
       <div>
         <StepLabel n={3}>
           {selected?.askLabel ?? "Anything you want me to know"}
-          {askRequired ? <span className="text-[var(--color-accent)]"> · required</span> : <span className="font-normal normal-case tracking-normal text-[var(--color-muted)]"> (optional)</span>}
+          {askRequired ? (
+            <span className="text-[var(--color-accent)]"> · required</span>
+          ) : (
+            <span className="font-normal normal-case tracking-normal text-[var(--color-muted)]"> (optional)</span>
+          )}
         </StepLabel>
         <textarea
           value={ask}
@@ -301,7 +385,15 @@ export function FuelCheckout({
           <p className="text-xs font-black uppercase tracking-wider text-[var(--color-navy)]">The deal</p>
           <p className="mt-1 font-display text-xl font-bold tracking-tight text-[var(--color-ink)]">
             {usdWhole(amountCents)}
-            {duration ? <span className="text-[var(--color-ink-soft)]"> buys {duration}.</span> : null}
+            {monthly ? " a month" : ""}
+            {duration ? (
+              <span className="text-[var(--color-ink-soft)]">
+                {" "}
+                buys {duration}
+                {monthly ? ", every month" : ""}
+                {articles ? `, ${articles} at last month's pace` : ""}.
+              </span>
+            ) : null}
           </p>
           {earned.length > 0 ? (
             <ul className="mt-2 space-y-1 text-sm text-[var(--color-ink)]">
@@ -335,9 +427,11 @@ export function FuelCheckout({
         >
           {busy
             ? "Opening Stripe…"
-            : paymentsConfigured
-              ? `Fuel ${haveAmount ? usdWhole(amountCents) : "the machine"} →`
-              : "Payments open soon"}
+            : !paymentsConfigured
+              ? "Payments open soon"
+              : monthly
+                ? `Start ${usdWhole(FUEL_MONTHLY.amountCents)} a month →`
+                : `Fuel ${haveAmount ? usdWhole(amountCents) : "the machine"} →`}
         </button>
         <p className="mt-3 text-xs leading-relaxed text-[var(--color-muted)]">
           Secure checkout by Stripe. No account to make. Receipt by email. The money goes to Ryan Nichols directly.

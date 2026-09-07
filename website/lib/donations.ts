@@ -15,6 +15,8 @@ export async function recordDonationFromSession(
   client?: SupabaseClient,
 ): Promise<void> {
   // Only paid, one-time donation sessions belong in the donations table.
+  // Subscription sessions are recorded from their invoices instead (below),
+  // so the first month is never counted twice.
   if (session.mode !== "payment") return;
   if (session.metadata?.kind !== "donation") return;
   if (session.payment_status !== "paid") return;
@@ -34,6 +36,51 @@ export async function recordDonationFromSession(
       recurring: false,
       campaign: session.metadata?.campaign || null,
       source: session.metadata?.source || null,
+    },
+    { onConflict: "stripe_session_id" },
+  );
+}
+
+// A paid invoice on a recurring donation (the Token Fund "Keeper" lane).
+// Every invoice, the first one included, lands here once via invoice.paid;
+// the invoice id fills the unique stripe_session_id slot so a re-delivered
+// event is a no-op. Invoices that are not fuel donations are ignored.
+export async function recordFuelInvoice(
+  invoice: Stripe.Invoice,
+  client?: SupabaseClient,
+): Promise<void> {
+  const metadata = invoice.parent?.subscription_details?.metadata ?? null;
+  if (metadata?.kind !== "donation") return;
+  if (!metadata.campaign) return;
+  if (invoice.status !== "paid") return;
+  if (!(invoice.amount_paid > 0)) return;
+
+  // The SDK moved the payment intent off the invoice and onto its payments
+  // list; read either shape without depending on the API version.
+  const loose = invoice as unknown as {
+    payment_intent?: unknown;
+    payments?: { data?: Array<{ payment?: { payment_intent?: unknown } }> };
+  };
+  const candidate = loose.payments?.data?.[0]?.payment?.payment_intent ?? loose.payment_intent;
+  const paymentIntent =
+    typeof candidate === "string"
+      ? candidate
+      : candidate && typeof candidate === "object" && "id" in candidate
+        ? String((candidate as { id: unknown }).id)
+        : null;
+
+  const supabase = client ?? getSupabaseServiceClient();
+  await supabase.from("donations").upsert(
+    {
+      stripe_session_id: invoice.id,
+      stripe_payment_intent: paymentIntent,
+      email: invoice.customer_email ?? null,
+      name: invoice.customer_name ?? null,
+      amount_cents: invoice.amount_paid,
+      currency: invoice.currency ?? "usd",
+      recurring: true,
+      campaign: metadata.campaign,
+      source: metadata.source || null,
     },
     { onConflict: "stripe_session_id" },
   );

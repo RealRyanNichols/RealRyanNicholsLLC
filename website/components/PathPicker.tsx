@@ -99,12 +99,14 @@ export function PathPicker({ variant = "band" }: { variant?: Variant }) {
   }
 
   // The homepage renders the band inline — the floating overlay stands down
-  // there so first-timers aren't asked the same question twice. And it NEVER
-  // shows in the back office or inside embeds: those aren't funnels.
+  // there so first-timers aren't asked the same question twice. It NEVER
+  // shows in the back office or inside embeds: those aren't funnels. And it
+  // stays off the Token Fund page, which has exactly one question already.
   if (
     variant === "overlay" &&
     (pathname === "/" ||
       pathname.startsWith("/posts/") ||
+      pathname.startsWith("/fuel") ||
       pathname.startsWith("/admin") ||
       pathname.startsWith("/embed"))
   )
