@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 
@@ -99,6 +100,12 @@ export type CaseDocument = {
   series_position: number;
   series_title: string | null;
 };
+
+// The two dates every day-count on the site is measured from: the arrest in
+// the Eastern District of Texas and the Presidential pardon. Every page reads
+// them from here; nobody does their own date arithmetic.
+export const ARREST_DATE = "2021-01-18";
+export const PARDON_DATE = "2025-01-20";
 
 const GRIEVANCE_COLS =
   "id, slug, title, summary, body, category, severity, count, display_order, views_count, shares_count, og_image_url";
@@ -210,13 +217,51 @@ export async function getJ6PeoplePage({
   };
 }
 
-export async function getJ6ClaimCounts(): Promise<{
+// Public January 6 defendants on the record: the one number every
+// "N defendants indexed" line on the site must use. Same visibility filter as
+// every other count in this file — a hidden row is not part of the public
+// record. One head-only count query; never a row fetch. Optionally narrowed
+// to one claim status (the banner wants "unclaimed" and nothing else).
+//
+// Wrapped in React cache() so a page and the components it renders (the path
+// split, the banner) share one request per render instead of each firing
+// their own. A failed query resolves to 0; render sites must treat 0 as
+// "unavailable" and drop the numeral rather than print it.
+export const getJ6DefendantCount = cache(
+  async (
+    claimStatus?: "unclaimed" | "verified" | "pending",
+  ): Promise<number> => {
+    const supabase = getSupabaseStaticClient();
+    let request = supabase
+      .from("case_people")
+      .select("id", { count: "exact", head: true })
+      .eq("visibility", "public")
+      .eq("is_j6_defendant", true);
+    if (claimStatus) request = request.eq("claim_status", claimStatus);
+    const { count } = await request;
+    return count ?? 0;
+  },
+);
+
+// Sworn statements (affidavits) on the public record. Same filters the /j6
+// page used before this lived here, so the tile's number did not change.
+export const getSwornStatementCount = cache(async (): Promise<number> => {
+  const supabase = getSupabaseStaticClient();
+  const { count } = await supabase
+    .from("case_documents")
+    .select("id", { count: "exact", head: true })
+    .eq("visibility", "public")
+    .eq("doc_type", "affidavit");
+  return count ?? 0;
+});
+
+export const getJ6ClaimCounts = cache(async (): Promise<{
   total: number;
   withCaseNumber: number;
   unclaimed: number;
   verified: number;
   pending: number;
-}> {
+}> => {
   const supabase = getSupabaseStaticClient();
   const [total, withCaseNumber, unclaimed, verified, pending] = await Promise.all([
     supabase
@@ -258,7 +303,7 @@ export async function getJ6ClaimCounts(): Promise<{
     verified: verified.count ?? 0,
     pending: pending.count ?? 0,
   };
-}
+});
 
 export async function getPersonBySlug(slug: string): Promise<CasePerson | null> {
   const supabase = getSupabaseStaticClient();
@@ -455,7 +500,9 @@ export async function getPeopleForGrievance(grievanceId: string): Promise<CasePe
   return (data ?? []) as CasePerson[];
 }
 
-export async function getCaseTotals(): Promise<{
+// Per-request memoized (React cache): /case awaits this once for the page and
+// again inside the path split, and only one set of count queries goes out.
+export const getCaseTotals = cache(async (): Promise<{
   grievances: number;
   ryanFiledGrievances: number;
   documents: number;
@@ -464,7 +511,8 @@ export async function getCaseTotals(): Promise<{
   corroborators: number;
   daysDetained: number;
   events: number;
-}> {
+  igpBrokenFederalOfficers: number;
+}> => {
   const supabase = getSupabaseStaticClient();
   const [grievances, documents, people, corroborators, events, ryanFiled] = await Promise.all([
     supabase.from("case_grievances").select("id", { count: "exact", head: true }).eq("visibility", "public"),
@@ -490,8 +538,8 @@ export async function getCaseTotals(): Promise<{
       .eq("author_role", "ryan")
       .eq("doc_type", "grievance_form"),
   ]);
-  const arrest = new Date("2021-01-18");
-  const pardon = new Date("2025-01-20");
+  const arrest = new Date(ARREST_DATE);
+  const pardon = new Date(PARDON_DATE);
   const daysDetained = Math.round((pardon.getTime() - arrest.getTime()) / 86400000);
   return {
     grievances: grievances.count ?? 0,
@@ -503,5 +551,12 @@ export async function getCaseTotals(): Promise<{
     corroborators: corroborators.count ?? 0,
     daysDetained,
     events: events.count ?? 0,
+    // Federal officers on the record acknowledging the grievance system (IGP)
+    // is broken. Carried over from the /case archive header as published
+    // (2026-09-07 case-files pass); the underlying witness statements sit in
+    // the file but this figure is not yet tied to exhibit numbers here —
+    // NEEDS AUTHENTICATION before it is treated as more than the page's own
+    // tally. Lives here so no page carries its own typed count.
+    igpBrokenFederalOfficers: 2,
   };
-}
+});

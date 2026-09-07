@@ -1,17 +1,12 @@
 import Link from "next/link";
-import { getSupabaseStaticClient } from "@/lib/supabase/static";
+import { getJ6DefendantCount } from "@/lib/case";
 
 // Slim conversion banner on the homepage feed. Points readers to the
-// full J6 hub (/j6) where the live SiteMomentum panel lives.
+// full J6 hub (/j6) where the live SiteMomentum panel lives. The count is
+// the public-record count from lib/case.ts — same visibility filter as every
+// other number on the site, never a raw table count. One query.
 export async function J6Banner() {
-  const supabase = getSupabaseStaticClient();
-  const { count } = await supabase
-    .from("case_people")
-    .select("id", { count: "exact", head: true })
-    .eq("is_j6_defendant", true)
-    .eq("claim_status", "unclaimed");
-
-  const profilesReady = count ?? 0;
+  const profilesReady = await getJ6DefendantCount("unclaimed");
 
   return (
     <Link
@@ -21,7 +16,7 @@ export async function J6Banner() {
       <div className="flex items-center gap-4">
         <div className="flex-shrink-0">
           <div className="text-3xl sm:text-4xl font-bold tabular-nums tracking-tight text-[var(--color-blue)] group-hover:text-[var(--color-paper)]">
-            {profilesReady.toLocaleString()}
+            {profilesReady.toLocaleString("en-US")}
           </div>
         </div>
         <div className="flex-1 min-w-0">

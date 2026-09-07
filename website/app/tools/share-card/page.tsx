@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { pageMetadata } from "@/lib/page-metadata";
 import { ShareCardTool } from "@/components/ShareCardTool";
+import { getCaseTotals, getJ6DefendantCount } from "@/lib/case";
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = pageMetadata({
   title: "Share Card Generator — make the receipt travel",
@@ -10,7 +13,12 @@ export const metadata: Metadata = pageMetadata({
   path: "/tools/share-card",
 });
 
-export default function ShareCardPage() {
+export default async function ShareCardPage() {
+  // The presets' numbers come from lib/case.ts, never typed into the tool.
+  const [totals, defendants] = await Promise.all([
+    getCaseTotals(),
+    getJ6DefendantCount(),
+  ]);
   return (
     <article className="mx-auto max-w-6xl px-4 py-10">
       <nav className="mb-4 text-sm text-[var(--color-muted)]">
@@ -39,7 +47,7 @@ export default function ShareCardPage() {
       </p>
 
       <div className="mt-8">
-        <ShareCardTool />
+        <ShareCardTool defendants={defendants} days={totals.daysDetained} />
       </div>
 
       <section className="mt-12 rounded-2xl border-2 border-[var(--color-navy)]/30 bg-[var(--color-blue-soft)]/40 p-6 sm:p-8">

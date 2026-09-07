@@ -6,7 +6,21 @@ import Link from "next/link";
 
 type JoinState = "idle" | "submitting" | "ok" | "error";
 
-export function HomeRebrand() {
+// The record strip's numbers are handed in by the server: defendants,
+// documents and events from lib/case.ts (getJ6DefendantCount, getCaseTotals)
+// and daysSincePardon from lib/site-totals.ts (site_totals().days_since_pardon,
+// the one server-side source for that figure). This component used to carry
+// typed counts that drifted from the archive; it never types one again.
+// Note: as of the 2026-09-07 case-files pass nothing renders this component
+// — it is kept only so its numbers can no longer be wrong.
+export type HomeRecord = {
+  defendants: number;
+  documents: number;
+  events: number;
+  daysSincePardon: number;
+};
+
+export function HomeRebrand({ record }: { record: HomeRecord }) {
   const root = useRef<HTMLDivElement>(null);
   const [js, setJs] = useState(false);
   const [menu, setMenu] = useState(false);
@@ -195,10 +209,10 @@ export function HomeRebrand() {
               <Link className="btn btn-ghost ghost-dark" href="/case">Explore the record →</Link>
             </div>
             <div className="record-stats">
-              <div><b>1,571</b><span>J6 defendants</span></div>
-              <div><b>1,044</b><span>documents on file</span></div>
-              <div><b>39</b><span>timeline events</span></div>
-              <div><b>517</b><span>days since the pardon</span></div>
+              <div><b>{record.defendants.toLocaleString("en-US")}</b><span>J6 defendants</span></div>
+              <div><b>{record.documents.toLocaleString("en-US")}</b><span>documents on file</span></div>
+              <div><b>{record.events.toLocaleString("en-US")}</b><span>timeline events</span></div>
+              <div><b>{record.daysSincePardon.toLocaleString("en-US")}</b><span>days since the pardon</span></div>
             </div>
           </div>
         </section>

@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { pageMetadata } from "@/lib/page-metadata";
 import { EmbedSnippet } from "@/components/EmbedSnippet";
+import { getJ6DefendantCount } from "@/lib/case";
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = pageMetadata({
   title: "Embeddable widgets — put the archive on your site",
@@ -13,7 +16,9 @@ export const metadata: Metadata = pageMetadata({
 // The widget hub: every embed is a doorway back into the archive from
 // someone else's site. One iframe line each, no scripts, no tracking.
 
-export default function EmbedHubPage() {
+export default async function EmbedHubPage() {
+  // Live public count from lib/case.ts — the blurb never carries a typed one.
+  const defendants = await getJ6DefendantCount();
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
       <nav className="mb-4 text-sm text-[var(--color-muted)]">
@@ -41,7 +46,7 @@ export default function EmbedHubPage() {
       <div className="mt-8 grid gap-5">
         <EmbedSnippet
           title="Find Your Case — defendant lookup"
-          blurb="Your readers search all 1,571 indexed January 6 defendants by name, case number, or role, right on your page."
+          blurb={`Your readers search ${defendants > 0 ? `all ${defendants.toLocaleString("en-US")} indexed` : "the indexed"} January 6 defendants by name, case number, or role, right on your page.`}
           path="/embed/find-your-case"
           height={420}
         />
