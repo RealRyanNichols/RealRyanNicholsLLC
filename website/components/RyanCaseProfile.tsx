@@ -162,7 +162,7 @@ export function RyanCaseProfile({
           name: "What happened to Ryan Nichols in jail?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: `He was detained ${days} days between arrest and pardon, held across ${totals.facilities} federal and local facilities, including extended solitary confinement. In December 2021 a federal judge acknowledged on the record that his due-process rights had been violated; he remained detained. From inside he authored ${totals.ryanFiledGrievances.toLocaleString("en-US")} grievance forms, and the conditions record — photographs, complaints, medical records — is public in the case archive.`,
+            text: `${days} days passed between his arrest and his pardon. He was held across ${totals.facilities} federal and local facilities, including extended solitary confinement. In December 2021 a federal judge acknowledged on the record that his due-process rights had been violated; he remained detained. From inside he authored ${totals.ryanFiledGrievances.toLocaleString("en-US")} grievance forms, and the conditions record — photographs, complaints, medical records — is public in the case archive.`,
           },
         },
         {

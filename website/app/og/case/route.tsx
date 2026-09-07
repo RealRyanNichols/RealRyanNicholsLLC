@@ -131,12 +131,16 @@ export async function GET(req: Request) {
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
           <div style={{ display: "flex", gap: 48 }}>
             {stats.map(([n, label]) => (
-              <div key={label} style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+              // Capped so a long label ("Days, arrest to pardon") wraps
+              // inside its column instead of shoving the footer into the
+              // right margin.
+              <div key={label} style={{ display: "flex", flexDirection: "column", gap: 6, maxWidth: 210 }}>
                 <div style={{ display: "flex", fontSize: 52, fontWeight: 800, color: PALETTE.goldBright }}>{n}</div>
                 <div
                   style={{
                     display: "flex",
                     fontSize: 18,
+                    lineHeight: 1.2,
                     fontWeight: 700,
                     letterSpacing: "0.06em",
                     textTransform: "uppercase",
