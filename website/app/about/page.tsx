@@ -3,9 +3,9 @@ import { DECORATIONS, OPERATIONS, RECOGNITION } from "@/lib/bio";
 import { pageMetadata } from "@/lib/page-metadata";
 
 export const metadata = pageMetadata({
-  title: "About Ryan Nichols",
+  title: "Ryan Nichols — Marine Veteran, Founder & January 6 Advocate",
   description:
-    "United States Marine Corps veteran. Search and Rescue specialist. Founder of Wholesale Universe. Father. January 6 defendant pardoned January 20, 2025. Charges dismissed with prejudice.",
+    "Ryan Nichols is a U.S. Marine Corps veteran, search-and-rescue operator, founder of Wholesale Universe, and January 6 defendant pardoned by President Trump on January 20, 2025. Charges dismissed with prejudice by U.S. Attorney Edward R. Martin Jr. Based in East Texas.",
   path: "/about",
 });
 

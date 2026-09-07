@@ -6,11 +6,11 @@ import { getOgImage } from "@/lib/og-images";
 export async function generateMetadata(): Promise<Metadata> {
   const override = await getOgImage("/jan-6");
   const title = override?.title ?? "Jan 6";
-  const description = override?.description ?? "Ryan Nichols' Jan 6 story, in his own words.";
+  const description = override?.description ?? "Ryan Nichols' January 6 story in his own words — the arrest, the DC jail, the trial, and the pardon on January 20, 2025.";
   const url = `${SITE.url}/jan-6`;
   const ogImageUrl = override?.image_url ?? null;
   return {
-    title: "Jan 6",
+    title: "Ryan Nichols — January 6: In His Own Words",
     description,
     alternates: { canonical: url },
     openGraph: {

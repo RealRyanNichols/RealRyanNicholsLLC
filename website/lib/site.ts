@@ -1,8 +1,8 @@
 export const SITE = {
   name: "Ryan Nichols",
-  tagline: "Father, builder, J6 survivor. Healing in public.",
+  tagline: "Marine Veteran, Founder & January 6 Advocate. Healing in public.",
   description:
-    "The personal feed of Ryan Nichols. Faith, fatherhood, building, and the long road of healing in public — written from his own front porch, on a domain he owns.",
+    "Ryan Nichols — U.S. Marine Corps veteran, search-and-rescue operator, founder of Wholesale Universe, and January 6 defendant pardoned January 20, 2025. Charges dismissed with prejudice. Building in public from East Texas.",
   url: process.env.SITE_URL ?? "https://realryannichols.com",
   author: "Ryan Nichols",
   // Drop a square photo at website/public/avatar.jpg and set this to
