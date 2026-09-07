@@ -118,6 +118,9 @@ export function GrievancesView({ grievances }: { grievances: Awaited<ReturnType<
                           {g.summary}
                         </p>
                       ) : null}
+                      <span className="mt-3 inline-block text-xs font-bold text-[var(--color-navy)]">
+                        Read <span aria-hidden>→</span>
+                      </span>
                     </div>
                     <div className="flex-shrink-0 text-right">
                       <div className="text-2xl font-bold leading-none">{g.count}</div>
@@ -160,6 +163,9 @@ export function TimelineView({ events }: { events: Awaited<ReturnType<typeof get
             {e.location ? (
               <p className="mt-1 text-xs text-[var(--color-muted)]">📍 {e.location}</p>
             ) : null}
+            <span className="mt-2 inline-block text-xs font-bold text-[var(--color-navy)]">
+              Read <span aria-hidden>→</span>
+            </span>
           </Link>
         </li>
       ))}
@@ -221,7 +227,7 @@ export function DocumentsView({ documents }: { documents: Awaited<ReturnType<typ
               </p>
             ) : null}
             <span className="mt-auto pt-2.5 text-xs font-bold text-[var(--color-navy)]">
-              Open the record →
+              Read <span aria-hidden>→</span>
             </span>
           </div>
         </Link>

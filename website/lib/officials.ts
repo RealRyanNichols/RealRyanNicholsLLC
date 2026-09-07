@@ -6,6 +6,10 @@
 //
 //   FACT                  — verifiable, uncontested (role, agency, docket facts)
 //   RECORD                — stated on the court record / in a filing
+//   DOCUMENTED            — preserved in a named exhibit on file (a grievance,
+//                           a note, a photograph, a recording); the paper
+//                           exists and is linked, the claim inside it is not
+//                           thereby established
 //   RYAN STATEMENT        — Ryan's own account or characterization
 //   DOCUMENTED INFERENCE  — a conclusion drawn from disclosed, sourced facts
 //   NEEDS AUTHENTICATION  — real and load-bearing, but not yet independently verified
@@ -19,6 +23,7 @@
 export type ClaimLabel =
   | "FACT"
   | "RECORD"
+  | "DOCUMENTED"
   | "RYAN STATEMENT"
   | "DOCUMENTED INFERENCE"
   | "NEEDS AUTHENTICATION";

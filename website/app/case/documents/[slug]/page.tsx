@@ -61,10 +61,15 @@ export default async function DocumentPage({
   const d = await getDocumentBySlug(slug);
   if (!d) notFound();
   const url = `${SITE.url}/case/documents/${d.slug}`;
-  const externalUrl = d.file_url ?? d.external_url;
   const proxiedImage = `/api/case-doc/${d.slug}/image`;
   const video = detectVideo(d.external_url);
   const gate = await getGateState();
+  // "Open at the source" used to sit on every evidence card; it lives here
+  // now, above the record wall, so a logged-out reader can still verify a
+  // court filing on the public docket or a clip on its platform. It always
+  // points at the outside source, never at our re-hosted copy.
+  const sourceHref = video ? video.watchUrl : d.external_url;
+  const sourceLabel = video ? `Open on ${video.platformLabel}` : "Open at the source";
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
@@ -115,6 +120,19 @@ export default async function DocumentPage({
         </p>
       ) : null}
 
+      {sourceHref ? (
+        <p className="mt-2">
+          <a
+            href={sourceHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-11 items-center text-sm font-bold text-[var(--color-navy)] underline sm:min-h-0"
+          >
+            {sourceLabel} <span aria-hidden>→</span>
+          </a>
+        </p>
+      ) : null}
+
       <div className="mt-6 flex items-center gap-3 flex-wrap">
         <ShareButton url={url} title={d.title} slug={d.slug} caseKind="document" />
       </div>
@@ -138,16 +156,8 @@ export default async function DocumentPage({
                 className="absolute inset-0 w-full h-full border-0"
               />
             </div>
-            <figcaption className="px-4 py-3 text-xs text-[var(--color-muted)] flex items-center justify-between gap-3 flex-wrap">
-              <span>Source: {video.platformLabel}</span>
-              <a
-                href={video.watchUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[var(--color-accent)] underline font-semibold"
-              >
-                Open on {video.platformLabel} →
-              </a>
+            <figcaption className="px-4 py-3 text-xs text-[var(--color-muted)]">
+              Source: {video.platformLabel}
             </figcaption>
           </>
         ) : !d.file_url && d.external_url ? (
@@ -175,16 +185,8 @@ export default async function DocumentPage({
                 </a>
               </div>
             </object>
-            <figcaption className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 text-xs text-[var(--color-muted)]">
-              <span>Official record · not re-hosted — verify at the source</span>
-              <a
-                href={d.external_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex min-h-11 items-center font-semibold text-[var(--color-accent)] underline sm:min-h-0"
-              >
-                Open at the source →
-              </a>
+            <figcaption className="px-4 py-3 text-xs text-[var(--color-muted)]">
+              Official record · not re-hosted — verify at the source
             </figcaption>
           </>
         ) : (
@@ -196,15 +198,15 @@ export default async function DocumentPage({
               loading="eager"
               className="w-full h-auto block"
             />
-            {externalUrl ? (
-              <figcaption className="px-4 py-3 text-xs text-[var(--color-muted)] flex items-center justify-end gap-3 flex-wrap">
+            {d.file_url ? (
+              <figcaption className="flex flex-wrap items-center justify-end gap-3 px-4 py-3 text-xs text-[var(--color-muted)]">
                 <a
-                  href={externalUrl}
+                  href={d.file_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[var(--color-accent)] underline font-semibold"
+                  className="inline-flex min-h-11 items-center font-semibold text-[var(--color-accent)] underline sm:min-h-0"
                 >
-                  Open source →
+                  Open the full-size file →
                 </a>
               </figcaption>
             ) : null}

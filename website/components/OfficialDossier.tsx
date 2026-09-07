@@ -4,60 +4,29 @@ import type { CasePerson } from "@/lib/case";
 import { ShareButton } from "@/components/ShareButton";
 import { ReactionBar } from "@/components/ReactionBar";
 import { CaseStats } from "@/components/CaseStats";
+import { ClaimChip, CLAIM_INK } from "@/components/case/ClaimChip";
 
-// The color + tone for each evidence label. This is the legend that makes the
-// dossier honest at a glance: a court record does not look like an opinion, and
-// an opinion does not look like a proven fact.
-const LABELS: Record<
-  ClaimLabel,
-  { color: string; bg: string; blurb: string }
-> = {
-  FACT: {
-    color: "var(--color-navy)",
-    bg: "color-mix(in srgb, var(--color-navy) 7%, transparent)",
-    blurb: "Verifiable, uncontested.",
-  },
-  RECORD: {
-    color: "var(--color-blue)",
-    bg: "color-mix(in srgb, var(--color-blue) 9%, transparent)",
-    blurb: "Stated on the court record.",
-  },
-  "RYAN STATEMENT": {
-    color: "var(--color-accent)",
-    bg: "color-mix(in srgb, var(--color-accent) 8%, transparent)",
-    blurb: "Ryan's own account.",
-  },
-  "DOCUMENTED INFERENCE": {
-    color: "#b6892a",
-    bg: "color-mix(in srgb, #b6892a 10%, transparent)",
-    blurb: "Drawn from disclosed, sourced facts.",
-  },
-  "NEEDS AUTHENTICATION": {
-    color: "var(--color-muted)",
-    bg: "color-mix(in srgb, var(--color-muted) 8%, transparent)",
-    blurb: "Real and load-bearing, not yet verified.",
-  },
+// The legend that makes the dossier honest at a glance: a court record does
+// not look like an opinion, and an opinion does not look like a proven fact.
+// The chips themselves are the one shared ClaimChip; this map only carries
+// the one-line meaning of each label.
+const BLURB: Record<ClaimLabel, string> = {
+  FACT: "Verifiable, uncontested.",
+  RECORD: "Stated on the court record.",
+  DOCUMENTED: "Preserved in a named exhibit on file.",
+  "RYAN STATEMENT": "Ryan's own account.",
+  "DOCUMENTED INFERENCE": "Drawn from disclosed, sourced facts.",
+  "NEEDS AUTHENTICATION": "Real and load-bearing, not yet verified.",
 };
 
 const ORDER: ClaimLabel[] = [
   "FACT",
   "RECORD",
+  "DOCUMENTED",
   "RYAN STATEMENT",
   "DOCUMENTED INFERENCE",
   "NEEDS AUTHENTICATION",
 ];
-
-function LabelTag({ label }: { label: ClaimLabel }) {
-  const s = LABELS[label];
-  return (
-    <span
-      className="inline-block rounded px-1.5 py-0.5 text-[10px] font-black uppercase tracking-[0.14em]"
-      style={{ color: s.color, backgroundColor: s.bg }}
-    >
-      {label}
-    </span>
-  );
-}
 
 export function OfficialDossier({
   dossier,
@@ -159,9 +128,9 @@ export function OfficialDossier({
         <div className="mt-3 grid gap-2 sm:grid-cols-2">
           {usedLabels.map((l) => (
             <div key={l} className="flex items-center gap-2">
-              <LabelTag label={l} />
+              <ClaimChip label={l} />
               <span className="text-xs text-[var(--color-ink-soft)]">
-                {LABELS[l].blurb}
+                {BLURB[l]}
               </span>
             </div>
           ))}
@@ -175,14 +144,13 @@ export function OfficialDossier({
         </p>
         <div className="mt-4 space-y-4">
           {dossier.claims.map((c, i) => {
-            const s = LABELS[c.label];
             return (
               <div
                 key={i}
                 className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-5"
-                style={{ borderLeft: `4px solid ${s.color}` }}
+                style={{ borderLeft: `4px solid ${CLAIM_INK[c.label]}` }}
               >
-                <LabelTag label={c.label} />
+                <ClaimChip label={c.label} />
                 <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink)] sm:text-base">
                   {c.text}
                 </p>
@@ -192,16 +160,16 @@ export function OfficialDossier({
                       href={c.source.href}
                       target="_blank"
                       rel="noopener noreferrer nofollow"
-                      className="mt-2 inline-block text-xs font-bold text-[var(--color-navy)] hover:underline"
+                      className="mt-2 inline-flex min-h-11 items-center text-xs font-bold text-[var(--color-navy)] hover:underline sm:min-h-0"
                     >
-                      {c.source.label} ↗
+                      {c.source.label} <span aria-hidden>↗</span>
                     </a>
                   ) : (
                     <Link
                       href={c.source.href}
-                      className="mt-2 inline-block text-xs font-bold text-[var(--color-navy)] hover:underline"
+                      className="mt-2 inline-flex min-h-11 items-center text-xs font-bold text-[var(--color-navy)] hover:underline sm:min-h-0"
                     >
-                      {c.source.label} →
+                      {c.source.label} <span aria-hidden>→</span>
                     </Link>
                   )
                 ) : null}
