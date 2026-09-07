@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { trackEvent } from "@/lib/analytics";
 import { getVisitorId } from "@/lib/client-ids";
@@ -513,6 +513,21 @@ export function RyanChat({
   const pathname = usePathname();
   const inAdmin = pathname.startsWith("/admin") || pathname.startsWith("/embed");
 
+  const markTeaserSeen = useCallback(() => {
+    try {
+      localStorage.setItem(TEASER_KEY, "1");
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  const openChat = useCallback(() => {
+    setOpen(true);
+    setTeaser(false);
+    markTeaserSeen();
+    trackEvent("chat_open", { surface });
+  }, [markTeaserSeen, surface]);
+
   useEffect(() => {
     if (variant !== "launcher") return;
     function onKey(e: KeyboardEvent) {
@@ -526,9 +541,16 @@ export function RyanChat({
     window.addEventListener("keydown", onKey);
     window.addEventListener("ryanchat:open", onOpenEvent);
     let t: number | undefined;
+    if (pathname !== "/") {
+      setTeaser(false);
+      return () => {
+        window.removeEventListener("keydown", onKey);
+        window.removeEventListener("ryanchat:open", onOpenEvent);
+      };
+    }
     try {
       if (!localStorage.getItem(TEASER_KEY)) {
-        t = window.setTimeout(() => setTeaser(true), 4500);
+        t = window.setTimeout(() => setTeaser(true), 9000);
       }
     } catch {
       /* ignore */
@@ -538,21 +560,7 @@ export function RyanChat({
       window.removeEventListener("ryanchat:open", onOpenEvent);
       if (t) window.clearTimeout(t);
     };
-  }, [variant]);
-
-  function markTeaserSeen() {
-    try {
-      localStorage.setItem(TEASER_KEY, "1");
-    } catch {
-      /* ignore */
-    }
-  }
-  function openChat() {
-    setOpen(true);
-    setTeaser(false);
-    markTeaserSeen();
-    trackEvent("chat_open", { surface });
-  }
+  }, [openChat, pathname, variant]);
 
   // The floating launcher never rides into the back office — admin is a
   // workspace, not a funnel. (After all hooks, so the hook order is stable.)
