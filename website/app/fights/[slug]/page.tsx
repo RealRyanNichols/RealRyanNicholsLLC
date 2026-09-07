@@ -66,7 +66,7 @@ export default async function FightPage(props: { params: Promise<{ slug: string 
   return (
     <article className="mx-auto max-w-3xl px-4 py-8 sm:py-12">
       <nav className="text-sm text-[var(--color-muted)] mb-4">
-        <Link href="/fights" className="hover:underline">
+        <Link href="/fights" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
           ← All the fights
         </Link>
       </nav>

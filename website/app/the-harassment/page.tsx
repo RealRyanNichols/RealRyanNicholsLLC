@@ -341,7 +341,7 @@ export default async function ReceiptsWallPage(props: {
                   </p>
                 ) : null}
                 <div className="mt-3 flex flex-wrap gap-3 text-xs">
-                  <Link href={it.href} className="text-[var(--color-accent)] font-semibold hover:underline">
+                  <Link href={it.href} className="inline-flex min-h-11 items-center text-[var(--color-accent)] font-semibold hover:underline sm:min-h-0">
                     Read the full receipt →
                   </Link>
                   {it.external ? (
@@ -424,7 +424,7 @@ function Chip({
       href={href}
       aria-current={active ? "page" : undefined}
       className={[
-        "rounded-full border px-3 py-1.5 text-xs font-bold transition",
+        "inline-flex min-h-11 items-center rounded-full border px-3 py-1.5 text-xs font-bold transition sm:min-h-0",
         active
           ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)]"
           : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]",

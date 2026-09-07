@@ -105,11 +105,11 @@ export function HeaderStatusStrip() {
   return (
     <>
       <div className="border-b border-white/5 bg-[linear-gradient(90deg,#0a1326_0%,#0d1830_50%,#0a1326_100%)] text-[#cfd9ea]">
-        <div className="mx-auto flex h-8 max-w-5xl items-center justify-between gap-3 px-3 text-[11px] sm:px-4">
+        <div className="mx-auto flex min-h-11 max-w-5xl items-center justify-between gap-3 px-3 text-[11px] sm:h-8 sm:min-h-0 sm:px-4">
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="group -mx-1 flex shrink-0 items-center gap-3 rounded-md px-1 transition hover:bg-white/5"
+            className="group -mx-1 flex min-h-11 shrink-0 items-center gap-3 rounded-md px-1 transition hover:bg-white/5 sm:min-h-0"
             title="Open the Situation Room"
             aria-haspopup="dialog"
           >
@@ -154,12 +154,12 @@ export function HeaderStatusStrip() {
               <span className="flex min-w-0 items-center gap-0.5">
                 <Link
                   href="/book/preorder"
-                  className="min-w-0 truncate rounded-md px-1 py-0.5 font-black text-[var(--color-gold-bright)] transition hover:bg-white/5 hover:text-[#f0d48a]"
+                  className="flex min-h-11 min-w-0 items-center rounded-md px-1 py-0.5 font-black text-[var(--color-gold-bright)] transition hover:bg-white/5 hover:text-[#f0d48a] sm:min-h-0"
                 >
-                  <span className="sm:hidden">
+                  <span className="min-w-0 truncate sm:hidden">
                     Fighting Shadows {priceLabel} →
                   </span>
-                  <span className="hidden sm:inline">
+                  <span className="hidden min-w-0 truncate sm:inline">
                     Fighting Shadows — {priceLabel}
                     {onSale ? " launch" : ""}. Get it →
                   </span>
@@ -168,7 +168,7 @@ export function HeaderStatusStrip() {
                   type="button"
                   onClick={dismissBook}
                   aria-label="Hide the book offer"
-                  className="grid h-5 w-5 shrink-0 place-items-center rounded-full text-sm leading-none text-[#5f7197] transition hover:bg-white/10 hover:text-[#fdf8ea]"
+                  className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-base leading-none text-[#5f7197] transition hover:bg-white/10 hover:text-[#fdf8ea] sm:h-5 sm:w-5 sm:text-sm"
                 >
                   ×
                 </button>
@@ -178,7 +178,7 @@ export function HeaderStatusStrip() {
             <Link
               href="/the-map-room"
               className={[
-                "group shrink-0 items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[#fdf8ea] transition hover:border-[var(--color-gold-bright)]/60 hover:text-[var(--color-gold-bright)]",
+                "group min-h-11 shrink-0 items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[#fdf8ea] transition hover:border-[var(--color-gold-bright)]/60 hover:text-[var(--color-gold-bright)] sm:min-h-0",
                 // On phones the money link wins the space contest; the pill
                 // returns the moment the pitch is dismissed (or on sm+).
                 showBook ? "hidden sm:inline-flex" : "inline-flex",

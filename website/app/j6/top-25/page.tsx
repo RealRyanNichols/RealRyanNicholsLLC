@@ -143,9 +143,9 @@ export default async function J6Top25Page() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListLd) }}
       />
       <nav className="mb-6 text-sm text-[var(--color-muted)]">
-        <Link href="/j6" className="font-semibold hover:underline">← J6 Archive</Link>
+        <Link href="/j6" className="inline-flex min-h-11 items-center font-semibold hover:underline sm:min-h-0">← J6 Archive</Link>
         <span className="mx-2">·</span>
-        <Link href="/case?view=people" className="font-semibold hover:underline">All profiles</Link>
+        <Link href="/case?view=people" className="inline-flex min-h-11 items-center font-semibold hover:underline sm:min-h-0">All profiles</Link>
       </nav>
 
       <header className="overflow-hidden rounded-3xl border border-[#26385f] bg-[#071329] px-6 py-8 text-[#f8f2df] shadow-2xl sm:px-10 sm:py-12">

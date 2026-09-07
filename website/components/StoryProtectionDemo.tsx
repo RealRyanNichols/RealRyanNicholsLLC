@@ -205,7 +205,7 @@ export function StoryProtectionDemo() {
             </a>
             <a
               href="/submit"
-              className="inline-flex items-center justify-center rounded-lg border border-[var(--color-line)] px-4 py-2 text-sm font-bold text-[var(--color-accent)] transition hover:bg-[var(--color-accent-soft)]"
+              className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[var(--color-line)] px-4 py-2 text-sm font-bold text-[var(--color-accent)] transition hover:bg-[var(--color-accent-soft)]"
             >
               Submit a tip
             </a>

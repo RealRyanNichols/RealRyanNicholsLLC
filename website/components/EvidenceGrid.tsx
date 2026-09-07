@@ -232,7 +232,7 @@ function SeriesCard({ series }: { series: DocSeries }) {
         <div className="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-semibold">
           <Link
             href={`/case/documents/${lead.slug}`}
-            className="text-[var(--color-navy)] hover:underline"
+            className="inline-flex min-h-11 items-center text-[var(--color-navy)] hover:underline sm:min-h-0"
           >
             Read & discuss →
           </Link>
@@ -241,7 +241,7 @@ function SeriesCard({ series }: { series: DocSeries }) {
               href={lead.external_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[var(--color-muted)] hover:text-[var(--color-navy)] hover:underline"
+              className="inline-flex min-h-11 items-center text-[var(--color-muted)] hover:text-[var(--color-navy)] hover:underline sm:min-h-0"
             >
               Open at the source →
             </a>

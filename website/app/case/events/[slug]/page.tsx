@@ -93,11 +93,11 @@ export default async function EventPage({
       />
 
       <nav className="text-sm text-[var(--color-muted)] mb-4">
-        <Link href="/case" className="hover:underline">
+        <Link href="/case" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
           ← J6 Case
         </Link>{" "}
         ·{" "}
-        <Link href="/case?view=timeline" className="hover:underline">
+        <Link href="/case?view=timeline" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
           Timeline
         </Link>
       </nav>

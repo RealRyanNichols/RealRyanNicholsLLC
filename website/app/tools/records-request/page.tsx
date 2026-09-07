@@ -14,11 +14,11 @@ export default function RecordsRequestPage() {
   return (
     <article className="mx-auto max-w-6xl px-4 py-10">
       <nav className="mb-4 text-sm text-[var(--color-muted)]">
-        <Link href="/tools" className="hover:underline">
+        <Link href="/tools" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
           ← Tools
         </Link>{" "}
         ·{" "}
-        <Link href="/case" className="hover:underline">
+        <Link href="/case" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
           The J6 Case
         </Link>
       </nav>

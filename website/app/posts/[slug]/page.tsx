@@ -296,7 +296,7 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
       />
       <article className="lg:col-span-2">
         <nav className="text-sm text-[var(--color-muted)] mb-4">
-          <Link href="/" className="hover:underline">
+          <Link href="/" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
             ← Back to feed
           </Link>
         </nav>
@@ -343,7 +343,7 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
                 <Link
                   key={tag}
                   href={`/search?q=${encodeURIComponent(tag)}`}
-                  className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-2.5 py-1 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                  className="inline-flex min-h-11 items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-2.5 py-1 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] sm:min-h-0"
                 >
                   #{tag}
                 </Link>

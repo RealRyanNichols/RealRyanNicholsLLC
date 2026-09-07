@@ -55,7 +55,7 @@ export default async function WitnessesPage() {
   return (
     <article className="mx-auto max-w-5xl px-4 py-10">
       <nav className="text-sm text-[var(--color-muted)] mb-4">
-        <Link href="/case" className="hover:underline">
+        <Link href="/case" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
           ← J6 Case
         </Link>
       </nav>

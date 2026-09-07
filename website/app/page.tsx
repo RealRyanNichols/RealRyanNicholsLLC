@@ -261,7 +261,7 @@ function SortTab({
     <Link
       href={href}
       className={[
-        "px-4 py-2.5 -mb-px border-b-2 text-sm font-bold tracking-tight transition",
+        "inline-flex min-h-11 items-center px-4 py-2.5 -mb-px border-b-2 text-sm font-bold tracking-tight transition",
         active
           ? "border-[var(--color-accent)] text-[var(--color-ink)]"
           : "border-transparent text-[var(--color-muted)] hover:text-[var(--color-ink)]",

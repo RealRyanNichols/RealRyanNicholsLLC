@@ -71,11 +71,11 @@ export default async function StoryChapterPage({
       <JsonLd data={ld} />
 
       <nav className="mb-4 text-sm text-[var(--color-muted)]">
-        <Link href="/case" className="hover:underline">
+        <Link href="/case" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
           ← The case
         </Link>{" "}
         ·{" "}
-        <Link href="/about" className="hover:underline">
+        <Link href="/about" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
           The full record
         </Link>
       </nav>
@@ -175,7 +175,7 @@ export default async function StoryChapterPage({
             </p>
             <Link
               href="/submit"
-              className="mt-3 inline-flex items-center rounded-lg bg-[var(--color-navy)] px-4 py-2 text-sm font-bold text-[#fdf8ea] transition hover:bg-[var(--color-blue)]"
+              className="mt-3 inline-flex min-h-11 items-center rounded-lg bg-[var(--color-navy)] px-4 py-2 text-sm font-bold text-[#fdf8ea] transition hover:bg-[var(--color-blue)]"
             >
               Send what you have →
             </Link>
@@ -194,7 +194,7 @@ export default async function StoryChapterPage({
         />
         <Link
           href="/case"
-          className="text-sm font-bold text-[var(--color-navy)] hover:underline"
+          className="inline-flex min-h-11 items-center text-sm font-bold text-[var(--color-navy)] hover:underline"
         >
           The whole story, start to finish →
         </Link>

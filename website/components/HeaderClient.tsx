@@ -196,7 +196,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             </Link>
             <Link
               href="/#join"
-              className="btn-support inline-flex min-h-11 items-center rounded-full px-3 py-2 text-xs font-semibold min-[360px]:px-4"
+              className="btn-support inline-flex min-h-11 min-w-11 items-center justify-center rounded-full px-3 py-2 text-xs font-semibold min-[360px]:px-4"
             >
               Join
             </Link>

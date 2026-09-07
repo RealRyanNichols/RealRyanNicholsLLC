@@ -42,6 +42,10 @@ const ALL_MONTHS: Array<{ y: number; m: number }> = (() => {
   }
   return out;
 })();
+const YEARS: number[] = Array.from(
+  { length: TIMELINE_END_Y - TIMELINE_START_Y + 1 },
+  (_, i) => TIMELINE_START_Y + i,
+);
 
 // ─── Component ─────────────────────────────────────────────────────────
 export function CaseTimeline({ data }: { data: TimelinePayload }) {
@@ -170,6 +174,29 @@ export function CaseTimeline({ data }: { data: TimelinePayload }) {
           activeYear={activeYear}
           onYearClick={(y) => setActiveYear(activeYear === y ? "all" : y)}
         />
+        {/* Phones: the SVG year bands scale down to a few pixels at 390px
+            wide, so the year filter is a row of real buttons there. */}
+        <div
+          className="mt-3 flex flex-wrap gap-1.5 sm:hidden"
+          role="group"
+          aria-label="Filter by year"
+        >
+          {YEARS.map((y) => (
+            <button
+              key={y}
+              type="button"
+              onClick={() => setActiveYear(activeYear === y ? "all" : y)}
+              aria-pressed={activeYear === y}
+              className={`min-h-11 min-w-11 rounded-full px-3 font-mono text-xs font-bold transition ${
+                activeYear === y
+                  ? "bg-[var(--color-gold-bright)] text-[#0a1429]"
+                  : "border border-[#3a557c] text-[#cfd9ea]"
+              }`}
+            >
+              {y}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* ── Chronological list ───────────────────────────────────── */}
@@ -266,6 +293,7 @@ function Histogram({
               strokeWidth={0.5}
             />
             <text
+              className="hidden sm:block"
               x={PAD_L - 4}
               y={y + 3}
               textAnchor="end"
@@ -297,9 +325,10 @@ function Histogram({
               fill={isActiveYear ? "var(--color-gold-bright)" : "#3a557c"}
               fillOpacity={isActiveYear ? 0.85 : 0.4}
             >
-              <title>
-                {format(new Date(mn.y, mn.m - 1, 1), "MMM yyyy")}: {v}
-              </title>
+              {/* One string child: React 19 serializes a multi-child SVG
+                  <title> differently on the server, which broke hydration
+                  for the whole page (React #418). */}
+              <title>{`${format(new Date(mn.y, mn.m - 1, 1), "MMM yyyy")}: ${v}`}</title>
             </rect>
           </g>
         );
@@ -320,6 +349,7 @@ function Histogram({
             fill="transparent"
           />
           <text
+            className="hidden sm:block"
             x={(band.x0 + band.x1) / 2}
             y={H - 8}
             textAnchor="middle"
@@ -366,9 +396,9 @@ function TimelineCard({
       <div className="flex items-baseline justify-between gap-3">
         <Link
           href={`/case/people/${row.slug}`}
-          className="text-base font-bold text-[var(--color-ink)] hover:text-[var(--color-accent)] truncate"
+          className="flex min-h-11 min-w-0 items-center text-base font-bold text-[var(--color-ink)] hover:text-[var(--color-accent)] sm:min-h-0"
         >
-          {row.name}
+          <span className="truncate">{row.name}</span>
         </Link>
         {d ? (
           <span className="text-[11px] font-mono text-[var(--color-muted)] whitespace-nowrap">
@@ -410,7 +440,7 @@ function PivotButton({
     <button
       type="button"
       onClick={onClick}
-      className={`rounded-full px-3.5 py-1.5 text-xs font-bold transition ${
+      className={`min-h-11 rounded-full px-3.5 py-1.5 text-xs font-bold transition sm:min-h-0 ${
         active
           ? "bg-[var(--color-gold-bright)] text-[#0a1429]"
           : "text-[#cfd9ea] hover:bg-[#1c2a4a]"
@@ -434,7 +464,7 @@ function FilterChip({
     <button
       type="button"
       onClick={onClick}
-      className={`rounded-full px-2.5 py-1 text-[11px] font-bold border transition ${
+      className={`min-h-11 rounded-full px-2.5 py-1 text-[11px] font-bold border transition sm:min-h-0 ${
         active
           ? "border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)]"
           : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:border-[var(--color-blue)]"

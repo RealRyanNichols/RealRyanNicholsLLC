@@ -33,7 +33,7 @@ export default async function SuggestProfileUpdatePage({
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
       <nav className="text-sm text-[var(--color-muted)]">
-        <Link href={`/case/people/${slug}`} className="hover:underline">
+        <Link href={`/case/people/${slug}`} className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
           ← Back to {person.name}&apos;s public profile
         </Link>
       </nav>

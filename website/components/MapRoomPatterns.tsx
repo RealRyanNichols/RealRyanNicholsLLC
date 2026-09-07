@@ -171,7 +171,7 @@ export async function MapRoomPatterns() {
           </div>
           <Link
             href="/case?view=grievances"
-            className="mt-4 inline-block text-xs font-semibold text-[var(--color-accent)] hover:underline"
+            className="mt-4 inline-flex min-h-11 items-center text-xs font-semibold text-[var(--color-accent)] hover:underline sm:min-h-0"
           >
             See every grievance →
           </Link>

@@ -194,7 +194,7 @@ export function J6Top25Ballot({
                     {candidate.profile_slug ? (
                       <Link
                         href={`/case/people/${candidate.profile_slug}`}
-                        className="rounded-lg border border-[var(--color-line)] px-3 py-2 text-xs font-black hover:border-[#d2ad4f]"
+                        className="inline-flex min-h-11 items-center rounded-lg border border-[var(--color-line)] px-3 py-2 text-xs font-black hover:border-[#d2ad4f]"
                       >
                         View profile
                       </Link>
@@ -207,7 +207,7 @@ export function J6Top25Ballot({
                       type="button"
                       disabled={!signedIn || !verifiedEmail || isPending || selected}
                       onClick={() => submitVote(candidate.id)}
-                      className="rounded-lg bg-[#b3212d] px-4 py-2 text-xs font-black text-white disabled:cursor-not-allowed disabled:opacity-50"
+                      className="min-h-11 rounded-lg bg-[#b3212d] px-4 py-2 text-xs font-black text-white disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       {selected ? "Your vote" : isPending ? "Saving…" : "Vote"}
                     </button>

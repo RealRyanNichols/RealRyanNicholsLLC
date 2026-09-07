@@ -96,8 +96,8 @@ export function ReactionRow({
 
   const btnBase =
     size === "sm"
-      ? "inline-flex items-center gap-1 rounded-full border px-2 py-1 text-xs font-semibold transition"
-      : "inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-sm font-semibold transition";
+      ? "inline-flex min-h-11 min-w-11 items-center justify-center gap-1 rounded-full border px-2 py-1 text-xs font-semibold transition sm:min-h-0 sm:min-w-0"
+      : "inline-flex min-h-11 min-w-11 items-center justify-center gap-1 rounded-full border px-3 py-1.5 text-sm font-semibold transition sm:min-h-0 sm:min-w-0";
 
   return (
     <div className={size === "sm" ? "flex gap-1 flex-wrap" : "flex gap-1.5 flex-wrap"}>

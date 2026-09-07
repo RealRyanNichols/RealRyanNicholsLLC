@@ -52,7 +52,7 @@ export default async function UserProfilePage({
   return (
     <article className="mx-auto max-w-2xl px-4 py-10">
       <nav className="text-sm text-[var(--color-muted)] mb-4">
-        <Link href="/" className="hover:underline">
+        <Link href="/" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
           ← Back to feed
         </Link>
       </nav>

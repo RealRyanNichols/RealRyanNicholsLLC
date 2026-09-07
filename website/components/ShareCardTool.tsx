@@ -119,7 +119,7 @@ export function ShareCardTool() {
               key={p.label}
               type="button"
               onClick={() => applyPreset(p)}
-              className="rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-1.5 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-navy)] hover:text-[var(--color-navy)]"
+              className="min-h-11 rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-1.5 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-navy)] hover:text-[var(--color-navy)] sm:min-h-0"
             >
               {p.label}
             </button>

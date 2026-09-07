@@ -1281,7 +1281,7 @@ export function CaseNexus({
               }}
               onFocus={() => setSearchOpen(true)}
               placeholder="Search name or case number"
-              className="mt-2 w-full rounded-md border border-[#3a557c] bg-[#071126] px-3 py-2 text-[12px] font-mono text-[var(--color-paper)] placeholder:text-[#7c8aa6] focus:border-[var(--color-gold-bright)] focus:outline-none"
+              className="mt-2 w-full rounded-md border border-[#3a557c] bg-[#071126] px-3 py-2 text-xs font-mono text-[var(--color-paper)] placeholder:text-[#7c8aa6] focus:border-[var(--color-gold-bright)] focus:outline-none"
             />
             {searchOpen && query.trim().length > 0 ? (
               <div className="mt-2 max-h-72 overflow-auto rounded-md border border-[#3a557c] bg-[#071126]">

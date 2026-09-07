@@ -134,7 +134,7 @@ export function PathPicker({ variant = "band" }: { variant?: Variant }) {
           type="button"
           onClick={dismiss}
           aria-label="Dismiss"
-          className={`shrink-0 rounded-full p-1 transition ${dark ? "text-[#8194b4] hover:bg-white/10 hover:text-[#fdf8ea]" : "text-[var(--color-muted)] hover:bg-[var(--color-surface)] hover:text-[var(--color-ink)]"}`}
+          className={`-mr-2 -mt-2 grid h-11 w-11 shrink-0 place-items-center rounded-full transition ${dark ? "text-[#8194b4] hover:bg-white/10 hover:text-[#fdf8ea]" : "text-[var(--color-muted)] hover:bg-[var(--color-surface)] hover:text-[var(--color-ink)]"}`}
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" className="h-5 w-5" aria-hidden>
             <line x1="6" y1="6" x2="18" y2="18" />
