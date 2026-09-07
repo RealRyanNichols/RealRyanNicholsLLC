@@ -338,7 +338,7 @@ export function RecordsRequestTool() {
       </div>
 
       {/* Output */}
-      <div className="lg:sticky lg:top-6 lg:self-start">
+      <div className="lg:sticky lg:top-20 lg:self-start">
         <div className="mb-2 flex items-center justify-between">
           <p className={lbl}>Your letter — ready to send</p>
           <div className="flex gap-2">

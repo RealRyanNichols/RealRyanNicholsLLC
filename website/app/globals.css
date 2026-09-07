@@ -70,7 +70,13 @@
     text-rendering: optimizeLegibility;
     width: 100%;
     max-width: 100%;
+    /* `hidden` turns body into a scroll container, which makes every
+       position: sticky inside it (the site header, the /case chapter rail)
+       stick to nothing. `clip` blocks horizontal overflow without creating
+       a scroll container; `hidden` stays as the fallback for engines that
+       lack `clip`. */
     overflow-x: hidden;
+    overflow-x: clip;
   }
 
   *,
@@ -83,6 +89,7 @@
     min-width: 0;
     max-width: 100%;
     overflow-x: hidden;
+    overflow-x: clip;
   }
 
   :where(header, footer, nav, main, section, article, aside, div, ul, ol, li, label, form, fieldset) {
