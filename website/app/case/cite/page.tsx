@@ -6,7 +6,9 @@ import { Eyebrow } from "@/components/case/ChapterHeader";
 // The researcher's on-ramp. This block used to sit inside the /case story as
 // a paragraph card ("Study this case"); it lives at its own URL now so the
 // citation has a permanent address and the story's last rung stays a link
-// grid. The content is unchanged.
+// grid. The content moved as it was, with one deictic fix: "This page and
+// the archive behind it" became "The case file and the archive behind it",
+// since "this page" would now point at the citation page itself.
 
 const TITLE = "How to cite the J6 case archive";
 const DESCRIPTION =
@@ -53,7 +55,7 @@ export default function CitePage() {
       </p>
 
       <div className="mt-6 rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-5">
-        <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--color-muted)]">
+        <p className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-muted)]">
           How to cite this archive
         </p>
         <p className="mt-2 break-words font-mono text-xs leading-relaxed text-[var(--color-ink)] sm:text-sm">

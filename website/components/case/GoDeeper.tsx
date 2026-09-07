@@ -16,10 +16,10 @@ export function GoDeeper({ totals, className = "" }: { totals: Totals; className
   const entries: Entry[] = [
     { href: "/case", label: "The case hub" },
     { href: "/case?view=timeline", label: "Timeline" },
-    { href: "/case?view=grievances", label: "Grievances", meta: totals.grievances.toLocaleString("en-US") },
-    { href: "/case?view=documents", label: "Documents", meta: totals.documents.toLocaleString("en-US") },
+    { href: "/case?view=grievances", label: "Grievances", meta: `${totals.grievances.toLocaleString("en-US")} documented` },
+    { href: "/case?view=documents", label: "Documents", meta: `${totals.documents.toLocaleString("en-US")} scans` },
     { href: "/case?view=people", label: "People of record" },
-    { href: "/case/witnesses", label: "Co-detainees & witnesses", meta: totals.corroborators.toLocaleString("en-US") },
+    { href: "/case/witnesses", label: "Co-detainees & witnesses", meta: `${totals.corroborators.toLocaleString("en-US")} corroborating` },
     { href: "/case/officials", label: "Officials named" },
     { href: "/case/geography", label: "Geography", meta: `${totals.facilities.toLocaleString("en-US")} facilities` },
     { href: "/case/damages", label: "Damages" },
@@ -28,7 +28,7 @@ export function GoDeeper({ totals, className = "" }: { totals: Totals; className
     { href: "/rss.xml", label: "RSS", file: true },
   ];
   const linkCls =
-    "inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-[var(--color-navy)] hover:underline";
+    "inline-flex min-h-11 min-w-11 items-center gap-1.5 text-sm font-semibold text-[var(--color-navy)] hover:underline";
   return (
     <section id="go-deeper" className={`border-t-2 border-[var(--color-line)] pt-10 ${className}`}>
       <Eyebrow>Go deeper</Eyebrow>

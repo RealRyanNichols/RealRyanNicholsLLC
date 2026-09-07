@@ -115,8 +115,9 @@ export default async function CasePage({
   // THE FRONT DOOR. Clicking "Case" lands on United States v. Nichols —
   // Ryan's full story, the detention record, the whole file. The archive
   // hub (grievances / timeline / people / documents) still lives at
-  // ?view=… and is linked from "The full record" directory inside the
-  // profile. This is deliberate: the case page IS his case.
+  // ?view=… and is linked from the "Go deeper" grid
+  // (components/case/GoDeeper.tsx) at the foot of the profile. This is
+  // deliberate: the case page IS his case.
   if (!view && !q) {
     const ryan = await getPersonBySlug(SUBJECT_SLUG);
     if (ryan) {
