@@ -59,7 +59,7 @@ export async function GET(req: Request) {
     const [totals, j6] = await Promise.all([getCaseTotals(), getJ6DefendantCount()]);
     documents = totals.documents ?? 0;
     grievances = totals.ryanFiledGrievances ?? 0;
-    days = totals.daysDetained ?? 0;
+    days = totals.daysArrestToPardon ?? 0;
     defendants = j6;
   } catch {
     // Never let the card 500 — fall back to a clean, stat-less version.
@@ -71,7 +71,7 @@ export async function GET(req: Request) {
   const stats: [string, string][] = [];
   if (documents > 0) stats.push([documents.toLocaleString("en-US"), "Documents on file"]);
   if (grievances > 0) stats.push([grievances.toLocaleString("en-US"), "Grievances filed"]);
-  if (days > 0) stats.push([days.toLocaleString("en-US"), "Days detained"]);
+  if (days > 0) stats.push([days.toLocaleString("en-US"), "Days, arrest to pardon"]);
 
   return new ImageResponse(
     (

@@ -5,7 +5,12 @@ import { getJ6DefendantCount } from "@/lib/case";
 // full J6 hub (/j6) where the live SiteMomentum panel lives. The count is
 // the public-record count from lib/case.ts — same visibility filter as every
 // other number on the site, never a raw table count. One query.
-export async function J6Banner() {
+export async function J6Banner({
+  tone = "accent",
+}: {
+  // "navy" for pages that allow flag red on one element only (/case).
+  tone?: "accent" | "navy";
+} = {}) {
   const profilesReady = await getJ6DefendantCount("unclaimed");
 
   return (
@@ -20,7 +25,12 @@ export async function J6Banner() {
           </div>
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-accent)] group-hover:text-[var(--color-paper)]">
+          <p
+            className={[
+              "text-xs uppercase tracking-wider font-bold group-hover:text-[var(--color-paper)]",
+              tone === "navy" ? "text-[var(--color-navy)]" : "text-[var(--color-accent)]",
+            ].join(" ")}
+          >
             J6 Anti-Weaponization Case Builder
           </p>
           <p className="mt-0.5 text-sm sm:text-base font-bold text-[var(--color-ink)] group-hover:text-[var(--color-paper)] leading-tight">

@@ -34,7 +34,7 @@ export async function J6PathSplit({
     <section className={className} aria-label="Two ways into the January 6 files">
       {headline ? (
         <>
-          <p className="text-[11px] font-black uppercase tracking-[0.24em] text-[var(--color-accent)]">
+          <p className="text-[11px] font-black uppercase tracking-[0.24em] text-[var(--color-navy)]">
             The January 6 Files
           </p>
           <Heading className="mt-2 font-display text-4xl font-black leading-[0.95] tracking-tight sm:text-6xl">
@@ -67,8 +67,8 @@ export async function J6PathSplit({
               One man&rsquo;s case
             </p>
             <p className="mt-3 font-display text-3xl font-black leading-none tracking-tight text-[var(--color-gold-bright)] sm:text-5xl">
-              {totals.daysDetained > 0
-                ? totals.daysDetained.toLocaleString("en-US")
+              {totals.daysArrestToPardon > 0
+                ? totals.daysArrestToPardon.toLocaleString("en-US")
                 : "—"}
             </p>
             <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--color-paper)]/60 sm:text-xs">

@@ -52,7 +52,7 @@ export default async function EmbedHubPage() {
         />
         <EmbedSnippet
           title="Live archive stats"
-          blurb="A compact live counter: people indexed, documents on file, grievances filed, days detained. Updates hourly."
+          blurb="A compact live counter: people indexed, documents on file, grievances filed, days from arrest to pardon. Updates hourly."
           path="/embed/stats"
           height={140}
         />

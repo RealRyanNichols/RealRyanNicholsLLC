@@ -509,7 +509,7 @@ export const getCaseTotals = cache(async (): Promise<{
   people: number;
   facilities: number;
   corroborators: number;
-  daysDetained: number;
+  daysArrestToPardon: number;
   events: number;
   igpBrokenFederalOfficers: number;
 }> => {
@@ -540,7 +540,7 @@ export const getCaseTotals = cache(async (): Promise<{
   ]);
   const arrest = new Date(ARREST_DATE);
   const pardon = new Date(PARDON_DATE);
-  const daysDetained = Math.round((pardon.getTime() - arrest.getTime()) / 86400000);
+  const daysArrestToPardon = Math.round((pardon.getTime() - arrest.getTime()) / 86400000);
   return {
     grievances: grievances.count ?? 0,
     ryanFiledGrievances: ryanFiled.count ?? 0,
@@ -549,7 +549,7 @@ export const getCaseTotals = cache(async (): Promise<{
     facilities: 10, // Tyler/E.D.Tex., DC DOC CTF, Rappahannock, Northern Neck, FDC Houston,
                     // Florence, Oklahoma transit, Albany, NW3 quarantine, BOP post-sentence.
     corroborators: corroborators.count ?? 0,
-    daysDetained,
+    daysArrestToPardon,
     events: events.count ?? 0,
     // Federal officers on the record acknowledging the grievance system (IGP)
     // is broken. Carried over from the /case archive header as published

@@ -47,7 +47,7 @@ export default async function ShareCardPage() {
       </p>
 
       <div className="mt-8">
-        <ShareCardTool defendants={defendants} days={totals.daysDetained} />
+        <ShareCardTool defendants={defendants} days={totals.daysArrestToPardon} />
       </div>
 
       <section className="mt-12 rounded-2xl border-2 border-[var(--color-navy)]/30 bg-[var(--color-blue-soft)]/40 p-6 sm:p-8">
