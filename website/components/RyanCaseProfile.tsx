@@ -529,6 +529,7 @@ export function RyanCaseProfile({
           detention record. */}
       <CaseCaptureBand
         className="mt-12"
+        placement="case-timeline"
         line="The record is still being written. Get the next filing when it lands."
       />
 
@@ -850,10 +851,10 @@ export function RyanCaseProfile({
           form under it, so the page asks exactly twice. */}
       <CaseCaptureBand
         className="mt-12"
-        label="The book"
+        placement="case-book"
         line="They tried to bury me. I wrote the book."
       >
-        <BookCtaBand tone="case" />
+        <BookCtaBand tone="case" headingLevel="h3" />
       </CaseCaptureBand>
 
       {/* Attorney briefing — below the story. Counsel jumps straight here

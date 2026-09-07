@@ -53,7 +53,7 @@ export function Footer() {
               Get the next post by email or text — straight from Ryan.
             </p>
           </div>
-          <SignupForm emailEnabled={SITE.emailCaptureEnabled} />
+          <SignupForm emailEnabled={SITE.emailCaptureEnabled} placement="footer" />
         </div>
 
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">

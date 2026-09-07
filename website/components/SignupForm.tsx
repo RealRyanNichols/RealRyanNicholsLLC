@@ -18,11 +18,16 @@ export function SignupForm({
   // wording anywhere the caller does not pass its own.
   kicker = "Get updates",
   blurb,
+  // Where on the site this form sits ("footer", "case-timeline", …). Rides
+  // along on every subscribe_* event so identical forms on one page can be
+  // told apart; the event names themselves never change.
+  placement,
 }: {
   emailEnabled?: boolean;
   className?: string;
   kicker?: string;
   blurb?: string;
+  placement?: string;
 }) {
   const [state, setState] = useState<State>({ kind: "idle" });
   const [email, setEmail] = useState("");
@@ -32,8 +37,9 @@ export function SignupForm({
     e.preventDefault();
     const channel =
       email && phone ? "email_phone" : email ? "email" : phone ? "phone" : "empty";
+    const base: Record<string, string> = placement ? { channel, placement } : { channel };
     if (!email && !phone) {
-      trackEvent("subscribe_failed", { channel, reason: "empty" });
+      trackEvent("subscribe_failed", { ...base, reason: "empty" });
       setState({
         kind: "error",
         message: emailEnabled
@@ -42,7 +48,7 @@ export function SignupForm({
       });
       return;
     }
-    trackEvent("subscribe_attempt", { channel });
+    trackEvent("subscribe_attempt", base);
     setState({ kind: "submitting" });
     try {
       const res = await fetch("/api/subscribe", {
@@ -52,12 +58,12 @@ export function SignupForm({
       });
       const json = await res.json();
       if (!res.ok) {
-        trackEvent("subscribe_failed", { channel, reason: "api" });
+        trackEvent("subscribe_failed", { ...base, reason: "api" });
         setState({ kind: "error", message: json.error ?? "Something went wrong." });
         return;
       }
       trackEvent("subscribe_success", {
-        channel,
+        ...base,
         email_action: json.email_action ?? "none",
         phone_action: json.phone_action ?? "none",
       });
@@ -68,7 +74,7 @@ export function SignupForm({
       setEmail("");
       setPhone("");
     } catch {
-      trackEvent("subscribe_failed", { channel, reason: "network" });
+      trackEvent("subscribe_failed", { ...base, reason: "network" });
       setState({ kind: "error", message: "Network error. Please try again." });
     }
   }
