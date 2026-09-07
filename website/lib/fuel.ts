@@ -157,6 +157,29 @@ export function resolveFuelAmount(
   return { ok: true, amountCents: cents, tier: tierForAmount(tiers, cents) };
 }
 
+// How long a gift keeps the machine running, from the real monthly bill:
+// bill / 30 is a day of the machine. Hours below a day, days below a month.
+// Null when there is no bill to measure against (never a made-up figure).
+export function fuelDuration(amountCents: number, billCents: number): string | null {
+  if (!(billCents > 0) || !(amountCents > 0)) return null;
+  const days = amountCents / (billCents / 30);
+  if (days >= 29.5) return "a full month of the machine";
+  if (days >= 1.75) return `about ${Math.round(days)} days of the machine`;
+  if (days >= 0.9) return "about a day of the machine";
+  const hours = Math.max(1, Math.round(days * 24));
+  return `about ${hours} hour${hours === 1 ? "" : "s"} of the machine`;
+}
+
+// Calendar helpers for the month meter (UTC, matching getFuelRaised).
+export function daysLeftInMonth(now: Date = new Date()): number {
+  const last = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 0)).getUTCDate();
+  return Math.max(0, last - now.getUTCDate());
+}
+
+export function monthName(now: Date = new Date()): string {
+  return now.toLocaleString("en-US", { month: "long", timeZone: "UTC" });
+}
+
 export function usdWhole(cents: number): string {
   return (cents / 100).toLocaleString("en-US", {
     style: "currency",
