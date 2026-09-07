@@ -138,6 +138,8 @@ function SeriesCard({ series }: { series: DocSeries }) {
   const officialOnly = !lead.file_url && !!lead.external_url && !video;
 
   if (video) {
+    // The embed is the card; the one affordance is the link to the record.
+    // "Open on <platform>" lives on the destination page.
     return (
       <article className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] overflow-hidden">
         <div className="px-4 pt-3 pb-2 flex items-baseline justify-between gap-3 flex-wrap">
@@ -154,9 +156,9 @@ function SeriesCard({ series }: { series: DocSeries }) {
           </div>
           <Link
             href={`/case/documents/${lead.slug}`}
-            className="text-xs font-semibold text-[var(--color-navy)] hover:underline whitespace-nowrap"
+            className="inline-flex min-h-11 items-center whitespace-nowrap text-xs font-bold text-[var(--color-navy)] hover:underline sm:min-h-0"
           >
-            Share & discuss →
+            Read →
           </Link>
         </div>
         <VideoEmbedBlock video={video} title={title} />
@@ -166,14 +168,15 @@ function SeriesCard({ series }: { series: DocSeries }) {
 
   // Article-style row: the document's face on the left (first page, or an
   // official-record seal for court filings we serve from the source), the
-  // story of it on the right.
+  // story of it on the right. The whole card is the link, with one visible
+  // "Read" affordance — same pattern as PostCard. "Open at the source" lives
+  // on the document page itself.
   return (
-    <article className="overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] sm:flex sm:items-stretch">
-      <Link
-        href={`/case/documents/${lead.slug}`}
-        className="block shrink-0 sm:w-44"
-        aria-label={`Open ${title}`}
-      >
+    <Link
+      href={`/case/documents/${lead.slug}`}
+      className="group block overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] transition hover:border-[var(--color-navy)] hover:shadow-md sm:flex sm:items-stretch"
+    >
+      <div className="shrink-0 sm:w-44">
         {officialOnly ? (
           <span className="flex h-40 w-full flex-col items-center justify-center gap-1.5 bg-[var(--color-navy)] p-4 text-center sm:h-full">
             <svg
@@ -201,12 +204,12 @@ function SeriesCard({ series }: { series: DocSeries }) {
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={`/api/case-doc/${lead.slug}/image`}
-            alt={title}
+            alt=""
             loading="lazy"
             className="h-40 w-full bg-black object-cover object-top sm:h-full"
           />
         )}
-      </Link>
+      </div>
       <div className="min-w-0 flex-1 p-4">
         <p className="text-[10px] uppercase tracking-wider text-[var(--color-navy)] font-bold">
           {lead.doc_type}
@@ -219,36 +222,19 @@ function SeriesCard({ series }: { series: DocSeries }) {
             </span>
           ) : null}
         </p>
-        <Link href={`/case/documents/${lead.slug}`} className="flex min-h-11 items-center sm:min-h-0">
-          <p className="mt-1 text-sm font-semibold leading-snug text-[var(--color-ink)] hover:text-[var(--color-navy)] transition">
-            {title}
-          </p>
-        </Link>
+        <p className="mt-1 text-sm font-semibold leading-snug text-[var(--color-ink)] transition group-hover:text-[var(--color-navy)]">
+          {title}
+        </p>
         {lead.description ? (
           <p className="mt-1.5 text-xs leading-snug text-[var(--color-ink-soft)] line-clamp-3">
             {lead.description}
           </p>
         ) : null}
-        <div className="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-semibold">
-          <Link
-            href={`/case/documents/${lead.slug}`}
-            className="inline-flex min-h-11 items-center text-[var(--color-navy)] hover:underline sm:min-h-0"
-          >
-            Read & discuss →
-          </Link>
-          {lead.external_url ? (
-            <a
-              href={lead.external_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex min-h-11 items-center text-[var(--color-muted)] hover:text-[var(--color-navy)] hover:underline sm:min-h-0"
-            >
-              Open at the source →
-            </a>
-          ) : null}
-        </div>
+        <span className="mt-2.5 inline-block text-xs font-bold text-[var(--color-navy)]">
+          Read <span aria-hidden>→</span>
+        </span>
       </div>
-    </article>
+    </Link>
   );
 }
 
@@ -268,16 +254,8 @@ function VideoEmbedBlock({ video, title }: { video: VideoEmbed; title: string })
           className="absolute inset-0 w-full h-full border-0"
         />
       </div>
-      <div className="px-4 py-2 text-xs text-[var(--color-muted)] flex items-center justify-between gap-3">
-        <span>Source: {video.platformLabel}</span>
-        <a
-          href={video.watchUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-[var(--color-navy)] font-semibold hover:underline"
-        >
-          Open on {video.platformLabel} →
-        </a>
+      <div className="px-4 py-2 text-xs text-[var(--color-muted)]">
+        Source: {video.platformLabel}
       </div>
     </div>
   );

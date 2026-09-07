@@ -12,6 +12,7 @@ import { CaseStatCards } from "@/components/case/CaseStatCards";
 import { CaseChapterNav } from "@/components/case/CaseChapterNav";
 import { CASE_CHAPTERS } from "@/components/case/chapters";
 import { ChapterHeader, Eyebrow } from "@/components/case/ChapterHeader";
+import { ClaimChip } from "@/components/case/ClaimChip";
 import { EvidenceGrid } from "@/components/EvidenceGrid";
 import { ReactionBar } from "@/components/ReactionBar";
 import { ReadingProgress } from "@/components/ReadingProgress";
@@ -523,7 +524,7 @@ export function RyanCaseProfile({
                   href={e.doc}
                   className="mt-1 inline-block text-xs font-bold text-[var(--color-navy)] hover:underline"
                 >
-                  Read the paper →
+                  Read →
                 </Link>
               ) : null}
             </li>
@@ -545,9 +546,9 @@ export function RyanCaseProfile({
           <Link href="/case?view=documents" className="text-[var(--color-navy)] font-semibold hover:underline">
             public document record
           </Link>
-          . Items marked <DetTag kind="doc" /> are documented. Items marked{" "}
-          <DetTag kind="account" /> are his sworn or stated account, with the
-          corroborating records named.
+          . Items marked <ClaimChip label="FACT" /> are documented. Items marked{" "}
+          <ClaimChip label="RYAN STATEMENT" /> are his sworn or stated account,
+          with the corroborating records named.
         </p>
 
         <div className="mt-6 space-y-3">
@@ -652,7 +653,7 @@ export function RyanCaseProfile({
               className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-5"
             >
               <div className="flex flex-wrap items-center gap-2">
-                <DetTag kind={item.tag} />
+                <ClaimChip label={item.tag === "doc" ? "FACT" : "RYAN STATEMENT"} />
                 <h3 className="text-base font-bold tracking-tight text-[var(--color-ink)]">
                   {item.title}
                 </h3>
@@ -1138,18 +1139,6 @@ function AttorneyBriefing() {
         </p>
       </div>
     </section>
-  );
-}
-
-function DetTag({ kind }: { kind: "doc" | "account" }) {
-  return kind === "doc" ? (
-    <span className="rounded-full bg-[var(--color-navy)] px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-[#fdf8ea]">
-      Documented
-    </span>
-  ) : (
-    <span className="rounded-full border border-[var(--color-navy)] px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-[var(--color-navy)]">
-      His account
-    </span>
   );
 }
 

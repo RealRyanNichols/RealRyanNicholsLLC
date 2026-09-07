@@ -204,7 +204,7 @@ export default async function DocumentPage({
                   rel="noopener noreferrer"
                   className="text-[var(--color-accent)] underline font-semibold"
                 >
-                  Open source →
+                  Open at the source →
                 </a>
               </figcaption>
             ) : null}
