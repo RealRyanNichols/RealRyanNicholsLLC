@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { getCaseTotals } from "@/lib/case";
+import { getCaseTotals, getJ6DefendantCount } from "@/lib/case";
 import { ogEmbeddableImage } from "@/lib/og-embed";
 import { PALETTE } from "@/lib/palette";
 
@@ -11,6 +11,13 @@ export const revalidate = 3600;
 // live case stats and served on our own domain at /og/case?view=…
 // Any /case view without a pinned override gets a branded card for free.
 
+// The people card carries the live public defendant count. If the count
+// cannot be read the line drops the number rather than typing one in, and
+// makes no claim about completeness.
+function peopleSub(defendants: number): string {
+  return `${defendants > 0 ? `${defendants.toLocaleString("en-US")} ` : ""}January 6 defendants indexed. Find a name, claim a profile, build the record.`;
+}
+
 const VIEWS: Record<string, { kicker: string; headline: string; sub: string }> = {
   documents: {
     kicker: "The J6 Case Archive · Documents",
@@ -20,7 +27,7 @@ const VIEWS: Record<string, { kicker: string; headline: string; sub: string }> =
   people: {
     kicker: "The J6 Case Archive · People",
     headline: "Every defendant. A profile, free forever.",
-    sub: "1,571 January 6 defendants indexed. Find a name, claim a profile, build the record.",
+    sub: peopleSub(0),
   },
   timeline: {
     kicker: "The J6 Case Archive · Timeline",
@@ -43,19 +50,22 @@ const DEFAULT_VIEW = {
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const view = url.searchParams.get("view") ?? "";
-  const copy = VIEWS[view] ?? DEFAULT_VIEW;
 
   let documents = 0;
   let grievances = 0;
   let days = 0;
+  let defendants = 0;
   try {
-    const totals = await getCaseTotals();
+    const [totals, j6] = await Promise.all([getCaseTotals(), getJ6DefendantCount()]);
     documents = totals.documents ?? 0;
     grievances = totals.ryanFiledGrievances ?? 0;
     days = totals.daysDetained ?? 0;
+    defendants = j6;
   } catch {
     // Never let the card 500 — fall back to a clean, stat-less version.
   }
+  const base = VIEWS[view] ?? DEFAULT_VIEW;
+  const copy = view === "people" ? { ...base, sub: peopleSub(defendants) } : base;
 
   const mark = await ogEmbeddableImage("/avatar.jpg");
   const stats: [string, string][] = [];

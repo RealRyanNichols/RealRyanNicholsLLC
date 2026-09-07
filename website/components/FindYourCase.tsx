@@ -3,11 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
 
-// Find Your Case — the "am I in here?" search over 1,571 J6 defendants.
+// Find Your Case — the "am I in here?" search over every public J6 defendant.
 // Debounced live search against /api/j6/search; result cards deep-link to
 // /case/people/[slug] with a claim CTA for unclaimed profiles and a share
 // button per result. `embed` mode drops site-internal navigation styling and
 // opens everything in a new tab so the widget works inside an iframe.
+// `defendants` is the live public count handed down by the server page
+// (lib/case.ts getJ6DefendantCount) — this file never types a number.
 
 type Result = {
   slug: string;
@@ -29,7 +31,13 @@ const STATUS_LABEL: Record<string, string> = {
   unclaimed: "Unclaimed — free to claim",
 };
 
-export function FindYourCase({ embed = false }: { embed?: boolean }) {
+export function FindYourCase({
+  embed = false,
+  defendants,
+}: {
+  embed?: boolean;
+  defendants: number;
+}) {
   const [q, setQ] = useState("");
   const [results, setResults] = useState<Result[]>([]);
   const [total, setTotal] = useState(0);
@@ -96,7 +104,9 @@ export function FindYourCase({ embed = false }: { embed?: boolean }) {
         htmlFor="fyc-q"
         className="block text-[11px] font-black uppercase tracking-[0.18em] text-[var(--color-navy)]"
       >
-        Find your case — 1,571 J6 defendants indexed
+        Find your case —{" "}
+        {defendants > 0 ? `${defendants.toLocaleString("en-US")} ` : ""}J6
+        defendants indexed
       </label>
       <div className="mt-2 flex gap-2">
         <input

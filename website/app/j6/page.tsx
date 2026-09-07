@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getCaseTotals } from "@/lib/case";
-import { getSupabaseStaticClient } from "@/lib/supabase/static";
+import {
+  getCaseTotals,
+  getJ6ClaimCounts,
+  getSwornStatementCount,
+} from "@/lib/case";
 import { SiteMomentum } from "@/components/SiteMomentum";
 import { FindYourCase } from "@/components/FindYourCase";
+import { J6PathSplit } from "@/components/J6PathSplit";
 import { getOgImage } from "@/lib/og-images";
 import { SITE } from "@/lib/site";
 
@@ -51,35 +55,17 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function J6MissionPage() {
-  const totals = await getCaseTotals();
-
-  const supabase = getSupabaseStaticClient();
-  const [
-    { count: profilesReady },
-    { count: profilesClaimed },
-    { count: defendantsTotal },
-    { count: swornStatements },
-  ] = await Promise.all([
-    supabase
-      .from("case_people")
-      .select("id", { count: "exact", head: true })
-      .eq("is_j6_defendant", true)
-      .eq("claim_status", "unclaimed"),
-    supabase
-      .from("case_people")
-      .select("id", { count: "exact", head: true })
-      .eq("is_j6_defendant", true)
-      .eq("claim_status", "verified"),
-    supabase
-      .from("case_people")
-      .select("id", { count: "exact", head: true })
-      .eq("is_j6_defendant", true),
-    supabase
-      .from("case_documents")
-      .select("id", { count: "exact", head: true })
-      .eq("doc_type", "affidavit")
-      .eq("visibility", "public"),
+  // Every count here is the public-record count from lib/case.ts — the same
+  // visibility filter the archive uses everywhere else. This page used to
+  // count raw rows and drifted from /case by the hidden ones.
+  const [totals, claims, swornStatements] = await Promise.all([
+    getCaseTotals(),
+    getJ6ClaimCounts(),
+    getSwornStatementCount(),
   ]);
+  const profilesReady = claims.unclaimed;
+  const profilesClaimed = claims.verified;
+  const defendantsTotal = claims.total;
 
   // This page IS the archive's front door — point engines at the same
   // Dataset entity the case page declares.
@@ -100,6 +86,11 @@ export default async function J6MissionPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <article className="mx-auto max-w-3xl px-4 py-12">
+        {/* Door 2 is never one-way: the same split that opens /case sits at
+            the top here, with this side marked, so the anchor case is one
+            tap back. */}
+        <J6PathSplit active="everyone" className="mb-10" />
+
         <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
           The January 6 Case Archive · founded by Ryan Nichols
         </p>
@@ -108,17 +99,17 @@ export default async function J6MissionPage() {
         </h1>
         <p className="mt-5 text-xl sm:text-2xl text-[var(--color-ink-soft)] leading-snug">
           Built from the inside.{" "}
-          {(defendantsTotal ?? 0) > 0
-            ? `${(defendantsTotal ?? 0).toLocaleString()} defendants on record. `
+          {defendantsTotal > 0
+            ? `${defendantsTotal.toLocaleString("en-US")} defendants on record. `
             : ""}
           Free for every one of them. Forever.
         </p>
 
-        {(profilesReady ?? 0) > 0 ? (
+        {profilesReady > 0 ? (
           <p className="mt-4 inline-block rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] px-4 py-1.5 text-sm font-bold text-[var(--color-blue)]">
-            {(profilesReady ?? 0).toLocaleString()} profiles ready to be claimed
-            {(profilesClaimed ?? 0) > 0
-              ? ` · ${profilesClaimed} already verified`
+            {profilesReady.toLocaleString("en-US")} profiles ready to be claimed
+            {profilesClaimed > 0
+              ? ` · ${profilesClaimed.toLocaleString("en-US")} already verified`
               : ""}
           </p>
         ) : null}
@@ -126,7 +117,7 @@ export default async function J6MissionPage() {
         {/* Find Your Case — the first question every defendant and family
             member has: am I in here? Answer it before anything else. */}
         <section className="mt-8">
-          <FindYourCase />
+          <FindYourCase defendants={defendantsTotal} />
         </section>
 
         {/* Live momentum panel — moved off the homepage feed so it lives where
@@ -265,11 +256,11 @@ export default async function J6MissionPage() {
             Already in the archive
           </p>
           <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-4">
-            <Stat n={defendantsTotal ?? 0} label="Defendants on record" />
-            <Stat n={profilesClaimed ?? 0} label="Verified & building" />
+            <Stat n={defendantsTotal} label="Defendants on record" />
+            <Stat n={profilesClaimed} label="Verified & building" />
             <Stat n={totals.documents} label="Documents" />
             <Stat n={totals.grievances} label="Grievances" />
-            <Stat n={swornStatements ?? 0} label="Sworn statements" />
+            <Stat n={swornStatements} label="Sworn statements" />
             <Stat n={totals.events} label="Timeline events" />
           </div>
           <p className="mt-5 text-sm text-[var(--color-ink-soft)]">

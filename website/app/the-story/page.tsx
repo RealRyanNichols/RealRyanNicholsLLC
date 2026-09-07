@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { pageMetadata } from "@/lib/page-metadata";
 import { RescueGallery } from "@/components/RescueGallery";
+import { getCaseTotals, getJ6DefendantCount } from "@/lib/case";
 
 export const metadata: Metadata = pageMetadata({
   title: "The Story — Ryan Nichols, All of It",
@@ -12,7 +13,7 @@ export const metadata: Metadata = pageMetadata({
 
 // The life's work, as chapters. Each one links into the part of the site that
 // holds its receipts. This page is the spine; the site is the body.
-const CHAPTERS: {
+type Chapter = {
   era: string;
   kicker: string;
   title: string;
@@ -23,7 +24,13 @@ const CHAPTERS: {
   // Only set when a REAL, verified photo of that era exists. Chapters without
   // one get a designed era plate — never a photo from the wrong year.
   image?: string;
-}[] = [
+};
+
+// Chapter Ten carries the live archive counts from lib/case.ts — never a
+// typed number — so the spine can only ever say what the archive says. A
+// count of 0 means the query failed; the line then drops the number.
+function chaptersFor(record: { defendants: number; documents: number }): Chapter[] {
+  return [
   {
     era: "2005",
     kicker: "Chapter One",
@@ -139,16 +146,24 @@ const CHAPTERS: {
     kicker: "Chapter Ten",
     title: "The archive for the others",
     lines: [
-      "1,571 defendants indexed. Profiles free, forever.",
-      "1,400+ documents public and permanent.",
+      `${record.defendants > 0 ? `${record.defendants.toLocaleString("en-US")} d` : "D"}efendants indexed. Profiles free, forever.`,
+      `${record.documents > 0 ? `${record.documents.toLocaleString("en-US")} d` : "D"}ocuments public and permanent.`,
       "Witnesses coming forward. History written — and righted.",
     ],
     href: "/j6",
     cta: "Enter the archive →",
   },
-];
+  ];
+}
 
-export default function TheStoryPage() {
+export const revalidate = 3600;
+
+export default async function TheStoryPage() {
+  const [totals, defendants] = await Promise.all([
+    getCaseTotals(),
+    getJ6DefendantCount(),
+  ]);
+  const chapters = chaptersFor({ defendants, documents: totals.documents });
   return (
     <article className="mx-auto max-w-3xl px-4 py-12">
       {/* Hero */}
@@ -185,7 +200,7 @@ export default function TheStoryPage() {
 
       {/* Chapters */}
       <section className="mt-14 space-y-6">
-        {CHAPTERS.map((c, idx) => (
+        {chapters.map((c, idx) => (
           <Link
             key={c.kicker}
             href={c.href}

@@ -15,31 +15,47 @@ const FIELD =
 const LABEL =
   "block text-[11px] font-black uppercase tracking-wider text-[var(--color-muted)]";
 
-const PRESETS: { label: string; title: string; sub: string; stat?: string; statLabel?: string }[] = [
-  {
-    label: "The archive",
-    title: "Every case. Every clue. One record.",
-    sub: "1,571 January 6 defendants indexed — open, sourced, and free at realryannichols.com/case.",
-  },
-  {
-    label: "1,463 days",
-    title: "Detained 1,463 days. Pardoned. Dismissed with prejudice.",
-    sub: "The full federal record of United States v. Nichols — preserved and public.",
-    stat: "1,463",
-    statLabel: "Days detained",
-  },
-  {
-    label: "Demand the tape",
-    title: "Release the bodycam.",
-    sub: "Free tool: a correctly-formatted records request in 60 seconds. No lawyer needed.",
-  },
-];
+type Preset = { label: string; title: string; sub: string; stat?: string; statLabel?: string };
 
-const DEFAULT_PRESET = PRESETS[0]!;
+// Presets carry the live archive numbers the page hands in from lib/case.ts
+// — the public defendant count and the arrest-to-pardon day count — so a
+// stale typed figure can never leave this tool on a card. A count of 0 means
+// the query failed; the line then drops the number instead of printing it.
+function buildPresets(defendants: number, days: number): Preset[] {
+  const n = defendants > 0 ? `${defendants.toLocaleString("en-US")} ` : "";
+  const d = days.toLocaleString("en-US");
+  return [
+    {
+      label: "The archive",
+      title: "Every case. Every clue. One record.",
+      sub: `${n}January 6 defendants indexed — open, sourced, and free at realryannichols.com/case.`,
+    },
+    {
+      label: `${d} days`,
+      title: `${d} days, arrest to pardon. Pardoned. Dismissed with prejudice.`,
+      sub: "The full federal record of United States v. Nichols — preserved and public.",
+      stat: d,
+      statLabel: "Days, arrest to pardon",
+    },
+    {
+      label: "Demand the tape",
+      title: "Release the bodycam.",
+      sub: "Free tool: a correctly-formatted records request in 60 seconds. No lawyer needed.",
+    },
+  ];
+}
 
-export function ShareCardTool() {
-  const [title, setTitle] = useState(DEFAULT_PRESET.title);
-  const [sub, setSub] = useState(DEFAULT_PRESET.sub);
+export function ShareCardTool({
+  defendants,
+  days,
+}: {
+  defendants: number;
+  days: number;
+}) {
+  const presets = useMemo(() => buildPresets(defendants, days), [defendants, days]);
+  const first = presets[0]!;
+  const [title, setTitle] = useState(first.title);
+  const [sub, setSub] = useState(first.sub);
   const [stat, setStat] = useState("");
   const [statLabel, setStatLabel] = useState("");
   const [style, setStyle] = useState<Style>("dark");
@@ -101,7 +117,7 @@ export function ShareCardTool() {
       .catch(() => {});
   }
 
-  function applyPreset(p: (typeof PRESETS)[number]) {
+  function applyPreset(p: Preset) {
     setTitle(p.title);
     setSub(p.sub);
     setStat(p.stat ?? "");
@@ -114,7 +130,7 @@ export function ShareCardTool() {
       {/* Form */}
       <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
         <div className="flex flex-wrap gap-2">
-          {PRESETS.map((p) => (
+          {presets.map((p) => (
             <button
               key={p.label}
               type="button"
@@ -166,7 +182,7 @@ export function ShareCardTool() {
                 value={stat}
                 onChange={(e) => setStat(e.target.value)}
                 className={`${FIELD} mt-1.5 font-bold`}
-                placeholder="1,463"
+                placeholder={days.toLocaleString("en-US")}
               />
             </div>
             <div>
@@ -179,7 +195,7 @@ export function ShareCardTool() {
                 value={statLabel}
                 onChange={(e) => setStatLabel(e.target.value)}
                 className={`${FIELD} mt-1.5`}
-                placeholder="Days detained"
+                placeholder="Days, arrest to pardon"
               />
             </div>
           </div>
