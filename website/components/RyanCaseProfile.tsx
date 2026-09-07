@@ -18,6 +18,7 @@ import { ReactionBar } from "@/components/ReactionBar";
 import { ReadingProgress } from "@/components/ReadingProgress";
 import { JsonLd } from "@/components/JsonLd";
 import { BookCtaBand } from "@/components/BookCtaBand";
+import { CaseCaptureBand } from "@/components/case/CaseCaptureBand";
 import { PERSON_ID, personRef, websiteRef } from "@/lib/jsonld";
 import { SITE } from "@/lib/site";
 import type { Post } from "@/lib/types";
@@ -301,14 +302,6 @@ export function RyanCaseProfile({
         </Link>
       </div>
 
-      {/* The book, placed where the readers actually are. Scroll telemetry on
-          /case for the 48h to 2026-08-23: of 1,882 views, 826 (44%) stopped
-          inside the first 10% and only 205 (11%) ever got past 60%. A CTA at
-          the bottom of this profile would be read by almost nobody. This sits
-          right after the hook and before Chapter One, around 15-20% depth,
-          which roughly 55% of readers still reach. */}
-      <BookCtaBand className="mt-8" tone="case" />
-
       {/* ---- Who he is, before the government ---- */}
       <section id="chapter-one" className="mt-12 scroll-mt-24 border-t-2 border-[var(--color-line)] pt-10">
         <ChapterHeader
@@ -531,6 +524,14 @@ export function RyanCaseProfile({
           ))}
         </ol>
       </section>
+
+      {/* Capture band one — a pause after the case timeline, before the
+          detention record. */}
+      <CaseCaptureBand
+        className="mt-12"
+        placement="case-timeline"
+        line="The record is still being written. Get the next filing when it lands."
+      />
 
       {/* ---- The detention record — the documented account ---- */}
       <section id="chapter-three" className="mt-12 scroll-mt-24 border-t-2 border-[var(--color-line)] pt-10">
@@ -842,6 +843,19 @@ export function RyanCaseProfile({
           <CaseStats views={person.views_count} shares={person.shares_count} />
         </div>
       </section>
+
+      {/* Capture band two — the book, after the evidence. The book band used
+          to sit before Chapter One on the strength of scroll telemetry from
+          2026-08-23 (44% of readers stopped inside the first 10%); it now
+          lands where the record has made its case, with the same follow
+          form under it, so the page asks exactly twice. */}
+      <CaseCaptureBand
+        className="mt-12"
+        placement="case-book"
+        line="They tried to bury me. I wrote the book."
+      >
+        <BookCtaBand tone="case" headingLevel="h3" />
+      </CaseCaptureBand>
 
       {/* Attorney briefing — below the story. Counsel jumps straight here
           via the hero's secondary link ("Counsel evaluating this case, start

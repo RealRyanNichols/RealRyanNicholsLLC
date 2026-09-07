@@ -9,14 +9,20 @@ import { BOOK, BOOK_TIERS, formatUsd, tierPriceUsd, tierSale } from "@/lib/book"
  * `tone` picks the accent: "accent" (default) keeps the flag-red rule and
  * button used on the home feed and elsewhere; "case" swaps them for gold, so
  * the /case page keeps its one-red-element rule (the hero's primary button).
+ *
+ * `headingLevel` lets a caller that already carries its own heading (the
+ * /case capture band) nest the price line under it instead of beside it.
  */
 export function BookCtaBand({
   className = "",
   tone = "accent",
+  headingLevel = "h2",
 }: {
   className?: string;
   tone?: "accent" | "case";
+  headingLevel?: "h2" | "h3";
 }) {
+  const Heading = headingLevel;
   const digital = BOOK_TIERS.find((t) => t.slug === "early_release_digital");
   const founding = BOOK_TIERS.find(
     (t) => t.slug === "founding_supporter_edition",
@@ -39,7 +45,7 @@ export function BookCtaBand({
           <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-gold-bright)]">
             {BOOK.title} · Pre-order
           </p>
-          <h2 className="mt-1 font-display text-2xl font-black leading-tight tracking-tight text-[#fdf8ea] sm:text-3xl">
+          <Heading className="mt-1 font-display text-2xl font-black leading-tight tracking-tight text-[#fdf8ea] sm:text-3xl">
             Early access for{" "}
             <span className="text-[var(--color-gold-bright)]">{price}</span>
             {list ? (
@@ -59,7 +65,7 @@ export function BookCtaBand({
                 {sale.percentOff}% off
               </span>
             ) : null}
-          </h2>
+          </Heading>
           <p className="mt-1 text-sm font-semibold text-[#cfd9ea]">
             Read it first and own a piece of the story — or become a Founding
             Supporter (limited to {founding?.limited ?? 250}).
