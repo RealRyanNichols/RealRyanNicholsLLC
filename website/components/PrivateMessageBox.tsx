@@ -153,7 +153,7 @@ export function PrivateMessageBox({
               });
               setState(open ? { kind: "idle" } : { kind: "open" });
             }}
-            className="min-h-11 rounded-full border border-[var(--color-line)] px-3 py-1.5 text-xs font-black hover:border-[var(--color-accent)] sm:min-h-0"
+            className="min-h-11 min-w-11 rounded-full border border-[var(--color-line)] px-3 py-1.5 text-xs font-black hover:border-[var(--color-accent)] sm:min-h-0 sm:min-w-0"
           >
             {open ? "Close" : "Message"}
           </button>

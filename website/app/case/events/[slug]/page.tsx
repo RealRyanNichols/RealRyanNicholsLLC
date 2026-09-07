@@ -167,12 +167,12 @@ export default async function EventPage({
         </div>
       </section>
 
-      <div className="mt-10 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-ink-soft)]">
+      <p className="mt-10 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-ink-soft)]">
         <Link href="/support" className="text-[var(--color-accent)] underline font-semibold">
           Support Ryan&apos;s rebuild
         </Link>{" "}
         — every dollar funds keeping this record public.
-      </div>
+      </p>
     </article>
   );
 }

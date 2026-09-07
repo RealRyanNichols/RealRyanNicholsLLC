@@ -57,7 +57,7 @@ export function BookStickyBuyBar({
           </div>
           <Link
             href={href}
-            className="shrink-0 rounded-lg bg-[var(--color-accent)] px-4 py-2.5 text-sm font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)]"
+            className="inline-flex min-h-11 shrink-0 items-center rounded-lg bg-[var(--color-accent)] px-4 py-2.5 text-sm font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)]"
           >
             {cta}
           </Link>

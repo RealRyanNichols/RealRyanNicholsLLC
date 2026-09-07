@@ -48,13 +48,13 @@ export default function ToolsPage() {
             <div className="mt-4 flex flex-wrap gap-2">
               <Link
                 href="/case/intake"
-                className="rounded-md border-2 border-[var(--color-success)] bg-[var(--color-success-soft)] px-4 py-2 text-sm font-black text-[var(--color-ink)] transition hover:bg-[var(--color-paper)]"
+                className="inline-flex min-h-11 items-center rounded-md border-2 border-[var(--color-success)] bg-[var(--color-success-soft)] px-4 py-2 text-sm font-black text-[var(--color-ink)] transition hover:bg-[var(--color-paper)]"
               >
                 See public signals
               </Link>
               <Link
                 href="/store/strategy-call-30"
-                className="rounded-md border-2 border-[var(--color-support)] bg-[var(--color-support)] px-4 py-2 text-sm font-black text-[var(--color-ink)] transition hover:bg-[var(--color-support-soft)]"
+                className="inline-flex min-h-11 items-center rounded-md border-2 border-[var(--color-support)] bg-[var(--color-support)] px-4 py-2 text-sm font-black text-[var(--color-ink)] transition hover:bg-[var(--color-support-soft)]"
               >
                 Build with Ryan
               </Link>

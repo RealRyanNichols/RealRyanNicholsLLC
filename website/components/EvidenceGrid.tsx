@@ -219,7 +219,7 @@ function SeriesCard({ series }: { series: DocSeries }) {
             </span>
           ) : null}
         </p>
-        <Link href={`/case/documents/${lead.slug}`} className="block">
+        <Link href={`/case/documents/${lead.slug}`} className="flex min-h-11 items-center sm:min-h-0">
           <p className="mt-1 text-sm font-semibold leading-snug text-[var(--color-ink)] hover:text-[var(--color-navy)] transition">
             {title}
           </p>

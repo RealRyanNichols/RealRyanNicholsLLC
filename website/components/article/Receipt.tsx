@@ -60,9 +60,11 @@ export function Receipt({ value }: { value: Record<string, unknown> }) {
           {exhibitId ? (
             <a
               href={`#${exhibitId}`}
-              className="rounded border border-[var(--color-gold-bright)]/40 px-1.5 py-0.5 font-mono text-[11px] font-bold text-[var(--color-gold-bright)] no-underline"
+              className="-my-2.5 inline-flex min-h-11 items-center no-underline sm:my-0 sm:min-h-0"
             >
-              {exhibitId}
+              <span className="rounded border border-[var(--color-gold-bright)]/40 px-1.5 py-0.5 font-mono text-[11px] font-bold text-[var(--color-gold-bright)]">
+                {exhibitId}
+              </span>
             </a>
           ) : null}
         </div>

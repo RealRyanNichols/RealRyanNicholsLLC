@@ -1412,13 +1412,13 @@ export function CaseNexus({
                 <div className="mt-3 grid grid-cols-2 gap-2">
                   <Link
                     href="/submit"
-                    className="rounded-md border border-[var(--color-gold-bright)] bg-[var(--color-gold-bright)]/15 px-3 py-2 text-center text-[10px] font-bold uppercase tracking-wider text-[var(--color-gold-bright)] transition hover:bg-[var(--color-gold-bright)]/25"
+                    className="inline-flex min-h-11 items-center justify-center rounded-md border border-[var(--color-gold-bright)] bg-[var(--color-gold-bright)]/15 px-3 py-2 text-center text-[10px] font-bold uppercase tracking-wider text-[var(--color-gold-bright)] transition hover:bg-[var(--color-gold-bright)]/25"
                   >
                     Add clue
                   </Link>
                   <Link
                     href="/tell-your-story"
-                    className="rounded-md border border-[#3a557c] bg-[#071126] px-3 py-2 text-center text-[10px] font-bold uppercase tracking-wider text-[#cfd9ea] transition hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)]"
+                    className="inline-flex min-h-11 items-center justify-center rounded-md border border-[#3a557c] bg-[#071126] px-3 py-2 text-center text-[10px] font-bold uppercase tracking-wider text-[#cfd9ea] transition hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)]"
                   >
                     Tell story
                   </Link>
@@ -1436,7 +1436,7 @@ export function CaseNexus({
                 <button
                   type="button"
                   onClick={() => fitMap(new Set(visibleConnectors.map((n) => n.node.id)))}
-                  className="text-[10px] font-bold uppercase tracking-wider text-[#7c8aa6] hover:text-[var(--color-paper)]"
+                  className="inline-flex min-h-11 items-center px-1 text-[10px] font-bold uppercase tracking-wider text-[#7c8aa6] hover:text-[var(--color-paper)] sm:min-h-0"
                 >
                   Fit hubs
                 </button>
@@ -1449,7 +1449,7 @@ export function CaseNexus({
                       key={connector.node.id}
                       type="button"
                       onClick={() => selectNode(connector.node.id, "graph")}
-                      className={`flex w-full items-center justify-between gap-3 rounded-md border px-3 py-2 text-left transition ${
+                      className={`flex min-h-11 w-full items-center justify-between gap-3 rounded-md border px-3 py-2 text-left transition ${
                         active
                           ? "border-[var(--color-gold-bright)] bg-[var(--color-gold-bright)]/10"
                           : "border-[#203a64] bg-[#071126] hover:border-[#3a557c]"
@@ -1476,7 +1476,7 @@ export function CaseNexus({
               <button
                 type="button"
                 onClick={() => fitMap()}
-                className="text-[10px] font-bold uppercase tracking-wider text-[#7c8aa6] hover:text-[var(--color-paper)]"
+                className="inline-flex min-h-11 items-center px-1 text-[10px] font-bold uppercase tracking-wider text-[#7c8aa6] hover:text-[var(--color-paper)] sm:min-h-0"
               >
                 Fit all
               </button>
@@ -1489,7 +1489,7 @@ export function CaseNexus({
                     key={caseNode.node.id}
                     type="button"
                     onClick={() => selectNode(caseNode.node.id, "graph")}
-                    className={`flex w-full items-center justify-between gap-3 rounded-md border px-3 py-2 text-left transition ${
+                    className={`flex min-h-11 w-full items-center justify-between gap-3 rounded-md border px-3 py-2 text-left transition ${
                       active
                         ? "border-[var(--color-gold-bright)] bg-[var(--color-gold-bright)]/10"
                         : "border-[#203a64] bg-[#071126] hover:border-[#3a557c]"
