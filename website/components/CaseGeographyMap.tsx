@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { geoPath, geoIdentity } from "d3-geo";
 import { feature } from "topojson-client";
@@ -97,6 +97,11 @@ export function CaseGeographyMap({ data }: { data: GeoPayload }) {
   const [drawer, setDrawer] = useState<StateDrawer | null>(null);
   const [loadingDrawer, setLoadingDrawer] = useState(false);
   const svgRef = useRef<SVGSVGElement | null>(null);
+  // The 56 state outlines are ~210KB of path data. Draw them only after
+  // hydration so the HTML carries the headline, the table, and the frame,
+  // never the geometry (same rule as the Map Room radar).
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   async function openState(stateName: string) {
     setSelected(stateName);
@@ -118,13 +123,14 @@ export function CaseGeographyMap({ data }: { data: GeoPayload }) {
       <div className="relative rounded-2xl overflow-hidden border-2 border-[var(--color-blue)] bg-[#0a1429]">
         <svg
           ref={svgRef}
+          data-geo-map
           viewBox={`0 0 ${W} ${H}`}
           className="block w-full h-auto select-none"
           role="img"
           aria-label="Choropleth map of January 6 defendant counts by state. Click a state to see its defendant list."
         >
-          {/* States */}
-          {statesFC.features.map((f) => {
+          {/* States — client-only, see `mounted`. */}
+          {mounted && statesFC.features.map((f) => {
             const nm = f.properties?.name ?? "";
             const row = countByState.get(nm.toLowerCase()) ?? null;
             const ct = row?.defendants ?? 0;
@@ -288,11 +294,12 @@ export function CaseGeographyMap({ data }: { data: GeoPayload }) {
               </h3>
               <button
                 type="button"
+                data-geo-close
                 onClick={() => {
                   setSelected(null);
                   setDrawer(null);
                 }}
-                className="text-[10px] uppercase tracking-wider text-[#7c8aa6] hover:text-[var(--color-paper)] font-bold"
+                className="-mr-3 -mt-2 grid min-h-11 min-w-11 place-items-center rounded-full px-3 text-[10px] uppercase tracking-wider text-[#7c8aa6] hover:text-[var(--color-paper)] font-bold"
               >
                 Close ×
               </button>

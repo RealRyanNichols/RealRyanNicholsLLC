@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BookCtaBand } from "@/components/BookCtaBand";
 
-// Donations are retired. /support stays because inbound links exist, but the
-// page now sells: support the work by owning a piece of it — the book, a
-// build, or something from the store. No gift rails, no "give" language.
-const TITLE = "Support the work — own a piece of it";
+// /support sells first (book, builds, store) and offers one narrow gift lane:
+// the Token Fund at /fuel, which pays for the AI tokens that build the site
+// and trades every tier for work. No floorless "give" rails.
+const TITLE = "Support the work — fuel it or own a piece of it";
 const DESCRIPTION =
-  "Ryan doesn't pass the hat. If the work matters to you, the way to support it is to own it: pre-order Fighting Shadows, hire him to build, or pick something up from the store.";
+  "Fuel the machine that builds this site, or own a piece of the work: the Token Fund, Fighting Shadows, a build, or the store.";
 
 export const metadata: Metadata = {
   title: "Support the Work",
@@ -21,6 +21,13 @@ export const metadata: Metadata = {
 };
 
 const WAYS = [
+  {
+    href: "/fuel",
+    kicker: "The Token Fund",
+    title: "Fuel the machine",
+    body: "Every page here is built with AI tokens Ryan pays for. Buy the fuel and get work back: a question answered, a letter, an article on the topic you pick.",
+    cta: "Fuel it →",
+  },
   {
     href: "/book/preorder",
     kicker: "The book",
@@ -51,13 +58,30 @@ export default function SupportPage() {
         Support the work
       </p>
       <h1 className="mt-2 font-display text-4xl font-black tracking-tight sm:text-5xl">
-        Own a piece of it.
+        Fuel it, or own a piece of it.
       </h1>
       <p className="mt-4 max-w-2xl text-lg leading-relaxed text-[var(--color-ink-soft)]">
-        This site doesn&apos;t take donations. Ryan sells what he builds — the
-        book, the builds, the store. If the record matters to you, the way to
-        keep it public is simple: buy something worth buying.
+        Ryan sells what he builds: the book, the builds, the store. And the
+        machine that builds all of it runs on AI tokens he pays for. Put fuel
+        in the tank and he puts work back in your hands.
       </p>
+
+      <Link
+        href="/fuel"
+        className="mt-6 block rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-5 transition hover:bg-[var(--color-accent)]/15 sm:p-6"
+      >
+        <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--color-accent)]">
+          The Token Fund
+        </p>
+        <p className="mt-1 font-display text-2xl font-black tracking-tight text-[var(--color-ink)]">
+          Fuel the machine. Get work back.
+        </p>
+        <p className="mt-1.5 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+          A question answered in public. A letter in the mail. An article on the
+          topic you pick. Every tier is a trade, and the bill is published.
+        </p>
+        <span className="mt-3 inline-block text-sm font-bold text-[var(--color-accent)]">See the tiers →</span>
+      </Link>
 
       {/* Lead: the book */}
       <div className="mt-8">
@@ -65,7 +89,7 @@ export default function SupportPage() {
       </div>
 
       {/* The three ways to own it */}
-      <section className="mt-10 grid gap-3 sm:grid-cols-3">
+      <section className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {WAYS.map((w) => (
           <Link
             key={w.href}

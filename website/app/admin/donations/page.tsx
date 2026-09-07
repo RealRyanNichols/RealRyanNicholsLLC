@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { format } from "date-fns";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { SupportNoteModerator } from "@/components/SupportNoteModerator";
+import { FUEL_MESSAGE_PREFIX, FUEL_PURPOSE, parseFuelMessage } from "@/lib/fuel";
+import { getFuelRaised } from "@/lib/fuel-server";
 
 export const metadata: Metadata = {
   title: "Donations",
@@ -85,6 +87,28 @@ export default async function AdminDonationsPage() {
     .order("created_at", { ascending: false })
     .limit(25);
 
+  // Token Fund rows: the support intents created at /fuel checkout, told
+  // apart by their message prefix, plus the money totals from donations.
+  const [{ data: fuelIntentsRaw }, fuelRaised] = await Promise.all([
+    supabase
+      .from("support_intents")
+      .select("id, created_at, intended_amount, display_name, email, message, status")
+      .eq("purpose", FUEL_PURPOSE)
+      .like("message", `${FUEL_MESSAGE_PREFIX}%`)
+      .order("created_at", { ascending: false })
+      .limit(100),
+    getFuelRaised(),
+  ]);
+  const fuelIntents = (fuelIntentsRaw ?? []) as {
+    id: string;
+    created_at: string;
+    intended_amount: string | null;
+    display_name: string | null;
+    email: string | null;
+    message: string | null;
+    status: string;
+  }[];
+
   // Transparent funding goal: all line items (incl. inactive) + settings + snapshot.
   const [fundingItemsRes, fundingSettingsRes, fundingSnapRes] = await Promise.all([
     supabase
@@ -152,11 +176,87 @@ export default async function AdminDonationsPage() {
         Donations &amp; payments
       </h1>
       <p className="mt-1 inline-block rounded border border-[var(--color-line)] bg-[var(--color-surface)] px-2 py-1 text-xs font-bold uppercase tracking-wider text-[var(--color-muted)]">
-        Legacy — donations retired. Kept as the historical ledger; the public site now sells (book, services, store).
+        Token Fund live at /fuel since Sep 7, 2026. &ldquo;Fund the Truth&rdquo; below is the closed legacy ledger.
       </p>
       <p className="mt-2 text-sm text-[var(--color-muted)]">
         Every dollar in, in one place.
       </p>
+
+      {/* Token Fund: money in, and the work each payment bought. */}
+      <section className="mt-6 rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-surface)] p-4 sm:p-5">
+        <div className="flex flex-wrap items-baseline justify-between gap-3">
+          <div>
+            <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--color-accent)]">
+              Token Fund · /fuel
+            </p>
+            <h2 className="mt-1 text-lg font-bold tracking-tight">
+              {fuelRaised
+                ? `${usd(fuelRaised.monthCents)} this month · ${usd(fuelRaised.allTimeCents)} all time`
+                : "Money totals need SUPABASE_SERVICE_ROLE_KEY"}
+            </h2>
+          </div>
+          <a href="/fuel" className="text-xs font-bold text-[var(--color-accent)] underline underline-offset-4">
+            Open the public page →
+          </a>
+        </div>
+        <p className="mt-2 text-xs text-[var(--color-muted)]">
+          Each row is a payment that bought work. &ldquo;started&rdquo; means they opened Stripe and did not finish; still a lead.
+        </p>
+        {fuelIntents.length === 0 ? (
+          <p className="mt-3 text-sm italic text-[var(--color-ink-soft)]">No Token Fund activity yet.</p>
+        ) : (
+          <div className="mt-3 overflow-x-auto">
+            <table className="w-full min-w-[36rem] text-sm">
+              <thead className="text-[10px] uppercase tracking-wider text-[var(--color-muted)]">
+                <tr>
+                  <th className="px-2 py-1 text-left font-bold">When</th>
+                  <th className="px-2 py-1 text-left font-bold">Who</th>
+                  <th className="px-2 py-1 text-left font-bold">Tier</th>
+                  <th className="px-2 py-1 text-right font-bold">Amount</th>
+                  <th className="px-2 py-1 text-left font-bold">Status</th>
+                  <th className="px-2 py-1 text-left font-bold">What they asked for</th>
+                </tr>
+              </thead>
+              <tbody>
+                {fuelIntents.map((i) => {
+                  const f = parseFuelMessage(i.message);
+                  return (
+                    <tr key={i.id} className="border-t border-[var(--color-line)] align-top">
+                      <td className="whitespace-nowrap px-2 py-2 text-[var(--color-ink-soft)]">
+                        {format(new Date(i.created_at), "MMM d, h:mm a")}
+                      </td>
+                      <td className="px-2 py-2">
+                        <span className="font-semibold text-[var(--color-ink)]">{i.display_name || "—"}</span>
+                        {i.email ? <span className="block text-xs text-[var(--color-muted)]">{i.email}</span> : null}
+                      </td>
+                      <td className="px-2 py-2 text-[var(--color-ink-soft)]">{f?.tier ?? "—"}</td>
+                      <td className="whitespace-nowrap px-2 py-2 text-right font-mono font-bold">
+                        {i.intended_amount ? `$${i.intended_amount}` : "—"}
+                      </td>
+                      <td className="px-2 py-2">
+                        <span
+                          className={`rounded-full border px-2 py-0.5 text-xs font-bold ${
+                            i.status === "paid"
+                              ? "border-[var(--color-success)] text-[var(--color-success)]"
+                              : i.status === "started"
+                                ? "border-[var(--color-amber)] text-[var(--color-amber)]"
+                                : "border-[var(--color-line)] text-[var(--color-muted)]"
+                          }`}
+                        >
+                          {i.status}
+                        </span>
+                      </td>
+                      <td className="max-w-[24rem] px-2 py-2 text-[var(--color-ink-soft)]">
+                        {f?.ask ? <span className="whitespace-pre-wrap">{f.ask}</span> : <span className="italic">nothing</span>}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
 
       {/* Goal tools retired with the donations program — records only.
           fundingSettings kept in scope for the ledger note below. */}

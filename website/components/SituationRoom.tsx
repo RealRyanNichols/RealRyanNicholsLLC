@@ -445,12 +445,19 @@ export function SituationRoom({
             ) : null}
           </p>
           <div className="mt-4 flex flex-wrap items-center gap-3">
-            {/* Donations retired — the room's money door now sells the book. */}
+            {/* The room's money doors: the book, and the Token Fund that pays
+                for the AI tokens building all of this. */}
             <a
               href="/book/preorder"
-              className="rounded-full border border-[var(--color-gold-bright)]/60 bg-[var(--color-gold-bright)] px-4 py-2.5 text-sm font-black tracking-tight text-[#0a1326] transition hover:bg-[#f0d27a]"
+              className="inline-flex min-h-11 items-center rounded-full border border-[var(--color-gold-bright)]/60 bg-[var(--color-gold-bright)] px-4 py-2.5 text-sm font-black tracking-tight text-[#0a1326] transition hover:bg-[#f0d27a]"
             >
               Get the Book →
+            </a>
+            <a
+              href="/fuel"
+              className="inline-flex min-h-11 items-center rounded-full border border-[var(--color-live)]/60 bg-[var(--color-live)]/10 px-4 py-2.5 text-sm font-black tracking-tight text-[var(--color-live)] transition hover:bg-[var(--color-live)]/20"
+            >
+              Fuel the machine →
             </a>
             <button
               type="button"
