@@ -9,6 +9,7 @@ import { VerseSidebar } from "@/components/VerseSidebar";
 import { SignupForm } from "@/components/SignupForm";
 import { BookPromo } from "@/components/BookPromo";
 import { BookCtaBand } from "@/components/BookCtaBand";
+import { FuelBand } from "@/components/FuelBand";
 import { FeedPoll } from "@/components/FeedPoll";
 import { LiveNowBanner } from "@/components/LiveNowBanner";
 import { getActiveLiveStream } from "@/lib/live";
@@ -113,6 +114,9 @@ export default async function HomePage({
                 // Poll rides AFTER the fourth post now — Ryan's call: let
                 // people breathe through the top of the feed before we ask
                 // them anything.
+                // Token Fund band right after the lead post: the site's one
+                // gift lane, with the live AI bill from the ledger as its number.
+                i === 0 ? <FuelBand key="home-fuel" className="my-8" /> : null,
                 i === slots.poll ? (
                   <FeedPoll key="home-poll" className="my-8" />
                 ) : null,
