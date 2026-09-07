@@ -95,6 +95,12 @@ export function LiveVisitorRadar({ initial }: { initial: RadarPing[] }) {
   const [dragging, setDragging] = useState(false);
   const pointers = useRef(new Map<number, { x: number; y: number }>());
   const gesture = useRef<Gesture | null>(null);
+  // Tap-vs-drag: a single pointer that goes down on a ping and lifts within
+  // TAP_SLOP px selects it; any real movement is a pan, even when it starts
+  // on a ping. Selection therefore lives here, not in a click handler on
+  // the ping, because pointer capture on the svg would swallow that click.
+  const tap = useRef<{ pingId: string | null; startX: number; startY: number; moved: boolean } | null>(null);
+  const TAP_SLOP = 8;
 
   // CSS pixels per viewBox unit at the current rendered size, so dots and
   // tap targets keep a constant on-screen size (a 44px hit target on a
@@ -176,12 +182,22 @@ export function LiveVisitorRadar({ initial }: { initial: RadarPing[] }) {
     };
   }, [toViewBox, zoomAt]);
 
+  function pingIdAt(target: EventTarget | null): string | null {
+    const el = target as Element | null;
+    const g = el && typeof el.closest === "function" ? el.closest("[data-ping-id]") : null;
+    return g ? g.getAttribute("data-ping-id") : null;
+  }
+
   function onPointerDown(e: React.PointerEvent<SVGSVGElement>) {
     if (e.pointerType === "mouse" && e.button !== 0) return;
     svgRef.current?.setPointerCapture?.(e.pointerId);
     pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
     const active = Array.from(pointers.current.values());
     const current = viewRef.current;
+    tap.current =
+      active.length === 1
+        ? { pingId: pingIdAt(e.target), startX: e.clientX, startY: e.clientY, moved: false }
+        : null;
     if (active.length >= 2) {
       const [a, b] = active;
       gesture.current = {
@@ -206,6 +222,10 @@ export function LiveVisitorRadar({ initial }: { initial: RadarPing[] }) {
   function onPointerMove(e: React.PointerEvent<SVGSVGElement>) {
     if (!pointers.current.has(e.pointerId)) return;
     pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    const t = tap.current;
+    if (t && !t.moved && Math.hypot(e.clientX - t.startX, e.clientY - t.startY) > TAP_SLOP) {
+      t.moved = true;
+    }
     const g = gesture.current;
     const rect = svgRef.current?.getBoundingClientRect();
     if (!g || !rect) return;
@@ -244,9 +264,19 @@ export function LiveVisitorRadar({ initial }: { initial: RadarPing[] }) {
   }
 
   function onPointerUp(e: React.PointerEvent<SVGSVGElement>) {
+    const wasSingle = pointers.current.size === 1;
     pointers.current.delete(e.pointerId);
     const active = Array.from(pointers.current.values());
     if (active.length === 0) {
+      const t = tap.current;
+      if (t && wasSingle && !t.moved && e.type !== "pointercancel") {
+        const id = t.pingId;
+        // A tap on a dot toggles its chip; a tap on open map clears it.
+        setSelected((cur) =>
+          id && cur?.ping_id !== id ? (pings.find((p) => p.ping_id === id) ?? null) : null,
+        );
+      }
+      tap.current = null;
       gesture.current = null;
       setDragging(false);
     } else if (active.length === 1) {
@@ -365,11 +395,7 @@ export function LiveVisitorRadar({ initial }: { initial: RadarPing[] }) {
               <g
                 key={p.ping_id}
                 data-ping
-                onPointerDown={(e) => e.stopPropagation()}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelected((cur) => (cur?.ping_id === p.ping_id ? null : p));
-                }}
+                data-ping-id={p.ping_id}
                 style={{ cursor: "pointer" }}
               >
                 {/* Invisible 44px hit target so a fingertip can land it. */}
