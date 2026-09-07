@@ -3,7 +3,7 @@ import { randomBytes } from "crypto";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { requireStripe } from "@/lib/stripe";
 import { getSupabaseServiceClient } from "@/lib/supabase/service";
-import { recordDonationFromSession } from "@/lib/donations";
+import { recordDonationFromSession, recordFuelInvoice } from "@/lib/donations";
 import { markFuelIntentPaid } from "@/lib/fuel-server";
 import { triggerBookBuyerAutomation } from "@/lib/book-buyer-automation";
 
@@ -49,6 +49,11 @@ export async function POST(req: Request) {
         await handleRefund(supabase, event);
         break;
       case "invoice.paid":
+        // Recurring Token Fund gifts are recorded per invoice (first month
+        // included); the service-invoice handler ignores them and vice versa.
+        await recordFuelInvoice(event.data.object as Stripe.Invoice, supabase);
+        await handleServiceInvoiceChange(supabase, event);
+        break;
       case "invoice.payment_failed":
       case "invoice.voided":
       case "invoice.marked_uncollectible":
@@ -83,6 +88,12 @@ async function handleCheckoutCompleted(
   if (session.mode === "subscription") {
     if (kind === "service_payment_plan") {
       await handleServicePaymentPlanCheckout(stripe, supabase, session);
+      return;
+    }
+    if (kind === "donation") {
+      // Token Fund Keeper. The money lands from invoice.paid; here the
+      // support intent captured at checkout becomes paid work.
+      await markFuelIntentPaid(session, supabase);
       return;
     }
 

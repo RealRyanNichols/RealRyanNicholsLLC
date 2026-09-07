@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { requireStripe } from "@/lib/stripe";
 import { recordDonationFromSession } from "@/lib/donations";
 import { getFuelBill, markFuelIntentPaid } from "@/lib/fuel-server";
-import { tierForAmount, usdWhole } from "@/lib/fuel";
+import { FUEL_MONTHLY, tierForAmount, usdWhole } from "@/lib/fuel";
 import { PurchaseTracker } from "@/components/PurchaseTracker";
 import { SignupForm } from "@/components/SignupForm";
 import { ShareRail } from "@/components/ShareRail";
@@ -42,8 +42,15 @@ export default async function FuelThanksPage({
   }
 
   const { tiers } = await getFuelBill();
-  const tier = tiers.find((t) => t.slug === tierSlug) ?? (amountCents > 0 ? tierForAmount(tiers, amountCents) : null);
-  const earned = tier ? tiers.filter((t) => t.amountCents <= tier.amountCents).flatMap((t) => t.gets) : [];
+  const keeper = tierSlug === FUEL_MONTHLY.slug;
+  const tier = keeper
+    ? FUEL_MONTHLY
+    : (tiers.find((t) => t.slug === tierSlug) ?? (amountCents > 0 ? tierForAmount(tiers, amountCents) : null));
+  const earned = keeper
+    ? FUEL_MONTHLY.gets
+    : tier
+      ? tiers.filter((t) => t.amountCents <= tier.amountCents).flatMap((t) => t.gets)
+      : [];
 
   return (
     <article className="mx-auto max-w-xl px-4 py-16">
@@ -55,8 +62,13 @@ export default async function FuelThanksPage({
         Fuel received.
       </h1>
       <p className="mt-4 leading-relaxed text-[var(--color-ink-soft)]">
-        {amountCents > 0 ? `${usdWhole(amountCents)} went straight to me, no middleman. ` : "Your payment went straight to me, no middleman. "}
+        {keeper
+          ? `You are a Keeper. ${usdWhole(amountCents)} a month keeps a day of the machine running every month, and your name goes in the Keepers row on the wall. `
+          : amountCents > 0
+            ? `${usdWhole(amountCents)} went straight to me, no middleman. `
+            : "Your payment went straight to me, no middleman. "}
         {email ? `Stripe is sending the receipt to ${email}.` : "Stripe is sending the receipt to your email."}
+        {keeper ? " Stop it any time by writing to me; the last month billed is the last charge." : ""}
       </p>
 
       {earned.length > 0 ? (

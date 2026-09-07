@@ -3,7 +3,10 @@ import assert from "node:assert/strict";
 import {
   FUEL_FLOOR_CENTS,
   FUEL_MAX_CENTS,
+  FUEL_MONTHLY,
+  articlesLabel,
   daysLeftInMonth,
+  fuelArticlesAtPace,
   formatFuelMessage,
   fuelBillCents,
   fuelBillItems,
@@ -46,7 +49,24 @@ test("a custom amount resolves to the highest tier it reaches", () => {
   const big = resolveFuelAmount(tiers, { amountCents: 200000 });
   assert.ok(big.ok);
   assert.equal(big.tier?.slug, "month");
-  assert.equal(tierForAmount(tiers, 1999), null);
+  assert.equal(tierForAmount(tiers, 1999)?.slug, "spark");
+  assert.equal(tierForAmount(tiers, 499), null);
+});
+
+test("the monthly lane is a fixed amount outside the size ladder", () => {
+  assert.equal(FUEL_MONTHLY.slug, "keeper");
+  assert.equal(FUEL_MONTHLY.amountCents, 5000);
+  assert.ok(!resolveTiers(130000).some((t) => t.slug === "keeper"));
+});
+
+test("articles at pace come from the real bill and the real post count", () => {
+  // 227 posts on a $1,300 bill: about $5.73 an article.
+  assert.equal(articlesLabel(fuelArticlesAtPace(500, 130000, 227)), "about 1 article");
+  assert.equal(articlesLabel(fuelArticlesAtPace(2000, 130000, 227)), "about 3 articles");
+  assert.equal(articlesLabel(fuelArticlesAtPace(50000, 130000, 227)), "about 87 articles");
+  assert.equal(fuelArticlesAtPace(2000, 130000, null), null);
+  assert.equal(fuelArticlesAtPace(2000, 0, 227), null);
+  assert.equal(articlesLabel(fuelArticlesAtPace(100, 130000, 227)), "part of an article");
 });
 
 test("the floor and ceiling hold, and unknown tiers are refused", () => {
@@ -62,6 +82,7 @@ test("the floor and ceiling hold, and unknown tiers are refused", () => {
 
 test("a gift is measured in machine time against the real bill, never a typed number", () => {
   const bill = 130000; // $1,300 a month => $43.33 a day
+  assert.equal(fuelDuration(500, bill), "about 3 hours of the machine");
   assert.equal(fuelDuration(2000, bill), "about 11 hours of the machine");
   assert.equal(fuelDuration(5000, bill), "about a day of the machine");
   assert.equal(fuelDuration(10000, bill), "about 2 days of the machine");

@@ -8,6 +8,7 @@ import { SITE } from "@/lib/site";
 import {
   FUEL_CAMPAIGN,
   FUEL_MAX_CENTS,
+  FUEL_MONTHLY,
   FUEL_PURPOSE,
   formatFuelMessage,
   resolveFuelAmount,
@@ -21,10 +22,12 @@ export const runtime = "nodejs";
 // (or a custom amount above the floor); the client never sets a price. A
 // support_intents row captures who they are and what they asked for before
 // the redirect, so an abandoned checkout still leaves a lead, and a paid one
-// becomes an item of work Ryan owes.
+// becomes an item of work Ryan owes. "monthly" opens a Stripe subscription
+// for the Keeper amount; its invoices are recorded by the webhook.
 const schema = z.object({
   tier: z.string().max(40).optional().nullable(),
   amount_cents: z.number().int().min(0).max(FUEL_MAX_CENTS).optional().nullable(),
+  cadence: z.enum(["once", "monthly"]).default("once"),
   display_name: z.string().max(120).optional().or(z.literal("")),
   email: z.string().email("Please enter a valid email.").optional().or(z.literal("")),
   ask: z.string().max(1800).optional().or(z.literal("")),
@@ -63,11 +66,14 @@ export async function POST(request: Request) {
   });
   if (!rl.ok) return NextResponse.json({ error: rl.error }, { status: 429 });
 
+  const monthly = parsed.data.cadence === "monthly";
   const { tiers } = await getFuelBill();
-  const resolved = resolveFuelAmount(tiers, {
-    tier: parsed.data.tier ?? null,
-    amountCents: parsed.data.amount_cents ?? null,
-  });
+  const resolved = monthly
+    ? { ok: true as const, amountCents: FUEL_MONTHLY.amountCents, tier: FUEL_MONTHLY }
+    : resolveFuelAmount(tiers, {
+        tier: parsed.data.tier ?? null,
+        amountCents: parsed.data.amount_cents ?? null,
+      });
   if (!resolved.ok) return NextResponse.json({ error: resolved.error }, { status: 400 });
 
   const ask = parsed.data.ask?.trim() || "";
@@ -78,7 +84,9 @@ export async function POST(request: Request) {
     );
   }
 
-  const tierTitle = resolved.tier?.title ?? `Custom ${usdWhole(resolved.amountCents)}`;
+  const tierTitle = monthly
+    ? `${FUEL_MONTHLY.title} (monthly)`
+    : (resolved.tier?.title ?? `Custom ${usdWhole(resolved.amountCents)}`);
   const displayName = parsed.data.display_name?.trim() || null;
   const email = parsed.data.email?.trim() || null;
 
@@ -106,34 +114,60 @@ export async function POST(request: Request) {
     intentSaved = false;
   }
 
+  const metadata = {
+    kind: "donation",
+    campaign: FUEL_CAMPAIGN,
+    source: "fuel",
+    tier: monthly ? FUEL_MONTHLY.slug : (resolved.tier?.slug ?? "custom"),
+    cadence: parsed.data.cadence,
+    intent_id: intentSaved ? intentId : "",
+  };
+  const productData = {
+    name: `Token Fund: ${tierTitle}`,
+    description:
+      "Pays for the AI tokens that build and run realryannichols.com. Goes to Ryan Nichols directly.",
+  };
+
   const stripe = requireStripe();
-  const session = await stripe.checkout.sessions.create({
-    mode: "payment",
-    submit_type: "donate",
-    line_items: [
-      {
-        quantity: 1,
-        price_data: {
-          currency: "usd",
-          unit_amount: resolved.amountCents,
-          product_data: {
-            name: `Token Fund: ${tierTitle}`,
-            description:
-              "Pays for the AI tokens that build and run realryannichols.com. Goes to Ryan Nichols directly.",
+  const session = monthly
+    ? await stripe.checkout.sessions.create({
+        mode: "subscription",
+        line_items: [
+          {
+            quantity: 1,
+            price_data: {
+              currency: "usd",
+              unit_amount: resolved.amountCents,
+              recurring: { interval: "month" },
+              product_data: productData,
+            },
           },
-        },
-      },
-    ],
-    customer_email: email ?? undefined,
-    success_url: `${SITE.url}/fuel/thanks?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${SITE.url}/fuel?canceled=1`,
-    metadata: {
-      kind: "donation",
-      campaign: FUEL_CAMPAIGN,
-      source: "fuel",
-      tier: resolved.tier?.slug ?? "custom",
-      intent_id: intentSaved ? intentId : "",
-    },
-  });
+        ],
+        customer_email: email ?? undefined,
+        // The subscription carries the same metadata so every invoice it
+        // raises can be recognised as fuel by the webhook.
+        subscription_data: { metadata },
+        success_url: `${SITE.url}/fuel/thanks?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${SITE.url}/fuel?canceled=1`,
+        metadata,
+      })
+    : await stripe.checkout.sessions.create({
+        mode: "payment",
+        submit_type: "donate",
+        line_items: [
+          {
+            quantity: 1,
+            price_data: {
+              currency: "usd",
+              unit_amount: resolved.amountCents,
+              product_data: productData,
+            },
+          },
+        ],
+        customer_email: email ?? undefined,
+        success_url: `${SITE.url}/fuel/thanks?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${SITE.url}/fuel?canceled=1`,
+        metadata,
+      });
   return NextResponse.json({ url: session.url });
 }

@@ -106,7 +106,7 @@ Report back: the two before and after query results, the webhook response code, 
 ```
 Approval: I approve restricting the database function live_visitor_session_detail to admin use only.
 
-You are working in the RealRyanNicholsLLC repo. The Next.js app is in website/. Migrations live in supabase/migrations/ at the repo root. Read AGENTS.md first. The Supabase MCP is connected to the production project rpchhzncxigczfojfdtc; treat every write as production.
+You are working in the RealRyanNicholsLLC repo. The Next.js app is in website/. Migrations live in website/supabase/migrations/. Read AGENTS.md first. The Supabase MCP is connected to the production project rpchhzncxigczfojfdtc; treat every write as production.
 
 Ground rules: Never invent. Never expose SUPABASE_SERVICE_ROLE_KEY to the browser. No public surface may show a visitor's path or page trail. Never edit by line number; grep for the symbol first. npx tsc --noEmit and npx eslint <changed files> green before any commit.
 
@@ -131,7 +131,7 @@ Report back: the callers you found, the grants before and after, and the two pro
 ```
 Approval: I approve capturing database functions, views, triggers, and cron jobs that exist only in production into migration files, with no change in behavior.
 
-You are working in the RealRyanNicholsLLC repo. Migrations live in supabase/migrations/ at the repo root. Read AGENTS.md first. The Supabase MCP is connected to the production project rpchhzncxigczfojfdtc; this job reads production and writes only files in the repo.
+You are working in the RealRyanNicholsLLC repo. Migrations live in website/supabase/migrations/. Read AGENTS.md first. The Supabase MCP is connected to the production project rpchhzncxigczfojfdtc; this job reads production and writes only files in the repo.
 
 Ground rules: Never invent. Do not edit any function body. Do not apply anything to production; the objects already exist there. Never expose the service-role key.
 
@@ -159,7 +159,7 @@ DECISION (mine, pick one and delete the others):
 (b) City-level pings for admins only; the public map stays at state level.
 (c) City-level pings for everyone, with the privacy floor below.
 
-You are working in the RealRyanNicholsLLC repo. The Next.js app is in website/; run every command from there. Migrations live in supabase/migrations/ at the repo root. Read AGENTS.md first.
+You are working in the RealRyanNicholsLLC repo. The Next.js app is in website/; run every command from there. Migrations live in website/supabase/migrations/. Read AGENTS.md first.
 
 Ground rules: Never invent. Do not invent city coordinates; every coordinate comes from a licensed dataset you name, with its license. No public surface may show a visitor's path or page trail. Never edit by line number; grep for the symbol first. npx tsc --noEmit, npx eslint <changed files>, and npm test green before any commit.
 

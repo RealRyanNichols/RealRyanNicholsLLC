@@ -4,11 +4,13 @@ import type Stripe from "stripe";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { getSupabaseServiceClient, isSupabaseServiceConfigured } from "@/lib/supabase/service";
 import { fetchSiteTotals } from "@/lib/site-totals";
+import { getPublishedSupporters } from "@/lib/supporters";
 import {
   FUEL_CAMPAIGN,
   FUEL_PURPOSE,
   fuelBillCents,
   fuelBillItems,
+  parseFuelMessage,
   resolveTiers,
   type FundingItem,
   type ResolvedFuelTier,
@@ -72,6 +74,9 @@ export type FuelRaised = {
   monthCount: number;
   allTimeCents: number;
   allTimeCount: number;
+  // Recurring gifts that landed this month (the Keepers).
+  keepers: number;
+  lastGiftAt: string | null;
 };
 
 // Money in for this campaign. The donations table is admin-read, so this
@@ -83,29 +88,76 @@ export async function getFuelRaised(): Promise<FuelRaised | null> {
     const supabase = getSupabaseServiceClient();
     const { data } = await supabase
       .from("donations")
-      .select("amount_cents, created_at, refunded_at")
+      .select("amount_cents, created_at, refunded_at, recurring")
       .eq("campaign", FUEL_CAMPAIGN)
       .is("refunded_at", null)
       .order("created_at", { ascending: false })
       .limit(1000);
-    const rows = (data ?? []) as { amount_cents: number; created_at: string }[];
+    const rows = (data ?? []) as { amount_cents: number; created_at: string; recurring: boolean | null }[];
     const monthStart = new Date();
     monthStart.setUTCDate(1);
     monthStart.setUTCHours(0, 0, 0, 0);
     let monthCents = 0;
     let monthCount = 0;
     let allTimeCents = 0;
+    let keepers = 0;
     for (const r of rows) {
       allTimeCents += r.amount_cents ?? 0;
       if (new Date(r.created_at) >= monthStart) {
         monthCents += r.amount_cents ?? 0;
         monthCount += 1;
+        if (r.recurring) keepers += 1;
       }
     }
-    return { monthCents, monthCount, allTimeCents, allTimeCount: rows.length };
+    return {
+      monthCents,
+      monthCount,
+      allTimeCents,
+      allTimeCount: rows.length,
+      keepers,
+      lastGiftAt: rows[0]?.created_at ?? null,
+    };
   } catch {
     return null;
   }
+}
+
+// One snapshot for the live meter: the bill, the month, the room, and the
+// last few published fuelers. Served by /api/fuel/status and used as the
+// meter's first render on /fuel so the numbers never flash from zero.
+export type FuelStatus = {
+  at: string;
+  billCents: number;
+  raised: FuelRaised | null;
+  liveNow: number;
+  recent: { name: string; tier: string; amount: string | null; at: string }[];
+};
+
+export async function getFuelStatus(): Promise<FuelStatus> {
+  const supabase = getSupabaseStaticClient();
+  const [bill, raised, totals, published] = await Promise.all([
+    getFuelBill(),
+    getFuelRaised(),
+    fetchSiteTotals(supabase),
+    getPublishedSupporters(24),
+  ]);
+  const recent = published
+    .map((s) => ({ s, fuel: parseFuelMessage(s.message) }))
+    .filter((x) => x.fuel !== null)
+    .slice(0, 6)
+    .map(({ s, fuel }) => ({
+      name: s.display_name ?? "Anonymous",
+      tier: fuel!.tier,
+      amount: s.amount,
+      at: s.created_at,
+    }));
+  return {
+    at: new Date().toISOString(),
+    billCents: bill.billCents,
+    raised,
+    liveNow: totals?.live_now ?? 0,
+    recent,
+  };
 }
 
 // Flip the support intent created at checkout to "paid" once Stripe says
