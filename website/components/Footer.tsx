@@ -30,6 +30,7 @@ const COLUMNS: { heading: string; links: { href: string; label: string }[] }[] =
     links: [
       { href: "/services", label: "Services" },
       { href: "/store", label: "Store" },
+      { href: "/fuel", label: "Fuel the machine" },
       { href: "/own-your-feed", label: "Own Your Feed" },
       { href: "/impact", label: "Impact" },
       { href: "/about", label: "About" },

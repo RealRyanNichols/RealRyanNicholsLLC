@@ -108,16 +108,17 @@ export async function ProfileHero() {
           </div>
         </div>
 
-        <div className="mt-3 flex flex-wrap items-center gap-2 sm:hidden">
+        {/* Phones: two full-width thumbs, no wrapping row. */}
+        <div className="mt-4 grid grid-cols-2 gap-2 sm:hidden">
           <Link
             href="/start-here"
-            className="btn-accent inline-flex min-h-11 items-center rounded-full px-5 py-1.5 text-sm transition"
+            className="btn-accent inline-flex min-h-12 items-center justify-center rounded-lg px-4 py-2 text-sm transition"
           >
             Start Here
           </Link>
           <Link
             href="/book/preorder"
-            className="btn-support inline-flex min-h-11 items-center rounded-full px-4 py-1.5 text-sm font-semibold transition"
+            className="inline-flex min-h-12 items-center justify-center rounded-lg border-2 border-[var(--color-gold-bright)] px-4 py-2 text-sm font-bold text-[var(--color-ink)] transition hover:bg-[var(--color-support-soft)]"
           >
             Get the Book
           </Link>

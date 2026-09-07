@@ -29,10 +29,12 @@ const DOORS: Door[] = [
   },
 ];
 
-// The two things we sell — surfaced as buttons, never buried in a maze.
+// The things we sell — surfaced as buttons, never buried in a maze. Fuel is
+// the Token Fund: it pays for the AI tokens the whole site runs on.
 const OFFERS: Offer[] = [
   { href: "/book", label: "The Book" },
   { href: "/services", label: "Work With Me" },
+  { href: "/fuel", label: "Fuel" },
 ];
 
 const MOBILE_ADMIN_LINKS: { href: string; label: string }[] = [
@@ -282,7 +284,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
                 Join — get it in your inbox
               </Link>
 
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-3 gap-2">
                 {OFFERS.map((o) => (
                   <Link
                     key={o.href}

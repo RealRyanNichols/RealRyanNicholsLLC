@@ -228,32 +228,41 @@ function PostCardBody({
     post.thumbnail_url ?? post.og_image_url ?? fallbackImage ?? null;
   return (
     <>
-      <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">
-        <Link href={`/posts/${post.slug}`} className="hover:underline underline-offset-4">
-          {post.title ?? "Untitled"}
-        </Link>
-      </h2>
       {cardImage ? (
-        // A card image (own thumbnail, or the OG fallback) means we show a
-        // plain-text excerpt — rendering the full body would repaint visuals.
+        // A card image (own thumbnail, or the OG fallback) leads the card:
+        // art first, then the headline, then a plain-text excerpt. On phones
+        // the art runs edge to edge; from sm up it sits inside the column.
         <>
           <Link
             href={`/posts/${post.slug}`}
-            className="mt-3 block relative aspect-video overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)]"
+            className="relative -mx-4 block aspect-video overflow-hidden bg-[var(--color-surface)] sm:mx-0 sm:rounded-xl sm:border sm:border-[var(--color-line)]"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={cardImage}
               alt={post.title ? `${post.title} social preview` : "Article social preview"}
               loading="lazy"
-              className="absolute inset-0 h-full w-full object-cover"
+              className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover/card:scale-[1.02]"
             />
           </Link>
-          <p className="mt-3 leading-relaxed text-[var(--color-ink-soft)]">
-            {feedExcerpt(post.body, 280)}
+          <h2 className="mt-4 font-display text-2xl font-bold leading-tight tracking-tight sm:text-3xl">
+            <Link href={`/posts/${post.slug}`} className="hover:underline underline-offset-4">
+              {post.title ?? "Untitled"}
+            </Link>
+          </h2>
+          <p className="mt-2.5 leading-relaxed text-[var(--color-ink-soft)]">
+            {feedExcerpt(post.body, 240)}
           </p>
         </>
-      ) : bodyHasVisual(post.body) ? (
+      ) : null}
+      {cardImage ? null : (
+        <h2 className="font-display text-2xl font-bold leading-tight tracking-tight sm:text-3xl">
+          <Link href={`/posts/${post.slug}`} className="hover:underline underline-offset-4">
+            {post.title ?? "Untitled"}
+          </Link>
+        </h2>
+      )}
+      {cardImage ? null : bodyHasVisual(post.body) ? (
         // The body carries its own visual (tweet embed, image, video shortcode)
         // — render it so the feed keeps its social, media-forward feel.
         <div className="mt-3">
