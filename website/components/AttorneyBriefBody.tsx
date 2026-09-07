@@ -1313,7 +1313,7 @@ export function AttorneyBriefBody({
     <article className="mx-auto w-full max-w-[60rem] px-4 py-5 sm:px-5 lg:px-6">
       <nav
         aria-label="Attorney brief shortcuts"
-        className="sticky top-0 z-20 mb-4 flex flex-wrap items-center justify-between gap-2 border border-[var(--color-line)] bg-[var(--color-paper)]/95 p-2 shadow-sm backdrop-blur"
+        className="sticky top-16 z-20 mb-4 flex flex-wrap items-center justify-between gap-2 border border-[var(--color-line)] bg-[var(--color-paper)]/95 p-2 shadow-sm backdrop-blur"
       >
         {mode === "counsel" ? (
           <a

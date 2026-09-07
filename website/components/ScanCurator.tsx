@@ -94,7 +94,7 @@ export function ScanCurator({ doc, nextSlug, prevSlug }: { doc: Doc; nextSlug: s
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <figure className="rounded-xl overflow-hidden border border-[var(--color-line)] bg-black sticky top-4 self-start">
+      <figure className="rounded-xl overflow-hidden border border-[var(--color-line)] bg-black sticky top-20 self-start">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={`/api/case-doc/${doc.slug}/image`}

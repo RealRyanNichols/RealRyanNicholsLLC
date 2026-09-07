@@ -211,7 +211,7 @@ export function CaseTimeline({ data }: { data: TimelinePayload }) {
             const monthLabel = format(new Date(y, m - 1, 1), "MMMM yyyy");
             return (
               <section key={key}>
-                <header className="sticky top-0 z-10 -mx-1 px-1 py-2 bg-[var(--color-paper)]/95 backdrop-blur-sm border-b border-[var(--color-line)] flex items-baseline justify-between">
+                <header className="sticky top-16 z-10 -mx-1 px-1 py-2 bg-[var(--color-paper)]/95 backdrop-blur-sm border-b border-[var(--color-line)] flex items-baseline justify-between">
                   <h2 className="text-lg sm:text-xl font-bold tracking-tight font-display text-[var(--color-ink)]">
                     {monthLabel}
                   </h2>
