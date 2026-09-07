@@ -126,7 +126,7 @@ export default async function DocumentPage({
             href={sourceHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex min-h-11 items-center text-sm font-bold text-[var(--color-navy)] underline sm:min-h-0"
+            className="inline-flex min-h-11 items-center gap-1 text-sm font-bold text-[var(--color-navy)] underline sm:min-h-0"
           >
             {sourceLabel} <span aria-hidden>→</span>
           </a>

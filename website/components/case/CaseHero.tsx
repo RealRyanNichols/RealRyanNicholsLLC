@@ -62,7 +62,7 @@ export function CaseHero({
         </a>
         <a
           href="#attorney-briefing"
-          className="inline-flex min-h-11 items-center text-sm font-bold text-[var(--color-gold-bright)] underline-offset-4 hover:underline sm:min-h-0"
+          className="inline-flex min-h-11 items-center gap-1 text-sm font-bold text-[var(--color-gold-bright)] underline-offset-4 hover:underline sm:min-h-0"
         >
           Counsel evaluating this case, start here <span aria-hidden>→</span>
         </a>
