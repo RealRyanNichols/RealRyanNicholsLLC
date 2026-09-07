@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SITE } from "@/lib/site";
 import { getOgImage } from "@/lib/og-images";
 import { BookCtaBand } from "@/components/BookCtaBand";
+import { FuelBand } from "@/components/FuelBand";
 import { getCaseTotals } from "@/lib/case";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 
@@ -79,8 +80,8 @@ export default async function ImpactPage() {
       </h1>
       <p className="mt-4 max-w-2xl text-base sm:text-lg text-[var(--color-ink-soft)] leading-relaxed">
         No ads. No middleman. No organization taking a cut. This is the public
-        record built here, on a domain Ryan owns — and it&apos;s paid for by
-        what he sells, not by passing the hat.
+        record built here, on a domain Ryan owns. It runs on AI tokens he pays
+        for by the token, the bill is published, and you can fuel it.
       </p>
 
       {/* ---- The impact ledger ---- */}
@@ -113,11 +114,15 @@ export default async function ImpactPage() {
           What keeps it running
         </h2>
         <p className="mt-2 max-w-2xl text-sm text-[var(--color-ink-soft)] leading-relaxed">
-          Everything above is funded by work, not gifts: the book, paid builds
-          and investigations, and the store. If you want more of this to exist,
-          buy the thing that&apos;s worth it to you.
+          Everything above is funded by work: the book, paid builds and
+          investigations, the store, and the Token Fund, where you buy the AI
+          fuel and get work back. If you want more of this to exist, buy the
+          thing that&apos;s worth it to you.
         </p>
         <div className="mt-5">
+          <FuelBand />
+        </div>
+        <div className="mt-4">
           <BookCtaBand />
         </div>
         <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-1 text-sm">

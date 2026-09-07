@@ -93,6 +93,10 @@ Rules:
 - Write them in Ryan's voice. Direct. Warm. No corporate survey tone.
 - Never make a poll the ask for money or signup.
 
+## The fuel ask — hard-coded on every article
+
+Every post page renders `components/FuelAsk.tsx` directly under the body: "You just read something built with Claude, ChatGPT, and Grok. I pay for every token." It carries the live AI bill from the funding ledger and the real 30-day article count, and it links to `/fuel`. The page renders it, so **never paste a duplicate ask into a post body**. What the body owes the ask is value: an article worth a reader's time is the whole case for fueling the next one. When a closer naturally points somewhere, `/fuel` is a fine place to point once, in Ryan's words ("If this was worth your time, fuel the next one"), never as a guilt trip and never above the record. Anything that costs Ryan's time (a question answered, a letter, a commissioned article) starts at $50 (`FUEL_TIME_FLOOR_CENTS` in `lib/fuel.ts`); do not promise his time under that.
+
 ## Active-matter caution
 
 Some topics relate to an **active legal matter** where Ryan is the named

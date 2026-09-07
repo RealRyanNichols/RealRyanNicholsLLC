@@ -85,8 +85,9 @@ export const FUEL_TIERS: FuelTier[] = [
     title: "Commission an article",
     blurb: "You pick the topic. I do the work and publish it here.",
     gets: [
-      "I research and publish an article on the topic you pick, under this site's rules: public records, public actors, no minors, no private data",
+      "You pick the topic. I do the research, pull the records and the pictures, and go back and forth with you until it is right, under this site's rules: public records, public actors, no minors, no private data",
       "You read it first, before it goes live",
+      "Then it is published here, indexed, and wired with the links, buttons, and call to action you want readers to follow",
     ],
     askLabel: "The topic, and any records or links you already have",
     askRequired: true,
@@ -151,6 +152,16 @@ export function resolveTiers(billCents: number): ResolvedFuelTier[] {
     }
   }
   return out;
+}
+
+// $50 and up buys Ryan's time: a question answered, a letter, an article.
+// Under it, fuel keeps the machine running and the name goes on the wall.
+// Ryan set this floor himself: the research, the pictures, and the back and
+// forth take hours, and he will not pretend otherwise for five dollars.
+export const FUEL_TIME_FLOOR_CENTS = 5_000;
+
+export function timeTiers(tiers: ResolvedFuelTier[]): ResolvedFuelTier[] {
+  return tiers.filter((t) => t.amountCents >= FUEL_TIME_FLOOR_CENTS);
 }
 
 // Highest tier whose amount the gift reaches; null below the first tier.

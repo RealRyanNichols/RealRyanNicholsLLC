@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { FreeToolsHub } from "@/components/FreeToolsHub";
 import { BookCtaBand } from "@/components/BookCtaBand";
+import { FuelBand } from "@/components/FuelBand";
 import { SITE } from "@/lib/site";
 
 const title = "Free Tools | Real Ryan Nichols";
@@ -98,6 +99,11 @@ export default function ToolsPage() {
 
       <section className="mx-auto max-w-6xl px-3 py-4 sm:px-6 lg:py-6">
         <FreeToolsHub />
+      </section>
+
+      {/* Free to use, not free to run: every tool above burns tokens. */}
+      <section className="mx-auto max-w-6xl px-3 pb-8 sm:px-6">
+        <FuelBand />
       </section>
     </article>
   );

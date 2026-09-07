@@ -25,6 +25,7 @@ import { SITE } from "@/lib/site";
 import { muxThumbnailUrl } from "@/lib/mux";
 import { getOgImage } from "@/lib/og-images";
 import { BookCtaBand } from "@/components/BookCtaBand";
+import { FuelAsk } from "@/components/FuelAsk";
 import type { Post, MediaItem } from "@/lib/types";
 
 export const revalidate = 60;
@@ -365,6 +366,10 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
 
         <ViewTracker slug={post.slug} />
         <PostMain post={post} />
+
+        {/* The hard-coded ask, in Ryan's words, on every article. Rendered
+            here so no post ships without it; never pasted into a body. */}
+        <FuelAsk className="mt-8" />
 
         {/* Inbound half of the link graph: which articles cite this one. */}
         <WhatLinksHere postId={post.id} />
