@@ -33,7 +33,7 @@ export default function CaseBriefingPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-6 sm:py-8">
       <header className="mb-5">
-        <p className="text-xs uppercase tracking-[0.2em] text-[#e1bd5b] font-bold">
+        <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-gold-bright)] font-bold">
           The Briefing Desk · realryannichols.com
         </p>
         <h1 className="mt-2 text-3xl sm:text-5xl font-bold tracking-tight leading-[1.05] font-display">

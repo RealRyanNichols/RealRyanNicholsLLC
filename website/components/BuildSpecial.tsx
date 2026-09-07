@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
+import { normalizeSiteTotals } from "@/lib/site-totals";
 
 // Modules a build can include — sparks "I could have X" in the buyer.
 const INCLUDES = [
@@ -39,8 +40,23 @@ function LiveViewers() {
     const poll = async () => {
       try {
         const supabase = getSupabaseBrowserClient();
-        const { data } = await supabase.rpc("site_live_pulse");
-        if (alive && data) setP(data as Pulse);
+        // "Right now" is site_totals().live_now — the same integer every
+        // other live surface shows. site_live_pulse only supplies the
+        // today / week context.
+        const [totals, pulse] = await Promise.all([
+          supabase.rpc("site_totals"),
+          supabase.rpc("site_live_pulse"),
+        ]);
+        if (!alive) return;
+        const t = normalizeSiteTotals(totals.data);
+        const pl = (pulse.data ?? {}) as Partial<Pulse>;
+        if (totals.data || pulse.data) {
+          setP({
+            reading_now: t.live_now,
+            today: pl.today ?? 0,
+            week: pl.week ?? 0,
+          });
+        }
       } catch {
         /* never break the page */
       }

@@ -156,7 +156,7 @@ export function J6Top25Ballot({
               }`}
             >
               <div className="flex gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#071329] text-xl font-black text-[#e1bd5b]">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#071329] text-xl font-black text-[var(--color-gold-bright)]">
                   {index + 1}
                 </div>
                 {candidate.photo_url ? (

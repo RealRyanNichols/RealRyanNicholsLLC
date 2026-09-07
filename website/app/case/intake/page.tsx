@@ -312,7 +312,7 @@ export default async function IntakeLedgerPage({
         <section className="mb-5 border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm">
           <div className="grid gap-4 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
+              <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
                 Public action lanes
               </p>
               <h2 className="mt-1 font-sans text-2xl font-black text-[#fdf8ea]">
@@ -363,7 +363,7 @@ export default async function IntakeLedgerPage({
               </p>
               <Link
                 href={intakeHref(filter, null)}
-                className="border border-[#e1bd5b]/50 px-3 py-2 text-xs font-black uppercase tracking-normal text-[#e1bd5b] transition hover:bg-[#e1bd5b]/15"
+                className="border border-[var(--color-gold-bright)]/50 px-3 py-2 text-xs font-black uppercase tracking-normal text-[var(--color-gold-bright)] transition hover:bg-[var(--color-gold-bright)]/15"
               >
                 Show all lanes
               </Link>
@@ -574,8 +574,8 @@ function LaneStat({
       className={[
         "border p-3 transition",
         active
-          ? "border-[#e1bd5b] bg-[#e1bd5b]/15"
-          : "border-white/10 bg-white/[0.055] hover:border-[#e1bd5b]/50 hover:bg-[#e1bd5b]/10",
+          ? "border-[var(--color-gold-bright)] bg-[var(--color-gold-bright)]/15"
+          : "border-white/10 bg-white/[0.055] hover:border-[var(--color-gold-bright)]/50 hover:bg-[var(--color-gold-bright)]/10",
       ].join(" ")}
     >
       <p className="font-sans text-2xl font-black text-[#fdf8ea]">

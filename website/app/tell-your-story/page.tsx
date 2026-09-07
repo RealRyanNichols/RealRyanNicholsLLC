@@ -192,7 +192,7 @@ export default function TellYourStoryPage() {
           </div>
 
           <div className="rounded-lg border border-[var(--color-blue)] bg-[var(--color-blue-strong)] p-5 text-[var(--color-paper)] shadow-xl sm:p-6">
-            <p className="text-xs font-black uppercase tracking-normal text-[#e1bd5b]">
+            <p className="text-xs font-black uppercase tracking-normal text-[var(--color-gold-bright)]">
               How it works — 3 steps
             </p>
             <div className="mt-4 grid gap-3">

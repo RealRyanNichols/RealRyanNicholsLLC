@@ -1,0 +1,27 @@
+/* Brand color tokens.
+ *
+ * This file lives outside app/ and components/ on purpose: those trees must
+ * not carry hex literals for these colors (see tests/palette.test.ts). Every
+ * value here is mirrored in lib/palette.ts for renderers that cannot read
+ * CSS (Satori OG cards, sharp SVG). Change a color in both places; the test
+ * fails otherwise.
+ *
+ * Imported by app/globals.css. */
+:root {
+  /* Live / "online" green: pulse dots, radar pings, healthy chips. */
+  --color-live: #7fe3a9;
+  /* Gold as it reads on navy surfaces (headers, situation room, OG cards). */
+  --color-gold-bright: #e1bd5b;
+  /* Lighter gold for secondary chart series and "watch" states. */
+  --color-gold-light: #e4c66a;
+  /* Deep green line for unique visitors on the visitor trend chart. */
+  --color-green-deep: #2f7d54;
+  /* Sky blue for search-crawler series. */
+  --color-sky: #38bdf8;
+  /* Amber for "watch" tones and capped-sample strips. */
+  --color-amber: #b45309;
+  /* Third-party brand colors, used only to color their traffic sources. */
+  --color-brand-facebook: #4267B2;
+  --color-brand-google: #34a853;
+  --color-brand-instagram: #E1306C;
+}

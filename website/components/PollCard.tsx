@@ -243,7 +243,7 @@ export function PollCard({
               </div>
             ))}
           </div>
-          <form onSubmit={unlock} className="mt-3 border-l-2 border-[#e1bd5b] bg-[var(--color-surface-2)] p-3">
+          <form onSubmit={unlock} className="mt-3 border-l-2 border-[var(--color-gold-bright)] bg-[var(--color-surface-2)] p-3">
             <p className="text-sm font-bold text-[var(--color-ink)]">
               Your vote is in. The breakdown is locked.
             </p>

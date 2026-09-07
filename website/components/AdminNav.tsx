@@ -66,7 +66,7 @@ export function AdminNav() {
           <details className="group relative min-w-0 flex-1">
             <summary className="flex min-h-10 cursor-pointer list-none items-center gap-2 marker:hidden">
               <span className="min-w-0">
-                <span className="block text-[10px] font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
+                <span className="block text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
                   Admin
                 </span>
                 <span className="block truncate text-sm font-black">
@@ -74,7 +74,7 @@ export function AdminNav() {
                 </span>
               </span>
               <span
-                className="text-xs text-[#e1bd5b] transition group-open:rotate-180"
+                className="text-xs text-[var(--color-gold-bright)] transition group-open:rotate-180"
                 aria-hidden
               >
                 ▾
@@ -105,7 +105,7 @@ export function AdminNav() {
           </details>
           <Link
             href="/admin/new"
-            className="shrink-0 rounded-md bg-[#e1bd5b] px-3.5 py-2 text-xs font-black uppercase tracking-normal text-[#071126] transition hover:bg-[#f0d48a]"
+            className="shrink-0 rounded-md bg-[var(--color-gold-bright)] px-3.5 py-2 text-xs font-black uppercase tracking-normal text-[#071126] transition hover:bg-[#f0d48a]"
           >
             New post
           </Link>
@@ -119,12 +119,12 @@ export function AdminNav() {
         aria-label="Admin navigation"
       >
         <div className="rounded-md border border-[#203a64] bg-[#071126] p-3 text-[#fdf8ea]">
-          <p className="px-2 text-[10px] font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
+          <p className="px-2 text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
             Admin
           </p>
           <Link
             href="/admin/new"
-            className="mt-3 flex min-h-10 items-center justify-center rounded-md bg-[#e1bd5b] px-3 text-xs font-black uppercase tracking-normal text-[#071126] transition hover:bg-[#f0d48a]"
+            className="mt-3 flex min-h-10 items-center justify-center rounded-md bg-[var(--color-gold-bright)] px-3 text-xs font-black uppercase tracking-normal text-[#071126] transition hover:bg-[#f0d48a]"
           >
             New post
           </Link>
@@ -138,9 +138,9 @@ export function AdminNav() {
             ))}
           </div>
           <details className="group mt-2 border-t border-white/10 pt-2" open={moreActive}>
-            <summary className="flex min-h-9 cursor-pointer list-none items-center justify-between rounded-md px-2 text-[10px] font-black uppercase tracking-[0.18em] text-[#8194b4] transition hover:text-[#e1bd5b] marker:hidden">
+            <summary className="flex min-h-9 cursor-pointer list-none items-center justify-between rounded-md px-2 text-[10px] font-black uppercase tracking-[0.18em] text-[#8194b4] transition hover:text-[var(--color-gold-bright)] marker:hidden">
               More tools
-              <span className="text-sm text-[#e1bd5b] transition group-open:rotate-45" aria-hidden>
+              <span className="text-sm text-[var(--color-gold-bright)] transition group-open:rotate-45" aria-hidden>
                 +
               </span>
             </summary>
@@ -167,7 +167,7 @@ function RailLink({ item, active }: { item: AdminItem; active: boolean }) {
       className={[
         "flex min-h-9 items-center rounded-md border-l-2 px-2.5 text-[0.85rem] font-bold transition",
         active
-          ? "border-[#e1bd5b] bg-white/[0.07] text-[#e1bd5b]"
+          ? "border-[var(--color-gold-bright)] bg-white/[0.07] text-[var(--color-gold-bright)]"
           : "border-transparent text-[#cfd9ea] hover:bg-white/5 hover:text-[#fdf8ea]",
       ].join(" ")}
     >

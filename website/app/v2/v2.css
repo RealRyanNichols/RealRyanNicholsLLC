@@ -18,7 +18,7 @@
 .rrnx .eyebrow{font-family:var(--mono);font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-deep)}
 .rrnx .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font-weight:700;font-size:.95rem;padding:.85rem 1.4rem;border-radius:999px;border:1.5px solid transparent;cursor:pointer;transition:transform .15s ease,box-shadow .2s ease,background .2s ease;white-space:nowrap;font-family:var(--sans)}
 .rrnx .btn:hover{transform:translateY(-2px)}
-.rrnx .btn-gold{background:linear-gradient(135deg,var(--gold),#e1bd5b);color:#1a1207;box-shadow:0 0 0 1px rgba(143,107,22,.25),0 14px 26px -12px rgba(200,155,47,.7)}
+.rrnx .btn-gold{background:linear-gradient(135deg,var(--gold),var(--color-gold-bright));color:#1a1207;box-shadow:0 0 0 1px rgba(143,107,22,.25),0 14px 26px -12px rgba(200,155,47,.7)}
 .rrnx .btn-red{background:var(--red);color:#fff;box-shadow:0 14px 26px -14px rgba(179,36,25,.8)}
 .rrnx .btn-navy{background:var(--navy);color:#fff}
 .rrnx .btn-ghost{background:transparent;border-color:var(--line);color:var(--ink)}

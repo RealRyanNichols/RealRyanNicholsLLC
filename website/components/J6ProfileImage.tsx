@@ -39,7 +39,7 @@ export function J6ProfileImage({
       ? "bg-emerald-800 text-white"
       : isEditorialPortrait
         ? "bg-amber-700 text-white"
-        : "bg-[#071123] text-[#e1bd5b]";
+        : "bg-[#071123] text-[var(--color-gold-bright)]";
 
   if (variant === "card") {
     return (

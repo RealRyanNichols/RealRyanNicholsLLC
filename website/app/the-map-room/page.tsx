@@ -9,11 +9,13 @@ import { MapRoomDocket } from "@/components/MapRoomDocket";
 import { MapRoomTrail } from "@/components/MapRoomTrail";
 import { MapRoomPinnedPost } from "@/components/MapRoomPinnedPost";
 import { ShareRail } from "@/components/ShareRail";
+import { EMPTY_SITE_TOTALS, fetchSiteTotals } from "@/lib/site-totals";
+import { sanitizePings } from "@/lib/radar-pings";
 
-// Tight 30s ISR — the live counts come from the client poll, but the
-// SSR'd first paint stays fresh enough that share previews and search
-// bots see realistic numbers.
-export const revalidate = 30;
+// Rendered per request so the headline number in the HTML — the one a
+// reader with JavaScript off sees — is exactly site_totals().live_now at
+// that moment, not a cached copy. The two RPCs behind it are cheap.
+export const dynamic = "force-dynamic";
 
 const TITLE =
   "The Map Room — the live record of United States v. Nichols and every January 6 defendant who joins";
@@ -54,40 +56,24 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-type Totals = {
-  defendants: number;
-  defendants_verified: number;
-  documents: number;
-  grievances: number;
-  events: number;
-  days_since_pardon: number;
-  days_since_dismissal: number;
-  live_now: number;
-  countries_now: number;
-};
-
 export default async function TheMapRoomPage() {
   const supabase = getSupabaseStaticClient();
-  const { data: totals } = await supabase.rpc("site_totals");
-
-  const initialTotals: Totals = (totals as Totals | null) ?? {
-    defendants: 0,
-    defendants_verified: 0,
-    documents: 0,
-    grievances: 0,
-    events: 0,
-    days_since_pardon: 0,
-    days_since_dismissal: 0,
-    live_now: 0,
-    countries_now: 0,
-  };
+  const [totals, pingsRes] = await Promise.all([
+    fetchSiteTotals(supabase),
+    supabase.rpc("live_visitor_pings"),
+  ]);
+  const initialTotals = totals ?? EMPTY_SITE_TOTALS;
+  // Strip each row to city/state/country before it is serialized into the
+  // page: the RPC also carries the session's current path, which never
+  // belongs on a public surface.
+  const initialPings = sanitizePings(pingsRes.data);
 
   return (
     <article className="mx-auto max-w-5xl px-4 py-6 sm:py-8">
       {/* Map Room leads with the RADAR. No preamble. The visitor's
           first frame is moving dots on a navy command-screen, not a
           headline. The narrative slot lives below the data. */}
-      <MapRoomLive initialTotals={initialTotals} />
+      <MapRoomLive initialTotals={initialTotals} initialPings={initialPings} />
 
       <div className="mt-4">
         <ShareRail
@@ -123,13 +109,13 @@ export default async function TheMapRoomPage() {
       >
         <div
           className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full blur-3xl"
-          style={{ background: "rgba(127, 227, 169, 0.18)" }}
+          style={{ background: "color-mix(in srgb, var(--color-live) 18%, transparent)" }}
           aria-hidden
         />
         <div className="relative flex items-start justify-between gap-4 flex-wrap">
           <div className="max-w-xl">
-            <p className="text-[10px] uppercase tracking-[0.25em] text-[#e1bd5b] font-bold flex items-center gap-1.5">
-              <span className="inline-block w-2 h-2 rounded-full bg-[#e1bd5b] animate-pulse" />
+            <p className="text-[10px] uppercase tracking-[0.25em] text-[var(--color-gold-bright)] font-bold flex items-center gap-1.5">
+              <span className="inline-block w-2 h-2 rounded-full bg-[var(--color-gold-bright)] animate-pulse" />
               New · The Case Nexus
             </p>
             <h2 className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight font-display text-[var(--color-paper)]">

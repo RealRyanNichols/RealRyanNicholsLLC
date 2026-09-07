@@ -21,7 +21,7 @@ const RESTRICTED: ReceiptLabel[] = ["PRIVATE / NOT PUBLIC", "SEALED"];
 function chipClass(label: ReceiptLabel): string {
   switch (label) {
     case "FACT":
-      return "bg-[#e1bd5b] text-[#061020]";
+      return "bg-[var(--color-gold-bright)] text-[#061020]";
     case "NEEDS AUTHENTICATION":
       return "bg-[#8a6d1f]/60 text-[#f4efe4]";
     case "PRIVATE / NOT PUBLIC":
@@ -48,7 +48,7 @@ export function Receipt({ value }: { value: Record<string, unknown> }) {
   return (
     <aside
       id={exhibitId || undefined}
-      className="not-prose my-7 overflow-hidden rounded-lg border-l-4 border-[#e1bd5b] bg-[#0b1b34] text-[#f4efe4]"
+      className="not-prose my-7 overflow-hidden rounded-lg border-l-4 border-[var(--color-gold-bright)] bg-[#0b1b34] text-[#f4efe4]"
     >
       <div className="p-5 sm:p-6">
         <div className="flex flex-wrap items-center gap-2">
@@ -60,7 +60,7 @@ export function Receipt({ value }: { value: Record<string, unknown> }) {
           {exhibitId ? (
             <a
               href={`#${exhibitId}`}
-              className="rounded border border-[#e1bd5b]/40 px-1.5 py-0.5 font-mono text-[11px] font-bold text-[#e1bd5b] no-underline"
+              className="rounded border border-[var(--color-gold-bright)]/40 px-1.5 py-0.5 font-mono text-[11px] font-bold text-[var(--color-gold-bright)] no-underline"
             >
               {exhibitId}
             </a>
@@ -75,7 +75,7 @@ export function Receipt({ value }: { value: Record<string, unknown> }) {
 
         {source ? (
           <p className="mt-3 text-sm text-[#a9b7d0]">
-            <span className="font-bold uppercase tracking-wider text-[11px] text-[#e1bd5b]">
+            <span className="font-bold uppercase tracking-wider text-[11px] text-[var(--color-gold-bright)]">
               Source:
             </span>{" "}
             {url ? (
@@ -83,7 +83,7 @@ export function Receipt({ value }: { value: Record<string, unknown> }) {
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-semibold text-[#cfd9ea] underline decoration-[#e1bd5b] underline-offset-2"
+                className="font-semibold text-[#cfd9ea] underline decoration-[var(--color-gold-bright)] underline-offset-2"
               >
                 {source} <span aria-hidden>↗</span>
               </a>

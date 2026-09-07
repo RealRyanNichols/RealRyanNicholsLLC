@@ -3,7 +3,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { formatDistanceToNowStrict } from "date-fns";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { fetchSiteTotals } from "@/lib/site-totals";
 import { PendingProfileActions } from "@/components/PendingProfileActions";
+import { CappedSampleStrip } from "@/components/CappedSampleStrip";
 import {
   getIntegrationHealth,
   countCriticalIssues,
@@ -41,8 +43,13 @@ export default async function AdminHomePage() {
   const fiveMinAgo = new Date(now.getTime() - 5 * 60 * 1000).toISOString();
   const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000).toISOString();
 
+  // One definition of "live" across the site: site_totals().live_now counts
+  // distinct sessions active in the last five minutes. Counting page_views
+  // rows here double-counted anyone with two tabs open.
+  const siteTotals = await fetchSiteTotals(supabase);
+  const activeNow = siteTotals?.live_now ?? 0;
+
   const [
-    { count: activeNow },
     { count: views24h },
     { count: pendingProfiles },
     { count: activeProfiles },
@@ -55,10 +62,6 @@ export default async function AdminHomePage() {
     { data: pendingProfilesList },
     { data: recentSessions },
   ] = await Promise.all([
-    supabase
-      .from("page_views")
-      .select("id", { count: "exact", head: true })
-      .gte("last_activity_at", fiveMinAgo),
     supabase
       .from("page_views")
       .select("id", { count: "exact", head: true })
@@ -246,7 +249,7 @@ export default async function AdminHomePage() {
     needsYou.push({
       href: "/admin/invoices",
       title: "Collect on invoices",
-      sub: `${invoices.length} open invoice${invoices.length === 1 ? "" : "s"} outstanding.`,
+      sub: `${invoices.length}${invoices.length >= 6 ? "+" : ""} open invoice${invoices.length === 1 ? "" : "s"} outstanding${invoices.length >= 6 ? " (newest 6 sampled)" : ""}.`,
       count: usd(receivableCents),
     });
   }
@@ -309,6 +312,15 @@ export default async function AdminHomePage() {
             ))}
           </div>
         )}
+        {/* "Collect on invoices" sums the newest six open/failed invoices;
+            once the sample is full the receivable is a floor, not a total. */}
+        {invoices.length >= 6 ? (
+          <CappedSampleStrip
+            className="mt-3"
+            windowLabel="open invoices"
+            samples={[{ label: "draft/open/failed invoices", rows: invoices.length, cap: 6 }]}
+          />
+        ) : null}
       </section>
 
       {/* The pulse — every number that used to be a card, at whisper volume. */}

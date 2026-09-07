@@ -98,13 +98,13 @@ export default function BookPage() {
         <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:py-16">
           <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-12">
             <div className="max-w-3xl">
-              <p className="text-xs font-black uppercase tracking-[0.24em] text-[#e1bd5b]">
+              <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
                 Pre-order · A memoir by {BOOK.author}
               </p>
               <h1 className="mt-3 font-display text-5xl font-black leading-[0.95] tracking-tight text-[#fdf8ea] sm:text-7xl">
                 {BOOK.title}
               </h1>
-              <p className="mt-4 max-w-2xl font-display text-lg font-black uppercase leading-snug tracking-[0.04em] text-[#e1bd5b] sm:text-xl">
+              <p className="mt-4 max-w-2xl font-display text-lg font-black uppercase leading-snug tracking-[0.04em] text-[var(--color-gold-bright)] sm:text-xl">
                 {BOOK.subtitle}
               </p>
               <p className="mt-5 max-w-2xl text-base font-semibold leading-7 text-[#cfd9ea] sm:text-lg">
@@ -138,7 +138,7 @@ export default function BookPage() {
           </div>
 
           {saleActive ? (
-            <div className="mt-8 rounded-xl border border-[#e1bd5b]/40 bg-[#e1bd5b]/10 px-4 py-3 text-center text-[#e1bd5b]">
+            <div className="mt-8 rounded-xl border border-[var(--color-gold-bright)]/40 bg-[var(--color-gold-bright)]/10 px-4 py-3 text-center text-[var(--color-gold-bright)]">
               <BookCountdown endsAt={SALE_ENDS_AT} className="justify-center" />
             </div>
           ) : null}
@@ -151,7 +151,7 @@ export default function BookPage() {
             id="book-list"
             className="mt-10 rounded-xl border border-white/10 bg-white/[0.06] p-5 sm:p-6"
           >
-            <p className="text-sm font-black uppercase tracking-[0.16em] text-[#e1bd5b]">
+            <p className="text-sm font-black uppercase tracking-[0.16em] text-[var(--color-gold-bright)]">
               Get on the list
             </p>
             <p className="mb-3 mt-1 font-display text-lg font-black leading-tight text-[#fdf8ea]">
@@ -257,7 +257,7 @@ export default function BookPage() {
       {/* Evidence / archive connection */}
       <section className="bg-[#071126] text-[#fdf8ea]">
         <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:py-14">
-          <p className="text-xs font-black uppercase tracking-[0.22em] text-[#e1bd5b]">
+          <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
             The book and the record
           </p>
           <h2 className="mt-2 font-display text-3xl font-black leading-tight tracking-normal text-[#fdf8ea] sm:text-4xl">
@@ -272,7 +272,7 @@ export default function BookPage() {
               <Link
                 key={a.href}
                 href={a.href}
-                className="group rounded-xl border border-white/12 bg-white/[0.05] p-5 transition hover:border-[#e1bd5b]/60"
+                className="group rounded-xl border border-white/12 bg-white/[0.05] p-5 transition hover:border-[var(--color-gold-bright)]/60"
               >
                 <h3 className="font-display text-xl font-black tracking-normal text-[#fdf8ea]">
                   {a.label}
@@ -280,7 +280,7 @@ export default function BookPage() {
                 <p className="mt-1.5 text-sm font-semibold text-[#cfd9ea]">
                   {a.desc}
                 </p>
-                <p className="mt-3 text-sm font-black text-[#e1bd5b] group-hover:underline">
+                <p className="mt-3 text-sm font-black text-[var(--color-gold-bright)] group-hover:underline">
                   Open →
                 </p>
               </Link>
@@ -347,7 +347,7 @@ export default function BookPage() {
             <BookDisclaimer className="border-white/10 bg-white/[0.05] text-[#cfd9ea]" />
           </div>
           <p className="mt-6 text-center text-sm text-[#cfd9ea]">
-            <Link href="/" className="font-semibold underline hover:text-[#e1bd5b]">
+            <Link href="/" className="font-semibold underline hover:text-[var(--color-gold-bright)]">
               ← Back to RealRyanNichols.com
             </Link>
           </p>

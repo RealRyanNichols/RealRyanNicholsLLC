@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
 import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
 import { BOOK_TIERS, formatUsd, tierPriceUsd, tierSale } from "@/lib/book";
+import { normalizeSiteTotals } from "@/lib/site-totals";
 
 // The full board only loads when someone opens it (it pulls in the world map).
 const SituationRoom = dynamic(
@@ -52,7 +53,7 @@ export function HeaderStatusStrip() {
     const supabase = getSupabaseBrowserClient();
     async function pull() {
       const { data } = await supabase.rpc("site_totals");
-      if (mounted && data) setT(data as Totals);
+      if (mounted && data) setT(normalizeSiteTotals(data));
     }
     void pull();
     const id = window.setInterval(pull, 30_000);
@@ -114,8 +115,8 @@ export function HeaderStatusStrip() {
           >
             <span className="inline-flex items-center gap-2">
               <span className="relative flex h-2 w-2" aria-hidden>
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#7fe3a9] opacity-70" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#7fe3a9] shadow-[0_0_10px_rgba(127,227,169,0.8)]" />
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-live)] opacity-70" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--color-live)] shadow-[0_0_10px_rgba(127,227,169,0.8)]" />
               </span>
               {/* Until the RPC responds, show a label instead of fake zeros —
                   crawlers, link previews, and slow connections were seeing
@@ -136,12 +137,12 @@ export function HeaderStatusStrip() {
                 </span>
                 <span className="hidden h-3 w-px bg-white/10 md:block" aria-hidden />
                 <span className="hidden md:inline-flex">
-                  <Stat value={views} label="views" />
+                  <Stat value={views} label="reach" />
                 </span>
               </>
             ) : null}
             <span
-              className="ml-0.5 text-[#5f7197] transition group-hover:text-[#e1bd5b]"
+              className="ml-0.5 text-[#5f7197] transition group-hover:text-[var(--color-gold-bright)]"
               aria-hidden
             >
               ⤢
@@ -153,7 +154,7 @@ export function HeaderStatusStrip() {
               <span className="flex min-w-0 items-center gap-0.5">
                 <Link
                   href="/book/preorder"
-                  className="min-w-0 truncate rounded-md px-1 py-0.5 font-black text-[#e1bd5b] transition hover:bg-white/5 hover:text-[#f0d48a]"
+                  className="min-w-0 truncate rounded-md px-1 py-0.5 font-black text-[var(--color-gold-bright)] transition hover:bg-white/5 hover:text-[#f0d48a]"
                 >
                   <span className="sm:hidden">
                     Fighting Shadows {priceLabel} →
@@ -177,7 +178,7 @@ export function HeaderStatusStrip() {
             <Link
               href="/the-map-room"
               className={[
-                "group shrink-0 items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[#fdf8ea] transition hover:border-[#e1bd5b]/60 hover:text-[#e1bd5b]",
+                "group shrink-0 items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[#fdf8ea] transition hover:border-[var(--color-gold-bright)]/60 hover:text-[var(--color-gold-bright)]",
                 // On phones the money link wins the space contest; the pill
                 // returns the moment the pitch is dismissed (or on sm+).
                 showBook ? "hidden sm:inline-flex" : "inline-flex",

@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
+import { PALETTE } from "@/lib/palette";
 
 // Dynamic OG share card for /the-map-room. Pulls the same site_totals
 // snapshot the page uses so the share preview shows the LIVE counters
@@ -53,7 +54,7 @@ export async function GET() {
             fontWeight: 700,
             letterSpacing: "0.2em",
             textTransform: "uppercase",
-            color: "#e1bd5b",
+            color: PALETTE.goldBright,
           }}
         >
           <div
@@ -61,8 +62,8 @@ export async function GET() {
               width: 14,
               height: 14,
               borderRadius: 14,
-              background: "#e1bd5b",
-              boxShadow: "0 0 12px #e1bd5b",
+              background: PALETTE.goldBright,
+              boxShadow: `0 0 12px ${PALETTE.goldBright}`,
             }}
           />
           THE MAP ROOM · LIVE

@@ -166,7 +166,7 @@ export function FindYourCase({ embed = false }: { embed?: boolean }) {
                         ? "bg-emerald-800 text-white"
                         : r.image_kind === "editorial-portrait"
                           ? "bg-amber-700 text-white"
-                          : "bg-[#071123]/95 text-[#e1bd5b]",
+                          : "bg-[#071123]/95 text-[var(--color-gold-bright)]",
                     ].join(" ")}
                   >
                     {r.image_label}

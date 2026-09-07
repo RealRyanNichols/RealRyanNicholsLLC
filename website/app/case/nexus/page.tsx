@@ -19,7 +19,7 @@ const DESCRIPTION =
 
 const connectionTypes: { n: string; title: string; body: string; color: string }[] = [
   { n: "01", title: "Court documents", color: "#7fa9e3", body: "Dockets, filings, exhibits, orders, plea papers, sentencing records, and archived DOJ documents." },
-  { n: "02", title: "Witness statements", color: "#e1bd5b", body: "People who saw the same event, heard the same instruction, received the same treatment, or can confirm a timeline." },
+  { n: "02", title: "Witness statements", color: "var(--color-gold-bright)", body: "People who saw the same event, heard the same instruction, received the same treatment, or can confirm a timeline." },
   { n: "03", title: "Photos and videos", color: "#ffd166", body: "Public clips, bodycam references, livestreams, still frames, metadata, timestamps, and location context." },
   { n: "04", title: "Shared clues", color: "#f08a8a", body: "Names, agencies, prosecutors, officers, facilities, dates, charges, locations, aliases, URLs, and repeated fact patterns." },
 ];
@@ -85,7 +85,7 @@ export default async function CaseNexusPage() {
     <article className="mx-auto max-w-[92rem] px-3 py-3 sm:px-4 sm:py-5">
       <header className="mb-3">
         <div className="max-w-3xl">
-          <p className="text-xs font-black uppercase tracking-normal text-[#e1bd5b]">
+          <p className="text-xs font-black uppercase tracking-normal text-[var(--color-gold-bright)]">
             The Case Nexus · connect every clue
           </p>
           <h1 className="mt-1 font-display text-3xl font-black leading-[1.02] tracking-normal sm:text-4xl">
@@ -104,7 +104,7 @@ export default async function CaseNexusPage() {
               ["Witness", "#7fa9e3"],
               ["Video", "#ffd166"],
               ["Photo", "#f08a8a"],
-              ["Clue", "#e1bd5b"],
+              ["Clue", "var(--color-gold-bright)"],
             ] as const).map(([label, color]) => (
               <span
                 key={label}
@@ -116,13 +116,13 @@ export default async function CaseNexusPage() {
             ))}
             <Link
               href="/submit"
-              className="rounded-full bg-[#e1bd5b] px-3.5 py-1.5 text-center text-xs font-black uppercase tracking-normal text-[#071126] shadow-sm transition hover:brightness-105"
+              className="rounded-full bg-[var(--color-gold-bright)] px-3.5 py-1.5 text-center text-xs font-black uppercase tracking-normal text-[#071126] shadow-sm transition hover:brightness-105"
             >
               + Add a clue
             </Link>
             <Link
               href="/tell-your-story"
-              className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3.5 py-1.5 text-center text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[#e1bd5b] hover:text-[var(--color-accent)]"
+              className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3.5 py-1.5 text-center text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-gold-bright)] hover:text-[var(--color-accent)]"
             >
               Tell story
             </Link>
@@ -140,7 +140,7 @@ export default async function CaseNexusPage() {
           Dark investigation-board panel so the graph stops being a mystery. */}
       <section className="mt-4 overflow-hidden rounded-xl border border-[#1f2f55] bg-[#0a1429] p-5 sm:p-6">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <p className="text-xs font-black uppercase tracking-[0.18em] text-[#e1bd5b]">
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-[var(--color-gold-bright)]">
             Read the map
           </p>
           <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#7c8aa6]">
@@ -158,7 +158,7 @@ export default async function CaseNexusPage() {
               {[
                 ["#1f2f55", "Case", "A case number. Bigger = more defendants on it.", "ring"],
                 ["#e08658", "Defendant — unclaimed", "A person on the record; profile free to claim.", "dot"],
-                ["#e1bd5b", "Defendant — verified", "A profile claimed and confirmed.", "dot"],
+                ["var(--color-gold-bright)", "Defendant — verified", "A profile claimed and confirmed.", "dot"],
                 ["#ffd166", "Defendant — pending", "A claim in review.", "dot"],
                 ["#7c8aa6", "Document", "A filing, order, exhibit, or scan.", "dot"],
               ].map(([color, label, sub, shape]) => (
@@ -184,7 +184,7 @@ export default async function CaseNexusPage() {
             </p>
             <ul className="mt-3 space-y-2 text-sm text-[#dbe4f4]">
               {[
-                ["#e1bd5b", "Source", "The DOJ / salvaged record a case came from."],
+                ["var(--color-gold-bright)", "Source", "The DOJ / salvaged record a case came from."],
                 ["#7fa9e3", "Court", "The court a case was filed in."],
                 ["#ffd166", "Facility", "A jail or prison in the record."],
                 ["#f08a8a", "Charge", "A charge shared across defendants."],
@@ -214,7 +214,7 @@ export default async function CaseNexusPage() {
                 ["Focus / Fit", "to isolate one thread or frame the whole web."],
               ].map(([verb, sub]) => (
                 <li key={verb} className="flex items-start gap-2.5">
-                  <span aria-hidden className="mt-1.5 h-2 w-6 flex-shrink-0 rounded-full bg-[#e1bd5b]" />
+                  <span aria-hidden className="mt-1.5 h-2 w-6 flex-shrink-0 rounded-full bg-[var(--color-gold-bright)]" />
                   <span>
                     <span className="font-bold text-white">{verb}</span>{" "}
                     <span className="text-xs leading-snug text-[#9fb0cc]">{sub}</span>

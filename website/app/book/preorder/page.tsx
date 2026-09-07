@@ -51,7 +51,7 @@ export default function BookPreorderPage() {
         <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:py-14">
           <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_240px] lg:gap-12">
             <div className="max-w-2xl">
-              <p className="text-xs font-black uppercase tracking-[0.24em] text-[#e1bd5b]">
+              <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
                 Pre-order · {BOOK.title}
               </p>
               <h1 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-[#fdf8ea] sm:text-6xl">
@@ -103,7 +103,7 @@ export default function BookPreorderPage() {
           </div>
 
           {saleActive ? (
-            <div className="mt-8 rounded-xl border border-[#e1bd5b]/40 bg-[#e1bd5b]/10 px-4 py-3 text-center text-[#e1bd5b]">
+            <div className="mt-8 rounded-xl border border-[var(--color-gold-bright)]/40 bg-[var(--color-gold-bright)]/10 px-4 py-3 text-center text-[var(--color-gold-bright)]">
               <BookCountdown endsAt={SALE_ENDS_AT} className="justify-center" />
             </div>
           ) : null}

@@ -149,7 +149,7 @@ export default async function J6Top25Page() {
       </nav>
 
       <header className="overflow-hidden rounded-3xl border border-[#26385f] bg-[#071329] px-6 py-8 text-[#f8f2df] shadow-2xl sm:px-10 sm:py-12">
-        <p className="text-xs font-black uppercase tracking-[0.24em] text-[#e1bd5b]">Community ranking · live vote</p>
+        <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">Community ranking · live vote</p>
         <h1 className="mt-3 max-w-4xl font-display text-4xl font-black leading-[0.95] sm:text-6xl">
           Which January 6 case had the most hype?
         </h1>

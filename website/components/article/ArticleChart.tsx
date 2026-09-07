@@ -8,7 +8,7 @@ import { jsonString } from "@/lib/shortcodes";
 
 type Datum = { label: string; value?: number; series?: Record<string, number> };
 
-const SERIES_COLORS = ["#e1bd5b", "#7fa9e3", "#9df0c0", "#cfd9ea"];
+const SERIES_COLORS = ["var(--color-gold-bright)", "#7fa9e3", "#9df0c0", "#cfd9ea"];
 
 function parseData(value: Record<string, unknown>): Datum[] {
   const raw = value.data;
@@ -88,7 +88,7 @@ export function ArticleChart({ value }: { value: Record<string, unknown> }) {
     <figure className="not-prose my-8">
       <div className="overflow-hidden rounded-lg border border-[#0b1b34]/20 bg-[#0b1b34]">
         {title ? (
-          <p className="border-b border-[#f4efe4]/10 px-4 py-3 text-sm font-black uppercase tracking-wider text-[#e1bd5b]">
+          <p className="border-b border-[#f4efe4]/10 px-4 py-3 text-sm font-black uppercase tracking-wider text-[var(--color-gold-bright)]">
             {title}
           </p>
         ) : null}
@@ -129,7 +129,7 @@ export function ArticleChart({ value }: { value: Record<string, unknown> }) {
             {type === "line" && !isMulti ? (
               <polyline
                 fill="none"
-                stroke="#e1bd5b"
+                stroke="var(--color-gold-bright)"
                 strokeWidth={3}
                 points={data
                   .map((d, i) => `${padL + i * slot + slot / 2},${y(d.value ?? 0)}`)
@@ -143,7 +143,7 @@ export function ArticleChart({ value }: { value: Record<string, unknown> }) {
                     cx={padL + i * slot + slot / 2}
                     cy={y(d.value ?? 0)}
                     r={4}
-                    fill="#e1bd5b"
+                    fill="var(--color-gold-bright)"
                   />
                 ))
               : null}
@@ -159,7 +159,7 @@ export function ArticleChart({ value }: { value: Record<string, unknown> }) {
                       width={slot - 24}
                       height={Math.max(2, h)}
                       rx={3}
-                      fill="#e1bd5b"
+                      fill="var(--color-gold-bright)"
                     />
                   );
                 })
@@ -240,7 +240,7 @@ export function ArticleChart({ value }: { value: Record<string, unknown> }) {
         ) : null}
 
         <p className="border-t border-[#f4efe4]/10 px-4 py-2.5 text-xs text-[#a9b7d0]">
-          <span className="font-bold uppercase tracking-wider text-[10px] text-[#e1bd5b]">
+          <span className="font-bold uppercase tracking-wider text-[10px] text-[var(--color-gold-bright)]">
             Source:
           </span>{" "}
           {sourceUrl ? (
@@ -248,7 +248,7 @@ export function ArticleChart({ value }: { value: Record<string, unknown> }) {
               href={sourceUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-semibold underline decoration-[#e1bd5b] underline-offset-2"
+              className="font-semibold underline decoration-[var(--color-gold-bright)] underline-offset-2"
             >
               {source} <span aria-hidden>↗</span>
             </a>

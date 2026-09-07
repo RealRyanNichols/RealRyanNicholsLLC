@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
+import { PALETTE } from "@/lib/palette";
 
 export const runtime = "nodejs";
 export const revalidate = 86400;
@@ -51,15 +52,15 @@ function identityCardSvg(name: string): string {
   </defs>
   <rect width="800" height="1000" fill="url(#bg)"/>
   <rect width="800" height="1000" fill="url(#grid)"/>
-  <rect x="44" y="44" width="712" height="912" rx="34" fill="none" stroke="#e1bd5b" stroke-width="4"/>
-  <text x="400" y="112" text-anchor="middle" fill="#e1bd5b" font-family="${font}" font-size="25" font-weight="800" letter-spacing="5">JANUARY 6 ARCHIVE</text>
+  <rect x="44" y="44" width="712" height="912" rx="34" fill="none" stroke="${PALETTE.goldBright}" stroke-width="4"/>
+  <text x="400" y="112" text-anchor="middle" fill="${PALETTE.goldBright}" font-family="${font}" font-size="25" font-weight="800" letter-spacing="5">JANUARY 6 ARCHIVE</text>
   <circle cx="400" cy="398" r="174" fill="#0c1931" stroke="#8da8d2" stroke-width="5"/>
-  <circle cx="400" cy="398" r="145" fill="#152a4d" stroke="#e1bd5b" stroke-opacity=".45" stroke-width="3"/>
+  <circle cx="400" cy="398" r="145" fill="#152a4d" stroke="${PALETTE.goldBright}" stroke-opacity=".45" stroke-width="3"/>
   <text x="400" y="425" text-anchor="middle" fill="#fdf8ea" font-family="${font}" font-size="116" font-weight="900" letter-spacing="5">${safeInitials}</text>
   <text x="400" y="650" text-anchor="middle" fill="#fdf8ea" font-family="${font}" font-size="${nameFontSize}" font-weight="850">${lineOne}</text>
   ${lineTwo ? `<text x="400" y="705" text-anchor="middle" fill="#fdf8ea" font-family="${font}" font-size="${nameFontSize}" font-weight="850">${lineTwo}</text>` : ""}
-  <line x1="164" y1="754" x2="636" y2="754" stroke="#e1bd5b" stroke-width="3"/>
-  <text x="400" y="818" text-anchor="middle" fill="#e1bd5b" font-family="${font}" font-size="29" font-weight="850" letter-spacing="3">PORTRAIT NEEDED</text>
+  <line x1="164" y1="754" x2="636" y2="754" stroke="${PALETTE.goldBright}" stroke-width="3"/>
+  <text x="400" y="818" text-anchor="middle" fill="${PALETTE.goldBright}" font-family="${font}" font-size="29" font-weight="850" letter-spacing="3">PORTRAIT NEEDED</text>
   <text x="400" y="862" text-anchor="middle" fill="#b8c8df" font-family="${font}" font-size="22">Face-free identity card · not a photograph</text>
   <text x="400" y="915" text-anchor="middle" fill="#879ab5" font-family="${font}" font-size="19">Help complete the record at RealRyanNichols.com</text>
 </svg>`;

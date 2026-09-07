@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { format, formatDistanceToNowStrict, subDays } from "date-fns";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { CappedSampleStrip } from "@/components/CappedSampleStrip";
 
 export const metadata: Metadata = {
   title: "Audience intelligence",
@@ -443,12 +444,22 @@ export default async function AdminAudiencePage() {
       </p>
 
       <section className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-5">
-        <Stat label="Visitor profiles" value={fmt(dossiers.length)} sub="last 30 days" />
+        <Stat label="Visitor profiles" value={fmt(dossiers.length)} sub="last 30 days · sampled" />
         <Stat label="Known users" value={fmt(known)} sub="signed-in matches" />
         <Stat label="Money candidates" value={fmt(moneyCandidates)} sub="score 50+" />
         <Stat label="Direct signals" value={fmt(directSignals)} sub="comments + messages" />
         <Stat label="Tracked actions" value={fmt(totalEvents)} sub={`${fmt(totalDwell)}s dwell`} />
       </section>
+
+      {/* Every dossier below is built from these row samples. */}
+      <CappedSampleStrip
+        className="mt-3"
+        windowLabel="30d"
+        samples={[
+          { label: "page views", rows: views.length },
+          { label: "events", rows: events.length },
+        ]}
+      />
 
       <section className="mt-8 space-y-4">
         {dossiers.length === 0 ? (
