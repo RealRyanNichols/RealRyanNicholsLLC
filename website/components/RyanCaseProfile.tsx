@@ -295,7 +295,7 @@ export function RyanCaseProfile({
         </p>
         <Link
           href="/fights/equal-justice"
-          className="mt-4 inline-block text-sm font-bold text-[var(--color-navy)] hover:underline"
+          className="mt-4 inline-flex min-h-11 items-center text-sm font-bold text-[var(--color-navy)] hover:underline sm:min-h-0"
         >
           Equal justice under the law — the fight that came out of it →
         </Link>

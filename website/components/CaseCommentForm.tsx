@@ -42,10 +42,10 @@ export function CaseCommentForm({ type, slug, signedIn }: Props) {
           <Link className="btn-accent rounded-lg px-4 py-2 text-xs font-bold" href={signupHref}>
             Join and comment
           </Link>
-          <Link className="text-xs font-semibold text-[var(--color-muted)] underline underline-offset-4" href="/login">
+          <Link className="inline-flex min-h-11 items-center text-xs font-semibold text-[var(--color-muted)] underline underline-offset-4 sm:min-h-0" href="/login">
             Already have an account?
           </Link>
-          <Link className="text-xs font-semibold text-[var(--color-muted)] underline underline-offset-4" href="/community-rules">
+          <Link className="inline-flex min-h-11 items-center text-xs font-semibold text-[var(--color-muted)] underline underline-offset-4 sm:min-h-0" href="/community-rules">
             community rules
           </Link>
         </div>

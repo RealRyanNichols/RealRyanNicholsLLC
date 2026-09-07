@@ -50,7 +50,7 @@ export default async function LivePage() {
             </p>
             <Link
               href="/videos"
-              className="mt-5 inline-flex rounded-full bg-[var(--color-accent)] px-5 py-2.5 text-sm font-black text-[var(--color-paper)]"
+              className="mt-5 inline-flex min-h-11 items-center rounded-full bg-[var(--color-accent)] px-5 py-2.5 text-sm font-black text-[var(--color-paper)]"
             >
               Open videos
             </Link>

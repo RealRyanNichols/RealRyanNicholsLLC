@@ -222,7 +222,7 @@ export default async function DocumentPage({
         />
       )}
 
-      <div className="mt-10 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-ink-soft)]">
+      <p className="mt-10 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-ink-soft)]">
         This record stays public because the work sells, not begs —{" "}
         <Link href="/book" className="text-[var(--color-accent)] underline font-semibold">
           get the book
@@ -232,7 +232,7 @@ export default async function DocumentPage({
           get your own case built like this
         </Link>
         .
-      </div>
+      </p>
     </article>
   );
 }

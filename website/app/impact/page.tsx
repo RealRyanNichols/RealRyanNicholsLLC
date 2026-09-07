@@ -121,10 +121,10 @@ export default async function ImpactPage() {
           <BookCtaBand />
         </div>
         <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-1 text-sm">
-          <Link href="/services" className="font-bold text-[var(--color-accent)] hover:underline">
+          <Link href="/services" className="inline-flex min-h-11 items-center font-bold text-[var(--color-accent)] hover:underline sm:min-h-0">
             Hire Ryan — sites, dashboards, investigations →
           </Link>
-          <Link href="/store" className="font-bold text-[var(--color-accent)] hover:underline">
+          <Link href="/store" className="inline-flex min-h-11 items-center font-bold text-[var(--color-accent)] hover:underline sm:min-h-0">
             Browse the store →
           </Link>
         </div>

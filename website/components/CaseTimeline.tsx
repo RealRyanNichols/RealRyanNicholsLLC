@@ -464,7 +464,7 @@ function FilterChip({
     <button
       type="button"
       onClick={onClick}
-      className={`min-h-11 rounded-full px-2.5 py-1 text-[11px] font-bold border transition sm:min-h-0 ${
+      className={`min-h-11 min-w-11 rounded-full px-2.5 py-1 text-[11px] font-bold border transition sm:min-h-0 sm:min-w-0 ${
         active
           ? "border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)]"
           : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:border-[var(--color-blue)]"

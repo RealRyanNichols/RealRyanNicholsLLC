@@ -110,11 +110,13 @@ function InfoTip({ text }: { text: string }) {
   return (
     <span className="relative inline-flex group shrink-0">
       {/* The visible "i" stays 16px; on phones the button around it is a
-          44px hit box pulled in with negative margins so layout is unchanged. */}
+          44px hit box pulled in with negative margins so layout is unchanged.
+          min-w-11 is load-bearing: the base reset caps buttons at
+          max-width:100% of the 16px wrapper, and only min-width beats it. */}
       <button
         type="button"
         aria-label={text}
-        className="group/tip -m-3.5 inline-flex h-11 w-11 shrink-0 items-center justify-center focus:outline-none cursor-help sm:m-0 sm:h-4 sm:w-4"
+        className="group/tip -m-3.5 inline-flex h-11 w-11 min-w-11 shrink-0 items-center justify-center focus:outline-none cursor-help sm:m-0 sm:h-4 sm:w-4 sm:min-w-0"
       >
         <span className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-[var(--color-line)] text-[10px] font-bold leading-none text-[var(--color-muted)] group-hover/tip:border-[var(--color-accent)] group-hover/tip:text-[var(--color-accent)] group-focus/tip:border-[var(--color-accent)]">
           i
