@@ -654,11 +654,14 @@ export function CaseNexus({
   }
 
   // Pan + zoom via d3-zoom on the SVG root. Applies transform to the
-  // top-level <g> so all children scale together. Crucially, this does
-  // NOT hijack page scrolling:
-  //   • plain mouse wheel  → the page scrolls (zoom needs ⌘/Ctrl)
-  //   • single-finger touch → the page scrolls; two fingers pan/zoom
-  //   • mouse drag (button 0) → pans the graph
+  // top-level <g> so all children scale together. Same rules as the Map
+  // Room radar, so the two boards feel like one instrument:
+  //   • one finger on the graph pans the graph, not the page
+  //     (touch-action: none on the svg); two fingers pinch-zoom
+  //   • mouse wheel over the graph zooms (d3-zoom's listener is
+  //     non-passive, so the page does not scroll underneath)
+  //   • mouse drag (button 0) pans the graph
+  // Off the graph, the page scrolls as normal.
   const zoomRef = useRef<{
     svg: ReturnType<typeof select<SVGSVGElement, unknown>>;
     z: ZoomBehavior<SVGSVGElement, unknown>;
@@ -672,9 +675,8 @@ export function CaseNexus({
       .scaleExtent([0.3, 4])
       .filter((event) => {
         const e = event as WheelEvent & TouchEvent & MouseEvent;
-        if (e.type === "wheel") return e.ctrlKey || e.metaKey;
-        if (e.type === "touchstart" || e.type === "touchmove")
-          return (e.touches?.length ?? 0) >= 2;
+        if (e.type === "wheel") return true;
+        if (e.type === "touchstart" || e.type === "touchmove") return true;
         return !e.button;
       })
       .on("zoom", (event) => {
@@ -972,7 +974,8 @@ export function CaseNexus({
               ref={svgRef}
               viewBox={`0 0 ${W} ${H}`}
               className="block h-[320px] w-full max-w-full cursor-grab select-none active:cursor-grabbing sm:h-[44vh] sm:min-h-[320px] sm:max-h-[480px] xl:h-[min(44vh,480px)] 2xl:h-[min(48vh,520px)]"
-              style={{ touchAction: "pan-y" }}
+              style={{ touchAction: "none" }}
+              data-nexus-map
               role="img"
               aria-label="Interactive evidence graph of January 6 cases, defendants, documents, and visible connections."
             >
@@ -1105,7 +1108,10 @@ export function CaseNexus({
 
           {/* Investigation filters — toggle whole classes off the board so you
               can isolate exactly what you're chasing. */}
-          <div className="absolute right-3 top-3 z-10 flex flex-wrap justify-end gap-1.5">
+          {/* Overlay containers let touches through to the graph; only the
+              buttons themselves catch them. Without this the invisible flex
+              box around the controls swallowed one-finger pans on phones. */}
+          <div data-nexus-controls className="pointer-events-none absolute right-3 top-3 z-10 flex flex-wrap justify-end gap-1.5">
             <button
               type="button"
               onClick={() =>
@@ -1121,7 +1127,7 @@ export function CaseNexus({
                 })
               }
               aria-pressed={traceMode}
-              className={`rounded-full border px-2.5 py-1 text-[10px] font-black uppercase tracking-wider backdrop-blur transition ${
+              className={`pointer-events-auto min-h-11 rounded-full border px-3 text-[10px] font-black uppercase tracking-wider backdrop-blur transition ${
                 traceMode
                   ? "border-[#9df0c0] bg-[#9df0c0]/15 text-[#9df0c0]"
                   : "border-[#203a64] bg-[#071126]/80 text-[#7c8aa6] hover:border-[#3a557c] hover:text-[#cfd9ea]"
@@ -1140,7 +1146,7 @@ export function CaseNexus({
             </FilterChip>
           </div>
 
-          <div className="absolute bottom-16 right-3 z-10 flex items-end gap-1.5 sm:bottom-3">
+          <div data-nexus-controls className="pointer-events-none absolute bottom-16 right-3 z-10 flex items-end gap-1.5 sm:bottom-3">
             <div className="flex gap-1.5">
               <MapActionButton label="Fit whole map" onClick={() => fitMap()}>
                 Fit
@@ -1547,7 +1553,7 @@ function FilterChip({
       type="button"
       onClick={onClick}
       aria-pressed={on}
-      className={`rounded-full border px-2.5 py-1 text-[10px] font-black uppercase tracking-wider backdrop-blur transition ${
+      className={`pointer-events-auto min-h-11 rounded-full border px-3 text-[10px] font-black uppercase tracking-wider backdrop-blur transition ${
         on
           ? "border-[var(--color-gold-bright)] bg-[var(--color-gold-bright)]/15 text-[var(--color-gold-bright)]"
           : "border-[#203a64] bg-[#071126]/80 text-[#7c8aa6] hover:border-[#3a557c] hover:text-[#cfd9ea]"
@@ -1699,7 +1705,7 @@ function ZoomButton({
       type="button"
       aria-label={label}
       onClick={onClick}
-      className="h-9 w-9 rounded-full border border-[#3a557c] bg-[#0e1a36]/90 text-[#cfd9ea] text-lg font-bold leading-none flex items-center justify-center hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)] transition"
+      className="pointer-events-auto h-11 w-11 rounded-full border border-[#3a557c] bg-[#0e1a36]/90 text-[#cfd9ea] text-lg font-bold leading-none flex items-center justify-center hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)] transition"
     >
       {children}
     </button>
@@ -1723,7 +1729,7 @@ function MapActionButton({
       aria-label={label}
       onClick={onClick}
       disabled={disabled}
-      className="h-9 rounded-full border border-[#3a557c] bg-[#0e1a36]/90 px-3 text-[11px] font-bold uppercase tracking-wider text-[#cfd9ea] transition hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)] disabled:cursor-not-allowed disabled:opacity-45"
+      className="pointer-events-auto h-11 min-w-11 rounded-full border border-[#3a557c] bg-[#0e1a36]/90 px-4 text-[11px] font-bold uppercase tracking-wider text-[#cfd9ea] transition hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)] disabled:cursor-not-allowed disabled:opacity-45"
     >
       {children}
     </button>

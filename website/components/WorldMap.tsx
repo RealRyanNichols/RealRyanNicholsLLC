@@ -1,9 +1,10 @@
 import { geoEqualEarth, geoPath } from "d3-geo";
 import { feature } from "topojson-client";
-// world-atlas 50m gives crisp coastlines (~270KB land features) while
-// keeping the file small enough to ship in the server bundle. We import
-// JSON directly so this stays a static asset, no fetch at request time.
-import landJson from "world-atlas/land-50m.json";
+// world-atlas 110m: the 50m set produced a single 900KB path string in
+// every /admin/analytics response. 110m is plenty at 1000×500 and lands
+// at ~77KB of path data, split one <path> per polygon so no attribute
+// balloons. We import JSON directly so this stays a static asset.
+import landJson from "world-atlas/land-110m.json";
 import type { Topology, GeometryCollection } from "topojson-specification";
 import type { Feature, GeometryObject } from "geojson";
 import { COUNTRY_COORDS } from "@/lib/country-coords";
@@ -32,13 +33,18 @@ const projection = geoEqualEarth()
       : landFeature,
   );
 const pathGen = geoPath(projection);
-const landPath =
-  "features" in landFeature
-    ? landFeature.features
-        .map((f) => pathGen(f as Feature<GeometryObject>))
-        .filter((p): p is string => !!p)
-        .join(" ")
-    : pathGen(landFeature as Feature<GeometryObject>) ?? "";
+const landFeatures: Feature<GeometryObject>[] =
+  "features" in landFeature ? landFeature.features : [landFeature];
+// One path per polygon (a MultiPolygon is split) so no single `d` is huge.
+const landPaths: string[] = landFeatures.flatMap((f) => {
+  if (f.geometry.type === "MultiPolygon") {
+    return (f.geometry.coordinates as number[][][][])
+      .map((coords) => pathGen({ type: "Polygon", coordinates: coords } as GeometryObject))
+      .filter((p): p is string => !!p);
+  }
+  const p = pathGen(f);
+  return p ? [p] : [];
+});
 
 export function WorldMap({
   data,
@@ -106,14 +112,17 @@ export function WorldMap({
         );
       })()}
 
-      {/* Land mass (Natural Earth 50m, projected via d3-geo Equal Earth). */}
-      <path
-        d={landPath}
-        fill="var(--color-paper)"
-        stroke="var(--color-line)"
-        strokeWidth="0.5"
-        opacity="0.92"
-      />
+      {/* Land mass (Natural Earth 110m, projected via d3-geo Equal Earth). */}
+      {landPaths.map((d, i) => (
+        <path
+          key={i}
+          d={d}
+          fill="var(--color-paper)"
+          stroke="var(--color-line)"
+          strokeWidth="0.5"
+          opacity="0.92"
+        />
+      ))}
 
       {/* One dot per country, area scaled by views, with a pulse ring. */}
       {known.map((d) => {

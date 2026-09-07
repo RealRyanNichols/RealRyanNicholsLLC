@@ -4,6 +4,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { requireStripe } from "@/lib/stripe";
 import { getSupabaseServiceClient } from "@/lib/supabase/service";
 import { recordDonationFromSession } from "@/lib/donations";
+import { markFuelIntentPaid } from "@/lib/fuel-server";
 import { triggerBookBuyerAutomation } from "@/lib/book-buyer-automation";
 
 export const runtime = "nodejs";
@@ -113,6 +114,8 @@ async function handleCheckoutCompleted(
   if (session.mode === "payment" && kind === "donation") {
     // Shared with the /checkout/success backstop — idempotent on session id.
     await recordDonationFromSession(session, supabase);
+    // Token Fund: the support intent captured at checkout becomes paid work.
+    await markFuelIntentPaid(session, supabase);
     return;
   }
 
