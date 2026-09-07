@@ -416,7 +416,7 @@ export default async function FuelPage({
               <p>
                 {caseTotals ? (
                   <>
-                    I spent <strong className="text-[var(--color-ink)]">{caseTotals.daysDetained.toLocaleString("en-US")} days</strong> in
+                    I spent <strong className="text-[var(--color-ink)]">{caseTotals.daysArrestToPardon.toLocaleString("en-US")} days</strong> in
                     federal custody before a pardon and a dismissal with prejudice.{" "}
                   </>
                 ) : (

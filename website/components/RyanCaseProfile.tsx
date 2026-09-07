@@ -7,6 +7,8 @@ import { CaseViewTracker } from "@/components/CaseViewTracker";
 import { ShareButton } from "@/components/ShareButton";
 import { CaseInfoCard } from "@/components/CaseInfoCard";
 import { CaseStats } from "@/components/CaseStats";
+import { CaseHero } from "@/components/case/CaseHero";
+import { CaseStatCards } from "@/components/case/CaseStatCards";
 import { EvidenceGrid } from "@/components/EvidenceGrid";
 import { ReactionBar } from "@/components/ReactionBar";
 import { ReadingProgress } from "@/components/ReadingProgress";
@@ -22,7 +24,7 @@ type CaseTotals = {
   documents: number;
   facilities: number;
   corroborators: number;
-  daysDetained: number;
+  daysArrestToPardon: number;
   events: number;
 };
 
@@ -55,12 +57,18 @@ export function RyanCaseProfile({
   totals,
   posts,
   url,
+  variant = "profile",
+  rail,
 }: {
   person: CasePerson;
   evidence: CaseDocument[];
   totals: CaseTotals;
   posts: Post[];
   url: string;
+  // "case" is the /case front door (no breadcrumb back to itself; the path
+  // split arrives through `rail`). "profile" is /case/people/ryan-nichols.
+  variant?: "case" | "profile";
+  rail?: React.ReactNode;
 }) {
   const titledPosts = posts.filter((p) => p.title && p.title.trim()).slice(0, 6);
 
@@ -68,7 +76,7 @@ export function RyanCaseProfile({
   // layout by @id) with case-specific detail, mark this page as his profile,
   // describe the archive as a Dataset, and answer the questions people
   // actually ask engines — every answer drawn from this page's verified copy.
-  const days = totals.daysDetained.toLocaleString("en-US");
+  const days = totals.daysArrestToPardon.toLocaleString("en-US");
   const profileLd = [
     {
       "@context": "https://schema.org",
@@ -154,7 +162,7 @@ export function RyanCaseProfile({
           name: "What happened to Ryan Nichols in jail?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: `He was detained ${days} days between arrest and pardon, held across ${totals.facilities} federal and local facilities, including extended solitary confinement. In December 2021 a federal judge acknowledged on the record that his due-process rights had been violated; he remained detained. From inside he authored ${totals.ryanFiledGrievances.toLocaleString("en-US")} grievance forms, and the conditions record — photographs, complaints, medical records — is public in the case archive.`,
+            text: `${days} days passed between his arrest and his pardon. He was held across ${totals.facilities} federal and local facilities, including extended solitary confinement. In December 2021 a federal judge acknowledged on the record that his due-process rights had been violated; he remained detained. From inside he authored ${totals.ryanFiledGrievances.toLocaleString("en-US")} grievance forms, and the conditions record — photographs, complaints, medical records — is public in the case archive.`,
           },
         },
         {
@@ -175,59 +183,41 @@ export function RyanCaseProfile({
       <CaseViewTracker type="person" slug={person.slug} />
       <ReadingProgress />
 
-      <nav className="text-sm text-[var(--color-muted)] mb-2">
-        <Link href="/case" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
-          ← J6 Case
-        </Link>{" "}
-        ·{" "}
-        <Link href="/case?view=people" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
-          All people
-        </Link>
-      </nav>
+      {variant === "profile" ? (
+        <nav className="text-sm text-[var(--color-muted)] mb-4">
+          <Link href="/case" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
+            ← J6 Case
+          </Link>{" "}
+          ·{" "}
+          <Link href="/case?view=people" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
+            All people
+          </Link>
+        </nav>
+      ) : null}
 
-      <p className="mb-4 text-xs text-[var(--color-muted)]">
-        Attorney evaluating his current matter?{" "}
-        <a
-          href="#attorney-briefing"
-          className="font-bold text-[var(--color-navy)] hover:underline"
-        >
-          Jump to the briefing ↓
-        </a>
-      </p>
+      {/* ---- Hero: the day count tells the story in one breath ---- */}
+      <CaseHero person={person} days={totals.daysArrestToPardon} roleLine={ROLE_LINE} />
 
-      {/* ---- Hero ---- */}
-      <div className="rounded-3xl border-2 border-[var(--color-accent)] bg-gradient-to-br from-[var(--color-accent-soft)] to-[var(--color-surface)] p-6 sm:p-9">
-        {person.photo_url ? (
-          <>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={person.photo_url}
-              alt={person.name}
-              className="float-right ml-4 mb-3 h-32 w-32 sm:h-44 sm:w-44 rounded-2xl object-cover border-2 border-[var(--color-accent)] shadow-lg"
-            />
-          </>
-        ) : null}
-        <p className="text-[11px] uppercase tracking-[0.25em] text-[var(--color-accent)] font-bold">
-          Verified subject · United States v. Nichols
-        </p>
-        <h1 className="mt-2 text-4xl sm:text-6xl font-bold tracking-tight leading-[1.02] font-display">
-          {person.name}
-        </h1>
-        <p className="mt-3 text-sm sm:text-base font-semibold text-[var(--color-ink)] leading-relaxed">
-          {ROLE_LINE}
-        </p>
-        <p className="mt-4 max-w-2xl border-l-2 border-[var(--color-navy)] pl-4 text-sm font-semibold leading-relaxed text-[var(--color-ink)]">
+      {/* ---- Four numbers, each a door to its proof ---- */}
+      <CaseStatCards totals={totals} className="mt-4" />
+
+      {/* The two doors as the return rail, when this page is /case itself. */}
+      {rail ? <div className="mt-8">{rail}</div> : null}
+
+      {/* ---- The record in a paragraph ---- */}
+      <div className="mt-8">
+        <p className="max-w-2xl border-l-2 border-[var(--color-navy)] pl-4 text-sm font-semibold leading-relaxed text-[var(--color-ink)]">
           Sentenced May 2, 2024. Pardoned in full on January 20, 2025 — and the
           case was dismissed with prejudice. It can never be brought again.
         </p>
         <p className="mt-5 max-w-2xl text-sm sm:text-base leading-relaxed text-[var(--color-ink)]">
           New here? This page is the whole story, told in paper: a Marine and
-          hurricane rescuer, arrested after January 6 — {days} days detained,
-          solitary confinement, a judge admitting on the record that his due
-          process was violated, a habeas suit filed from his cell, release, a
-          plea, 63 months, then a full pardon and dismissal with prejudice.
-          Every claim links to the document that proves it. Read it. Check it.
-          Share it.
+          hurricane rescuer, arrested after January 6 — {days} days from arrest
+          to pardon, solitary confinement, a judge admitting on the record that
+          his due process was violated, a habeas suit filed from his cell,
+          release, a plea, 63 months, then a full pardon and dismissal with
+          prejudice. Every claim links to the document that proves it. Read it.
+          Check it. Share it.
         </p>
       </div>
 
@@ -243,6 +233,7 @@ export function RyanCaseProfile({
           title={`${person.name} — United States v. Nichols. Pardoned, charges dismissed with prejudice. The full record:`}
           slug={person.slug}
           caseKind="person"
+          tone="navy"
         />
       </div>
       <div className="mt-3">
@@ -250,39 +241,9 @@ export function RyanCaseProfile({
           targetType="person"
           targetId={person.slug}
           prompt="Stand with Ryan — tap to react, no signup."
+          tone="navy"
         />
       </div>
-
-      {/* ---- The case in numbers ---- */}
-      {/* Every number is a door to its proof — nothing on this page is a
-          claim without a receipt. */}
-      <section className="mt-8 grid grid-cols-2 sm:grid-cols-5 gap-3">
-        <Stat
-          n={String(totals.facilities)}
-          label="Facilities held across"
-          href="/case/geography"
-        />
-        <Stat
-          n={totals.daysDetained.toLocaleString()}
-          label="Days, arrest → pardon"
-          href="/case?view=timeline"
-        />
-        <Stat
-          n={totals.ryanFiledGrievances.toLocaleString()}
-          label="Grievances he filed"
-          href="/case?view=grievances"
-        />
-        <Stat
-          n={totals.documents.toLocaleString()}
-          label="Documents on the record"
-          href="/case?view=documents"
-        />
-        <Stat
-          n={String(totals.corroborators)}
-          label="Fellow detainees on record"
-          href="/case?view=people&filter=all"
-        />
-      </section>
 
       {/* ---- The line that should stop you ---- */}
       <aside className="mt-6 rounded-2xl border-2 border-[var(--color-navy)]/30 bg-[var(--color-blue-soft)]/40 p-6 sm:p-8">
@@ -322,11 +283,11 @@ export function RyanCaseProfile({
           the bottom of this profile would be read by almost nobody. This sits
           right after the hook and before Chapter One, around 15-20% depth,
           which roughly 55% of readers still reach. */}
-      <BookCtaBand className="mt-8" />
+      <BookCtaBand className="mt-8" tone="case" />
 
       {/* ---- Who he is, before the government ---- */}
-      <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+      <section id="chapter-one" className="mt-12 scroll-mt-24 border-t-2 border-[var(--color-line)] pt-10">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-navy)] font-bold">
           Chapter One · Before the case — the man behind the file
         </p>
         <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
@@ -341,7 +302,7 @@ export function RyanCaseProfile({
 
         {/* Service record */}
         <div className="mt-6 rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6">
-          <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+          <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-navy)] font-bold">
             Service record · USMC 2010–2014
           </p>
           <h3 className="mt-1 text-xl font-bold tracking-tight font-display">
@@ -376,7 +337,7 @@ export function RyanCaseProfile({
 
         {/* Operations timeline */}
         <div className="mt-8">
-          <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+          <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-navy)] font-bold">
             Search & rescue · the operations log
           </p>
           <h3 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight font-display">
@@ -414,7 +375,7 @@ export function RyanCaseProfile({
           <ol className="mt-6 relative border-l-2 border-[var(--color-line)] ml-3 space-y-5">
             {OPERATIONS.map((op) => (
               <li key={op.title} className="relative pl-6">
-                <span className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full bg-[var(--color-accent)] ring-4 ring-[var(--color-paper)]" />
+                <span className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full bg-[var(--color-navy)] ring-4 ring-[var(--color-paper)]" />
                 <Link href={`/story/${storySlugFor(op)}`} className="group block">
                   <div className="flex flex-wrap items-baseline gap-2">
                     <span className="rounded bg-[var(--color-ink)] text-[var(--color-paper)] px-1.5 py-0.5 text-[10px] font-bold tabular-nums">
@@ -470,7 +431,7 @@ export function RyanCaseProfile({
 
         <Link
           href="/about"
-          className="mt-6 inline-block text-sm font-bold text-[var(--color-accent)] hover:underline"
+          className="mt-6 inline-block text-sm font-bold text-[var(--color-navy)] hover:underline"
         >
           Read the full biography, filed as Exhibit 288 →
         </Link>
@@ -481,7 +442,7 @@ export function RyanCaseProfile({
 
       {/* ---- The J6 case, start to finish ---- */}
       <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-navy)] font-bold">
           Chapter Two · The case, start to finish
         </p>
         <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
@@ -538,7 +499,7 @@ export function RyanCaseProfile({
             },
           ].map((e) => (
             <li key={e.date} className="relative pl-6">
-              <span className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full bg-[var(--color-accent)] ring-4 ring-[var(--color-paper)]" />
+              <span className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full bg-[var(--color-navy)] ring-4 ring-[var(--color-paper)]" />
               <div className="flex flex-wrap items-baseline gap-2">
                 <span className="rounded bg-[var(--color-ink)] text-[var(--color-paper)] px-1.5 py-0.5 text-[10px] font-bold tabular-nums">
                   {e.date}
@@ -561,8 +522,8 @@ export function RyanCaseProfile({
 
       {/* ---- The detention record — the documented account ---- */}
       <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
-          Chapter Three · The detention record — {totals.daysDetained.toLocaleString()} days
+        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-navy)] font-bold">
+          Chapter Three · The detention record — {totals.daysArrestToPardon.toLocaleString()} days, arrest to pardon
         </p>
         <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
           Not memoir. Paper.
@@ -571,7 +532,7 @@ export function RyanCaseProfile({
           What happened between arrest and pardon is not a story he tells — it is
           a file he built, one exhibit at a time, from inside. Every entry below
           carries an exhibit number from the master archive or lives in the{" "}
-          <Link href="/case?view=documents" className="text-[var(--color-accent)] font-semibold hover:underline">
+          <Link href="/case?view=documents" className="text-[var(--color-navy)] font-semibold hover:underline">
             public document record
           </Link>
           . Items marked <DetTag kind="doc" /> are documented. Items marked{" "}
@@ -773,10 +734,11 @@ export function RyanCaseProfile({
           </p>
           <ShareButton
             url={url}
-            title={`The detention record of ${person.name} — ${totals.daysDetained.toLocaleString()} days, documented on paper. Read it and check it yourself:`}
+            title={`The detention record of ${person.name} — ${totals.daysArrestToPardon.toLocaleString()} days from arrest to pardon, documented on paper. Read it and check it yourself:`}
             slug={person.slug}
             caseKind="person"
             compact
+            tone="navy"
           />
         </div>
       </section>
@@ -788,7 +750,7 @@ export function RyanCaseProfile({
       {/* ---- On the record now (latest dispatches) ---- */}
       {titledPosts.length > 0 ? (
         <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
-          <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+          <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-navy)] font-bold">
             Chapter Four · On the record now
           </p>
           <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
@@ -803,7 +765,7 @@ export function RyanCaseProfile({
               <Link
                 key={p.slug}
                 href={`/posts/${p.slug}`}
-                className="group overflow-hidden rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-accent)] transition"
+                className="group overflow-hidden rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-navy)] transition"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -813,7 +775,7 @@ export function RyanCaseProfile({
                   className="h-28 w-full border-b border-[var(--color-line)] object-cover"
                 />
                 <div className="p-4">
-                  <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] font-bold text-[var(--color-accent)]">
+                  <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] font-bold text-[var(--color-navy)]">
                     {p.category ? <span>{p.category}</span> : null}
                     {p.published_at ? (
                       <span className="text-[var(--color-muted)]">
@@ -824,14 +786,14 @@ export function RyanCaseProfile({
                       </span>
                     ) : null}
                   </div>
-                  <p className="mt-1 text-base font-bold tracking-tight font-display leading-snug group-hover:text-[var(--color-accent)] transition">
+                  <p className="mt-1 text-base font-bold tracking-tight font-display leading-snug group-hover:text-[var(--color-navy)] transition">
                     {p.title}
                   </p>
                 </div>
               </Link>
             ))}
           </div>
-          <Link href="/" className="mt-5 inline-block text-sm font-bold text-[var(--color-accent)] hover:underline">
+          <Link href="/" className="mt-5 inline-block text-sm font-bold text-[var(--color-navy)] hover:underline">
             See everything in the feed →
           </Link>
         </section>
@@ -839,8 +801,8 @@ export function RyanCaseProfile({
 
       {/* ---- Evidence on file ---- */}
       <section className="mt-12 border-t border-[var(--color-line)] pt-8">
-        <div className="border-l-2 border-[var(--color-accent)] pl-4 mb-5">
-          <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent)] font-bold">
+        <div className="border-l-2 border-[var(--color-navy)] pl-4 mb-5">
+          <p className="text-[10px] uppercase tracking-wider text-[var(--color-navy)] font-bold">
             Evidence on file
           </p>
           <h2 className="text-lg sm:text-xl font-bold tracking-tight">
@@ -856,7 +818,7 @@ export function RyanCaseProfile({
             {totals.documents.toLocaleString()} documents,{" "}
             {totals.ryanFiledGrievances.toLocaleString()} grievance forms in his own hand,{" "}
             {totals.grievances} documented grievance patterns, {totals.facilities} facilities.{" "}
-            <Link href="/case?view=documents" className="text-[var(--color-accent)] font-semibold hover:underline">
+            <Link href="/case?view=documents" className="text-[var(--color-navy)] font-semibold hover:underline">
               Walk the full record →
             </Link>
           </p>
@@ -876,16 +838,17 @@ export function RyanCaseProfile({
         </div>
       </section>
 
-      {/* Attorney briefing — below the story now. Counsel jumps straight
-          here via the chip under the breadcrumb; strangers get the human
-          story first. Same public-facts-only content as before. */}
+      {/* Attorney briefing — below the story. Counsel jumps straight here
+          via the hero's secondary link ("Counsel evaluating this case, start
+          here"); strangers get the human story first. Same public-facts-only
+          content as before. */}
       <div id="attorney-briefing" className="scroll-mt-24">
         <AttorneyBriefing />
       </div>
 
       {/* ---- The full record · a directory into every part of the case ---- */}
       <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-navy)] font-bold">
           The full record
         </p>
         <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
@@ -1004,8 +967,8 @@ export function RyanCaseProfile({
 
       {/* ---- Closing CTA · stand with him ---- */}
       <section className="mt-12">
-        <div className="rounded-3xl border-2 border-[var(--color-accent)] bg-gradient-to-br from-[var(--color-accent-soft)] to-[var(--color-surface)] p-6 sm:p-10 text-center">
-          <p className="text-[11px] uppercase tracking-[0.25em] text-[var(--color-accent)] font-bold">
+        <div className="rounded-3xl border-2 border-[var(--color-navy)] bg-[var(--color-blue-soft)]/40 p-6 sm:p-10 text-center">
+          <p className="text-[11px] uppercase tracking-[0.25em] text-[var(--color-navy)] font-bold">
             Stand with him
           </p>
           <h2 className="mt-2 text-2xl sm:text-4xl font-bold tracking-tight font-display leading-[1.06] max-w-2xl mx-auto">
@@ -1019,7 +982,7 @@ export function RyanCaseProfile({
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <Link
               href="/book"
-              className="inline-flex items-center rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] px-6 py-3 text-sm font-bold hover:opacity-90 transition"
+              className="btn-accent inline-flex min-h-11 items-center rounded-full px-6 py-3 text-sm font-bold"
             >
               Get the book →
             </Link>
@@ -1028,13 +991,14 @@ export function RyanCaseProfile({
               title={`${person.name} — pardoned January 6 defendant, charges dismissed with prejudice. The full record:`}
               slug={person.slug}
               caseKind="person"
+              tone="navy"
             />
           </div>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-xs text-[var(--color-muted)]">
-            <Link href="/the-harassment" className="hover:text-[var(--color-accent)] font-semibold">
+            <Link href="/the-harassment" className="hover:text-[var(--color-navy)] font-semibold">
               The harassment wall →
             </Link>
-            <Link href="/" className="hover:text-[var(--color-accent)] font-semibold">
+            <Link href="/" className="hover:text-[var(--color-navy)] font-semibold">
               The latest dispatches →
             </Link>
           </div>
@@ -1196,35 +1160,13 @@ function DetTag({ kind }: { kind: "doc" | "account" }) {
   );
 }
 
-function Stat({ n, label, href }: { n: string; label: string; href?: string }) {
-  const inner = (
-    <>
-      <div className="text-3xl sm:text-[2.4rem] font-bold tracking-tight leading-none text-[var(--color-navy)] font-display tabular-nums">
-        {n}
-      </div>
-      <div className="mt-2 text-[11px] sm:text-xs font-black uppercase tracking-[0.08em] text-[var(--color-support-strong)] leading-tight">
-        {label}
-        {href ? <span aria-hidden> →</span> : null}
-      </div>
-    </>
-  );
-  const shell = "qa-tile p-4 sm:p-5";
-  return href ? (
-    <Link href={href} className={`${shell} block`}>
-      {inner}
-    </Link>
-  ) : (
-    <div className={shell}>{inner}</div>
-  );
-}
-
 function CrossLink({ href, title, sub }: { href: string; title: string; sub: string }) {
   return (
     <Link
       href={href}
-      className="block rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4 hover:border-[var(--color-accent)] transition group"
+      className="block rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4 hover:border-[var(--color-navy)] transition group"
     >
-      <p className="text-sm font-bold tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">
+      <p className="text-sm font-bold tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-navy)]">
         {title}
       </p>
       <p className="mt-1 text-xs leading-snug text-[var(--color-ink-soft)]">{sub}</p>

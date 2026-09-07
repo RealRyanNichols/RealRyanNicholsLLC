@@ -59,7 +59,7 @@ export async function GET(req: Request) {
     const [totals, j6] = await Promise.all([getCaseTotals(), getJ6DefendantCount()]);
     documents = totals.documents ?? 0;
     grievances = totals.ryanFiledGrievances ?? 0;
-    days = totals.daysDetained ?? 0;
+    days = totals.daysArrestToPardon ?? 0;
     defendants = j6;
   } catch {
     // Never let the card 500 — fall back to a clean, stat-less version.
@@ -71,7 +71,7 @@ export async function GET(req: Request) {
   const stats: [string, string][] = [];
   if (documents > 0) stats.push([documents.toLocaleString("en-US"), "Documents on file"]);
   if (grievances > 0) stats.push([grievances.toLocaleString("en-US"), "Grievances filed"]);
-  if (days > 0) stats.push([days.toLocaleString("en-US"), "Days detained"]);
+  if (days > 0) stats.push([days.toLocaleString("en-US"), "Days, arrest to pardon"]);
 
   return new ImageResponse(
     (
@@ -131,12 +131,16 @@ export async function GET(req: Request) {
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
           <div style={{ display: "flex", gap: 48 }}>
             {stats.map(([n, label]) => (
-              <div key={label} style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+              // Capped so a long label ("Days, arrest to pardon") wraps
+              // inside its column instead of shoving the footer into the
+              // right margin.
+              <div key={label} style={{ display: "flex", flexDirection: "column", gap: 6, maxWidth: 210 }}>
                 <div style={{ display: "flex", fontSize: 52, fontWeight: 800, color: PALETTE.goldBright }}>{n}</div>
                 <div
                   style={{
                     display: "flex",
                     fontSize: 18,
+                    lineHeight: 1.2,
                     fontWeight: 700,
                     letterSpacing: "0.06em",
                     textTransform: "uppercase",

@@ -4,12 +4,17 @@ import { pageMetadata } from "@/lib/page-metadata";
 import { RescueGallery } from "@/components/RescueGallery";
 import { getCaseTotals, getJ6DefendantCount } from "@/lib/case";
 
-export const metadata: Metadata = pageMetadata({
-  title: "The Story — Ryan Nichols, All of It",
-  description:
-    "One life, told whole: Katrina at 14, the Marines, two dozen hurricane rescues, a business built from nothing, January 6 and 1,463 days detained, the fall nobody photographs, the finding, the family, and the archive built so it can never be buried.",
-  path: "/the-story",
-});
+// The day count in the description is the live arrest-to-pardon figure from
+// lib/case.ts, never typed.
+export async function generateMetadata(): Promise<Metadata> {
+  const totals = await getCaseTotals();
+  const days = totals.daysArrestToPardon.toLocaleString("en-US");
+  return pageMetadata({
+    title: "The Story — Ryan Nichols, All of It",
+    description: `One life, told whole: Katrina at 14, the Marines, two dozen hurricane rescues, a business built from nothing, January 6 and ${days} days from arrest to pardon, the fall nobody photographs, the finding, the family, and the archive built so it can never be buried.`,
+    path: "/the-story",
+  });
+}
 
 // The life's work, as chapters. Each one links into the part of the site that
 // holds its receipts. This page is the spine; the site is the body.
@@ -29,7 +34,12 @@ type Chapter = {
 // Chapter Ten carries the live archive counts from lib/case.ts — never a
 // typed number — so the spine can only ever say what the archive says. A
 // count of 0 means the query failed; the line then drops the number.
-function chaptersFor(record: { defendants: number; documents: number }): Chapter[] {
+function chaptersFor(record: {
+  defendants: number;
+  documents: number;
+  days: number;
+  facilities: number;
+}): Chapter[] {
   return [
   {
     era: "2005",
@@ -83,7 +93,7 @@ function chaptersFor(record: { defendants: number; documents: number }): Chapter
     title: "The fire",
     lines: [
       "January 6. Arrested twelve days later.",
-      "1,463 days. Ten facilities. Solitary.",
+      `${record.days.toLocaleString("en-US")} days, arrest to pardon. ${record.facilities} facilities. Solitary.`,
       "A federal judge admitted on the record his due process was violated.",
       "He stayed in anyway — and papered every day of it.",
     ],
@@ -163,7 +173,12 @@ export default async function TheStoryPage() {
     getCaseTotals(),
     getJ6DefendantCount(),
   ]);
-  const chapters = chaptersFor({ defendants, documents: totals.documents });
+  const chapters = chaptersFor({
+    defendants,
+    documents: totals.documents,
+    days: totals.daysArrestToPardon,
+    facilities: totals.facilities,
+  });
   return (
     <article className="mx-auto max-w-3xl px-4 py-12">
       {/* Hero */}

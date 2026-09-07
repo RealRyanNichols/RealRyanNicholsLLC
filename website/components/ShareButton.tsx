@@ -16,6 +16,7 @@ export function ShareButton({
   caseKind,
   compact = false,
   shares,
+  tone = "accent",
 }: {
   url: string;
   title: string;
@@ -24,7 +25,15 @@ export function ShareButton({
   compact?: boolean;
   /** When provided, shows a live, optimistic share count next to the button. */
   shares?: number;
+  /** "navy" for pages that allow flag red on one element only (/case). */
+  tone?: "accent" | "navy";
 }) {
+  const hoverCls =
+    tone === "navy"
+      ? "hover:border-[var(--color-navy)] hover:text-[var(--color-navy)]"
+      : "hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]";
+  const itemHoverCls =
+    tone === "navy" ? "hover:text-[var(--color-navy)]" : "hover:text-[var(--color-accent)]";
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [supportsNative, setSupportsNative] = useState(false);
@@ -112,14 +121,16 @@ export function ShareButton({
         aria-expanded={open}
         className={
           compact
-            ? "inline-flex min-h-11 items-center gap-1.5 rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1 text-xs font-semibold text-[var(--color-ink-soft)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition sm:min-h-0"
-            : "inline-flex min-h-11 items-center gap-2 rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-2 text-sm font-semibold text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition"
+            ? `inline-flex min-h-11 items-center gap-1.5 rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1 text-xs font-semibold text-[var(--color-ink-soft)] ${hoverCls} transition sm:min-h-0`
+            : `inline-flex min-h-11 items-center gap-2 rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-2 text-sm font-semibold text-[var(--color-ink)] ${hoverCls} transition`
         }
       >
         <ShareIcon className={compact ? "h-3.5 w-3.5" : "h-4 w-4"} />
         Share
         {shownCount > 0 ? (
-          <span className="tabular-nums text-[var(--color-accent)] font-bold">
+          <span
+            className={`tabular-nums font-bold ${tone === "navy" ? "text-[var(--color-navy)]" : "text-[var(--color-accent)]"}`}
+          >
             {formatShareCount(shownCount)}
           </span>
         ) : null}
@@ -134,7 +145,7 @@ export function ShareButton({
               type="button"
               onClick={tryNative}
               role="menuitem"
-              className="flex min-h-11 w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-[var(--color-ink)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-accent)] transition text-left"
+              className={`flex min-h-11 w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-[var(--color-ink)] hover:bg-[var(--color-surface-2)] ${itemHoverCls} transition text-left`}
             >
               <ShareIcon className="h-4 w-4" />
               Share via…
@@ -144,7 +155,7 @@ export function ShareButton({
             type="button"
             onClick={copy}
             role="menuitem"
-            className="flex min-h-11 w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-[var(--color-ink)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-accent)] transition text-left"
+            className={`flex min-h-11 w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-[var(--color-ink)] hover:bg-[var(--color-surface-2)] ${itemHoverCls} transition text-left`}
           >
             <LinkIcon className="h-4 w-4" />
             {copied ? "Link copied ✓" : "Copy link"}
@@ -161,7 +172,7 @@ export function ShareButton({
                 share("share_platform", p.name);
                 setOpen(false);
               }}
-              className="flex min-h-11 items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-accent)] transition"
+              className={`flex min-h-11 items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-[var(--color-ink-soft)] hover:bg-[var(--color-surface-2)] ${itemHoverCls} transition`}
             >
               <span className="w-4 text-center text-sm font-bold leading-none" aria-hidden>
                 {p.icon}

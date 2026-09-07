@@ -29,14 +29,14 @@ type DamageItem = {
 
 export default async function DamagesPage() {
   const totals = await getCaseTotals();
-  const years = (totals.daysDetained / 365.25).toFixed(1);
+  const years = (totals.daysArrestToPardon / 365.25).toFixed(1);
 
   const damages: DamageItem[] = [
     {
       label: "Liberty lost",
-      oneLine: `${totals.daysDetained.toLocaleString()} days in federal detention before pardon, then dismissed with prejudice.`,
+      oneLine: `${totals.daysArrestToPardon.toLocaleString()} days in federal detention before pardon, then dismissed with prejudice.`,
       body: "From the January 18, 2021 arrest to the January 20, 2025 full presidential pardon, Ryan spent " +
-        totals.daysDetained.toLocaleString() + " days — roughly " + years + " years — in federal detention. " +
+        totals.daysArrestToPardon.toLocaleString() + " days — roughly " + years + " years — in federal detention. " +
         "Multiple bond hearings denied. Most of that time in solitary confinement. After the pardon, U.S. Attorney " +
         "Edward R. Martin Jr. moved to dismiss the charges with prejudice — the case cannot be brought again. " +
         "The detention that destroyed his marriage, his business, and his health came before either of those vindications.",
@@ -114,7 +114,7 @@ export default async function DamagesPage() {
       </p>
 
       <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 print:grid-cols-4">
-        <Stat label="Days detained" value={totals.daysDetained.toLocaleString()} />
+        <Stat label="Days detained" value={totals.daysArrestToPardon.toLocaleString()} />
         <Stat label="Years of liberty lost" value={String(years)} />
         <Stat label="Facilities cycled" value={String(totals.facilities)} />
         <Stat label="Grievances filed" value={String(totals.grievances)} />

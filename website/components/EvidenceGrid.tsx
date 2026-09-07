@@ -16,7 +16,7 @@ const ROLE_LABEL: Record<CaseAuthorRole, string> = {
 };
 
 const ROLE_CLASS: Record<CaseAuthorRole, string> = {
-  ryan: "bg-[var(--color-accent-soft)] text-[var(--color-accent)] border-[var(--color-accent)]",
+  ryan: "bg-[var(--color-blue-soft)] text-[var(--color-navy)] border-[var(--color-navy)]",
   co_detainee: "bg-amber-900/30 text-amber-200 border-amber-700",
   attorney: "bg-blue-900/30 text-blue-200 border-blue-700",
   court: "bg-purple-900/30 text-purple-200 border-purple-700",
@@ -142,7 +142,7 @@ function SeriesCard({ series }: { series: DocSeries }) {
       <article className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] overflow-hidden">
         <div className="px-4 pt-3 pb-2 flex items-baseline justify-between gap-3 flex-wrap">
           <div className="min-w-0 flex-1">
-            <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent)] font-bold">
+            <p className="text-[10px] uppercase tracking-wider text-[var(--color-navy)] font-bold">
               {video.platformLabel} · video
               {lead.document_date ? (
                 <> · {format(new Date(lead.document_date), "MMM d, yyyy")}</>
@@ -154,7 +154,7 @@ function SeriesCard({ series }: { series: DocSeries }) {
           </div>
           <Link
             href={`/case/documents/${lead.slug}`}
-            className="text-xs font-semibold text-[var(--color-accent)] hover:underline whitespace-nowrap"
+            className="text-xs font-semibold text-[var(--color-navy)] hover:underline whitespace-nowrap"
           >
             Share & discuss →
           </Link>
@@ -208,7 +208,7 @@ function SeriesCard({ series }: { series: DocSeries }) {
         )}
       </Link>
       <div className="min-w-0 flex-1 p-4">
-        <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent)] font-bold">
+        <p className="text-[10px] uppercase tracking-wider text-[var(--color-navy)] font-bold">
           {lead.doc_type}
           {lead.document_date ? (
             <> · {format(new Date(lead.document_date), "MMM d, yyyy")}</>
@@ -274,7 +274,7 @@ function VideoEmbedBlock({ video, title }: { video: VideoEmbed; title: string })
           href={video.watchUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[var(--color-accent)] font-semibold hover:underline"
+          className="text-[var(--color-navy)] font-semibold hover:underline"
         >
           Open on {video.platformLabel} →
         </a>

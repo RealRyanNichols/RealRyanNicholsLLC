@@ -56,7 +56,11 @@ export function ReactionBar({
   targetId,
   seed,
   prompt = "Tap how this hits you — no signup, everyone sees the count",
+  tone = "accent",
 }: {
+  // "accent" keeps the flag-red count and active state used site-wide;
+  // "navy" is for pages that allow red on one element only (/case).
+  tone?: "accent" | "navy";
   targetType: ReactionTargetType;
   targetId: string;
   seed?: Payload;
@@ -131,7 +135,12 @@ export function ReactionBar({
           {prompt}
         </p>
         {total > 0 ? (
-          <span className="text-xs font-mono font-bold text-[var(--color-accent)] tabular-nums whitespace-nowrap">
+          <span
+            className={[
+              "text-xs font-mono font-bold tabular-nums whitespace-nowrap",
+              tone === "navy" ? "text-[var(--color-navy)]" : "text-[var(--color-accent)]",
+            ].join(" ")}
+          >
             {total.toLocaleString()} {total === 1 ? "reaction" : "reactions"}
           </span>
         ) : null}
@@ -150,8 +159,12 @@ export function ReactionBar({
               className={[
                 "inline-flex min-h-11 min-w-11 items-center justify-center gap-1 rounded-full border px-2.5 py-1.5 text-sm transition select-none sm:min-h-0 sm:min-w-0",
                 active
-                  ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent)] font-bold"
-                  : "border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)]",
+                  ? tone === "navy"
+                    ? "border-[var(--color-navy)] bg-[var(--color-blue-soft)] text-[var(--color-navy)] font-bold"
+                    : "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent)] font-bold"
+                  : tone === "navy"
+                    ? "border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink-soft)] hover:border-[var(--color-navy)]"
+                    : "border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)]",
               ].join(" ")}
             >
               <span aria-hidden className="text-base leading-none">{icon}</span>

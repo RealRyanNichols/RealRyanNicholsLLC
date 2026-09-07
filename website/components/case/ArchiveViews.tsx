@@ -19,7 +19,7 @@ function SeverityDots({ severity }: { severity: number }) {
           className={[
             "h-1.5 w-1.5 rounded-full",
             i <= severity
-              ? "bg-[var(--color-accent)]"
+              ? "bg-[var(--color-navy)]"
               : "bg-[var(--color-line)]",
           ].join(" ")}
         />
@@ -83,8 +83,8 @@ export function GrievancesView({ grievances }: { grievances: Awaited<ReturnType<
       {groups.map((act) =>
         act.items.length === 0 ? null : (
           <section key={act.label}>
-            <div className="border-l-2 border-[var(--color-accent)] pl-4 mb-4">
-              <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent)] font-bold">
+            <div className="border-l-2 border-[var(--color-navy)] pl-4 mb-4">
+              <p className="text-[10px] uppercase tracking-wider text-[var(--color-navy)] font-bold">
                 {act.tag}
               </p>
               <h2 className="text-lg sm:text-xl font-bold tracking-tight">{act.label}</h2>
@@ -97,7 +97,7 @@ export function GrievancesView({ grievances }: { grievances: Awaited<ReturnType<
                 <Link
                   key={g.id}
                   href={`/case/grievances/${g.slug}`}
-                  className="block group rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-accent)] transition p-5"
+                  className="block group rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-navy)] transition p-5"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">
@@ -110,7 +110,7 @@ export function GrievancesView({ grievances }: { grievances: Awaited<ReturnType<
                         ) : null}
                       </div>
                       <h3 className="text-lg font-bold tracking-tight">
-                        <span className="text-[var(--color-accent)] mr-2">#{g.display_order}</span>
+                        <span className="text-[var(--color-navy)] mr-2">#{g.display_order}</span>
                         {g.title}
                       </h3>
                       {g.summary ? (
@@ -142,14 +142,14 @@ export function TimelineView({ events }: { events: Awaited<ReturnType<typeof get
       {events.map((e) => (
         <li key={e.id} className="relative pl-8 pb-8 border-l border-[var(--color-line)] last:border-l-0">
           <span
-            className="absolute -left-[7px] top-1 h-3.5 w-3.5 rounded-full bg-[var(--color-accent)] ring-4 ring-[var(--color-paper)]"
+            className="absolute -left-[7px] top-1 h-3.5 w-3.5 rounded-full bg-[var(--color-navy)] ring-4 ring-[var(--color-paper)]"
             aria-hidden
           />
           <Link href={`/case/events/${e.slug}`} className="group block">
-            <time className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+            <time className="text-xs uppercase tracking-wider text-[var(--color-navy)] font-bold">
               {e.event_date ? format(new Date(e.event_date), "MMMM d, yyyy") : "Date pending verification"}
             </time>
-            <h2 className="mt-1 text-lg font-bold tracking-tight group-hover:text-[var(--color-accent)] transition">
+            <h2 className="mt-1 text-lg font-bold tracking-tight group-hover:text-[var(--color-navy)] transition">
               {e.title}
             </h2>
             {e.description ? (
@@ -167,64 +167,6 @@ export function TimelineView({ events }: { events: Awaited<ReturnType<typeof get
   );
 }
 
-const PEOPLE_GROUPS: { label: string; match: (agency: string | null) => boolean; lead: string }[] = [
-  {
-    label: "Executive",
-    match: (a) => !!a && /^executive/i.test(a),
-    lead: "The Presidential pardon and the Anti-Weaponization Fund originate here.",
-  },
-  {
-    label: "Judiciary",
-    match: (a) => !!a && /district court/i.test(a),
-    lead: "Federal judges who presided over the case and were the subject of defense motions.",
-  },
-  {
-    label: "Prosecution",
-    match: (a) => !!a && /u\.?s\.? attorney/i.test(a),
-    lead: "Federal prosecutors of record in United States v. Nichols.",
-  },
-  {
-    label: "Defense Counsel",
-    match: (a) => !!a && /private counsel/i.test(a),
-    lead: "Defense attorneys representing Ryan and other January 6 defendants.",
-  },
-  {
-    label: "Capitol Police / MPD (January 6)",
-    match: (a) => !!a && /capitol police|mpd/i.test(a),
-    lead: "Officers from the events at the U.S. Capitol on January 6, 2021 — named in the bodycam discovery record.",
-  },
-  {
-    label: "DC DOC / Detention Staff",
-    match: (a) => !!a && /(dc doc|doc medical|igp)/i.test(a),
-    lead: "Detention staff named in the documented grievances.",
-  },
-  {
-    label: "Rappahannock & Northern Neck",
-    match: (a) => !!a && /(rappahannock|northern neck)/i.test(a),
-    lead: "Staff at the second and third facilities Ryan was moved through after the unannounced September 2022 transfer.",
-  },
-  {
-    label: "U.S. Marshals",
-    match: (a) => !!a && /marshals/i.test(a),
-    lead: "Federal officers tied to specific incidents inside the facilities — including the witness statement acknowledging the IGP is broken.",
-  },
-  {
-    label: "Co-defendants & Fellow Detainees",
-    match: (a) => !!a && /(c-2b|^dc doc$|harkrider|defend|j6 detainee|sibick witness)/i.test(a),
-    lead: "Co-defendants on the indictment and detainees who signed witness statements.",
-  },
-  {
-    label: "January 6 Capitol Crowd",
-    match: (a) => !!a && /january 6 capitol crowd/i.test(a),
-    lead: "Civilian figures from the Capitol events on January 6.",
-  },
-  {
-    label: "Family",
-    match: (a) => !!a && /family/i.test(a),
-    lead: "Family members directly affected.",
-  },
-];
-
 export function DocumentsView({ documents }: { documents: Awaited<ReturnType<typeof getDocuments>> }) {
   // The archive is visual — nearly every record on file is a scan. Show the
   // paper, not a paragraph about the paper. Fixed 4:3 wells keep every card
@@ -236,7 +178,7 @@ export function DocumentsView({ documents }: { documents: Awaited<ReturnType<typ
         <Link
           key={d.id}
           href={`/case/documents/${d.slug}`}
-          className="group flex flex-col overflow-hidden rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] transition hover:border-[var(--color-accent)] hover:shadow-md"
+          className="group flex flex-col overflow-hidden rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] transition hover:border-[var(--color-navy)] hover:shadow-md"
         >
           <div className="relative aspect-[4/3] w-full overflow-hidden">
             {/* The plate always renders underneath. If the scan is missing or
@@ -266,7 +208,7 @@ export function DocumentsView({ documents }: { documents: Awaited<ReturnType<typ
 
           <div className="flex flex-1 flex-col p-3.5">
             {d.document_date ? (
-              <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--color-accent)]">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--color-navy)]">
                 {format(new Date(d.document_date), "MMM d, yyyy")}
               </p>
             ) : null}

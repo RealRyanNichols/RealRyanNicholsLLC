@@ -130,20 +130,18 @@ export default async function CasePage({
         getPublishedPosts(),
         getJ6DefendantCount(),
       ]);
+      // The hero (the day count) is this page's h1; the path split follows
+      // the four stat cards as the return rail, without its own headline.
       return (
-        <>
-          <div className="mx-auto max-w-5xl px-4 pt-10">
-            {/* h2 here: the profile below carries this page's h1. */}
-            <J6PathSplit active="ryan" headline="h2" />
-          </div>
-          <RyanCaseProfile
-            person={ryan}
-            evidence={evidence}
-            totals={totals}
-            posts={posts}
-            url={`${SITE.url}/case`}
-          />
-        </>
+        <RyanCaseProfile
+          person={ryan}
+          evidence={evidence}
+          totals={totals}
+          posts={posts}
+          url={`${SITE.url}/case`}
+          variant="case"
+          rail={<J6PathSplit active="ryan" />}
+        />
       );
     }
   }
@@ -204,7 +202,7 @@ export default async function CasePage({
                     ? "/case?view=people"
                     : `/case?view=people&filter=${j6Filter}`
                 }
-                className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-4 text-sm font-bold text-[var(--color-ink-soft)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-4 text-sm font-bold text-[var(--color-ink-soft)] hover:border-[var(--color-navy)] hover:text-[var(--color-navy)]"
               >
                 Clear
               </Link>
@@ -326,7 +324,7 @@ export default async function CasePage({
         {/* One unified stat block — the four headline numbers, then the four
             secondary ones, adjacent. No buttons splitting them apart. */}
         <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl">
-          <BigStat label="Days detained" value={totals.daysDetained.toLocaleString()} />
+          <BigStat label="Days, arrest to pardon" value={totals.daysArrestToPardon.toLocaleString()} />
           <BigStat label="Grievances filed" value={String(totals.grievances)} />
           <BigStat label="Documents on file" value={String(totals.documents)} />
           <BigStat label="Co-detainees corroborating" value={String(totals.corroborators)} />
@@ -351,13 +349,13 @@ export default async function CasePage({
           </Link>
           <Link
             href="/case/damages"
-            className="inline-flex min-h-11 items-center rounded-full border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-5 py-2.5 text-sm font-bold text-[var(--color-accent)] hover:opacity-90"
+            className="inline-flex min-h-11 items-center rounded-full border border-[var(--color-navy)] bg-[var(--color-blue-soft)]/60 px-5 py-2.5 text-sm font-bold text-[var(--color-navy)] hover:opacity-90"
           >
             What it cost him — Damages →
           </Link>
           <Link
             href="/case/witnesses"
-            className="inline-flex min-h-11 items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-5 py-2.5 text-sm font-bold text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="inline-flex min-h-11 items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-5 py-2.5 text-sm font-bold text-[var(--color-ink)] hover:border-[var(--color-navy)] hover:text-[var(--color-navy)]"
           >
             Wall of Corroborators →
           </Link>
@@ -369,7 +367,7 @@ export default async function CasePage({
         {ryan ? (
           <Link
             href="/case/people/ryan-nichols"
-            className="mt-6 block overflow-hidden rounded-2xl border-2 border-[var(--color-ink)] bg-[var(--color-surface)] hover:border-[var(--color-accent)] transition group"
+            className="mt-6 block overflow-hidden rounded-2xl border-2 border-[var(--color-ink)] bg-[var(--color-surface)] hover:border-[var(--color-navy)] transition group"
           >
             <div className="flex flex-col sm:flex-row">
               {ryanPhoto ? (
@@ -381,7 +379,7 @@ export default async function CasePage({
                 />
               ) : null}
               <div className="flex-1 p-5 sm:p-6">
-                <p className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--color-accent)]">
+                <p className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--color-navy)]">
                   The lead case · ✓ verified
                 </p>
                 <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
@@ -407,7 +405,7 @@ export default async function CasePage({
                   The case this whole archive was built on. Every filing, every named
                   official, every document — the full record is on my file.
                 </p>
-                <span className="mt-3 inline-block text-sm font-bold text-[var(--color-accent)] group-hover:underline">
+                <span className="mt-3 inline-block text-sm font-bold text-[var(--color-navy)] group-hover:underline">
                   Read my full case file →
                 </span>
               </div>
@@ -419,7 +417,7 @@ export default async function CasePage({
             split above is the door to the archive; this banner carries the
             unclaimed-profile count (public-record count from lib/case.ts). */}
         <div className="mt-6">
-          <J6Banner />
+          <J6Banner tone="navy" />
         </div>
 
         {/* The book. /case is by far the highest-traffic page on the site —
@@ -429,13 +427,13 @@ export default async function CasePage({
             the same BookCtaBand already used on home, /support, /impact,
             /tools and every post, so the archive keeps its voice and the
             reader gets a door. */}
-        <BookCtaBand className="mt-8" />
+        <BookCtaBand className="mt-8" tone="case" />
 
         <p className="mt-3 text-xs text-[var(--color-muted)]">
           How this archive sources, labels, and corrects what it publishes —{" "}
           <Link
             href="/editorial-standards"
-            className="font-bold text-[var(--color-accent)] hover:underline"
+            className="font-bold text-[var(--color-navy)] hover:underline"
           >
             editorial standards →
           </Link>
@@ -507,7 +505,7 @@ export default async function CasePage({
           {q ? (
             <Link
               href={`/case${tab === "grievances" ? "" : `?view=${tab}`}`}
-              className="inline-flex items-center justify-center rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm font-medium text-[var(--color-ink-soft)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+              className="inline-flex items-center justify-center rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm font-medium text-[var(--color-ink-soft)] hover:border-[var(--color-navy)] hover:text-[var(--color-navy)]"
             >
               Clear
             </Link>
@@ -541,7 +539,7 @@ export default async function CasePage({
         <div className="mb-1 flex items-center gap-2">
           <Link
             href="/case/officials"
-            className="inline-flex min-h-11 items-center gap-1.5 rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-3.5 py-1.5 text-xs font-bold text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-paper)] transition sm:min-h-0"
+            className="inline-flex min-h-11 items-center gap-1.5 rounded-full border-2 border-[var(--color-navy)] bg-[var(--color-blue-soft)]/60 px-3.5 py-1.5 text-xs font-bold text-[var(--color-navy)] hover:bg-[var(--color-navy)] hover:text-[var(--color-paper)] transition sm:min-h-0"
           >
             Who&apos;s named
             <span aria-hidden>→</span>
@@ -573,7 +571,7 @@ export default async function CasePage({
 function BigStat({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
-      <div className="text-3xl sm:text-4xl font-bold tracking-tight leading-none text-[var(--color-accent)]">
+      <div className="text-3xl sm:text-4xl font-bold tracking-tight leading-none text-[var(--color-navy)]">
         {value}
       </div>
       <div className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold mt-2">
@@ -738,7 +736,7 @@ function TabLink({
       className={[
         "inline-flex min-h-11 items-center px-4 py-2.5 -mb-px border-b-2 text-sm font-semibold transition sm:min-h-0",
         active
-          ? "border-[var(--color-accent)] text-[var(--color-ink)]"
+          ? "border-[var(--color-navy)] text-[var(--color-ink)]"
           : "border-transparent text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]",
       ].join(" ")}
     >
@@ -853,7 +851,7 @@ function PeopleView({
       {groups.map((group) =>
         group.items.length === 0 ? null : (
           <section key={group.label}>
-            <div className="border-l-2 border-[var(--color-accent)] pl-4 mb-4">
+            <div className="border-l-2 border-[var(--color-navy)] pl-4 mb-4">
               <h2 className="text-lg sm:text-xl font-bold tracking-tight">{group.label}</h2>
               <p className="text-sm text-[var(--color-ink-soft)] mt-1 max-w-2xl leading-relaxed">
                 {group.lead}
@@ -864,10 +862,10 @@ function PeopleView({
                 <Link
                   key={p.id}
                   href={`/case/people/${p.slug}`}
-                  className="block rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 hover:border-[var(--color-accent)] transition"
+                  className="block rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 hover:border-[var(--color-navy)] transition"
                 >
                   <h3 className="text-lg font-bold tracking-tight">{p.name}</h3>
-                  <p className="text-sm text-[var(--color-accent)] font-medium mt-0.5">
+                  <p className="text-sm text-[var(--color-navy)] font-medium mt-0.5">
                     {p.role}
                     {p.agency ? ` · ${p.agency}` : ""}
                   </p>
@@ -892,10 +890,10 @@ function PeopleView({
               <Link
                 key={p.id}
                 href={`/case/people/${p.slug}`}
-                className="block rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 hover:border-[var(--color-accent)] transition"
+                className="block rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 hover:border-[var(--color-navy)] transition"
               >
                 <h3 className="text-lg font-bold tracking-tight">{p.name}</h3>
-                <p className="text-sm text-[var(--color-accent)] font-medium mt-0.5">
+                <p className="text-sm text-[var(--color-navy)] font-medium mt-0.5">
                   {p.role}
                   {p.agency ? ` · ${p.agency}` : ""}
                 </p>
@@ -953,7 +951,7 @@ function J6DefendantsView({
       <div className="mb-5 overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)]">
         <div className="grid gap-px bg-[var(--color-line)] md:grid-cols-[1fr_0.8fr]">
           <div className="bg-[var(--color-surface)] p-5">
-            <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+            <p className="text-xs uppercase tracking-wider text-[var(--color-navy)] font-bold">
               Anti-Weaponization Case Builder
             </p>
             <h2 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight">
@@ -996,8 +994,8 @@ function J6DefendantsView({
               className={[
                 "inline-flex min-h-11 items-center rounded-full px-3 py-1.5 text-xs font-bold border-2 transition sm:min-h-0",
                 active
-                  ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)]"
-                  : "border-[var(--color-line)] hover:border-[var(--color-accent)]",
+                  ? "border-[var(--color-navy)] bg-[var(--color-navy)] text-[var(--color-paper)]"
+                  : "border-[var(--color-line)] hover:border-[var(--color-navy)]",
               ].join(" ")}
             >
               {label}
@@ -1124,7 +1122,7 @@ function PaginationControls({
           "inline-flex min-h-11 items-center rounded-lg border px-3 text-xs font-black uppercase",
           page <= 1
             ? "pointer-events-none border-[var(--color-line)] text-[var(--color-muted)] opacity-50"
-            : "border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]",
+            : "border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink)] hover:border-[var(--color-navy)] hover:text-[var(--color-navy)]",
         ].join(" ")}
       >
         Previous
@@ -1139,7 +1137,7 @@ function PaginationControls({
           "inline-flex min-h-11 items-center rounded-lg border px-3 text-xs font-black uppercase",
           page >= pageCount
             ? "pointer-events-none border-[var(--color-line)] text-[var(--color-muted)] opacity-50"
-            : "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-paper)]",
+            : "border-[var(--color-navy)] bg-[var(--color-blue-soft)]/60 text-[var(--color-navy)] hover:bg-[var(--color-navy)] hover:text-[var(--color-paper)]",
         ].join(" ")}
       >
         Next
@@ -1165,16 +1163,16 @@ function HubCard({
       className={[
         "block rounded-2xl border-2 p-4 transition group",
         featured
-          ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)]"
-          : "border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-accent)]",
+          ? "border-[var(--color-navy)] bg-[var(--color-blue-soft)]/60"
+          : "border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-navy)]",
       ].join(" ")}
     >
       <p
         className={[
           "text-sm font-bold tracking-tight",
           featured
-            ? "text-[var(--color-accent)]"
-            : "text-[var(--color-ink)] group-hover:text-[var(--color-accent)]",
+            ? "text-[var(--color-navy)]"
+            : "text-[var(--color-ink)] group-hover:text-[var(--color-navy)]",
         ].join(" ")}
       >
         {title} <span aria-hidden>→</span>

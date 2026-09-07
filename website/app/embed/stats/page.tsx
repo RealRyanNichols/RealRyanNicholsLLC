@@ -13,13 +13,13 @@ export const revalidate = 3600;
 // header set; every number links back to the archive.
 
 export default async function StatsEmbedPage() {
-  let totals = { documents: 0, ryanFiledGrievances: 0, daysDetained: 0, people: 0 };
+  let totals = { documents: 0, ryanFiledGrievances: 0, daysArrestToPardon: 0, people: 0 };
   try {
     const t = await getCaseTotals();
     totals = {
       documents: t.documents ?? 0,
       ryanFiledGrievances: t.ryanFiledGrievances ?? 0,
-      daysDetained: t.daysDetained ?? 0,
+      daysArrestToPardon: t.daysArrestToPardon ?? 0,
       people: t.people ?? 0,
     };
   } catch {
@@ -30,7 +30,7 @@ export default async function StatsEmbedPage() {
     [totals.people, "People indexed"],
     [totals.documents, "Documents on file"],
     [totals.ryanFiledGrievances, "Grievances filed"],
-    [totals.daysDetained, "Days detained"],
+    [totals.daysArrestToPardon, "Days, arrest to pardon"],
   ];
 
   return (
