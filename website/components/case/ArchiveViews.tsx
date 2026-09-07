@@ -19,7 +19,7 @@ function SeverityDots({ severity }: { severity: number }) {
           className={[
             "h-1.5 w-1.5 rounded-full",
             i <= severity
-              ? "bg-[var(--color-support)]"
+              ? "bg-[var(--color-navy)]"
               : "bg-[var(--color-line)]",
           ].join(" ")}
         />

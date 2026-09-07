@@ -15,7 +15,7 @@ Fighting Shadows again, and the second mention must stay plain text.
 
 {{receipt: {
   "label": "FACT",
-  "claim": "Ryan Nichols was detained 1,463 days and pardoned January 20, 2025.",
+  "claim": "Ryan Nichols: 1,463 days from arrest to pardon, January 20, 2025.",
   "source": "Judgment, 1:21-cr-00117 (D.D.C.)",
   "url": "https://www.courtlistener.com/docket/59293148/united-states-v-nichols/",
   "exhibit_id": "EX-TEST-01",
@@ -32,7 +32,7 @@ Fighting Shadows again, and the second mention must stay plain text.
 
 {{chart: {
   "type": "bar",
-  "title": "Days detained by phase",
+  "title": "Days, arrest to pardon, by phase",
   "caption": "Detention phases of United States v. Nichols.",
   "source": "Court record, 1:21-cr-00117",
   "data": [

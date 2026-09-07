@@ -52,7 +52,7 @@ export function BookCtaBand({
                 className={[
                   "ml-2 inline-block rounded px-1.5 py-0.5 align-middle text-xs font-black",
                   gold
-                    ? "bg-[var(--color-gold-bright)] text-[#071126]"
+                    ? "bg-[var(--color-gold-bright)] text-[var(--color-navy)]"
                     : "bg-[var(--color-accent)] text-[var(--color-paper)]",
                 ].join(" ")}
               >
@@ -71,7 +71,7 @@ export function BookCtaBand({
             className={[
               "inline-flex min-h-12 items-center justify-center rounded-lg px-6 py-3 text-base font-black transition",
               gold
-                ? "bg-[var(--color-gold-bright)] text-[#071126] hover:bg-[var(--color-gold-light)]"
+                ? "bg-[var(--color-gold-bright)] text-[var(--color-navy)] hover:bg-[var(--color-gold-light)]"
                 : "bg-[var(--color-accent)] text-[var(--color-paper)] hover:bg-[var(--color-accent-strong)]",
             ].join(" ")}
           >

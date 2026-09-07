@@ -233,6 +233,7 @@ export function RyanCaseProfile({
           title={`${person.name} — United States v. Nichols. Pardoned, charges dismissed with prejudice. The full record:`}
           slug={person.slug}
           caseKind="person"
+          tone="navy"
         />
       </div>
       <div className="mt-3">
@@ -737,6 +738,7 @@ export function RyanCaseProfile({
             slug={person.slug}
             caseKind="person"
             compact
+            tone="navy"
           />
         </div>
       </section>
@@ -836,9 +838,10 @@ export function RyanCaseProfile({
         </div>
       </section>
 
-      {/* Attorney briefing — below the story now. Counsel jumps straight
-          here via the chip under the breadcrumb; strangers get the human
-          story first. Same public-facts-only content as before. */}
+      {/* Attorney briefing — below the story. Counsel jumps straight here
+          via the hero's secondary link ("Counsel evaluating this case, start
+          here"); strangers get the human story first. Same public-facts-only
+          content as before. */}
       <div id="attorney-briefing" className="scroll-mt-24">
         <AttorneyBriefing />
       </div>
@@ -988,6 +991,7 @@ export function RyanCaseProfile({
               title={`${person.name} — pardoned January 6 defendant, charges dismissed with prejudice. The full record:`}
               slug={person.slug}
               caseKind="person"
+              tone="navy"
             />
           </div>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-xs text-[var(--color-muted)]">

@@ -19,7 +19,10 @@ export function CaseHero({
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
           <p className="text-[11px] font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
-            United States v. Nichols · {person.name}
+            Verified subject · United States v. Nichols
+          </p>
+          <p className="mt-1 font-display text-2xl font-bold leading-tight tracking-tight text-[var(--color-paper)] sm:text-3xl">
+            {person.name}
           </p>
           <p className="mt-1 text-xs font-semibold leading-snug text-[var(--color-paper)]/70 sm:text-sm">
             {roleLine}
@@ -30,7 +33,7 @@ export function CaseHero({
           <img
             src={person.photo_url}
             alt={person.name}
-            className="h-16 w-16 shrink-0 rounded-2xl border-2 border-[var(--color-gold-bright)] object-cover sm:h-24 sm:w-24"
+            className="h-24 w-24 shrink-0 rounded-2xl border-2 border-[var(--color-gold-bright)] object-cover sm:h-36 sm:w-36"
           />
         ) : null}
       </div>
@@ -55,13 +58,13 @@ export function CaseHero({
           href="#chapter-one"
           className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)]"
         >
-          Read the record ↓
+          Read the record <span aria-hidden>↓</span>
         </a>
         <a
           href="#attorney-briefing"
           className="inline-flex min-h-11 items-center text-sm font-bold text-[var(--color-gold-bright)] underline-offset-4 hover:underline sm:min-h-0"
         >
-          Counsel evaluating this case, start here →
+          Counsel evaluating this case, start here <span aria-hidden>→</span>
         </a>
       </div>
     </header>

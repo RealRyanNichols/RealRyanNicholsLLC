@@ -220,7 +220,7 @@ function SeverityDots({ severity }: { severity: number }) {
           key={i}
           className={[
             "h-1.5 w-1.5 rounded-full",
-            i <= severity ? "bg-[var(--color-accent)]" : "bg-[var(--color-line)]",
+            i <= severity ? "bg-[var(--color-navy)]" : "bg-[var(--color-line)]",
           ].join(" ")}
         />
       ))}
