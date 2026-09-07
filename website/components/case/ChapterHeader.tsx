@@ -3,16 +3,26 @@ import type { ReactNode } from "react";
 // The one eyebrow every section of the case page uses: 11px, uppercase,
 // tracked, navy. Before this there were a dozen hand-copied versions of the
 // same three classes across the page; change it here, it changes everywhere.
+const EYEBROW_TONE = {
+  navy: "text-[var(--color-navy)]",
+  // The blue cards (recognition, attorney briefing) carry blue ink.
+  blue: "text-[var(--color-blue)]",
+  // On the navy bands: the muted steel the site has always used there.
+  cream: "text-[#8194b4]",
+} as const;
+
 export function Eyebrow({
   children,
+  tone = "navy",
   className = "",
 }: {
   children: ReactNode;
+  tone?: keyof typeof EYEBROW_TONE;
   className?: string;
 }) {
   return (
     <p
-      className={`text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--color-navy)] ${className}`}
+      className={`text-[11px] font-bold uppercase tracking-[0.2em] ${EYEBROW_TONE[tone]} ${className}`}
     >
       {children}
     </p>

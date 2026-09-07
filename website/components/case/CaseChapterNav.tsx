@@ -19,7 +19,15 @@ function label(c: (typeof CASE_CHAPTERS)[number]): string {
   return c.n ? `${CHAPTER_ORDINAL[c.n]} · ${c.short}` : c.short;
 }
 
-export function CaseChapterNav({ variant }: { variant: "rail" | "chips" }) {
+export function CaseChapterNav({
+  variant,
+  chapters = CASE_CHAPTERS,
+}: {
+  variant: "rail" | "chips";
+  // The page passes the stops it actually rendered, so the nav never links
+  // to a section that is not on the page (Chapter Four is conditional).
+  chapters?: readonly (typeof CASE_CHAPTERS)[number][];
+}) {
   const [current, setCurrent] = useState<string | null>(null);
   const scroller = useRef<HTMLElement | null>(null);
 
@@ -28,7 +36,7 @@ export function CaseChapterNav({ variant }: { variant: "rail" | "chips" }) {
     const update = () => {
       raf = 0;
       let active: string | null = null;
-      for (const c of CASE_CHAPTERS) {
+      for (const c of chapters) {
         const el = document.getElementById(c.id);
         if (el && el.getBoundingClientRect().top <= READING_LINE) active = c.id;
       }
@@ -45,14 +53,18 @@ export function CaseChapterNav({ variant }: { variant: "rail" | "chips" }) {
       window.removeEventListener("resize", onScroll);
       if (raf) window.cancelAnimationFrame(raf);
     };
-  }, []);
+  }, [chapters]);
 
   // Keep the active chip in view — scroll the row only, never the page.
   useEffect(() => {
     if (variant !== "chips" || !current || !scroller.current) return;
     const chip = scroller.current.querySelector<HTMLElement>(`[data-chip="${current}"]`);
     if (!chip) return;
-    scroller.current.scrollTo({ left: Math.max(0, chip.offsetLeft - 16), behavior: "smooth" });
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    scroller.current.scrollTo({
+      left: Math.max(0, chip.offsetLeft - 16),
+      behavior: reduce ? "auto" : "smooth",
+    });
   }, [current, variant]);
 
   if (variant === "rail") {
@@ -62,7 +74,7 @@ export function CaseChapterNav({ variant }: { variant: "rail" | "chips" }) {
           The chapters
         </p>
         <ol className="mt-3 border-l-2 border-[var(--color-line)]">
-          {CASE_CHAPTERS.map((c) => {
+          {chapters.map((c) => {
             const active = current === c.id;
             return (
               <li key={c.id}>
@@ -90,10 +102,10 @@ export function CaseChapterNav({ variant }: { variant: "rail" | "chips" }) {
     <nav
       ref={scroller}
       aria-label="Chapters"
-      className="-mx-4 overflow-x-auto px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      className="relative -mx-4 overflow-x-auto px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
     >
       <ol className="flex w-max gap-2 py-1">
-        {CASE_CHAPTERS.map((c) => {
+        {chapters.map((c) => {
           const active = current === c.id;
           return (
             <li key={c.id}>
