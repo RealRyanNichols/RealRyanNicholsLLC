@@ -169,10 +169,11 @@ export type J6PeoplePage = {
 };
 
 // The people directory's query, as the database sees it: PostgREST filter
-// punctuation stripped, whitespace collapsed. Exported so the directory
-// marks its results with the same needle it filtered them with.
+// punctuation and the ILIKE wildcards (% and _) stripped, whitespace
+// collapsed. Exported so the directory marks its results with the same
+// needle it filtered them with, and so the two mean the same thing.
 export function cleanCaseSearch(q: string): string {
-  return q.replace(/[,%()]/g, " ").replace(/\s+/g, " ").trim();
+  return q.replace(/[,%()_]/g, " ").replace(/\s+/g, " ").trim();
 }
 
 export async function getJ6PeoplePage({

@@ -1,27 +1,43 @@
 import type { ReactNode } from "react";
 
 // Case-insensitive text matching for the search views, with offsets that
-// stay true to the original string. A plain toLowerCase() can change a
-// string's length (İ becomes i̇), which would put a mark on the wrong
-// characters; folding one character at a time and keeping any character
-// whose lowercase form has a different length keeps every index aligned.
-function fold(s: string): string {
-  let out = "";
+// stay true to the original string. The text is lowercased one character
+// at a time and every folded character remembers where it came from, so
+// a character whose lowercase form expands (İ becomes i̇) still matches
+// its lowercase form, the way the archive's filter compares, and still
+// marks the original character.
+type Folded = { text: string; starts: number[]; ends: number[] };
+
+function fold(s: string): Folded {
+  let text = "";
+  const starts: number[] = [];
+  const ends: number[] = [];
+  let at = 0;
   for (const ch of s) {
     const low = ch.toLowerCase();
-    out += low.length === ch.length ? low : ch;
+    for (let k = 0; k < low.length; k++) {
+      starts.push(at);
+      ends.push(at + ch.length);
+    }
+    text += low;
+    at += ch.length;
   }
-  return out;
+  return { text, starts, ends };
 }
 
-// Every [start, end) span of the query in the text, non-overlapping.
+// Every [start, end) span of the query in the text, in the text's own
+// offsets, non-overlapping.
 function spans(text: string, q: string): [number, number][] {
-  const needle = fold(q.trim());
+  const needle = q.trim().toLowerCase();
   if (!needle) return [];
   const hay = fold(text);
   const found: [number, number][] = [];
-  for (let at = hay.indexOf(needle); at !== -1; at = hay.indexOf(needle, at + needle.length)) {
-    found.push([at, at + needle.length]);
+  for (
+    let at = hay.text.indexOf(needle);
+    at !== -1;
+    at = hay.text.indexOf(needle, at + needle.length)
+  ) {
+    found.push([hay.starts[at], hay.ends[at + needle.length - 1]]);
   }
   return found;
 }
@@ -33,7 +49,8 @@ export function matchesText(text: string | null | undefined, q: string): boolean
 }
 
 // A window of text around the first occurrence, for a match that lives in
-// a field the card does not otherwise show (a grievance's body).
+// a field the card does not otherwise show (a grievance's body) or past
+// the part it clamps (a document's description).
 export function excerptAround(
   text: string | null | undefined,
   q: string,
@@ -66,6 +83,7 @@ export function Highlight({
   const parts: ReactNode[] = [];
   let from = 0;
   for (const [start, end] of found) {
+    if (start < from) continue;
     if (start > from) parts.push(text.slice(from, start));
     parts.push(
       <mark
