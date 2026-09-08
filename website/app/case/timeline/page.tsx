@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
+import { getPublicJ6Slugs } from "@/lib/case";
 import { getOgImage } from "@/lib/og-images";
 import { SITE } from "@/lib/site";
 import { CaseTimeline, type TimelinePayload } from "@/components/CaseTimeline";
@@ -51,11 +52,21 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function CaseTimelinePage() {
   const supabase = getSupabaseStaticClient();
-  const { data } = await supabase.rpc("case_timeline_data");
-  const payload: TimelinePayload = (data as TimelinePayload | null) ?? {
+  const [{ data }, publicSlugs] = await Promise.all([
+    supabase.rpc("case_timeline_data"),
+    getPublicJ6Slugs(),
+  ]);
+  const raw: TimelinePayload = (data as TimelinePayload | null) ?? {
     rows: [],
     histograms: { sentencings: [], arrests: [] },
     totals: { all_j6: 0, with_arrest: 0, with_plea: 0, with_sentence: 0 },
+  };
+  // The RPC returns every defendant it knows; only public profiles get a
+  // row here, so no card links to a page that would 404. The histograms and
+  // totals stay the RPC's aggregate numbers.
+  const payload: TimelinePayload = {
+    ...raw,
+    rows: raw.rows.filter((r) => publicSlugs.has(r.slug)),
   };
 
   return (

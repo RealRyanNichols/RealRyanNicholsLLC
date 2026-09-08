@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import { J6Banner } from "@/components/J6Banner";
 import {
@@ -276,6 +277,11 @@ export default async function CasePage({
     getCaseTotals(),
     getSiteSettings(),
     getJ6DefendantCount(),
+    // J6Banner's own number. Warmed here so the banner, an async server
+    // component in the middle of the header, never suspends during SSR: a
+    // banner that suspended got its own late boundary, and hydrating that
+    // boundary was the intermittent React #418 on the archive views.
+    getJ6DefendantCount("unclaimed"),
   ]);
   const ryan = people.find((p) => p.slug === "ryan-nichols") ?? null;
   const ryanPhoto = siteSettings.avatar_url ?? null;
@@ -313,6 +319,24 @@ export default async function CasePage({
       filteredEvents.length +
       filteredDocuments.length
     : 0;
+
+  // The timeline and the documents views page their lists. Unpaged, the
+  // documents view was a 7.6 MB HTML document (every scan on the record in
+  // one response) and the timeline 1.5 MB: unreadable on a phone and the
+  // pages where React's hydration raced the parser. 48 per page, the same
+  // size as the people directory; the grievances view (34 patterns) stays
+  // whole.
+  const archiveList =
+    tab === "documents" ? filteredDocuments : tab === "timeline" ? filteredEvents : [];
+  const archivePageCount = Math.max(1, Math.ceil(archiveList.length / ARCHIVE_PAGE_SIZE));
+  const archivePage = Math.min(page, archivePageCount);
+  const archiveFrom = (archivePage - 1) * ARCHIVE_PAGE_SIZE;
+  const pageEvents = filteredEvents.slice(archiveFrom, archiveFrom + ARCHIVE_PAGE_SIZE);
+  const pageDocuments = filteredDocuments.slice(archiveFrom, archiveFrom + ARCHIVE_PAGE_SIZE);
+  const archiveShowing =
+    archiveList.length === 0
+      ? null
+      : `${(archiveFrom + 1).toLocaleString("en-US")}–${Math.min(archiveFrom + ARCHIVE_PAGE_SIZE, archiveList.length).toLocaleString("en-US")} of ${archiveList.length.toLocaleString("en-US")}`;
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
@@ -418,7 +442,11 @@ export default async function CasePage({
             split above is the door to the archive; this banner carries the
             unclaimed-profile count (public-record count from lib/case.ts). */}
         <div className="mt-6">
-          <J6Banner tone="navy" />
+          {/* Belt and braces: if the count ever does suspend, it suspends
+              inside a real boundary that hydrates cleanly. */}
+          <Suspense fallback={null}>
+            <J6Banner tone="navy" />
+          </Suspense>
         </div>
 
         {/* The book. /case is by far the highest-traffic page on the site —
@@ -448,7 +476,7 @@ export default async function CasePage({
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             <HubCard
-              href="/evidence-the-doj-tried-to-erase"
+              href="/case/the-salvaged-doj-record"
               title="Evidence the DOJ Tried to Erase"
               sub="The scrubbed federal record — preserved and hash-verified."
               featured
@@ -557,17 +585,34 @@ export default async function CasePage({
       </div>
 
       {tab === "grievances" && <GrievancesView grievances={filteredGrievances} />}
-      {tab === "timeline" && <TimelineView events={filteredEvents} />}
+      {tab === "timeline" && <TimelineView events={pageEvents} />}
       {/* Unreachable: the people view returns from shouldRenderJ6Directory
           above. PeopleView and PEOPLE_GROUPS below are dead with it and come
           out when this file is split into components/case/. */}
       {tab === "people" && (
         <PeopleView people={filteredPeople} j6Filter={j6Filter} q={q} />
       )}
-      {tab === "documents" && <DocumentsView documents={filteredDocuments} />}
+      {tab === "documents" && <DocumentsView documents={pageDocuments} />}
+      {(tab === "timeline" || tab === "documents") && archivePageCount > 1 ? (
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--color-line)] pt-5">
+          <p className="text-sm text-[var(--color-muted)]">
+            Showing {archiveShowing} {tab === "documents" ? "documents" : "events"}
+          </p>
+          <PaginationControls
+            page={archivePage}
+            pageCount={archivePageCount}
+            view={tab}
+            q={q}
+            label={tab === "documents" ? "Document pages" : "Timeline pages"}
+          />
+        </div>
+      ) : null}
     </div>
   );
 }
+
+// Rows per page on the timeline and documents views.
+const ARCHIVE_PAGE_SIZE = 48;
 
 function BigStat({ label, value }: { label: string; value: string }) {
   return (
@@ -1013,8 +1058,10 @@ function J6DefendantsView({
         <PaginationControls
           page={page}
           pageCount={pageCount}
+          view="people"
           j6Filter={j6Filter}
           q={q}
+          label="J6 profile pages"
         />
       </div>
 
@@ -1087,8 +1134,10 @@ function J6DefendantsView({
           <PaginationControls
             page={page}
             pageCount={pageCount}
+            view="people"
             j6Filter={j6Filter}
             q={q}
+            label="J6 profile pages"
           />
         </div>
       ) : null}
@@ -1099,23 +1148,27 @@ function J6DefendantsView({
 function PaginationControls({
   page,
   pageCount,
-  j6Filter,
+  view,
+  j6Filter = "all",
   q,
+  label = "Pages",
 }: {
   page: number;
   pageCount: number;
-  j6Filter: "all" | "unclaimed" | "verified" | "pending";
+  view: Tab;
+  j6Filter?: "all" | "unclaimed" | "verified" | "pending";
   q: string;
+  label?: string;
 }) {
   const hrefFor = (nextPage: number) => {
-    const params = new URLSearchParams({ view: "people", page: String(nextPage) });
+    const params = new URLSearchParams({ view, page: String(nextPage) });
     if (j6Filter !== "all") params.set("filter", j6Filter);
     if (q) params.set("q", q);
     return `/case?${params.toString()}`;
   };
 
   return (
-    <nav className="flex items-center gap-2" aria-label="J6 profile pages">
+    <nav className="flex items-center gap-2" aria-label={label}>
       <Link
         href={hrefFor(Math.max(1, page - 1))}
         aria-disabled={page <= 1}

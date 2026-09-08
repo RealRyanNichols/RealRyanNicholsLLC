@@ -5,6 +5,7 @@ import { STORY_CHAPTERS, getStoryChapter } from "@/lib/story";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbLd, personRef, websiteRef } from "@/lib/jsonld";
 import { ShareButton } from "@/components/ShareButton";
+import { CaseReturnRail } from "@/components/case/CaseReturnRail";
 import { SITE } from "@/lib/site";
 
 export const revalidate = 3600;
@@ -70,15 +71,13 @@ export default async function StoryChapterPage({
     <article className="mx-auto max-w-3xl px-4 py-10">
       <JsonLd data={ld} />
 
-      <nav className="mb-4 text-sm text-[var(--color-muted)]">
-        <Link href="/case" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
-          ← The case
-        </Link>{" "}
-        ·{" "}
-        <Link href="/about" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
-          The full record
-        </Link>
-      </nav>
+      {/* The one shared way back: every /story chapter returns to the case
+          through the same rail, top and bottom. */}
+      <CaseReturnRail
+        href="/case#chapter-one"
+        className="mb-6"
+        secondary={{ href: "/about", label: "The full rescue record" }}
+      />
 
       <p className="text-[11px] uppercase tracking-[0.25em] font-bold text-[var(--color-navy)]">
         The rescue record · chapter {idx + 1} of {STORY_CHAPTERS.length}
@@ -146,7 +145,6 @@ export default async function StoryChapterPage({
         {c.media.length > 0 ? (
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             {c.media.map((m) => (
-              // eslint-disable-next-line @next/next/no-img-element
               <figure key={m.src}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -183,7 +181,7 @@ export default async function StoryChapterPage({
         )}
       </section>
 
-      {/* Share + timeline walk */}
+      {/* Share */}
       <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
         <ShareButton
           url={url}
@@ -192,12 +190,6 @@ export default async function StoryChapterPage({
           caseKind="person"
           compact
         />
-        <Link
-          href="/case"
-          className="inline-flex min-h-11 items-center text-sm font-bold text-[var(--color-navy)] hover:underline"
-        >
-          The whole story, start to finish →
-        </Link>
       </div>
 
       <nav className="mt-8 grid gap-3 border-t-2 border-[var(--color-line)] pt-6 sm:grid-cols-2">
@@ -230,6 +222,12 @@ export default async function StoryChapterPage({
           </Link>
         ) : null}
       </nav>
+
+      <CaseReturnRail
+        href="/case#chapter-one"
+        label="Back to the case, start to finish"
+        className="mt-8"
+      />
     </article>
   );
 }

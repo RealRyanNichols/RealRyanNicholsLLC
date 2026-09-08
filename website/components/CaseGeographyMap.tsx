@@ -170,9 +170,10 @@ export function CaseGeographyMap({ data }: { data: GeoPayload }) {
                 }}
                 style={{ cursor: ct > 0 ? "pointer" : "default" }}
               >
-                <title>
-                  {nm}: {ct} defendant{ct === 1 ? "" : "s"}
-                </title>
+                {/* One string child: React hydrates a multi-child <title>
+                    as separate text nodes and the browser's parser merges
+                    them, which is a deterministic hydration mismatch. */}
+                <title>{`${nm}: ${ct} defendant${ct === 1 ? "" : "s"}`}</title>
               </path>
             );
           })}
