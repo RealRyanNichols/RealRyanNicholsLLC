@@ -1,10 +1,23 @@
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
+import localFont from "next/font/local";
 import { SITE } from "@/lib/site";
 import { Suspense } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { SiteEffects } from "@/components/SiteEffects";
+
+// The theater's display face: Big Shoulders Display, the condensed cut Ryan
+// picked for the cover-art standard. Self-hosted (OFL), one variable file,
+// the latin range, ~35 KB. Exposed as --font-story-display, which the
+// --font-condensed theme token and the .display primitive read.
+const condensed = localFont({
+  src: "./the-story/fonts/BigShouldersDisplay-latin.woff2",
+  weight: "700 900",
+  display: "swap",
+  variable: "--font-story-display",
+});
 import { MobileSupportBar } from "@/components/MobileSupportBar";
 import { PathPicker } from "@/components/PathPicker";
 import { RyanChat } from "@/components/RyanChat";
@@ -103,12 +116,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   };
 
   return (
-    <html lang="en">
+    <html lang="en" className={condensed.variable}>
       <body className="min-h-screen flex flex-col">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
+        <SiteEffects />
         <Header />
         <main className="flex-1 w-full pb-[calc(5rem+env(safe-area-inset-bottom))] lg:pb-0">
           {children}
