@@ -12,7 +12,10 @@ import { getPublishedSupporters } from "@/lib/supporters";
 import { getCaseTotals } from "@/lib/case";
 import { SITE } from "@/lib/site";
 import {
+  CODEX_RATES,
   FABLE_RATES,
+  OPENAI_CREDITS,
+  codexUsdPerMTok,
   FUEL_FLOOR_CENTS,
   FUEL_MONTHLY,
   FUEL_TIME_FLOOR_CENTS,
@@ -124,11 +127,14 @@ const MACHINE_DOES = [
 
 // Sticker prices behind the ledger, read off the vendors' own pages on the
 // date below. Update the date when you re-check them; never guess a price.
-const PRICES_CHECKED = "September 7, 2026";
+const PRICES_CHECKED = "September 7 and 8, 2026";
+const CODEX_USD = codexUsdPerMTok();
 const STICKER = [
   "Claude Max: $100 a month for 5x Pro usage, $200 a month for 20x, each with a five-hour session limit and a weekly limit. There is no bigger plan. Past the limits, usage credits at standard API rates.",
   `${FABLE_RATES.model} by the token: $${FABLE_RATES.input} per million in, $${FABLE_RATES.cacheRead} per million cached, $${FABLE_RATES.output} per million out.`,
-  "ChatGPT Pro: $100 a month for 5x Plus usage, $200 for 20x. Past the limit, extra credits, metered by the token.",
+  "ChatGPT Pro: $100 a month for 5x Plus usage, $200 for 20x. Past the limit, credits.",
+  `OpenAI credits, off my own billing screen: ${usdWhole(OPENAI_CREDITS.minBalanceUsd * 100)} is ${OPENAI_CREDITS.minBalanceCredits} credits, four cents a credit. Auto-reload packs of ${OPENAI_CREDITS.packs.map((p) => `${usdWhole(p.usd * 100)} for ${p.credits.toLocaleString("en-US")}`).join(", ")}, badged ${OPENAI_CREDITS.packs.map((p) => p.badge.replace(" off", "")).join(", ")} off. No usage-limit resets on offer.`,
+  `${CODEX_RATES.model} by the credit: ${CODEX_RATES.creditsPerMTok.input} per million tokens in, ${CODEX_RATES.creditsPerMTok.cached} cached, ${CODEX_RATES.creditsPerMTok.output.toLocaleString("en-US")} out. At four cents a credit that is $${CODEX_USD.input} in, $${CODEX_USD.cached} cached, $${CODEX_USD.output} out per million: the same sticker as ${FABLE_RATES.model}.`,
 ];
 
 const MEASURED_DAYS = [
@@ -380,6 +386,18 @@ export default async function FuelPage({
                     ${FABLE_RATES.input} per million tokens in, ${FABLE_RATES.cacheRead} per million cached, ${FABLE_RATES.output} per
                     million out. Read from Anthropic&apos;s pricing page on {FABLE_RATES.checkedOn}. Usage credits are
                     billed at exactly these rates.
+                  </small>
+                </div>
+                <div className="ft-tile">
+                  <em>The other faucet · OpenAI credits</em>
+                  <b>
+                    {usdWhole(OPENAI_CREDITS.minBalanceUsd * 100)} is {OPENAI_CREDITS.minBalanceCredits} credits. {CODEX_RATES.model} burns{" "}
+                    {CODEX_RATES.creditsPerMTok.output.toLocaleString("en-US")} a million tokens out.
+                  </b>
+                  <small>
+                    Four cents a credit, off my own billing screen on {OPENAI_CREDITS.checkedOn}. That makes Codex ${CODEX_USD.input} per
+                    million in, ${CODEX_USD.cached} cached, ${CODEX_USD.output} out: the same sticker as Claude. Both faucets price the
+                    overage the same way, so one arithmetic covers both.
                   </small>
                 </div>
                 <div className="ft-tile">
