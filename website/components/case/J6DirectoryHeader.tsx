@@ -8,7 +8,10 @@ import type { J6Filter } from "@/components/case/archive";
 // CaseSearchForm.tsx, the same one every door on /case uses), and the
 // match line. On a phone the box comes first, so a family member looking
 // for a name types it on the first screen; from sm up the hero leads and
-// the box follows it, as before. CSS order only, so nothing moves on load.
+// the box follows it, as before. The box is first in the DOM, so on a
+// phone what you see, what you tab through, and what a screen reader
+// announces agree; the hero moves ahead of it with CSS from sm up, where
+// the two are side by side in reading order anyway. Nothing moves on load.
 export function J6DirectoryHeader({
   counts,
   j6Filter,
@@ -23,9 +26,7 @@ export function J6DirectoryHeader({
 }) {
   return (
     <header className="mb-10 flex flex-col">
-      <J6DirectoryHero counts={counts} activeFilter={j6Filter} />
-
-      <div className="order-first mb-6 sm:order-none sm:mb-0 sm:mt-6">
+      <div className="mb-6 sm:order-last sm:mb-0 sm:mt-6">
         <CaseSearchForm
           q={q}
           view="people"
@@ -41,6 +42,8 @@ export function J6DirectoryHeader({
           </p>
         ) : null}
       </div>
+
+      <J6DirectoryHero counts={counts} activeFilter={j6Filter} />
     </header>
   );
 }
