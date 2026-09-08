@@ -80,8 +80,8 @@ export default async function FamilyCaseDashboard() {
 
       {/* The one blocking problem */}
       {rejectedOrders.length > 0 ? (
-        <div className="mt-6 rounded-2xl border-l-4 border-red-600 bg-red-50 p-5">
-          <p className="text-[11px] font-black uppercase tracking-[0.18em] text-red-700">
+        <div className="mt-6 rounded-2xl border-l-4 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-5">
+          <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--color-accent)]">
             The bottleneck
           </p>
           <p className="mt-1 font-display text-lg font-bold leading-snug">
@@ -108,10 +108,10 @@ export default async function FamilyCaseDashboard() {
                 className={[
                   "mt-0.5 inline-block rounded px-1.5 py-0.5 text-[10px] font-black uppercase",
                   t.priority === 1
-                    ? "bg-red-100 text-red-700"
+                    ? "bg-[var(--color-accent-soft)] text-[var(--color-tag-severe)]"
                     : t.priority === 2
-                      ? "bg-amber-100 text-amber-800"
-                      : "bg-[var(--color-blue-soft)] text-[var(--color-navy)]",
+                      ? "bg-[var(--color-support-soft)] text-[var(--color-tag-procedural)]"
+                      : "bg-[var(--color-blue-soft)] text-[var(--color-blue-ink)]",
                 ].join(" ")}
               >
                 P{t.priority}
@@ -165,11 +165,11 @@ function Stat({
       className={[
         "rounded-2xl border p-4",
         alert
-          ? "border-red-300 bg-red-50"
+          ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)]"
           : "border-[var(--color-line)] bg-[var(--color-surface)]",
       ].join(" ")}
     >
-      <p className={["font-display text-3xl font-black", alert ? "text-red-700" : ""].join(" ")}>
+      <p className={["font-display text-3xl font-black", alert ? "text-[var(--color-accent)]" : ""].join(" ")}>
         {value}
       </p>
       <p className="mt-0.5 text-[11px] font-bold uppercase tracking-wider text-[var(--color-muted)]">
@@ -217,10 +217,10 @@ function DocketTable({
                   className={[
                     "inline-block rounded px-1.5 py-0.5 text-[10px] font-black uppercase",
                     r.status === "Accepted"
-                      ? "bg-green-100 text-green-800"
+                      ? "bg-[var(--color-success-soft)] text-[var(--color-success)]"
                       : r.status === "Rejected"
-                        ? "bg-red-100 text-red-700"
-                        : "bg-[var(--color-blue-soft)] text-[var(--color-navy)]",
+                        ? "bg-[var(--color-accent-soft)] text-[var(--color-tag-severe)]"
+                        : "bg-[var(--color-blue-soft)] text-[var(--color-blue-ink)]",
                   ].join(" ")}
                 >
                   {r.status}

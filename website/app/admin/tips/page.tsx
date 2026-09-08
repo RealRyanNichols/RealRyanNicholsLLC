@@ -156,16 +156,16 @@ export default async function AdminTipsPage({
         should sit here without a next move.
       </p>
 
-      <section className="mt-6 border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm">
+      <section className="mt-6 border border-[var(--color-line)] bg-[var(--color-navy)] p-4 text-[var(--color-cream)] shadow-sm">
         <div className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
               Tip action radar
             </p>
-            <h2 className="mt-1 font-sans text-2xl font-black text-[#fdf8ea]">
+            <h2 className="mt-1 font-sans text-2xl font-black">
               Route it before it gets forgotten.
             </h2>
-            <p className="mt-2 text-sm font-semibold leading-6 text-[#cfd9ea]">
+            <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
               This queue now turns each tip into a specific admin action. Hot
               leads are tips with source, map, or verification signals.
             </p>
@@ -218,8 +218,8 @@ export default async function AdminTipsPage({
           </div>
         </div>
         {routeView || urgencyView || outcomeView ? (
-          <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border border-white/10 bg-white/[0.055] p-3">
-            <p className="text-sm font-bold leading-6 text-[#cfd9ea]">
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border border-[var(--color-line-soft)] bg-[var(--color-surface-2)] p-3">
+            <p className="text-sm font-bold leading-6 text-[var(--color-ink-soft)]">
               Showing {visibleTips.length} of {routedTips.length} tips
               {urgencyView ? ` in the ${urgencyView} lane` : ""}
               {routeView ? ` routed to ${routeLabel(routeView).toLowerCase()}` : ""}.
@@ -282,7 +282,7 @@ export default async function AdminTipsPage({
                       className={[
                         "mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-full text-sm font-bold",
                         t.submitter_name
-                          ? "bg-[var(--color-blue-soft)] text-[var(--color-navy)]"
+                          ? "bg-[var(--color-blue-soft)] text-[var(--color-blue-ink)]"
                           : "border border-dashed border-[var(--color-muted)] text-[var(--color-muted)]",
                       ].join(" ")}
                       aria-hidden
@@ -316,7 +316,7 @@ export default async function AdminTipsPage({
                         {t.submitter_email ? (
                           <a
                             href={`mailto:${t.submitter_email}`}
-                            className="rounded border border-[var(--color-line)] bg-[var(--color-paper)] px-1.5 py-0.5 font-mono text-[10px] text-[var(--color-navy)] hover:underline"
+                            className="rounded border border-[var(--color-line)] bg-[var(--color-surface-2)] px-1.5 py-0.5 font-mono text-[10px] text-[var(--color-blue-ink)] hover:underline"
                           >
                             {t.submitter_email}
                           </a>
@@ -430,14 +430,14 @@ function RadarStat({
         "border p-3 transition",
         active ? "ring-2 ring-[var(--color-gold-bright)]" : "hover:border-[var(--color-gold-bright)]",
         tone === "red"
-          ? "border-[#e0362c]/70 bg-[#e0362c]/15"
-          : "border-[var(--color-gold-bright)]/40 bg-white/[0.055]",
+          ? "border-[var(--color-accent)]/70 bg-[var(--color-accent-soft)]"
+          : "border-[var(--color-line)] bg-[var(--color-surface-2)]",
       ].join(" ")}
     >
-      <p className="font-sans text-2xl font-black text-[#fdf8ea]">
+      <p className="font-sans text-2xl font-black text-[var(--color-cream)]">
         {value}
       </p>
-      <p className="mt-1 text-[10px] font-black uppercase tracking-[0.16em] text-[#cfd9ea]">
+      <p className="mt-1 text-[10px] font-black uppercase tracking-[0.16em] text-[var(--color-ink-soft)]">
         {label}
       </p>
     </Link>
@@ -459,9 +459,9 @@ function TipRoutePanel({
         : "border-[var(--color-line)] bg-[var(--color-paper)]";
   const labelTone =
     plan.urgency === "hot"
-      ? "bg-[var(--color-accent)] text-white"
+      ? "bg-[var(--color-accent)] text-[var(--color-cream)]"
       : plan.urgency === "next"
-        ? "bg-[var(--color-support)] text-[#1a1410]"
+        ? "bg-[var(--color-support)] text-[var(--color-navy)]"
         : "bg-[var(--color-surface-2)] text-[var(--color-ink-soft)]";
 
   return (
@@ -486,7 +486,7 @@ function TipRoutePanel({
         {plan.nextActions.map((action, index) => (
           <li
             key={action}
-            className="border border-black/10 bg-white/45 p-2 text-xs font-semibold leading-5 text-[var(--color-ink-soft)]"
+            className="border border-[var(--color-line-soft)] bg-[var(--color-surface-2)] p-2 text-xs font-semibold leading-5 text-[var(--color-ink-soft)]"
           >
             <span className="mr-1 font-black text-[var(--color-accent)]">
               {index + 1}.
@@ -500,14 +500,14 @@ function TipRoutePanel({
           {plan.tags.map((tag) => (
             <span
               key={tag}
-              className="border border-black/10 bg-white/55 px-2 py-1 text-[10px] font-black uppercase tracking-normal text-[var(--color-muted)]"
+              className="border border-[var(--color-line-soft)] bg-[var(--color-surface-2)] px-2 py-1 text-[10px] font-black uppercase tracking-normal text-[var(--color-muted)]"
             >
               {tag}
             </span>
           ))}
         </div>
       ) : null}
-      <div className="mt-3 border-t border-black/10 pt-3">
+      <div className="mt-3 border-t border-[var(--color-line-soft)] pt-3">
         <p className="mb-2 text-[11px] font-bold leading-snug text-[var(--color-ink-soft)]">
           Turn this tip into action. The first two open a ready-to-edit draft
           built from it — nothing goes public until you hit publish.
@@ -515,7 +515,7 @@ function TipRoutePanel({
         <div className="flex flex-wrap gap-2">
           <Link
             href={`/admin/new?tip=${tipId}`}
-            className="border border-[var(--color-accent)] bg-[var(--color-accent)] px-3 py-2 text-xs font-black uppercase tracking-normal text-white transition hover:bg-[var(--color-accent-strong)]"
+            className="border border-[var(--color-accent)] bg-[var(--color-accent)] px-3 py-2 text-xs font-black uppercase tracking-normal text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)]"
           >
             ✍️ Write the article →
           </Link>
@@ -528,7 +528,7 @@ function TipRoutePanel({
           <TipEvidenceButton tipId={tipId} />
           <Link
             href={`/case/intake?route=${plan.kind}`}
-            className="border border-black/10 bg-white/45 px-3 py-2 text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-accent)]"
+            className="border border-[var(--color-line)] bg-transparent px-3 py-2 text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-gold)]"
           >
             📣 Public ledger →
           </Link>
@@ -642,9 +642,9 @@ function outcomeLabel(value?: string | null) {
 function CategoryChip({ category }: { category?: string | null }) {
   const cat = category ?? "j6";
   const map: Record<string, { label: string; cls: string }> = {
-    j6: { label: "J6 case", cls: "bg-[var(--color-accent)] text-white" },
-    national: { label: "National news", cls: "bg-[var(--color-blue)] text-white" },
-    local: { label: "Local news", cls: "bg-green-700 text-white" },
+    j6: { label: "J6 case", cls: "bg-[var(--color-accent)] text-[var(--color-cream)]" },
+    national: { label: "National news", cls: "bg-[var(--color-blue)] text-[var(--color-cream)]" },
+    local: { label: "Local news", cls: "bg-[var(--color-success)] text-[var(--color-navy)]" },
     other: { label: "Other", cls: "bg-[var(--color-surface-2)] text-[var(--color-ink-soft)]" },
   };
   const m = map[cat] ?? map.other;
@@ -657,9 +657,9 @@ function CategoryChip({ category }: { category?: string | null }) {
 
 function StatusBadge({ status }: { status: string }) {
   const styles: Record<string, string> = {
-    pending: "bg-[var(--color-accent)] text-white",
+    pending: "bg-[var(--color-accent)] text-[var(--color-cream)]",
     reviewed: "bg-[var(--color-surface-2)] text-[var(--color-ink-soft)]",
-    merged: "bg-green-600/80 text-white",
+    merged: "bg-[var(--color-success)] text-[var(--color-navy)]",
     rejected: "bg-[var(--color-surface-2)] text-[var(--color-muted)]",
   };
   return (
@@ -680,8 +680,8 @@ function OutcomeBadge({ status }: { status: string }) {
       className={[
         "rounded-full px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider",
         worked
-          ? "bg-[var(--color-live)]/25 text-[#0f3d2a]"
-          : "bg-[#e0362c]/15 text-[var(--color-accent)]",
+          ? "bg-[var(--color-success-soft)] text-[var(--color-success)]"
+          : "bg-[var(--color-accent-soft)] text-[var(--color-accent)]",
       ].join(" ")}
     >
       {outcomeLabel(status)}

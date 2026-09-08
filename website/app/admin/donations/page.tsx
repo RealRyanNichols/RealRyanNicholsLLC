@@ -239,7 +239,7 @@ export default async function AdminDonationsPage() {
                             i.status === "paid"
                               ? "border-[var(--color-success)] text-[var(--color-success)]"
                               : i.status === "started"
-                                ? "border-[var(--color-amber)] text-[var(--color-amber)]"
+                                ? "border-[var(--color-tag-procedural)] text-[var(--color-tag-procedural)]"
                                 : "border-[var(--color-line)] text-[var(--color-muted)]"
                           }`}
                         >
@@ -322,7 +322,7 @@ export default async function AdminDonationsPage() {
         </>
       ) : (
         <section className="mt-6 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-6">
-          <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-blue)]">
+          <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-blue-ink)]">
             Connect Stripe to see revenue
           </p>
           <h2 className="mt-1 text-xl font-bold tracking-tight font-display">
@@ -460,7 +460,7 @@ function Stat({
         "rounded-2xl border-2 p-4",
         accent
           ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)]"
-          : "border-[var(--color-line)] bg-[var(--color-paper)]",
+          : "border-[var(--color-line)] bg-[var(--color-surface)]",
       ].join(" ")}
     >
       <div

@@ -113,7 +113,7 @@ export default async function AdminSocialPage() {
       </p>
 
       {!anthropicOn ? (
-        <p className="mt-4 rounded-md border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm font-semibold text-[var(--color-ink)]">
+        <p className="mt-4 rounded-md border border-[var(--color-support)]/40 bg-[var(--color-support-soft)] px-4 py-3 text-sm font-semibold text-[var(--color-ink)]">
           ANTHROPIC_API_KEY is not set in Vercel, so generation is off. Drafts
           already written still show below.
         </p>
@@ -155,10 +155,10 @@ export default async function AdminSocialPage() {
                       key={v.id}
                       className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-3.5"
                     >
-                      <p className="flex flex-wrap items-center gap-2 text-[11px] font-black uppercase tracking-wider text-[var(--color-navy)]">
+                      <p className="flex flex-wrap items-center gap-2 text-[11px] font-black uppercase tracking-wider text-[var(--color-gold)]">
                         {PLATFORM_NAMES[v.platform]}
                         {v.angle ? (
-                          <span className="rounded bg-[var(--color-blue-soft)] px-1.5 py-0.5 text-[10px] text-[var(--color-blue)]">
+                          <span className="rounded bg-[var(--color-blue-soft)] px-1.5 py-0.5 text-[10px] text-[var(--color-blue-ink)]">
                             {v.angle}
                           </span>
                         ) : null}

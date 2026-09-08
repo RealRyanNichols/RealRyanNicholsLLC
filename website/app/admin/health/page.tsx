@@ -214,7 +214,7 @@ export default async function AdminHealthPage() {
       </section>
 
       {ops.queryErrors.length > 0 ? (
-        <section className="mt-6 rounded-md border border-amber-500/40 bg-amber-500/10 p-5 text-sm">
+        <section className="mt-6 rounded-md border border-[var(--color-tag-procedural)]/40 bg-[var(--color-tag-procedural)]/10 p-5 text-sm">
           <p className="font-bold">Some health readers could not run.</p>
           <p className="mt-1 text-[var(--color-ink-soft)]">
             Usually a missing table, policy, or service role — a health signal,
@@ -841,7 +841,7 @@ function Pulse({
     <span className="inline-flex items-baseline gap-1.5">
       {live ? (
         <span
-          className="inline-block h-2 w-2 self-center rounded-full bg-green-500 animate-pulse"
+          className="inline-block h-2 w-2 self-center rounded-full bg-[var(--color-live)] animate-pulse"
           aria-hidden
         />
       ) : null}
@@ -858,9 +858,9 @@ function Pulse({
 function Dot({ status }: { status: CheckStatus }) {
   const color =
     status === "ok"
-      ? "bg-green-500"
+      ? "bg-[var(--color-success)]"
       : status === "partial"
-        ? "bg-amber-500"
+        ? "bg-[var(--color-tag-procedural)]"
         : "bg-[var(--color-accent)]";
   return (
     <span
@@ -884,19 +884,19 @@ function severitySurface(severity: Severity) {
   const cls: Record<Severity, string> = {
     critical:
       "border-[var(--color-accent)] bg-[var(--color-accent)]/10 text-[var(--color-ink)]",
-    warning: "border-amber-500/40 bg-amber-500/10 text-[var(--color-ink)]",
+    warning: "border-[var(--color-tag-procedural)]/40 bg-[var(--color-tag-procedural)]/10 text-[var(--color-ink)]",
     watch: "border-[var(--color-line)] bg-[var(--color-surface-2)] text-[var(--color-ink)]",
-    good: "border-green-600/30 bg-green-600/10 text-[var(--color-ink)]",
+    good: "border-[var(--color-success)]/30 bg-[var(--color-success)]/10 text-[var(--color-ink)]",
   };
   return cls[severity];
 }
 
 function severityPill(severity: Severity) {
   const cls: Record<Severity, string> = {
-    critical: "bg-[var(--color-accent)] text-white",
-    warning: "bg-amber-500 text-black",
+    critical: "bg-[var(--color-accent)] text-[var(--color-cream)]",
+    warning: "bg-[var(--color-tag-procedural)] text-[var(--color-navy)]",
     watch: "bg-[var(--color-surface)] text-[var(--color-ink-soft)]",
-    good: "bg-green-600 text-white",
+    good: "bg-[var(--color-success)] text-[var(--color-navy)]",
   };
   return cls[severity];
 }

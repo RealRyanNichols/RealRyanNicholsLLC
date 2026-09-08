@@ -580,13 +580,13 @@ function shortPath(path: string): string {
 function colorBySource(key: string): string {
   const map: Record<string, string> = {
     human: "var(--color-gold-bright)",
-    "search-bot": "#7fa9e3",
-    "ai-bot": "#c8a3ff",
+    "search-bot": "var(--color-sky)",
+    "ai-bot": "var(--color-blue-ink)",
     "social-bot": "var(--color-gold-light)",
-    "uptime-bot": "#9fb0ca",
-    unknown: "#6f7f99",
+    "uptime-bot": "var(--color-blue-strong)",
+    unknown: "var(--color-muted)",
   };
-  return map[key] ?? "#9fb0ca";
+  return map[key] ?? "var(--color-muted)";
 }
 
 function sourceLabel(key: string): string {
@@ -604,12 +604,12 @@ function sourceLabel(key: string): string {
 function deviceColor(key: string): string {
   const map: Record<string, string> = {
     mobile: "var(--color-gold-bright)",
-    desktop: "#7fa9e3",
+    desktop: "var(--color-blue-ink)",
     tablet: "var(--color-gold-light)",
-    bot: "#c8a3ff",
-    unknown: "#6f7f99",
+    bot: "var(--color-sky)",
+    unknown: "var(--color-muted)",
   };
-  return map[key] ?? "#9fb0ca";
+  return map[key] ?? "var(--color-muted)";
 }
 
 async function VisualIntelligenceWall({ excludeSelf }: { excludeSelf: boolean }) {
@@ -711,7 +711,7 @@ async function VisualIntelligenceWall({ excludeSelf }: { excludeSelf: boolean })
     {
       name: "Views",
       value: views7 ?? 0,
-      fill: "#7fa9e3",
+      fill: "var(--color-blue-ink)",
       hint: "Raw page attention in the last 7 days.",
     },
     {
@@ -723,7 +723,7 @@ async function VisualIntelligenceWall({ excludeSelf }: { excludeSelf: boolean })
     {
       name: "Shared / copied",
       value: shares ?? 0,
-      fill: "#7fa9e3",
+      fill: "var(--color-blue-ink)",
       hint: `${fmt(shareMenus)} share menus opened.`,
     },
     {
@@ -759,7 +759,7 @@ async function VisualIntelligenceWall({ excludeSelf }: { excludeSelf: boolean })
     {
       name: "Known failures",
       value: knownFailures ?? 0,
-      fill: "#ef6f61",
+      fill: "var(--color-danger)",
       hint: "Red is reserved for leaks, failures, or incomplete flow.",
     },
   ];
@@ -851,8 +851,8 @@ async function VisualIntelligenceWall({ excludeSelf }: { excludeSelf: boolean })
     <>
       <AdminVisualAnalytics
         daily={daily}
-        sourceMix={sourceMix.length ? sourceMix : [{ name: "No source data", value: 1, color: "#6f7f99" }]}
-        deviceMix={deviceMix.length ? deviceMix : [{ name: "No device data", value: 1, color: "#6f7f99" }]}
+        sourceMix={sourceMix.length ? sourceMix : [{ name: "No source data", value: 1, color: "var(--color-muted)" }]}
+        deviceMix={deviceMix.length ? deviceMix : [{ name: "No device data", value: 1, color: "var(--color-muted)" }]}
         funnel={funnel}
         content={content.length ? content : [{ name: "No paths", views: 0, actions: 0 }]}
         systems={systems}
@@ -1043,8 +1043,8 @@ async function CommandCenter({ liveNow }: { liveNow: number }) {
   ].sort((a, b) => a.value - b.value);
 
   return (
-    <section className="mt-6 overflow-hidden rounded-2xl border border-[#243452] bg-[#0b1428] text-[#fdf8ea]">
-      <div className="border-b border-white/10 px-4 py-3 sm:px-5">
+    <section className="mt-6 overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink)]">
+      <div className="border-b border-[var(--color-line-soft)] px-4 py-3 sm:px-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
@@ -1056,14 +1056,14 @@ async function CommandCenter({ liveNow }: { liveNow: number }) {
           </div>
           <Link
             href="/the-map-room"
-            className="rounded-full border border-[var(--color-gold-bright)]/40 bg-[var(--color-gold-bright)]/10 px-4 py-2 text-xs font-black uppercase tracking-wider text-[var(--color-gold-bright)] transition hover:bg-[var(--color-gold-bright)] hover:text-[#0b1428]"
+            className="rounded-full border border-[var(--color-gold-bright)]/40 bg-[var(--color-gold-bright)]/10 px-4 py-2 text-xs font-black uppercase tracking-wider text-[var(--color-gold-bright)] transition hover:bg-[var(--color-gold-bright)] hover:text-[var(--color-navy)]"
           >
             Open live radar
           </Link>
         </div>
       </div>
 
-      <div className="grid gap-px bg-white/10 md:grid-cols-4">
+      <div className="grid gap-px bg-[var(--color-line-soft)] md:grid-cols-4">
         <CommandMetric
           label="Live pulse"
           value={String(liveNow)}
@@ -1091,29 +1091,29 @@ async function CommandCenter({ liveNow }: { liveNow: number }) {
       </div>
 
       <div className="grid gap-4 p-4 sm:p-5 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+        <div className="rounded-xl border border-[var(--color-line-soft)] bg-[var(--color-surface-2)] p-4">
           <div className="flex items-start justify-between gap-3">
             <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
+              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-gold)]">
                 Hottest path
               </p>
-              <h3 className="mt-1 break-all font-mono text-sm font-black text-[#fdf8ea]">
+              <h3 className="mt-1 break-all font-mono text-sm font-black text-[var(--color-ink)]">
                 {topPath?.label ?? "No path data yet"}
               </h3>
             </div>
-            <span className="rounded-full bg-[var(--color-gold-bright)] px-3 py-1 text-xs font-black text-[#0b1428]">
+            <span className="rounded-full bg-[var(--color-gold-bright)] px-3 py-1 text-xs font-black text-[var(--color-navy)]">
               {fmt(topPath?.n ?? 0)} views
             </span>
           </div>
-          <p className="mt-3 text-sm leading-relaxed text-[#cfd9ea]">
+          <p className="mt-3 text-sm leading-relaxed text-[var(--color-ink-soft)]">
             Use the hottest path as the next post prompt. If people are already
             opening it, publish a follow-up that sends them back there, asks one
             clear question, and turns the page into a share target.
           </p>
         </div>
 
-        <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-          <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
+        <div className="rounded-xl border border-[var(--color-line-soft)] bg-[var(--color-surface-2)] p-4">
+          <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-gold)]">
             Fix first
           </p>
           <div className="mt-3 grid gap-2">
@@ -1121,7 +1121,7 @@ async function CommandCenter({ liveNow }: { liveNow: number }) {
               <Link
                 key={item.label}
                 href={item.href}
-                className="block rounded-lg border border-white/10 bg-[#101a31] p-3 transition hover:border-[var(--color-gold-bright)]"
+                className="block rounded-lg border border-[var(--color-line-soft)] bg-[var(--color-surface)] p-3 transition hover:border-[var(--color-gold-bright)]"
               >
                 <div className="flex items-center justify-between gap-3">
                   <span className="text-sm font-black">{item.label}</span>
@@ -1129,7 +1129,7 @@ async function CommandCenter({ liveNow }: { liveNow: number }) {
                     {item.value}%
                   </span>
                 </div>
-                <p className="mt-1 text-xs leading-snug text-[#cfd9ea]">
+                <p className="mt-1 text-xs leading-snug text-[var(--color-ink-soft)]">
                   {item.text}
                 </p>
               </Link>
@@ -1148,7 +1148,7 @@ async function CommandCenter({ liveNow }: { liveNow: number }) {
         />
       </div>
 
-      <p className="border-t border-white/10 px-4 py-3 text-xs text-[#a9b7d0] sm:px-5">
+      <p className="border-t border-[var(--color-line-soft)] px-4 py-3 text-xs text-[var(--color-muted)] sm:px-5">
         Max mode uses the first-party stream already collected here: page views,
         dwell, scroll, clicks, outbound clicks, acquisition, shares, tips,
         support intent, subscriptions, video and live events. No IPs are shown.
@@ -1172,19 +1172,19 @@ function CommandMetric({
 }) {
   const styles = TONE_STYLES[tone];
   return (
-    <div className="bg-[#0b1428] p-4">
+    <div className="bg-[var(--color-surface)] p-4">
       <div className="flex items-center justify-between gap-2">
-        <span className="text-[10px] font-black uppercase tracking-[0.18em] text-[#a9b7d0]">
+        <span className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-muted)]">
           {label}
         </span>
         <span className={`rounded-full px-2 py-0.5 text-[9px] font-black uppercase ${styles.chip}`}>
           {tone === "healthy" ? "strong" : tone === "watch" ? "watch" : tone === "leak" ? "fix" : "read"}
         </span>
       </div>
-      <div className={`mt-2 text-3xl font-black tracking-tight tabular-nums ${tone === "neutral" ? "text-[#fdf8ea]" : styles.value}`}>
+      <div className={`mt-2 text-3xl font-black tracking-tight tabular-nums ${tone === "neutral" ? "text-[var(--color-ink)]" : styles.value}`}>
         {value}
       </div>
-      <p className="mt-1 text-xs leading-snug text-[#cfd9ea]">{sub}</p>
+      <p className="mt-1 text-xs leading-snug text-[var(--color-ink-soft)]">{sub}</p>
     </div>
   );
 }
@@ -1201,8 +1201,8 @@ const TONE_STYLES: Record<Tone, { value: string; chip: string }> = {
     chip: "bg-[var(--color-success)]/15 text-[var(--color-success)]",
   },
   watch: {
-    value: "text-[var(--color-amber)]",
-    chip: "bg-[var(--color-amber)]/15 text-[var(--color-amber)]",
+    value: "text-[var(--color-tag-procedural)]",
+    chip: "bg-[var(--color-tag-procedural)]/15 text-[var(--color-tag-procedural)]",
   },
   leak: {
     value: "text-[var(--color-danger)]",
@@ -1580,7 +1580,7 @@ function FunnelRow({
   let dropTone = "text-[var(--color-muted)]";
   if (stepPct !== null) {
     if (stepPct >= 60) dropTone = "text-[var(--color-success)]";
-    else if (stepPct >= 25) dropTone = "text-[var(--color-amber)]";
+    else if (stepPct >= 25) dropTone = "text-[var(--color-tag-procedural)]";
     else dropTone = "text-[var(--color-danger)]";
   }
   return (
@@ -2210,7 +2210,7 @@ async function AttentionFunnel() {
           </div>
           <Link
             href="/admin/new"
-            className="rounded-full bg-[var(--color-accent)] px-4 py-2 text-xs font-black text-[var(--color-paper)]"
+            className="rounded-full bg-[var(--color-accent)] px-4 py-2 text-xs font-black text-[var(--color-cream)]"
           >
             Create post
           </Link>
@@ -2229,7 +2229,7 @@ async function AttentionFunnel() {
                   </p>
                   <h4 className="mt-1 text-lg font-black tracking-tight">{card.label}</h4>
                 </div>
-                <span className="rounded-full bg-[var(--color-paper)] px-3 py-1 text-xs font-mono font-bold text-[var(--color-ink-soft)]">
+                <span className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-1 text-xs font-mono font-bold text-[var(--color-ink-soft)]">
                   {card.metric}
                 </span>
               </div>
@@ -2238,14 +2238,14 @@ async function AttentionFunnel() {
                 Do next: {card.action}
               </p>
               <div className="mt-3 grid gap-2 md:grid-cols-2">
-                <p className="rounded-lg bg-[var(--color-paper)] p-3 text-xs leading-relaxed">
+                <p className="rounded-lg bg-[var(--color-surface-2)] p-3 text-xs leading-relaxed">
                   <span className="font-black uppercase tracking-wider text-[var(--color-muted)]">
                     Hook
                   </span>
                   <br />
                   {card.hook}
                 </p>
-                <p className="rounded-lg bg-[var(--color-paper)] p-3 text-xs leading-relaxed">
+                <p className="rounded-lg bg-[var(--color-surface-2)] p-3 text-xs leading-relaxed">
                   <span className="font-black uppercase tracking-wider text-[var(--color-muted)]">
                     Thumbnail
                   </span>

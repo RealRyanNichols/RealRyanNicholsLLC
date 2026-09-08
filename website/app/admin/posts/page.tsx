@@ -89,7 +89,7 @@ export default async function AdminPostsPage({
         </h1>
         <Link
           href="/admin/new"
-          className="rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-4 py-2 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
+          className="rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-4 py-2 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
         >
           + New post
         </Link>
