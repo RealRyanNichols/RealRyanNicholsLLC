@@ -77,3 +77,47 @@ test("no single land path is anywhere near the 120,000-character ceiling", () =>
   const longest = Math.max(...LAND_PATHS.map((p) => p.length));
   assert.ok(longest < 120_000, `longest land path is ${longest} chars`);
 });
+
+import { sanitizePings } from "../lib/radar-pings";
+
+// Gilmer, TX sits near 32.73 N, 94.94 W. Rounded to a tenth of a degree, as
+// the tracking route stores it, that is 32.7 / -94.9.
+const gilmerFix = { ...gilmer, latitude: 32.7, longitude: -94.9 };
+
+test("a ping with rounded coordinates lands at its town, inside its state", () => {
+  const ll = pingLngLat(gilmerFix);
+  assert.ok(ll);
+  assert.ok(Math.abs(ll[0] - -94.9) <= 0.05 && Math.abs(ll[1] - 32.7) <= 0.05, `landed at ${ll}`);
+  assert.ok(geoContains(stateFor("TX")!.feature, ll), "must stay inside Texas");
+  assert.deepEqual(pingLngLat(gilmerFix), ll, "placement is deterministic");
+});
+
+test("coordinates outside the ping's own state fall back inside that state", () => {
+  // 36.5 N, 97.5 W is Oklahoma. Vercel said Texas, so Texas wins.
+  const ll = pingLngLat({ ...gilmer, latitude: 36.5, longitude: -97.5 });
+  assert.ok(ll);
+  assert.ok(geoContains(stateFor("TX")!.feature, ll), "must fall back inside Texas");
+  assert.ok(!geoContains(stateFor("OK")!.feature, ll), "must not plot in Oklahoma");
+});
+
+test("a non-US ping with coordinates plots there; without them, the country centroid", () => {
+  const london = pingLngLat({ ...gilmer, country: "GB", region: "ENG", city: "London", latitude: 51.5, longitude: -0.1 });
+  assert.ok(london);
+  assert.ok(Math.abs(london[0] - -0.1) <= 0.05 && Math.abs(london[1] - 51.5) <= 0.05);
+  const noFix = pingLngLat({ ...gilmer, country: "GB", region: "ENG", city: "London", latitude: null, longitude: null });
+  assert.ok(noFix);
+  assert.ok(Math.abs(noFix[0] - -1.5) < 3 && Math.abs(noFix[1] - 53) < 3);
+});
+
+test("sanitizePings keeps only rounded, in-range coordinate pairs and drops the trail", () => {
+  const rows = sanitizePings([
+    { ping_id: "a", country: "US", region: "TX", city: "Gilmer", last_seen: "x", latitude: 32.74, longitude: -94.94, path: "/secret", pages_in_session: 9 },
+    { ping_id: "b", country: "US", region: "TX", city: null, last_seen: "x", latitude: "bad", longitude: 999 },
+    { ping_id: "c", country: "US", region: "TX", city: null, last_seen: "x", latitude: 32.7, longitude: null },
+  ]);
+  assert.equal(rows.length, 3);
+  assert.deepEqual([rows[0].latitude, rows[0].longitude], [32.7, -94.9]);
+  assert.ok(!("path" in rows[0]) && !("pages_in_session" in rows[0]));
+  assert.deepEqual([rows[1].latitude, rows[1].longitude], [null, null]);
+  assert.deepEqual([rows[2].latitude, rows[2].longitude], [null, null], "half a pair is no pair");
+});
