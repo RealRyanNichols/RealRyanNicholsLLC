@@ -4,12 +4,16 @@ import type { CasePerson, getCaseTotals } from "@/lib/case";
 import { J6Banner } from "@/components/J6Banner";
 import { J6PathSplit } from "@/components/J6PathSplit";
 import { BookCtaBand } from "@/components/BookCtaBand";
+import { CaseSearchForm } from "@/components/case/CaseSearchForm";
 import type { Tab } from "@/components/case/archive";
 
 // The header every archive view shares (/case?view=grievances|timeline|
-// documents, and any search): the path split, the eight numbers, the three
-// doors, the lead case, the claim banner, the book, the tools hub, and the
-// search box. Moved out of app/case/page.tsx verbatim.
+// documents, and any search). Search-first: the box sits under the path
+// split so a phone reader can search the record from the first screen, and
+// a results page is results. With a query the header is the split, the box,
+// and the hit count; the browse chrome (the eight numbers, the three doors,
+// the lead case, the claim banner, the book, the tools hub) waits until the
+// search is cleared.
 export function ArchiveHeader({
   totals,
   eventsShown,
@@ -29,6 +33,7 @@ export function ArchiveHeader({
   q: string;
   totalHits: number;
 }) {
+  const searching = q.length > 0;
   return (
     <header className="mb-10">
       {/* The one path split. These views are all United States v. Nichols,
@@ -36,6 +41,20 @@ export function ArchiveHeader({
           out to every other defendant. */}
       <J6PathSplit active="ryan" headline="h1" />
 
+      {/* Search */}
+      <CaseSearchForm
+        q={q}
+        view={tab === "grievances" ? undefined : tab}
+        className="mt-6"
+      />
+      {searching ? (
+        <p className="mt-2 text-xs text-[var(--color-muted)]">
+          {totalHits} match{totalHits === 1 ? "" : "es"} for &quot;{q}&quot; across all 4 sections.
+        </p>
+      ) : null}
+
+      {searching ? null : (
+        <>
       {/* One unified stat block — the four headline numbers, then the four
           secondary ones, adjacent. No buttons splitting them apart. */}
       <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl">
@@ -198,43 +217,8 @@ export function ArchiveHeader({
           />
         </div>
       </section>
-
-      {/* Search */}
-      <form
-        method="get"
-        action="/case"
-        className="mt-6 flex flex-col sm:flex-row gap-2 max-w-2xl"
-      >
-        {tab !== "grievances" ? (
-          <input type="hidden" name="view" value={tab} />
-        ) : null}
-        <input
-          type="search"
-          name="q"
-          defaultValue={q}
-          placeholder="Search grievances, people, events, documents…"
-          className="flex-1 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm"
-        />
-        <button
-          type="submit"
-          className="btn-accent rounded-md px-4 py-2 text-sm font-bold"
-        >
-          Search
-        </button>
-        {q ? (
-          <Link
-            href={`/case${tab === "grievances" ? "" : `?view=${tab}`}`}
-            className="inline-flex items-center justify-center rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm font-medium text-[var(--color-ink-soft)] hover:border-[var(--color-navy)] hover:text-[var(--color-navy)]"
-          >
-            Clear
-          </Link>
-        ) : null}
-      </form>
-      {q ? (
-        <p className="mt-2 text-xs text-[var(--color-muted)]">
-          {totalHits} match{totalHits === 1 ? "" : "es"} for &quot;{q}&quot; across all 4 sections.
-        </p>
-      ) : null}
+        </>
+      )}
     </header>
   );
 }

@@ -20,6 +20,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { BookCtaBand } from "@/components/BookCtaBand";
 import { CaseCaptureBand } from "@/components/case/CaseCaptureBand";
 import { GoDeeper } from "@/components/case/GoDeeper";
+import { CaseSearchForm } from "@/components/case/CaseSearchForm";
 import { PERSON_ID, personRef, websiteRef } from "@/lib/jsonld";
 import { SITE } from "@/lib/site";
 import type { Post } from "@/lib/types";
@@ -227,6 +228,13 @@ export function RyanCaseProfile({
           flow under the hero. The desktop rail lives in the left column. */}
       <div className="mt-5 lg:hidden">
         <CaseChapterNav variant="chips" chapters={chapters} />
+      </div>
+
+      {/* Search the record from the first screen. The results open on the
+          archive with a hit count per section. */}
+      <div className="mt-6">
+        <Eyebrow>Search the record</Eyebrow>
+        <CaseSearchForm className="mt-2" />
       </div>
 
       {/* The two doors as the return rail, when this page is /case itself. */}
