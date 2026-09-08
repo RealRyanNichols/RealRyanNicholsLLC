@@ -257,6 +257,15 @@ export default async function CasePage({
     redirect(pageHref({ view: tab, page: archivePageCount, q }));
   }
 
+  // Hits per section while searching: the header's summary line and the
+  // tab strip both read from this one object.
+  const counts = {
+    grievances: filteredGrievances.length,
+    timeline: filteredEvents.length,
+    people: filteredPeople.length,
+    documents: filteredDocuments.length,
+  };
+
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
       <ArchiveHeader
@@ -268,24 +277,16 @@ export default async function CasePage({
         tab={tab}
         q={q}
         totalHits={totalHits}
+        counts={counts}
       />
 
-      <ArchiveTabs
-        tab={tab}
-        q={q}
-        counts={{
-          grievances: filteredGrievances.length,
-          timeline: filteredEvents.length,
-          people: filteredPeople.length,
-          documents: filteredDocuments.length,
-        }}
-      />
+      <ArchiveTabs tab={tab} q={q} counts={counts} />
 
       {/* The pager's links land here, not at the top of the header. */}
       <div id={ARCHIVE_LIST_ID} className="scroll-mt-24">
-        {tab === "grievances" && <GrievancesView grievances={filteredGrievances} />}
-        {tab === "timeline" && <TimelineView events={pageEvents} />}
-        {tab === "documents" && <DocumentsView documents={pageDocuments} />}
+        {tab === "grievances" && <GrievancesView grievances={filteredGrievances} q={q} />}
+        {tab === "timeline" && <TimelineView events={pageEvents} q={q} />}
+        {tab === "documents" && <DocumentsView documents={pageDocuments} q={q} />}
       </div>
       <ArchivePager
         tab={tab}
