@@ -66,7 +66,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE.url}/j6/top-25`, lastModified: now, changeFrequency: "hourly", priority: 0.95 },
     { url: `${SITE.url}/case-builder`, lastModified: now, changeFrequency: "weekly", priority: 0.85 },
     { url: `${SITE.url}/case/timeline`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${SITE.url}/case/briefing`, lastModified: now, changeFrequency: "weekly", priority: 0.85 },
     { url: `${SITE.url}/case/officials`, lastModified: now, changeFrequency: "weekly", priority: 0.85 },
     { url: `${SITE.url}/case/geography`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${SITE.url}/case/nexus`, lastModified: now, changeFrequency: "weekly", priority: 0.85 },

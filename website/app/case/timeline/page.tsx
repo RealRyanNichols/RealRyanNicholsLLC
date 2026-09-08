@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
+import { getPublicJ6Slugs } from "@/lib/case";
 import { getOgImage } from "@/lib/og-images";
 import { SITE } from "@/lib/site";
 import { CaseTimeline, type TimelinePayload } from "@/components/CaseTimeline";
@@ -51,11 +52,28 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function CaseTimelinePage() {
   const supabase = getSupabaseStaticClient();
-  const { data } = await supabase.rpc("case_timeline_data");
-  const payload: TimelinePayload = (data as TimelinePayload | null) ?? {
+  const [{ data }, publicSlugs] = await Promise.all([
+    supabase.rpc("case_timeline_data"),
+    getPublicJ6Slugs(),
+  ]);
+  const raw: TimelinePayload = (data as TimelinePayload | null) ?? {
     rows: [],
     histograms: { sentencings: [], arrests: [] },
     totals: { all_j6: 0, with_arrest: 0, with_plea: 0, with_sentence: 0 },
+  };
+  // The RPC returns every defendant it knows, public or not; only public
+  // profiles get a row here, so no card names a person whose page is not
+  // public or links to one that would 404. The histograms and totals stay
+  // the RPC's aggregate numbers.
+  //
+  // getPublicJ6Slugs() resolves to null when any page of the directory
+  // failed to load. The list then fails closed: no allowlist, no rows. A
+  // hidden record must never render, not even for one five-minute ISR
+  // window, so the page says the list did not load rather than guess.
+  const listUnavailable = publicSlugs === null;
+  const payload: TimelinePayload = {
+    ...raw,
+    rows: publicSlugs ? raw.rows.filter((r) => publicSlugs.has(r.slug)) : [],
   };
 
   return (
@@ -87,6 +105,16 @@ export default async function CaseTimelinePage() {
           .
         </p>
       </header>
+
+      {listUnavailable ? (
+        <p
+          role="status"
+          className="mb-4 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface-2)] px-4 py-3 text-sm text-[var(--color-ink-soft)]"
+        >
+          The defendant list did not load this time. The counts above still
+          stand; the list is back on the next refresh, within five minutes.
+        </p>
+      ) : null}
 
       <CaseTimeline data={payload} />
 

@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { Suspense } from "react";
 import Link from "next/link";
 import { J6Banner } from "@/components/J6Banner";
 import {
@@ -37,7 +39,7 @@ const CASE_DESCRIPTION =
 export async function generateMetadata({
   searchParams,
 }: {
-  searchParams: Promise<{ view?: string; q?: string; filter?: string }>;
+  searchParams: Promise<{ view?: string; q?: string; filter?: string; page?: string }>;
 }): Promise<Metadata> {
   const sp = await searchParams;
   // Strip the search query from the canonical OG lookup — q is user input
@@ -46,8 +48,17 @@ export async function generateMetadata({
   const lookupParams: Record<string, string | undefined> = {};
   if (sp.view) lookupParams.view = sp.view;
   if (sp.filter) lookupParams.filter = sp.filter;
-  const canonical = canonicalPath("/case", lookupParams);
-  const override = await getOgImage(canonical);
+  const ogLookup = canonicalPath("/case", lookupParams);
+  const override = await getOgImage(ogLookup);
+  // The share card is the same on every slice of a paged view, so the
+  // override lookup stays page-less. The canonical URL is not: a later page
+  // of the timeline or documents view is its own address, or crawlers fold
+  // every slice into page one.
+  const page = parsePage(sp.page);
+  const canonical =
+    sp.view && page > 1
+      ? canonicalPath("/case", { ...lookupParams, page: String(page) })
+      : ogLookup;
 
   const settings = await getSiteSettings();
   // Self-created, self-hosted default card — /og/case renders a branded share
@@ -93,6 +104,31 @@ export async function generateMetadata({
 
 type Tab = "grievances" | "timeline" | "people" | "documents";
 
+// ?page= as a 1-based integer; anything unparseable or below 1 is page one.
+function parsePage(raw: string | undefined): number {
+  return Math.max(1, Number.parseInt(raw ?? "1", 10) || 1);
+}
+
+// The one address for a slice of a paged view. Page one is the bare view,
+// the same URL the canonical names, so no slice has two addresses.
+function pageHref({
+  view,
+  page,
+  j6Filter = "all",
+  q,
+}: {
+  view: Tab;
+  page: number;
+  j6Filter?: "all" | "unclaimed" | "verified" | "pending";
+  q: string;
+}): string {
+  const params = new URLSearchParams({ view });
+  if (page > 1) params.set("page", String(page));
+  if (j6Filter !== "all") params.set("filter", j6Filter);
+  if (q) params.set("q", q);
+  return `/case?${params.toString()}`;
+}
+
 function shouldRenderJ6Directory(tab: Tab): boolean {
   return tab === "people";
 }
@@ -110,7 +146,7 @@ export default async function CasePage({
 }) {
   const { view, q: rawQ, filter: rawFilter, page: rawPage } = await searchParams;
   const q = (rawQ ?? "").trim();
-  const page = Math.max(1, Number.parseInt(rawPage ?? "1", 10) || 1);
+  const page = parsePage(rawPage);
 
   // THE FRONT DOOR. Clicking "Case" lands on United States v. Nichols —
   // Ryan's full story, the detention record, the whole file. The archive
@@ -164,7 +200,12 @@ export default async function CasePage({
     ]);
 
     const pageCount = Math.max(1, Math.ceil(j6Page.total / j6Page.pageSize));
-    const clampedPage = Math.min(j6Page.page, pageCount);
+    // A page past the end (a stale link, or rows gone since it was shared)
+    // has one address: the last page. Redirect rather than clamp, or several
+    // URLs would serve the same slice under different canonicals.
+    if (page > pageCount) {
+      redirect(pageHref({ view: "people", page: pageCount, j6Filter, q }));
+    }
 
     return (
       <div className="mx-auto max-w-5xl px-4 py-10">
@@ -257,7 +298,7 @@ export default async function CasePage({
           j6Filter={j6Filter}
           q={q}
           totalCount={j6Page.total}
-          page={clampedPage}
+          page={page}
           pageSize={j6Page.pageSize}
         />
       </div>
@@ -276,6 +317,11 @@ export default async function CasePage({
     getCaseTotals(),
     getSiteSettings(),
     getJ6DefendantCount(),
+    // J6Banner's own number. Warmed here so the banner, an async server
+    // component in the middle of the header, never suspends during SSR: a
+    // banner that suspended got its own late boundary, and hydrating that
+    // boundary was the intermittent React #418 on the archive views.
+    getJ6DefendantCount("unclaimed"),
   ]);
   const ryan = people.find((p) => p.slug === "ryan-nichols") ?? null;
   const ryanPhoto = siteSettings.avatar_url ?? null;
@@ -313,6 +359,29 @@ export default async function CasePage({
       filteredEvents.length +
       filteredDocuments.length
     : 0;
+
+  // The timeline and the documents views page their lists. Unpaged, the
+  // documents view was a 7.6 MB HTML document (every scan on the record in
+  // one response) and the timeline 1.5 MB: unreadable on a phone and the
+  // pages where React's hydration raced the parser. 48 per page, the same
+  // size as the people directory; the grievances view (34 patterns) stays
+  // whole.
+  const archiveList =
+    tab === "documents" ? filteredDocuments : tab === "timeline" ? filteredEvents : [];
+  const archivePageCount = Math.max(1, Math.ceil(archiveList.length / ARCHIVE_PAGE_SIZE));
+  // Same rule as the people directory: a page past the end redirects to the
+  // last one. The unpaged views have one page, so ?page=2 on grievances
+  // lands back on the view itself.
+  if (page > archivePageCount) {
+    redirect(pageHref({ view: tab, page: archivePageCount, q }));
+  }
+  const archiveFrom = (page - 1) * ARCHIVE_PAGE_SIZE;
+  const pageEvents = filteredEvents.slice(archiveFrom, archiveFrom + ARCHIVE_PAGE_SIZE);
+  const pageDocuments = filteredDocuments.slice(archiveFrom, archiveFrom + ARCHIVE_PAGE_SIZE);
+  const archiveShowing =
+    archiveList.length === 0
+      ? null
+      : `${(archiveFrom + 1).toLocaleString("en-US")}–${Math.min(archiveFrom + ARCHIVE_PAGE_SIZE, archiveList.length).toLocaleString("en-US")} of ${archiveList.length.toLocaleString("en-US")}`;
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
@@ -418,7 +487,11 @@ export default async function CasePage({
             split above is the door to the archive; this banner carries the
             unclaimed-profile count (public-record count from lib/case.ts). */}
         <div className="mt-6">
-          <J6Banner tone="navy" />
+          {/* Belt and braces: if the count ever does suspend, it suspends
+              inside a real boundary that hydrates cleanly. */}
+          <Suspense fallback={null}>
+            <J6Banner tone="navy" />
+          </Suspense>
         </div>
 
         {/* The book. /case is by far the highest-traffic page on the site —
@@ -448,7 +521,7 @@ export default async function CasePage({
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             <HubCard
-              href="/evidence-the-doj-tried-to-erase"
+              href="/case/the-salvaged-doj-record"
               title="Evidence the DOJ Tried to Erase"
               sub="The scrubbed federal record — preserved and hash-verified."
               featured
@@ -556,18 +629,38 @@ export default async function CasePage({
         </div>
       </div>
 
-      {tab === "grievances" && <GrievancesView grievances={filteredGrievances} />}
-      {tab === "timeline" && <TimelineView events={filteredEvents} />}
-      {/* Unreachable: the people view returns from shouldRenderJ6Directory
-          above. PeopleView and PEOPLE_GROUPS below are dead with it and come
-          out when this file is split into components/case/. */}
-      {tab === "people" && (
-        <PeopleView people={filteredPeople} j6Filter={j6Filter} q={q} />
-      )}
-      {tab === "documents" && <DocumentsView documents={filteredDocuments} />}
+      {/* The pager's links land here, not at the top of the header. */}
+      <div id="archive-list" className="scroll-mt-24">
+        {tab === "grievances" && <GrievancesView grievances={filteredGrievances} />}
+        {tab === "timeline" && <TimelineView events={pageEvents} />}
+        {/* Unreachable: the people view returns from shouldRenderJ6Directory
+            above. PeopleView and PEOPLE_GROUPS below are dead with it and come
+            out when this file is split into components/case/. */}
+        {tab === "people" && (
+          <PeopleView people={filteredPeople} j6Filter={j6Filter} q={q} />
+        )}
+        {tab === "documents" && <DocumentsView documents={pageDocuments} />}
+      </div>
+      {(tab === "timeline" || tab === "documents") && archivePageCount > 1 ? (
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--color-line)] pt-5">
+          <p className="text-sm text-[var(--color-muted)]">
+            Showing {archiveShowing} {tab === "documents" ? "documents" : "events"}
+          </p>
+          <PaginationControls
+            page={page}
+            pageCount={archivePageCount}
+            view={tab}
+            q={q}
+            label={tab === "documents" ? "Document pages" : "Timeline pages"}
+          />
+        </div>
+      ) : null}
     </div>
   );
 }
+
+// Rows per page on the timeline and documents views.
+const ARCHIVE_PAGE_SIZE = 48;
 
 function BigStat({ label, value }: { label: string; value: string }) {
   return (
@@ -1013,8 +1106,10 @@ function J6DefendantsView({
         <PaginationControls
           page={page}
           pageCount={pageCount}
+          view="people"
           j6Filter={j6Filter}
           q={q}
+          label="J6 profile pages"
         />
       </div>
 
@@ -1087,8 +1182,10 @@ function J6DefendantsView({
           <PaginationControls
             page={page}
             pageCount={pageCount}
+            view="people"
             j6Filter={j6Filter}
             q={q}
+            label="J6 profile pages"
           />
         </div>
       ) : null}
@@ -1099,23 +1196,24 @@ function J6DefendantsView({
 function PaginationControls({
   page,
   pageCount,
-  j6Filter,
+  view,
+  j6Filter = "all",
   q,
+  label = "Pages",
 }: {
   page: number;
   pageCount: number;
-  j6Filter: "all" | "unclaimed" | "verified" | "pending";
+  view: Tab;
+  j6Filter?: "all" | "unclaimed" | "verified" | "pending";
   q: string;
+  label?: string;
 }) {
-  const hrefFor = (nextPage: number) => {
-    const params = new URLSearchParams({ view: "people", page: String(nextPage) });
-    if (j6Filter !== "all") params.set("filter", j6Filter);
-    if (q) params.set("q", q);
-    return `/case?${params.toString()}`;
-  };
+  // Land on the list, not the top of the header.
+  const hrefFor = (nextPage: number) =>
+    `${pageHref({ view, page: nextPage, j6Filter, q })}#${view === "people" ? "j6-profile-list" : "archive-list"}`;
 
   return (
-    <nav className="flex items-center gap-2" aria-label="J6 profile pages">
+    <nav className="flex items-center gap-2" aria-label={label}>
       <Link
         href={hrefFor(Math.max(1, page - 1))}
         aria-disabled={page <= 1}

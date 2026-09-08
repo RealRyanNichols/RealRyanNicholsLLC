@@ -243,6 +243,34 @@ export const getJ6DefendantCount = cache(
   },
 );
 
+// Every public J6 defendant slug, for pages that get their rows from an RPC
+// (the sentencing timeline, which only lists J6 defendants) and must not
+// link a profile that /case/people would 404 for being non-public.
+// Paginated past PostgREST's max-rows cap like getPeople().
+//
+// Resolves to null when any page fails. The directory is bigger than one
+// page, so a partial set is worse than none: a caller that filtered with
+// it would silently drop every public row whose slug sat on the page that
+// failed. null tells the caller the allowlist could not be built.
+export const getPublicJ6Slugs = cache(async (): Promise<Set<string> | null> => {
+  const supabase = getSupabaseStaticClient();
+  const PAGE = 1000;
+  const slugs = new Set<string>();
+  for (let from = 0; ; from += PAGE) {
+    const { data, error } = await supabase
+      .from("case_people")
+      .select("slug")
+      .eq("visibility", "public")
+      .eq("is_j6_defendant", true)
+      .order("slug", { ascending: true })
+      .range(from, from + PAGE - 1);
+    if (error || !data) return null;
+    for (const row of data as { slug: string }[]) slugs.add(row.slug);
+    if (data.length < PAGE) break;
+  }
+  return slugs;
+});
+
 // Sworn statements (affidavits) on the public record. Same filters the /j6
 // page used before this lived here, so the tile's number did not change.
 export const getSwornStatementCount = cache(async (): Promise<number> => {
@@ -322,7 +350,10 @@ export async function getEvents(): Promise<CaseEvent[]> {
     .from("case_events")
     .select(EVENT_COLS)
     .eq("visibility", "public")
-    .order("event_date", { ascending: true, nullsFirst: true });
+    .order("event_date", { ascending: true, nullsFirst: true })
+    // Same-day events would otherwise come back in whatever order Postgres
+    // chose that request, and the archive pages this list at 48 a page.
+    .order("id", { ascending: true });
   return (data ?? []) as CaseEvent[];
 }
 
@@ -351,6 +382,11 @@ export async function getDocuments(): Promise<CaseDocument[]> {
       .order("document_date", { ascending: false, nullsFirst: false })
       .order("relevance", { ascending: false })
       .order("title", { ascending: true })
+      // Same date, relevance, and title is common (exhibit series), and
+      // without a total order PostgREST returns those ties in a different
+      // order per query: the documents view shuffled between loads and a
+      // row could straddle two .range() pages. The id makes it stable.
+      .order("id", { ascending: true })
       .range(from, from + PAGE - 1);
     if (error || !data || data.length === 0) break;
     all.push(...(data as CaseDocument[]));

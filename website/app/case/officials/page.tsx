@@ -197,7 +197,7 @@ export default async function AccountabilityIndexPage() {
 
       <section className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-3">
         <CrossLink href="/case/nexus" title="The Case Nexus" sub="Walk the network as a graph." />
-        <CrossLink href="/evidence-the-doj-tried-to-erase" title="Evidence the DOJ tried to erase" sub="The preserved record." />
+        <CrossLink href="/case/the-salvaged-doj-record" title="Evidence the DOJ tried to erase" sub="The preserved record." />
         <CrossLink href="/case" title="The full case file" sub="Grievances, events, documents." />
       </section>
     </article>

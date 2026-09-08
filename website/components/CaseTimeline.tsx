@@ -72,6 +72,15 @@ export function CaseTimeline({ data }: { data: TimelinePayload }) {
   }, [data.rows, pivot, activeYear, filterCluster]);
 
   // Group filtered rows by year-month for sticky headers.
+  // The readout's denominator counts the rows this component was handed
+  // (public profiles with a date on the active pivot), so "showing X of Y"
+  // agrees with itself; the RPC's own totals stay on the page header as
+  // the on-file counts.
+  const pivotTotal = useMemo(
+    () => data.rows.filter((r) => !!r[pivot]).length,
+    [data.rows, pivot],
+  );
+
   const grouped = useMemo(() => {
     const map = new Map<string, Row[]>();
     for (const r of filteredRows) {
@@ -164,7 +173,7 @@ export function CaseTimeline({ data }: { data: TimelinePayload }) {
           </div>
           <div className="text-xs font-mono text-[#7c8aa6]">
             showing <span className="text-[var(--color-gold-bright)]">{filteredRows.length}</span>{" "}
-            of {pivot === "sentence_date" ? data.totals.with_sentence : data.totals.with_arrest}
+            of {pivotTotal}
           </div>
         </div>
         <Histogram
