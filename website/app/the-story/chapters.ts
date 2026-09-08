@@ -204,7 +204,7 @@ export function chaptersFor(r: Record): Chapter[] {
       chips: [
         { label: "Fact · Exhibit 288", tone: "fact" },
         { label: "Ryan statement · The Comeback Ledger", tone: "statement" },
-        { label: "Real photo · Rescue the Universe archive" },
+        { label: "Real photo · Jose, Hurricane Harvey supply run" },
       ],
       href: "/posts/the-comeback-ledger",
       cta: "Line one of the comeback ledger",
@@ -212,12 +212,15 @@ export function chaptersFor(r: Record): Chapter[] {
       media: {
         kind: "frame",
         provenance: "real",
-        credit: "Supplies loaded between storms",
+        // Ryan, September 8, 2026: this is Jose, who worked with him at the
+        // time and helped raise the money and buy the supplies for Hurricane
+        // Harvey victims and first responders. Not Ryan.
+        credit: "Jose, on the Harvey supply run",
         ratio: "tall",
         picture: pic(
           "/story/builder-warehouse",
           [720, 1440],
-          "Ryan Nichols in a warehouse aisle with a cart stacked with cases of drinking water",
+          "Jose, who worked with Ryan Nichols raising money and buying supplies for Hurricane Harvey victims and first responders, beside a cart stacked with cases of water",
         ),
       },
     },
