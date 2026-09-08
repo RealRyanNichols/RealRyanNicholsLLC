@@ -504,6 +504,16 @@ body[data-mobile-menu-open="true"] .rrn-mobile-support-bar {
     justify-content: center;
     min-height: 44px;
   }
+
+  /* A row of small link chips (search topics, tags): each one a full thumb,
+     44px both ways, from one rule instead of a class string on every chip. */
+  .chip-row > a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    min-width: 44px;
+  }
 }
 
 @media (min-width: 640px) {
