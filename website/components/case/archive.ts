@@ -43,19 +43,37 @@ function matchesQuery(q: string, ...fields: (string | null | undefined)[]) {
   return fields.some((f) => (f ?? "").toLowerCase().includes(needle));
 }
 
-// The people directory's page count and the page it actually shows.
+// The one address for a slice of a paged view. Page one is the bare view,
+// the same URL the canonical names, so no slice has two addresses. The
+// page redirects a past-the-end ?page= here, and the pager links with it.
+export function pageHref({
+  view,
+  page,
+  j6Filter = "all",
+  q,
+}: {
+  view: Tab;
+  page: number;
+  j6Filter?: J6Filter;
+  q: string;
+}): string {
+  const params = new URLSearchParams({ view });
+  if (page > 1) params.set("page", String(page));
+  if (j6Filter !== "all") params.set("filter", j6Filter);
+  if (q) params.set("q", q);
+  return `/case?${params.toString()}`;
+}
+
+// The people directory's page count. A page past it is redirected by the
+// page, not clamped here, so every slice keeps one address.
 export function pageDirectory({
   total,
-  page,
   pageSize,
 }: {
   total: number;
-  page: number;
   pageSize: number;
 }) {
-  const pageCount = Math.max(1, Math.ceil(total / pageSize));
-  const clampedPage = Math.min(page, pageCount);
-  return { pageCount, clampedPage };
+  return { pageCount: Math.max(1, Math.ceil(total / pageSize)) };
 }
 
 // Rows per page on the timeline and documents views.
@@ -149,13 +167,14 @@ export function pageArchive({
   const archiveList =
     tab === "documents" ? filteredDocuments : tab === "timeline" ? filteredEvents : [];
   const archivePageCount = Math.max(1, Math.ceil(archiveList.length / ARCHIVE_PAGE_SIZE));
-  const archivePage = Math.min(page, archivePageCount);
-  const archiveFrom = (archivePage - 1) * ARCHIVE_PAGE_SIZE;
+  // A page past archivePageCount is the page's to redirect (see pageHref);
+  // the slice below is only ever rendered for a page in range.
+  const archiveFrom = (page - 1) * ARCHIVE_PAGE_SIZE;
   const pageEvents = filteredEvents.slice(archiveFrom, archiveFrom + ARCHIVE_PAGE_SIZE);
   const pageDocuments = filteredDocuments.slice(archiveFrom, archiveFrom + ARCHIVE_PAGE_SIZE);
   const archiveShowing =
     archiveList.length === 0
       ? null
       : `${(archiveFrom + 1).toLocaleString("en-US")}–${Math.min(archiveFrom + ARCHIVE_PAGE_SIZE, archiveList.length).toLocaleString("en-US")} of ${archiveList.length.toLocaleString("en-US")}`;
-  return { archivePageCount, archivePage, pageEvents, pageDocuments, archiveShowing };
+  return { archivePageCount, pageEvents, pageDocuments, archiveShowing };
 }

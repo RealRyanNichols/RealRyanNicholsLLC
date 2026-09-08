@@ -2,6 +2,7 @@ import Link from "next/link";
 import {
   ARCHIVE_LIST_ID,
   J6_PROFILE_LIST_ID,
+  pageHref,
   type J6Filter,
   type Tab,
 } from "@/components/case/archive";
@@ -24,13 +25,9 @@ export function PaginationControls({
   q: string;
   label?: string;
 }) {
-  const hrefFor = (nextPage: number) => {
-    const params = new URLSearchParams({ view, page: String(nextPage) });
-    if (j6Filter !== "all") params.set("filter", j6Filter);
-    if (q) params.set("q", q);
-    // Land on the list, not the top of the header.
-    return `/case?${params.toString()}#${view === "people" ? J6_PROFILE_LIST_ID : ARCHIVE_LIST_ID}`;
-  };
+  // Land on the list, not the top of the header.
+  const hrefFor = (nextPage: number) =>
+    `${pageHref({ view, page: nextPage, j6Filter, q })}#${view === "people" ? J6_PROFILE_LIST_ID : ARCHIVE_LIST_ID}`;
 
   return (
     <nav className="flex items-center gap-2" aria-label={label}>

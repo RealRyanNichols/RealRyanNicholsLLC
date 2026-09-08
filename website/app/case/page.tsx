@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import {
   getGrievances,
   getPeople,
@@ -33,6 +34,7 @@ import {
   filterArchive,
   pageArchive,
   pageDirectory,
+  pageHref,
   parseJ6Filter,
   parsePage,
   parseTab,
@@ -169,11 +171,16 @@ export default async function CasePage({
       getJ6PeoplePage({ claimStatus: j6Filter, q, page, pageSize: 48 }),
       getJ6ClaimCounts(),
     ]);
-    const { clampedPage } = pageDirectory({
+    const { pageCount } = pageDirectory({
       total: j6Page.total,
-      page: j6Page.page,
       pageSize: j6Page.pageSize,
     });
+    // A page past the end (a stale link, or rows gone since it was shared)
+    // has one address: the last page. Redirect rather than clamp, or several
+    // URLs would serve the same slice under different canonicals.
+    if (page > pageCount) {
+      redirect(pageHref({ view: "people", page: pageCount, j6Filter, q }));
+    }
 
     return (
       <div className="mx-auto max-w-5xl px-4 py-10">
@@ -192,7 +199,7 @@ export default async function CasePage({
           j6Filter={j6Filter}
           q={q}
           totalCount={j6Page.total}
-          page={clampedPage}
+          page={page}
           pageSize={j6Page.pageSize}
         />
       </div>
@@ -237,8 +244,18 @@ export default async function CasePage({
     documents,
     peopleNamed: totals.people,
   });
-  const { archivePageCount, archivePage, pageEvents, pageDocuments, archiveShowing } =
-    pageArchive({ tab, page, filteredEvents, filteredDocuments });
+  const { archivePageCount, pageEvents, pageDocuments, archiveShowing } = pageArchive({
+    tab,
+    page,
+    filteredEvents,
+    filteredDocuments,
+  });
+  // Same rule as the people directory: a page past the end redirects to the
+  // last one. The unpaged views have one page, so ?page=2 on grievances
+  // lands back on the view itself.
+  if (page > archivePageCount) {
+    redirect(pageHref({ view: tab, page: archivePageCount, q }));
+  }
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
@@ -272,7 +289,7 @@ export default async function CasePage({
       </div>
       <ArchivePager
         tab={tab}
-        page={archivePage}
+        page={page}
         pageCount={archivePageCount}
         showing={archiveShowing}
         q={q}
