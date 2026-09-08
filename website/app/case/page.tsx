@@ -38,7 +38,7 @@ const CASE_DESCRIPTION =
 export async function generateMetadata({
   searchParams,
 }: {
-  searchParams: Promise<{ view?: string; q?: string; filter?: string }>;
+  searchParams: Promise<{ view?: string; q?: string; filter?: string; page?: string }>;
 }): Promise<Metadata> {
   const sp = await searchParams;
   // Strip the search query from the canonical OG lookup — q is user input
@@ -47,8 +47,17 @@ export async function generateMetadata({
   const lookupParams: Record<string, string | undefined> = {};
   if (sp.view) lookupParams.view = sp.view;
   if (sp.filter) lookupParams.filter = sp.filter;
-  const canonical = canonicalPath("/case", lookupParams);
-  const override = await getOgImage(canonical);
+  const ogLookup = canonicalPath("/case", lookupParams);
+  const override = await getOgImage(ogLookup);
+  // The share card is the same on every slice of a paged view, so the
+  // override lookup stays page-less. The canonical URL is not: a later page
+  // of the timeline or documents view is its own address, or crawlers fold
+  // every slice into page one.
+  const page = parsePage(sp.page);
+  const canonical =
+    sp.view && page > 1
+      ? canonicalPath("/case", { ...lookupParams, page: String(page) })
+      : ogLookup;
 
   const settings = await getSiteSettings();
   // Self-created, self-hosted default card — /og/case renders a branded share
@@ -94,6 +103,11 @@ export async function generateMetadata({
 
 type Tab = "grievances" | "timeline" | "people" | "documents";
 
+// ?page= as a 1-based integer; anything unparseable or below 1 is page one.
+function parsePage(raw: string | undefined): number {
+  return Math.max(1, Number.parseInt(raw ?? "1", 10) || 1);
+}
+
 function shouldRenderJ6Directory(tab: Tab): boolean {
   return tab === "people";
 }
@@ -111,7 +125,7 @@ export default async function CasePage({
 }) {
   const { view, q: rawQ, filter: rawFilter, page: rawPage } = await searchParams;
   const q = (rawQ ?? "").trim();
-  const page = Math.max(1, Number.parseInt(rawPage ?? "1", 10) || 1);
+  const page = parsePage(rawPage);
 
   // THE FRONT DOOR. Clicking "Case" lands on United States v. Nichols —
   // Ryan's full story, the detention record, the whole file. The archive
