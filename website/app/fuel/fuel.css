@@ -105,10 +105,16 @@
   transition: opacity 0.3s ease, transform 0.3s ease;
   white-space: nowrap;
 }
-.ft-rail a:hover span,
-.ft-rail a.is-active span {
+/* Labels only on hover: the active label would sit over the chapter copy
+   on a 1440 screen, where the rail and the text share the left edge. */
+.ft-rail a:hover span {
   opacity: 1;
   transform: none;
+}
+.ft-rail a span {
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  background: var(--ft-glass);
 }
 .ft-rail a.is-active {
   color: var(--ft-gold);
