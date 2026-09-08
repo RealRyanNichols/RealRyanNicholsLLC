@@ -1,8 +1,4 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
-import { Suspense } from "react";
-import Link from "next/link";
-import { J6Banner } from "@/components/J6Banner";
 import {
   getGrievances,
   getPeople,
@@ -27,8 +23,26 @@ import {
 import { getDocumentsForPerson } from "@/lib/case";
 import { getPublishedPosts } from "@/lib/posts";
 import { SUBJECT_SLUG } from "@/lib/bio";
-import { J6ProfileImage } from "@/components/J6ProfileImage";
-import { BookCtaBand } from "@/components/BookCtaBand";
+import { ArchiveHeader } from "@/components/case/ArchiveHeader";
+import { ArchivePager } from "@/components/case/ArchivePager";
+import { ArchiveTabs, J6DirectoryTabs } from "@/components/case/CaseTabNav";
+import { J6DefendantsView } from "@/components/case/J6DefendantsView";
+import { J6DirectoryHeader } from "@/components/case/J6DirectoryHeader";
+import {
+  filterArchive,
+  pageArchive,
+  parseJ6Filter,
+  parsePage,
+  parseTab,
+  shouldRenderJ6Directory,
+} from "@/components/case/archive";
+
+// The /case route: three doors, one file that only composes. The front door
+// is Ryan's own case (components/RyanCaseProfile.tsx); ?view=people is the
+// J6 people directory; every other ?view= is the archive. Each chapter of
+// those pages is its own server component under components/case/, and the
+// non-visual logic (tab and filter parsing, search, paging) is
+// components/case/archive.ts. Data calls stay here.
 
 export const revalidate = 300;
 
@@ -102,43 +116,6 @@ export async function generateMetadata({
   };
 }
 
-type Tab = "grievances" | "timeline" | "people" | "documents";
-
-// ?page= as a 1-based integer; anything unparseable or below 1 is page one.
-function parsePage(raw: string | undefined): number {
-  return Math.max(1, Number.parseInt(raw ?? "1", 10) || 1);
-}
-
-// The one address for a slice of a paged view. Page one is the bare view,
-// the same URL the canonical names, so no slice has two addresses.
-function pageHref({
-  view,
-  page,
-  j6Filter = "all",
-  q,
-}: {
-  view: Tab;
-  page: number;
-  j6Filter?: "all" | "unclaimed" | "verified" | "pending";
-  q: string;
-}): string {
-  const params = new URLSearchParams({ view });
-  if (page > 1) params.set("page", String(page));
-  if (j6Filter !== "all") params.set("filter", j6Filter);
-  if (q) params.set("q", q);
-  return `/case?${params.toString()}`;
-}
-
-function shouldRenderJ6Directory(tab: Tab): boolean {
-  return tab === "people";
-}
-
-function matchesQuery(q: string, ...fields: (string | null | undefined)[]) {
-  if (!q) return true;
-  const needle = q.toLowerCase();
-  return fields.some((f) => (f ?? "").toLowerCase().includes(needle));
-}
-
 export default async function CasePage({
   searchParams,
 }: {
@@ -182,16 +159,8 @@ export default async function CasePage({
       );
     }
   }
-  const tab: Tab =
-    view === "timeline" || view === "people" || view === "documents"
-      ? (view as Tab)
-      : "grievances";
-  const j6Filter: "all" | "unclaimed" | "verified" | "pending" =
-    rawFilter === "unclaimed" ||
-    rawFilter === "verified" ||
-    rawFilter === "pending"
-      ? rawFilter
-      : "all";
+  const tab = parseTab(view);
+  const j6Filter = parseJ6Filter(rawFilter);
 
   if (shouldRenderJ6Directory(tab)) {
     const [j6Page, j6Counts] = await Promise.all([
@@ -200,105 +169,26 @@ export default async function CasePage({
     ]);
 
     const pageCount = Math.max(1, Math.ceil(j6Page.total / j6Page.pageSize));
-    // A page past the end (a stale link, or rows gone since it was shared)
-    // has one address: the last page. Redirect rather than clamp, or several
-    // URLs would serve the same slice under different canonicals.
-    if (page > pageCount) {
-      redirect(pageHref({ view: "people", page: pageCount, j6Filter, q }));
-    }
+    const clampedPage = Math.min(j6Page.page, pageCount);
 
     return (
       <div className="mx-auto max-w-5xl px-4 py-10">
         {/* Door 2 is never one-way: the split sits above the directory so
             the way back to the anchor case is the first thing on the page. */}
         <J6PathSplit active="everyone" className="mb-10" />
-        <header className="mb-10">
-          <J6ClaimDirectoryHero counts={j6Counts} activeFilter={j6Filter} />
-
-          <form
-            method="get"
-            action="/case"
-            className="mt-6 flex flex-col gap-2 sm:flex-row"
-          >
-            <input type="hidden" name="view" value="people" />
-            {j6Filter !== "all" ? (
-              <input type="hidden" name="filter" value={j6Filter} />
-            ) : null}
-            <input
-              type="search"
-              name="q"
-              defaultValue={q}
-              placeholder="Search name, case number, or role..."
-              className="min-h-12 flex-1 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-4 text-sm"
-            />
-            <button
-              type="submit"
-              className="btn-accent min-h-12 rounded-xl px-5 text-sm font-black"
-            >
-              Search
-            </button>
-            {q ? (
-              <Link
-                href={
-                  j6Filter === "all"
-                    ? "/case?view=people"
-                    : `/case?view=people&filter=${j6Filter}`
-                }
-                className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-4 text-sm font-bold text-[var(--color-ink-soft)] hover:border-[var(--color-navy)] hover:text-[var(--color-navy)]"
-              >
-                Clear
-              </Link>
-            ) : null}
-          </form>
-          {q ? (
-            <p className="mt-2 text-xs text-[var(--color-muted)]">
-              {j6Page.total.toLocaleString()} match
-              {j6Page.total === 1 ? "" : "es"} for &quot;{q}&quot; in this J6
-              profile bucket.
-            </p>
-          ) : null}
-        </header>
-
-        <div className="mb-8 flex flex-wrap items-end justify-between gap-3 border-b border-[var(--color-line)]">
-          <nav className="flex flex-wrap gap-1" aria-label="Case view">
-            <TabLink active={false} href="/case?view=grievances">
-              Grievances
-            </TabLink>
-            <TabLink active={false} href="/case?view=timeline">
-              Timeline
-            </TabLink>
-            <TabLink
-              active
-              href={
-                j6Filter === "all"
-                  ? "/case?view=people"
-                  : `/case?view=people&filter=${j6Filter}`
-              }
-            >
-              People
-            </TabLink>
-            <TabLink active={false} href="/case?view=documents">
-              Documents
-            </TabLink>
-          </nav>
-          <div className="mb-1 flex items-center gap-2">
-            <Link
-              href="/case/nexus"
-              className="inline-flex min-h-11 items-center gap-1.5 rounded-full border-2 border-[#1f2f55] bg-[#0a1429] px-3.5 py-1.5 text-xs font-bold text-[#cfd9ea] transition hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)] sm:min-h-0"
-            >
-              <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--color-gold-bright)]" aria-hidden />
-              View as graph
-              <span aria-hidden>→</span>
-            </Link>
-          </div>
-        </div>
-
+        <J6DirectoryHeader
+          counts={j6Counts}
+          j6Filter={j6Filter}
+          q={q}
+          total={j6Page.total}
+        />
+        <J6DirectoryTabs j6Filter={j6Filter} />
         <J6DefendantsView
           people={j6Page.people}
           j6Filter={j6Filter}
           q={q}
           totalCount={j6Page.total}
-          page={page}
+          page={clampedPage}
           pageSize={j6Page.pageSize}
         />
       </div>
@@ -326,957 +216,48 @@ export default async function CasePage({
   const ryan = people.find((p) => p.slug === "ryan-nichols") ?? null;
   const ryanPhoto = siteSettings.avatar_url ?? null;
 
-  const filteredGrievances = q
-    ? grievances.filter((g) =>
-        matchesQuery(q, g.title, g.summary, g.body, g.category)
-      )
-    : grievances;
-  const filteredPeopleByQ = q
-    ? people.filter((p) =>
-        matchesQuery(q, p.name, p.role, p.agency, p.description)
-      )
-    : people;
-  const filteredPeople =
-    j6Filter === "all"
-      ? filteredPeopleByQ
-      : filteredPeopleByQ.filter(
-          (p) => p.is_j6_defendant && p.claim_status === j6Filter,
-        );
-  const filteredEvents = q
-    ? events.filter((e) =>
-        matchesQuery(q, e.title, e.description, e.location)
-      )
-    : events;
-  const filteredDocuments = q
-    ? documents.filter((d) =>
-        matchesQuery(q, d.title, d.description, d.doc_type, d.source)
-      )
-    : documents;
-
-  const totalHits = q
-    ? filteredGrievances.length +
-      filteredPeople.length +
-      filteredEvents.length +
-      filteredDocuments.length
-    : 0;
-
-  // The timeline and the documents views page their lists. Unpaged, the
-  // documents view was a 7.6 MB HTML document (every scan on the record in
-  // one response) and the timeline 1.5 MB: unreadable on a phone and the
-  // pages where React's hydration raced the parser. 48 per page, the same
-  // size as the people directory; the grievances view (34 patterns) stays
-  // whole.
-  const archiveList =
-    tab === "documents" ? filteredDocuments : tab === "timeline" ? filteredEvents : [];
-  const archivePageCount = Math.max(1, Math.ceil(archiveList.length / ARCHIVE_PAGE_SIZE));
-  // Same rule as the people directory: a page past the end redirects to the
-  // last one. The unpaged views have one page, so ?page=2 on grievances
-  // lands back on the view itself.
-  if (page > archivePageCount) {
-    redirect(pageHref({ view: tab, page: archivePageCount, q }));
-  }
-  const archiveFrom = (page - 1) * ARCHIVE_PAGE_SIZE;
-  const pageEvents = filteredEvents.slice(archiveFrom, archiveFrom + ARCHIVE_PAGE_SIZE);
-  const pageDocuments = filteredDocuments.slice(archiveFrom, archiveFrom + ARCHIVE_PAGE_SIZE);
-  const archiveShowing =
-    archiveList.length === 0
-      ? null
-      : `${(archiveFrom + 1).toLocaleString("en-US")}–${Math.min(archiveFrom + ARCHIVE_PAGE_SIZE, archiveList.length).toLocaleString("en-US")} of ${archiveList.length.toLocaleString("en-US")}`;
+  const { filteredGrievances, filteredPeople, filteredEvents, filteredDocuments, totalHits } =
+    filterArchive({ q, j6Filter, grievances, people, events, documents });
+  const { archivePageCount, archivePage, pageEvents, pageDocuments, archiveShowing } =
+    pageArchive({ tab, page, filteredEvents, filteredDocuments });
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
-      <header className="mb-10">
-        {/* The one path split. These views are all United States v. Nichols,
-            so Door 1 carries the "You are here" pill and Door 2 is the way
-            out to every other defendant. */}
-        <J6PathSplit active="ryan" headline="h1" />
+      <ArchiveHeader
+        totals={totals}
+        eventsShown={q ? filteredEvents.length : events.length}
+        peopleShown={q ? filteredPeople.length : totals.people}
+        ryan={ryan}
+        ryanPhoto={ryanPhoto}
+        tab={tab}
+        q={q}
+        totalHits={totalHits}
+      />
 
-        {/* One unified stat block — the four headline numbers, then the four
-            secondary ones, adjacent. No buttons splitting them apart. */}
-        <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl">
-          <BigStat label="Days, arrest to pardon" value={totals.daysArrestToPardon.toLocaleString()} />
-          <BigStat label="Grievances filed" value={String(totals.grievances)} />
-          <BigStat label="Documents on file" value={String(totals.documents)} />
-          <BigStat label="Co-detainees corroborating" value={String(totals.corroborators)} />
-        </div>
-
-        <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2 max-w-3xl">
-          <SmallStat label="Events" value={q ? filteredEvents.length : events.length} />
-          <SmallStat label="People named" value={q ? filteredPeople.length : totals.people} />
-          <SmallStat label="Facilities" value={totals.facilities} />
-          <SmallStat
-            label="Federal officers on record (IGP broken)"
-            value={totals.igpBrokenFederalOfficers}
-          />
-        </div>
-
-        <div className="mt-6 flex flex-wrap gap-3">
-          <Link
-            href="/case/brief"
-            className="btn-accent inline-flex min-h-11 items-center rounded-full px-5 py-2.5 text-sm font-bold"
-          >
-            Read the Compensation Brief →
-          </Link>
-          <Link
-            href="/case/damages"
-            className="inline-flex min-h-11 items-center rounded-full border border-[var(--color-navy)] bg-[var(--color-blue-soft)]/60 px-5 py-2.5 text-sm font-bold text-[var(--color-navy)] hover:opacity-90"
-          >
-            What it cost him — Damages →
-          </Link>
-          <Link
-            href="/case/witnesses"
-            className="inline-flex min-h-11 items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-5 py-2.5 text-sm font-bold text-[var(--color-ink)] hover:border-[var(--color-navy)] hover:text-[var(--color-navy)]"
-          >
-            Wall of Corroborators →
-          </Link>
-        </div>
-
-        {/* PILLAR 1 — THE LEAD CASE. Ryan's own file is the main story this
-            whole archive is built on; surface it as the centerpiece with a
-            direct path to his full profile, not a name buried in the list. */}
-        {ryan ? (
-          <Link
-            href="/case/people/ryan-nichols"
-            className="mt-6 block overflow-hidden rounded-2xl border-2 border-[var(--color-ink)] bg-[var(--color-surface)] hover:border-[var(--color-navy)] transition group"
-          >
-            <div className="flex flex-col sm:flex-row">
-              {ryanPhoto ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={ryanPhoto}
-                  alt="Ryan Nichols"
-                  className="h-52 w-full flex-shrink-0 object-cover object-top sm:h-auto sm:w-48"
-                />
-              ) : null}
-              <div className="flex-1 p-5 sm:p-6">
-                <p className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--color-navy)]">
-                  The lead case · ✓ verified
-                </p>
-                <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
-                  United States v. Nichols
-                </h2>
-                {/* Hard docket identifiers only. The pardon, the days, and the ten
-                    facilities are already in the header above this card, so the
-                    card carries the case-file facts and the link — not a re-telling. */}
-                {/* Docket identifiers come from the database row only. If a
-                    field is ever missing the page says so instead of typing
-                    a value in — no count or number on this page is hardcoded. */}
-                <p className="mt-2 text-xs sm:text-sm font-medium text-[var(--color-muted)]">
-                  Case No. {ryan.case_number ?? "NEEDS AUTHENTICATION"}
-                  {" · "}
-                  {ryan.court ?? "Court: NEEDS AUTHENTICATION"}
-                  {" · "}
-                  {ryan.charges?.length
-                    ? `${ryan.charges.length} federal charges`
-                    : "Charges: NEEDS AUTHENTICATION"}
-                  {ryan.judge_name ? ` · Judge ${ryan.judge_name}` : ""}
-                </p>
-                <p className="mt-2 text-sm sm:text-base text-[var(--color-ink-soft)] leading-relaxed">
-                  The case this whole archive was built on. Every filing, every named
-                  official, every document — the full record is on my file.
-                </p>
-                <span className="mt-3 inline-block text-sm font-bold text-[var(--color-navy)] group-hover:underline">
-                  Read my full case file →
-                </span>
-              </div>
-            </div>
-          </Link>
-        ) : null}
-
-        {/* PILLAR 2 — the claim CTA for every other defendant. The path
-            split above is the door to the archive; this banner carries the
-            unclaimed-profile count (public-record count from lib/case.ts). */}
-        <div className="mt-6">
-          {/* Belt and braces: if the count ever does suspend, it suspends
-              inside a real boundary that hydrates cleanly. */}
-          <Suspense fallback={null}>
-            <J6Banner tone="navy" />
-          </Suspense>
-        </div>
-
-        {/* The book. /case is by far the highest-traffic page on the site —
-            on Aug 22 it took 475 of the 504 visitors X sent, while only 30
-            reached /book/preorder, and 8 of those 30 bought. The archive was
-            doing its job and then handing the reader nowhere to go. This is
-            the same BookCtaBand already used on home, /support, /impact,
-            /tools and every post, so the archive keeps its voice and the
-            reader gets a door. */}
-        <BookCtaBand className="mt-8" tone="case" />
-
-        <p className="mt-3 text-xs text-[var(--color-muted)]">
-          How this archive sources, labels, and corrects what it publishes —{" "}
-          <Link
-            href="/editorial-standards"
-            className="font-bold text-[var(--color-navy)] hover:underline"
-          >
-            editorial standards →
-          </Link>
-        </p>
-
-        {/* Explore-the-case hub — every tool with its function spelled out,
-            so nothing is a mystery and Evidence stays front-and-center. */}
-        <section className="mt-8">
-          <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold mb-3">
-            Explore this case
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            <HubCard
-              href="/case/the-salvaged-doj-record"
-              title="Evidence the DOJ Tried to Erase"
-              sub="The scrubbed federal record — preserved and hash-verified."
-              featured
-            />
-            <HubCard
-              href="/the-map-room"
-              title="The Map Room — LIVE"
-              sub="Who's reading the case right now, on a live world map."
-            />
-            <HubCard
-              href="/case/officials"
-              title="Accountability Index"
-              sub="Everyone named in the record, grouped by agency."
-            />
-            <HubCard
-              href="/case/nexus"
-              title="The Nexus"
-              sub="Force-directed graph of the co-defendant network."
-            />
-            <HubCard
-              href="/case/timeline"
-              title="The Timeline"
-              sub="Every arrest and sentencing, month by month."
-            />
-            <HubCard
-              href="/case/geography"
-              title="The Geography"
-              sub="Every J6 defendant plotted by home state."
-            />
-          </div>
-        </section>
-
-        {/* Search */}
-        <form
-          method="get"
-          action="/case"
-          className="mt-6 flex flex-col sm:flex-row gap-2 max-w-2xl"
-        >
-          {tab !== "grievances" ? (
-            <input type="hidden" name="view" value={tab} />
-          ) : null}
-          <input
-            type="search"
-            name="q"
-            defaultValue={q}
-            placeholder="Search grievances, people, events, documents…"
-            className="flex-1 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm"
-          />
-          <button
-            type="submit"
-            className="btn-accent rounded-md px-4 py-2 text-sm font-bold"
-          >
-            Search
-          </button>
-          {q ? (
-            <Link
-              href={`/case${tab === "grievances" ? "" : `?view=${tab}`}`}
-              className="inline-flex items-center justify-center rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm font-medium text-[var(--color-ink-soft)] hover:border-[var(--color-navy)] hover:text-[var(--color-navy)]"
-            >
-              Clear
-            </Link>
-          ) : null}
-        </form>
-        {q ? (
-          <p className="mt-2 text-xs text-[var(--color-muted)]">
-            {totalHits} match{totalHits === 1 ? "" : "es"} for &quot;{q}&quot; across all 4 sections.
-          </p>
-        ) : null}
-      </header>
-
-      <div className="flex items-end justify-between gap-3 flex-wrap border-b border-[var(--color-line)] mb-8">
-        <nav
-          className="flex flex-wrap gap-1"
-          aria-label="Case view"
-        >
-          <TabLink active={tab === "grievances"} href={`/case?view=grievances${q ? `&q=${encodeURIComponent(q)}` : ""}`}>
-            Grievances {q ? `(${filteredGrievances.length})` : ""}
-          </TabLink>
-          <TabLink active={tab === "timeline"} href={`/case?view=timeline${q ? `&q=${encodeURIComponent(q)}` : ""}`}>
-            Timeline {q ? `(${filteredEvents.length})` : ""}
-          </TabLink>
-          <TabLink active={tab === "people"} href={`/case?view=people${q ? `&q=${encodeURIComponent(q)}` : ""}`}>
-            People {q ? `(${filteredPeople.length})` : ""}
-          </TabLink>
-          <TabLink active={tab === "documents"} href={`/case?view=documents${q ? `&q=${encodeURIComponent(q)}` : ""}`}>
-            Documents {q ? `(${filteredDocuments.length})` : ""}
-          </TabLink>
-        </nav>
-        <div className="mb-1 flex items-center gap-2">
-          <Link
-            href="/case/officials"
-            className="inline-flex min-h-11 items-center gap-1.5 rounded-full border-2 border-[var(--color-navy)] bg-[var(--color-blue-soft)]/60 px-3.5 py-1.5 text-xs font-bold text-[var(--color-navy)] hover:bg-[var(--color-navy)] hover:text-[var(--color-paper)] transition sm:min-h-0"
-          >
-            Who&apos;s named
-            <span aria-hidden>→</span>
-          </Link>
-          <Link
-            href="/case/nexus"
-            className="inline-flex min-h-11 items-center gap-1.5 rounded-full border-2 border-[#1f2f55] bg-[#0a1429] px-3.5 py-1.5 text-xs font-bold text-[#cfd9ea] hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)] transition sm:min-h-0"
-          >
-            <span className="inline-block w-1.5 h-1.5 rounded-full bg-[var(--color-gold-bright)] animate-pulse" aria-hidden />
-            View as graph
-            <span aria-hidden>→</span>
-          </Link>
-        </div>
-      </div>
+      <ArchiveTabs
+        tab={tab}
+        q={q}
+        counts={{
+          grievances: filteredGrievances.length,
+          timeline: filteredEvents.length,
+          people: filteredPeople.length,
+          documents: filteredDocuments.length,
+        }}
+      />
 
       {/* The pager's links land here, not at the top of the header. */}
       <div id="archive-list" className="scroll-mt-24">
         {tab === "grievances" && <GrievancesView grievances={filteredGrievances} />}
         {tab === "timeline" && <TimelineView events={pageEvents} />}
-        {/* Unreachable: the people view returns from shouldRenderJ6Directory
-            above. PeopleView and PEOPLE_GROUPS below are dead with it and come
-            out when this file is split into components/case/. */}
-        {tab === "people" && (
-          <PeopleView people={filteredPeople} j6Filter={j6Filter} q={q} />
-        )}
         {tab === "documents" && <DocumentsView documents={pageDocuments} />}
       </div>
-      {(tab === "timeline" || tab === "documents") && archivePageCount > 1 ? (
-        <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--color-line)] pt-5">
-          <p className="text-sm text-[var(--color-muted)]">
-            Showing {archiveShowing} {tab === "documents" ? "documents" : "events"}
-          </p>
-          <PaginationControls
-            page={page}
-            pageCount={archivePageCount}
-            view={tab}
-            q={q}
-            label={tab === "documents" ? "Document pages" : "Timeline pages"}
-          />
-        </div>
-      ) : null}
-    </div>
-  );
-}
-
-// Rows per page on the timeline and documents views.
-const ARCHIVE_PAGE_SIZE = 48;
-
-function BigStat({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
-      <div className="text-3xl sm:text-4xl font-bold tracking-tight leading-none text-[var(--color-navy)]">
-        {value}
-      </div>
-      <div className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold mt-2">
-        {label}
-      </div>
-    </div>
-  );
-}
-
-function SmallStat({ label, value }: { label: string; value: number | string }) {
-  return (
-    <div className="rounded-lg border border-[var(--color-line)] px-2.5 py-1.5 text-[var(--color-ink-soft)]">
-      <span className="text-sm font-bold text-[var(--color-ink)] mr-1.5">{value}</span>
-      <span className="text-[10px] uppercase tracking-wider">{label}</span>
-    </div>
-  );
-}
-
-function J6ClaimDirectoryHero({
-  counts,
-  activeFilter,
-}: {
-  counts: {
-    total: number;
-    withCaseNumber: number;
-    unclaimed: number;
-    verified: number;
-    pending: number;
-  };
-  activeFilter: "all" | "unclaimed" | "verified" | "pending";
-}) {
-  const isUnclaimed = activeFilter === "unclaimed";
-  const kicker =
-    activeFilter === "verified"
-      ? "Verified defendants"
-      : activeFilter === "pending"
-        ? "Claims under review"
-        : activeFilter === "unclaimed"
-          ? "J6 defendants · get in here"
-          : "The January 6 People Archive";
-  const title =
-    activeFilter === "verified"
-      ? "These J6 defendants are already building their public record."
-      : activeFilter === "pending"
-        ? "These claims are waiting on verification."
-        : activeFilter === "unclaimed"
-          ? "If you have the facts and evidence, build your case here."
-          : "Search every name. Open the record. Help complete what is missing.";
-  const lead =
-    activeFilter === "verified"
-      ? "A verified profile becomes a living case file: testimony, court documents, photos, videos, links, dates, witnesses, and updates in one place."
-      : activeFilter === "pending"
-        ? "Claims do not go public until Ryan verifies the person against the docket and public record. That protects the defendants and keeps the archive credible."
-        : activeFilter === "unclaimed"
-          ? "Every J6 defendant should have a place to organize what happened in plain English. Find your name, claim your profile, and start turning scattered facts into a record people can inspect."
-          : "A searchable, evidence-first directory of public January 6 profiles. Find a person by name or case number, inspect the available record, and help fill an honest gap with a source.";
-
-  return (
-    <section className="overflow-hidden rounded-2xl border-2 border-[#1f2f55] bg-[#071123] text-[#fdf8ea] shadow-2xl">
-      <div className="grid gap-px bg-white/10 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="bg-[#071123] p-5 sm:p-7">
-          <p className="text-[11px] font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
-            {kicker}
-          </p>
-          <h1 className="mt-3 text-3xl font-black leading-[1.02] tracking-tight text-[#fdf8ea] sm:text-5xl">
-            {title}
-          </h1>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-[#cfd9ea] sm:text-lg">
-            {lead}
-          </p>
-
-          {isUnclaimed ? (
-            <div className="mt-5 rounded-xl border border-[var(--color-gold-bright)]/30 bg-[var(--color-gold-bright)]/10 p-4">
-              <p className="text-sm font-black uppercase tracking-wider text-[var(--color-gold-bright)]">
-                What you can add after verification
-              </p>
-              <div className="mt-3 grid gap-2 text-sm text-[#fdf8ea] sm:grid-cols-2">
-                {[
-                  "Your timeline",
-                  "Court filings",
-                  "Photos and videos",
-                  "Witness statements",
-                  "Jail / medical records",
-                  "Missing evidence requests",
-                ].map((item) => (
-                  <div key={item} className="flex items-center gap-2">
-                    <span className="h-2 w-2 rounded-full bg-[var(--color-gold-bright)]" aria-hidden />
-                    <span>{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ) : null}
-
-          <div className="mt-6 flex flex-col gap-2 sm:flex-row">
-            <Link
-              href="#j6-profile-list"
-              className="inline-flex min-h-12 items-center justify-center rounded-xl bg-[var(--color-gold-bright)] px-5 py-3 text-sm font-black uppercase tracking-wider text-[#071123] transition hover:bg-[#a7efc4]"
-            >
-              Find your name
-            </Link>
-            <Link
-              href="/submit?type=j6"
-              className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#7fa9e3]/60 bg-[#7fa9e3]/10 px-5 py-3 text-sm font-black uppercase tracking-wider text-[#dce8ff] transition hover:bg-[#7fa9e3] hover:text-[#071123]"
-            >
-              Send evidence or a lead
-            </Link>
-          </div>
-          <p className="mt-3 text-xs leading-relaxed text-[#9fb0ca]">
-            This is not a law firm and not legal advice. It is an evidence-first
-            public-record and case-organization system. Private details stay
-            private until they are safe and approved to publish.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 gap-px bg-white/10 sm:grid-cols-4 lg:grid-cols-2">
-          <J6HeroStat label="Total J6 profiles" value={counts.total} tone="blue" />
-          <J6HeroStat label="Docket numbers" value={counts.withCaseNumber} tone="gold" />
-          <J6HeroStat label="Verified" value={counts.verified} tone="green" />
-          <J6HeroStat label="Under review" value={counts.pending} tone="blue" />
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function J6HeroStat({
-  label,
-  value,
-  tone,
-}: {
-  label: string;
-  value: number;
-  tone: "green" | "gold" | "blue";
-}) {
-  const color =
-    tone === "green" ? "text-[var(--color-gold-bright)]" : tone === "gold" ? "text-[var(--color-gold-light)]" : "text-[#7fa9e3]";
-  return (
-    <div className="bg-[#0d1a33] p-4 sm:p-5">
-      <div className={`font-mono text-3xl font-black leading-none tabular-nums ${color}`}>
-        {value.toLocaleString()}
-      </div>
-      <div className="mt-2 text-[10px] font-black uppercase tracking-[0.18em] text-[#cfd9ea]">
-        {label}
-      </div>
-    </div>
-  );
-}
-
-function TabLink({
-  active,
-  href,
-  children,
-}: {
-  active: boolean;
-  href: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <Link
-      href={href}
-      className={[
-        "inline-flex min-h-11 items-center px-4 py-2.5 -mb-px border-b-2 text-sm font-semibold transition sm:min-h-0",
-        active
-          ? "border-[var(--color-navy)] text-[var(--color-ink)]"
-          : "border-transparent text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]",
-      ].join(" ")}
-    >
-      {children}
-    </Link>
-  );
-}
-
-const PEOPLE_GROUPS: { label: string; match: (agency: string | null) => boolean; lead: string }[] = [
-  {
-    label: "Executive",
-    match: (a) => !!a && /^executive/i.test(a),
-    lead: "The Presidential pardon and the Anti-Weaponization Fund originate here.",
-  },
-  {
-    label: "Judiciary",
-    match: (a) => !!a && /district court/i.test(a),
-    lead: "Federal judges who presided over the case and were the subject of defense motions.",
-  },
-  {
-    label: "Prosecution",
-    match: (a) => !!a && /u\.?s\.? attorney/i.test(a),
-    lead: "Federal prosecutors of record in United States v. Nichols.",
-  },
-  {
-    label: "Defense Counsel",
-    match: (a) => !!a && /private counsel/i.test(a),
-    lead: "Defense attorneys representing Ryan and other January 6 defendants.",
-  },
-  {
-    label: "Capitol Police / MPD (January 6)",
-    match: (a) => !!a && /capitol police|mpd/i.test(a),
-    lead: "Officers from the events at the U.S. Capitol on January 6, 2021 — named in the bodycam discovery record.",
-  },
-  {
-    label: "DC DOC / Detention Staff",
-    match: (a) => !!a && /(dc doc|doc medical|igp)/i.test(a),
-    lead: "Detention staff named in the documented grievances.",
-  },
-  {
-    label: "Rappahannock & Northern Neck",
-    match: (a) => !!a && /(rappahannock|northern neck)/i.test(a),
-    lead: "Staff at the second and third facilities Ryan was moved through after the unannounced September 2022 transfer.",
-  },
-  {
-    label: "U.S. Marshals",
-    match: (a) => !!a && /marshals/i.test(a),
-    lead: "Federal officers tied to specific incidents inside the facilities — including the witness statement acknowledging the IGP is broken.",
-  },
-  {
-    label: "Co-defendants & Fellow Detainees",
-    match: (a) => !!a && /(c-2b|^dc doc$|harkrider|defend|j6 detainee|sibick witness)/i.test(a),
-    lead: "Co-defendants on the indictment and detainees who signed witness statements.",
-  },
-  {
-    label: "January 6 Capitol Crowd",
-    match: (a) => !!a && /january 6 capitol crowd/i.test(a),
-    lead: "Civilian figures from the Capitol events on January 6.",
-  },
-  {
-    label: "Family",
-    match: (a) => !!a && /family/i.test(a),
-    lead: "Family members directly affected.",
-  },
-];
-
-function PeopleView({
-  people,
-  j6Filter,
-  q,
-  totalCount,
-  page,
-  pageSize,
-}: {
-  people: Awaited<ReturnType<typeof getPeople>>;
-  j6Filter: "all" | "unclaimed" | "verified" | "pending";
-  q: string;
-  totalCount?: number;
-  page?: number;
-  pageSize?: number;
-}) {
-  // J6 filter mode: flat alphabetical list, all J6 defendants matching the
-  // selected claim status. Skips the agency-group treatment entirely.
-  if (j6Filter !== "all") {
-    return (
-      <J6DefendantsView
-        people={people}
-        j6Filter={j6Filter}
+      <ArchivePager
+        tab={tab}
+        page={archivePage}
+        pageCount={archivePageCount}
+        showing={archiveShowing}
         q={q}
-        totalCount={totalCount}
-        page={page}
-        pageSize={pageSize}
       />
-    );
-  }
-
-  const assigned = new Set<string>();
-  const groups = PEOPLE_GROUPS.map((g) => {
-    const items = people.filter((p) => {
-      if (assigned.has(p.id)) return false;
-      if (g.match(p.agency)) {
-        assigned.add(p.id);
-        return true;
-      }
-      return false;
-    });
-    return { ...g, items };
-  });
-  const rest = people.filter((p) => !assigned.has(p.id));
-  return (
-    <div className="space-y-10">
-      {groups.map((group) =>
-        group.items.length === 0 ? null : (
-          <section key={group.label}>
-            <div className="border-l-2 border-[var(--color-navy)] pl-4 mb-4">
-              <h2 className="text-lg sm:text-xl font-bold tracking-tight">{group.label}</h2>
-              <p className="text-sm text-[var(--color-ink-soft)] mt-1 max-w-2xl leading-relaxed">
-                {group.lead}
-              </p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {group.items.map((p) => (
-                <Link
-                  key={p.id}
-                  href={`/case/people/${p.slug}`}
-                  className="block rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 hover:border-[var(--color-navy)] transition"
-                >
-                  <h3 className="text-lg font-bold tracking-tight">{p.name}</h3>
-                  <p className="text-sm text-[var(--color-navy)] font-medium mt-0.5">
-                    {p.role}
-                    {p.agency ? ` · ${p.agency}` : ""}
-                  </p>
-                  {p.description ? (
-                    <p className="mt-2 text-sm text-[var(--color-ink-soft)] leading-relaxed">
-                      {p.description}
-                    </p>
-                  ) : null}
-                </Link>
-              ))}
-            </div>
-          </section>
-        ),
-      )}
-      {rest.length > 0 ? (
-        <section>
-          <div className="border-l-2 border-[var(--color-line)] pl-4 mb-4">
-            <h2 className="text-lg sm:text-xl font-bold tracking-tight">Other Named Individuals</h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {rest.map((p) => (
-              <Link
-                key={p.id}
-                href={`/case/people/${p.slug}`}
-                className="block rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 hover:border-[var(--color-navy)] transition"
-              >
-                <h3 className="text-lg font-bold tracking-tight">{p.name}</h3>
-                <p className="text-sm text-[var(--color-navy)] font-medium mt-0.5">
-                  {p.role}
-                  {p.agency ? ` · ${p.agency}` : ""}
-                </p>
-                {p.description ? (
-                  <p className="mt-2 text-sm text-[var(--color-ink-soft)] leading-relaxed">
-                    {p.description}
-                  </p>
-                ) : null}
-              </Link>
-            ))}
-          </div>
-        </section>
-      ) : null}
     </div>
-  );
-}
-
-function J6DefendantsView({
-  people,
-  j6Filter,
-  q,
-  totalCount,
-  page = 1,
-  pageSize = people.length || 1,
-}: {
-  people: Awaited<ReturnType<typeof getPeople>>;
-  j6Filter: "all" | "unclaimed" | "verified" | "pending";
-  q: string;
-  totalCount?: number;
-  page?: number;
-  pageSize?: number;
-}) {
-  const shownTotal = totalCount ?? people.length;
-  const pageCount = Math.max(1, Math.ceil(shownTotal / pageSize));
-  const first = shownTotal === 0 ? 0 : (page - 1) * pageSize + 1;
-  const last = Math.min(shownTotal, first + people.length - 1);
-  const heading =
-    j6Filter === "all"
-      ? `${shownTotal.toLocaleString()} searchable January 6 profiles`
-      : j6Filter === "unclaimed"
-      ? `${shownTotal.toLocaleString()} J6 defendant profiles waiting to be claimed`
-      : j6Filter === "verified"
-        ? `${shownTotal.toLocaleString()} J6 defendants verified`
-        : `${shownTotal.toLocaleString()} J6 claims pending review`;
-  const lead =
-    j6Filter === "all"
-      ? "The free public directory, ordered A–Z. Search a name, case number, or role, then select any person to open the full profile."
-      : j6Filter === "unclaimed"
-      ? "Public profiles that are free for anyone to read and ready for the named person to claim. Claims are verified before editing access is granted."
-      : j6Filter === "verified"
-        ? "Public profiles whose owners have completed identity verification."
-        : "Public profiles with ownership claims awaiting review.";
-  return (
-    <div id="j6-profile-list" className="scroll-mt-24">
-      <div className="mb-5 overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)]">
-        <div className="grid gap-px bg-[var(--color-line)] md:grid-cols-[1fr_0.8fr]">
-          <div className="bg-[var(--color-surface)] p-5">
-            <p className="text-xs uppercase tracking-wider text-[var(--color-navy)] font-bold">
-              Anti-Weaponization Case Builder
-            </p>
-            <h2 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight">
-              {heading}
-            </h2>
-            <p className="mt-2 text-sm text-[var(--color-ink-soft)] leading-relaxed max-w-2xl">
-              {lead}
-            </p>
-          </div>
-          <div className="bg-[var(--color-paper)] p-5">
-            <p className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-black">
-              The build path
-            </p>
-            <ol className="mt-3 grid gap-2 text-sm text-[var(--color-ink-soft)]">
-              <li><strong className="text-[var(--color-ink)]">1.</strong> Find your name.</li>
-              <li><strong className="text-[var(--color-ink)]">2.</strong> Claim the profile with proof it is you.</li>
-              <li><strong className="text-[var(--color-ink)]">3.</strong> Build your page with facts, documents, media, and testimony.</li>
-            </ol>
-          </div>
-        </div>
-      </div>
-
-      {/* Sub-filter pills */}
-      <nav className="mb-5 flex flex-wrap gap-2">
-        {(["unclaimed", "verified", "pending", "all"] as const).map((f) => {
-          const active = f === j6Filter;
-          const href = `/case?view=people${f !== "all" ? `&filter=${f}` : ""}${q ? `&q=${encodeURIComponent(q)}` : ""}`;
-          const label =
-            f === "all"
-              ? "All J6 profiles"
-              : f === "unclaimed"
-                ? "Ready to claim"
-                : f === "verified"
-                  ? "Verified"
-                  : "Pending review";
-          return (
-            <Link
-              key={f}
-              href={href}
-              className={[
-                "inline-flex min-h-11 items-center rounded-full px-3 py-1.5 text-xs font-bold border-2 transition sm:min-h-0",
-                active
-                  ? "border-[var(--color-navy)] bg-[var(--color-navy)] text-[var(--color-paper)]"
-                  : "border-[var(--color-line)] hover:border-[var(--color-navy)]",
-              ].join(" ")}
-            >
-              {label}
-            </Link>
-          );
-        })}
-      </nav>
-
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-3">
-        <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-muted)]">
-          Showing {first.toLocaleString()}-{last.toLocaleString()} of{" "}
-          {shownTotal.toLocaleString()}
-        </p>
-        <PaginationControls
-          page={page}
-          pageCount={pageCount}
-          view="people"
-          j6Filter={j6Filter}
-          q={q}
-          label="J6 profile pages"
-        />
-      </div>
-
-      <div className="mb-4 rounded-xl border border-[var(--color-success)]/40 bg-[var(--color-success-soft)] px-4 py-3 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-        <strong className="text-[var(--color-ink)]">
-          Every J6 profile is public and free to view.
-        </strong>{" "}
-        An account is only required to claim a profile, manage a claimed
-        profile, or suggest a correction.
-      </div>
-
-      {people.length === 0 ? (
-        <p className="text-sm text-[var(--color-muted)] italic py-10 text-center">
-          No profiles in this bucket yet.
-        </p>
-      ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {people.map((p) => {
-            const badge =
-              p.claim_status === "verified"
-                ? { label: "Verified", bg: "var(--color-success)" }
-                : p.claim_status === "pending"
-                  ? { label: "Claim pending", bg: "var(--color-blue)" }
-                  : { label: "Ready to claim", bg: "var(--color-support)" };
-            return (
-              <Link
-                key={p.id}
-                href={`/case/people/${p.slug}`}
-                aria-label={`View ${p.name}'s free public January 6 profile`}
-                className="group flex min-h-full flex-col overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] transition hover:-translate-y-0.5 hover:border-[var(--color-blue)] hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blue)]"
-              >
-                <J6ProfileImage person={p} variant="card" />
-                <div className="flex flex-1 flex-col p-4">
-                  <div className="flex items-start justify-between gap-2">
-                    <h3 className="text-lg font-black leading-tight tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-blue)]">
-                      {p.name}
-                    </h3>
-                    <span
-                      className="whitespace-nowrap rounded-md px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--color-paper)]"
-                      style={{ background: badge.bg }}
-                    >
-                      {badge.label}
-                    </span>
-                  </div>
-                  {p.role ? (
-                    <p className="mt-1 text-sm leading-snug text-[var(--color-muted)]">
-                      {p.role}
-                    </p>
-                  ) : null}
-                  <div className="mt-4 grid grid-cols-2 gap-2 text-[11px] text-[var(--color-muted)]">
-                    <span className="rounded-md border border-[var(--color-line-soft)] bg-[var(--color-paper)] px-2 py-1">
-                      {p.case_number ?? "Case # needed"}
-                    </span>
-                    <span className="rounded-md border border-[var(--color-line-soft)] bg-[var(--color-paper)] px-2 py-1 text-right">
-                      {p.views_count.toLocaleString()} views
-                    </span>
-                  </div>
-                  <span className="mt-auto pt-4 text-sm font-black text-[var(--color-blue)]">
-                    View free public profile →
-                  </span>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-      )}
-
-      {pageCount > 1 ? (
-        <div className="mt-6">
-          <PaginationControls
-            page={page}
-            pageCount={pageCount}
-            view="people"
-            j6Filter={j6Filter}
-            q={q}
-            label="J6 profile pages"
-          />
-        </div>
-      ) : null}
-    </div>
-  );
-}
-
-function PaginationControls({
-  page,
-  pageCount,
-  view,
-  j6Filter = "all",
-  q,
-  label = "Pages",
-}: {
-  page: number;
-  pageCount: number;
-  view: Tab;
-  j6Filter?: "all" | "unclaimed" | "verified" | "pending";
-  q: string;
-  label?: string;
-}) {
-  // Land on the list, not the top of the header.
-  const hrefFor = (nextPage: number) =>
-    `${pageHref({ view, page: nextPage, j6Filter, q })}#${view === "people" ? "j6-profile-list" : "archive-list"}`;
-
-  return (
-    <nav className="flex items-center gap-2" aria-label={label}>
-      <Link
-        href={hrefFor(Math.max(1, page - 1))}
-        aria-disabled={page <= 1}
-        className={[
-          "inline-flex min-h-11 items-center rounded-lg border px-3 text-xs font-black uppercase",
-          page <= 1
-            ? "pointer-events-none border-[var(--color-line)] text-[var(--color-muted)] opacity-50"
-            : "border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink)] hover:border-[var(--color-navy)] hover:text-[var(--color-navy)]",
-        ].join(" ")}
-      >
-        Previous
-      </Link>
-      <span className="font-mono text-xs font-black tabular-nums text-[var(--color-muted)]">
-        {page.toLocaleString()} / {pageCount.toLocaleString()}
-      </span>
-      <Link
-        href={hrefFor(Math.min(pageCount, page + 1))}
-        aria-disabled={page >= pageCount}
-        className={[
-          "inline-flex min-h-11 items-center rounded-lg border px-3 text-xs font-black uppercase",
-          page >= pageCount
-            ? "pointer-events-none border-[var(--color-line)] text-[var(--color-muted)] opacity-50"
-            : "border-[var(--color-navy)] bg-[var(--color-blue-soft)]/60 text-[var(--color-navy)] hover:bg-[var(--color-navy)] hover:text-[var(--color-paper)]",
-        ].join(" ")}
-      >
-        Next
-      </Link>
-    </nav>
-  );
-}
-
-function HubCard({
-  href,
-  title,
-  sub,
-  featured,
-}: {
-  href: string;
-  title: string;
-  sub: string;
-  featured?: boolean;
-}) {
-  return (
-    <Link
-      href={href}
-      className={[
-        "block rounded-2xl border-2 p-4 transition group",
-        featured
-          ? "border-[var(--color-navy)] bg-[var(--color-blue-soft)]/60"
-          : "border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-navy)]",
-      ].join(" ")}
-    >
-      <p
-        className={[
-          "text-sm font-bold tracking-tight",
-          featured
-            ? "text-[var(--color-navy)]"
-            : "text-[var(--color-ink)] group-hover:text-[var(--color-navy)]",
-        ].join(" ")}
-      >
-        {title} <span aria-hidden>→</span>
-      </p>
-      <p className="mt-1 text-xs leading-snug text-[var(--color-ink-soft)]">{sub}</p>
-    </Link>
   );
 }
