@@ -247,7 +247,12 @@ export const getJ6DefendantCount = cache(
 // (the sentencing timeline, which only lists J6 defendants) and must not
 // link a profile that /case/people would 404 for being non-public.
 // Paginated past PostgREST's max-rows cap like getPeople().
-export const getPublicJ6Slugs = cache(async (): Promise<Set<string>> => {
+//
+// Resolves to null when any page fails. The directory is bigger than one
+// page, so a partial set is worse than none: a caller that filtered with
+// it would silently drop every public row whose slug sat on the page that
+// failed. null tells the caller the allowlist could not be built.
+export const getPublicJ6Slugs = cache(async (): Promise<Set<string> | null> => {
   const supabase = getSupabaseStaticClient();
   const PAGE = 1000;
   const slugs = new Set<string>();
@@ -259,7 +264,7 @@ export const getPublicJ6Slugs = cache(async (): Promise<Set<string>> => {
       .eq("is_j6_defendant", true)
       .order("slug", { ascending: true })
       .range(from, from + PAGE - 1);
-    if (error || !data || data.length === 0) break;
+    if (error || !data) return null;
     for (const row of data as { slug: string }[]) slugs.add(row.slug);
     if (data.length < PAGE) break;
   }
@@ -345,7 +350,10 @@ export async function getEvents(): Promise<CaseEvent[]> {
     .from("case_events")
     .select(EVENT_COLS)
     .eq("visibility", "public")
-    .order("event_date", { ascending: true, nullsFirst: true });
+    .order("event_date", { ascending: true, nullsFirst: true })
+    // Same-day events would otherwise come back in whatever order Postgres
+    // chose that request, and the archive pages this list at 48 a page.
+    .order("id", { ascending: true });
   return (data ?? []) as CaseEvent[];
 }
 

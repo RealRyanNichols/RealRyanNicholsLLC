@@ -65,16 +65,16 @@ export default async function CaseTimelinePage() {
   // row here, so no card links to a page that would 404. The histograms and
   // totals stay the RPC's aggregate numbers.
   //
-  // getPublicJ6Slugs() swallows query errors and returns whatever it
-  // collected, an empty Set if the first page failed. An empty set means
-  // "no filter available", not "nothing is public": applying it would blank
-  // the whole timeline on a transient hiccup while the numbers still render.
+  // getPublicJ6Slugs() resolves to null when any page of the directory
+  // failed to load. null means "no filter available", not "nothing is
+  // public": filtering on a partial or missing allowlist would blank the
+  // timeline on a transient hiccup while the numbers still render, so the
+  // RPC's own rows stand until the next revalidation.
   const payload: TimelinePayload = {
     ...raw,
-    rows:
-      publicSlugs.size > 0
-        ? raw.rows.filter((r) => publicSlugs.has(r.slug))
-        : raw.rows,
+    rows: publicSlugs
+      ? raw.rows.filter((r) => publicSlugs.has(r.slug))
+      : raw.rows,
   };
 
   return (
