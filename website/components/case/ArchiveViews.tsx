@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { format } from "date-fns";
 import type { getGrievances, getEvents, getDocuments } from "@/lib/case";
-import { Highlight } from "@/components/case/Highlight";
+import { Highlight, excerptAround, matchesText } from "@/components/case/Highlight";
 
 // The three archive views + the severity meter they share. Each takes the
 // search query so a result shows the word that matched it (Highlight); with
@@ -102,7 +102,15 @@ export function GrievancesView({
               </p>
             </div>
             <div className="space-y-3">
-              {act.items.map((g) => (
+              {act.items.map((g) => {
+                // The search also reads the body, which the card does not
+                // show. When that is the only place the query landed, show
+                // the passage, so no card matches without saying why.
+                const bodyHit =
+                  q && ![g.title, g.summary, g.category].some((f) => matchesText(f, q))
+                    ? excerptAround(g.body, q)
+                    : null;
+                return (
                 <Link
                   key={g.id}
                   href={`/case/grievances/${g.slug}`}
@@ -114,7 +122,7 @@ export function GrievancesView({
                         <SeverityDots severity={g.severity} />
                         {g.category ? (
                           <span className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-semibold">
-                            {g.category}
+                            <Highlight text={g.category} q={q} />
                           </span>
                         ) : null}
                       </div>
@@ -125,6 +133,11 @@ export function GrievancesView({
                       {g.summary ? (
                         <p className="mt-2 text-sm text-[var(--color-ink-soft)] leading-relaxed">
                           <Highlight text={g.summary} q={q} />
+                        </p>
+                      ) : null}
+                      {bodyHit ? (
+                        <p className="mt-2 text-xs italic leading-relaxed text-[var(--color-muted)]">
+                          From the filing: <Highlight text={bodyHit} q={q} />
                         </p>
                       ) : null}
                       <span className="mt-3 inline-block text-xs font-bold text-[var(--color-navy)]">
@@ -139,7 +152,8 @@ export function GrievancesView({
                     </div>
                   </div>
                 </Link>
-              ))}
+                );
+              })}
             </div>
           </section>
         ),
@@ -203,7 +217,14 @@ export function DocumentsView({
   // stays square on a phone and on a desktop.
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {documents.map((d) => (
+      {documents.map((d) => {
+        // The search also reads the source, which the card does not show.
+        // When that is the only place the query landed, name it.
+        const sourceHit =
+          q && ![d.title, d.description, d.doc_type].some((f) => matchesText(f, q))
+            ? matchesText(d.source, q)
+            : false;
+        return (
         <Link
           key={d.id}
           href={`/case/documents/${d.slug}`}
@@ -231,7 +252,7 @@ export function DocumentsView({
               />
             ) : null}
             <span className="absolute left-2 top-2 rounded bg-black/75 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-[0.12em] text-white backdrop-blur-sm">
-              {d.doc_type}
+              <Highlight text={d.doc_type} q={q} />
             </span>
           </div>
 
@@ -249,12 +270,18 @@ export function DocumentsView({
                 <Highlight text={d.description} q={q} />
               </p>
             ) : null}
+            {sourceHit ? (
+              <p className="mt-1.5 text-[11px] leading-snug text-[var(--color-muted)]">
+                Source: <Highlight text={d.source} q={q} />
+              </p>
+            ) : null}
             <span className="mt-auto pt-2.5 text-xs font-bold text-[var(--color-navy)]">
               Read <span aria-hidden>→</span>
             </span>
           </div>
         </Link>
-      ))}
+        );
+      })}
     </div>
   );
 }

@@ -168,7 +168,10 @@ export type J6PeoplePage = {
   pageSize: number;
 };
 
-function cleanCaseSearch(q: string): string {
+// The people directory's query, as the database sees it: PostgREST filter
+// punctuation stripped, whitespace collapsed. Exported so the directory
+// marks its results with the same needle it filtered them with.
+export function cleanCaseSearch(q: string): string {
   return q.replace(/[,%()]/g, " ").replace(/\s+/g, " ").trim();
 }
 
