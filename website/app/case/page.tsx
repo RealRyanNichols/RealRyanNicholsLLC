@@ -584,15 +584,18 @@ export default async function CasePage({
         </div>
       </div>
 
-      {tab === "grievances" && <GrievancesView grievances={filteredGrievances} />}
-      {tab === "timeline" && <TimelineView events={pageEvents} />}
-      {/* Unreachable: the people view returns from shouldRenderJ6Directory
-          above. PeopleView and PEOPLE_GROUPS below are dead with it and come
-          out when this file is split into components/case/. */}
-      {tab === "people" && (
-        <PeopleView people={filteredPeople} j6Filter={j6Filter} q={q} />
-      )}
-      {tab === "documents" && <DocumentsView documents={pageDocuments} />}
+      {/* The pager's links land here, not at the top of the header. */}
+      <div id="archive-list" className="scroll-mt-24">
+        {tab === "grievances" && <GrievancesView grievances={filteredGrievances} />}
+        {tab === "timeline" && <TimelineView events={pageEvents} />}
+        {/* Unreachable: the people view returns from shouldRenderJ6Directory
+            above. PeopleView and PEOPLE_GROUPS below are dead with it and come
+            out when this file is split into components/case/. */}
+        {tab === "people" && (
+          <PeopleView people={filteredPeople} j6Filter={j6Filter} q={q} />
+        )}
+        {tab === "documents" && <DocumentsView documents={pageDocuments} />}
+      </div>
       {(tab === "timeline" || tab === "documents") && archivePageCount > 1 ? (
         <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--color-line)] pt-5">
           <p className="text-sm text-[var(--color-muted)]">
@@ -1164,7 +1167,8 @@ function PaginationControls({
     const params = new URLSearchParams({ view, page: String(nextPage) });
     if (j6Filter !== "all") params.set("filter", j6Filter);
     if (q) params.set("q", q);
-    return `/case?${params.toString()}`;
+    // Land on the list, not the top of the header.
+    return `/case?${params.toString()}#${view === "people" ? "j6-profile-list" : "archive-list"}`;
   };
 
   return (

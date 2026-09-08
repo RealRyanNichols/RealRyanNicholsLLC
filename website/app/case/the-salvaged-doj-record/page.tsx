@@ -356,7 +356,7 @@ export default async function SalvagedDojRecordPage({
             href="/the-map-room"
             className="rounded-full border-2 border-[var(--color-line)] bg-[var(--color-surface)] px-5 py-2.5 text-sm font-bold text-[var(--color-ink)] hover:border-[var(--color-accent)]"
           >
-            The Map Room
+            The Map Room: who&apos;s reading the case right now
           </Link>
           <Link
             href="/submit"

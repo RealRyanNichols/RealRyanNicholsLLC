@@ -226,6 +226,7 @@ export default async function StoryChapterPage({
       <CaseReturnRail
         href="/case#chapter-one"
         label="Back to the case, start to finish"
+        ariaLabel="Return to the case (end of chapter)"
         className="mt-8"
       />
     </article>

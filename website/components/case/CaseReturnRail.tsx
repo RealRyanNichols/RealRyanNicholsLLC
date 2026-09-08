@@ -7,12 +7,15 @@ import Link from "next/link";
 export function CaseReturnRail({
   href = "/case",
   label = "Back to the case",
+  ariaLabel = "Return to the case",
   crumb,
   secondary,
   className = "",
 }: {
   href?: string;
   label?: string;
+  // Landmark name; give the second rail on a page its own.
+  ariaLabel?: string;
   // What this page is, in the case's terms ("The rescue record · chapter 3 of 12").
   crumb?: string;
   secondary?: { href: string; label: string };
@@ -20,7 +23,7 @@ export function CaseReturnRail({
 }) {
   return (
     <nav
-      aria-label="Return to the case"
+      aria-label={ariaLabel}
       className={`flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-y border-[var(--color-line)] py-1 text-sm ${className}`}
     >
       <Link

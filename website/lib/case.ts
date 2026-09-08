@@ -244,8 +244,9 @@ export const getJ6DefendantCount = cache(
 );
 
 // Every public J6 defendant slug, for pages that get their rows from an RPC
-// (the sentencing timeline) and must not link a profile that /case/people
-// would 404. Paginated past PostgREST's max-rows cap like getPeople().
+// (the sentencing timeline, which only lists J6 defendants) and must not
+// link a profile that /case/people would 404 for being non-public.
+// Paginated past PostgREST's max-rows cap like getPeople().
 export const getPublicJ6Slugs = cache(async (): Promise<Set<string>> => {
   const supabase = getSupabaseStaticClient();
   const PAGE = 1000;
