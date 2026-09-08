@@ -64,9 +64,17 @@ export default async function CaseTimelinePage() {
   // The RPC returns every defendant it knows; only public profiles get a
   // row here, so no card links to a page that would 404. The histograms and
   // totals stay the RPC's aggregate numbers.
+  //
+  // getPublicJ6Slugs() swallows query errors and returns whatever it
+  // collected, an empty Set if the first page failed. An empty set means
+  // "no filter available", not "nothing is public": applying it would blank
+  // the whole timeline on a transient hiccup while the numbers still render.
   const payload: TimelinePayload = {
     ...raw,
-    rows: raw.rows.filter((r) => publicSlugs.has(r.slug)),
+    rows:
+      publicSlugs.size > 0
+        ? raw.rows.filter((r) => publicSlugs.has(r.slug))
+        : raw.rows,
   };
 
   return (
