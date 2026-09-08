@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import Link from "next/link";
 import { J6Banner } from "@/components/J6Banner";
@@ -108,6 +109,26 @@ function parsePage(raw: string | undefined): number {
   return Math.max(1, Number.parseInt(raw ?? "1", 10) || 1);
 }
 
+// The one address for a slice of a paged view. Page one is the bare view,
+// the same URL the canonical names, so no slice has two addresses.
+function pageHref({
+  view,
+  page,
+  j6Filter = "all",
+  q,
+}: {
+  view: Tab;
+  page: number;
+  j6Filter?: "all" | "unclaimed" | "verified" | "pending";
+  q: string;
+}): string {
+  const params = new URLSearchParams({ view });
+  if (page > 1) params.set("page", String(page));
+  if (j6Filter !== "all") params.set("filter", j6Filter);
+  if (q) params.set("q", q);
+  return `/case?${params.toString()}`;
+}
+
 function shouldRenderJ6Directory(tab: Tab): boolean {
   return tab === "people";
 }
@@ -179,7 +200,12 @@ export default async function CasePage({
     ]);
 
     const pageCount = Math.max(1, Math.ceil(j6Page.total / j6Page.pageSize));
-    const clampedPage = Math.min(j6Page.page, pageCount);
+    // A page past the end (a stale link, or rows gone since it was shared)
+    // has one address: the last page. Redirect rather than clamp, or several
+    // URLs would serve the same slice under different canonicals.
+    if (page > pageCount) {
+      redirect(pageHref({ view: "people", page: pageCount, j6Filter, q }));
+    }
 
     return (
       <div className="mx-auto max-w-5xl px-4 py-10">
@@ -272,7 +298,7 @@ export default async function CasePage({
           j6Filter={j6Filter}
           q={q}
           totalCount={j6Page.total}
-          page={clampedPage}
+          page={page}
           pageSize={j6Page.pageSize}
         />
       </div>
@@ -343,8 +369,13 @@ export default async function CasePage({
   const archiveList =
     tab === "documents" ? filteredDocuments : tab === "timeline" ? filteredEvents : [];
   const archivePageCount = Math.max(1, Math.ceil(archiveList.length / ARCHIVE_PAGE_SIZE));
-  const archivePage = Math.min(page, archivePageCount);
-  const archiveFrom = (archivePage - 1) * ARCHIVE_PAGE_SIZE;
+  // Same rule as the people directory: a page past the end redirects to the
+  // last one. The unpaged views have one page, so ?page=2 on grievances
+  // lands back on the view itself.
+  if (page > archivePageCount) {
+    redirect(pageHref({ view: tab, page: archivePageCount, q }));
+  }
+  const archiveFrom = (page - 1) * ARCHIVE_PAGE_SIZE;
   const pageEvents = filteredEvents.slice(archiveFrom, archiveFrom + ARCHIVE_PAGE_SIZE);
   const pageDocuments = filteredDocuments.slice(archiveFrom, archiveFrom + ARCHIVE_PAGE_SIZE);
   const archiveShowing =
@@ -616,7 +647,7 @@ export default async function CasePage({
             Showing {archiveShowing} {tab === "documents" ? "documents" : "events"}
           </p>
           <PaginationControls
-            page={archivePage}
+            page={page}
             pageCount={archivePageCount}
             view={tab}
             q={q}
@@ -1177,13 +1208,9 @@ function PaginationControls({
   q: string;
   label?: string;
 }) {
-  const hrefFor = (nextPage: number) => {
-    const params = new URLSearchParams({ view, page: String(nextPage) });
-    if (j6Filter !== "all") params.set("filter", j6Filter);
-    if (q) params.set("q", q);
-    // Land on the list, not the top of the header.
-    return `/case?${params.toString()}#${view === "people" ? "j6-profile-list" : "archive-list"}`;
-  };
+  // Land on the list, not the top of the header.
+  const hrefFor = (nextPage: number) =>
+    `${pageHref({ view, page: nextPage, j6Filter, q })}#${view === "people" ? "j6-profile-list" : "archive-list"}`;
 
   return (
     <nav className="flex items-center gap-2" aria-label={label}>
