@@ -1,4 +1,10 @@
-import type { getGrievances, getPeople, getEvents, getDocuments } from "@/lib/case";
+import type {
+  CaseDocument,
+  CaseEvent,
+  CaseGrievance,
+  CasePerson,
+  J6ClaimFilter,
+} from "@/lib/case";
 
 // The /case archive's non-visual logic: which tab and filter the URL asks
 // for, the search filter, and the paging math. app/case/page.tsx composes
@@ -6,12 +12,12 @@ import type { getGrievances, getPeople, getEvents, getDocuments } from "@/lib/ca
 // renders. Moved out of the page file verbatim.
 
 export type Tab = "grievances" | "timeline" | "people" | "documents";
-export type J6Filter = "all" | "unclaimed" | "verified" | "pending";
+export type J6Filter = J6ClaimFilter;
 
-export type Grievances = Awaited<ReturnType<typeof getGrievances>>;
-export type People = Awaited<ReturnType<typeof getPeople>>;
-export type Events = Awaited<ReturnType<typeof getEvents>>;
-export type Documents = Awaited<ReturnType<typeof getDocuments>>;
+// The anchors the pager lands on: the archive list under the tab strip,
+// and the people directory's list.
+export const ARCHIVE_LIST_ID = "archive-list";
+export const J6_PROFILE_LIST_ID = "j6-profile-list";
 
 export function parseTab(view: string | undefined): Tab {
   return view === "timeline" || view === "people" || view === "documents"
@@ -31,10 +37,25 @@ export function shouldRenderJ6Directory(tab: Tab): boolean {
   return tab === "people";
 }
 
-export function matchesQuery(q: string, ...fields: (string | null | undefined)[]) {
+function matchesQuery(q: string, ...fields: (string | null | undefined)[]) {
   if (!q) return true;
   const needle = q.toLowerCase();
   return fields.some((f) => (f ?? "").toLowerCase().includes(needle));
+}
+
+// The people directory's page count and the page it actually shows.
+export function pageDirectory({
+  total,
+  page,
+  pageSize,
+}: {
+  total: number;
+  page: number;
+  pageSize: number;
+}) {
+  const pageCount = Math.max(1, Math.ceil(total / pageSize));
+  const clampedPage = Math.min(page, pageCount);
+  return { pageCount, clampedPage };
 }
 
 // Rows per page on the timeline and documents views.
@@ -47,13 +68,16 @@ export function filterArchive({
   people,
   events,
   documents,
+  peopleNamed,
 }: {
   q: string;
   j6Filter: J6Filter;
-  grievances: Grievances;
-  people: People;
-  events: Events;
-  documents: Documents;
+  grievances: CaseGrievance[];
+  people: CasePerson[];
+  events: CaseEvent[];
+  documents: CaseDocument[];
+  // The public people count from lib/case.ts, shown when nothing is searched.
+  peopleNamed: number;
 }) {
   const filteredGrievances = q
     ? grievances.filter((g) =>
@@ -89,7 +113,20 @@ export function filterArchive({
       filteredDocuments.length
     : 0;
 
-  return { filteredGrievances, filteredPeople, filteredEvents, filteredDocuments, totalHits };
+  // The two small stats in the header: hits while searching, the record's
+  // own counts otherwise.
+  const eventsShown = q ? filteredEvents.length : events.length;
+  const peopleShown = q ? filteredPeople.length : peopleNamed;
+
+  return {
+    filteredGrievances,
+    filteredPeople,
+    filteredEvents,
+    filteredDocuments,
+    totalHits,
+    eventsShown,
+    peopleShown,
+  };
 }
 
 // The timeline and the documents views page their lists. Unpaged, the
@@ -106,8 +143,8 @@ export function pageArchive({
 }: {
   tab: Tab;
   page: number;
-  filteredEvents: Events;
-  filteredDocuments: Documents;
+  filteredEvents: CaseEvent[];
+  filteredDocuments: CaseDocument[];
 }) {
   const archiveList =
     tab === "documents" ? filteredDocuments : tab === "timeline" ? filteredEvents : [];

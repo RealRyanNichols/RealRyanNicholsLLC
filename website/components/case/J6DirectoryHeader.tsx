@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { J6ClaimDirectoryHero } from "@/components/case/J6DirectoryHero";
+import type { getJ6ClaimCounts } from "@/lib/case";
+import { J6DirectoryHero } from "@/components/case/J6DirectoryHero";
 import type { J6Filter } from "@/components/case/archive";
 
 // The top of the J6 people directory (/case?view=people): the hero for the
@@ -11,13 +12,7 @@ export function J6DirectoryHeader({
   q,
   total,
 }: {
-  counts: {
-    total: number;
-    withCaseNumber: number;
-    unclaimed: number;
-    verified: number;
-    pending: number;
-  };
+  counts: Awaited<ReturnType<typeof getJ6ClaimCounts>>;
   j6Filter: J6Filter;
   q: string;
   // Matches in this bucket for the current query.
@@ -25,7 +20,7 @@ export function J6DirectoryHeader({
 }) {
   return (
     <header className="mb-10">
-      <J6ClaimDirectoryHero counts={counts} activeFilter={j6Filter} />
+      <J6DirectoryHero counts={counts} activeFilter={j6Filter} />
 
       <form
         method="get"

@@ -1,5 +1,10 @@
 import Link from "next/link";
-import type { J6Filter, Tab } from "@/components/case/archive";
+import {
+  ARCHIVE_LIST_ID,
+  J6_PROFILE_LIST_ID,
+  type J6Filter,
+  type Tab,
+} from "@/components/case/archive";
 
 // Previous / N of M / Next, for every paged list on /case: the people
 // directory, the timeline view, the documents view. Keeps the view, the
@@ -24,7 +29,7 @@ export function PaginationControls({
     if (j6Filter !== "all") params.set("filter", j6Filter);
     if (q) params.set("q", q);
     // Land on the list, not the top of the header.
-    return `/case?${params.toString()}#${view === "people" ? "j6-profile-list" : "archive-list"}`;
+    return `/case?${params.toString()}#${view === "people" ? J6_PROFILE_LIST_ID : ARCHIVE_LIST_ID}`;
   };
 
   return (

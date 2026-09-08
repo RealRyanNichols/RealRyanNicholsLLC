@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { J6ProfileImage } from "@/components/J6ProfileImage";
 import { PaginationControls } from "@/components/case/PaginationControls";
-import type { J6Filter, People } from "@/components/case/archive";
+import { J6_PROFILE_LIST_ID, type J6Filter } from "@/components/case/archive";
+import type { CasePerson } from "@/lib/case";
 
 // The J6 people directory list (/case?view=people): the bucket heading,
 // the claim-status pills, the card grid, and its pager. Moved out of
@@ -14,7 +15,7 @@ export function J6DefendantsView({
   page = 1,
   pageSize = people.length || 1,
 }: {
-  people: People;
+  people: CasePerson[];
   j6Filter: J6Filter;
   q: string;
   totalCount?: number;
@@ -42,7 +43,7 @@ export function J6DefendantsView({
         ? "Public profiles whose owners have completed identity verification."
         : "Public profiles with ownership claims awaiting review.";
   return (
-    <div id="j6-profile-list" className="scroll-mt-24">
+    <div id={J6_PROFILE_LIST_ID} className="scroll-mt-24">
       <div className="mb-5 overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)]">
         <div className="grid gap-px bg-[var(--color-line)] md:grid-cols-[1fr_0.8fr]">
           <div className="bg-[var(--color-surface)] p-5">

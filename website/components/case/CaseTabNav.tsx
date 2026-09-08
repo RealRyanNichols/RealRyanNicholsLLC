@@ -31,6 +31,10 @@ function TabLink({
   );
 }
 
+// The directory strip's graph link. The archive strip below carries its own
+// copy whose class string differs only in order; this move keeps both
+// byte-for-byte so the rendered HTML stays identical, and a later pass that
+// is allowed to touch class strings can collapse them into this one.
 function GraphLink() {
   return (
     <Link

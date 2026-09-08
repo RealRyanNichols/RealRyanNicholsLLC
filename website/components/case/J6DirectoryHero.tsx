@@ -1,20 +1,15 @@
 import Link from "next/link";
-import type { J6Filter } from "@/components/case/archive";
+import type { getJ6ClaimCounts } from "@/lib/case";
+import { J6_PROFILE_LIST_ID, type J6Filter } from "@/components/case/archive";
 
 // The dark hero at the top of the J6 people directory (/case?view=people):
 // the pitch for the active claim filter and four headline counts. Moved out
 // of app/case/page.tsx verbatim.
-export function J6ClaimDirectoryHero({
+export function J6DirectoryHero({
   counts,
   activeFilter,
 }: {
-  counts: {
-    total: number;
-    withCaseNumber: number;
-    unclaimed: number;
-    verified: number;
-    pending: number;
-  };
+  counts: Awaited<ReturnType<typeof getJ6ClaimCounts>>;
   activeFilter: J6Filter;
 }) {
   const isUnclaimed = activeFilter === "unclaimed";
@@ -82,7 +77,7 @@ export function J6ClaimDirectoryHero({
 
           <div className="mt-6 flex flex-col gap-2 sm:flex-row">
             <Link
-              href="#j6-profile-list"
+              href={`#${J6_PROFILE_LIST_ID}`}
               className="inline-flex min-h-12 items-center justify-center rounded-xl bg-[var(--color-gold-bright)] px-5 py-3 text-sm font-black uppercase tracking-wider text-[#071123] transition hover:bg-[#a7efc4]"
             >
               Find your name

@@ -158,6 +158,9 @@ export async function getPeople(): Promise<CasePerson[]> {
   return all;
 }
 
+// The claim-status buckets the people directory can filter on.
+export type J6ClaimFilter = "all" | "unclaimed" | "verified" | "pending";
+
 export type J6PeoplePage = {
   people: CasePerson[];
   total: number;
@@ -175,7 +178,7 @@ export async function getJ6PeoplePage({
   page = 1,
   pageSize = 120,
 }: {
-  claimStatus: "all" | "unclaimed" | "verified" | "pending";
+  claimStatus: J6ClaimFilter;
   q?: string;
   page?: number;
   pageSize?: number;

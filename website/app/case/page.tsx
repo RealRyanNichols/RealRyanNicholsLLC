@@ -5,6 +5,7 @@ import {
   getPersonBySlug,
   getEvents,
   getDocuments,
+  getDocumentsForPerson,
   getCaseTotals,
   getJ6ClaimCounts,
   getJ6DefendantCount,
@@ -20,7 +21,6 @@ import {
   TimelineView,
   DocumentsView,
 } from "@/components/case/ArchiveViews";
-import { getDocumentsForPerson } from "@/lib/case";
 import { getPublishedPosts } from "@/lib/posts";
 import { SUBJECT_SLUG } from "@/lib/bio";
 import { ArchiveHeader } from "@/components/case/ArchiveHeader";
@@ -29,8 +29,10 @@ import { ArchiveTabs, J6DirectoryTabs } from "@/components/case/CaseTabNav";
 import { J6DefendantsView } from "@/components/case/J6DefendantsView";
 import { J6DirectoryHeader } from "@/components/case/J6DirectoryHeader";
 import {
+  ARCHIVE_LIST_ID,
   filterArchive,
   pageArchive,
+  pageDirectory,
   parseJ6Filter,
   parsePage,
   parseTab,
@@ -41,8 +43,8 @@ import {
 // is Ryan's own case (components/RyanCaseProfile.tsx); ?view=people is the
 // J6 people directory; every other ?view= is the archive. Each chapter of
 // those pages is its own server component under components/case/, and the
-// non-visual logic (tab and filter parsing, search, paging) is
-// components/case/archive.ts. Data calls stay here.
+// non-visual logic (tab and filter parsing, search, paging, which number a
+// stat shows) is components/case/archive.ts. Data calls stay here.
 
 export const revalidate = 300;
 
@@ -167,9 +169,11 @@ export default async function CasePage({
       getJ6PeoplePage({ claimStatus: j6Filter, q, page, pageSize: 48 }),
       getJ6ClaimCounts(),
     ]);
-
-    const pageCount = Math.max(1, Math.ceil(j6Page.total / j6Page.pageSize));
-    const clampedPage = Math.min(j6Page.page, pageCount);
+    const { clampedPage } = pageDirectory({
+      total: j6Page.total,
+      page: j6Page.page,
+      pageSize: j6Page.pageSize,
+    });
 
     return (
       <div className="mx-auto max-w-5xl px-4 py-10">
@@ -216,8 +220,23 @@ export default async function CasePage({
   const ryan = people.find((p) => p.slug === "ryan-nichols") ?? null;
   const ryanPhoto = siteSettings.avatar_url ?? null;
 
-  const { filteredGrievances, filteredPeople, filteredEvents, filteredDocuments, totalHits } =
-    filterArchive({ q, j6Filter, grievances, people, events, documents });
+  const {
+    filteredGrievances,
+    filteredPeople,
+    filteredEvents,
+    filteredDocuments,
+    totalHits,
+    eventsShown,
+    peopleShown,
+  } = filterArchive({
+    q,
+    j6Filter,
+    grievances,
+    people,
+    events,
+    documents,
+    peopleNamed: totals.people,
+  });
   const { archivePageCount, archivePage, pageEvents, pageDocuments, archiveShowing } =
     pageArchive({ tab, page, filteredEvents, filteredDocuments });
 
@@ -225,8 +244,8 @@ export default async function CasePage({
     <div className="mx-auto max-w-5xl px-4 py-10">
       <ArchiveHeader
         totals={totals}
-        eventsShown={q ? filteredEvents.length : events.length}
-        peopleShown={q ? filteredPeople.length : totals.people}
+        eventsShown={eventsShown}
+        peopleShown={peopleShown}
         ryan={ryan}
         ryanPhoto={ryanPhoto}
         tab={tab}
@@ -246,7 +265,7 @@ export default async function CasePage({
       />
 
       {/* The pager's links land here, not at the top of the header. */}
-      <div id="archive-list" className="scroll-mt-24">
+      <div id={ARCHIVE_LIST_ID} className="scroll-mt-24">
         {tab === "grievances" && <GrievancesView grievances={filteredGrievances} />}
         {tab === "timeline" && <TimelineView events={pageEvents} />}
         {tab === "documents" && <DocumentsView documents={pageDocuments} />}
