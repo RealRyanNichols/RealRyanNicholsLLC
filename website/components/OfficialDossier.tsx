@@ -160,14 +160,14 @@ export function OfficialDossier({
                       href={c.source.href}
                       target="_blank"
                       rel="noopener noreferrer nofollow"
-                      className="mt-2 inline-flex min-h-11 items-center text-xs font-bold text-[var(--color-navy)] hover:underline sm:min-h-0"
+                      className="mt-2 inline-flex min-h-11 items-center gap-1 text-xs font-bold text-[var(--color-navy)] hover:underline sm:min-h-0"
                     >
                       {c.source.label} <span aria-hidden>↗</span>
                     </a>
                   ) : (
                     <Link
                       href={c.source.href}
-                      className="mt-2 inline-flex min-h-11 items-center text-xs font-bold text-[var(--color-navy)] hover:underline sm:min-h-0"
+                      className="mt-2 inline-flex min-h-11 items-center gap-1 text-xs font-bold text-[var(--color-navy)] hover:underline sm:min-h-0"
                     >
                       {c.source.label} <span aria-hidden>→</span>
                     </Link>

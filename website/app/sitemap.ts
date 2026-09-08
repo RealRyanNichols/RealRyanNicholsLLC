@@ -70,6 +70,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE.url}/case/officials`, lastModified: now, changeFrequency: "weekly", priority: 0.85 },
     { url: `${SITE.url}/case/geography`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${SITE.url}/case/nexus`, lastModified: now, changeFrequency: "weekly", priority: 0.85 },
+    { url: `${SITE.url}/case/cite`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE.url}/case/the-salvaged-doj-record`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     { url: `${SITE.url}/start-here`, lastModified: now, changeFrequency: "weekly", priority: 0.85 },
     { url: `${SITE.url}/impact`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },

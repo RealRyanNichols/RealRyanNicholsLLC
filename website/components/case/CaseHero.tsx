@@ -56,13 +56,13 @@ export function CaseHero({
       <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
         <a
           href="#chapter-one"
-          className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)]"
+          className="inline-flex min-h-12 items-center justify-center gap-1.5 rounded-lg bg-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)]"
         >
           Read the record <span aria-hidden>↓</span>
         </a>
         <a
           href="#attorney-briefing"
-          className="inline-flex min-h-11 items-center text-sm font-bold text-[var(--color-gold-bright)] underline-offset-4 hover:underline sm:min-h-0"
+          className="inline-flex min-h-11 items-center gap-1 text-sm font-bold text-[var(--color-gold-bright)] underline-offset-4 hover:underline sm:min-h-0"
         >
           Counsel evaluating this case, start here <span aria-hidden>→</span>
         </a>

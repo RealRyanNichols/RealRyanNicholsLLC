@@ -19,6 +19,7 @@ import { ReadingProgress } from "@/components/ReadingProgress";
 import { JsonLd } from "@/components/JsonLd";
 import { BookCtaBand } from "@/components/BookCtaBand";
 import { CaseCaptureBand } from "@/components/case/CaseCaptureBand";
+import { GoDeeper } from "@/components/case/GoDeeper";
 import { PERSON_ID, personRef, websiteRef } from "@/lib/jsonld";
 import { SITE } from "@/lib/site";
 import type { Post } from "@/lib/types";
@@ -515,7 +516,7 @@ export function RyanCaseProfile({
               {"doc" in e && e.doc ? (
                 <Link
                   href={e.doc}
-                  className="mt-1 inline-flex min-h-11 items-center text-xs font-bold text-[var(--color-navy)] hover:underline sm:min-h-0"
+                  className="mt-1 inline-flex min-h-11 items-center gap-1 text-xs font-bold text-[var(--color-navy)] hover:underline sm:min-h-0"
                 >
                   Read <span aria-hidden>→</span>
                 </Link>
@@ -665,7 +666,7 @@ export function RyanCaseProfile({
               {"paper" in item && item.paper ? (
                 <Link
                   href={item.paper.href}
-                  className="mt-2 inline-flex min-h-11 items-center text-xs font-bold text-[var(--color-navy)] hover:underline sm:min-h-0"
+                  className="mt-2 inline-flex min-h-11 items-center gap-1 text-xs font-bold text-[var(--color-navy)] hover:underline sm:min-h-0"
                 >
                   {item.paper.label} <span aria-hidden>→</span>
                 </Link>
@@ -865,92 +866,11 @@ export function RyanCaseProfile({
         <AttorneyBriefing />
       </div>
 
-      {/* ---- The full record · a directory into every part of the case ---- */}
-      <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
-        <Eyebrow>The full record</Eyebrow>
-        <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
-          Everything is public. Walk it yourself.
-        </h2>
-        <p className="mt-3 text-base text-[var(--color-ink-soft)] leading-relaxed max-w-2xl">
-          Nothing here sits behind a paywall or a login. Every grievance, every
-          document, every name — open, sourced, and laid out to be checked.
-        </p>
-        <div className="mt-6 grid grid-cols-2 lg:grid-cols-3 gap-3">
-          <CrossLink href="/case" title="The case hub" sub="Start here — the whole file, organized" />
-          <CrossLink href="/case?view=timeline" title="Timeline" sub="Arrest to pardon, day by day" />
-          <CrossLink
-            href="/case?view=grievances"
-            title="Grievances"
-            sub={`${totals.grievances} documented, with the paperwork`}
-          />
-          <CrossLink
-            href="/case?view=documents"
-            title="Documents"
-            sub={`${totals.documents.toLocaleString()} scans on the record`}
-          />
-          <CrossLink
-            href="/case/witnesses"
-            title="Co-detainees & witnesses"
-            sub={`${totals.corroborators} who corroborate the record`}
-          />
-          <CrossLink href="/case/officials" title="Officials named" sub="Who did what, on the record" />
-          <CrossLink
-            href="/case/geography"
-            title="Geography"
-            sub={`The ${totals.facilities} facilities he moved through`}
-          />
-          <CrossLink href="/case/damages" title="Damages" sub="What four years of this cost" />
-          <CrossLink href="/about" title="Full biography" sub="Exhibit 288, in his words" />
-        </div>
-      </section>
-
-      {/* ---- Study this case — the researcher's on-ramp ---- */}
-      <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
-        <Eyebrow>Study this case</Eyebrow>
-        <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
-          Built to be checked, cited, and taught.
-        </h2>
-        <p className="mt-3 text-base text-[var(--color-ink-soft)] leading-relaxed max-w-2xl">
-          This page and the archive behind it exist so journalists, lawyers,
-          students, and historians can study United States v. Nichols from the
-          primary record — court filings linked at their official source,
-          grievance scans, transcripts, and sworn statements, each labeled for
-          what it is (FACT / RYAN STATEMENT / NEEDS AUTHENTICATION).
-        </p>
-        <div className="mt-5 rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-5">
-          <p className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-muted)]">
-            How to cite this archive
-          </p>
-          <p className="mt-2 font-mono text-xs sm:text-sm leading-relaxed text-[var(--color-ink)] break-words">
-            Nichols, Ryan. <em>The J6 Case Archive: United States v. Nichols</em>,
-            No. 1:21-cr-00117 (D.D.C.). RealRyanNichols.com.
-            https://www.realryannichols.com/case
-          </p>
-          <p className="mt-3 text-xs text-[var(--color-muted)] leading-relaxed">
-            Cite individual documents by their own URL — every scan, filing, and
-            grievance has a permanent page. Court records link to CourtListener/RECAP
-            so you can verify against the official docket yourself. Related habeas
-            matter: Nichols v. Garland, No. 1:22-cv-02356 (D.D.C.).
-          </p>
-          <div className="mt-4 flex flex-wrap gap-x-5 gap-y-1.5 text-xs font-bold">
-            <Link href="/case?view=documents" className="text-[var(--color-navy)] hover:underline">
-              The full document archive →
-            </Link>
-            <Link href="/case?view=timeline" className="text-[var(--color-navy)] hover:underline">
-              The dated timeline →
-            </Link>
-            <a href="/llms.txt" className="text-[var(--color-navy)] hover:underline">
-              Machine-readable overview (llms.txt) →
-            </a>
-            <a href="/rss.xml" className="text-[var(--color-navy)] hover:underline">
-              RSS →
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ---- Case Builder — this page is the product demo ---- */}
-      <section className="mt-12 rounded-2xl border-2 border-[var(--color-navy)] bg-[var(--color-surface)] p-6 sm:p-8">
+      {/* ---- Rung 2 · Case Builder — this page is the product demo ---- */}
+      <section
+        id="case-builder"
+        className="mt-12 rounded-2xl border-2 border-[var(--color-navy)] bg-[var(--color-surface)] p-6 sm:p-8"
+      >
         <Eyebrow>Case Builder</Eyebrow>
         <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
           Fighting a case the public should see? He builds these.
@@ -965,56 +885,45 @@ export function RyanCaseProfile({
         <div className="mt-5 flex flex-wrap items-center gap-4">
           <Link
             href="/case-builder"
-            className="btn-accent inline-flex items-center px-6 py-3 text-sm"
+            className="btn-accent inline-flex min-h-11 items-center gap-1.5 px-6 py-3 text-sm"
           >
-            Request a case build →
+            Request a case build <span aria-hidden>→</span>
           </Link>
           <Link
             href="/j6"
-            className="text-sm font-bold text-[var(--color-navy)] hover:underline"
+            className="inline-flex min-h-11 items-center gap-1 text-sm font-bold text-[var(--color-navy)] hover:underline sm:min-h-0"
           >
-            J6 defendant? Yours is free →
+            J6 defendant? Yours is free <span aria-hidden>→</span>
           </Link>
         </div>
       </section>
 
-      {/* ---- Closing CTA · stand with him ---- */}
-      <section className="mt-12">
-        <div className="rounded-3xl border-2 border-[var(--color-navy)] bg-[var(--color-blue-soft)]/40 p-6 sm:p-10 text-center">
-          <Eyebrow>Stand with him</Eyebrow>
-          <h2 className="mt-2 text-2xl sm:text-4xl font-bold tracking-tight font-display leading-[1.06] max-w-2xl mx-auto">
-            He kept the receipts. Help keep them public.
-          </h2>
-          <p className="mt-4 text-base text-[var(--color-ink-soft)] leading-relaxed max-w-xl mx-auto">
-            Keeping this record up — the filings, the scans, the names — takes work and
-            nerve. The best way to help: read it, and put this page in front of one more
-            person.
-          </p>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-            <Link
-              href="/book"
-              className="btn-accent inline-flex min-h-11 items-center rounded-full px-6 py-3 text-sm font-bold"
-            >
-              Get the book →
-            </Link>
-            <ShareButton
-              url={url}
-              title={`${person.name} — pardoned January 6 defendant, charges dismissed with prejudice. The full record:`}
-              slug={person.slug}
-              caseKind="person"
-              tone="navy"
-            />
-          </div>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-xs text-[var(--color-muted)]">
-            <Link href="/the-harassment" className="hover:text-[var(--color-navy)] font-semibold">
-              The harassment wall →
-            </Link>
-            <Link href="/" className="hover:text-[var(--color-navy)] font-semibold">
-              The latest dispatches →
-            </Link>
-          </div>
+      {/* ---- Rung 3 · Share — the archive's rule of engagement, one button ---- */}
+      <section
+        id="share"
+        className="mt-12 rounded-3xl border-2 border-[var(--color-navy)] bg-[var(--color-blue-soft)]/40 p-6 text-center sm:p-10"
+      >
+        <Eyebrow>Share the record</Eyebrow>
+        <h2 className="mx-auto mt-2 max-w-2xl font-display text-2xl font-bold leading-[1.1] tracking-tight sm:text-3xl">
+          Do not threaten anyone. Do not harass anyone. Do not contact anyone
+          in my name.
+        </h2>
+        <p className="mx-auto mt-4 max-w-xl font-display text-xl font-bold leading-snug text-[var(--color-navy)] sm:text-2xl">
+          Read it. Share it. Send receipts.
+        </p>
+        <div className="mt-6 flex justify-center">
+          <ShareButton
+            url={url}
+            title={`${person.name} — pardoned January 6 defendant, charges dismissed with prejudice. The full record:`}
+            slug={person.slug}
+            caseKind="person"
+            tone="navy"
+          />
         </div>
       </section>
+
+      {/* ---- Rung 4 · Go deeper — one link grid into every part of the record ---- */}
+      <GoDeeper totals={totals} className="mt-12" />
       </div>
     </article>
   );
@@ -1132,18 +1041,20 @@ function AttorneyBriefing() {
           packet — motions, declarations, exhibit index, and the case-specific
           details that aren&apos;t on this public page.
         </p>
-        <div className="mt-4 flex flex-wrap items-center gap-3">
+        {/* One button on this rung: the email. The secure note stays as a
+            text link beside it. */}
+        <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2">
           <a
             href="mailto:ryan@realryannichols.com?subject=Attorney%20inquiry%20%E2%80%94%20Harrison%20County%20matter&body=Hi%20Ryan%2C%0A%0AI%27m%20an%20attorney%20licensed%20in%20%5Bstate%5D.%20My%20practice%20areas%3A%20%5Bareas%5D.%0A%0AI%27d%20like%20the%20full%20private%20briefing%20on%20your%20current%20matter.%0A%0A%5BName%2C%20firm%2C%20bar%20number%2C%20phone%5D"
-            className="inline-flex items-center rounded-full bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)] transition"
+            className="inline-flex min-h-11 items-center rounded-full bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)] transition"
           >
             ✉ Email me about representation
           </a>
           <Link
             href="/submit"
-            className="inline-flex items-center rounded-full border border-[var(--color-blue)]/40 px-5 py-2.5 text-sm font-bold text-[var(--color-blue)] hover:bg-[var(--color-blue)] hover:text-[var(--color-paper)] transition"
+            className="inline-flex min-h-11 items-center gap-1 text-sm font-bold text-[var(--color-blue)] hover:underline sm:min-h-0"
           >
-            Send a secure note →
+            Send a secure note <span aria-hidden>→</span>
           </Link>
         </div>
         <p className="mt-3 text-[11px] text-[var(--color-muted)] leading-snug">
@@ -1156,16 +1067,3 @@ function AttorneyBriefing() {
   );
 }
 
-function CrossLink({ href, title, sub }: { href: string; title: string; sub: string }) {
-  return (
-    <Link
-      href={href}
-      className="block rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4 hover:border-[var(--color-navy)] transition group"
-    >
-      <p className="text-sm font-bold tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-navy)]">
-        {title}
-      </p>
-      <p className="mt-1 text-xs leading-snug text-[var(--color-ink-soft)]">{sub}</p>
-    </Link>
-  );
-}
