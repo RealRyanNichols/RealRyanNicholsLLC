@@ -2,6 +2,7 @@ import Link from "next/link";
 import { J6ProfileImage } from "@/components/J6ProfileImage";
 import { PaginationControls } from "@/components/case/PaginationControls";
 import { J6_PROFILE_LIST_ID, type J6Filter } from "@/components/case/archive";
+import { Highlight } from "@/components/case/Highlight";
 import type { CasePerson } from "@/lib/case";
 
 // The J6 people directory list (/case?view=people): the bucket heading,
@@ -147,7 +148,7 @@ export function J6DefendantsView({
                 <div className="flex flex-1 flex-col p-4">
                   <div className="flex items-start justify-between gap-2">
                     <h3 className="text-lg font-black leading-tight tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-blue)]">
-                      {p.name}
+                      <Highlight text={p.name} q={q} />
                     </h3>
                     <span
                       className="whitespace-nowrap rounded-md px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--color-paper)]"
@@ -158,12 +159,12 @@ export function J6DefendantsView({
                   </div>
                   {p.role ? (
                     <p className="mt-1 text-sm leading-snug text-[var(--color-muted)]">
-                      {p.role}
+                      <Highlight text={p.role} q={q} />
                     </p>
                   ) : null}
                   <div className="mt-4 grid grid-cols-2 gap-2 text-[11px] text-[var(--color-muted)]">
                     <span className="rounded-md border border-[var(--color-line-soft)] bg-[var(--color-paper)] px-2 py-1">
-                      {p.case_number ?? "Case # needed"}
+                      {p.case_number ? <Highlight text={p.case_number} q={q} /> : "Case # needed"}
                     </span>
                     <span className="rounded-md border border-[var(--color-line-soft)] bg-[var(--color-paper)] px-2 py-1 text-right">
                       {p.views_count.toLocaleString()} views

@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { format } from "date-fns";
 import type { getGrievances, getEvents, getDocuments } from "@/lib/case";
+import { Highlight } from "@/components/case/Highlight";
 
-// The three archive views + the severity meter they share.
+// The three archive views + the severity meter they share. Each takes the
+// search query so a result shows the word that matched it (Highlight); with
+// no query the views render exactly as they browse.
 //
 // These used to live at the bottom of app/case/page.tsx alongside a dozen other
 // components. Pulled out so each rendering job has a name and a file you can
@@ -73,7 +76,13 @@ const NARRATIVE_ACTS: { range: [number, number]; label: string; tag: string; lea
   },
 ];
 
-export function GrievancesView({ grievances }: { grievances: Awaited<ReturnType<typeof getGrievances>> }) {
+export function GrievancesView({
+  grievances,
+  q = "",
+}: {
+  grievances: Awaited<ReturnType<typeof getGrievances>>;
+  q?: string;
+}) {
   const groups = NARRATIVE_ACTS.map((act) => ({
     ...act,
     items: grievances.filter((g) => g.display_order >= act.range[0] && g.display_order <= act.range[1]),
@@ -111,11 +120,11 @@ export function GrievancesView({ grievances }: { grievances: Awaited<ReturnType<
                       </div>
                       <h3 className="text-lg font-bold tracking-tight">
                         <span className="text-[var(--color-navy)] mr-2">#{g.display_order}</span>
-                        {g.title}
+                        <Highlight text={g.title} q={q} />
                       </h3>
                       {g.summary ? (
                         <p className="mt-2 text-sm text-[var(--color-ink-soft)] leading-relaxed">
-                          {g.summary}
+                          <Highlight text={g.summary} q={q} />
                         </p>
                       ) : null}
                       <span className="mt-3 inline-block text-xs font-bold text-[var(--color-navy)]">
@@ -139,7 +148,13 @@ export function GrievancesView({ grievances }: { grievances: Awaited<ReturnType<
   );
 }
 
-export function TimelineView({ events }: { events: Awaited<ReturnType<typeof getEvents>> }) {
+export function TimelineView({
+  events,
+  q = "",
+}: {
+  events: Awaited<ReturnType<typeof getEvents>>;
+  q?: string;
+}) {
   return (
     <ol className="space-y-0">
       {events.map((e) => (
@@ -153,15 +168,17 @@ export function TimelineView({ events }: { events: Awaited<ReturnType<typeof get
               {e.event_date ? format(new Date(e.event_date), "MMMM d, yyyy") : "Date pending verification"}
             </time>
             <h2 className="mt-1 text-lg font-bold tracking-tight group-hover:text-[var(--color-navy)] transition">
-              {e.title}
+              <Highlight text={e.title} q={q} />
             </h2>
             {e.description ? (
               <p className="mt-2 text-sm text-[var(--color-ink-soft)] leading-relaxed max-w-2xl">
-                {e.description}
+                <Highlight text={e.description} q={q} />
               </p>
             ) : null}
             {e.location ? (
-              <p className="mt-1 text-xs text-[var(--color-muted)]">📍 {e.location}</p>
+              <p className="mt-1 text-xs text-[var(--color-muted)]">
+                📍 <Highlight text={e.location} q={q} />
+              </p>
             ) : null}
             <span className="mt-2 inline-block text-xs font-bold text-[var(--color-navy)]">
               Read <span aria-hidden>→</span>
@@ -173,7 +190,13 @@ export function TimelineView({ events }: { events: Awaited<ReturnType<typeof get
   );
 }
 
-export function DocumentsView({ documents }: { documents: Awaited<ReturnType<typeof getDocuments>> }) {
+export function DocumentsView({
+  documents,
+  q = "",
+}: {
+  documents: Awaited<ReturnType<typeof getDocuments>>;
+  q?: string;
+}) {
   // The archive is visual — nearly every record on file is a scan. Show the
   // paper, not a paragraph about the paper. Fixed 4:3 wells keep every card
   // the same shape no matter what the underlying scan measures, so the grid
@@ -219,11 +242,11 @@ export function DocumentsView({ documents }: { documents: Awaited<ReturnType<typ
               </p>
             ) : null}
             <h2 className="mt-1 line-clamp-2 text-sm font-bold leading-snug tracking-tight text-[var(--color-ink)] transition group-hover:text-[var(--color-navy)]">
-              {d.title}
+              <Highlight text={d.title} q={q} />
             </h2>
             {d.description ? (
               <p className="mt-1.5 line-clamp-2 text-xs leading-snug text-[var(--color-ink-soft)]">
-                {d.description}
+                <Highlight text={d.description} q={q} />
               </p>
             ) : null}
             <span className="mt-auto pt-2.5 text-xs font-bold text-[var(--color-navy)]">
