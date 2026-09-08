@@ -6,12 +6,11 @@ import type { J6Filter } from "@/components/case/archive";
 // The top of the J6 people directory (/case?view=people): the hero for the
 // active claim bucket, the record's search box (components/case/
 // CaseSearchForm.tsx, the same one every door on /case uses), and the
-// match line. On a phone the box comes first, so a family member looking
-// for a name types it on the first screen; from sm up the hero leads and
-// the box follows it, as before. The box is first in the DOM, so on a
-// phone what you see, what you tab through, and what a screen reader
-// announces agree; the hero moves ahead of it with CSS from sm up, where
-// the two are side by side in reading order anyway. Nothing moves on load.
+// match line. The box comes first, in the DOM and on screen, at every
+// width: a family member looking for a name types it on the first screen
+// of a phone, and what is seen, tabbed, and announced agree everywhere
+// (a CSS reorder at one breakpoint moved the mismatch to the other).
+// Nothing moves on load.
 export function J6DirectoryHeader({
   counts,
   j6Filter,
@@ -26,7 +25,7 @@ export function J6DirectoryHeader({
 }) {
   return (
     <header className="mb-10 flex flex-col">
-      <div className="mb-6 sm:order-last sm:mb-0 sm:mt-6">
+      <div className="mb-6">
         <CaseSearchForm
           q={q}
           view="people"
