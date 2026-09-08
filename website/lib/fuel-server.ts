@@ -8,8 +8,10 @@ import { getPublishedSupporters } from "@/lib/supporters";
 import {
   FUEL_CAMPAIGN,
   FUEL_PURPOSE,
-  fuelBillCents,
-  fuelBillItems,
+  fuelOverageCents,
+  fuelOverageItems,
+  fuelSubscriptionCents,
+  fuelSubscriptionItems,
   parseFuelMessage,
   resolveTiers,
   type FundingItem,
@@ -17,24 +19,33 @@ import {
 } from "@/lib/fuel";
 
 export type FuelBill = {
-  items: FundingItem[];
-  billCents: number;
+  // What Ryan pays himself, off the vendors' invoices. Context, not the ask.
+  subscriptions: FundingItem[];
+  subscriptionCents: number;
+  // The ask: the overage-credits line and its monthly target.
+  overage: FundingItem | null;
+  targetCents: number;
   tiers: ResolvedFuelTier[];
 };
 
-// The AI bill as recorded in the funding ledger, plus the tiers it implies.
-// Public read (RLS exposes active line items to anon).
+// The Token Fund picture as recorded in the funding ledger, plus the tiers
+// the target implies. Public read (RLS exposes active line items to anon).
 export async function getFuelBill(): Promise<FuelBill> {
   const supabase = getSupabaseStaticClient();
   const { data } = await supabase
     .from("funding_line_items")
-    .select("label, amount_cents, cadence, is_active")
+    .select("label, blurb, amount_cents, cadence, is_active, fuel_role")
     .eq("is_active", true)
     .order("sort_order", { ascending: true });
   const all = (data ?? []) as FundingItem[];
-  const items = fuelBillItems(all);
-  const billCents = fuelBillCents(all);
-  return { items, billCents, tiers: resolveTiers(billCents) };
+  const targetCents = fuelOverageCents(all);
+  return {
+    subscriptions: fuelSubscriptionItems(all),
+    subscriptionCents: fuelSubscriptionCents(all),
+    overage: fuelOverageItems(all)[0] ?? null,
+    targetCents,
+    tiers: resolveTiers(targetCents),
+  };
 }
 
 // What the machine produced, for the receipts block on /fuel. Only real
@@ -127,7 +138,9 @@ export async function getFuelRaised(): Promise<FuelRaised | null> {
 // meter's first render on /fuel so the numbers never flash from zero.
 export type FuelStatus = {
   at: string;
-  billCents: number;
+  // The overage target (the ask) and what Ryan pays himself, both from the ledger.
+  targetCents: number;
+  subscriptionCents: number;
   raised: FuelRaised | null;
   liveNow: number;
   recent: { name: string; tier: string; amount: string | null; at: string }[];
@@ -153,7 +166,8 @@ export async function getFuelStatus(): Promise<FuelStatus> {
     }));
   return {
     at: new Date().toISOString(),
-    billCents: bill.billCents,
+    targetCents: bill.targetCents,
+    subscriptionCents: bill.subscriptionCents,
     raised,
     liveNow: totals?.live_now ?? 0,
     recent,

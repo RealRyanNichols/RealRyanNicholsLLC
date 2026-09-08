@@ -4,14 +4,15 @@ import { FUEL_TIME_FLOOR_CENTS, usdWhole } from "@/lib/fuel";
 
 // The article-foot ask, in Ryan's words. It is rendered by the post page so
 // that no article ships without it; never paste a copy into a post body.
-// The figures are the live AI bill from the funding ledger and the real
-// 30-day post count. With no bill in the ledger the ask still runs, just
-// without a number, because a made-up figure is worse than none.
-const PICKS = ["spark", "shift", "day"] as const;
+// The figures are the ledger's overage target and subscription total and the
+// real 30-day post count. With no overage line in the ledger the ask still
+// runs, just without a number, because a made-up figure is worse than none.
+const PICKS = ["spark", "charge", "day"] as const;
 
 export async function FuelAsk({ className = "" }: { className?: string }) {
   const [bill, output] = await Promise.all([getFuelBill(), getMachineOutput()]);
-  const month = bill.billCents > 0 ? usdWhole(bill.billCents) : null;
+  const target = bill.targetCents > 0 ? usdWhole(bill.targetCents) : null;
+  const subs = bill.subscriptionCents > 0 ? usdWhole(bill.subscriptionCents) : null;
   const picks = PICKS.map((slug) => bill.tiers.find((t) => t.slug === slug)).filter(
     (t): t is NonNullable<typeof t> => t !== undefined,
   );
@@ -41,18 +42,20 @@ export async function FuelAsk({ className = "" }: { className?: string }) {
           <span className="text-[var(--color-gold-bright)]">I pay for every token.</span>
         </h2>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[#cfd9ea] sm:text-base">
-          I need help buying more of their usage so I can do more, teach more, and create more. That only
-          works if what I put out is worth your time. If this was, fuel the next one.
+          The subscriptions are on me. They run dry every half a week, and then the machine stops unless there
+          are credits on the account. I need help buying that overage so I can do more, teach more, and create
+          more. That only works if what I put out is worth your time. If this was, fuel the next one.
         </p>
-        {month ? (
+        {target ? (
           <p className="mt-2 text-sm font-semibold text-[#fdf8ea]">
-            {month} a month in tokens
+            {subs ? `${subs} a month in subscriptions, paid by me. ` : ""}
+            {target} a month in overage credits is the ask
             {output.posts30 !== null && output.posts30 > 0 ? (
               <>
                 . {output.posts30.toLocaleString("en-US")} articles in the last 30 days
               </>
             ) : null}
-            . The bill is published.
+            . The ledger is public.
           </p>
         ) : null}
         <div className="mt-4 flex flex-wrap items-center gap-2">

@@ -11,6 +11,7 @@ type Item = {
   cadence: "monthly" | "one_time";
   sort_order: number;
   is_active: boolean;
+  fuel_role?: "subscription" | "overage" | null;
 };
 
 type Settings = {
@@ -240,6 +241,9 @@ function ItemRow({ item }: { item?: Item }) {
   const [cadence, setCadence] = useState<"monthly" | "one_time">(item?.cadence ?? "monthly");
   const [sort, setSort] = useState(String(item?.sort_order ?? 0));
   const [active, setActive] = useState(item?.is_active ?? true);
+  // Token Fund role. Blank for ordinary lines; 'subscription' for Ryan's own
+  // AI bills (context on /fuel, never in a goal); 'overage' for the one ask.
+  const [fuelRole, setFuelRole] = useState<"" | "subscription" | "overage">(item?.fuel_role ?? "");
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
 
@@ -259,6 +263,7 @@ function ItemRow({ item }: { item?: Item }) {
       cadence,
       sort_order: Math.max(0, parseInt(sort || "0", 10) || 0),
       is_active: active,
+      fuel_role: fuelRole || null,
     });
     setBusy(false);
     if (err) {
@@ -299,6 +304,17 @@ function ItemRow({ item }: { item?: Item }) {
         <select className={inputCls} value={cadence} onChange={(e) => setCadence(e.target.value as "monthly" | "one_time")}>
           <option value="monthly">monthly</option>
           <option value="one_time">one-time</option>
+        </select>
+        <select
+          className={`${inputCls} mt-1`}
+          value={fuelRole}
+          onChange={(e) => setFuelRole(e.target.value as "" | "subscription" | "overage")}
+          aria-label="Token Fund role"
+          title="Token Fund role: subscription = paid by Ryan, shown on /fuel, never in a goal; overage = the /fuel ask"
+        >
+          <option value="">no fuel role</option>
+          <option value="subscription">fuel: subscription (mine)</option>
+          <option value="overage">fuel: overage (the ask)</option>
         </select>
       </div>
       <div className="sm:col-span-1">

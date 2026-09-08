@@ -20,6 +20,9 @@ const upsertSchema = z.object({
   cadence: z.enum(["monthly", "one_time"]),
   sort_order: z.number().int().min(0).max(1000),
   is_active: z.boolean(),
+  // Token Fund role: 'subscription' (Ryan's own bill, context only) or
+  // 'overage' (the fundable ask). Null for every other line.
+  fuel_role: z.enum(["subscription", "overage"]).nullable().optional(),
 });
 
 const deleteSchema = z.object({
@@ -74,6 +77,7 @@ export async function POST(request: Request) {
       cadence: body.cadence,
       sort_order: body.sort_order,
       is_active: body.is_active,
+      fuel_role: body.fuel_role ?? null,
       updated_at: new Date().toISOString(),
     };
     const { error: e } = body.id

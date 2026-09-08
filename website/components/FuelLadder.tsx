@@ -1,42 +1,43 @@
 import {
+  FABLE_RATES,
   FUEL_MONTHLY,
-  articlesLabel,
-  fuelArticlesAtPace,
-  fuelDuration,
+  MEASURED_DAY_CENTS,
+  MEASURED_MIX,
+  WORKING_DAY_HOURS,
+  costPerOutputTokenUsd,
+  machineTimeLabel,
+  roundWords,
+  tokensFor,
   usdWhole,
   type ResolvedFuelTier,
 } from "@/lib/fuel";
 
-// "What your fuel does": one bar per amount, scaled to machine time, with
-// the article count at the last 30 days' pace. Every number is derived from
-// the real bill and the real post count; nothing here is typed by hand.
-export function FuelLadder({
-  tiers,
-  billCents,
-  posts30,
-}: {
-  tiers: ResolvedFuelTier[];
-  billCents: number;
-  posts30: number | null;
-}) {
-  if (!(billCents > 0)) return null;
+// "What your fuel does": one bar per amount. Words come from Anthropic's
+// published Fable 5.1 rates times the token mix measured off Ryan's machine;
+// time is that amount against his measured average day. Nothing here is
+// typed by hand, and the footnote says out loud that it is an estimate.
+export function FuelLadder({ tiers }: { tiers: ResolvedFuelTier[] }) {
   const rows = [
     ...tiers.map((t) => ({ ...t, monthly: false })),
     { ...FUEL_MONTHLY, monthly: true },
   ].sort((a, b) => a.amountCents - b.amountCents || (a.monthly ? 1 : -1));
-  const maxHours = Math.max(...rows.map((r) => hours(r.amountCents, billCents)));
-  const perArticle = posts30 && posts30 > 0 ? Math.round(billCents / posts30) : null;
+  const max = Math.max(...rows.map((r) => r.amountCents));
+  const perOutput = costPerOutputTokenUsd();
 
   return (
     <div className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-6" data-fuel-ladder>
       <ol className="space-y-3">
         {rows.map((r) => {
-          const h = hours(r.amountCents, billCents);
-          const w = Math.max(6, Math.round((h / maxHours) * 100));
-          const time = fuelDuration(r.amountCents, billCents);
-          const arts = articlesLabel(fuelArticlesAtPace(r.amountCents, billCents, posts30));
+          // Square-root scale so a $5 bar is visible next to the month bar.
+          const w = Math.max(7, Math.round(Math.sqrt(r.amountCents / max) * 100));
+          const buy = tokensFor(r.amountCents);
+          const words = `${roundWords(buy.words)} words`;
+          const time = machineTimeLabel(r.amountCents)?.replace(" of the machine", "");
           return (
-            <li key={`${r.slug}-${r.monthly ? "m" : "o"}`} className="grid grid-cols-[5.5rem_1fr] items-center gap-3 sm:grid-cols-[7rem_1fr_16rem]">
+            <li
+              key={`${r.slug}-${r.monthly ? "m" : "o"}`}
+              className="grid grid-cols-[5.5rem_1fr] items-center gap-3 sm:grid-cols-[7rem_1fr_14rem]"
+            >
               <div>
                 <p className="font-display text-xl font-black tabular-nums tracking-tight text-[var(--color-ink)] sm:text-2xl">
                   {usdWhole(r.amountCents)}
@@ -67,36 +68,33 @@ export function FuelLadder({
                     }`}
                     style={w >= 45 ? { left: 8 } : { left: `calc(${w}% + 8px)` }}
                   >
-                    {time?.replace(" of the machine", "")}
+                    {words}
                   </span>
                 </div>
                 <p className="mt-1 text-xs text-[var(--color-ink-soft)] sm:hidden">
                   {r.monthly ? "Every month. " : ""}
-                  {arts ? `${arts} at last month's pace.` : ""}
+                  {time ? `${time[0].toUpperCase()}${time.slice(1)}.` : ""}
                 </p>
               </div>
               <p className="hidden text-sm text-[var(--color-ink-soft)] sm:block">
                 {r.monthly ? <strong className="text-[var(--color-ink)]">Every month. </strong> : null}
-                {arts ? `${arts} at last month's pace.` : time}
+                {time ? `${time[0].toUpperCase()}${time.slice(1)}.` : null}
               </p>
             </li>
           );
         })}
       </ol>
       <p className="mt-4 text-xs leading-relaxed text-[var(--color-muted)]">
-        Machine time is the bill divided by thirty days.
-        {perArticle && posts30 ? (
-          <>
-            {" "}
-            Article pace is the last 30 days: {posts30.toLocaleString("en-US")} articles on a {usdWhole(billCents)} bill,
-            about {usdWhole(perArticle)} each. Both numbers move when the real ones move.
-          </>
-        ) : null}
+        <strong className="text-[var(--color-ink-soft)]">Estimate, and here is the arithmetic.</strong> Anthropic
+        prices {FABLE_RATES.model} at ${FABLE_RATES.input} per million tokens in, ${FABLE_RATES.cacheRead} per million
+        cached, ${FABLE_RATES.output} per million out (checked {FABLE_RATES.checkedOn}). Measured off my own machine
+        ({MEASURED_MIX.window}, {MEASURED_MIX.activeDays} active days), every output token travels with{" "}
+        {MEASURED_MIX.inputPerOutput} input tokens and {Math.round(MEASURED_MIX.cacheReadPerOutput)} cache reads, so
+        one output token costs about ${perOutput.toFixed(5)} all in. Words are output tokens times 0.75, reasoning
+        included. Time is the gift against my measured average day, {usdWhole(MEASURED_DAY_CENTS.average)} of tokens
+        over {WORKING_DAY_HOURS} hours. Nobody has metered one article yet; the first month that runs on credits, the
+        real number replaces these.
       </p>
     </div>
   );
-}
-
-function hours(amountCents: number, billCents: number): number {
-  return (amountCents / (billCents / 30)) * 24;
 }

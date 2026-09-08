@@ -1,17 +1,27 @@
 // The Token Fund ("Fuel the Machine").
 //
 // Every article, filing summary, map, and archive page on this site is built
-// with AI tokens Ryan pays for. The fund lets readers pay for that fuel and
-// get something back for it. Money moves through the same Stripe Checkout the
-// store uses, into Ryan's account; he buys the credits. There is no link
-// that puts tokens straight into a Claude or ChatGPT account, and this page
-// never pretends there is.
+// with AI tokens. Ryan pays the subscriptions himself (Claude Max, ChatGPT
+// Pro, X Premium: the ledger rows with fuel_role = 'subscription') and is not
+// asking anyone to cover them. What runs dry is the included usage, usually
+// by the middle of the week. Past that, the only lane either vendor sells is
+// usage credits billed at published API rates. The fund buys those credits.
+// The ledger row with fuel_role = 'overage' is the monthly target, never a
+// number typed here.
+//
+// Money moves through the same Stripe Checkout the store uses, into Ryan's
+// account; he buys the credits. No vendor sells a link that puts tokens
+// straight into his account, and this page never pretends one does.
+//
+// Every "what a dollar buys" figure is arithmetic on two things: the rates
+// Anthropic publishes and the token mix measured off Ryan's own machine
+// (docs/usage-receipts-2026-09.md). Nobody has metered one article yet, so
+// the site calls these estimates, out loud, until a month runs on credits.
 //
 // Ryan retired open-ended donations in 2026 because a $1 pledge that eats a
 // $15 chargeback fee is a losing trade. The floor below exists for that
 // reason. Amounts and rewards are Ryan's call: change them here, nowhere
-// else. The "month" tier is not a number in this file; it is the AI bill as
-// it sits in the funding ledger (funding_line_items), so it tracks reality.
+// else.
 //
 // This module is pure (no server imports) so client components can read the
 // tiers. Server-side reads live in lib/fuel-server.ts.
@@ -33,7 +43,7 @@ export type FuelCadence = "once" | "monthly";
 
 export type FuelTier = {
   slug: string;
-  // null = "one month of the AI bill", resolved from the ledger at runtime.
+  // null = "one month of overage", resolved from the ledger at runtime.
   amountCents: number | null;
   title: string;
   blurb: string;
@@ -51,23 +61,31 @@ export const FUEL_TIERS: FuelTier[] = [
     slug: "spark",
     amountCents: 500,
     title: "A spark",
-    blurb: "Keeps the machine running through one build session.",
+    blurb: "Keeps the faucet open a little longer.",
     gets: ["Your name on the Fuel wall, or stay anonymous"],
     askLabel: "Anything you want me to know (optional)",
   },
   {
-    slug: "shift",
-    amountCents: 2_000,
-    title: "A shift",
-    blurb: "Half a day of articles, maps, and archive work.",
+    slug: "charge",
+    amountCents: 1_000,
+    title: "A charge",
+    blurb: "The first real push into the week.",
     gets: ["My thanks, in writing"],
+    askLabel: "Anything you want me to know (optional)",
+  },
+  {
+    slug: "research",
+    amountCents: 2_500,
+    title: "A research run",
+    blurb: "Enough credits to pull and read a stack of records.",
+    gets: ["A line on the wall saying what your fuel went into, once it has"],
     askLabel: "Anything you want me to know (optional)",
   },
   {
     slug: "day",
     amountCents: 5_000,
-    title: "A day of builds",
-    blurb: "A full day of articles, maps, and archive work.",
+    title: "A question, answered",
+    blurb: "My time starts here.",
     gets: ["Send me one question. I answer it in a public post."],
     askLabel: "Your question",
   },
@@ -96,8 +114,8 @@ export const FUEL_TIERS: FuelTier[] = [
   {
     slug: "month",
     amountCents: null,
-    title: "A full month of the machine",
-    blurb: "Exactly one month of the AI bill in the ledger.",
+    title: "A month of overage",
+    blurb: "The whole month's overage line in the ledger, covered.",
     gets: ["You pick the next investigation topic and get updates as it builds"],
     askLabel: "The investigation you want next",
     askRequired: true,
@@ -111,48 +129,13 @@ export const FUEL_MONTHLY: ResolvedFuelTier = {
   slug: "keeper",
   amountCents: 5_000,
   title: "Keeper",
-  blurb: "A day of the machine, every month, until you say stop.",
+  blurb: "Overage credits every month, until you say stop.",
   gets: [
     "Your name pinned in the Keepers row at the top of the Fuel wall, every month you keep it running",
-    "Everything a day of builds gets: one question, answered in public",
+    "Everything a question gets: one question, answered in public",
   ],
   askLabel: "Your question, or anything you want me to know",
 };
-
-export type FundingItem = {
-  label: string;
-  amount_cents: number;
-  cadence: string;
-  is_active: boolean;
-};
-
-// The AI line items in the funding ledger. Matched by label so the fund
-// follows whatever Ryan records there; the amounts are never typed here.
-const AI_ITEM = /claude|chatgpt|codex|grok|credits|ai tool/i;
-
-export function fuelBillItems(items: FundingItem[]): FundingItem[] {
-  return items.filter((i) => i.is_active && i.cadence === "monthly" && AI_ITEM.test(i.label));
-}
-
-export function fuelBillCents(items: FundingItem[]): number {
-  return fuelBillItems(items).reduce((s, i) => s + (i.amount_cents ?? 0), 0);
-}
-
-// Fill in the ledger-derived tier. When the ledger has no AI items (or the
-// bill is below the largest fixed tier) the month tier is dropped rather
-// than shown with a made-up number.
-export function resolveTiers(billCents: number): ResolvedFuelTier[] {
-  const out: ResolvedFuelTier[] = [];
-  const largestFixed = Math.max(...FUEL_TIERS.map((t) => t.amountCents ?? 0));
-  for (const t of FUEL_TIERS) {
-    if (t.amountCents !== null) {
-      out.push({ ...t, amountCents: t.amountCents });
-    } else if (billCents > largestFixed && billCents <= FUEL_MAX_CENTS) {
-      out.push({ ...t, amountCents: billCents });
-    }
-  }
-  return out;
-}
 
 // $50 and up buys Ryan's time: a question answered, a letter, an article.
 // Under it, fuel keeps the machine running and the name goes on the wall.
@@ -162,6 +145,57 @@ export const FUEL_TIME_FLOOR_CENTS = 5_000;
 
 export function timeTiers(tiers: ResolvedFuelTier[]): ResolvedFuelTier[] {
   return tiers.filter((t) => t.amountCents >= FUEL_TIME_FLOOR_CENTS);
+}
+
+// ── The ledger ──────────────────────────────────────────────────────────
+
+export type FuelRole = "subscription" | "overage";
+
+export type FundingItem = {
+  label: string;
+  blurb?: string | null;
+  amount_cents: number;
+  cadence: string;
+  is_active: boolean;
+  fuel_role?: FuelRole | null;
+};
+
+function activeMonthly(items: FundingItem[], role: FuelRole): FundingItem[] {
+  return items.filter((i) => i.is_active && i.cadence === "monthly" && i.fuel_role === role);
+}
+
+// What Ryan pays himself. Context on the page, never part of the ask.
+export function fuelSubscriptionItems(items: FundingItem[]): FundingItem[] {
+  return activeMonthly(items, "subscription");
+}
+
+export function fuelSubscriptionCents(items: FundingItem[]): number {
+  return fuelSubscriptionItems(items).reduce((s, i) => s + (i.amount_cents ?? 0), 0);
+}
+
+// The ask: overage credits. One row is expected; the sum is the target.
+export function fuelOverageItems(items: FundingItem[]): FundingItem[] {
+  return activeMonthly(items, "overage");
+}
+
+export function fuelOverageCents(items: FundingItem[]): number {
+  return fuelOverageItems(items).reduce((s, i) => s + (i.amount_cents ?? 0), 0);
+}
+
+// Fill in the ledger-derived tier. When the ledger has no overage line (or
+// the target is below the largest fixed tier) the month tier is dropped
+// rather than shown with a made-up number.
+export function resolveTiers(targetCents: number): ResolvedFuelTier[] {
+  const out: ResolvedFuelTier[] = [];
+  const largestFixed = Math.max(...FUEL_TIERS.map((t) => t.amountCents ?? 0));
+  for (const t of FUEL_TIERS) {
+    if (t.amountCents !== null) {
+      out.push({ ...t, amountCents: t.amountCents });
+    } else if (targetCents > largestFixed && targetCents <= FUEL_MAX_CENTS) {
+      out.push({ ...t, amountCents: targetCents });
+    }
+  }
+  return out;
 }
 
 // Highest tier whose amount the gift reaches; null below the first tier.
@@ -195,32 +229,108 @@ export function resolveFuelAmount(
   return { ok: true, amountCents: cents, tier: tierForAmount(tiers, cents) };
 }
 
-// How long a gift keeps the machine running, from the real monthly bill:
-// bill / 30 is a day of the machine. Hours below a day, days below a month.
-// Null when there is no bill to measure against (never a made-up figure).
-export function fuelDuration(amountCents: number, billCents: number): string | null {
-  if (!(billCents > 0) || !(amountCents > 0)) return null;
-  const days = amountCents / (billCents / 30);
-  if (days >= 29.5) return "a full month of the machine";
-  if (days >= 1.75) return `about ${Math.round(days)} days of the machine`;
-  if (days >= 0.9) return "about a day of the machine";
-  const hours = Math.max(1, Math.round(days * 24));
-  return `about ${hours} hour${hours === 1 ? "" : "s"} of the machine`;
+// ── What a dollar buys ──────────────────────────────────────────────────
+//
+// Two inputs, both with a source, and nothing else:
+//
+// 1. Anthropic's published prices for Claude Fable 5.1, per million tokens,
+//    read from platform.claude.com/docs/en/about-claude/pricing on the date
+//    below. Usage credits are billed at exactly these rates (support.claude.com,
+//    "Manage usage credits for paid Claude plans").
+export const FABLE_RATES = {
+  model: "Claude Fable 5.1",
+  input: 10,
+  cacheRead: 0.25,
+  output: 50,
+  checkedOn: "September 7, 2026",
+} as const;
+
+// 2. The token mix Ryan's own work burns: for every output token, the input
+//    and cache-read tokens that travel with it. Read with ccusage off his Mac
+//    for Aug 19 to Sep 7, 2026 (20 active days; docs/usage-receipts-2026-09.md).
+//    Those are Codex and Hermes logs, because Claude Code in Cowork and
+//    claude.ai keep no local log. It is the best measured mix there is, and
+//    every number built on it says "estimate" until a month runs on credits.
+export const MEASURED_MIX = {
+  inputPerOutput: 15.9,
+  cacheReadPerOutput: 291.4,
+  window: "Aug 19 to Sep 7, 2026",
+  activeDays: 20,
+} as const;
+
+// Measured working days from the same log, priced at the Fable 5.1 rates.
+export const MEASURED_DAY_CENTS = {
+  light: 4_713,
+  average: 15_620,
+  heavy: 27_742,
+  heaviest: 61_100,
+} as const;
+
+// Ryan's stated working day for the time estimate (same report, item 14).
+export const WORKING_DAY_HOURS = 8;
+
+// Anthropic's rule of thumb: one token is about 0.75 English words.
+export const WORDS_PER_TOKEN = 0.75;
+
+// One output token with its share of input and cache reads, in dollars.
+export function costPerOutputTokenUsd(): number {
+  return (
+    (FABLE_RATES.output +
+      MEASURED_MIX.inputPerOutput * FABLE_RATES.input +
+      MEASURED_MIX.cacheReadPerOutput * FABLE_RATES.cacheRead) /
+    1_000_000
+  );
 }
 
-// Articles a gift covers at the last 30 days' pace: the real bill divided
-// by the real count of posts published in that window. Null without both.
-export function fuelArticlesAtPace(amountCents: number, billCents: number, posts30: number | null): number | null {
-  if (!(billCents > 0) || !(amountCents > 0) || posts30 === null || !(posts30 > 0)) return null;
-  const perArticleCents = billCents / posts30;
-  return amountCents / perArticleCents;
+export type TokenBuy = {
+  outputTokens: number;
+  inputTokens: number;
+  cacheReadTokens: number;
+  words: number;
+};
+
+export function tokensFor(amountCents: number): TokenBuy {
+  const out = amountCents > 0 ? amountCents / 100 / costPerOutputTokenUsd() : 0;
+  return {
+    outputTokens: Math.round(out),
+    inputTokens: Math.round(out * MEASURED_MIX.inputPerOutput),
+    cacheReadTokens: Math.round(out * MEASURED_MIX.cacheReadPerOutput),
+    words: Math.round(out * WORDS_PER_TOKEN),
+  };
 }
 
-export function articlesLabel(n: number | null): string | null {
-  if (n === null) return null;
-  if (n < 0.75) return "part of an article";
-  if (n < 1.5) return "about 1 article";
-  return `about ${Math.round(n)} articles`;
+// Hours of the machine a gift buys at the measured average day.
+export function machineHours(amountCents: number): number {
+  return (amountCents / MEASURED_DAY_CENTS.average) * WORKING_DAY_HOURS;
+}
+
+export function machineTimeLabel(amountCents: number): string | null {
+  if (!(amountCents > 0)) return null;
+  const h = machineHours(amountCents);
+  if (h < 1) {
+    const min = Math.max(5, Math.round((h * 60) / 5) * 5);
+    return `about ${min} minutes of the machine`;
+  }
+  if (h < WORKING_DAY_HOURS * 1.5) {
+    const half = Math.round(h * 2) / 2;
+    return `about ${half} ${half === 1 ? "hour" : "hours"} of the machine`;
+  }
+  const days = Math.max(2, Math.round(h / WORKING_DAY_HOURS));
+  return `about ${days} working days of the machine`;
+}
+
+// 17,740 -> "17,700"; 5,200,000 -> "5.2M". For tables that must scan fast.
+export function compactTokens(n: number): string {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(n >= 10_000_000 ? 0 : 1)}M`;
+  if (n >= 10_000) return `${Math.round(n / 100) * 100}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return Math.round(n).toLocaleString("en-US");
+}
+
+// Round words to the nearest thousand for headlines: 13,305 -> "13,000".
+export function roundWords(n: number): string {
+  if (n >= 10_000) return (Math.round(n / 1000) * 1000).toLocaleString("en-US");
+  if (n >= 1_000) return (Math.round(n / 100) * 100).toLocaleString("en-US");
+  return Math.round(n).toLocaleString("en-US");
 }
 
 // Calendar helpers for the month meter (UTC, matching getFuelRaised).
