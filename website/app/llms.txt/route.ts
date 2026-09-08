@@ -13,6 +13,13 @@ export async function GET() {
     ? totals.ryanFiledGrievances.toLocaleString("en-US")
     : "267";
   const people = totals?.people ? totals.people.toLocaleString("en-US") : "1,500+";
+  // The day count comes from lib/case.ts like every other count on the
+  // site, and it is arrest to pardon, not a custody total: no facility
+  // record on file sums to one yet. Without totals the line drops the
+  // number rather than guess.
+  const daysLine = totals?.daysArrestToPardon
+    ? `${totals.daysArrestToPardon.toLocaleString("en-US")} days from arrest to pardon, including extended pretrial solitary confinement in the DC jail.`
+    : "Held from arrest to pardon, including extended pretrial solitary confinement in the DC jail.";
 
   const body = `# Ryan Nichols — RealRyanNichols.com
 
@@ -28,8 +35,7 @@ export async function GET() {
   search-and-rescue specialist who led civilian rescue missions after major
   hurricanes.
 - Charged after January 6, 2021 (United States v. Nichols, case
-  1:21-cr-00117, D.D.C.). Detained 1,463 days, including extended pretrial
-  solitary confinement in the DC jail. Sentenced to 63 months and fined
+  1:21-cr-00117, D.D.C.). ${daysLine} Sentenced to 63 months and fined
   $200,000 — the largest fine imposed in any January 6 case. Pardoned
   January 20, 2025; the case was dismissed with prejudice.
 - Now an independent journalist documenting his own case file in public and

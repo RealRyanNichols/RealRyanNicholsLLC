@@ -588,11 +588,11 @@ export default async function FuelPage({
               <p>
                 {caseTotals ? (
                   <>
-                    I spent <strong className="text-[var(--color-ink)]">{caseTotals.daysArrestToPardon.toLocaleString("en-US")} days</strong> in
-                    federal custody before a pardon and a dismissal with prejudice.{" "}
+                    It was <strong className="text-[var(--color-ink)]">{caseTotals.daysArrestToPardon.toLocaleString("en-US")} days</strong> from
+                    my arrest to my pardon, and then a dismissal with prejudice.{" "}
                   </>
                 ) : (
-                  <>I spent years in federal custody before a pardon and a dismissal with prejudice. </>
+                  <>It was years from my arrest to my pardon, and then a dismissal with prejudice. </>
                 )}
                 I came home to no business, no marriage, and a record nobody was going to publish for me.
               </p>
