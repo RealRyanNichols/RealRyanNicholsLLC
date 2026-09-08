@@ -19,7 +19,7 @@ export async function GET() {
   // number rather than guess.
   const daysLine = totals?.daysArrestToPardon
     ? `${totals.daysArrestToPardon.toLocaleString("en-US")} days from arrest to pardon, including extended pretrial solitary confinement in the DC jail.`
-    : "Held from arrest to pardon, including extended pretrial solitary confinement in the DC jail.";
+    : "From arrest to pardon, that included extended pretrial solitary confinement in the DC jail.";
 
   const body = `# Ryan Nichols — RealRyanNichols.com
 
