@@ -375,6 +375,38 @@ export async function getEventBySlug(slug: string): Promise<CaseEvent | null> {
   return (data ?? null) as CaseEvent | null;
 }
 
+// The columns the sitewide search reads and shows for a document: what
+// filterArchive matches on plus what a result card needs. No transcript,
+// so the whole index is a few hundred KB rather than megabytes and can be
+// held in a cache. Same order as getDocuments().
+const DOCUMENT_INDEX_COLS = "id, slug, title, description, doc_type, source, document_date";
+export type CaseDocumentIndexRow = Pick<
+  CaseDocument,
+  "id" | "slug" | "title" | "description" | "doc_type" | "source" | "document_date"
+>;
+
+export async function getDocumentsIndex(): Promise<CaseDocumentIndexRow[]> {
+  const supabase = getSupabaseStaticClient();
+  const PAGE = 1000;
+  const all: CaseDocumentIndexRow[] = [];
+  for (let from = 0; ; from += PAGE) {
+    const { data, error } = await supabase
+      .from("case_documents")
+      .select(DOCUMENT_INDEX_COLS)
+      .eq("visibility", "public")
+      .eq("archived", false)
+      .order("document_date", { ascending: false, nullsFirst: false })
+      .order("relevance", { ascending: false })
+      .order("title", { ascending: true })
+      .order("id", { ascending: true })
+      .range(from, from + PAGE - 1);
+    if (error || !data || data.length === 0) break;
+    all.push(...(data as CaseDocumentIndexRow[]));
+    if (data.length < PAGE) break;
+  }
+  return all;
+}
+
 export async function getDocuments(): Promise<CaseDocument[]> {
   // Paginate past PostgREST's 1000-row server cap.
   const supabase = getSupabaseStaticClient();

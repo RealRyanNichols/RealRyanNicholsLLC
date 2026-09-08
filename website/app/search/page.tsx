@@ -4,18 +4,19 @@ import { format } from "date-fns";
 import { SearchBox } from "@/components/SearchBox";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { SITE } from "@/lib/site";
+import { unstable_cache } from "next/cache";
 import {
   getGrievances,
-  getPeople,
+  getJ6PeoplePage,
   getEvents,
-  getDocuments,
-  type CaseDocument,
+  getDocumentsIndex,
+  type CaseDocumentIndexRow,
   type CaseEvent,
   type CaseGrievance,
   type CasePerson,
 } from "@/lib/case";
 import { filterArchive } from "@/components/case/archive";
-import { Highlight } from "@/components/case/Highlight";
+import { Highlight, excerptAround } from "@/components/case/Highlight";
 
 export const dynamic = "force-dynamic";
 
@@ -58,6 +59,25 @@ function readQuery(sp: Record<string, string | string[] | undefined>): string {
   return (v ?? "").trim().slice(0, 120);
 }
 
+// The case record the search reads: every public grievance and event, and
+// a slim index of every public document (no transcripts). Fetched once and
+// kept for five minutes across requests, the same ISR window the case
+// archive uses, so an ordinary search does not re-download the record.
+// People are not here: they come from the directory's own server-side
+// query per search (getJ6PeoplePage), which is one narrow request.
+const getCaseCorpus = unstable_cache(
+  async () => {
+    const [grievances, events, documents] = await Promise.all([
+      getGrievances(),
+      getEvents(),
+      getDocumentsIndex(),
+    ]);
+    return { grievances, events, documents };
+  },
+  ["search-case-corpus"],
+  { revalidate: 300 },
+);
+
 export async function generateMetadata({
   searchParams,
 }: {
@@ -91,29 +111,35 @@ export default async function SearchPage({
   let caseHits: CaseHits | null = null;
   if (q.length >= 2) {
     const supabase = getSupabaseStaticClient();
-    const [{ data }, grievances, people, events, documents] = await Promise.all([
+    const [{ data }, corpus, j6] = await Promise.all([
       supabase.rpc("search_posts", { q, max_results: 50 }),
-      getGrievances(),
-      getPeople(),
-      getEvents(),
-      getDocuments(),
+      getCaseCorpus(),
+      // People come from the directory's own query (J6 defendants, by
+      // name, case number, or role), so the sample here and the "All N"
+      // link into /case?view=people show the same result set.
+      getJ6PeoplePage({ claimStatus: "all", q, page: 1, pageSize: 24 }),
     ]);
     results = (data ?? []) as Hit[];
     const found = filterArchive({
       q,
       j6Filter: "all",
-      grievances,
-      people,
-      events,
-      documents,
+      grievances: corpus.grievances,
+      people: [],
+      events: corpus.events,
+      documents: corpus.documents,
       peopleNamed: 0,
     });
     caseHits = {
       grievances: found.filteredGrievances,
       events: found.filteredEvents,
-      people: found.filteredPeople,
+      people: j6.people,
+      peopleTotal: j6.total,
       documents: found.filteredDocuments,
-      total: found.totalHits,
+      total:
+        found.filteredGrievances.length +
+        found.filteredEvents.length +
+        j6.total +
+        found.filteredDocuments.length,
     };
   }
 
@@ -234,8 +260,10 @@ export default async function SearchPage({
 type CaseHits = {
   grievances: CaseGrievance[];
   events: CaseEvent[];
+  // The directory's first page for the query, and its full count.
   people: CasePerson[];
-  documents: CaseDocument[];
+  peopleTotal: number;
+  documents: CaseDocumentIndexRow[];
   total: number;
 };
 
@@ -244,9 +272,14 @@ type CaseHits = {
 const CASE_SAMPLE = 3;
 
 // A snippet is a pointer, not the record: the full text lives on the hit's
-// own page. Clipped before it is marked so a dozen hits stay a few KB.
+// own page. About SNIPPET characters, taken around the first occurrence of
+// the query when the field has one (so the mark is in the sample), else
+// from the field's opening. Clipped before it is marked so a dozen hits
+// stay a few KB.
 const SNIPPET = 120;
-function clip(text: string | null | undefined): string | null {
+function snippet(text: string | null | undefined, q: string): string | null {
+  const around = excerptAround(text, q, Math.floor(SNIPPET / 2));
+  if (around) return around;
   if (!text) return null;
   const t = text.trim();
   return t.length <= SNIPPET ? t : `${t.slice(0, SNIPPET).replace(/\s+\S*$/, "")}…`;
@@ -257,49 +290,56 @@ function clip(text: string | null | undefined): string | null {
 // and one door to the full results on /case.
 function CaseFilesHits({ hits, q }: { hits: CaseHits; q: string }) {
   const encoded = encodeURIComponent(q);
+  // Each section's count is the full result set the "All N" link opens;
+  // the items are its sample. Three sections filter the cached corpus the
+  // way /case?q= does; people carry the directory's own count.
   const sections = [
     {
       key: "grievances",
       label: "Grievances",
       href: `/case?view=grievances&q=${encoded}`,
+      count: hits.grievances.length,
       items: hits.grievances.map((g) => ({
         slug: g.slug,
         href: `/case/grievances/${g.slug}`,
         title: g.title,
-        sub: clip(g.summary),
+        sub: snippet(g.summary, q) ?? snippet(g.body, q),
       })),
     },
     {
       key: "timeline",
       label: "Timeline",
       href: `/case?view=timeline&q=${encoded}`,
+      count: hits.events.length,
       items: hits.events.map((e) => ({
         slug: e.slug,
         href: `/case/events/${e.slug}`,
         title: e.title,
-        sub: clip(e.description),
+        sub: snippet(e.description, q),
       })),
     },
     {
       key: "people",
       label: "People",
       href: `/case?view=people&q=${encoded}`,
+      count: hits.peopleTotal,
       items: hits.people.map((p) => ({
         slug: p.slug,
         href: `/case/people/${p.slug}`,
         title: p.name,
-        sub: p.role,
+        sub: [p.case_number, p.role].filter(Boolean).join(" · ") || null,
       })),
     },
     {
       key: "documents",
       label: "Documents",
       href: `/case?view=documents&q=${encoded}`,
+      count: hits.documents.length,
       items: hits.documents.map((d) => ({
         slug: d.slug,
         href: `/case/documents/${d.slug}`,
         title: d.title,
-        sub: clip(d.description),
+        sub: snippet(d.description, q) ?? ([d.doc_type, d.source].filter(Boolean).join(" · ") || null),
       })),
     },
   ];
@@ -328,22 +368,22 @@ function CaseFilesHits({ hits, q }: { hits: CaseHits; q: string }) {
       ) : (
         <>
           {sections
-            .filter((s) => s.items.length > 0)
+            .filter((s) => s.count > 0)
             .map((s) => (
               <div key={s.key} className="mt-6">
                 <div className="flex items-baseline justify-between gap-3">
                   <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--color-ink-soft)]">
                     {s.label}{" "}
                     <span className="text-[var(--color-muted)]">
-                      ({s.items.length.toLocaleString("en-US")})
+                      ({s.count.toLocaleString("en-US")})
                     </span>
                   </h3>
-                  {s.items.length > CASE_SAMPLE ? (
+                  {s.count > CASE_SAMPLE ? (
                     <Link
                       href={s.href}
                       className="inline-flex min-h-11 items-center gap-1 text-xs font-bold text-[var(--color-navy)] hover:underline sm:min-h-0"
                     >
-                      All {s.items.length.toLocaleString("en-US")}
+                      All {s.count.toLocaleString("en-US")}
                       <span aria-hidden>→</span>
                     </Link>
                   ) : null}
