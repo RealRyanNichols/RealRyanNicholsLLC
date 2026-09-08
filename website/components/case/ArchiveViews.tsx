@@ -267,7 +267,12 @@ export function DocumentsView({
             </h2>
             {d.description ? (
               <p className="mt-1.5 line-clamp-2 text-xs leading-snug text-[var(--color-ink-soft)]">
-                <Highlight text={d.description} q={q} />
+                {/* Two clamped lines can hide a match further in; while
+                    searching, show the passage around it instead. */}
+                <Highlight
+                  text={q ? (excerptAround(d.description, q, 60) ?? d.description) : d.description}
+                  q={q}
+                />
               </p>
             ) : null}
             {sourceHit ? (
