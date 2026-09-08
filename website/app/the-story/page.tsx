@@ -1,8 +1,27 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import localFont from "next/font/local";
 import { pageMetadata } from "@/lib/page-metadata";
 import { RescueGallery } from "@/components/RescueGallery";
 import { getCaseTotals, getJ6DefendantCount } from "@/lib/case";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbLd, personRef, websiteRef } from "@/lib/jsonld";
+import { SITE } from "@/lib/site";
+import { StoryCinema } from "@/components/story/StoryCinema";
+import { ChapterMedia, Img } from "@/components/story/StoryFrames";
+import { CLOSING, HERO, bleedBackdrop, chaptersFor, type Chapter } from "./chapters";
+import "./story.css";
+
+// The display face for this room only: Big Shoulders, the condensed cut Ryan
+// picked for the cover-art standard. Self-hosted (OFL), one variable file,
+// the latin range, ~35 KB. Everything else on the page is the site's own
+// serif and sans.
+const display = localFont({
+  src: "./fonts/BigShouldersDisplay-latin.woff2",
+  weight: "700 900",
+  display: "swap",
+  variable: "--font-story-display",
+});
 
 // The day count in the description is the live arrest-to-pardon figure from
 // lib/case.ts, never typed.
@@ -11,324 +30,270 @@ export async function generateMetadata(): Promise<Metadata> {
   const days = totals.daysArrestToPardon.toLocaleString("en-US");
   return pageMetadata({
     title: "The Story — Ryan Nichols, All of It",
-    description: `One life, told whole: Katrina at 14, the Marines, two dozen hurricane rescues, a business built from nothing, January 6 and ${days} days from arrest to pardon, the fall nobody photographs, the finding, the family, and the archive built so it can never be buried.`,
+    description: `One life, told whole and backed by paper: Katrina at 14, the Marines, two dozen hurricane rescues, a business built from nothing, January 6 and ${days} days from arrest to pardon, the fall nobody photographs, the finding, the family, and the archive built so it can never be buried.`,
     path: "/the-story",
+    image: "/og/the-story",
   });
-}
-
-// The life's work, as chapters. Each one links into the part of the site that
-// holds its receipts. This page is the spine; the site is the body.
-type Chapter = {
-  era: string;
-  kicker: string;
-  title: string;
-  lines: string[];
-  href: string;
-  cta: string;
-  tone?: "dark" | "light";
-  // Only set when a REAL, verified photo of that era exists. Chapters without
-  // one get a designed era plate — never a photo from the wrong year.
-  image?: string;
-};
-
-// Chapter Ten carries the live archive counts from lib/case.ts — never a
-// typed number — so the spine can only ever say what the archive says. A
-// count of 0 means the query failed; the line then drops the number.
-function chaptersFor(record: {
-  defendants: number;
-  documents: number;
-  days: number;
-  facilities: number;
-}): Chapter[] {
-  return [
-  {
-    era: "2005",
-    kicker: "Chapter One",
-    title: "The kid in the floodwater",
-    lines: [
-      "Hurricane Katrina. Fourteen years old.",
-      "His first rescue was not a metaphor.",
-    ],
-    href: "/story/hurricane-katrina-2005",
-    cta: "The Katrina chapter →",
-  },
-  {
-    era: "2010–2014",
-    kicker: "Chapter Two",
-    title: "The Marine",
-    lines: [
-      "Enlisted during two wars. Okinawa. Typhoons.",
-      "Led 30+ Marines. Honorable discharge.",
-    ],
-    href: "/case#service",
-    cta: "The service record →",
-  },
-  {
-    era: "2017–2020",
-    kicker: "Chapter Three",
-    title: "Two dozen storms",
-    lines: [
-      "Harvey. Florence. Michael. Sally.",
-      "Fifty people pulled out in a single day.",
-      "Ellen put him on her show. The storms kept coming. So did he.",
-    ],
-    href: "/story/hurricane-florence-2018",
-    cta: "The rescue operations log →",
-    image: "/rescues/rescue-047.jpg",
-  },
-  {
-    era: "2014–2021",
-    kicker: "Chapter Four",
-    title: "The builder",
-    lines: [
-      "Wholesale Universe. From nothing to multi-million.",
-      "A family. A father. A life built with two hands.",
-    ],
-    href: "/about",
-    cta: "The full biography →",
-  },
-  {
-    era: "2021–2025",
-    kicker: "Chapter Five",
-    title: "The fire",
-    lines: [
-      "January 6. Arrested twelve days later.",
-      `${record.days.toLocaleString("en-US")} days, arrest to pardon. ${record.facilities} facilities. Solitary.`,
-      "A federal judge admitted on the record his due process was violated.",
-      "He stayed in anyway — and papered every day of it.",
-    ],
-    href: "/case",
-    cta: "The case, in paper →",
-    tone: "dark",
-  },
-  {
-    era: "2022",
-    kicker: "Chapter Six",
-    title: "The habeas fight",
-    lines: [
-      "Over a year documenting abuses from inside.",
-      "267 grievance forms in his own hand.",
-      "He sued the Attorney General from his cell — and got out of solitary.",
-    ],
-    href: "/case/documents/habeas-petition-2022",
-    cta: "Read the petition →",
-  },
-  {
-    era: "Jan 20, 2025",
-    kicker: "Chapter Seven",
-    title: "Pardoned. Dismissed. Permanent.",
-    lines: [
-      "A full and unconditional pardon.",
-      "Dismissed with prejudice — it can never be brought again.",
-    ],
-    href: "/case/documents/order-j6-presidential-pardon-2025",
-    cta: "The pardon, on the record →",
-  },
-  {
-    era: "2025",
-    kicker: "Chapter Eight",
-    title: "The fall nobody photographs",
-    lines: [
-      "The cameras left after the pardon.",
-      "Homelessness. A marriage ending. The business gone.",
-      "Losing himself so completely he did not recognize the man doing the losing.",
-      "This chapter is being written now — plainly, and without shame.",
-    ],
-    href: "/posts/my-lifes-work-all-of-it",
-    cta: "The part people wondered about →",
-    tone: "dark",
-  },
-  {
-    era: "2025–2026",
-    kicker: "Chapter Nine",
-    title: "The finding",
-    lines: [
-      "Faith that works like a job, not a bumper sticker.",
-      "The water. The work. Mental health fought for out loud.",
-      "Amanda. A son on the way.",
-      "A comeback measured in receipts, not applause.",
-    ],
-    href: "/posts/the-comeback-ledger",
-    cta: "The comeback ledger →",
-  },
-  {
-    era: "Now",
-    kicker: "Chapter Ten",
-    title: "The archive for the others",
-    lines: [
-      `${record.defendants > 0 ? `${record.defendants.toLocaleString("en-US")} d` : "D"}efendants indexed. Profiles free, forever.`,
-      `${record.documents > 0 ? `${record.documents.toLocaleString("en-US")} d` : "D"}ocuments public and permanent.`,
-      "Witnesses coming forward. History written — and righted.",
-    ],
-    href: "/j6",
-    cta: "Enter the archive →",
-  },
-  ];
 }
 
 export const revalidate = 3600;
 
 export default async function TheStoryPage() {
-  const [totals, defendants] = await Promise.all([
-    getCaseTotals(),
-    getJ6DefendantCount(),
-  ]);
+  const [totals, defendants] = await Promise.all([getCaseTotals(), getJ6DefendantCount()]);
   const chapters = chaptersFor({
-    defendants,
-    documents: totals.documents,
     days: totals.daysArrestToPardon,
     facilities: totals.facilities,
+    grievances: totals.ryanFiledGrievances,
+    documents: totals.documents,
+    defendants,
   });
+  const days = totals.daysArrestToPardon;
+  const url = `${SITE.url}/the-story`;
+
+  const ld = [
+    {
+      "@context": "https://schema.org",
+      "@type": "AboutPage",
+      "@id": `${url}#page`,
+      url,
+      name: "The Story — Ryan Nichols, All of It",
+      description:
+        "Ten chapters of one life, each linked to the record that proves it: rescuer, Marine, builder, January 6 defendant, father.",
+      isPartOf: websiteRef(),
+      mainEntity: personRef(),
+    },
+    breadcrumbLd([
+      { name: "Home", url: SITE.url },
+      { name: "The Story", url },
+    ]),
+  ];
+
   return (
-    <article className="mx-auto max-w-3xl px-4 py-12">
-      {/* Hero */}
-      <p className="text-xs font-black uppercase tracking-[0.25em] text-[var(--color-accent)]">
-        The Story · All of it
-      </p>
-      <h1 className="mt-3 font-display text-4xl font-black leading-[1.05] tracking-tight sm:text-6xl">
-        One life.
-        <br />
-        Told whole.
-        <br />
-        Backed by paper.
-      </h1>
-      <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[var(--color-ink-soft)]">
-        Rescuer. Marine. Builder. Defendant. Father. The fire, the fall, and
-        the finding — every chapter below links to the part of this site that
-        holds its receipts. Read it in order. Check every claim. Share what
-        moves you.
-      </p>
-      <div className="mt-7 flex flex-wrap gap-3">
-        <Link
-          href="/posts/my-lifes-work-all-of-it"
-          className="btn-accent rounded-full px-5 py-2.5 text-sm font-bold"
-        >
-          Start with his own words
-        </Link>
-        <Link
-          href="/book"
-          className="btn-support rounded-full px-5 py-2.5 text-sm font-semibold"
-        >
-          The book: Fighting Shadows
-        </Link>
-      </div>
+    <div className={`st-theater ${display.variable}`}>
+      <JsonLd data={ld} />
+      <StoryCinema
+        chapters={chapters.map((c) => ({ id: c.id, era: c.era, title: c.title }))}
+      />
 
-      {/* Chapters */}
-      <section className="mt-14 space-y-6">
-        {chapters.map((c, idx) => (
-          <Link
-            key={c.kicker}
-            href={c.href}
-            className={[
-              "group grid gap-5 rounded-2xl border-2 p-6 transition sm:grid-cols-[168px_minmax(0,1fr)] sm:p-8",
-              c.tone === "dark"
-                ? "border-[var(--color-navy)]/40 bg-[var(--color-blue-soft)]/40 hover:border-[var(--color-navy)]"
-                : "border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-accent)]",
-            ].join(" ")}
-          >
-            {/* Fixed 4:3 well — a real photo when one exists for that era,
-                otherwise a numbered chapter plate. Height is reserved either
-                way, so the page never jumps as images load. */}
-            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-[var(--color-line)]">
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-[#16223f] to-[#0b1428]">
-                <span className="font-display text-4xl font-black leading-none text-white/90">
-                  {String(idx + 1).padStart(2, "0")}
-                </span>
-                <span className="mt-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
-                  {c.era}
-                </span>
-              </div>
-              {c.image ? (
-                /* eslint-disable-next-line @next/next/no-img-element */
-                <img
-                  src={c.image}
-                  alt={`Ryan Nichols — ${c.title}`}
-                  loading="lazy"
-                  className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-[1.04]"
-                />
-              ) : null}
-            </div>
+      {/* ---- Title card ---- */}
+      <header className="st-hero" id="the-story-top">
+        <div className="st-hero-media">
+          <Img p={HERO.picture} sizes="100vw" eager />
+          <span className="st-prov st-prov--real st-prov--hero">
+            Real photo · {HERO.credit}
+          </span>
+        </div>
+        <div className="st-hero-copy">
+          <p className="st-kicker">The Story · All of it</p>
+          <h1>
+            <span className="st-line" style={{ "--i": 0 } as React.CSSProperties}>
+              <span>One life.</span>
+            </span>
+            <span className="st-line" style={{ "--i": 1 } as React.CSSProperties}>
+              <span>Told whole.</span>
+            </span>
+            <span className="st-line" style={{ "--i": 2 } as React.CSSProperties}>
+              <span>
+                Backed by <em>paper.</em>
+              </span>
+            </span>
+          </h1>
+          <div className="st-rule" aria-hidden />
+          <p className="st-sub">
+            Rescuer. Marine. Builder. Defendant. Father. The fire, the fall,
+            and the finding. Every chapter below links to the paper that
+            proves it. Read it in order. Check every claim. Share what moves
+            you.
+          </p>
+          <ul className="st-stats">
+            <li className="st-stat">
+              <b data-count={days > 0 ? days : undefined}>
+                {days > 0 ? days.toLocaleString("en-US") : "—"}
+              </b>
+              <span>Days, arrest to pardon</span>
+            </li>
+            <li className="st-stat">
+              <b>2 dozen+</b>
+              <span>Disaster deployments</span>
+            </li>
+            <li className="st-stat">
+              <b data-count={defendants > 0 ? defendants : undefined}>
+                {defendants > 0 ? defendants.toLocaleString("en-US") : "—"}
+              </b>
+              <span>Defendants indexed</span>
+            </li>
+          </ul>
+          <div className="st-actions">
+            <Link href="/posts/my-lifes-work-all-of-it" className="st-btn">
+              Start with his own words
+            </Link>
+            <Link href="/book" className="st-btn st-btn--ghost">
+              The book: Fighting Shadows
+            </Link>
+          </div>
+          <a className="st-scrollcue" href="#chapter-1">
+            <i aria-hidden />
+            Chapter One · 2005
+          </a>
+        </div>
+      </header>
 
-            <div className="min-w-0">
-            <div className="flex items-baseline justify-between gap-3">
-              <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
-                {c.kicker}
-              </p>
-              <p className="text-xs font-bold tabular-nums text-[var(--color-muted)]">
-                {c.era}
-              </p>
+      {/* ---- Ten chapters ---- */}
+      <ol className="st-chapters">
+        {chapters.map((c, i) =>
+          c.layout === "bleed" ? (
+            <BleedChapter key={c.id} c={c} n={i + 1} />
+          ) : (
+            <SplitChapter key={c.id} c={c} n={i + 1} />
+          ),
+        )}
+      </ol>
+
+      {/* ---- The rescue record, in pictures ---- */}
+      <section className="st-paper-section" id="the-rescue-record">
+        <div>
+          <p className="st-kicker">The rescue record · in pictures</p>
+          <h2>Before he was a case number, he ran toward the water.</h2>
+          <p className="st-lead">
+            Hurricane after hurricane. Boats in the floodline, strangers pulled
+            to safety, the children he went in to save. Two dozen deployments,
+            one calling. This is the record of the work, straight off the
+            drive. Tap any photo to open it.
+          </p>
+          <div className="mt-8">
+            <RescueGallery count={54} />
+          </div>
+        </div>
+      </section>
+
+      {/* ---- The door out ---- */}
+      <section className="st-closing" id="why-this-page-exists">
+        <div className="st-closing-bg" aria-hidden>
+          <Img p={CLOSING.picture} sizes="100vw" />
+        </div>
+        <div className="st-closing-inner">
+          <p className="st-kicker">Why this page exists</p>
+          <blockquote className="st-closing-quote" data-reveal>
+            &ldquo;I feel called to go to the Marine Corps. I feel called to go
+            do all those rescues. I felt called to go to January 6th. I felt
+            called to run for Congress. I feel called to run the business that
+            I&rsquo;m running. I felt called to finally tell my story.{" "}
+            <em>You&rsquo;ll know when it&rsquo;s time. You just will.</em>&rdquo;
+            <cite>Ryan Nichols · recorded September 7, 2026 · Ryan statement</cite>
+          </blockquote>
+          <p className="st-sub" data-reveal style={{ "--d": 1 } as React.CSSProperties}>
+            It writes history. It rights history. And it leaves the door open
+            for every witness who needs a place to put their story.
+          </p>
+          <div className="st-actions" data-reveal style={{ "--d": 2 } as React.CSSProperties}>
+            <Link href="/tell-your-story" className="st-btn">
+              Tell your story
+            </Link>
+            <Link href="/j6" className="st-btn st-btn--ghost">
+              Claim a J6 profile, free forever
+            </Link>
+            <Link href="/book" className="st-btn st-btn--gold">
+              Read the book
+            </Link>
+          </div>
+          <p className="st-verse">
+            &ldquo;As for you, you meant evil against me, but God meant it for
+            good, to bring it about that many people should be kept alive, as
+            they are today.&rdquo; Genesis 50:20
+          </p>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function ChapterCopy({ c }: { c: Chapter }) {
+  return (
+    <>
+      <p className="st-era">
+        {c.kicker} · {c.era}
+      </p>
+      <h2>{c.title}</h2>
+      {c.stats ? (
+        <div className="st-bignums">
+          {c.stats.map((s) => (
+            <div className="st-bignum" key={s.label}>
+              <b data-count={s.value}>{s.value.toLocaleString("en-US")}</b>
+              <span>{s.label}</span>
             </div>
-            <h2 className="mt-2 font-display text-2xl font-black tracking-tight text-[var(--color-ink)] sm:text-3xl">
-              {c.title}
-            </h2>
-            <div className="mt-3 space-y-1.5">
-              {c.lines.map((line) => (
-                <p
-                  key={line}
-                  className="text-sm leading-relaxed text-[var(--color-ink-soft)] sm:text-base"
-                >
-                  {line}
-                </p>
-              ))}
-            </div>
-            <p className="mt-4 text-sm font-bold text-[var(--color-navy)] transition group-hover:text-[var(--color-accent)]">
-              {c.cta}
-            </p>
-            </div>
-          </Link>
+          ))}
+        </div>
+      ) : null}
+      <div className="st-lines">
+        {c.lines.map((l) => (
+          <p key={l.text} className={l.big ? "st-big" : undefined}>
+            {l.text}
+          </p>
         ))}
-      </section>
+      </div>
+      {c.quote ? (
+        <blockquote className="st-quote">
+          &ldquo;{c.quote.text}&rdquo;
+          <cite>{c.quote.cite}</cite>
+        </blockquote>
+      ) : null}
+      <div className="st-chips">
+        {c.chips.map((ch) => (
+          <span key={ch.label} className={`st-chip${ch.tone ? ` st-chip--${ch.tone}` : ""}`}>
+            {ch.label}
+          </span>
+        ))}
+      </div>
+      <Link href={c.href} className="st-cta">
+        {c.cta} <span aria-hidden>→</span>
+      </Link>
+    </>
+  );
+}
 
-      {/* The rescue record, in pictures — screened set, self-hosted on-domain */}
-      <section className="mt-14">
-        <p className="text-xs font-black uppercase tracking-[0.25em] text-[var(--color-accent)]">
-          The rescue record · in pictures
-        </p>
-        <h2 className="mt-2 font-display text-3xl font-black leading-tight tracking-tight sm:text-4xl">
-          Before he was a case number, he ran toward the water.
-        </h2>
-        <p className="mt-3 max-w-2xl text-base leading-relaxed text-[var(--color-ink-soft)]">
-          Hurricane after hurricane — boats in the floodline, strangers pulled to
-          safety, the children he went in to save. Two dozen deployments, one
-          calling. This is the record of the work, straight off the drive. Tap
-          any photo to open it.
-        </p>
-        <div className="mt-6">
-          <RescueGallery count={54} />
+function SplitChapter({ c, n }: { c: Chapter; n: number }) {
+  return (
+    <li
+      id={c.id}
+      data-chapter={n}
+      className={`st-chapter st-chapter--${c.id}${c.layout === "flip" ? " st-chapter--flip" : ""}`}
+    >
+      <span className="st-num" aria-hidden>
+        {String(n).padStart(2, "0")}
+      </span>
+      <div className="st-frame-wrap" data-reveal>
+        <ChapterMedia media={c.media} />
+      </div>
+      <div className="st-copy" data-reveal style={{ "--d": 1 } as React.CSSProperties}>
+        <ChapterCopy c={c} />
+      </div>
+    </li>
+  );
+}
+
+function BleedChapter({ c, n }: { c: Chapter; n: number }) {
+  const backdrop = bleedBackdrop(c.media);
+  const media = <ChapterMedia media={c.media} />;
+  return (
+    <li id={c.id} data-chapter={n} className={`st-chapter st-chapter--bleed st-chapter--${c.id}`}>
+      {backdrop ? (
+        <div className="st-bleed-bg" aria-hidden>
+          <Img p={backdrop} sizes="100vw" />
         </div>
-      </section>
-
-      {/* The why */}
-      <section className="mt-14 rounded-2xl border-2 border-[var(--color-navy)]/30 bg-[var(--color-blue-soft)]/40 p-6 sm:p-8">
-        <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[var(--color-navy)]">
-          Why this page exists
-        </p>
-        <p className="mt-3 font-display text-xl font-bold leading-snug text-[var(--color-ink)] sm:text-2xl">
-          It writes history. It rights history. And it leaves the door open for
-          every witness who needs a place to put their story.
-        </p>
-        <div className="mt-5 flex flex-wrap gap-3">
-          <Link
-            href="/tell-your-story"
-            className="btn-accent rounded-full px-5 py-2.5 text-sm font-bold"
-          >
-            Tell your story
-          </Link>
-          <Link
-            href="/j6"
-            className="rounded-full border-2 border-[var(--color-navy)]/40 px-5 py-2.5 text-sm font-bold text-[var(--color-navy)] transition hover:border-[var(--color-navy)]"
-          >
-            Claim a J6 profile — free, forever
-          </Link>
+      ) : null}
+      <span className="st-num" aria-hidden>
+        {String(n).padStart(2, "0")}
+      </span>
+      <div className="st-bleed-inner">
+        {media ? (
+          <div className="st-frame-wrap" data-reveal>
+            {media}
+          </div>
+        ) : null}
+        <div className="st-copy" data-reveal style={{ "--d": 1 } as React.CSSProperties}>
+          <ChapterCopy c={c} />
         </div>
-      </section>
-
-      {/* Verse */}
-      <p className="mt-12 border-l-2 border-[var(--color-navy)] pl-4 text-sm italic leading-relaxed text-[var(--color-ink-soft)]">
-        &ldquo;As for you, you meant evil against me, but God meant it for
-        good, to bring it about that many people should be kept alive, as they
-        are today.&rdquo; — Genesis 50:20
-      </p>
-    </article>
+      </div>
+    </li>
   );
 }
