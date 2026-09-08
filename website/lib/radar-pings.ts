@@ -22,10 +22,12 @@ function coarse(v: unknown, max: number): number | null {
   return Math.round(n * 10) / 10;
 }
 
-// The `live_visitor_pings` RPC also returns each session's current path and
-// page count. Those never reach a public surface, so strip them before the
-// rows are stored, serialized into HTML, or handed to the map. Kept in its
-// own module (no atlas imports) so server components can call it cheaply.
+// The `live_visitor_pings` RPC returns nothing but these fields since
+// 20260908040000_live_visitor_pings_no_path.sql; this sanitizer stays as the
+// second wall so that, whatever a future RPC change returns, no path, page
+// count, or raw coordinate is stored, serialized into HTML, or handed to the
+// map. Kept in its own module (no atlas imports) so server components can
+// call it cheaply.
 export function sanitizePings(rows: unknown): RadarPing[] {
   if (!Array.isArray(rows)) return [];
   const out: RadarPing[] = [];
