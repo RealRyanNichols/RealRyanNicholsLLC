@@ -10,18 +10,27 @@ import { getPublishedSupporters } from "@/lib/supporters";
 import { getCaseTotals } from "@/lib/case";
 import { SITE } from "@/lib/site";
 import {
+  FABLE_RATES,
   FUEL_FLOOR_CENTS,
   FUEL_MONTHLY,
   FUEL_TIME_FLOOR_CENTS,
+  MEASURED_DAY_CENTS,
+  MEASURED_MIX,
+  WORKING_DAY_HOURS,
+  compactTokens,
+  costPerOutputTokenUsd,
+  machineTimeLabel,
   parseFuelMessage,
+  roundWords,
   timeTiers,
+  tokensFor,
   usdWhole,
 } from "@/lib/fuel";
 
 export const dynamic = "force-dynamic";
 
 const DESCRIPTION =
-  "This machine runs on AI tokens Ryan pays for. Every article, filing summary, map, and defendant profile comes out of it. You buy the fuel, he does the work, and depending on how much fuel you put in, he does some of it for you.";
+  "Ryan pays the AI subscriptions himself. They run dry every half a week. The Token Fund buys the overage credits that keep the machine running, and what a dollar buys is arithmetic on published rates. Put in enough and he does some of the work for you.";
 
 export const metadata = pageMetadata({
   title: "Fuel the Machine: the Token Fund",
@@ -97,10 +106,24 @@ const MACHINE_DOES = [
 // date below. Update the date when you re-check them; never guess a price.
 const PRICES_CHECKED = "September 7, 2026";
 const STICKER = [
-  "Claude Max: $100 a month for 5x Pro usage, $200 a month for 20x, each with a five-hour session limit and a weekly limit. Past those, usage credits at standard API rates.",
-  "Claude Fable 5.1 by the token: $10 per million in, $50 per million out.",
+  "Claude Max: $100 a month for 5x Pro usage, $200 a month for 20x, each with a five-hour session limit and a weekly limit. There is no bigger plan. Past the limits, usage credits at standard API rates.",
+  `${FABLE_RATES.model} by the token: $${FABLE_RATES.input} per million in, $${FABLE_RATES.cacheRead} per million cached, $${FABLE_RATES.output} per million out.`,
   "ChatGPT Pro: $100 a month for 5x Plus usage, $200 for 20x. Past the limit, extra credits, metered by the token.",
 ];
+
+// The measured days, in the order they read best.
+const MEASURED_DAYS = [
+  { label: "A light day", cents: MEASURED_DAY_CENTS.light },
+  { label: "My average day", cents: MEASURED_DAY_CENTS.average },
+  { label: "A heavy day", cents: MEASURED_DAY_CENTS.heavy },
+  { label: "The heaviest day in the log", cents: MEASURED_DAY_CENTS.heaviest },
+];
+
+function joinNames(names: string[]): string {
+  if (names.length <= 1) return names[0] ?? "";
+  if (names.length === 2) return `${names[0]} and ${names[1]}`;
+  return `${names.slice(0, -1).join(", ")}, and ${names[names.length - 1]}`;
+}
 
 export default async function FuelPage({
   searchParams,
@@ -121,9 +144,14 @@ export default async function FuelPage({
     .filter((s) => s.fuel !== null);
   const keepers = wall.filter((s) => /keeper/i.test(s.fuel?.tier ?? ""));
   const others = wall.filter((s) => !/keeper/i.test(s.fuel?.tier ?? ""));
-  const hasBill = bill.billCents > 0;
+  const hasTarget = bill.targetCents > 0;
+  const target = hasTarget ? usdWhole(bill.targetCents) : null;
+  const subs = bill.subscriptionCents > 0 ? usdWhole(bill.subscriptionCents) : null;
+  const subsNames = joinNames(bill.subscriptions.map((s) => s.label.replace(/\s*\(.*\)\s*$/, "")));
   const fuelUrl = `${SITE.url}/fuel`;
-  const perDay = hasBill ? usdWhole(Math.round(bill.billCents / 30)) : null;
+  const five = tokensFor(500);
+  const fifty = machineTimeLabel(5_000);
+  const perOutput = costPerOutputTokenUsd();
 
   const archives = [
     output.posts30 !== null && output.posts30 > 0
@@ -147,6 +175,11 @@ export default async function FuelPage({
   ].sort((a, b) => a.amountCents - b.amountCents || (a.monthly ? 1 : -1));
   const floor = usdWhole(FUEL_TIME_FLOOR_CENTS);
 
+  // Every tier plus the Keeper lane, for the unit-math table.
+  const mathRows = [...bill.tiers, FUEL_MONTHLY]
+    .map((t) => ({ ...t, buy: tokensFor(t.amountCents), time: machineTimeLabel(t.amountCents) }))
+    .sort((a, b) => a.amountCents - b.amountCents);
+
   return (
     <main className="pb-16">
       {/* ── Hero: the ask, the number, the live meter, the buttons ─────── */}
@@ -164,24 +197,35 @@ export default async function FuelPage({
             The Token Fund
           </p>
           <h1 className="mt-3 max-w-3xl font-display text-4xl font-black leading-[1.02] tracking-tight text-[#fdf8ea] sm:text-6xl">
-            This machine runs on tokens.
+            I run out of tokens every half a week.
             <br />
-            <span className="text-[var(--color-gold-bright)]">You can fuel it.</span>
+            <span className="text-[var(--color-gold-bright)]">You can keep the faucet open.</span>
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-[#cfd9ea] sm:text-xl">
-            Every article, filing summary, map, timeline, and defendant profile on this
-            site is built with AI tokens I pay for by the token.
-            {hasBill ? (
+            Every article, filing summary, map, timeline, and defendant profile on this site is built with AI
+            tokens.{" "}
+            {subs ? (
+              <>
+                The subscriptions, <strong className="text-[#fdf8ea]">{subs} a month</strong> for {subsNames}, are on
+                me.
+              </>
+            ) : (
+              <>The subscriptions are on me.</>
+            )}{" "}
+            I am not asking anyone to cover those. What runs dry is the included usage, usually by the middle of
+            the week. Past that, the only lane either company sells is usage credits, billed by the token at
+            published rates.
+            {target ? (
               <>
                 {" "}
-                The bill is <strong className="text-[#fdf8ea]">{usdWhole(bill.billCents)} a month</strong>
-                {perDay ? <>, about {perDay} a day</> : null}.
+                Your fuel buys those credits. That is the whole ask:{" "}
+                <strong className="text-[#fdf8ea]">{target} a month in overage credits</strong> keeps the machine
+                running all week.
               </>
-            ) : null}{" "}
-            When the tokens run out, the machine stops.
+            ) : null}
           </p>
           <p className="mt-3 max-w-2xl text-lg font-bold leading-relaxed text-[#fdf8ea] sm:text-xl">
-            You buy the fuel. I do the work. Put in enough and I do some of it for you.
+            You buy the overage. I do the work. Put in enough and I do some of it for you.
           </p>
 
           {sp.canceled ? (
@@ -190,7 +234,7 @@ export default async function FuelPage({
             </p>
           ) : null}
 
-          {hasBill ? (
+          {hasTarget ? (
             <div className="mt-8">
               <FuelMeter initial={status} />
             </div>
@@ -207,21 +251,121 @@ export default async function FuelPage({
 
       <div className="mx-auto max-w-5xl px-4">
         {/* ── What your fuel does ───────────────────────────────────────── */}
-        {hasBill ? (
-          <section className="mt-12" aria-labelledby="fuel-ladder-title">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">What your fuel does</p>
-            <h2 id="fuel-ladder-title" className="mt-1 font-display text-2xl font-bold tracking-tight sm:text-3xl">
-              Five dollars is three hours of the machine. Fifty is a day.
-            </h2>
-            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--color-ink-soft)]">
-              Not a metaphor. The bill divided by thirty days is what a day costs, and the last thirty days of
-              articles is what a day produces. Every bar below is that math.
-            </p>
-            <div className="mt-5">
-              <FuelLadder tiers={bill.tiers} billCents={bill.billCents} posts30={output.posts30} />
+        <section className="mt-12" aria-labelledby="fuel-ladder-title">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">What your fuel does</p>
+          <h2 id="fuel-ladder-title" className="mt-1 font-display text-2xl font-bold tracking-tight sm:text-3xl">
+            {usdWhole(500)} buys about {roundWords(five.words)} words. {usdWhole(5_000)} buys {fifty}.
+          </h2>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--color-ink-soft)]">
+            Not a metaphor. Anthropic publishes the price of every token. The mix of tokens is measured off my own
+            machine. Every bar below is that arithmetic, and it is labeled an estimate because a tokens-per-article
+            meter does not exist yet.
+          </p>
+          <div className="mt-5">
+            <FuelLadder tiers={bill.tiers} />
+          </div>
+        </section>
+
+        {/* ── The math, in the open ────────────────────────────────────── */}
+        <section className="mt-12" aria-labelledby="fuel-math">
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">The math, in the open</p>
+            <span className="rounded-full border border-[var(--color-gold-bright)] bg-[var(--color-support-soft)] px-2 py-0.5 text-[11px] font-black uppercase tracking-wider text-[var(--color-support-strong)]">
+              Estimate
+            </span>
+          </div>
+          <h2 id="fuel-math" className="mt-1 font-display text-2xl font-bold tracking-tight sm:text-3xl">
+            A dollar is a number of tokens. Here is the arithmetic.
+          </h2>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--color-ink-soft)]">
+            Two inputs, both with a source, and nothing else. Anthropic publishes the price of every token. I
+            measured the mix of tokens my own work burns. Multiply, and a dollar becomes words and hours. Nobody
+            has metered a single article yet, so every figure here is an estimate and says so. The first month
+            that runs on credits, the real number replaces it.
+          </p>
+          <div className="mt-5 grid gap-3 md:grid-cols-2">
+            <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+              <p className="text-[11px] font-black uppercase tracking-wider text-[var(--color-muted)]">Input 1 · the rate card</p>
+              <p className="mt-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+                <strong className="text-[var(--color-ink)]">{FABLE_RATES.model}:</strong> ${FABLE_RATES.input} per million tokens
+                in, ${FABLE_RATES.cacheRead} per million cached, ${FABLE_RATES.output} per million out. Read from Anthropic&apos;s
+                pricing page on {FABLE_RATES.checkedOn}. Usage credits are billed at exactly these rates.
+              </p>
             </div>
-          </section>
-        ) : null}
+            <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+              <p className="text-[11px] font-black uppercase tracking-wider text-[var(--color-muted)]">Input 2 · my measured mix</p>
+              <p className="mt-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+                For every output token, my work carries{" "}
+                <strong className="text-[var(--color-ink)]">{MEASURED_MIX.inputPerOutput} input tokens</strong> and{" "}
+                <strong className="text-[var(--color-ink)]">{MEASURED_MIX.cacheReadPerOutput} cache reads</strong>. Measured with
+                ccusage on my own machine, {MEASURED_MIX.window}, {MEASURED_MIX.activeDays} active days. All in, one output
+                token costs about ${perOutput.toFixed(5)}.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-4 overflow-x-auto rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)]">
+            <table className="w-full min-w-[40rem] text-left text-sm">
+              <thead>
+                <tr className="text-[11px] font-black uppercase tracking-wider text-[var(--color-muted)]">
+                  <th className="px-4 py-3">Fuel</th>
+                  <th className="px-4 py-3">Words of output</th>
+                  <th className="px-4 py-3">Output tokens</th>
+                  <th className="px-4 py-3">Input it carries</th>
+                  <th className="px-4 py-3">Cache reads</th>
+                  <th className="px-4 py-3">Machine time</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[var(--color-line)]">
+                {mathRows.map((r) => (
+                  <tr key={r.slug}>
+                    <td className="px-4 py-2.5 font-display text-lg font-black tabular-nums text-[var(--color-ink)]">
+                      {usdWhole(r.amountCents)}
+                      {r.slug === FUEL_MONTHLY.slug ? <span className="text-xs font-bold text-[var(--color-muted)]">/mo</span> : null}
+                    </td>
+                    <td className="px-4 py-2.5 font-bold tabular-nums text-[var(--color-ink)]">{roundWords(r.buy.words)}</td>
+                    <td className="px-4 py-2.5 tabular-nums text-[var(--color-ink-soft)]">{compactTokens(r.buy.outputTokens)}</td>
+                    <td className="px-4 py-2.5 tabular-nums text-[var(--color-ink-soft)]">{compactTokens(r.buy.inputTokens)}</td>
+                    <td className="px-4 py-2.5 tabular-nums text-[var(--color-ink-soft)]">{compactTokens(r.buy.cacheReadTokens)}</td>
+                    <td className="px-4 py-2.5 text-[var(--color-ink-soft)]">{r.time?.replace(" of the machine", "")}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="mt-4 grid gap-3 md:grid-cols-[1fr_1.2fr] md:items-start">
+            <div className="overflow-x-auto rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)]">
+              <table className="w-full text-left text-sm">
+                <caption className="px-4 pt-3 text-left text-[11px] font-black uppercase tracking-wider text-[var(--color-muted)]">
+                  What a day of my work costs in credits, from the same log
+                </caption>
+                <tbody className="divide-y divide-[var(--color-line)]">
+                  {MEASURED_DAYS.map((d) => (
+                    <tr key={d.label}>
+                      <td className="px-4 py-2.5 text-[var(--color-ink-soft)]">{d.label}</td>
+                      <td className="px-4 py-2.5 text-right font-display text-lg font-black tabular-nums text-[var(--color-ink)]">
+                        {usdWhole(d.cents)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+              <p className="text-[11px] font-black uppercase tracking-wider text-[var(--color-muted)]">How the real number gets made</p>
+              <p className="mt-1">
+                Machine time above is the gift against my average day, {usdWhole(MEASURED_DAY_CENTS.average)} of tokens over{" "}
+                {WORKING_DAY_HOURS} hours. Words are output tokens times 0.75, reasoning included. Those are the two
+                assumptions, and they are both written down.
+              </p>
+              <p className="mt-2">
+                Turn usage credits on. Run a month. Read the meter. The day a metered article exists, its cost goes
+                here, the word estimate comes off, and every tier on this page re-prices itself from the same file.
+              </p>
+            </div>
+          </div>
+        </section>
 
         {/* ── Why articles ─────────────────────────────────────────────── */}
         <section className="mt-12" aria-labelledby="fuel-why-articles">
@@ -301,7 +445,7 @@ export default async function FuelPage({
         {archives.length > 0 ? (
           <section className="mt-12" aria-labelledby="fuel-good">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
-              What the fuel already bought
+              What the machine already built
             </p>
             <h2 id="fuel-good" className="mt-1 font-display text-2xl font-bold tracking-tight sm:text-3xl">
               Not a promise. A record you can open.
@@ -323,7 +467,7 @@ export default async function FuelPage({
             </div>
             <p className="mt-3 text-sm leading-relaxed text-[var(--color-ink-soft)]">
               Every one of those came out of the machine. None of it exists without tokens, and none of it was
-              written by a staff. It was me, at a keyboard, with the tools this fund pays for.
+              written by a staff. It was me, at a keyboard, with the tools this fund keeps running.
             </p>
 
             {/* Built with the same machine, for other people */}
@@ -358,40 +502,68 @@ export default async function FuelPage({
           </section>
         ) : null}
 
-        {/* ── The bill, from the ledger ─────────────────────────────────── */}
-        <section className="mt-12 rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6">
-          <div className="flex flex-wrap items-end justify-between gap-3">
-            <div>
-              <p className="text-xs font-black uppercase tracking-wider text-[var(--color-muted)]">
-                The bill, from the ledger
+        {/* ── Where the money goes, from the ledger ─────────────────────── */}
+        <section
+          id="fuel-ledger"
+          className="mt-12 scroll-mt-24 rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6"
+          aria-labelledby="fuel-ledger-title"
+        >
+          <p className="text-xs font-black uppercase tracking-wider text-[var(--color-muted)]">
+            Where the money goes, from the ledger
+          </p>
+          <h2 id="fuel-ledger-title" className="mt-1 font-display text-2xl font-bold tracking-tight">
+            {target ? `${target} a month in overage credits. That is the ask.` : "The ask, from the ledger"}
+          </h2>
+          <div className="mt-4 grid gap-4 md:grid-cols-2">
+            <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4">
+              <p className="text-[11px] font-black uppercase tracking-wider text-[var(--color-muted)]">
+                What I pay myself · not the ask
               </p>
-              <h2 className="mt-1 font-display text-2xl font-bold tracking-tight">
-                {hasBill ? `${usdWhole(bill.billCents)} a month in tokens.` : "The AI bill"}
-              </h2>
+              {bill.subscriptions.length > 0 ? (
+                <>
+                  <ul className="mt-2 divide-y divide-[var(--color-line)] text-sm">
+                    {bill.subscriptions.map((i) => (
+                      <li key={i.label} className="flex items-baseline justify-between gap-4 py-2">
+                        <span className="text-[var(--color-ink)]">{i.label}</span>
+                        <span className="font-mono font-bold tabular-nums text-[var(--color-ink)]">{usdWhole(i.amount_cents)}/mo</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-2 text-sm font-bold text-[var(--color-ink)]">
+                    {subs} a month, out of my own pocket.{" "}
+                    <span className="font-normal text-[var(--color-ink-soft)]">The fund does not touch these.</span>
+                  </p>
+                </>
+              ) : (
+                <p className="mt-2 text-sm text-[var(--color-muted)]">
+                  The subscription lines are not in the ledger right now. NEEDS AUTHENTICATION.
+                </p>
+              )}
             </div>
-            {perDay ? (
-              <p className="text-sm font-bold text-[var(--color-ink-soft)]">
-                That is {perDay} a day, every day the machine runs.
+            <div className="rounded-2xl border-2 border-[var(--color-gold-bright)] bg-[var(--color-support-soft)]/60 p-4">
+              <p className="text-[11px] font-black uppercase tracking-wider text-[var(--color-support-strong)]">
+                The ask · overage credits
               </p>
-            ) : null}
+              {bill.overage ? (
+                <>
+                  <p className="mt-1 font-display text-3xl font-black tabular-nums tracking-tight text-[var(--color-ink)]">
+                    {usdWhole(bill.overage.amount_cents)}
+                    <span className="text-sm font-bold text-[var(--color-muted)]">/mo</span>
+                  </p>
+                  {bill.overage.blurb ? (
+                    <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">{bill.overage.blurb}</p>
+                  ) : null}
+                </>
+              ) : (
+                <p className="mt-2 text-sm text-[var(--color-muted)]">
+                  The overage line is not in the ledger right now. NEEDS AUTHENTICATION.
+                </p>
+              )}
+            </div>
           </div>
-          {bill.items.length > 0 ? (
-            <ul className="mt-4 divide-y divide-[var(--color-line)] text-sm">
-              {bill.items.map((i) => (
-                <li key={i.label} className="flex items-baseline justify-between gap-4 py-2.5">
-                  <span className="text-[var(--color-ink)]">{i.label}</span>
-                  <span className="font-mono font-bold tabular-nums text-[var(--color-ink)]">{usdWhole(i.amount_cents)}/mo</span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="mt-3 text-sm text-[var(--color-muted)]">
-              The AI line items are not in the ledger right now. NEEDS AUTHENTICATION.
-            </p>
-          )}
           <p className="mt-4 text-xs leading-relaxed text-[var(--color-muted)]">
-            Same line items I publish on the funding ledger. They change when the bill changes, not when
-            I feel like it.
+            Same line items I publish on the funding ledger. They change when the bills change, not when I feel
+            like it. Every dollar raised here goes to the overage line and nowhere else.
           </p>
           <div className="mt-4 rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-3 sm:p-4">
             <p className="text-[11px] font-black uppercase tracking-wider text-[var(--color-muted)]">
@@ -426,8 +598,8 @@ export default async function FuelPage({
               </p>
               <p>
                 So I built the machine that publishes it. Articles. Filings in plain English. Timelines.
-                Maps. A profile for every J6 defendant who wants one, free. All of it runs on tokens, and
-                the tokens cost what the ledger above says they cost.
+                Maps. A profile for every J6 defendant who wants one, free. All of it runs on tokens. The
+                subscriptions are mine to pay. The overage is what stops me in the middle of the week.
               </p>
               <p>
                 This is not a handout. It is work, fueled in public. You put fuel in, the work gets done,
@@ -532,13 +704,7 @@ export default async function FuelPage({
             Above it, it is your call. Or make it {usdWhole(FUEL_MONTHLY.amountCents)} a month and become a Keeper.
           </p>
           <div className="mt-6 rounded-3xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-6">
-            <FuelCheckout
-              tiers={bill.tiers}
-              paymentsConfigured={paymentsConfigured}
-              billCents={bill.billCents}
-              posts30={output.posts30}
-              initialTier={sp.tier ?? null}
-            />
+            <FuelCheckout tiers={bill.tiers} paymentsConfigured={paymentsConfigured} initialTier={sp.tier ?? null} />
           </div>
         </section>
 
@@ -551,8 +717,13 @@ export default async function FuelPage({
             <div className="mt-3 space-y-3 text-sm leading-relaxed text-[var(--color-ink-soft)]">
               <p>
                 <strong className="text-[var(--color-ink)]">There is no button that puts tokens into my Claude or ChatGPT account.</strong>{" "}
-                Neither company sells that. Your payment goes through Stripe to me, and I buy the credits.
-                Every dollar shows up in my ledger, and the month&apos;s total shows on this page.
+                Neither company sells that. Your payment goes through Stripe to me, and I buy the credits at the
+                published rates. Every dollar shows up on the meter at the top of this page.
+              </p>
+              <p>
+                <strong className="text-[var(--color-ink)]">The subscriptions are not the ask.</strong> I pay
+                those myself, every month, and the ledger above shows them so you can see the whole picture. The
+                fund exists for the part that runs out.
               </p>
               <p>
                 <strong className="text-[var(--color-ink)]">What you get is work, not merchandise.</strong>{" "}
@@ -569,16 +740,22 @@ export default async function FuelPage({
           <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6">
             <h2 className="text-sm font-black uppercase tracking-wider text-[var(--color-muted)]">Questions people ask</h2>
             <div className="mt-2 divide-y divide-[var(--color-line)]">
+              <Faq q="Why not just buy a bigger plan?">
+                There is no bigger plan. Max 20x is the top tier Anthropic sells and Pro 20x is the top at OpenAI,
+                and I pay for both. Past the weekly cap the only lane is usage credits at API rates. That is the
+                overage, and that is what this buys.
+              </Faq>
+              <Faq q="How do I know it went to tokens?">
+                The meter is public and reads the money as it lands. The rates are public. My subscriptions are
+                paid out of my own pocket, so there is nowhere else for the fuel to go but credits. The first
+                month that runs on them, the real number goes on this page.
+              </Faq>
               <Faq q="What if my topic breaks the rules?">
                 I tell you, and I offer another. Public records, public actors, no minors, no private data,
                 no invented facts. Same rules as every article on this site.
               </Faq>
               <Faq q="Can I stay anonymous?">
                 Yes. Pick it on the form. Your name never touches the wall, and I still read your note.
-              </Faq>
-              <Faq q="How do I know it went to tokens?">
-                The bill on this page comes from the same ledger I publish. The meter at the top reads the
-                money as it lands. Compare the two any month you like.
               </Faq>
               <Faq q="How does monthly work, and how do I stop it?">
                 Stripe charges {usdWhole(FUEL_MONTHLY.amountCents)} on the same day each month. Write to me
@@ -653,7 +830,7 @@ export default async function FuelPage({
           <div className="mt-4">
             <ShareRail
               url={fuelUrl}
-              title="This machine runs on tokens. You can fuel it. Ryan Nichols pays for every article, filing, and map by the token:"
+              title="Ryan Nichols pays the AI subscriptions himself. They run dry every half a week and the machine stops. You can keep it running:"
             />
           </div>
           <p className="mt-4 text-sm leading-relaxed text-[var(--color-ink-soft)]">

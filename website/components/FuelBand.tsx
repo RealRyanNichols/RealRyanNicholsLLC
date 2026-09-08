@@ -3,14 +3,16 @@ import { getFuelBill } from "@/lib/fuel-server";
 import { usdWhole } from "@/lib/fuel";
 
 /**
- * Token Fund band for the feed. The number is the live AI bill from the
- * funding ledger (never typed here); the band hides itself if the ledger has
- * no AI line items yet, so it can never show a made-up figure.
+ * Token Fund band for the feed and the money pages. Both numbers come from
+ * the funding ledger (never typed here): what Ryan pays himself, and the
+ * overage-credits target that is the actual ask. The band hides itself when
+ * the ledger has no overage line, so it can never show a made-up figure.
  */
 export async function FuelBand({ className = "" }: { className?: string }) {
   const bill = await getFuelBill();
-  if (bill.billCents <= 0) return null;
-  const month = usdWhole(bill.billCents);
+  if (bill.targetCents <= 0) return null;
+  const target = usdWhole(bill.targetCents);
+  const subs = bill.subscriptionCents > 0 ? usdWhole(bill.subscriptionCents) : null;
 
   return (
     <section
@@ -33,13 +35,14 @@ export async function FuelBand({ className = "" }: { className?: string }) {
             id="fuel-band-title"
             className="mt-1 font-display text-2xl font-black leading-tight tracking-tight text-[#fdf8ea] sm:text-3xl"
           >
-            This machine runs on{" "}
-            <span className="text-[var(--color-gold-bright)]">{month} a month</span> in AI
-            tokens.
+            I pay the subscriptions.{" "}
+            <span className="text-[var(--color-gold-bright)]">They run dry every half a week.</span>
           </h2>
           <p className="mt-2 text-sm font-semibold leading-relaxed text-[#cfd9ea]">
-            Every article, filing, timeline, and map here is built with them. Fuel a
-            day, a week, or a whole article. You pick the job. I do the work.
+            Every article, filing, timeline, and map here is built on AI tokens.
+            {subs ? ` The ${subs} a month in subscriptions is on me.` : ""} The overage credits that keep the
+            machine running the rest of the week are the ask: {target} a month, billed by the token at published
+            rates. You buy the overage. I do the work.
           </p>
         </div>
         <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
@@ -47,7 +50,7 @@ export async function FuelBand({ className = "" }: { className?: string }) {
             href="/fuel"
             className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-gold-bright)] px-6 py-3 text-base font-black text-[#071126] transition hover:brightness-105"
           >
-            Fuel the machine →
+            Fuel the overage →
           </Link>
         </div>
       </div>

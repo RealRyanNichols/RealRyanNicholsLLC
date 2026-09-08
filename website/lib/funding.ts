@@ -8,6 +8,9 @@ export type FundingLineItem = {
   cadence: "monthly" | "one_time";
   sort_order: number;
   is_active: boolean;
+  // Token Fund role. 'subscription' rows are what Ryan pays himself and are
+  // context only: never part of the goal. See lib/fuel.ts.
+  fuel_role?: "subscription" | "overage" | null;
 };
 
 export type FundingSettings = {
@@ -47,7 +50,7 @@ export async function getFundingData(): Promise<FundingData | null> {
   const [itemsRes, settingsRes, snapRes] = await Promise.all([
     supabase
       .from("funding_line_items")
-      .select("id,label,blurb,amount_cents,cadence,sort_order,is_active")
+      .select("id,label,blurb,amount_cents,cadence,sort_order,is_active,fuel_role")
       .eq("is_active", true)
       .order("sort_order", { ascending: true }),
     supabase
@@ -61,7 +64,9 @@ export async function getFundingData(): Promise<FundingData | null> {
   if (!settingsRes.data) return null;
   const settings = settingsRes.data as FundingSettings;
 
-  const items = (itemsRes.data ?? []) as FundingLineItem[];
+  // Subscription rows are Ryan's own bills, shown on /fuel as context. They
+  // are not something anyone is asked to fund, so they never join the goal.
+  const items = ((itemsRes.data ?? []) as FundingLineItem[]).filter((i) => i.fuel_role !== "subscription");
   const monthlyItems = items.filter((i) => i.cadence === "monthly");
   const oneTimeItems = items.filter((i) => i.cadence === "one_time");
   const goalCents = monthlyItems.reduce((s, i) => s + i.amount_cents, 0);

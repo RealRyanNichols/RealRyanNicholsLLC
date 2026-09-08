@@ -6,10 +6,10 @@ import {
   FUEL_FLOOR_CENTS,
   FUEL_MAX_CENTS,
   FUEL_MONTHLY,
-  articlesLabel,
-  fuelArticlesAtPace,
-  fuelDuration,
+  machineTimeLabel,
+  roundWords,
   tierForAmount,
+  tokensFor,
   usdWhole,
   type FuelCadence,
   type ResolvedFuelTier,
@@ -18,18 +18,21 @@ import { FUEL_PICK_EVENT, type FuelPick } from "@/components/FuelQuickPick";
 
 // The Token Fund form. Three steps on one screen: pick the fuel (once or
 // monthly), say who you are, say what you want, then Stripe. Every control is
-// at least 44px tall.
+// at least 44px tall. "Buys" lines are the published-rate arithmetic in
+// lib/fuel.ts, labeled an estimate.
+function buysLabel(amountCents: number): string | null {
+  const time = machineTimeLabel(amountCents);
+  if (!time) return null;
+  return `${time} · about ${roundWords(tokensFor(amountCents).words)} words`;
+}
+
 export function FuelCheckout({
   tiers,
   paymentsConfigured,
-  billCents,
-  posts30 = null,
   initialTier = null,
 }: {
   tiers: ResolvedFuelTier[];
   paymentsConfigured: boolean;
-  billCents: number;
-  posts30?: number | null;
   initialTier?: string | null;
 }) {
   const featured = tiers.find((t) => t.featured) ?? tiers[0] ?? null;
@@ -80,8 +83,7 @@ export function FuelCheckout({
   const amountCents = monthly ? FUEL_MONTHLY.amountCents : tierSlug ? (selected?.amountCents ?? 0) : customCents;
   const askRequired = !!selected?.askRequired;
   const haveAmount = Number.isFinite(amountCents) && amountCents > 0;
-  const duration = haveAmount ? fuelDuration(amountCents, billCents) : null;
-  const articles = haveAmount ? articlesLabel(fuelArticlesAtPace(amountCents, billCents, posts30)) : null;
+  const buys = haveAmount ? buysLabel(amountCents) : null;
   const earned = monthly
     ? FUEL_MONTHLY.gets
     : selected
@@ -186,9 +188,9 @@ export function FuelCheckout({
               </span>
             </div>
             <p className="mt-1 text-base font-bold text-[var(--color-ink)]">{FUEL_MONTHLY.blurb}</p>
-            {fuelDuration(FUEL_MONTHLY.amountCents, billCents) ? (
+            {buysLabel(FUEL_MONTHLY.amountCents) ? (
               <p className="mt-0.5 text-xs font-black uppercase tracking-wider text-[var(--color-navy)]">
-                {fuelDuration(FUEL_MONTHLY.amountCents, billCents)}, every month
+                {buysLabel(FUEL_MONTHLY.amountCents)}, every month
               </p>
             ) : null}
             <ul className="mt-2 space-y-1 text-sm text-[var(--color-ink-soft)]">
@@ -209,7 +211,7 @@ export function FuelCheckout({
           <div className="mt-3 grid gap-3 sm:grid-cols-2" role="radiogroup" aria-label="Pick an amount">
             {tiers.map((t) => {
               const on = tierSlug === t.slug;
-              const time = fuelDuration(t.amountCents, billCents);
+              const time = buysLabel(t.amountCents);
               return (
                 <button
                   key={t.slug}
@@ -290,7 +292,7 @@ export function FuelCheckout({
               </span>
               {!tierSlug && Number.isFinite(customCents) && customCents >= FUEL_FLOOR_CENTS ? (
                 <span className="mt-2 text-xs font-black uppercase tracking-wider text-[var(--color-accent)]">
-                  {fuelDuration(customCents, billCents) ?? ""}
+                  {buysLabel(customCents) ?? ""}
                   {selected ? ` · ${selected.title} tier` : ""}
                 </span>
               ) : null}
@@ -386,12 +388,11 @@ export function FuelCheckout({
           <p className="mt-1 font-display text-xl font-bold tracking-tight text-[var(--color-ink)]">
             {usdWhole(amountCents)}
             {monthly ? " a month" : ""}
-            {duration ? (
+            {buys ? (
               <span className="text-[var(--color-ink-soft)]">
                 {" "}
-                buys {duration}
-                {monthly ? ", every month" : ""}
-                {articles ? `, ${articles} at last month's pace` : ""}.
+                buys {buys}
+                {monthly ? ", every month" : ""}. Estimate, at published rates.
               </span>
             ) : null}
           </p>

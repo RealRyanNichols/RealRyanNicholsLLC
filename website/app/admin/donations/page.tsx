@@ -113,7 +113,7 @@ export default async function AdminDonationsPage() {
   const [fundingItemsRes, fundingSettingsRes, fundingSnapRes] = await Promise.all([
     supabase
       .from("funding_line_items")
-      .select("id, label, blurb, amount_cents, cadence, sort_order, is_active")
+      .select("id, label, blurb, amount_cents, cadence, sort_order, is_active, fuel_role")
       .order("sort_order", { ascending: true }),
     supabase
       .from("funding_settings")

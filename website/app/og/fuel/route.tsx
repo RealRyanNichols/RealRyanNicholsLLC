@@ -3,16 +3,16 @@ import { PALETTE } from "@/lib/palette";
 import { getFuelBill, getFuelRaised } from "@/lib/fuel-server";
 import { usdWhole } from "@/lib/fuel";
 
-// Share card for /fuel. The number is the live AI bill from the ledger and
-// the meter is this month's fuel, so a shared link unfurls with the same
+// Share card for /fuel. The number is the ledger's overage target (the ask)
+// and the meter is this month's fuel, so a shared link unfurls with the same
 // receipts the page shows.
 export const runtime = "nodejs";
 export const revalidate = 60;
 
 export async function GET() {
   const [bill, raised] = await Promise.all([getFuelBill(), getFuelRaised()]);
-  const hasBill = bill.billCents > 0;
-  const pct = raised && hasBill ? Math.min(100, Math.round((raised.monthCents / bill.billCents) * 100)) : null;
+  const hasBill = bill.targetCents > 0;
+  const pct = raised && hasBill ? Math.min(100, Math.round((raised.monthCents / bill.targetCents) * 100)) : null;
 
   return new ImageResponse(
     (
@@ -63,10 +63,10 @@ export async function GET() {
                 color: PALETTE.goldBright,
               }}
             >
-              {usdWhole(bill.billCents)}
+              {usdWhole(bill.targetCents)}
             </span>
             <span style={{ fontSize: 30, fontWeight: 700, color: "#cfd9ea", display: "flex" }}>
-              a month in AI tokens
+              a month in overage credits
             </span>
           </div>
         ) : null}
@@ -82,7 +82,7 @@ export async function GET() {
             maxWidth: 1000,
           }}
         >
-          This machine runs on tokens. You can fuel it.
+          I pay the subscriptions. The overage is the ask.
         </div>
         <div
           style={{
@@ -94,7 +94,7 @@ export async function GET() {
             maxWidth: 1000,
           }}
         >
-          Every article, filing, map, and profile on this site is built with them. You buy the fuel. I do the work.
+          Every article, filing, map, and profile here runs on tokens. When the week&apos;s usage runs dry, your fuel buys the credits that keep it going.
         </div>
 
         {pct !== null && raised ? (

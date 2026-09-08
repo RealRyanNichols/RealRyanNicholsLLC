@@ -61,9 +61,9 @@ export function FuelMeter({ initial }: { initial: FuelStatus }) {
     return () => cancelAnimationFrame(raf);
   }, [status.raised?.monthCents]);
 
-  const bill = status.billCents;
+  const target = status.targetCents;
   const raised = status.raised;
-  const pct = raised && bill > 0 ? Math.min(100, Math.round((shown / bill) * 100)) : 0;
+  const pct = raised && target > 0 ? Math.min(100, Math.round((shown / target) * 100)) : 0;
   const now = new Date();
   const daysLeft = daysLeftInMonth(now);
   const month = monthName(now);
@@ -84,11 +84,11 @@ export function FuelMeter({ initial }: { initial: FuelStatus }) {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-live)] opacity-75" />
               <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[var(--color-live)]" />
             </span>
-            {month}&apos;s tank · live
+            {month}&apos;s overage tank · live
           </p>
           <p className="mt-1 font-display text-4xl font-black tabular-nums tracking-tight text-[#fdf8ea] sm:text-5xl" data-fuel-month>
             {usdWhole(shown)}
-            {bill > 0 ? <span className="text-xl font-bold text-[#cfd9ea] sm:text-2xl"> of {usdWhole(bill)}</span> : null}
+            {target > 0 ? <span className="text-xl font-bold text-[#cfd9ea] sm:text-2xl"> of {usdWhole(target)}</span> : null}
           </p>
         </div>
         <div className="text-left sm:text-right">
@@ -115,7 +115,7 @@ export function FuelMeter({ initial }: { initial: FuelStatus }) {
       </div>
       <div className="mt-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-xs text-[#a9b7d0]">
         <span>
-          {raised ? `${pct}% of the month is covered.` : "The meter reads the money as it lands."}
+          {raised ? `${pct}% of ${month}'s overage is covered.` : "The meter reads the money as it lands."}
           {raised && raised.allTimeCents > 0 ? ` ${usdWhole(raised.allTimeCents)} fueled all time.` : ""}
         </span>
         {last ? <span>Last fuel landed {last}.</span> : null}

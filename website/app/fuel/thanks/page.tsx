@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { requireStripe } from "@/lib/stripe";
 import { recordDonationFromSession } from "@/lib/donations";
 import { getFuelBill, markFuelIntentPaid } from "@/lib/fuel-server";
-import { FUEL_MONTHLY, tierForAmount, usdWhole } from "@/lib/fuel";
+import { FUEL_MONTHLY, machineTimeLabel, tierForAmount, usdWhole } from "@/lib/fuel";
 import { PurchaseTracker } from "@/components/PurchaseTracker";
 import { SignupForm } from "@/components/SignupForm";
 import { ShareRail } from "@/components/ShareRail";
@@ -63,7 +63,7 @@ export default async function FuelThanksPage({
       </h1>
       <p className="mt-4 leading-relaxed text-[var(--color-ink-soft)]">
         {keeper
-          ? `You are a Keeper. ${usdWhole(amountCents)} a month keeps a day of the machine running every month, and your name goes in the Keepers row on the wall. `
+          ? `You are a Keeper. ${usdWhole(amountCents)} a month buys ${machineTimeLabel(amountCents) ?? "overage credits"} every month, and your name goes in the Keepers row on the wall. `
           : amountCents > 0
             ? `${usdWhole(amountCents)} went straight to me, no middleman. `
             : "Your payment went straight to me, no middleman. "}
