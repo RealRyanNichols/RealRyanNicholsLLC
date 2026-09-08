@@ -59,12 +59,20 @@ export function MapRoomLive({
   return (
     <div className="space-y-5">
       {/* Interactive live radar — every active visitor is an individual
-          ping at city/state resolution. Drag or one-finger pan, pinch or
-          wheel to zoom, tap a ping for its city and state. No trails, no
-          session detail, no PII. */}
+          ping near their city (Vercel's geolocation, rounded to about 11 km
+          before it is stored; inside their state without it). Drag or
+          one-finger pan, pinch or wheel to zoom, tap a ping for its city and
+          state. No trails, no session detail, no addresses, no PII. */}
       <RadarFrame liveNow={totals.live_now} countriesNow={totals.countries_now}>
         <LiveVisitorRadar initial={initialPings} />
       </RadarFrame>
+      <p className="text-xs leading-relaxed text-[var(--color-muted)]" data-radar-disclosure>
+        What the map shows: one dot per visitor active in the last five minutes, placed from the
+        network&apos;s location lookup (Vercel&apos;s geolocation headers) and rounded to about 11 km
+        before it is stored, so a dot lands near a town, never on a street. Without a location it sits
+        inside the visitor&apos;s state or country. Tap a dot for city and state. No trails, no pages
+        read, no addresses, nothing that names a person.
+      </p>
 
       {/* The permanent four — counters that don't move much but anchor
           the page's weight. Big, confident, tabular. */}

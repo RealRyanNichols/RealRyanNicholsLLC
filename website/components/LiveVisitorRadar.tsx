@@ -19,9 +19,11 @@ import {
 // inside a RadarFrame that already carries the server-rendered headline).
 //
 // Public surface rules, in code:
-//   - a ping is a dot at city/state resolution, never a person
+//   - a ping is a dot at city resolution (Vercel's geolocation, rounded to
+//     a tenth of a degree, about 11 km, before it is stored), never a
+//     person and never an address; without coordinates it sits in its state
 //   - tapping a dot shows city and state only — no path, no page count,
-//     no session detail — and there is no drawer
+//     no session detail, no coordinates — and there is no drawer
 //   - one finger on the map pans the map, not the page; two fingers pinch;
 //     the wheel zooms; every control is at least 44×44 CSS px
 
@@ -346,7 +348,7 @@ export function LiveVisitorRadar({ initial }: { initial: RadarPing[] }) {
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
         role="group"
-        aria-label="Live map of active visitors. Each dot is one visitor at city and state resolution. Drag to pan, pinch or scroll to zoom, tap a dot to see its city and state."
+        aria-label="Live map of active visitors. Each dot is one visitor near their city, rounded to about 11 kilometers, never an address. Drag to pan, pinch or scroll to zoom, tap a dot to see its city and state."
       >
         <defs>
           <style>{`

@@ -1,13 +1,26 @@
 // The public shape of one live visitor on the radar. Deliberately tiny:
-// a hashed session id (for a stable dot), where they are to city/state
+// a hashed session id (for a stable dot), where they are to city
 // resolution, and when they were last seen. Nothing about what they read.
+//
+// Coordinates come from Vercel's own geolocation headers
+// (x-vercel-ip-latitude / x-vercel-ip-longitude), rounded to a tenth of a
+// degree (about 11 km) before they are stored and again here. A dot lands
+// near a town, never on a street.
 export type RadarPing = {
   ping_id: string;
   country: string | null;
   region: string | null;
   city: string | null;
   last_seen: string;
+  latitude?: number | null;
+  longitude?: number | null;
 };
+
+function coarse(v: unknown, max: number): number | null {
+  const n = typeof v === "number" ? v : typeof v === "string" ? Number.parseFloat(v) : NaN;
+  if (!Number.isFinite(n) || Math.abs(n) > max) return null;
+  return Math.round(n * 10) / 10;
+}
 
 // The `live_visitor_pings` RPC also returns each session's current path and
 // page count. Those never reach a public surface, so strip them before the
@@ -18,12 +31,16 @@ export function sanitizePings(rows: unknown): RadarPing[] {
   const out: RadarPing[] = [];
   for (const r of rows as Record<string, unknown>[]) {
     if (!r || typeof r.ping_id !== "string") continue;
+    const latitude = coarse(r.latitude, 90);
+    const longitude = coarse(r.longitude, 180);
     out.push({
       ping_id: r.ping_id,
       country: typeof r.country === "string" ? r.country : null,
       region: typeof r.region === "string" ? r.region : null,
       city: typeof r.city === "string" ? r.city : null,
       last_seen: typeof r.last_seen === "string" ? r.last_seen : "",
+      latitude: latitude !== null && longitude !== null ? latitude : null,
+      longitude: latitude !== null && longitude !== null ? longitude : null,
     });
   }
   return out;

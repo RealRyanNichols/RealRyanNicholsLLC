@@ -1,12 +1,15 @@
 // Geometry for the live visitor radar (Map Room + Situation Room).
 //
 // One Equal Earth projection over Natural Earth 110m land, with US state
-// outlines from us-atlas so a visitor's state (which Vercel supplies as a
-// two-letter region code) plots inside the right state instead of at the
-// national centroid. Nothing here invents coordinates: state and country
-// shapes come from the shipped atlases, country centroids from
-// lib/country-coords.ts, and the only "randomness" is a deterministic hash of
-// the ping id so a session keeps the same dot between polls.
+// outlines from us-atlas. A ping with coordinates (Vercel's geolocation
+// headers, rounded to a tenth of a degree, about 11 km, before they are
+// stored) plots at its town, and never outside the state Vercel named for
+// it; a ping without them plots inside its state (which Vercel supplies as a
+// two-letter region code) instead of at the national centroid. Nothing here
+// invents coordinates: state and country shapes come from the shipped
+// atlases, country centroids from lib/country-coords.ts, and the only
+// "randomness" is a deterministic hash of the ping id so a session keeps the
+// same dot between polls.
 //
 // This module is imported by client components only (and by tests). Keep it
 // out of server components: the atlases are ~170KB of JSON.
@@ -194,15 +197,36 @@ function pointInCountry(code: string, seed: string): [number, number] | null {
   return [meta.lng + (a - 0.5) * 4, meta.lat + (b - 0.5) * 3];
 }
 
-// Longitude/latitude for a ping: inside its US state when the region is
-// known, otherwise at the country centroid. Null when the country is unknown.
+// The stored coordinates, if the ping carries a usable pair, nudged by up to
+// three hundredths of a degree (a couple of kilometres, still inside the
+// tenth-of-a-degree rounding cell) so two visitors in one town do not stack.
+// Deterministic per ping id, like everything else here.
+function pingFix(p: RadarPing): [number, number] | null {
+  const lat = p.latitude;
+  const lng = p.longitude;
+  if (typeof lat !== "number" || typeof lng !== "number") return null;
+  if (!Number.isFinite(lat) || !Number.isFinite(lng) || Math.abs(lat) > 90 || Math.abs(lng) > 180) return null;
+  const [a, b] = unit2(p.ping_id, 0);
+  return [lng + (a - 0.5) * 0.06, lat + (b - 0.5) * 0.06];
+}
+
+// Longitude/latitude for a ping. With coordinates: the town, as long as it
+// sits inside the US state Vercel named (a coastal rounding or a mismatch
+// falls back to a point inside that state). Without them: inside the state
+// when the region is known, otherwise the country centroid. Null when the
+// country is unknown.
 export function pingLngLat(p: RadarPing): [number, number] | null {
   const country = p.country?.toUpperCase() ?? null;
   if (!country) return null;
+  const fix = pingFix(p);
   if (country === "US") {
     const shape = stateFor(p.region);
-    if (shape) return pointInState(shape, p.ping_id);
+    if (shape) {
+      if (fix && geoContains(shape.feature, fix)) return fix;
+      return pointInState(shape, p.ping_id);
+    }
   }
+  if (fix) return fix;
   return pointInCountry(country, p.ping_id);
 }
 
@@ -217,7 +241,7 @@ export function projectLngLat(lng: number, lat: number): [number, number] | null
 }
 
 // The public label for a ping: city and state only. Never the path, never
-// the session, never how many pages they have read.
+// the session, never how many pages they have read, never the coordinates.
 export function pingLabel(p: Pick<RadarPing, "country" | "region" | "city">): string {
   const country = p.country?.toUpperCase() ?? null;
   const city = p.city?.trim() || null;

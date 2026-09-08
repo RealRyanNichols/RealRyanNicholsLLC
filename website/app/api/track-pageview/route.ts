@@ -27,6 +27,17 @@ const schema = z.object({
   ua: z.string().max(300).nullable().optional(),
 });
 
+// Vercel's x-vercel-ip-latitude / x-vercel-ip-longitude, rounded to a tenth
+// of a degree (about 11 km) before they touch the database. That rounding is
+// the privacy floor for the public Map Room: a dot near a town, never a
+// street. Anything unparsable or out of range is dropped, not guessed.
+function coarseCoord(raw: string | null, max: number): number | null {
+  if (!raw) return null;
+  const n = Number.parseFloat(raw);
+  if (!Number.isFinite(n) || Math.abs(n) > max) return null;
+  return Math.round(n * 10) / 10;
+}
+
 function parseHost(ref: string | null | undefined): string | null {
   if (!ref) return null;
   try {
@@ -92,6 +103,9 @@ export async function POST(request: Request) {
   const city = h.get("x-vercel-ip-city")
     ? decodeURIComponent(h.get("x-vercel-ip-city")!)
     : null;
+  const latitude = coarseCoord(h.get("x-vercel-ip-latitude"), 90);
+  const longitude = coarseCoord(h.get("x-vercel-ip-longitude"), 180);
+  const hasFix = latitude !== null && longitude !== null;
   // Forwarded-for is comma-separated; first entry is the original client.
   const ip =
     h.get("x-forwarded-for")?.split(",")[0]?.trim() ||
@@ -127,6 +141,8 @@ export async function POST(request: Request) {
           referrer_host: referrer_host?.slice(0, 200) || null,
           visitor_hash: vh,
           device_kind,
+          latitude: hasFix ? latitude : null,
+          longitude: hasFix ? longitude : null,
         })
         .select("id")
         .single();
@@ -156,6 +172,8 @@ export async function POST(request: Request) {
     p_referrer_host: referrer_host,
     p_visitor_hash: vh,
     p_device_kind: device_kind,
+    p_latitude: hasFix ? latitude : null,
+    p_longitude: hasFix ? longitude : null,
   });
   if (error) {
     // Don't fail visibly to the client — beacons should never break
