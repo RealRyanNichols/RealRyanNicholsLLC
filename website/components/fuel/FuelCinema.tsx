@@ -14,6 +14,9 @@ export function FuelCinema({ stops }: { stops: Stop[] }) {
   const barRef = useRef<HTMLElement>(null);
   const [active, setActive] = useState(0);
   const [on, setOn] = useState(false);
+  // True while the chapter under the reader sits on the cream paper, where
+  // the rail needs ink instead of the navy-floor colors.
+  const [paper, setPaper] = useState(false);
 
   useEffect(() => {
     const theater = document.querySelector<HTMLElement>(".ft-theater");
@@ -57,6 +60,7 @@ export function FuelCinema({ stops }: { stops: Stop[] }) {
           if (!e.isIntersecting) continue;
           const n = Number((e.target as HTMLElement).dataset.chapter);
           if (Number.isFinite(n)) setActive(n - 1);
+          setPaper((e.target as HTMLElement).closest(".ft-paper") !== null);
         }
       },
       { rootMargin: "-45% 0px -45% 0px", threshold: 0 },
@@ -102,7 +106,7 @@ export function FuelCinema({ stops }: { stops: Stop[] }) {
       <div className="ft-progress" aria-hidden>
         <i ref={barRef} />
       </div>
-      <nav className={`ft-rail ${on ? "is-on" : ""}`} aria-label="Sections">
+      <nav className={`ft-rail ${on ? "is-on" : ""} ${paper ? "is-paper" : ""}`} aria-label="Sections">
         {stops.map((s, i) => (
           <a
             key={s.id}
