@@ -1,13 +1,14 @@
+import { withMainPageOg } from "@/lib/page-metadata";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withMainPageOg("/editorial-standards", {
   title: "Editorial Standards",
   description:
     "How RealRyanNichols.com sources, labels, redacts, and corrects what it publishes — the line between testimony, opinion, allegation, and documented evidence, plus right-of-response, takedown, and prohibited-content rules.",
   alternates: { canonical: "/editorial-standards" },
-};
+});
 
 export default function EditorialStandardsPage() {
   return (

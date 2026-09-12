@@ -1,3 +1,4 @@
+import { withMainPageOg } from "@/lib/page-metadata";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getPeople } from "@/lib/case";
@@ -7,7 +8,7 @@ import { ReactionBar } from "@/components/ReactionBar";
 
 export const revalidate = 300;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withMainPageOg("/case/witnesses", {
   title: "Wall of Corroborators",
   description:
     "Every fellow January 6 detainee, federal officer, and witness who has gone on the record corroborating Ryan Nichols' account of the broken DC DOC grievance process and the conditions imposed on January 6 defendants.",
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
     url: `${SITE.url}/case/witnesses`,
   },
   alternates: { canonical: `${SITE.url}/case/witnesses` },
-};
+});
 
 // Mirror the getCaseTotals filter exactly so the hero count and the wall count
 // always match.

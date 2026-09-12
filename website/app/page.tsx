@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { withMainPageOg } from "@/lib/page-metadata";
 import { getPublishedPosts, getCommentCounts } from "@/lib/posts";
 import { getOgImages } from "@/lib/og-images";
 import { PostCard } from "@/components/PostCard";
@@ -27,6 +29,8 @@ import {
   type Copy,
 } from "@/lib/modules";
 import Link from "next/link";
+
+export const metadata: Metadata = withMainPageOg("/", {});
 
 export const revalidate = 60;
 

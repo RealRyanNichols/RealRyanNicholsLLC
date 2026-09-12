@@ -1,3 +1,4 @@
+import { withMainPageOg } from "@/lib/page-metadata";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BookOffers } from "@/components/BookOffers";
@@ -14,7 +15,7 @@ const title = "Pre-order Fighting Shadows | Ryan Nichols";
 const description =
   "Pre-order Fighting Shadows direct from Ryan Nichols — digital edition, signed paperback, or the Founding Supporter Edition with the evidence appendix. Delivery dates announced as the schedule is finalized.";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withMainPageOg("/book/preorder", {
   title,
   description,
   alternates: { canonical: `${SITE.url}/book/preorder` },
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
     images: [{ url: BOOK.ogImage, width: 1200, height: 800, alt: title }],
   },
   twitter: { card: "summary_large_image", title, description, images: [BOOK.ogImage] },
-};
+});
 
 export default function BookPreorderPage() {
   const digital = BOOK_TIERS.find((t) => t.slug === "early_release_digital");

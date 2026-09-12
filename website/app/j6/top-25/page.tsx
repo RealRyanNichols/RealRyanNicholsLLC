@@ -1,3 +1,4 @@
+import { withMainPageOg } from "@/lib/page-metadata";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
@@ -6,7 +7,7 @@ import { J6Top25Ballot } from "@/components/J6Top25Ballot";
 
 export const revalidate = 60;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withMainPageOg("/j6/top-25", {
   title: "Top 25 Most Publicized January 6 Cases",
   description:
     "Vote for the January 6 case that received the most public attention. One verified-email account gets one active vote, with write-ins allowed.",
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
       "Vote once per verified-email account. Write-ins can rise into the Top 25.",
     images: [`${SITE.url}/og/case?view=people`],
   },
-};
+});
 
 type PersonRelation = {
   slug: string | null;

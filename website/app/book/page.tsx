@@ -1,3 +1,4 @@
+import { withMainPageOg } from "@/lib/page-metadata";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BookEmailSignup } from "@/components/BookEmailSignup";
@@ -25,7 +26,7 @@ const title = "Fighting Shadows — A Memoir by Ryan Nichols";
 const description =
   "Fighting Shadows: a first-person account of January 6, the D.C. jail, forced vaccination, solitary confinement, coerced plea pressure, due process violations, and the fight to put the full record in public view. Pre-order direct from Ryan Nichols.";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withMainPageOg("/book", {
   title,
   description,
   alternates: { canonical: `${SITE.url}/book` },
@@ -44,7 +45,7 @@ export const metadata: Metadata = {
     description,
     images: [BOOK.ogImage],
   },
-};
+});
 
 const whyImWriting =
   "I am writing this because the official story is not the whole story, and because I lived a version of these events that the record can back up. I spent nearly four years inside the system. I kept notes, filed grievances, and held onto transcripts and documents. This book puts that account in one place, in my own words, so it cannot be buried, edited down, or spun. It is my recollection and my documented claims, laid out so you can weigh them yourself.";

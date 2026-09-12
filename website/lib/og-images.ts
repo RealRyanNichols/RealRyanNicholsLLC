@@ -1,4 +1,5 @@
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
+import { getMainPageOgImage } from "@/lib/page-og-catalog";
 
 export type PageOgImage = {
   path: string;
@@ -39,7 +40,19 @@ export async function getOgImage(path: string): Promise<PageOgImage | null> {
     .select("path, image_url, title, description, width, height")
     .eq("path", path)
     .maybeSingle();
-  return (data ?? null) as PageOgImage | null;
+  if (data) return data as PageOgImage;
+  // Admin-pinned cards (including archive view/filter variants) win. Main
+  // pages use the finished artwork when there is no matching override.
+  const image = getMainPageOgImage(path);
+  if (!image) return null;
+  return {
+    path,
+    image_url: image.url,
+    title: null,
+    description: null,
+    width: image.width,
+    height: image.height,
+  };
 }
 
 export async function getOgImages(): Promise<PageOgImage[]> {

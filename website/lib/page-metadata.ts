@@ -1,5 +1,36 @@
 import type { Metadata } from "next";
 import { SITE } from "@/lib/site";
+import { getMainPageOgImage } from "@/lib/page-og-catalog";
+
+/** Replace only the share artwork while retaining page-specific metadata. */
+export function withMainPageOg(path: string, metadata: Metadata): Metadata {
+  const image = getMainPageOgImage(path);
+  if (!image) return metadata;
+  const title =
+    typeof metadata.title === "string"
+      ? metadata.title
+      : `${SITE.name} — ${SITE.tagline}`;
+  const description = metadata.description ?? SITE.description;
+  return {
+    ...metadata,
+    openGraph: {
+      type: "website",
+      siteName: SITE.name,
+      title,
+      description,
+      url: `${SITE.url}${path}`,
+      ...metadata.openGraph,
+      images: [image],
+    },
+    twitter: {
+      title: metadata.openGraph?.title ?? title,
+      description: metadata.openGraph?.description ?? description,
+      ...metadata.twitter,
+      card: "summary_large_image",
+      images: [{ url: image.url, alt: image.alt }],
+    },
+  };
+}
 
 /**
  * Page metadata whose share card matches the page instead of the site
@@ -15,7 +46,7 @@ export function pageMetadata(opts: {
 }): Metadata {
   const image = opts.image ?? "/og/site";
   const url = `${SITE.url}${opts.path}`;
-  return {
+  return withMainPageOg(opts.path, {
     title: opts.title,
     description: opts.description,
     alternates: { canonical: url },
@@ -33,5 +64,5 @@ export function pageMetadata(opts: {
       description: opts.description,
       images: [image],
     },
-  };
+  });
 }

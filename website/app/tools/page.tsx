@@ -1,3 +1,4 @@
+import { withMainPageOg } from "@/lib/page-metadata";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { FreeToolsHub } from "@/components/FreeToolsHub";
@@ -9,7 +10,7 @@ const title = "Free Tools | Real Ryan Nichols";
 const description =
   "Free tools to build your case file, learn your rights, and draft public-records requests, pro se motions, timeline cards, and a next-three-moves plan — while helping Real Ryan Nichols spot public patterns.";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withMainPageOg("/tools", {
   title,
   description,
   alternates: { canonical: `${SITE.url}/tools` },
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
     description,
     images: [`${SITE.url}/og/site`],
   },
-};
+});
 
 export default function ToolsPage() {
   return (
