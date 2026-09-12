@@ -185,8 +185,11 @@ export default async function CasePage({
     return (
       <div className="mx-auto max-w-5xl px-4 py-10">
         {/* Door 2 is never one-way: the split sits above the directory so
-            the way back to the anchor case is the first thing on the page. */}
-        <J6PathSplit active="everyone" className="mb-10" />
+            the way back to the anchor case is the first thing on the page.
+            The hero carries the page's h1 while browsing; while searching
+            the hero stays out, so the split carries it, as it does on the
+            archive views. */}
+        <J6PathSplit active="everyone" className="mb-10" headline={q ? "h1" : undefined} />
         <J6DirectoryHeader
           counts={j6Counts}
           j6Filter={j6Filter}

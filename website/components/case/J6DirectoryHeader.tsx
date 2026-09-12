@@ -10,7 +10,9 @@ import type { J6Filter } from "@/components/case/archive";
 // width: a family member looking for a name types it on the first screen
 // of a phone, and what is seen, tabbed, and announced agree everywhere
 // (a CSS reorder at one breakpoint moved the mismatch to the other).
-// Nothing moves on load.
+// While a search is on, the hero stays out: the match line then sits
+// directly above the tabs and the matching profiles, with no pitch to
+// scroll past on a phone. Nothing moves on load.
 export function J6DirectoryHeader({
   counts,
   j6Filter,
@@ -42,7 +44,7 @@ export function J6DirectoryHeader({
         ) : null}
       </div>
 
-      <J6DirectoryHero counts={counts} activeFilter={j6Filter} />
+      {q ? null : <J6DirectoryHero counts={counts} activeFilter={j6Filter} />}
     </header>
   );
 }
