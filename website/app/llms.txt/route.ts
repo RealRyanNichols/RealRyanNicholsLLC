@@ -9,10 +9,11 @@ export const revalidate = 3600;
 export async function GET() {
   const totals = await getCaseTotals().catch(() => null);
   // Every count comes from lib/case.ts. Without totals each phrase names
-  // the thing without a number rather than guess one.
+  // the thing without a number rather than guess one, and claims nothing
+  // about how complete it is.
   const docs = totals?.documents
     ? `${totals.documents.toLocaleString("en-US")} public documents`
-    : "every public document";
+    : "public documents";
   const grievanceForms = totals?.ryanFiledGrievances
     ? `${totals.ryanFiledGrievances.toLocaleString("en-US")} grievance forms`
     : "the grievance forms";
