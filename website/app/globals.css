@@ -552,6 +552,19 @@ html.is-js [data-reveal]:not(.is-in) {
     transform: none;
   }
 }
+/* Print: no grain, and nothing waits on the observer to be revealed (the
+   case brief and the legal pages are printed). */
+@media print {
+  .grain {
+    display: none;
+  }
+  html.is-js [data-reveal],
+  html.is-js [data-reveal]:not(.is-in) {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
 
 /* Mobile-first page primitives for the public conversion pages. Most traffic
    is phone-first, so these defaults keep tap targets large, hero copy readable,
