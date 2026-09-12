@@ -174,7 +174,7 @@ export default async function AdminImportsPage({
             className={[
               "rounded-full border px-3 py-1 text-xs font-bold transition",
               theme === t.value
-                ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)]"
+                ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)]"
                 : "border-[var(--color-line)] text-[var(--color-ink)] hover:border-[var(--color-accent)]",
             ].join(" ")}
           >

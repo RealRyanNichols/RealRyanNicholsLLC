@@ -150,7 +150,7 @@ export default async function AdminBlueprintPage() {
     <article className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
       <header className="flex flex-wrap items-end justify-between gap-3 border-b border-[var(--color-line)] pb-4">
         <div>
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-blue)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-blue-ink)]">
             Legal-Tech Blueprint
           </p>
           <h1 className="mt-1 font-display text-3xl font-black tracking-tight">
@@ -308,7 +308,7 @@ export default async function AdminBlueprintPage() {
                       {features.map((f) => (
                         <span
                           key={f}
-                          className="rounded-full border border-[var(--color-blue)]/30 bg-[var(--color-blue-soft)] px-2 py-0.5 text-[11px] font-bold text-[var(--color-blue-strong)]"
+                          className="rounded-full border border-[var(--color-blue)]/30 bg-[var(--color-blue-soft)] px-2 py-0.5 text-[11px] font-bold text-[var(--color-blue-ink)]"
                         >
                           {f}
                         </span>
@@ -330,7 +330,7 @@ export default async function AdminBlueprintPage() {
                   ) : null}
 
                   {r.anything_else ? (
-                    <div className="mt-3 rounded-md border-l-4 border-[var(--color-blue)] bg-[var(--color-paper)] px-3 py-2">
+                    <div className="mt-3 rounded-md border-l-4 border-[var(--color-blue)] bg-[var(--color-blue-soft)] px-3 py-2">
                       <p className="text-[11px] font-black uppercase tracking-wider text-[var(--color-muted)]">
                         Anything else
                       </p>

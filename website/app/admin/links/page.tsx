@@ -123,12 +123,12 @@ export default async function AdminLinksPage() {
               <li key={p.id}>
                 <Link
                   href={`/posts/${p.slug}`}
-                  className="flex items-center justify-between gap-3 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] px-3.5 py-2.5 transition hover:border-[var(--color-navy)]"
+                  className="flex items-center justify-between gap-3 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] px-3.5 py-2.5 transition hover:border-[var(--color-gold)]"
                 >
                   <span className="min-w-0 truncate text-sm font-semibold text-[var(--color-ink)]">
                     {p.title ?? p.slug}
                   </span>
-                  <span className="shrink-0 text-sm font-bold tabular-nums text-[var(--color-navy)]">
+                  <span className="shrink-0 text-sm font-bold tabular-nums text-[var(--color-gold)]">
                     {inbound.get(p.id) ?? 0} in
                   </span>
                 </Link>

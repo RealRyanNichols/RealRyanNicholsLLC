@@ -94,7 +94,7 @@ export function AdminDeadmanToggle({ active }: { active: boolean }) {
       <div className="mt-3 flex items-center justify-between gap-4">
         <div>
           <p className="text-sm font-black text-[var(--color-ink)]">Current state</p>
-          <p className={active ? "text-2xl font-black text-red-800" : "text-2xl font-black text-green-800"}>
+          <p className={active ? "text-2xl font-black text-[var(--color-accent)]" : "text-2xl font-black text-[var(--color-success)]"}>
             {active ? "ON" : "OFF"}
           </p>
         </div>
@@ -102,7 +102,7 @@ export function AdminDeadmanToggle({ active }: { active: boolean }) {
           aria-hidden="true"
           className={[
             "h-5 w-5 rounded-full border-4",
-            active ? "border-red-800 bg-red-500" : "border-green-800 bg-green-500",
+            active ? "border-[var(--color-accent-soft)] bg-[var(--color-accent)]" : "border-[var(--color-success-soft)] bg-[var(--color-success)]",
           ].join(" ")}
         />
       </div>
@@ -117,14 +117,14 @@ export function AdminDeadmanToggle({ active }: { active: boolean }) {
           className={[
             "mt-5 w-full rounded-lg px-5 py-4 text-base font-black transition",
             active
-              ? "bg-[var(--color-blue)] text-white hover:bg-[var(--color-blue-strong)]"
-              : "bg-[var(--color-accent)] text-[var(--color-paper)] hover:bg-[var(--color-accent-strong)]",
+              ? "bg-[var(--color-blue)] text-[var(--color-cream)] hover:bg-[var(--color-blue-strong)]"
+              : "bg-[var(--color-accent)] text-[var(--color-cream)] hover:bg-[var(--color-accent-strong)]",
           ].join(" ")}
         >
           Click to {actionLabel.toLowerCase()}
         </button>
       ) : (
-        <div className="mt-5 rounded-lg border-2 border-amber-500 bg-amber-50 p-4 text-amber-950">
+        <div className="mt-5 rounded-lg border-2 border-[var(--color-tag-procedural)] bg-[var(--color-support-soft)] p-4 text-[var(--color-ink)]">
           <p className="font-black">Second confirmation</p>
           <p className="mt-2 text-sm leading-relaxed">
             {active
@@ -141,7 +141,7 @@ export function AdminDeadmanToggle({ active }: { active: boolean }) {
               type="button"
               disabled={busy}
               onClick={() => setPending(false)}
-              className="rounded-lg border border-amber-900/30 bg-white px-4 py-3 text-sm font-black disabled:opacity-50"
+              className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-4 py-3 text-sm font-black text-[var(--color-ink)] disabled:opacity-50"
             >
               Cancel
             </button>
@@ -150,8 +150,8 @@ export function AdminDeadmanToggle({ active }: { active: boolean }) {
               disabled={busy}
               onClick={confirmToggle}
               className={[
-                "rounded-lg px-4 py-3 text-sm font-black text-white disabled:opacity-50",
-                active ? "bg-[var(--color-blue)]" : "bg-red-800",
+                "rounded-lg px-4 py-3 text-sm font-black text-[var(--color-cream)] disabled:opacity-50",
+                active ? "bg-[var(--color-blue)]" : "bg-[var(--color-accent-strong)]",
               ].join(" ")}
             >
               {busy ? "Changing switch..." : `Yes, ${actionLabel.toLowerCase()} now`}
@@ -170,8 +170,8 @@ export function AdminDeadmanToggle({ active }: { active: boolean }) {
           className={[
             "mt-4 rounded-lg border p-4 text-sm leading-relaxed",
             result.error
-              ? "border-red-700/30 bg-red-700/10 text-red-900"
-              : "border-green-700/30 bg-green-700/10 text-[var(--color-ink)]",
+              ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-ink)]"
+              : "border-[var(--color-success)] bg-[var(--color-success-soft)] text-[var(--color-ink)]",
           ].join(" ")}
         >
           <p className="font-bold">{result.error ?? result.message ?? "Switch updated."}</p>

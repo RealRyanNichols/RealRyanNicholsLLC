@@ -522,7 +522,7 @@ export default async function AdminAudiencePage() {
             </div>
 
             <div className="mt-5 grid gap-4 lg:grid-cols-[minmax(0,1fr)_360px]">
-              <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4">
+              <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface-2)] p-4">
                 <h3 className="text-sm font-black uppercase tracking-wider text-[var(--color-muted)]">
                   Prediction and money move
                 </h3>
@@ -670,7 +670,7 @@ function Stat({
   sub?: string;
 }) {
   return (
-    <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] px-4 py-3">
+    <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface-2)] px-4 py-3">
       <div className="text-2xl font-black tracking-tight">{value}</div>
       <div className="mt-1 text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
         {label}
@@ -700,7 +700,7 @@ function Mini({
       {sub ? <p className="mt-1 text-xs text-[var(--color-muted)]">{sub}</p> : null}
     </>
   );
-  const classes = "rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-3";
+  const classes = "rounded-xl border border-[var(--color-line)] bg-[var(--color-surface-2)] p-3";
   return href ? (
     <Link href={href} className={`${classes} block hover:border-[var(--color-accent)]`}>
       {body}

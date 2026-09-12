@@ -5,54 +5,64 @@
 @import "../styles/tokens.css";
 
 @theme {
-  /* American palette: cream parchment background, deep flag-red accent
-     for severe items, navy blue secondary accent for institutional /
-     procedural cues, warm dark ink. Built so the eye rests easily on
-     long-form reading but red still hits hard where it has to. */
-  --color-paper: #f6efdf;
-  --color-surface: #fdf8ea;
-  --color-surface-2: #f0e6cf;
-  --color-line: #d8c89e;
-  --color-line-soft: #e5d6b1;
+  /* The theater palette. One dark room for the whole site: a deep navy
+     floor, navy panels with a gold hairline, cream type, gold for
+     emphasis and support, flag red kept for the one primary action on a
+     view and for severe marks. The spec is docs/theater-theme.md. Every
+     token here is a CSS variable; nothing in app/ or components/ carries a
+     hex literal for these colors. */
+  --color-paper: #06101f;
+  --color-surface: #0b1b34;
+  --color-surface-2: #10213f;
+  --color-line: rgba(225, 189, 91, 0.3);
+  --color-line-soft: rgba(253, 248, 234, 0.12);
 
-  --color-ink: #1a1410;
-  --color-ink-soft: #4a3e30;
-  --color-muted: #7a6a52;
+  --color-ink: #fdf8ea;
+  --color-ink-soft: rgba(253, 248, 234, 0.78);
+  --color-muted: rgba(253, 248, 234, 0.56);
+  /* Light text and strokes on a dark or colored band (buttons, badges). */
+  --color-cream: #fdf8ea;
 
-  --color-accent: #b32419;
-  --color-accent-strong: #8d1b13;
-  --color-accent-soft: #f6dad2;
-  --color-accent-glow: rgba(179, 36, 25, 0.18);
+  /* An intentional light interlude (a paper section, a scan viewer). */
+  --color-parchment: #f6efdf;
+  --color-parchment-ink: #1a1410;
+  --color-parchment-line: #d8c89e;
 
-  /* Support / money path. Red is reserved for danger, leaks, and failures;
-     support uses gold/green so funding the work reads as constructive action. */
-  --color-support: #c89b2f;
-  --color-support-strong: #8f6b16;
-  --color-support-soft: #f4e6bd;
-  --color-support-glow: rgba(200, 155, 47, 0.28);
+  --color-accent: #d9382b;
+  --color-accent-strong: #b32419;
+  --color-accent-soft: rgba(217, 56, 43, 0.16);
+  --color-accent-glow: rgba(217, 56, 43, 0.3);
 
-  /* Navy blue — the second American color. Use for institutional context,
-     procedural tags, secondary CTAs. --color-navy is the deep brand navy
-     (headers, primary buttons); --color-blue is its lighter hover step. */
+  /* Support / money path: gold, so funding the work reads as constructive. */
+  --color-support: #e1bd5b;
+  --color-support-strong: #f0d27a;
+  --color-support-soft: rgba(225, 189, 91, 0.14);
+  --color-support-glow: rgba(225, 189, 91, 0.35);
+
+  /* Navy is a band that must read as a distinct block on the floor; blue is
+     for blue buttons and borders, blue-ink for blue text. */
   --color-navy: #0b1b34;
-  --color-blue: #1d3a6b;
-  --color-blue-strong: #142a52;
-  --color-blue-soft: #d9e2f2;
+  --color-blue: #3d6fd1;
+  --color-blue-ink: #9dbcff;
+  --color-blue-strong: #2b56aa;
+  --color-blue-soft: rgba(61, 111, 209, 0.18);
 
-  /* Severity tag palette — only red is reserved for SEVERE. */
-  --color-tag-severe: #b32419;
-  --color-tag-procedural: #b8741c;
-  --color-tag-institutional: #1d3a6b;
-  --color-tag-resolved: #2d6a4f;
-  --color-gold: #c89b2f;
-  --color-gold-soft: #f4e6bd;
+  /* Severity tags. Only red is reserved for SEVERE. */
+  --color-tag-severe: #e0463a;
+  --color-tag-procedural: #e1a44a;
+  --color-tag-institutional: #9dbcff;
+  --color-tag-resolved: #6fd39a;
+  --color-gold: #e1bd5b;
+  --color-gold-soft: rgba(225, 189, 91, 0.14);
 
-  --color-success: #2d6a4f;
-  --color-success-soft: #dcebdc;
-  --color-danger: #b32419;
+  --color-success: #6fd39a;
+  --color-success-soft: rgba(111, 211, 154, 0.16);
+  --color-danger: #e0463a;
 
   --font-display: "Source Serif 4", "Iowan Old Style", "Charter", "Georgia", serif;
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Big Shoulders Display, self-hosted by next/font in app/layout.tsx. */
+  --font-condensed: var(--font-story-display), "Source Serif 4", "Georgia", serif;
 }
 
 /* Base resets live in @layer base so Tailwind utility classes — which
@@ -131,7 +141,7 @@
 
   ::selection {
     background: var(--color-accent);
-    color: #fdf8ea;
+    color: var(--color-cream);
   }
 
   /* Strong headings without negative tracking so long article titles stay legible. */
@@ -216,7 +226,7 @@
   width: 3rem;
   height: 4px;
   border-radius: 2px;
-  background: var(--color-accent);
+  background: var(--color-gold);
   margin-bottom: 0.7rem;
 }
 
@@ -286,7 +296,7 @@
   border-radius: 12px;
   border: 1px solid var(--color-line);
   background: var(--color-surface);
-  box-shadow: 0 1px 3px rgba(11, 27, 52, 0.06), 0 6px 18px rgba(11, 27, 52, 0.05);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 12px 30px rgba(0, 0, 0, 0.35);
   transition: box-shadow 0.2s ease;
 }
 .qa-tile::before {
@@ -295,7 +305,7 @@
   inset: 0;
   border-radius: 12px;
   pointer-events: none;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), inset 0 -1px 0 rgba(11, 27, 52, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), inset 0 -1px 0 rgba(0, 0, 0, 0.3);
 }
 .qa-tile::after {
   content: "";
@@ -311,7 +321,7 @@
   transition: transform 0.25s ease;
 }
 .qa-tile:hover {
-  box-shadow: 0 2px 4px rgba(11, 27, 52, 0.07), 0 12px 26px rgba(11, 27, 52, 0.07);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35), 0 18px 40px rgba(0, 0, 0, 0.45);
 }
 .qa-tile:hover::after {
   transform: scaleX(1);
@@ -326,20 +336,21 @@
   }
 }
 
-/* Quiet Authority button language. One solid navy button per view; every
-   other action is clean type. Flat ink — no gradients, no glow, no lift.
-   These rules are unlayered on purpose so they beat Tailwind utilities
+/* Theater button language. One solid gold button per view; every other
+   action is clean type on a gold rule, a blue button, or a ghost. Flag red
+   is the rare primary that is a demand (the case and story heroes). These
+   rules are unlayered on purpose so they beat Tailwind utilities
    (rounded-full etc.) already baked into markup across the site. */
 .btn-accent {
-  background: var(--color-navy);
-  color: #fdf8ea;
-  font-weight: 600;
+  background: var(--color-gold);
+  color: var(--color-navy);
+  font-weight: 700;
   border-radius: 8px;
   box-shadow: none;
   transition: background 0.15s ease;
 }
 .btn-accent:hover {
-  background: var(--color-blue);
+  background: var(--color-support-strong);
   transform: none;
   box-shadow: none;
 }
@@ -347,13 +358,13 @@
   transform: none;
 }
 
-/* Secondary action: type, not a box. Navy ink carried on a gold rule. */
+/* Secondary action: type, not a box. Cream ink carried on a gold rule. */
 .btn-support {
   background: transparent;
   color: inherit;
   font-weight: 600;
   border-radius: 0;
-  border-bottom: 2px solid var(--color-gold-bright);
+  border-bottom: 2px solid var(--color-gold);
   box-shadow: none;
   padding-left: 0.25rem;
   padding-right: 0.25rem;
@@ -361,7 +372,7 @@
 }
 .btn-support:hover {
   background: transparent;
-  color: var(--color-support-strong);
+  color: var(--color-gold);
   border-bottom-color: var(--color-support-strong);
   transform: none;
   box-shadow: none;
@@ -370,21 +381,138 @@
   transform: none;
 }
 
-/* Legacy alias — same navy primary. */
+/* Blue: the second button when a view already has its gold one. */
 .btn-blue {
-  background: var(--color-navy);
-  color: #fdf8ea;
+  background: var(--color-blue);
+  color: var(--color-cream);
   font-weight: 600;
   border-radius: 8px;
   transition: background 0.15s ease;
 }
 .btn-blue:hover {
-  background: var(--color-blue);
+  background: var(--color-blue-strong);
   transform: none;
   box-shadow: none;
 }
 .btn-blue:active {
   transform: none;
+}
+
+/* Red: a demand, or the hero primary on the case and story pages. */
+.btn-danger {
+  background: var(--color-accent);
+  color: var(--color-cream);
+  font-weight: 800;
+  border-radius: 8px;
+  transition: background 0.15s ease;
+}
+.btn-danger:hover {
+  background: var(--color-accent-strong);
+}
+
+/* Ghost: a hairline box that lights gold on hover. */
+.btn-ghost {
+  background: transparent;
+  color: var(--color-ink);
+  font-weight: 700;
+  border-radius: 8px;
+  border: 1.5px solid var(--color-line);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.btn-ghost:hover {
+  border-color: var(--color-gold);
+  background: var(--color-gold-soft);
+}
+
+/* ---------- theater primitives ---------- */
+
+/* A card or panel: navy, gold hairline, soft black shadow. */
+.panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: 14px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+.panel-2 {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-line);
+  border-radius: 14px;
+}
+
+/* The small gold kicker above a title. */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+/* The condensed display face for hero titles, chapter titles, numerals. */
+.display {
+  font-family: var(--font-condensed);
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 0.92;
+  letter-spacing: 0.005em;
+}
+
+/* A dark band that must read as its own block on the floor. */
+.band {
+  background: var(--color-navy);
+  border-top: 1px solid var(--color-line);
+  border-bottom: 1px solid var(--color-line);
+}
+
+/* Film grain: a fixed, viewport-sized sheet of turbulence that steps around
+   six times a second. One composited layer, mounted once by
+   components/SiteEffects.tsx; off under reduced motion and on admin. */
+.grain {
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  z-index: 25;
+  pointer-events: none;
+  opacity: 0.09;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0.7 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 260px 260px;
+  animation: grain-step 1.2s steps(6) infinite;
+}
+@keyframes grain-step {
+  0% { transform: translate(0, 0); }
+  17% { transform: translate(-3%, 2%); }
+  34% { transform: translate(2%, -4%); }
+  51% { transform: translate(-5%, -1%); }
+  68% { transform: translate(4%, 3%); }
+  85% { transform: translate(-1%, 5%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Reveal: anything with data-reveal rises in once when it enters the
+   viewport, staggered by --d. Gated on html.is-js so nothing is hidden with
+   JavaScript off. Count-up numbers carry data-count. */
+html.is-js [data-reveal] {
+  transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition-delay: calc(var(--d, 0) * 130ms);
+}
+html.is-js [data-reveal]:not(.is-in) {
+  opacity: 0;
+  transform: translateY(24px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .grain {
+    display: none;
+  }
+  html.is-js [data-reveal] {
+    transition: none;
+  }
+  html.is-js [data-reveal]:not(.is-in) {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* Mobile-first page primitives for the public conversion pages. Most traffic

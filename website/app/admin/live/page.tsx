@@ -60,7 +60,7 @@ export default async function AdminLivePage() {
       </div>
 
       {error ? (
-        <p className="mt-6 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800">
+        <p className="mt-6 rounded-lg border border-[var(--color-accent)]/40 bg-[var(--color-accent-soft)] p-3 text-sm text-[var(--color-ink)]">
           Could not load live streams: {error.message}
         </p>
       ) : null}

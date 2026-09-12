@@ -45,16 +45,16 @@ function usd(cents: number): string {
 function statusClass(status: ServiceInvoice["status"]): string {
   switch (status) {
     case "paid":
-      return "border-green-300 bg-green-50 text-green-800";
+      return "border-[var(--color-success)] bg-[var(--color-success-soft)] text-[var(--color-success)]";
     case "open":
-      return "border-blue-300 bg-blue-50 text-blue-800";
+      return "border-[var(--color-blue)] bg-[var(--color-blue-soft)] text-[var(--color-blue-ink)]";
     case "failed":
-      return "border-red-300 bg-red-50 text-red-800";
+      return "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-tag-severe)]";
     case "void":
     case "uncollectible":
-      return "border-zinc-300 bg-zinc-100 text-zinc-700";
+      return "border-[var(--color-line-soft)] bg-[var(--color-surface-2)] text-[var(--color-muted)]";
     default:
-      return "border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink-soft)]";
+      return "border-[var(--color-line)] bg-[var(--color-surface-2)] text-[var(--color-ink-soft)]";
   }
 }
 
@@ -117,7 +117,7 @@ export default async function AdminInvoicesPage() {
       </div>
 
       {error ? (
-        <div className="mt-5 rounded-2xl border border-red-300 bg-red-50 p-4 text-sm text-red-800">
+        <div className="mt-5 rounded-2xl border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-4 text-sm text-[var(--color-ink)]">
           <p className="font-bold">Invoice table is not available yet.</p>
           <p className="mt-1">
             Apply the latest Supabase migration, then refresh this page:
@@ -168,8 +168,8 @@ export default async function AdminInvoicesPage() {
                           className={[
                             "rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em]",
                             invoice.payment_mode === "plan"
-                              ? "border-emerald-300 bg-emerald-50 text-emerald-800"
-                              : "border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink-soft)]",
+                              ? "border-[var(--color-success)] bg-[var(--color-success-soft)] text-[var(--color-success)]"
+                              : "border-[var(--color-line)] bg-[var(--color-surface-2)] text-[var(--color-ink-soft)]",
                           ].join(" ")}
                         >
                           {invoice.payment_mode === "plan" ? "plan" : "invoice"}
@@ -194,7 +194,7 @@ export default async function AdminInvoicesPage() {
                       invoice.installment_cents &&
                       invoice.installment_interval &&
                       invoice.installment_count ? (
-                        <p className="mt-2 rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-xs font-semibold text-[var(--color-ink-soft)]">
+                        <p className="mt-2 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-xs font-semibold text-[var(--color-ink-soft)]">
                           {usd(invoice.down_payment_cents)} down ·{" "}
                           {invoice.installment_count}{" "}
                           {invoice.installment_interval === "week" ? "weekly" : "monthly"}{" "}
@@ -221,7 +221,7 @@ export default async function AdminInvoicesPage() {
                   </div>
 
                   {invoice.stripe_last_error ? (
-                    <p className="mt-3 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold text-red-700">
+                    <p className="mt-3 rounded-xl border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-3 py-2 text-xs font-semibold text-[var(--color-tag-severe)]">
                       Stripe error: {invoice.stripe_last_error}
                     </p>
                   ) : null}
@@ -232,7 +232,7 @@ export default async function AdminInvoicesPage() {
                         href={invoice.stripe_hosted_invoice_url}
                         target="_blank"
                         rel="noreferrer"
-                        className="rounded-full bg-[var(--color-accent)] px-3 py-1.5 text-xs font-bold text-[var(--color-paper)]"
+                        className="rounded-full bg-[var(--color-accent)] px-3 py-1.5 text-xs font-bold text-[var(--color-cream)]"
                       >
                         Payment page
                       </a>
@@ -253,7 +253,7 @@ export default async function AdminInvoicesPage() {
                       </span>
                     ) : null}
                     {invoice.paid_at ? (
-                      <span className="rounded-full border border-green-300 bg-green-50 px-3 py-1.5 text-xs font-bold text-green-800">
+                      <span className="rounded-full border border-[var(--color-success)] bg-[var(--color-success-soft)] px-3 py-1.5 text-xs font-bold text-[var(--color-success)]">
                         Paid {formatDistanceToNowStrict(new Date(invoice.paid_at), { addSuffix: true })}
                       </span>
                     ) : null}

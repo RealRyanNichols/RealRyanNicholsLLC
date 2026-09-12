@@ -8,7 +8,7 @@ import {
 } from "@/lib/deadman-constants";
 
 const inputClass =
-  "w-full rounded-lg border border-[var(--color-line)] bg-white px-3 py-3 text-sm text-[var(--color-ink)]";
+  "w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-3 text-sm text-[var(--color-ink)]";
 
 type ApiResult = {
   ok?: boolean;
@@ -123,7 +123,7 @@ export function DeadmanSwitchForm({ allowReverse = false }: { allowReverse?: boo
 
       {action === "activate" ? (
         <div className={allowReverse ? "mt-4 space-y-4" : "space-y-4"}>
-          <div className="rounded-lg border border-amber-500/40 bg-amber-50 p-3 text-sm leading-relaxed text-amber-950">
+          <div className="rounded-lg border border-[var(--color-tag-procedural)] bg-[var(--color-support-soft)] p-3 text-sm leading-relaxed text-[var(--color-ink)]">
             Activate only after you personally confirm custody. Being late,
             unreachable, or mentioned on social media is not enough.
           </div>
@@ -238,7 +238,7 @@ export function DeadmanSwitchForm({ allowReverse = false }: { allowReverse?: boo
             </div>
           </details>
 
-          <p className="rounded-lg border border-red-700/30 bg-red-700/5 p-3 text-xs leading-relaxed">
+          <p className="rounded-lg border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-3 text-xs leading-relaxed text-[var(--color-ink-soft)]">
             Pressing activate confirms that you personally verified custody and
             authorizes the immediate bulletin and hourly release pipeline. Do
             not enter private addresses, children&apos;s names, sealed material,
@@ -279,8 +279,8 @@ export function DeadmanSwitchForm({ allowReverse = false }: { allowReverse?: boo
         className={[
           "mt-5 w-full rounded-lg px-5 py-4 text-sm font-black transition disabled:cursor-not-allowed disabled:opacity-50",
           action === "activate"
-            ? "bg-[var(--color-accent)] text-[var(--color-paper)] hover:bg-[var(--color-accent-strong)]"
-            : "bg-[var(--color-blue)] text-white hover:bg-[var(--color-blue-strong)]",
+            ? "bg-[var(--color-accent)] text-[var(--color-cream)] hover:bg-[var(--color-accent-strong)]"
+            : "bg-[var(--color-blue)] text-[var(--color-cream)] hover:bg-[var(--color-blue-strong)]",
         ].join(" ")}
       >
         {busy
@@ -295,8 +295,8 @@ export function DeadmanSwitchForm({ allowReverse = false }: { allowReverse?: boo
           className={[
             "mt-4 rounded-lg border p-4 text-sm leading-relaxed",
             result.error
-              ? "border-red-700/30 bg-red-700/10 text-red-900"
-              : "border-green-700/30 bg-green-700/10 text-[var(--color-ink)]",
+              ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-ink)]"
+              : "border-[var(--color-success)] bg-[var(--color-success-soft)] text-[var(--color-ink)]",
           ].join(" ")}
         >
           {result.error ? (

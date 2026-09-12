@@ -147,7 +147,7 @@ export function AdminInvoiceForm() {
             value={clientName}
             onChange={(e) => setClientName(e.target.value)}
             required
-            className="mt-1 w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm outline-none focus:border-[var(--color-accent)]"
+            className="mt-1 w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm outline-none focus:border-[var(--color-accent)]"
             placeholder="Full name or company"
           />
         </label>
@@ -157,7 +157,7 @@ export function AdminInvoiceForm() {
             value={clientEmail}
             onChange={(e) => setClientEmail(e.target.value)}
             type="email"
-            className="mt-1 w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm outline-none focus:border-[var(--color-accent)]"
+            className="mt-1 w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm outline-none focus:border-[var(--color-accent)]"
             placeholder="needed if Stripe emails it"
           />
         </label>
@@ -166,7 +166,7 @@ export function AdminInvoiceForm() {
           <input
             value={clientPhone}
             onChange={(e) => setClientPhone(e.target.value)}
-            className="mt-1 w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm outline-none focus:border-[var(--color-accent)]"
+            className="mt-1 w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm outline-none focus:border-[var(--color-accent)]"
             placeholder="optional"
           />
         </label>
@@ -177,7 +177,7 @@ export function AdminInvoiceForm() {
             onChange={(e) => setAmount(e.target.value)}
             required
             inputMode="decimal"
-            className="mt-1 w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm outline-none focus:border-[var(--color-accent)]"
+            className="mt-1 w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm outline-none focus:border-[var(--color-accent)]"
             placeholder="1100"
           />
         </label>
@@ -252,7 +252,7 @@ export function AdminInvoiceForm() {
                 )}
               </p>
               {planHasRoundingIssue ? (
-                <p className="mt-2 text-xs font-semibold text-red-700">
+                <p className="mt-2 text-xs font-semibold text-[var(--color-accent)]">
                   The remaining balance has to divide cleanly by the number of
                   payments. Change the down payment or payment count.
                 </p>
@@ -268,7 +268,7 @@ export function AdminInvoiceForm() {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
-          className="mt-1 w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm outline-none focus:border-[var(--color-accent)]"
+          className="mt-1 w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm outline-none focus:border-[var(--color-accent)]"
         />
       </label>
 
@@ -279,7 +279,7 @@ export function AdminInvoiceForm() {
           onChange={(e) => setDescription(e.target.value)}
           required
           rows={4}
-          className="mt-1 w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm outline-none focus:border-[var(--color-accent)]"
+          className="mt-1 w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm outline-none focus:border-[var(--color-accent)]"
           placeholder="Plain-English description of the work, agreement, remaining balance, and what this invoice covers."
         />
       </label>
@@ -293,7 +293,7 @@ export function AdminInvoiceForm() {
             type="number"
             min="0"
             max="365"
-            className="mt-1 w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm outline-none focus:border-[var(--color-accent)]"
+            className="mt-1 w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm outline-none focus:border-[var(--color-accent)]"
           />
         </label>
         <label className="block text-sm font-semibold">
@@ -301,7 +301,7 @@ export function AdminInvoiceForm() {
           <input
             value={memo}
             onChange={(e) => setMemo(e.target.value)}
-            className="mt-1 w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm outline-none focus:border-[var(--color-accent)]"
+            className="mt-1 w-full rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm outline-none focus:border-[var(--color-accent)]"
             placeholder="private admin note"
           />
         </label>
@@ -324,8 +324,8 @@ export function AdminInvoiceForm() {
               className={[
                 "rounded-xl border px-3 py-3 text-sm transition",
                 delivery === value
-                  ? "border-[var(--color-accent)] bg-[var(--color-accent)]/10"
-                  : "border-[var(--color-line)] bg-[var(--color-paper)]",
+                  ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)]"
+                  : "border-[var(--color-line)] bg-[var(--color-surface-2)]",
               ].join(" ")}
             >
               <input
@@ -345,13 +345,13 @@ export function AdminInvoiceForm() {
       </fieldset>
 
       {error ? (
-        <p className="mt-4 rounded-xl border border-red-300 bg-red-50 px-3 py-2 text-sm font-semibold text-red-700">
+        <p className="mt-4 rounded-xl border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-3 py-2 text-sm font-semibold text-[var(--color-accent)]">
           {error}
         </p>
       ) : null}
 
       {result ? (
-        <div className="mt-4 rounded-xl border border-[var(--color-accent)] bg-[var(--color-accent)]/10 px-3 py-3 text-sm">
+        <div className="mt-4 rounded-xl border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-3 py-3 text-sm">
           <p className="font-bold">Invoice saved: {result.status}</p>
           {result.stripe_hosted_invoice_url ? (
             <a
@@ -389,7 +389,7 @@ export function AdminInvoiceForm() {
       <button
         type="submit"
         disabled={busy}
-        className="mt-5 w-full rounded-full bg-[var(--color-accent)] px-5 py-3 text-sm font-bold text-[var(--color-paper)] transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+        className="mt-5 w-full rounded-full bg-[var(--color-accent)] px-5 py-3 text-sm font-bold text-[var(--color-cream)] transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
       >
         {busy ? "Creating invoice..." : "Create invoice"}
       </button>

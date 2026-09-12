@@ -138,7 +138,7 @@ function ImportStripeButton() {
           type="button"
           onClick={run}
           disabled={busy}
-          className="whitespace-nowrap rounded-full bg-[var(--color-accent)] px-4 py-2 text-sm font-bold text-white disabled:opacity-50"
+          className="whitespace-nowrap rounded-full bg-[var(--color-accent)] px-4 py-2 text-sm font-bold text-[var(--color-cream)] disabled:opacity-50"
         >
           {busy ? "Importing…" : "Import from Stripe"}
         </button>
@@ -222,7 +222,7 @@ function SettingsForm({ initial }: { initial: Settings }) {
           type="button"
           onClick={save}
           disabled={busy}
-          className="rounded-full bg-[var(--color-accent)] px-4 py-2 text-sm font-bold text-white disabled:opacity-50"
+          className="rounded-full bg-[var(--color-accent)] px-4 py-2 text-sm font-bold text-[var(--color-cream)] disabled:opacity-50"
         >
           {busy ? "Saving…" : "Save campaign settings"}
         </button>
@@ -325,7 +325,7 @@ function ItemRow({ item }: { item?: Item }) {
           <input type="checkbox" checked={active} onChange={(e) => setActive(e.target.checked)} className="h-4 w-4 accent-[var(--color-accent)]" />
           active
         </label>
-        <button type="button" onClick={save} disabled={busy} className="rounded-full bg-[var(--color-accent)] px-3 py-1.5 text-xs font-bold text-white disabled:opacity-50">
+        <button type="button" onClick={save} disabled={busy} className="rounded-full bg-[var(--color-accent)] px-3 py-1.5 text-xs font-bold text-[var(--color-cream)] disabled:opacity-50">
           {isNew ? "Add" : "Save"}
         </button>
         {!isNew ? (

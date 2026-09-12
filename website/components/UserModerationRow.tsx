@@ -237,7 +237,7 @@ export function UserModerationRow({
           ) : null}
           {j6Matches.length > 0 ? (
             <div className="mt-3 rounded-lg border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-3">
-              <p className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-blue)]">
+              <p className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-blue-ink)]">
                 Possible J6 profile matches
               </p>
               <ul className="mt-2 space-y-1.5">
@@ -266,14 +266,14 @@ export function UserModerationRow({
                         <span
                           className={`ml-2 text-[10px] font-bold uppercase tracking-wider rounded px-1.5 py-0.5 ${
                             strong
-                              ? "bg-[var(--color-success)] text-[var(--color-paper)]"
+                              ? "bg-[var(--color-success)] text-[var(--color-navy)]"
                               : "bg-[var(--color-surface-2)] text-[var(--color-ink-soft)]"
                           }`}
                         >
                           {pct}% match
                         </span>
                         {claimed ? (
-                          <span className="ml-1 text-[10px] font-bold uppercase tracking-wider rounded px-1.5 py-0.5 bg-[var(--color-accent)] text-[var(--color-paper)]">
+                          <span className="ml-1 text-[10px] font-bold uppercase tracking-wider rounded px-1.5 py-0.5 bg-[var(--color-accent)] text-[var(--color-cream)]">
                             ALREADY CLAIMED
                           </span>
                         ) : null}
@@ -283,7 +283,7 @@ export function UserModerationRow({
                           type="button"
                           disabled={busy}
                           onClick={() => linkToJ6Profile(m.person_id, m.name)}
-                          className="flex-shrink-0 rounded-md bg-[var(--color-blue)] hover:bg-[var(--color-blue-strong)] px-2.5 py-1 text-xs font-bold text-[var(--color-paper)] disabled:opacity-50"
+                          className="flex-shrink-0 rounded-md bg-[var(--color-blue)] hover:bg-[var(--color-blue-strong)] px-2.5 py-1 text-xs font-bold text-[var(--color-cream)] disabled:opacity-50"
                         >
                           🔗 Link
                         </button>
@@ -304,7 +304,7 @@ export function UserModerationRow({
               <summary className="text-xs font-bold text-[var(--color-muted)] cursor-pointer hover:text-[var(--color-accent)]">
                 Admin notes ({profile.admin_notes.split("\n").filter((l) => l.trim()).length} lines)
               </summary>
-              <pre className="mt-2 whitespace-pre-wrap text-xs text-[var(--color-ink-soft)] bg-[var(--color-paper)] border border-[var(--color-line-soft)] rounded-md p-2 font-mono">
+              <pre className="mt-2 whitespace-pre-wrap text-xs text-[var(--color-ink-soft)] bg-[var(--color-surface-2)] border border-[var(--color-line-soft)] rounded-md p-2 font-mono">
                 {profile.admin_notes}
               </pre>
             </details>
@@ -317,7 +317,7 @@ export function UserModerationRow({
               type="button"
               disabled={busy}
               onClick={() => runAction("approve")}
-              className="rounded-md bg-[var(--color-success)] hover:opacity-90 px-3 py-1.5 text-xs font-bold text-[var(--color-paper)] disabled:opacity-60"
+              className="rounded-md bg-[var(--color-success)] hover:opacity-90 px-3 py-1.5 text-xs font-bold text-[var(--color-navy)] disabled:opacity-60"
               title="Mark as verified and active"
             >
               ✓ Approve
@@ -330,7 +330,7 @@ export function UserModerationRow({
               setAskOpen((v) => !v);
               setNoteOpen(false);
             }}
-            className="rounded-md border-2 border-[var(--color-blue)] bg-[var(--color-blue)] hover:bg-[var(--color-blue-strong)] px-3 py-1.5 text-xs font-bold text-[var(--color-paper)] disabled:opacity-60"
+            className="rounded-md border-2 border-[var(--color-blue)] bg-[var(--color-blue)] hover:bg-[var(--color-blue-strong)] px-3 py-1.5 text-xs font-bold text-[var(--color-cream)] disabled:opacity-60"
             title="Save a question to ask this user before approving"
           >
             ? Ask Info
@@ -351,7 +351,7 @@ export function UserModerationRow({
               type="button"
               disabled={busy}
               onClick={() => runAction("ban")}
-              className="rounded-md bg-[var(--color-accent)] hover:bg-[var(--color-accent-strong)] px-3 py-1.5 text-xs font-bold text-[var(--color-paper)] disabled:opacity-60"
+              className="rounded-md bg-[var(--color-accent)] hover:bg-[var(--color-accent-strong)] px-3 py-1.5 text-xs font-bold text-[var(--color-cream)] disabled:opacity-60"
               title="Hard ban — bad actor"
             >
               🚫 Ban
@@ -373,7 +373,7 @@ export function UserModerationRow({
               type="button"
               disabled={busy}
               onClick={deletePending}
-              className="rounded-md border border-[var(--color-danger)] px-3 py-1.5 text-xs font-bold text-[var(--color-danger)] transition hover:bg-[var(--color-danger)] hover:text-[var(--color-paper)] disabled:opacity-60"
+              className="rounded-md border border-[var(--color-danger)] px-3 py-1.5 text-xs font-bold text-[var(--color-danger)] transition hover:bg-[var(--color-danger)] hover:text-[var(--color-cream)] disabled:opacity-60"
               title="Delete this abandoned signup entirely — account and profile"
             >
               🗑 Delete signup
@@ -428,14 +428,14 @@ export function UserModerationRow({
             onChange={(e) => setQuestion(e.target.value)}
             rows={3}
             placeholder="e.g. 'Can you send a photo of your pardon document?' or 'Which DOJ case # is yours?'"
-            className="w-full rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-accent)]"
+            className="w-full rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-accent)]"
           />
           <div className="mt-2 flex flex-wrap gap-2">
             <button
               type="button"
               disabled={busy || !question.trim()}
               onClick={submitQuestion}
-              className="rounded-md bg-[var(--color-blue)] hover:bg-[var(--color-blue-strong)] px-3 py-1.5 text-xs font-bold text-[var(--color-paper)] disabled:opacity-50"
+              className="rounded-md bg-[var(--color-blue)] hover:bg-[var(--color-blue-strong)] px-3 py-1.5 text-xs font-bold text-[var(--color-cream)] disabled:opacity-50"
             >
               Save question & mark info_requested
             </button>
@@ -471,14 +471,14 @@ export function UserModerationRow({
             onChange={(e) => setNote(e.target.value)}
             rows={4}
             placeholder="Anything you want to remember about this user."
-            className="w-full rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm font-mono focus:outline-none focus:border-[var(--color-accent)]"
+            className="w-full rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm font-mono focus:outline-none focus:border-[var(--color-accent)]"
           />
           <div className="mt-2 flex flex-wrap gap-2">
             <button
               type="button"
               disabled={busy}
               onClick={saveNote}
-              className="rounded-md bg-[var(--color-accent)] hover:bg-[var(--color-accent-strong)] px-3 py-1.5 text-xs font-bold text-[var(--color-paper)] disabled:opacity-50"
+              className="rounded-md bg-[var(--color-accent)] hover:bg-[var(--color-accent-strong)] px-3 py-1.5 text-xs font-bold text-[var(--color-cream)] disabled:opacity-50"
             >
               Save note
             </button>
@@ -505,10 +505,10 @@ export function UserModerationRow({
 
 function StatusBadge({ status, verified }: { status: string; verified: boolean }) {
   const styles: Record<string, { bg: string; fg: string; label: string }> = {
-    banned: { bg: "var(--color-accent)", fg: "var(--color-paper)", label: "BANNED" },
+    banned: { bg: "var(--color-accent)", fg: "var(--color-cream)", label: "BANNED" },
     denied: { bg: "var(--color-surface-2)", fg: "var(--color-muted)", label: "DENIED" },
-    info_requested: { bg: "var(--color-blue)", fg: "var(--color-paper)", label: "INFO ASKED" },
-    pending: { bg: "var(--color-tag-procedural)", fg: "var(--color-paper)", label: "PENDING" },
+    info_requested: { bg: "var(--color-blue)", fg: "var(--color-cream)", label: "INFO ASKED" },
+    pending: { bg: "var(--color-tag-procedural)", fg: "var(--color-navy)", label: "PENDING" },
   };
   const s = styles[status];
   if (s) {
@@ -525,7 +525,7 @@ function StatusBadge({ status, verified }: { status: string; verified: boolean }
     return (
       <span
         className="rounded-full px-2 py-0.5 text-[10px] uppercase tracking-wider font-bold"
-        style={{ background: "var(--color-success)", color: "var(--color-paper)" }}
+        style={{ background: "var(--color-success)", color: "var(--color-navy)" }}
       >
         ✓ verified
       </span>

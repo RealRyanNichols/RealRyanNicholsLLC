@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import localFont from "next/font/local";
 import { pageMetadata } from "@/lib/page-metadata";
 import { RescueGallery } from "@/components/RescueGallery";
 import { getCaseTotals, getJ6DefendantCount } from "@/lib/case";
@@ -12,16 +11,8 @@ import { ChapterMedia, Img } from "@/components/story/StoryFrames";
 import { CLOSING, HERO, bleedBackdrop, chaptersFor, type Chapter } from "./chapters";
 import "./story.css";
 
-// The display face for this room only: Big Shoulders, the condensed cut Ryan
-// picked for the cover-art standard. Self-hosted (OFL), one variable file,
-// the latin range, ~35 KB. Everything else on the page is the site's own
-// serif and sans.
-const display = localFont({
-  src: "./fonts/BigShouldersDisplay-latin.woff2",
-  weight: "700 900",
-  display: "swap",
-  variable: "--font-story-display",
-});
+// The display face (Big Shoulders Display, --font-story-display) is loaded
+// once in app/layout.tsx and shared by the whole theater.
 
 // The day count in the description is the live arrest-to-pardon figure from
 // lib/case.ts, never typed.
@@ -69,7 +60,7 @@ export default async function TheStoryPage() {
   ];
 
   return (
-    <div className={`st-theater ${display.variable}`}>
+    <div className="st-theater">
       <JsonLd data={ld} />
       <StoryCinema
         chapters={chapters.map((c) => ({ id: c.id, era: c.era, title: c.title }))}

@@ -179,7 +179,7 @@ export default async function AdminDeadmanPage() {
               opened.
             </p>
             {researchDashboardError ? (
-              <p className="mt-3 rounded-lg border border-red-300 bg-red-50 p-3 text-xs font-bold text-red-900">
+              <p className="mt-3 rounded-lg border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-3 text-xs font-bold text-[var(--color-ink)]">
                 The private research dashboard could not be loaded. Counts are not being treated as zero; inspect the database connection before relying on this panel.
               </p>
             ) : null}
@@ -233,7 +233,7 @@ export default async function AdminDeadmanPage() {
                   {lead.legal_restrictions?.length ? (
                     <div className="mt-2 flex flex-wrap gap-1">
                       {lead.legal_restrictions.map((restriction: string) => (
-                        <span key={restriction} className="rounded-full border border-red-300 bg-red-50 px-2 py-1 text-[10px] font-bold text-red-900">
+                        <span key={restriction} className="rounded-full border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-2 py-1 text-[10px] font-bold text-[var(--color-tag-severe)]">
                           {restriction.replaceAll("_", " ")}
                         </span>
                       ))}
@@ -327,10 +327,10 @@ function Stat({
   tone: "red" | "green" | "gold" | "blue" | "plain";
 }) {
   const tones = {
-    red: "border-red-700 bg-red-700/10 text-red-900",
-    green: "border-green-700 bg-green-700/10 text-green-900",
-    gold: "border-[#d8ad43] bg-[#fff5d6] text-[#7a5100]",
-    blue: "border-[var(--color-blue)] bg-[var(--color-blue-soft)] text-[var(--color-blue)]",
+    red: "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-tag-severe)]",
+    green: "border-[var(--color-success)] bg-[var(--color-success-soft)] text-[var(--color-success)]",
+    gold: "border-[var(--color-gold)] bg-[var(--color-support-soft)] text-[var(--color-gold)]",
+    blue: "border-[var(--color-blue)] bg-[var(--color-blue-soft)] text-[var(--color-blue-ink)]",
     plain: "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink)]",
   };
   return (

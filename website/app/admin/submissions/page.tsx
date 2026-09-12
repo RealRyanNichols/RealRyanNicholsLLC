@@ -217,7 +217,7 @@ export default async function AdminSubmissionsPage({
                           href={s.embed_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="rounded-full bg-[var(--color-blue-soft)] text-[var(--color-blue)] px-2 py-0.5 hover:underline"
+                          className="rounded-full bg-[var(--color-blue-soft)] text-[var(--color-blue-ink)] px-2 py-0.5 hover:underline"
                         >
                           embed url ↗
                         </a>
@@ -339,16 +339,24 @@ function TabLink({
 }
 
 function StatusBadge({ status }: { status: string }) {
-  const styles: Record<string, { bg: string; label: string }> = {
-    approved: { bg: "var(--color-success)", label: "PUBLIC" },
-    pending: { bg: "var(--color-tag-procedural)", label: "PENDING" },
-    rejected: { bg: "var(--color-accent)", label: "REJECTED" },
+  const styles: Record<string, { cls: string; label: string }> = {
+    approved: {
+      cls: "bg-[var(--color-success-soft)] text-[var(--color-success)]",
+      label: "PUBLIC",
+    },
+    pending: {
+      cls: "bg-[var(--color-support-soft)] text-[var(--color-tag-procedural)]",
+      label: "PENDING",
+    },
+    rejected: {
+      cls: "bg-[var(--color-accent-soft)] text-[var(--color-accent)]",
+      label: "REJECTED",
+    },
   };
   const s = styles[status] ?? styles.pending;
   return (
     <span
-      className="rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--color-paper)]"
-      style={{ background: s.bg }}
+      className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${s.cls}`}
     >
       {s.label}
     </span>

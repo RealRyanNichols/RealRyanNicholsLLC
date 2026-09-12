@@ -42,7 +42,7 @@ const KIND_META: Record<
   tip: {
     label: "Tip",
     sub: "story or case info from the tip line",
-    chip: "bg-[var(--color-blue-soft)] text-[var(--color-navy)]",
+    chip: "bg-[var(--color-blue-soft)] text-[var(--color-blue-ink)]",
   },
   message: {
     label: "Message",
@@ -230,7 +230,7 @@ export default async function AdminInboxPage({
       <h1 className="mt-1 font-display text-3xl sm:text-4xl font-bold tracking-tight">
         Inbox
         {needsYou > 0 ? (
-          <span className="ml-3 inline-block rounded-full bg-[var(--color-navy)] px-2.5 py-0.5 align-middle text-sm font-bold text-[#fdf8ea]">
+          <span className="ml-3 inline-block rounded-full bg-[var(--color-gold)] px-2.5 py-0.5 align-middle text-sm font-bold text-[var(--color-navy)]">
             {needsYou}
           </span>
         ) : null}
@@ -265,14 +265,14 @@ export default async function AdminInboxPage({
               key={`${it.kind}-${it.id}`}
               href={it.href}
               className={[
-                "flex items-center gap-3 rounded-xl border p-3 transition hover:border-[var(--color-navy)]",
+                "flex items-center gap-3 rounded-xl border p-3 transition hover:border-[var(--color-gold)]",
                 it.pending
                   ? "border-[var(--color-line)] bg-[var(--color-surface)]"
                   : "border-[var(--color-line-soft)] bg-[var(--color-paper)] opacity-70",
               ].join(" ")}
             >
               <span
-                className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[var(--color-blue-soft)] text-sm font-bold text-[var(--color-navy)]"
+                className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[var(--color-blue-soft)] text-sm font-bold text-[var(--color-blue-ink)]"
                 aria-hidden
               >
                 {initials(it.who)}
@@ -307,7 +307,7 @@ export default async function AdminInboxPage({
               </div>
               <span
                 aria-hidden
-                className="shrink-0 text-[var(--color-muted)] transition group-hover:text-[var(--color-navy)]"
+                className="shrink-0 text-[var(--color-muted)] transition group-hover:text-[var(--color-gold)]"
               >
                 →
               </span>
@@ -337,8 +337,8 @@ function FilterChip({
       className={[
         "rounded-full border px-3.5 py-1.5 text-xs font-bold transition",
         active
-          ? "border-[var(--color-navy)] bg-[var(--color-navy)] text-[#fdf8ea]"
-          : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:border-[var(--color-navy)] hover:text-[var(--color-navy)]",
+          ? "border-[var(--color-gold)] bg-[var(--color-gold)] text-[var(--color-navy)]"
+          : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:border-[var(--color-gold)] hover:text-[var(--color-ink)]",
       ].join(" ")}
     >
       {label}

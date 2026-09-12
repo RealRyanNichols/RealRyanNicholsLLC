@@ -196,8 +196,8 @@ export function LiveControlRoom({
   return (
     <div className="space-y-8">
       {!muxConfigured ? (
-        <section className="rounded-xl border-2 border-red-700 bg-red-50 p-5 text-red-950">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-red-700">
+        <section className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-5 text-[var(--color-ink)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
             Mux not connected
           </p>
           <p className="mt-2 text-sm leading-relaxed">
@@ -223,7 +223,7 @@ export function LiveControlRoom({
             <input
               value={title}
               onChange={(event) => setTitle(event.target.value)}
-              className="rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 font-normal"
+              className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 font-normal"
               required
               maxLength={120}
             />
@@ -233,7 +233,7 @@ export function LiveControlRoom({
             <textarea
               value={description}
               onChange={(event) => setDescription(event.target.value)}
-              className="min-h-28 rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 font-normal"
+              className="min-h-28 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 font-normal"
               maxLength={2000}
             />
           </label>
@@ -242,7 +242,7 @@ export function LiveControlRoom({
             <input
               value={category}
               onChange={(event) => setCategory(event.target.value)}
-              className="rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 font-normal"
+              className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 font-normal"
               maxLength={80}
             />
           </label>
@@ -250,15 +250,15 @@ export function LiveControlRoom({
         <button
           type="submit"
           disabled={!muxConfigured || busy === "create"}
-          className="mt-5 rounded-full bg-[var(--color-accent)] px-5 py-2.5 text-sm font-black text-[var(--color-paper)] disabled:cursor-not-allowed disabled:opacity-50"
+          className="mt-5 rounded-full bg-[var(--color-accent)] px-5 py-2.5 text-sm font-black text-[var(--color-cream)] disabled:cursor-not-allowed disabled:opacity-50"
         >
           {busy === "create" ? "Creating..." : "Create live room"}
         </button>
       </form>
 
       {credentials ? (
-        <section className="rounded-xl border-2 border-red-700 bg-red-50 p-5 text-red-950">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-red-700">
+        <section className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-5 text-[var(--color-ink)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
             Stream credentials
           </p>
           <div className="mt-4 grid gap-3">
@@ -284,7 +284,7 @@ export function LiveControlRoom({
               <select
                 value={selectedStreamId}
                 onChange={(event) => setSelectedStreamId(event.target.value)}
-                className="rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-bold"
+                className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm font-bold"
               >
                 {streams.map((stream) => (
                   <option key={stream.id} value={stream.id}>
@@ -304,7 +304,7 @@ export function LiveControlRoom({
               streams.map((stream) => (
                 <article
                   key={stream.id}
-                  className="rounded-lg border border-[var(--color-line)] bg-white p-4"
+                  className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] p-4"
                 >
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
@@ -340,7 +340,7 @@ export function LiveControlRoom({
                         type="button"
                         onClick={() => announce(stream.id)}
                         disabled={busy === `announce:${stream.id}`}
-                        className="rounded-full bg-red-700 px-3 py-1.5 text-xs font-black text-white disabled:opacity-50"
+                        className="rounded-full bg-[var(--color-accent)] px-3 py-1.5 text-xs font-black text-[var(--color-cream)] disabled:opacity-50"
                       >
                         Announce
                       </button>
@@ -349,7 +349,7 @@ export function LiveControlRoom({
                           type="button"
                           onClick={() => endStream(stream.id)}
                           disabled={busy === `end:${stream.id}`}
-                          className="rounded-full border border-red-300 px-3 py-1.5 text-xs font-black text-red-800 disabled:opacity-50"
+                          className="rounded-full border border-[var(--color-accent)] px-3 py-1.5 text-xs font-black text-[var(--color-accent)] disabled:opacity-50"
                         >
                           End
                         </button>
@@ -401,7 +401,7 @@ export function LiveControlRoom({
                 <select
                   value={platform}
                   onChange={(event) => setPlatform(event.target.value)}
-                  className="rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 font-normal"
+                  className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 font-normal"
                 >
                   <option>YouTube</option>
                   <option>Facebook</option>
@@ -417,7 +417,7 @@ export function LiveControlRoom({
                   value={label}
                   onChange={(event) => setLabel(event.target.value)}
                   placeholder={`${platform} Live`}
-                  className="rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 font-normal"
+                  className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 font-normal"
                   maxLength={80}
                 />
               </label>
@@ -427,7 +427,7 @@ export function LiveControlRoom({
                   value={destinationUrl}
                   onChange={(event) => setDestinationUrl(event.target.value)}
                   placeholder="rtmps://..."
-                  className="rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 font-normal"
+                  className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 font-normal"
                   required
                 />
               </label>
@@ -437,7 +437,7 @@ export function LiveControlRoom({
                   type="password"
                   value={streamKey}
                   onChange={(event) => setStreamKey(event.target.value)}
-                  className="rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 font-normal"
+                  className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 font-normal"
                   required
                 />
               </label>
@@ -445,7 +445,7 @@ export function LiveControlRoom({
             <button
               type="submit"
               disabled={!muxConfigured || !selectedStream || busy === "simulcast"}
-              className="mt-4 rounded-full bg-[var(--color-accent)] px-5 py-2.5 text-sm font-black text-[var(--color-paper)] disabled:cursor-not-allowed disabled:opacity-50"
+              className="mt-4 rounded-full bg-[var(--color-accent)] px-5 py-2.5 text-sm font-black text-[var(--color-cream)] disabled:cursor-not-allowed disabled:opacity-50"
             >
               {busy === "simulcast" ? "Adding..." : "Add destination"}
             </button>
@@ -459,7 +459,7 @@ export function LiveControlRoom({
               <textarea
                 readOnly
                 value={socialShare.copy}
-                className="mt-3 min-h-32 w-full rounded-lg border border-[var(--color-line)] bg-white p-3 text-sm"
+                className="mt-3 min-h-32 w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-3 text-sm"
               />
               <div className="mt-3 flex flex-wrap gap-2">
                 <button
@@ -473,7 +473,7 @@ export function LiveControlRoom({
                   href={socialShare.xUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="rounded-full bg-black px-3 py-1.5 text-xs font-black text-white"
+                  className="rounded-full border border-[var(--color-line-soft)] bg-black px-3 py-1.5 text-xs font-black text-[var(--color-cream)]"
                 >
                   Post to X
                 </a>
@@ -481,7 +481,7 @@ export function LiveControlRoom({
                   href={socialShare.facebookUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="rounded-full bg-blue-700 px-3 py-1.5 text-xs font-black text-white"
+                  className="rounded-full bg-[var(--color-brand-facebook)] px-3 py-1.5 text-xs font-black text-[var(--color-cream)]"
                 >
                   Share to Facebook
                 </a>
@@ -492,7 +492,7 @@ export function LiveControlRoom({
       </section>
 
       {message ? (
-        <p className="rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-3 text-sm font-semibold text-[var(--color-ink-soft)]">
+        <p className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-3 text-sm font-semibold text-[var(--color-ink-soft)]">
           {message}
         </p>
       ) : null}
@@ -512,17 +512,17 @@ function CredentialRow({
   onCopy: (value: string) => void;
 }) {
   return (
-    <div className="grid gap-2 rounded-lg bg-white p-3 sm:grid-cols-[120px_minmax(0,1fr)_auto] sm:items-center">
-      <span className="text-xs font-black uppercase tracking-wider text-red-700">
+    <div className="grid gap-2 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-3 sm:grid-cols-[120px_minmax(0,1fr)_auto] sm:items-center">
+      <span className="text-xs font-black uppercase tracking-wider text-[var(--color-accent)]">
         {label}
       </span>
-      <code className="min-w-0 overflow-x-auto whitespace-nowrap rounded bg-red-950/5 px-2 py-1 text-xs">
+      <code className="min-w-0 overflow-x-auto whitespace-nowrap rounded bg-[var(--color-surface-2)] px-2 py-1 text-xs">
         {secret ? "************************" : value}
       </code>
       <button
         type="button"
         onClick={() => onCopy(value)}
-        className="rounded-full border border-red-200 px-3 py-1.5 text-xs font-black text-red-800"
+        className="rounded-full border border-[var(--color-accent)] px-3 py-1.5 text-xs font-black text-[var(--color-accent)]"
       >
         Copy
       </button>
@@ -537,7 +537,7 @@ function StatusBadge({ status }: { status: LiveStream["status"] }) {
       className={[
         "rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-wider",
         live
-          ? "bg-red-700 text-white"
+          ? "bg-[var(--color-accent)] text-[var(--color-cream)]"
           : "bg-[var(--color-accent-soft)] text-[var(--color-accent)]",
       ].join(" ")}
     >

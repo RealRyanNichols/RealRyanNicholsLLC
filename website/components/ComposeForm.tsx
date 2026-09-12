@@ -161,7 +161,7 @@ function Field({
 function ErrorBanner({ state }: { state: State }) {
   if (state.kind !== "error") return null;
   return (
-    <p className="mt-3 rounded-md bg-red-50 border border-red-200 px-3 py-2 text-sm text-red-700">
+    <p className="mt-3 rounded-md bg-[var(--color-accent-soft)] border border-[var(--color-accent)] px-3 py-2 text-sm text-[var(--color-accent)]">
       {state.message}
     </p>
   );
@@ -467,7 +467,7 @@ function PhotoForm() {
               <button
                 type="button"
                 onClick={() => setMedia((prev) => prev.filter((_, j) => j !== i))}
-                className="absolute top-1 right-1 rounded-full bg-black/70 text-white w-6 h-6 text-xs"
+                className="absolute top-1 right-1 rounded-full bg-black/70 text-[var(--color-cream)] w-6 h-6 text-xs"
                 aria-label="Remove"
               >
                 ×
@@ -787,7 +787,7 @@ function VideoForm({ videoConfig }: { videoConfig: VideoConfigStatus }) {
         </div>
       </div>
       {!videoConfig.muxConfigured ? (
-        <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+        <div className="mb-4 rounded-lg border border-[var(--color-tag-procedural)] bg-[var(--color-support-soft)] px-4 py-3 text-sm text-[var(--color-ink)]">
           <p className="font-bold">Large video upload is waiting on Mux credentials.</p>
           <p className="mt-1">
             Add these Vercel production env vars, then redeploy:{" "}
@@ -798,7 +798,7 @@ function VideoForm({ videoConfig }: { videoConfig: VideoConfigStatus }) {
           </p>
         </div>
       ) : !videoConfig.readyForProcessingUpdates ? (
-        <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+        <div className="mb-4 rounded-lg border border-[var(--color-tag-procedural)] bg-[var(--color-support-soft)] px-4 py-3 text-sm text-[var(--color-ink)]">
           <p className="font-bold">Uploads can start, but processing updates are incomplete.</p>
           <p className="mt-1">
             Add <code>{videoConfig.missing.join(", ")}</code> so Mux can flip uploaded videos
@@ -814,9 +814,9 @@ function VideoForm({ videoConfig }: { videoConfig: VideoConfigStatus }) {
           className={[
             "mb-4 rounded-lg border px-4 py-3 text-sm",
             muxHealth.kind === "ok"
-              ? "border-green-200 bg-green-50 text-green-800"
+              ? "border-[var(--color-success)] bg-[var(--color-success-soft)] text-[var(--color-success)]"
               : muxHealth.kind === "error"
-                ? "border-red-200 bg-red-50 text-red-700"
+                ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
                 : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)]",
           ].join(" ")}
         >
@@ -839,7 +839,7 @@ function VideoForm({ videoConfig }: { videoConfig: VideoConfigStatus }) {
           <button
             type="button"
             onClick={cancelUpload}
-            className="rounded-md border border-red-300 bg-red-50 px-4 py-2.5 text-sm font-bold text-red-700 hover:bg-red-100"
+            className="rounded-md border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-4 py-2.5 text-sm font-bold text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-cream)]"
           >
             Cancel upload
           </button>

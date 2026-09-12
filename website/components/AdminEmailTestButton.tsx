@@ -46,7 +46,7 @@ export function AdminEmailTestButton() {
         {state.kind === "sending" ? "Testing..." : "Send test email"}
       </button>
       {state.kind === "success" ? (
-        <p className="max-w-xs text-xs text-green-700">{state.message}</p>
+        <p className="max-w-xs text-xs text-[var(--color-success)]">{state.message}</p>
       ) : null}
       {state.kind === "error" ? (
         <p className="max-w-xs text-xs text-[var(--color-accent)]">
