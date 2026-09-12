@@ -202,8 +202,8 @@ function ProductCard({ p, reveal }: { p: Product; reveal?: number }) {
     <Link
       href={`/store/${p.slug}`}
       className="group flex h-full flex-col overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] transition hover:border-[var(--color-accent)]"
-      data-reveal={reveal === undefined ? undefined : ""}
-      style={{ "--d": reveal ?? 0 } as React.CSSProperties}
+      data-reveal={reveal === undefined ? undefined : true}
+      style={reveal === undefined ? undefined : ({ "--d": reveal } as React.CSSProperties)}
     >
       <div className="relative h-40 w-full overflow-hidden bg-[var(--color-surface-2)]">
         {/* eslint-disable-next-line @next/next/no-img-element */}

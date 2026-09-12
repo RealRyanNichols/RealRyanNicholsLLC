@@ -116,9 +116,7 @@ export default async function AccountabilityIndexPage() {
 
   return (
     <article className="mx-auto max-w-5xl px-4 py-8 sm:py-10">
-      <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
-        The case · accountability
-      </p>
+      <p className="eyebrow">The case · accountability</p>
       <h1 className="mt-2 text-3xl sm:text-5xl font-bold tracking-tight leading-[1.05] font-display">
         The Accountability Index
       </h1>
@@ -153,7 +151,7 @@ export default async function AccountabilityIndexPage() {
           if (people.length === 0) return null;
           return (
             <section key={sg.key}>
-              <div className="border-l-4 border-[var(--color-accent)] pl-4">
+              <div data-reveal className="border-l-4 border-[var(--color-gold)] pl-4">
                 <h2 className="text-xl sm:text-2xl font-bold tracking-tight font-display">
                   {sg.title}
                   <span className="ml-2 text-sm font-mono text-[var(--color-muted)]">
@@ -171,9 +169,9 @@ export default async function AccountabilityIndexPage() {
                   <li key={o.slug}>
                     <Link
                       href={`/case/people/${o.slug}`}
-                      className="block rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-3.5 hover:border-[var(--color-accent)] transition group"
+                      className="block rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-3.5 hover:border-[var(--color-gold)] transition group"
                     >
-                      <p className="font-bold tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">
+                      <p className="font-display font-bold tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-gold)]">
                         {o.name}
                       </p>
                       {o.role ? (
@@ -208,9 +206,9 @@ function CrossLink({ href, title, sub }: { href: string; title: string; sub: str
   return (
     <Link
       href={href}
-      className="block rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4 hover:border-[var(--color-accent)] transition group"
+      className="block rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-[0_16px_40px_rgba(0,0,0,0.3)] hover:border-[var(--color-gold)] transition group"
     >
-      <p className="text-sm font-bold tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">
+      <p className="font-display text-sm font-bold tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-gold)]">
         {title}
       </p>
       <p className="mt-1 text-xs leading-snug text-[var(--color-ink-soft)]">{sub}</p>

@@ -68,7 +68,7 @@ export function J6ProfileImage({
   }
 
   return (
-    <figure className="panel mt-5 overflow-hidden rounded-2xl">
+    <figure className="panel mt-5 overflow-hidden">
       <div className="relative">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img

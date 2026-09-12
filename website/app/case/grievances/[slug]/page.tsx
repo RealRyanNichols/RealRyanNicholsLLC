@@ -97,8 +97,8 @@ export default async function GrievancePage({
         </Link>
       </nav>
 
-      <div className="flex items-center gap-2 mb-3">
-        <span className="rounded-full bg-[var(--color-accent-soft)] text-[var(--color-accent)] px-2 py-0.5 text-xs font-bold uppercase tracking-wider">
+      <div data-reveal className="flex items-center gap-2 mb-3">
+        <span className="rounded-full border border-[var(--color-line)] bg-[var(--color-support-soft)] text-[var(--color-gold)] px-2 py-0.5 text-xs font-bold uppercase tracking-wider">
           Grievance #{g.display_order}
         </span>
         {g.category ? (
@@ -110,7 +110,7 @@ export default async function GrievancePage({
         <SeverityDots severity={g.severity} />
       </div>
 
-      <h1 className="text-3xl sm:text-4xl font-bold tracking-tight leading-[1.1]">
+      <h1 data-reveal className="font-display text-3xl sm:text-4xl font-bold tracking-tight leading-[1.1]">
         {g.title}
       </h1>
 
@@ -122,13 +122,13 @@ export default async function GrievancePage({
 
       <div className="mt-6 flex items-center gap-4 text-sm flex-wrap">
         <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-3">
-          <div className="text-2xl font-bold">{g.count}</div>
+          <div className="display text-2xl tabular-nums text-[var(--color-gold)]">{g.count}</div>
           <div className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-semibold">
             filings
           </div>
         </div>
         <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-3">
-          <div className="text-2xl font-bold">{g.severity}/5</div>
+          <div className="display text-2xl tabular-nums text-[var(--color-gold)]">{g.severity}/5</div>
           <div className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-semibold">
             severity
           </div>
@@ -154,11 +154,9 @@ export default async function GrievancePage({
 
       {namedPeople.length > 0 ? (
         <section className="mt-12 border-t border-[var(--color-line)] pt-8">
-          <div className="border-l-2 border-[var(--color-accent)] pl-4 mb-5">
-            <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent)] font-bold">
-              Officials named in the evidence
-            </p>
-            <h2 className="text-lg sm:text-xl font-bold tracking-tight">
+          <div className="border-l-2 border-[var(--color-gold)] pl-4 mb-5">
+            <p className="eyebrow">Officials named in the evidence</p>
+            <h2 className="font-display text-lg sm:text-xl font-bold tracking-tight">
               {namedPeople.length} {namedPeople.length === 1 ? "person" : "people"} named
             </h2>
             <p className="text-sm text-[var(--color-ink-soft)] mt-1 max-w-2xl leading-relaxed">
@@ -170,11 +168,9 @@ export default async function GrievancePage({
       ) : null}
 
       <section className="mt-12 border-t border-[var(--color-line)] pt-8">
-        <div className="border-l-2 border-[var(--color-accent)] pl-4 mb-5">
-          <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent)] font-bold">
-            Evidence on file
-          </p>
-          <h2 className="text-lg sm:text-xl font-bold tracking-tight">
+        <div className="border-l-2 border-[var(--color-gold)] pl-4 mb-5">
+          <p className="eyebrow">Evidence on file</p>
+          <h2 className="font-display text-lg sm:text-xl font-bold tracking-tight">
             {evidence.length === 0
               ? "No scans linked yet"
               : `${evidence.length} ${evidence.length === 1 ? "document" : "documents"} on file`}
@@ -187,9 +183,7 @@ export default async function GrievancePage({
       </section>
 
       <section className="mt-12 border-t border-[var(--color-line)] pt-8">
-        <h2 className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">
-          Discussion
-        </h2>
+        <h2 className="eyebrow">Discussion</h2>
         <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
           Comments here become part of the public record. Moderated.
         </p>
@@ -203,7 +197,7 @@ export default async function GrievancePage({
 
       <div className="mt-10 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-ink-soft)]">
         Help keep this case visible.{" "}
-        <Link href="/support" className="text-[var(--color-accent)] underline font-semibold">
+        <Link href="/support" className="text-[var(--color-gold)] underline font-semibold">
           Support Ryan&apos;s rebuild
         </Link>
         .

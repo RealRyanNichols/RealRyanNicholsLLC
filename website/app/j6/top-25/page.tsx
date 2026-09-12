@@ -149,7 +149,7 @@ export default async function J6Top25Page() {
       </nav>
 
       <header
-        className="panel overflow-hidden rounded-3xl px-6 py-8 text-[var(--color-ink)] sm:px-10 sm:py-12"
+        className="panel overflow-hidden px-6 py-8 text-[var(--color-ink)] sm:px-10 sm:py-12"
         data-reveal
       >
         <p className="eyebrow">Community ranking · live vote</p>

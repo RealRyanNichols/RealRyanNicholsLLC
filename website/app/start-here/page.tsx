@@ -139,7 +139,7 @@ export default function StartHerePage() {
             <Link
               key={c.href}
               href={c.href}
-              className="panel group p-5 transition hover:border-[var(--color-gold)]"
+              className="group rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.4)] transition hover:border-[var(--color-gold)]"
             >
               <p className="eyebrow">
                 {c.kicker}

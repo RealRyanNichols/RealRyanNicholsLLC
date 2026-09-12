@@ -31,14 +31,14 @@ export default async function ClaimPage({
   if (p.claim_status === "verified") {
     return (
       <article className="mx-auto max-w-md px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold">Already claimed</h1>
+        <h1 className="font-display text-2xl font-bold">Already claimed</h1>
         <p className="mt-3 text-[var(--color-ink-soft)]">
           This profile has been verified to its owner. If you believe the
           verification was wrong, send a tip explaining why.
         </p>
         <Link
           href="/submit"
-          className="mt-5 inline-block text-[var(--color-accent)] font-semibold hover:underline"
+          className="mt-5 inline-block text-[var(--color-gold)] font-semibold hover:underline"
         >
           Send a tip →
         </Link>
@@ -68,9 +68,7 @@ export default async function ClaimPage({
         </Link>
       </nav>
 
-      <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
-        Anti-Weaponization Case Builder · Claim
-      </p>
+      <p className="eyebrow">Anti-Weaponization Case Builder · Claim</p>
       <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight font-display">
         Claim {p.name}&apos;s profile
       </h1>
@@ -118,7 +116,7 @@ function ExistingClaim({
       : "Your claim is pending review.";
   return (
     <div className={`mt-8 rounded-2xl border-2 ${tone} p-6`}>
-      <h2 className="text-xl font-bold tracking-tight">{headline}</h2>
+      <h2 className="font-display text-xl font-bold tracking-tight">{headline}</h2>
       {status === "pending" ? (
         <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
           Ryan reviews claims personally. You&apos;ll get an email at the
@@ -133,15 +131,13 @@ function ExistingClaim({
       {status === "approved" ? (
         <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
           The profile is yours. Build it out:{" "}
-          <Link href="/account" className="text-[var(--color-accent)] font-semibold hover:underline">
+          <Link href="/account" className="text-[var(--color-gold)] font-semibold hover:underline">
             Go to your account →
           </Link>
         </p>
       ) : null}
       <div className="mt-4 border-t border-[var(--color-line)] pt-3 text-sm">
-        <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">
-          What you submitted
-        </p>
+        <p className="eyebrow">What you submitted</p>
         <p className="mt-1.5 whitespace-pre-wrap text-[var(--color-ink-soft)]">
           {proof}
         </p>

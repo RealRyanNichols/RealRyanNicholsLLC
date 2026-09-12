@@ -653,7 +653,7 @@ function OfferSalesPage({
 
       <section className="mx-auto max-w-6xl px-4 pb-8 sm:px-6">
         <div className="overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)]">
-          <div className="border-b border-[var(--color-line)] bg-[var(--color-navy)] p-5 text-[var(--color-cream)] sm:p-6">
+          <div className="border-b border-[var(--color-line)] bg-[var(--color-surface-2)] p-5 text-[var(--color-cream)] sm:p-6">
             <p className="eyebrow">
               Before / after
             </p>

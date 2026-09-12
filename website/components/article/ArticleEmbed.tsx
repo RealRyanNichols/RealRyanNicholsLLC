@@ -37,7 +37,7 @@ function embedUrl(platform: Platform, url: string): string | null {
     if (platform === "x") {
       const id = u.pathname.match(/\/status\/(\d+)/)?.[1];
       return id
-        ? `https://platform.twitter.com/embed/Tweet.html?id=${id}&theme=light&dnt=true`
+        ? `https://platform.twitter.com/embed/Tweet.html?id=${id}&theme=dark&dnt=true`
         : null;
     }
     if (platform === "facebook") {
@@ -86,7 +86,7 @@ export function ArticleEmbed({ value }: { value: Record<string, unknown> }) {
             sandbox="allow-scripts allow-same-origin allow-popups"
             referrerPolicy="no-referrer"
             loading="lazy"
-            className="h-[480px] w-full rounded-md border-0 bg-white"
+            className={`h-[480px] w-full rounded-md border-0 ${platform === "x" ? "bg-[var(--color-surface)]" : "bg-white"}`}
           />
         </div>
       ) : (

@@ -99,10 +99,10 @@ export function FindYourCase({
   const target = embed ? "_blank" : undefined;
 
   return (
-    <div className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-5">
+    <div className="panel p-4 sm:p-5">
       <label
         htmlFor="fyc-q"
-        className="block text-[11px] font-black uppercase tracking-[0.18em] text-[var(--color-ink)]"
+        className="eyebrow block"
       >
         Find your case —{" "}
         {defendants > 0 ? `${defendants.toLocaleString("en-US")} ` : ""}J6
@@ -115,7 +115,7 @@ export function FindYourCase({
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Name, case number, or role… (e.g. Nichols, 1:21-cr-00117)"
-          className="min-w-0 flex-1 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-4 py-3 text-base text-[var(--color-ink)] outline-none transition focus:border-[var(--color-gold)]"
+          className="min-w-0 flex-1 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-4 py-3 text-base text-[var(--color-ink)] outline-none transition focus:border-[var(--color-gold)]"
           autoComplete="off"
         />
       </div>
@@ -127,7 +127,7 @@ export function FindYourCase({
       ) : null}
 
       {!busy && touched && q.trim().length >= 2 && results.length === 0 ? (
-        <div className="mt-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-4 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+        <div className="mt-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] p-4 text-sm leading-relaxed text-[var(--color-ink-soft)]">
           No match on that spelling. Try last name only — and if you or your
           family member still isn&apos;t here,{" "}
           <a
@@ -147,7 +147,7 @@ export function FindYourCase({
           {results.map((r) => (
             <li
               key={r.slug}
-              className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-3.5"
+              className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface-2)] p-3.5"
             >
               <div className="flex gap-3">
                 <a
@@ -176,7 +176,7 @@ export function FindYourCase({
                         ? "bg-[var(--color-success)] text-[var(--color-navy)]"
                         : r.image_kind === "editorial-portrait"
                           ? "bg-[var(--color-tag-procedural)] text-[var(--color-navy)]"
-                          : "bg-[var(--color-surface)]/95 text-[var(--color-gold-bright)]",
+                          : "bg-[var(--color-navy)]/95 text-[var(--color-gold)]",
                     ].join(" ")}
                   >
                     {r.image_label}

@@ -92,8 +92,8 @@ export default async function DocumentPage({
         </Link>
       </nav>
 
-      <div className="flex items-center gap-2 mb-3 flex-wrap">
-        <span className="rounded-full bg-[var(--color-accent-soft)] text-[var(--color-accent)] px-2 py-0.5 text-xs font-bold uppercase tracking-wider">
+      <div data-reveal className="flex items-center gap-2 mb-3 flex-wrap">
+        <span className="rounded-full border border-[var(--color-line)] bg-[var(--color-support-soft)] text-[var(--color-gold)] px-2 py-0.5 text-xs font-bold uppercase tracking-wider">
           {d.doc_type}
         </span>
         <EvidenceBadge kind={d.doc_type} />
@@ -104,7 +104,7 @@ export default async function DocumentPage({
         ) : null}
       </div>
 
-      <h1 className="text-3xl sm:text-4xl font-bold tracking-tight leading-[1.1]">
+      <h1 data-reveal className="font-display text-3xl sm:text-4xl font-bold tracking-tight leading-[1.1]">
         {d.title}
       </h1>
 
@@ -179,7 +179,7 @@ export default async function DocumentPage({
                   href={d.external_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center rounded-lg bg-[var(--color-gold)] px-5 py-2.5 text-sm font-bold text-[var(--color-navy)]"
+                  className="btn-accent inline-flex items-center px-5 py-2.5 text-sm"
                 >
                   Open the PDF →
                 </a>
@@ -204,7 +204,7 @@ export default async function DocumentPage({
                   href={d.file_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-11 items-center font-semibold text-[var(--color-accent)] underline sm:min-h-0"
+                  className="inline-flex min-h-11 items-center font-semibold text-[var(--color-gold)] underline sm:min-h-0"
                 >
                   Open the full-size file →
                 </a>

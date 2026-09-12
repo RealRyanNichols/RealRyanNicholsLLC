@@ -110,7 +110,7 @@ export default function FightsPage() {
           <Link
             key={f.slug}
             href={`/fights/${f.slug}`}
-            className="panel group flex flex-col p-5 sm:p-6 transition hover:border-[var(--color-gold)]"
+            className="group flex flex-col rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.4)] transition hover:border-[var(--color-gold)] sm:p-6"
             data-reveal
           >
             <div className="flex items-center justify-between gap-2">

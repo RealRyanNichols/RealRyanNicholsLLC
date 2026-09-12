@@ -352,7 +352,7 @@ export default async function FuelPage({
                 </tbody>
               </table>
             </div>
-            <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+            <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 text-sm leading-relaxed text-[var(--color-ink-soft)]">
               <p className="text-[11px] font-black uppercase tracking-wider text-[var(--color-muted)]">How the real number gets made</p>
               <p className="mt-1">
                 Machine time above is the gift against my average day, {usdWhole(MEASURED_DAY_CENTS.average)} of tokens over{" "}

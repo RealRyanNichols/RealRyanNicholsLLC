@@ -52,6 +52,7 @@ literals; they render outside the DOM.
 | `--color-success` | `#6fd39a` | resolved, healthy, paid |
 | `--color-success-soft` | green at 16% | green tint |
 | `--color-tag-severe` / `-procedural` / `-institutional` / `-resolved` | red / amber / blue-ink / green | tag text and borders |
+| `--color-violet`, `--color-clay` (tokens.css, mirrored in `lib/palette.ts`) | `#c084fc`, `#e08658` | chart and graph series with no near match in the palette (AI agents, unclaimed people); never for type |
 
 Fonts: `--font-display` (Source Serif 4) for headings and prose,
 `--font-sans` (Inter) for UI and kickers, and `--font-condensed` (Big
@@ -77,6 +78,9 @@ titles, and big numerals. Tailwind utilities: `font-display`, `font-sans`,
   in; add `data-count="1234"` to a number that should count up (server-render
   the final formatted value inside it).
 - `.prose-body` keeps its rules; its colors come from the tokens above.
+- `.home-hero-shade`: the photo shade on the home title card, navy falling
+  off toward the copy (up from the bottom on phones, in from the right on
+  wider screens) so the type never crosses the face.
 
 ## Migration rules for a component or page
 
