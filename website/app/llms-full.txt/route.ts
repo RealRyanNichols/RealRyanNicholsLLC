@@ -12,6 +12,14 @@ export async function GET() {
     getPublishedPosts().catch(() => [] as Awaited<ReturnType<typeof getPublishedPosts>>),
   ]);
 
+  // The day count comes from lib/case.ts like every other count on the
+  // site, and it is arrest to pardon, not a custody total: no facility
+  // record on file sums to one yet. Without totals the lines drop the
+  // number rather than guess.
+  const days = totals?.daysArrestToPardon
+    ? `${totals.daysArrestToPardon.toLocaleString("en-US")} days from arrest to pardon`
+    : "the time from arrest to pardon";
+
   const latest = posts.slice(0, 20);
   const postLines = latest
     .map((p) => {
@@ -30,7 +38,7 @@ export async function GET() {
 Structure of ${SITE.url}/case:
 
 - Case brief: ${SITE.url}/case/brief — the case in plain language
-- Damages: ${SITE.url}/case/damages — what 1,463 days of detention cost
+- Damages: ${SITE.url}/case/damages — what ${days} cost
 - Witnesses: ${SITE.url}/case/witnesses — corroborating witnesses on record
 - Timeline: ${SITE.url}/case?view=timeline — every event, dated and sourced
 - Documents: ${SITE.url}/case?view=documents — ${totals?.documents?.toLocaleString("en-US") ?? "the"} public documents (court filings, government records, grievance forms, exhibits; each carries a classification label: FACT / RYAN STATEMENT / NEEDS AUTHENTICATION)
@@ -44,7 +52,7 @@ Structure of ${SITE.url}/case:
 
 Anchor facts (verified): pardoned January 20, 2025; dismissed with
 prejudice; sentence was 63 months plus a $200,000 fine — the largest
-fine imposed in any January 6 case; detained 1,463 days; case number
+fine imposed in any January 6 case; ${days}; case number
 1:21-cr-00117.
 
 ## Latest 20 posts
