@@ -428,7 +428,7 @@ export default async function FuelPage({
                   <tbody className="divide-y divide-[var(--color-line)]">
                     {mathRows.map((r) => (
                       <tr key={r.slug}>
-                        <td className="px-4 py-2.5 font-display text-lg font-black tabular-nums text-[var(--color-ink)]">
+                        <td className="whitespace-nowrap px-4 py-2.5 font-display text-lg font-black tabular-nums text-[var(--color-ink)]">
                           {usdWhole(r.amountCents)}
                           {r.slug === FUEL_MONTHLY.slug ? <span className="text-xs font-bold text-[var(--color-muted)]">/mo</span> : null}
                         </td>

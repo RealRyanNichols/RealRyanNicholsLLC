@@ -127,6 +127,31 @@
 .ft-rail a.is-active::before {
   box-shadow: 0 0 0 4px rgba(225, 189, 91, 0.18), 0 0 16px rgba(225, 189, 91, 0.7);
 }
+/* Over the paper sections (the deal, the form) the rail sits on cream, so it
+   switches to the site's ink and navy instead of vanishing. */
+.ft-rail.is-paper a {
+  color: var(--color-muted);
+}
+.ft-rail.is-paper a::before {
+  border-color: var(--color-muted);
+}
+.ft-rail.is-paper a span {
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+.ft-rail.is-paper a.is-active {
+  color: var(--color-accent);
+}
+.ft-rail.is-paper a.is-active::before,
+.ft-rail.is-paper a.is-done::before {
+  background: var(--color-navy);
+  border-color: var(--color-navy);
+}
+.ft-rail.is-paper a.is-active::before {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 18%, transparent);
+}
 
 /* Film grain: a fixed, viewport-sized sheet of turbulence that steps around
    six times a second. Cheap (one composited layer); off screen it fades. */
