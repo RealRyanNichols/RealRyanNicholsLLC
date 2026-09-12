@@ -68,7 +68,7 @@ export default function AboutPage() {
           The J6 Case →
         </Link>
         <Link
-          href="/jan-6"
+          href="/j6"
           className="rounded-full border-2 border-[var(--color-line)] bg-[var(--color-surface)] px-5 py-2.5 text-sm font-bold text-[var(--color-ink)] hover:border-[var(--color-accent)]"
         >
           My Jan 6 story
@@ -475,7 +475,7 @@ export default function AboutPage() {
             into this one.
           </li>
           <li>
-            <Link href="/jan-6" className="text-[var(--color-accent)] underline font-bold">
+            <Link href="/j6" className="text-[var(--color-accent)] underline font-bold">
               My Jan 6 story →
             </Link>{" "}
             — what happened, what I learned, where I am now.

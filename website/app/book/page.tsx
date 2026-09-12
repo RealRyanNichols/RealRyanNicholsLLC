@@ -54,7 +54,7 @@ const archiveLinks = [
   { href: "/case", label: "The case file", desc: "Timeline, people, and documents." },
   { href: "/the-map-room", label: "The Map Room", desc: "The public record, mapped." },
   {
-    href: "/evidence-the-doj-tried-to-erase",
+    href: "/case/the-salvaged-doj-record",
     label: "The evidence",
     desc: "Footage and records, in the open.",
   },

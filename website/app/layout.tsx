@@ -104,15 +104,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang="en">
-      <body className="min-h-screen flex flex-col">
+      <body className="min-h-screen flex flex-col pb-[calc(5rem+env(safe-area-inset-bottom))] lg:pb-0">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
         <Header />
-        <main className="flex-1 w-full pb-[calc(5rem+env(safe-area-inset-bottom))] lg:pb-0">
-          {children}
-        </main>
+        {/* The room the fixed phone support bar (MobileSupportBar) needs
+            is reserved once, here on the body, under the footer: the bar
+            is 65px tall and sits inside these 80px. It used to be padding
+            on <main>, which is above the footer, so the footer's last row
+            ran 1px under the bar and its copyright line sat behind it. */}
+        <main className="flex-1 w-full">{children}</main>
         <Footer />
         <MobileSupportBar />
         <PathPicker variant="overlay" />

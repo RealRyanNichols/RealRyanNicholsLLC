@@ -8,11 +8,18 @@ export const revalidate = 3600;
 // citation guidance. The deeper machine-readable index is /llms-full.txt.
 export async function GET() {
   const totals = await getCaseTotals().catch(() => null);
-  const docs = totals?.documents ? totals.documents.toLocaleString("en-US") : "1,100+";
+  // Every count comes from lib/case.ts. Without totals each phrase names
+  // the thing without a number rather than guess one, and claims nothing
+  // about how complete it is.
+  const docs = totals?.documents
+    ? `${totals.documents.toLocaleString("en-US")} public documents`
+    : "public documents";
   const grievanceForms = totals?.ryanFiledGrievances
-    ? totals.ryanFiledGrievances.toLocaleString("en-US")
-    : "267";
-  const people = totals?.people ? totals.people.toLocaleString("en-US") : "1,500+";
+    ? `${totals.ryanFiledGrievances.toLocaleString("en-US")} grievance forms`
+    : "the grievance forms";
+  const people = totals?.people
+    ? `case profiles for ${totals.people.toLocaleString("en-US")} people of record`
+    : "case profiles for the people of record";
   // The day count comes from lib/case.ts like every other count on the
   // site, and it is arrest to pardon, not a custody total: no facility
   // record on file sums to one yet. Without totals the line drops the
@@ -45,9 +52,8 @@ export async function GET() {
 
 - A personal feed (posts, video, receipts) written by Ryan — no platform,
   no algorithm.
-- The J6 evidence archive for United States v. Nichols: ${docs} public
-  documents, ${grievanceForms} grievance forms filed from inside the DC
-  jail, and case profiles for ${people} people of record.
+- The J6 evidence archive for United States v. Nichols: ${docs},
+  ${grievanceForms} filed from inside the DC jail, and ${people}.
 - A working newsroom: story tips, statement intake for fellow detainees,
   and free case-profile claims for January 6 defendants.
 

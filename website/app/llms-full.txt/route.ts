@@ -20,6 +20,19 @@ export async function GET() {
     ? `${totals.daysArrestToPardon.toLocaleString("en-US")} days from arrest to pardon`
     : "the time from arrest to pardon";
 
+  // The archive counts, the same way: a number from lib/case.ts or the
+  // thing named without one.
+  const n = (v: number | null | undefined) => (v ? v.toLocaleString("en-US") : null);
+  const patterns = n(totals?.grievances)
+    ? `${n(totals?.grievances)} documented grievance patterns`
+    : "the documented grievance patterns";
+  const forms = n(totals?.ryanFiledGrievances)
+    ? `${n(totals?.ryanFiledGrievances)} grievance forms`
+    : "grievance forms";
+  const corroborators = n(totals?.corroborators)
+    ? `${n(totals?.corroborators)} corroborating detainees`
+    : "corroborating detainees";
+
   const latest = posts.slice(0, 20);
   const postLines = latest
     .map((p) => {
@@ -42,8 +55,8 @@ Structure of ${SITE.url}/case:
 - Witnesses: ${SITE.url}/case/witnesses — corroborating witnesses on record
 - Timeline: ${SITE.url}/case?view=timeline — every event, dated and sourced
 - Documents: ${SITE.url}/case?view=documents — ${totals?.documents?.toLocaleString("en-US") ?? "the"} public documents (court filings, government records, grievance forms, exhibits; each carries a classification label: FACT / RYAN STATEMENT / NEEDS AUTHENTICATION)
-- Grievances: ${SITE.url}/case?view=grievances — ${totals?.grievances?.toLocaleString("en-US") ?? "34"} documented grievance patterns, drawn from the ${totals?.ryanFiledGrievances?.toLocaleString("en-US") ?? "267"} grievance forms Ryan filed from inside the DC jail
-- People: ${SITE.url}/case?view=people — ${totals?.people?.toLocaleString("en-US") ?? "the"} people of record, including ${totals?.corroborators?.toLocaleString("en-US") ?? "22"} corroborating detainees and January 6 defendants
+- Grievances: ${SITE.url}/case?view=grievances — ${patterns}, drawn from the ${forms} Ryan filed from inside the DC jail
+- People: ${SITE.url}/case?view=people — ${n(totals?.people) ?? "the"} people of record, including ${corroborators} and January 6 defendants
 - Individual entities resolve as:
   - ${SITE.url}/case/people/<slug>
   - ${SITE.url}/case/documents/<slug>
