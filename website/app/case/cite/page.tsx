@@ -60,8 +60,10 @@ export default function CitePage() {
         </p>
         <p className="mt-2 break-words font-mono text-xs leading-relaxed text-[var(--color-ink)] sm:text-sm">
           Nichols, Ryan. <em>The J6 Case Archive: United States v. Nichols</em>,
-          No. 1:21-cr-00117 (D.D.C.). RealRyanNichols.com.
-          https://www.realryannichols.com/case
+          No. 1:21-cr-00117 (D.D.C.). RealRyanNichols.com.{" "}
+          {/* The canonical host from lib/site.ts (the apex; www redirects
+              to it), so a citation copied from here resolves in one hop. */}
+          {SITE.url}/case
         </p>
         <p className="mt-3 text-xs leading-relaxed text-[var(--color-muted)]">
           Cite individual documents by their own URL — every scan, filing, and
