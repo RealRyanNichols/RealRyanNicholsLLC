@@ -272,18 +272,29 @@ type CaseHits = {
 // where the full list lives with its own paging.
 const CASE_SAMPLE = 3;
 
-// A snippet is a pointer, not the record: the full text lives on the hit's
-// own page. About SNIPPET characters, taken around the first occurrence of
-// the query when the field has one (so the mark is in the sample), else
-// from the field's opening. Clipped before it is marked so a dozen hits
-// stay a few KB.
+// A sample line is a pointer, not the record: the full text lives on the
+// hit's own page. About SNIPPET characters. The line is the first of the
+// hit's searched fields the query landed in, shown around the match, so a
+// hit that matched by its location or its source shows that field with
+// the mark in it; only a hit whose title carried the match falls back to
+// the opening of its lead field. Clipped before it is marked so a dozen
+// hits stay a few KB.
 const SNIPPET = 120;
-function snippet(text: string | null | undefined, q: string): string | null {
-  const around = excerptAround(text, q, Math.floor(SNIPPET / 2));
-  if (around) return around;
+function clip(text: string | null | undefined): string | null {
   if (!text) return null;
   const t = text.trim();
   return t.length <= SNIPPET ? t : `${t.slice(0, SNIPPET).replace(/\s+\S*$/, "")}…`;
+}
+function sampleLine(
+  q: string,
+  fields: (string | null | undefined)[],
+  lead: string | null | undefined,
+): string | null {
+  for (const field of fields) {
+    const around = excerptAround(field, q, Math.floor(SNIPPET / 2));
+    if (around) return around;
+  }
+  return clip(lead);
 }
 
 // The second scope: what the query found in the case record, a sample per
@@ -304,7 +315,7 @@ function CaseFilesHits({ hits, q }: { hits: CaseHits; q: string }) {
         slug: g.slug,
         href: `/case/grievances/${g.slug}`,
         title: g.title,
-        sub: snippet(g.summary, q) ?? snippet(g.body, q),
+        sub: sampleLine(q, [g.summary, g.body, g.category], g.summary ?? g.body),
       })),
     },
     {
@@ -316,7 +327,7 @@ function CaseFilesHits({ hits, q }: { hits: CaseHits; q: string }) {
         slug: e.slug,
         href: `/case/events/${e.slug}`,
         title: e.title,
-        sub: snippet(e.description, q),
+        sub: sampleLine(q, [e.description, e.location], e.description),
       })),
     },
     {
@@ -340,7 +351,11 @@ function CaseFilesHits({ hits, q }: { hits: CaseHits; q: string }) {
         slug: d.slug,
         href: `/case/documents/${d.slug}`,
         title: d.title,
-        sub: snippet(d.description, q) ?? ([d.doc_type, d.source].filter(Boolean).join(" · ") || null),
+        sub: sampleLine(
+          q,
+          [d.description, d.source, d.doc_type],
+          d.description ?? ([d.doc_type, d.source].filter(Boolean).join(" · ") || null),
+        ),
       })),
     },
   ];
