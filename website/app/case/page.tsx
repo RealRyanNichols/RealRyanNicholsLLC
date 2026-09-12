@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import {
   getGrievances,
-  getPeople,
   getPersonBySlug,
   getEvents,
   getDocuments,
@@ -212,43 +211,49 @@ export default async function CasePage({
   }
 
   // `tab === "people"` never reaches here (shouldRenderJ6Directory returns
-  // above); the getPeople() branch is for a search query, which needs every
-  // person to count hits. The trailing getJ6DefendantCount() warms the
-  // per-request cache the path split reads from.
-  const [grievances, people, events, documents, totals, siteSettings] = await Promise.all([
-    getGrievances(),
-    q ? getPeople() : getPersonBySlug("ryan-nichols").then((p) => (p ? [p] : [])),
-    getEvents(),
-    getDocuments(),
-    getCaseTotals(),
-    getSiteSettings(),
-    getJ6DefendantCount(),
-    // J6Banner's own number. Warmed here so the banner, an async server
-    // component in the middle of the header, never suspends during SSR: a
-    // banner that suspended got its own late boundary, and hydrating that
-    // boundary was the intermittent React #418 on the archive views.
-    getJ6DefendantCount("unclaimed"),
-  ]);
-  const ryan = people.find((p) => p.slug === "ryan-nichols") ?? null;
+  // above). The People tab is the J6 directory, so the people count a
+  // search shows is the directory's own count for the query (one head-only
+  // request with the directory's predicate): the number that tab opens
+  // on, not a count over every person on the record. The trailing
+  // getJ6DefendantCount() warms the per-request cache the path split
+  // reads from.
+  const [grievances, ryan, events, documents, totals, siteSettings, peopleHits] =
+    await Promise.all([
+      getGrievances(),
+      getPersonBySlug("ryan-nichols"),
+      getEvents(),
+      getDocuments(),
+      getCaseTotals(),
+      getSiteSettings(),
+      q ? getJ6DefendantCount(undefined, q) : Promise.resolve(0),
+      getJ6DefendantCount(),
+      // J6Banner's own number. Warmed here so the banner, an async server
+      // component in the middle of the header, never suspends during SSR: a
+      // banner that suspended got its own late boundary, and hydrating that
+      // boundary was the intermittent React #418 on the archive views.
+      getJ6DefendantCount("unclaimed"),
+    ]);
   const ryanPhoto = siteSettings.avatar_url ?? null;
 
   const {
     filteredGrievances,
-    filteredPeople,
     filteredEvents,
     filteredDocuments,
-    totalHits,
+    totalHits: archiveHits,
     eventsShown,
-    peopleShown,
+    peopleShown: peopleNamed,
   } = filterArchive({
     q,
     j6Filter,
     grievances,
-    people,
+    // People are counted by the directory query above, not filtered here.
+    people: [],
     events,
     documents,
     peopleNamed: totals.people,
   });
+  const totalHits = q ? archiveHits + peopleHits : 0;
+  const peopleShown = q ? peopleHits : peopleNamed;
   const { archivePageCount, pageEvents, pageDocuments, archiveShowing } = pageArchive({
     tab,
     page,
@@ -267,7 +272,7 @@ export default async function CasePage({
   const counts = {
     grievances: filteredGrievances.length,
     timeline: filteredEvents.length,
-    people: filteredPeople.length,
+    people: peopleHits,
     documents: filteredDocuments.length,
   };
 

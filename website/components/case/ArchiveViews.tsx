@@ -262,7 +262,11 @@ export function DocumentsView({
                 {format(new Date(d.document_date), "MMM d, yyyy")}
               </p>
             ) : null}
-            <h2 className="mt-1 line-clamp-2 text-sm font-bold leading-snug tracking-tight text-[var(--color-ink)] transition group-hover:text-[var(--color-navy)]">
+            {/* Two clamped lines while browsing; while searching the whole
+                title, so a match past the second line is in view. */}
+            <h2
+              className={`mt-1 ${q ? "" : "line-clamp-2 "}text-sm font-bold leading-snug tracking-tight text-[var(--color-ink)] transition group-hover:text-[var(--color-navy)]`}
+            >
               <Highlight text={d.title} q={q} />
             </h2>
             {d.description ? (

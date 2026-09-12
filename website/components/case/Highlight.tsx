@@ -66,10 +66,15 @@ export function excerptAround(
   return `${head}${text.slice(start, end).trim()}${tail}`;
 }
 
-// Wraps every occurrence of the query in <mark>, so a search result shows
-// the word that matched it. Plain string scanning, no regex built from
-// user input. With no query the text renders untouched, so the same
-// markup serves the browse views.
+// Marks per text. The first few say why the text matched; past that a
+// mark adds markup, not meaning, and a one-letter query over a page of
+// long descriptions would otherwise ship thousands of elements.
+const MAX_MARKS = 3;
+
+// Wraps the first MAX_MARKS occurrences of the query in <mark>, so a
+// search result shows the word that matched it. Plain string scanning, no
+// regex built from user input. With no query the text renders untouched,
+// so the same markup serves the browse views.
 export function Highlight({
   text,
   q,
@@ -78,7 +83,7 @@ export function Highlight({
   q: string;
 }): ReactNode {
   if (!text) return null;
-  const found = spans(text, q);
+  const found = spans(text, q).slice(0, MAX_MARKS);
   if (found.length === 0) return text;
   const parts: ReactNode[] = [];
   let from = 0;
