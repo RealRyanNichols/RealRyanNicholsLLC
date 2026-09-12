@@ -1,3 +1,4 @@
+import { withMainPageOg } from "@/lib/page-metadata";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
@@ -11,7 +12,7 @@ const TITLE =
 const DESCRIPTION =
   "The Biden DOJ scrubbed its master listing of every January 6 defendant from justice.gov after the pardons. realryannichols.com preserves the canonical December 2023 snapshot — 1,092 defendants, 3,230 document links, every case number and case status the federal government published. Verified against the Wayback Machine.";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withMainPageOg("/case/the-salvaged-doj-record", {
   title: "The Salvaged DOJ Record",
   description: DESCRIPTION,
   alternates: { canonical: `${SITE.url}/case/the-salvaged-doj-record` },
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
     url: `${SITE.url}/case/the-salvaged-doj-record`,
   },
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
-};
+});
 
 type ArchiveRow = {
   id: string;

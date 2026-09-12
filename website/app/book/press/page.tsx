@@ -1,3 +1,4 @@
+import { withMainPageOg } from "@/lib/page-metadata";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BookEmailSignup } from "@/components/BookEmailSignup";
@@ -8,7 +9,7 @@ const title = "Press & Media — Fighting Shadows | Ryan Nichols";
 const description =
   "Press and media resources for Fighting Shadows, the memoir by Ryan Nichols. Book description, author bio, interview topics, and how to request an interview.";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withMainPageOg("/book/press", {
   title,
   description,
   alternates: { canonical: `${SITE.url}/book/press` },
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
     images: [{ url: BOOK.ogImage, width: 1200, height: 800, alt: title }],
   },
   twitter: { card: "summary_large_image", title, description, images: [BOOK.ogImage] },
-};
+});
 
 const authorBio =
   "Ryan Nichols is a former United States Marine and search-and-rescue volunteer from East Texas. He was prosecuted in connection with January 6, held for nearly four years in the federal system — including the Washington, D.C. jail — and later pardoned. He now publishes his case file, evidence, and first-person account in the open at RealRyanNichols.com.";

@@ -1,9 +1,10 @@
+import { withMainPageOg } from "@/lib/page-metadata";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { SITE } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withMainPageOg("/own-your-feed", {
   title: "Own Your Feed",
   description:
     "Get a domain-first personal feed that you control: no algorithm dependency, no social platform lock-in, and a clear path to paid support.",
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
       "Ryan Nichols builds domain-first feeds and public record sites for people who need to stop renting attention from social media.",
     images: ["/social-cards/map-room.jpg"],
   },
-};
+});
 
 const offers = [
   {

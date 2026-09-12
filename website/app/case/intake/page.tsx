@@ -1,3 +1,4 @@
+import { withMainPageOg } from "@/lib/page-metadata";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { formatDistanceToNowStrict } from "date-fns";
@@ -10,12 +11,12 @@ import {
 import { getSupabaseServiceClient, isSupabaseServiceConfigured } from "@/lib/supabase/service";
 import { SITE } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withMainPageOg("/case/intake", {
   title: "Public Intake Ledger | Real Ryan Nichols",
   description:
     "A public-safe ledger of tips and submissions received by Real Ryan Nichols LLC, with community verification and context signals.",
   alternates: { canonical: `${SITE.url}/case/intake` },
-};
+});
 
 export const dynamic = "force-dynamic";
 

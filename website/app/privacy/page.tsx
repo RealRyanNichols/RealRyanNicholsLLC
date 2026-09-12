@@ -1,11 +1,12 @@
+import { withMainPageOg } from "@/lib/page-metadata";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withMainPageOg("/privacy", {
   title: "Privacy",
   description: "Privacy policy for realryannichols.com.",
-};
+});
 
 const EFFECTIVE_DATE = "May 24, 2026";
 

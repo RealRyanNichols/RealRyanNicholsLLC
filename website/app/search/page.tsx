@@ -1,3 +1,4 @@
+import { withMainPageOg } from "@/lib/page-metadata";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { format } from "date-fns";
@@ -53,7 +54,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const q = readQuery(await searchParams);
   const title = q ? `Search: ${q}` : "Search the record";
-  return {
+  return withMainPageOg("/search", {
     title,
     description:
       "Search every article, post, and video on RealRyanNichols.com — by keyword, person, court term, or topic.",
@@ -61,7 +62,7 @@ export async function generateMetadata({
     // Internal search-result pages shouldn't be indexed (thin/duplicate); the
     // underlying articles are indexed on their own canonical URLs.
     robots: { index: false, follow: true },
-  };
+  });
 }
 
 export default async function SearchPage({

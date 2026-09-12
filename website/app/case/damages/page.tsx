@@ -1,3 +1,4 @@
+import { withMainPageOg } from "@/lib/page-metadata";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getCaseTotals } from "@/lib/case";
@@ -5,7 +6,7 @@ import { SITE } from "@/lib/site";
 
 export const revalidate = 300;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withMainPageOg("/case/damages", {
   title: "Damages",
   description:
     "Itemized damages claimed in United States v. Nichols — liberty lost, marriage and family destroyed, Wholesale Universe Inc. ended, documented medical injury, lasting mental-health impact. The harm the Anti-Weaponization Fund exists to remedy.",
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
     url: `${SITE.url}/case/damages`,
   },
   alternates: { canonical: `${SITE.url}/case/damages` },
-};
+});
 
 type DamageItem = {
   label: string;

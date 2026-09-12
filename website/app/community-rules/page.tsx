@@ -1,9 +1,10 @@
+import { withMainPageOg } from "@/lib/page-metadata";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withMainPageOg("/community-rules", {
   title: "Community rules",
   description: "How comments work on Ryan Nichols' site.",
-};
+});
 
 export default function CommunityRulesPage() {
   return (

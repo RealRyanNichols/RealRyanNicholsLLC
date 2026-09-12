@@ -1,3 +1,4 @@
+import { withMainPageOg } from "@/lib/page-metadata";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BookCtaBand } from "@/components/BookCtaBand";
@@ -9,7 +10,7 @@ const TITLE = "Support the work — fuel it or own a piece of it";
 const DESCRIPTION =
   "Fuel the machine that builds this site, or own a piece of the work: the Token Fund, Fighting Shadows, a build, or the store.";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withMainPageOg("/support", {
   title: "Support the Work",
   description: DESCRIPTION,
   alternates: { canonical: "/support" },
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
   },
-};
+});
 
 const WAYS = [
   {

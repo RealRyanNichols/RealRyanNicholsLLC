@@ -1,3 +1,4 @@
+import { withMainPageOg } from "@/lib/page-metadata";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -101,7 +102,7 @@ const POLICY = [
   },
 ];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withMainPageOg("/tell-your-story", {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: `${SITE.url}/tell-your-story` },
@@ -118,7 +119,7 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     images: [`${SITE.url}/og/site`],
   },
-};
+});
 
 export default function TellYourStoryPage() {
   return (
