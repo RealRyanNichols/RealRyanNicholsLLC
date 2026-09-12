@@ -23,6 +23,7 @@ export function ArchiveHeader({
   tab,
   q,
   totalHits,
+  counts,
 }: {
   totals: Awaited<ReturnType<typeof getCaseTotals>>;
   eventsShown: number;
@@ -32,6 +33,10 @@ export function ArchiveHeader({
   tab: Tab;
   q: string;
   totalHits: number;
+  // Hits per section for the current query, the same numbers the tab
+  // strip shows. Spelled out under the box so a phone reader sees where
+  // the matches are before the tabs.
+  counts: { grievances: number; timeline: number; people: number; documents: number };
 }) {
   const searching = q.length > 0;
   return (
@@ -49,7 +54,13 @@ export function ArchiveHeader({
       />
       {searching ? (
         <p className="mt-2 text-xs text-[var(--color-muted)]">
-          {totalHits} match{totalHits === 1 ? "" : "es"} for &quot;{q}&quot; across all 4 sections.
+          <span className="font-bold text-[var(--color-ink)]">
+            {totalHits.toLocaleString("en-US")} match{totalHits === 1 ? "" : "es"}
+          </span>{" "}
+          for &quot;{q}&quot;: {counts.grievances.toLocaleString("en-US")} grievances ·{" "}
+          {counts.timeline.toLocaleString("en-US")} events ·{" "}
+          {counts.people.toLocaleString("en-US")} people ·{" "}
+          {counts.documents.toLocaleString("en-US")} documents.
         </p>
       ) : null}
 
