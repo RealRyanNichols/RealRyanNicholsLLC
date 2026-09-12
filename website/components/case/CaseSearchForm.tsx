@@ -37,10 +37,14 @@ export function CaseSearchForm({
     >
       {view ? <input type="hidden" name="view" value={view} /> : null}
       {j6Filter !== "all" ? <input type="hidden" name="filter" value={j6Filter} /> : null}
+      {/* Two characters at least, the same floor as /search: one letter
+          matches most of the record and marks it everywhere. An empty
+          box still submits (it clears the search). */}
       <input
         type="search"
         name="q"
         defaultValue={q}
+        minLength={2}
         placeholder={placeholder}
         aria-label={placeholder}
         className="min-h-11 flex-1 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-4 text-sm text-[var(--color-ink)]"

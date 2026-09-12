@@ -168,8 +168,27 @@ export type J6PeoplePage = {
   pageSize: number;
 };
 
-function cleanCaseSearch(q: string): string {
-  return q.replace(/[,%()]/g, " ").replace(/\s+/g, " ").trim();
+// The people directory's query, as the database sees it: PostgREST filter
+// punctuation and the ILIKE wildcards (% and _) stripped, whitespace
+// collapsed. Exported so the directory marks its results with the same
+// needle it filtered them with, and so the two mean the same thing.
+export function cleanCaseSearch(q: string): string {
+  return q.replace(/[,%()_]/g, " ").replace(/\s+/g, " ").trim();
+}
+
+// A query that was typed but has nothing searchable left once cleaned
+// ("_", "()"): a search for nothing, which matches nothing, not a search
+// for everything.
+function isEmptiedSearch(q: string, cleaned: string): boolean {
+  return q.trim().length > 0 && cleaned.length === 0;
+}
+
+// The directory's search predicate: name, case number, or role. One string
+// for the page query and the count query, so the number a tab shows is the
+// number it opens on.
+function j6SearchOr(cleaned: string): string {
+  const like = `%${cleaned}%`;
+  return `name.ilike.${like},case_number.ilike.${like},role.ilike.${like}`;
 }
 
 export async function getJ6PeoplePage({
@@ -189,6 +208,9 @@ export async function getJ6PeoplePage({
   const from = (safePage - 1) * safePageSize;
   const to = from + safePageSize - 1;
   const query = cleanCaseSearch(q);
+  if (isEmptiedSearch(q, query)) {
+    return { people: [], total: 0, page: safePage, pageSize: safePageSize };
+  }
 
   let request = supabase
     .from("case_people")
@@ -204,12 +226,7 @@ export async function getJ6PeoplePage({
     .order("name", { ascending: true })
     .range(from, to);
 
-  if (query) {
-    const like = `%${query}%`;
-    request = request.or(
-      `name.ilike.${like},case_number.ilike.${like},role.ilike.${like}`,
-    );
-  }
+  if (query) request = request.or(j6SearchOr(query));
 
   const { data, count } = await request;
   return {
@@ -224,16 +241,22 @@ export async function getJ6PeoplePage({
 // "N defendants indexed" line on the site must use. Same visibility filter as
 // every other count in this file — a hidden row is not part of the public
 // record. One head-only count query; never a row fetch. Optionally narrowed
-// to one claim status (the banner wants "unclaimed" and nothing else).
+// to one claim status (the banner wants "unclaimed" and nothing else), or to
+// a search query with the directory's own predicate, so the People count an
+// archive search shows is the count /case?view=people opens on.
 //
 // Wrapped in React cache() so a page and the components it renders (the path
 // split, the banner) share one request per render instead of each firing
 // their own. A failed query resolves to 0; render sites must treat 0 as
-// "unavailable" and drop the numeral rather than print it.
+// "unavailable" and drop the numeral rather than print it (a searched
+// count is the exception: 0 there means no match).
 export const getJ6DefendantCount = cache(
   async (
     claimStatus?: "unclaimed" | "verified" | "pending",
+    q = "",
   ): Promise<number> => {
+    const query = cleanCaseSearch(q);
+    if (isEmptiedSearch(q, query)) return 0;
     const supabase = getSupabaseStaticClient();
     let request = supabase
       .from("case_people")
@@ -241,6 +264,7 @@ export const getJ6DefendantCount = cache(
       .eq("visibility", "public")
       .eq("is_j6_defendant", true);
     if (claimStatus) request = request.eq("claim_status", claimStatus);
+    if (query) request = request.or(j6SearchOr(query));
     const { count } = await request;
     return count ?? 0;
   },
