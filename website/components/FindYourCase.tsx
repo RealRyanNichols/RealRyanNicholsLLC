@@ -171,7 +171,7 @@ export function FindYourCase({
                   />
                   <span
                     className={[
-                      "absolute inset-x-1 bottom-1 rounded px-1 py-0.5 text-center text-[7px] font-black uppercase tracking-wide shadow",
+                      "absolute inset-x-1 bottom-1 truncate rounded px-1 py-0.5 text-center text-[8px] font-black uppercase tracking-wide shadow",
                       r.image_kind === "portrait"
                         ? "bg-[var(--color-success)] text-[var(--color-navy)]"
                         : r.image_kind === "editorial-portrait"

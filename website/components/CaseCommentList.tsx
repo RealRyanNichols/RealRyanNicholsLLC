@@ -75,7 +75,7 @@ export async function CaseCommentList({
         return (
           <li key={c.id} className="flex gap-3">
             <div
-              className="h-9 w-9 rounded-full bg-[var(--color-accent-soft)] text-[var(--color-accent)] flex items-center justify-center text-sm font-semibold flex-shrink-0"
+              className="h-9 w-9 rounded-full border border-[var(--color-line)] bg-[var(--color-surface-2)] text-[var(--color-gold)] flex items-center justify-center text-sm font-semibold flex-shrink-0"
               aria-hidden
             >
               {initial}
@@ -85,7 +85,7 @@ export async function CaseCommentList({
                 {profile?.username ? (
                   <Link
                     href={`/u/${profile.username}`}
-                    className="font-semibold text-[var(--color-ink)] hover:text-[var(--color-accent)] hover:underline"
+                    className="font-semibold text-[var(--color-ink)] hover:text-[var(--color-gold)] hover:underline"
                   >
                     {name}
                   </Link>

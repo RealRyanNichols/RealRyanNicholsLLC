@@ -239,9 +239,15 @@
 }
 
 .prose-body a:not(.not-prose *) {
-  color: var(--color-accent);
+  color: var(--color-gold);
   text-decoration: underline;
   text-underline-offset: 3px;
+  text-decoration-color: var(--color-line);
+  transition: color 0.15s ease, text-decoration-color 0.15s ease;
+}
+.prose-body a:not(.not-prose *):hover {
+  color: var(--color-support-strong);
+  text-decoration-color: var(--color-gold);
 }
 
 .prose-body ol:not(.not-prose *),
@@ -426,6 +432,11 @@
 
 /* ---------- theater primitives ---------- */
 
+/* In the components layer on purpose: a Tailwind utility on the same
+   element (a different radius, a hover border, a gradient) must win over
+   the primitive. The .btn-* rules above stay unlayered because they have
+   to beat the rounded-full and bg-* utilities baked into older markup. */
+@layer components {
 /* A card or panel: navy, gold hairline, soft black shadow. */
 .panel {
   background: var(--color-surface);
@@ -489,6 +500,7 @@
       transparent 62%
     );
   }
+}
 }
 
 /* Film grain: a fixed, viewport-sized sheet of turbulence that steps around
