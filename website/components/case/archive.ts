@@ -79,7 +79,17 @@ export function pageDirectory({
 // Rows per page on the timeline and documents views.
 export const ARCHIVE_PAGE_SIZE = 48;
 
-export function filterArchive({
+// The fields the search reads from a person and a document. filterArchive
+// is generic over them so a caller can pass slimmer rows (the sitewide
+// search's document index carries no transcript) and get the same rows
+// back, typed as it sent them.
+export type SearchablePerson = Pick<
+  CasePerson,
+  "name" | "role" | "agency" | "description" | "case_number" | "is_j6_defendant" | "claim_status"
+>;
+export type SearchableDocument = Pick<CaseDocument, "title" | "description" | "doc_type" | "source">;
+
+export function filterArchive<P extends SearchablePerson, D extends SearchableDocument>({
   q,
   j6Filter,
   grievances,
@@ -91,9 +101,9 @@ export function filterArchive({
   q: string;
   j6Filter: J6Filter;
   grievances: CaseGrievance[];
-  people: CasePerson[];
+  people: P[];
   events: CaseEvent[];
-  documents: CaseDocument[];
+  documents: D[];
   // The public people count from lib/case.ts, shown when nothing is searched.
   peopleNamed: number;
 }) {
@@ -102,9 +112,11 @@ export function filterArchive({
         matchesQuery(q, g.title, g.summary, g.body, g.category)
       )
     : grievances;
+  // The same fields the people directory searches (name, case number,
+  // role), plus the archive's agency and description.
   const filteredPeopleByQ = q
     ? people.filter((p) =>
-        matchesQuery(q, p.name, p.role, p.agency, p.description)
+        matchesQuery(q, p.name, p.case_number, p.role, p.agency, p.description)
       )
     : people;
   const filteredPeople =
