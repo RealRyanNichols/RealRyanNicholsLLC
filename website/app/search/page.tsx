@@ -7,6 +7,7 @@ import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { SITE } from "@/lib/site";
 import { unstable_cache } from "next/cache";
 import {
+  cleanCaseSearch,
   getGrievances,
   getJ6PeoplePage,
   getEvents,
@@ -304,12 +305,16 @@ function CaseFilesHits({ hits, q }: { hits: CaseHits; q: string }) {
   const encoded = encodeURIComponent(q);
   // Each section's count is the full result set the "All N" link opens;
   // the items are its sample. Three sections filter the cached corpus the
-  // way /case?q= does; people carry the directory's own count.
+  // way /case?q= does, and mark with the query as typed, the needle that
+  // filter used; people carry the directory's own count and mark with
+  // the cleaned query the directory filtered on, so "John  Doe" finds
+  // and marks "John Doe" here as it does on /case?view=people.
   const sections = [
     {
       key: "grievances",
       label: "Grievances",
       href: `/case?view=grievances&q=${encoded}`,
+      needle: q,
       count: hits.grievances.length,
       items: hits.grievances.map((g) => ({
         slug: g.slug,
@@ -322,6 +327,7 @@ function CaseFilesHits({ hits, q }: { hits: CaseHits; q: string }) {
       key: "timeline",
       label: "Timeline",
       href: `/case?view=timeline&q=${encoded}`,
+      needle: q,
       count: hits.events.length,
       items: hits.events.map((e) => ({
         slug: e.slug,
@@ -334,6 +340,7 @@ function CaseFilesHits({ hits, q }: { hits: CaseHits; q: string }) {
       key: "people",
       label: "People",
       href: `/case?view=people&q=${encoded}`,
+      needle: cleanCaseSearch(q),
       count: hits.peopleTotal,
       items: hits.people.map((p) => ({
         slug: p.slug,
@@ -346,6 +353,7 @@ function CaseFilesHits({ hits, q }: { hits: CaseHits; q: string }) {
       key: "documents",
       label: "Documents",
       href: `/case?view=documents&q=${encoded}`,
+      needle: q,
       count: hits.documents.length,
       items: hits.documents.map((d) => ({
         slug: d.slug,
@@ -409,11 +417,11 @@ function CaseFilesHits({ hits, q }: { hits: CaseHits; q: string }) {
                     <li key={item.slug}>
                       <Link href={item.href} className="group block py-3">
                         <p className="font-bold leading-snug text-[var(--color-ink)] group-hover:text-[var(--color-navy)]">
-                          <Highlight text={item.title} q={q} />
+                          <Highlight text={item.title} q={s.needle} />
                         </p>
                         {item.sub ? (
                           <p className="mt-0.5 line-clamp-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-                            <Highlight text={item.sub} q={q} />
+                            <Highlight text={item.sub} q={s.needle} />
                           </p>
                         ) : null}
                       </Link>
