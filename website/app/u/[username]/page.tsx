@@ -84,14 +84,14 @@ export default async function UserProfilePage({
               {verified ? (
                 <span
                   title="Verified"
-                  className="inline-flex items-center gap-1 rounded-full bg-emerald-900/40 border border-emerald-700 px-2 py-0.5 text-xs font-bold text-emerald-300"
+                  className="inline-flex items-center gap-1 rounded-full bg-[var(--color-success-soft)] border border-[var(--color-success)]/40 px-2 py-0.5 text-xs font-bold text-[var(--color-success)]"
                 >
                   ✓ Verified
                 </span>
               ) : isPending ? (
                 <span
                   title="Pending admin review"
-                  className="inline-flex items-center gap-1 rounded-full bg-amber-900/30 border border-amber-700 px-2 py-0.5 text-xs font-semibold text-amber-300"
+                  className="inline-flex items-center gap-1 rounded-full bg-[var(--color-support-soft)] border border-[var(--color-tag-procedural)]/50 px-2 py-0.5 text-xs font-semibold text-[var(--color-tag-procedural)]"
                 >
                   Pending review
                 </span>

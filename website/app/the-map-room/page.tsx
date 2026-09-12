@@ -105,7 +105,7 @@ export default async function TheMapRoomPage() {
           sees it first. */}
       <Link
         href="/case/nexus"
-        className="mt-10 block rounded-2xl border-2 border-[var(--color-blue)] bg-gradient-to-br from-[#0a1429] via-[#0e1a36] to-[#1c2a4a] p-5 sm:p-7 relative overflow-hidden group hover:from-[#0e1a36] hover:via-[#1c2a4a] hover:to-[#1c2a4a] transition"
+        className="mt-10 block rounded-2xl border-2 border-[var(--color-blue)] bg-gradient-to-br from-[var(--color-surface)] via-[var(--color-surface)] to-[var(--color-surface-2)] p-5 sm:p-7 relative overflow-hidden group hover:from-[var(--color-surface)] hover:via-[var(--color-surface-2)] hover:to-[var(--color-surface-2)] transition"
       >
         <div
           className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full blur-3xl"
@@ -118,17 +118,17 @@ export default async function TheMapRoomPage() {
               <span className="inline-block w-2 h-2 rounded-full bg-[var(--color-gold-bright)] animate-pulse" />
               New · The Case Nexus
             </p>
-            <h2 className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight font-display text-[var(--color-paper)]">
+            <h2 className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight font-display text-[var(--color-cream)]">
               The whole J6 case, on one interactive map.
             </h2>
-            <p className="mt-2 text-sm sm:text-base text-[#cfd9ea] leading-relaxed">
+            <p className="mt-2 text-sm sm:text-base text-[var(--color-ink-soft)] leading-relaxed">
               Every co-defendant cluster, every defendant, every archived
               document — laid out as a force-directed graph you can drag,
               zoom, and walk. Search a name, click a node, expand the
               network.
             </p>
           </div>
-          <span className="text-[var(--color-paper)] font-bold text-sm flex-shrink-0 group-hover:translate-x-1 transition-transform">
+          <span className="text-[var(--color-cream)] font-bold text-sm flex-shrink-0 group-hover:translate-x-1 transition-transform">
             Walk the graph →
           </span>
         </div>
@@ -199,7 +199,7 @@ export default async function TheMapRoomPage() {
         <div className="mt-5 flex flex-wrap gap-3">
           <Link
             href="/jan-6"
-            className="rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
+            className="rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
           >
             Ryan&apos;s Jan 6 story →
           </Link>
@@ -211,7 +211,7 @@ export default async function TheMapRoomPage() {
           </Link>
           <Link
             href="/book/preorder"
-            className="rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
+            className="rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-cream)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
           >
             Get the Book
           </Link>
@@ -247,12 +247,12 @@ function ActionCard({
 }) {
   const ring =
     accent === "accent"
-      ? "border-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-paper)]"
-      : "border-[var(--color-blue)] hover:bg-[var(--color-blue)] hover:text-[var(--color-paper)]";
+      ? "border-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-cream)]"
+      : "border-[var(--color-blue)] hover:bg-[var(--color-blue)] hover:text-[var(--color-cream)]";
   const labelColor =
     accent === "accent"
-      ? "text-[var(--color-accent)] group-hover:text-[var(--color-paper)]"
-      : "text-[var(--color-blue)] group-hover:text-[var(--color-paper)]";
+      ? "text-[var(--color-accent)] group-hover:text-[var(--color-cream)]"
+      : "text-[var(--color-blue-ink)] group-hover:text-[var(--color-cream)]";
 
   return (
     <Link
@@ -264,10 +264,10 @@ function ActionCard({
       >
         {label}
       </p>
-      <p className="mt-1 text-lg font-bold tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-paper)] leading-tight">
+      <p className="mt-1 text-lg font-bold tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-cream)] leading-tight">
         {title}
       </p>
-      <p className="mt-2 text-xs leading-snug text-[var(--color-ink-soft)] group-hover:text-[var(--color-paper)]">
+      <p className="mt-2 text-xs leading-snug text-[var(--color-ink-soft)] group-hover:text-[var(--color-cream)]">
         {sub}
       </p>
     </Link>

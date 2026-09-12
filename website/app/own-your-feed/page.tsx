@@ -236,15 +236,15 @@ export default function OwnYourFeedPage() {
           className="object-cover"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-[#081426]/75" aria-hidden="true" />
-        <div className="relative mx-auto flex min-h-[68vh] max-w-5xl flex-col justify-end px-4 py-10 text-[#fdf8ea]">
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#d8c89e]">
+        <div className="absolute inset-0 bg-[var(--color-paper)]/75" aria-hidden="true" />
+        <div className="relative mx-auto flex min-h-[68vh] max-w-5xl flex-col justify-end px-4 py-10 text-[var(--color-cream)]">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-gold)]">
             Real Ryan Nichols platform builds
           </p>
           <h1 className="mt-3 max-w-3xl text-5xl font-bold leading-[0.98] tracking-normal sm:text-7xl">
             Own Your Feed
           </h1>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-[#f6efdf] sm:text-lg">
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-[var(--color-cream)] sm:text-lg">
             I built my own platform because I got tired of renting attention
             from companies that can throttle, lock, or erase it. I can build
             yours too.
@@ -258,7 +258,7 @@ export default function OwnYourFeedPage() {
             </Link>
             <Link
               href="/store/site-audit"
-              className="inline-flex items-center justify-center rounded-lg border border-[#d8c89e] bg-[#fdf8ea] px-5 py-3 text-sm font-bold text-[#142a52] transition hover:border-[#fdf8ea]"
+              className="inline-flex items-center justify-center rounded-lg border border-[var(--color-gold)] bg-[var(--color-gold)] px-5 py-3 text-sm font-bold text-[var(--color-navy)] transition hover:border-[var(--color-cream)]"
             >
               Get the audit first
             </Link>
@@ -311,7 +311,7 @@ export default function OwnYourFeedPage() {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {layers.map((item) => (
             <div key={item.label} className="border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
-              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--color-blue)]">
+              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--color-blue-ink)]">
                 {item.label}
               </p>
               <h3 className="mt-2 text-2xl font-bold tracking-normal">{item.title}</h3>
@@ -337,7 +337,7 @@ export default function OwnYourFeedPage() {
               <div className="border-t border-[var(--color-line)] px-4 py-3 sm:border-l sm:border-t-0">
                 On rented land
               </div>
-              <div className="border-t border-[var(--color-line)] px-4 py-3 text-[var(--color-blue)] sm:border-l sm:border-t-0">
+              <div className="border-t border-[var(--color-line)] px-4 py-3 text-[var(--color-blue-ink)] sm:border-l sm:border-t-0">
                 On your own domain
               </div>
             </div>
@@ -382,12 +382,12 @@ export default function OwnYourFeedPage() {
         </div>
       </section>
 
-      <section className="bg-[var(--color-blue)] text-[#fdf8ea]">
+      <section className="bg-[var(--color-blue)] text-[var(--color-cream)]">
         <div className="mx-auto max-w-5xl px-4 py-10">
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#d8c89e]">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-gold)]">
             Pick the lane
           </p>
-          <h2 className="mt-2 text-3xl font-bold tracking-normal text-[#fdf8ea] sm:text-4xl">
+          <h2 className="mt-2 text-3xl font-bold tracking-normal text-[var(--color-cream)] sm:text-4xl">
             Start small, or build the whole platform.
           </h2>
           <div className="mt-6 grid grid-cols-1 gap-3 lg:grid-cols-4">
@@ -395,7 +395,7 @@ export default function OwnYourFeedPage() {
               <Link
                 key={offer.href}
                 href={offer.href}
-                className="flex min-h-[21rem] flex-col border border-[#d8c89e]/50 bg-[#fdf8ea] p-4 text-[var(--color-ink)] transition hover:border-[#fdf8ea]"
+                className="flex min-h-[21rem] flex-col border border-[var(--color-gold)]/50 bg-[var(--color-surface-2)] p-4 text-[var(--color-ink)] transition hover:border-[var(--color-cream)]"
               >
                 <p className="text-2xl font-bold text-[var(--color-accent)]">{offer.price}</p>
                 <h3 className="mt-2 text-xl font-bold tracking-normal">{offer.name}</h3>
@@ -409,7 +409,7 @@ export default function OwnYourFeedPage() {
                     </li>
                   ))}
                 </ul>
-                <span className="mt-auto pt-5 text-sm font-bold text-[var(--color-blue)]">
+                <span className="mt-auto pt-5 text-sm font-bold text-[var(--color-blue-ink)]">
                   Open checkout -&gt;
                 </span>
               </Link>
@@ -468,7 +468,7 @@ export default function OwnYourFeedPage() {
         <div className="space-y-3">
           {roadmap.map((step, index) => (
             <div key={step} className="flex gap-3 border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
-              <span className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-[var(--color-accent)] text-sm font-bold text-[#fdf8ea]">
+              <span className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-[var(--color-accent)] text-sm font-bold text-[var(--color-cream)]">
                 {index + 1}
               </span>
               <p className="pt-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">

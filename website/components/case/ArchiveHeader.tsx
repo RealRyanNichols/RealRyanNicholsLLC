@@ -83,13 +83,13 @@ export function ArchiveHeader({
         </Link>
         <Link
           href="/case/damages"
-          className="inline-flex min-h-11 items-center rounded-full border border-[var(--color-navy)] bg-[var(--color-blue-soft)]/60 px-5 py-2.5 text-sm font-bold text-[var(--color-navy)] hover:opacity-90"
+          className="inline-flex min-h-11 items-center rounded-full border border-[var(--color-blue)] bg-[var(--color-blue-soft)]/60 px-5 py-2.5 text-sm font-bold text-[var(--color-blue-ink)] hover:opacity-90"
         >
           What it cost him — Damages →
         </Link>
         <Link
           href="/case/witnesses"
-          className="inline-flex min-h-11 items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-5 py-2.5 text-sm font-bold text-[var(--color-ink)] hover:border-[var(--color-navy)] hover:text-[var(--color-navy)]"
+          className="inline-flex min-h-11 items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-5 py-2.5 text-sm font-bold text-[var(--color-ink)] hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
         >
           Wall of Corroborators →
         </Link>
@@ -101,7 +101,7 @@ export function ArchiveHeader({
       {ryan ? (
         <Link
           href="/case/people/ryan-nichols"
-          className="mt-6 block overflow-hidden rounded-2xl border-2 border-[var(--color-ink)] bg-[var(--color-surface)] hover:border-[var(--color-navy)] transition group"
+          className="mt-6 block overflow-hidden rounded-2xl border-2 border-[var(--color-ink)] bg-[var(--color-surface)] hover:border-[var(--color-gold)] transition group"
         >
           <div className="flex flex-col sm:flex-row">
             {ryanPhoto ? (
@@ -113,7 +113,7 @@ export function ArchiveHeader({
               />
             ) : null}
             <div className="flex-1 p-5 sm:p-6">
-              <p className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--color-navy)]">
+              <p className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--color-ink)]">
                 The lead case · ✓ verified
               </p>
               <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
@@ -139,7 +139,7 @@ export function ArchiveHeader({
                 The case this whole archive was built on. Every filing, every named
                 official, every document — the full record is on my file.
               </p>
-              <span className="mt-3 inline-block text-sm font-bold text-[var(--color-navy)] group-hover:underline">
+              <span className="mt-3 inline-block text-sm font-bold text-[var(--color-ink)] group-hover:underline">
                 Read my full case file →
               </span>
             </div>
@@ -171,7 +171,7 @@ export function ArchiveHeader({
         How this archive sources, labels, and corrects what it publishes —{" "}
         <Link
           href="/editorial-standards"
-          className="font-bold text-[var(--color-navy)] hover:underline"
+          className="font-bold text-[var(--color-ink)] hover:underline"
         >
           editorial standards →
         </Link>
@@ -226,7 +226,7 @@ export function ArchiveHeader({
 function BigStat({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
-      <div className="text-3xl sm:text-4xl font-bold tracking-tight leading-none text-[var(--color-navy)]">
+      <div className="text-3xl sm:text-4xl font-bold tracking-tight leading-none text-[var(--color-ink)]">
         {value}
       </div>
       <div className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold mt-2">
@@ -262,16 +262,16 @@ function HubCard({
       className={[
         "block rounded-2xl border-2 p-4 transition group",
         featured
-          ? "border-[var(--color-navy)] bg-[var(--color-blue-soft)]/60"
-          : "border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-navy)]",
+          ? "border-[var(--color-blue)] bg-[var(--color-blue-soft)]/60"
+          : "border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-gold)]",
       ].join(" ")}
     >
       <p
         className={[
           "text-sm font-bold tracking-tight",
           featured
-            ? "text-[var(--color-navy)]"
-            : "text-[var(--color-ink)] group-hover:text-[var(--color-navy)]",
+            ? "text-[var(--color-ink)]"
+            : "text-[var(--color-ink)] group-hover:text-[var(--color-gold)]",
         ].join(" ")}
       >
         {title} <span aria-hidden>→</span>

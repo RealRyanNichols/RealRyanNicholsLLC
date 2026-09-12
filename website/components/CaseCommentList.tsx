@@ -95,7 +95,7 @@ export async function CaseCommentList({
                 {verified ? (
                   <span
                     title="Verified by admin"
-                    className="rounded-full bg-emerald-900/30 border border-emerald-700 text-emerald-300 px-1.5 py-0.5 text-[10px] uppercase tracking-wider font-bold"
+                    className="rounded-full bg-[var(--color-success-soft)] border border-[var(--color-success)]/40 text-[var(--color-success)] px-1.5 py-0.5 text-[10px] uppercase tracking-wider font-bold"
                   >
                     ✓
                   </span>

@@ -113,12 +113,12 @@ export function CommentForm({ postId, signedIn }: Props) {
         </button>
       </div>
       {state.kind === "success" && (
-        <p className="mt-3 text-sm text-emerald-700">
+        <p className="mt-3 text-sm text-[var(--color-success)]">
           Comment submitted. It will appear once approved.
         </p>
       )}
       {state.kind === "error" && (
-        <p className="mt-3 text-sm text-red-700">{state.message}</p>
+        <p className="mt-3 text-sm text-[var(--color-danger)]">{state.message}</p>
       )}
     </form>
   );

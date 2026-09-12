@@ -126,7 +126,7 @@ export default async function DocumentPage({
             href={sourceHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex min-h-11 items-center gap-1 text-sm font-bold text-[var(--color-navy)] underline sm:min-h-0"
+            className="inline-flex min-h-11 items-center gap-1 text-sm font-bold text-[var(--color-ink)] underline sm:min-h-0"
           >
             {sourceLabel} <span aria-hidden>→</span>
           </a>
@@ -171,7 +171,7 @@ export default async function DocumentPage({
               className="block h-[75vh] w-full bg-white"
             >
               <div className="flex h-[40vh] flex-col items-center justify-center gap-4 p-8 text-center">
-                <p className="max-w-md text-sm leading-relaxed text-white/85">
+                <p className="max-w-md text-sm leading-relaxed text-[var(--color-cream)]/85">
                   This is an official court record, served directly from the
                   public docket so you can verify it at the source.
                 </p>
@@ -179,7 +179,7 @@ export default async function DocumentPage({
                   href={d.external_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center rounded-lg bg-[#fdf8ea] px-5 py-2.5 text-sm font-bold text-[var(--color-navy)]"
+                  className="inline-flex items-center rounded-lg bg-[var(--color-gold)] px-5 py-2.5 text-sm font-bold text-[var(--color-navy)]"
                 >
                   Open the PDF →
                 </a>

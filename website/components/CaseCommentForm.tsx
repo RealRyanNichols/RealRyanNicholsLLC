@@ -114,7 +114,7 @@ export function CaseCommentForm({ type, slug, signedIn }: Props) {
         </button>
       </div>
       {state.kind === "success" && (
-        <p className="mt-3 text-sm text-emerald-400">
+        <p className="mt-3 text-sm text-[var(--color-success)]">
           Comment submitted. It will appear once approved.
         </p>
       )}

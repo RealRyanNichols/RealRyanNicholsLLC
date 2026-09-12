@@ -1351,7 +1351,7 @@ export function AttorneyBriefBody({
           </a>
           <a
             href="#false-gun-pattern"
-            className="inline-flex min-h-10 items-center border border-[#b32419] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[#8d1b13] transition hover:bg-[var(--color-accent-soft)]"
+            className="inline-flex min-h-10 items-center border border-[var(--color-danger)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-danger)] transition hover:bg-[var(--color-accent-soft)]"
           >
             The pattern
           </a>
@@ -1390,17 +1390,17 @@ export function AttorneyBriefBody({
 
       <section
         id="first-look"
-        className="border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm sm:p-5 lg:p-6"
+        className="border border-[var(--color-line-soft)] bg-[var(--color-surface)] p-4 text-[var(--color-cream)] shadow-sm sm:p-5 lg:p-6"
       >
         <div className="grid gap-5 lg:grid-cols-[1fr_18rem] lg:items-start">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
               Attorney cover sheet
             </p>
-            <h1 className="mt-2 max-w-3xl text-3xl font-black leading-[0.98] text-[#fdf8ea] sm:text-5xl lg:text-6xl">
+            <h1 className="mt-2 max-w-3xl text-3xl font-black leading-[0.98] text-[var(--color-cream)] sm:text-5xl lg:text-6xl">
               Three charges. One disputed story. Four records to open first.
             </h1>
-            <p className="mt-4 max-w-3xl text-base font-semibold leading-7 text-[#cfd9ea]">
+            <p className="mt-4 max-w-3xl text-base font-semibold leading-7 text-[var(--color-ink-soft)]">
               This brief should not feel like a database on first contact.
               Counsel gets the clean path first: the live criminal matter, the
               disputed fact, the missing record packet, and the source doors.
@@ -1415,17 +1415,17 @@ export function AttorneyBriefBody({
               </a>
               <a
                 href="#packet-drawers"
-                className="inline-flex min-h-11 items-center border border-white/15 bg-white/[0.055] px-4 text-sm font-black text-[#fdf8ea] transition hover:bg-white/10"
+                className="inline-flex min-h-11 items-center border border-[var(--color-cream)]/15 bg-[var(--color-cream)]/[0.055] px-4 text-sm font-black text-[var(--color-cream)] transition hover:bg-[var(--color-cream)]/10"
               >
                 Show the deeper file
               </a>
             </div>
           </div>
-          <aside className="border border-white/10 bg-white/[0.055] p-4">
-            <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
+          <aside className="border border-[var(--color-cream)]/10 bg-[var(--color-cream)]/[0.055] p-4">
+            <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-gold)]">
               Dallas meeting
             </p>
-            <h2 className="mt-2 font-sans text-xl font-black text-[#fdf8ea]">
+            <h2 className="mt-2 font-sans text-xl font-black text-[var(--color-cream)]">
               Dallas criminal-defense meeting
             </h2>
             <dl className="mt-3 grid gap-3">
@@ -1470,33 +1470,33 @@ export function AttorneyBriefBody({
           {firstReadFlow.map((item, index) => (
             <section
               key={item.title}
-              className="border border-white/10 bg-white/[0.055] p-4"
+              className="border border-[var(--color-cream)]/10 bg-[var(--color-cream)]/[0.055] p-4"
             >
-              <p className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
-                <span className="inline-flex h-6 w-6 items-center justify-center border border-[#d8c89e]/40 text-xs">
+              <p className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-gold)]">
+                <span className="inline-flex h-6 w-6 items-center justify-center border border-[var(--color-gold)]/40 text-xs">
                   {index + 1}
                 </span>
                 {item.label}
               </p>
-              <h2 className="mt-3 font-sans text-xl font-black leading-tight text-[#fdf8ea]">
+              <h2 className="mt-3 font-sans text-xl font-black leading-tight text-[var(--color-cream)]">
                 {item.title}
               </h2>
-              <p className="mt-2 text-sm font-semibold leading-6 text-[#cfd9ea]">
+              <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
                 {item.body}
               </p>
             </section>
           ))}
         </div>
 
-        <div className="mt-5 border border-[#e02a1d]/50 bg-[#e02a1d]/15 p-4">
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#ffb0a8]">
+        <div className="mt-5 border border-[var(--color-danger)]/50 bg-[var(--color-accent)]/15 p-4">
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-tag-severe)]">
             Core disputed fact
           </p>
-          <h2 className="mt-2 font-sans text-xl font-black leading-tight text-[#fdf8ea] sm:text-2xl">
+          <h2 className="mt-2 font-sans text-xl font-black leading-tight text-[var(--color-cream)] sm:text-2xl">
             Public allegation says displayed / hand on grip. Ryan disputes
             pulling, pointing, brandishing, firing, or threatening.
           </h2>
-          <p className="mt-3 max-w-4xl text-sm font-semibold leading-6 text-[#ffd2cc]">
+          <p className="mt-3 max-w-4xl text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
             The page should keep repeating that simple distinction. Everything
             else supports, tests, or explains that record.
           </p>
@@ -1613,8 +1613,8 @@ export function AttorneyBriefBody({
             before they line up into one pattern.
           </p>
         </div>
-        <div className="mt-4 border-l-4 border-[#b32419] bg-[#f6dad2] p-4">
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#8d1b13]">
+        <div className="mt-4 border-l-4 border-[var(--color-danger)] bg-[var(--color-accent-soft)] p-4">
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-danger)]">
             Criminal posture — Ryan&apos;s position
           </p>
           <p className="mt-1 text-sm font-bold leading-6 text-[var(--color-ink)]">
@@ -1638,10 +1638,10 @@ export function AttorneyBriefBody({
 
       <section
         id="false-gun-pattern"
-        className="mt-4 border-2 border-[#b32419] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5"
+        className="mt-4 border-2 border-[var(--color-danger)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5"
       >
         <div>
-          <p className="text-xs font-black uppercase tracking-[0.22em] text-[#8d1b13]">
+          <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-danger)]">
             The pattern — line by line
           </p>
           <h2 className="mt-1 font-sans text-2xl font-black leading-tight text-[var(--color-ink)] sm:text-3xl">
@@ -1661,7 +1661,7 @@ export function AttorneyBriefBody({
               className="border border-[var(--color-line)] bg-[var(--color-paper)] p-4"
             >
               <div className="flex items-center gap-2">
-                <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center bg-[#b32419] font-sans text-sm font-black text-white">
+                <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center bg-[var(--color-accent)] font-sans text-sm font-black text-[var(--color-cream)]">
                   {index + 1}
                 </span>
                 <p className="font-sans text-base font-black text-[var(--color-ink)]">
@@ -1669,16 +1669,16 @@ export function AttorneyBriefBody({
                 </p>
               </div>
               <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                <div className="border-l-4 border-[#b32419] pl-3">
-                  <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#8d1b13]">
+                <div className="border-l-4 border-[var(--color-danger)] pl-3">
+                  <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[var(--color-danger)]">
                     The claim
                   </p>
                   <p className="mt-0.5 text-sm font-semibold leading-5 text-[var(--color-ink)]">
                     {item.claim}
                   </p>
                 </div>
-                <div className="border-l-4 border-[#2d6a4f] pl-3">
-                  <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#2d6a4f]">
+                <div className="border-l-4 border-[var(--color-success)] pl-3">
+                  <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[var(--color-success)]">
                     The record
                   </p>
                   <p className="mt-0.5 text-sm font-semibold leading-5 text-[var(--color-ink)]">
@@ -1687,11 +1687,11 @@ export function AttorneyBriefBody({
                 </div>
               </div>
               <p className="mt-3 text-xs font-semibold leading-5 text-[var(--color-ink-soft)]">
-                <span className="font-black text-[#2d6a4f]">Proof: </span>
+                <span className="font-black text-[var(--color-success)]">Proof: </span>
                 {item.proof}
               </p>
               <p className="mt-1 text-xs font-semibold leading-5 text-[var(--color-ink-soft)]">
-                <span className="font-black text-[#8d1b13]">
+                <span className="font-black text-[var(--color-danger)]">
                   What happened anyway:{" "}
                 </span>
                 {item.consequence}
@@ -1703,16 +1703,16 @@ export function AttorneyBriefBody({
 
       <section
         id="civil-throughline"
-        className="mt-4 border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm sm:p-5"
+        className="mt-4 border border-[var(--color-line-soft)] bg-[var(--color-surface)] p-4 text-[var(--color-cream)] shadow-sm sm:p-5"
       >
         <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
           The civil throughline
         </p>
-        <h2 className="mt-1 font-sans text-2xl font-black leading-tight text-[#fdf8ea] sm:text-3xl">
+        <h2 className="mt-1 font-sans text-2xl font-black leading-tight text-[var(--color-cream)] sm:text-3xl">
           Bo Rogers, Bonnie, and Wholesale Universe all run back to Harrison
           County.
         </h2>
-        <p className="mt-2 max-w-3xl text-sm font-semibold leading-6 text-[#cfd9ea]">
+        <p className="mt-2 max-w-3xl text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
           The divorce, the business fraud, and the criminal charges are not
           separate stories. They share a county, a judge, and a pattern: a false
           claim treated as credible, the record that disproves it ignored, and
@@ -1722,21 +1722,21 @@ export function AttorneyBriefBody({
           {civilThroughline.anchors.map((item) => (
             <div
               key={item.label}
-              className="border border-white/10 bg-white/5 p-3"
+              className="border border-[var(--color-cream)]/10 bg-[var(--color-cream)]/5 p-3"
             >
-              <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#d8c89e]">
+              <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--color-gold)]">
                 {item.label}
               </p>
-              <p className="mt-1 text-sm font-semibold leading-6 text-[#cfd9ea]">
+              <p className="mt-1 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
                 {item.body}
               </p>
             </div>
           ))}
         </div>
-        <p className="mt-3 text-[10px] font-bold uppercase tracking-[0.16em] text-[#d8c89e]">
+        <p className="mt-3 text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--color-gold)]">
           Reported concerns and supporting context — not court findings.
         </p>
-        <div className="mt-4 border-t border-white/10 pt-4">
+        <div className="mt-4 border-t border-[var(--color-cream)]/10 pt-4">
           <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-gold-bright)]">
             Filed exhibits — open these
           </p>
@@ -1745,17 +1745,17 @@ export function AttorneyBriefBody({
               <a
                 key={ex.href}
                 href={ex.href}
-                className="group border border-white/10 bg-white/5 p-3 transition hover:border-[var(--color-gold-bright)]/50 hover:bg-[var(--color-gold-bright)]/10"
+                className="group border border-[var(--color-cream)]/10 bg-[var(--color-cream)]/5 p-3 transition hover:border-[var(--color-gold-bright)]/50 hover:bg-[var(--color-gold-bright)]/10"
               >
                 <span className="flex items-center justify-between gap-2">
-                  <span className="text-sm font-black text-[#fdf8ea]">
+                  <span className="text-sm font-black text-[var(--color-cream)]">
                     {ex.label}
                   </span>
                   <span className="shrink-0 text-[10px] font-black uppercase tracking-[0.08em] text-[var(--color-gold-bright)]">
                     Open
                   </span>
                 </span>
-                <span className="mt-1 block text-xs font-semibold leading-5 text-[#cfd9ea]">
+                <span className="mt-1 block text-xs font-semibold leading-5 text-[var(--color-ink-soft)]">
                   {ex.note}
                 </span>
               </a>
@@ -1824,32 +1824,32 @@ export function AttorneyBriefBody({
 
       <section
         id="longview-report"
-        className="mt-4 border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm sm:p-5"
+        className="mt-4 border border-[var(--color-line-soft)] bg-[var(--color-surface)] p-4 text-[var(--color-cream)] shadow-sm sm:p-5"
       >
         <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
           Criminal referral — Longview PD case 260630230
         </p>
-        <h2 className="mt-1 font-sans text-2xl font-black leading-tight text-[#fdf8ea] sm:text-3xl">
+        <h2 className="mt-1 font-sans text-2xl font-black leading-tight text-[var(--color-cream)] sm:text-3xl">
           What Ryan reported, and what still needs to be investigated.
         </h2>
-        <p className="mt-2 max-w-3xl text-sm font-semibold leading-6 text-[#cfd9ea]">
+        <p className="mt-2 max-w-3xl text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
           Concurrent with the divorce, Ryan reported suspected financial fraud
           to the Longview Police Department. The same records also contradict
           the hearing testimony in the divorce. These are reported concerns and
           supporting context — not court findings.
         </p>
         <div className="mt-4 grid gap-4 lg:grid-cols-2">
-          <div className="border border-white/10 bg-white/5 p-3">
-            <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
+          <div className="border border-[var(--color-cream)]/10 bg-[var(--color-cream)]/5 p-3">
+            <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-gold)]">
               What was reported
             </p>
             <ul className="mt-2 grid gap-2">
               {longviewReport.findings.map((item) => (
                 <li
                   key={item}
-                  className="flex gap-2 text-sm font-semibold leading-6 text-[#cfd9ea]"
+                  className="flex gap-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]"
                 >
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 bg-[#d8c89e]" />
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 bg-[var(--color-gold)]" />
                   <span>{item}</span>
                 </li>
               ))}
@@ -1863,7 +1863,7 @@ export function AttorneyBriefBody({
               {longviewReport.investigate.map((item) => (
                 <li
                   key={item}
-                  className="flex gap-2 text-sm font-semibold leading-6 text-[#fdf8ea]"
+                  className="flex gap-2 text-sm font-semibold leading-6 text-[var(--color-cream)]"
                 >
                   <span className="mt-2 h-1.5 w-1.5 shrink-0 bg-[var(--color-gold-bright)]" />
                   <span>{item}</span>
@@ -2002,14 +2002,14 @@ export function AttorneyBriefBody({
           </span>
         </summary>
         <div className="grid gap-4 border-t border-[var(--color-line)] p-4 lg:grid-cols-[0.9fr_1.1fr]">
-        <section className="border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm sm:p-5">
+        <section className="border border-[var(--color-line-soft)] bg-[var(--color-surface)] p-4 text-[var(--color-cream)] shadow-sm sm:p-5">
           <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
             Open first
           </p>
-          <h2 className="mt-1 font-sans text-2xl font-black text-[#fdf8ea]">
+          <h2 className="mt-1 font-sans text-2xl font-black text-[var(--color-cream)]">
             Give counsel the door, not the warehouse.
           </h2>
-          <p className="mt-2 text-sm font-semibold leading-6 text-[#cfd9ea]">
+          <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
             These links prove the record exists and let the attorney drill down
             without seeing every private detail on the page.
           </p>
@@ -2018,12 +2018,12 @@ export function AttorneyBriefBody({
               <a
                 key={source.href}
                 href={source.href}
-                className="border border-white/10 bg-white/5 p-3 transition hover:border-[var(--color-gold-bright)]/50 hover:bg-[var(--color-gold-bright)]/10"
+                className="border border-[var(--color-cream)]/10 bg-[var(--color-cream)]/5 p-3 transition hover:border-[var(--color-gold-bright)]/50 hover:bg-[var(--color-gold-bright)]/10"
               >
-                <span className="block text-sm font-black text-[#fdf8ea]">
+                <span className="block text-sm font-black text-[var(--color-cream)]">
                   {source.label}
                 </span>
-                <span className="mt-1 block text-xs font-semibold leading-5 text-[#cfd9ea]">
+                <span className="mt-1 block text-xs font-semibold leading-5 text-[var(--color-ink-soft)]">
                   {source.note}
                 </span>
               </a>
@@ -2072,24 +2072,24 @@ export function AttorneyBriefBody({
         </div>
       </details>
 
-      <details id="drive-evidence" className="mt-4 border border-[#203a64] bg-[#071126] text-[#fdf8ea] shadow-sm">
+      <details id="drive-evidence" className="mt-4 border border-[var(--color-line-soft)] bg-[var(--color-surface)] text-[var(--color-cream)] shadow-sm">
         <summary className="flex cursor-pointer items-center justify-between gap-3 p-4 text-sm font-black uppercase tracking-normal marker:content-[''] sm:p-5">
           <span>Open Google Drive source folders</span>
           <span className="border border-[var(--color-gold-bright)]/50 px-2 py-1 text-[10px] text-[var(--color-gold-bright)]">
             4 folders
           </span>
         </summary>
-        <div className="border-t border-white/10 p-4 sm:p-5">
+        <div className="border-t border-[var(--color-cream)]/10 p-4 sm:p-5">
         <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
               Source folders
             </p>
-            <h2 className="mt-1 font-sans text-2xl font-black text-[#fdf8ea]">
+            <h2 className="mt-1 font-sans text-2xl font-black text-[var(--color-cream)]">
               Four controlled entry points.
             </h2>
           </div>
-          <p className="max-w-md text-xs font-semibold leading-5 text-[#cfd9ea]">
+          <p className="max-w-md text-xs font-semibold leading-5 text-[var(--color-ink-soft)]">
             Folder-level links keep the browser brief clean while showing the
             source lanes are already organized.
           </p>
@@ -2099,17 +2099,17 @@ export function AttorneyBriefBody({
             <a
               key={folder.href}
               href={folder.href}
-              className="border border-white/10 bg-white/5 p-3 transition hover:border-[var(--color-gold-bright)]/50 hover:bg-[var(--color-gold-bright)]/10"
+              className="border border-[var(--color-cream)]/10 bg-[var(--color-cream)]/5 p-3 transition hover:border-[var(--color-gold-bright)]/50 hover:bg-[var(--color-gold-bright)]/10"
             >
               <div className="flex items-start justify-between gap-3">
-                <span className="text-sm font-black text-[#fdf8ea]">
+                <span className="text-sm font-black text-[var(--color-cream)]">
                   {folder.label}
                 </span>
                 <span className="bg-[var(--color-gold-bright)]/15 px-2 py-1 text-[10px] font-black uppercase tracking-[0.08em] text-[var(--color-gold-bright)]">
                   Open
                 </span>
               </div>
-              <span className="mt-2 block text-[10px] font-black uppercase tracking-[0.16em] text-[#d8c89e]">
+              <span className="mt-2 block text-[10px] font-black uppercase tracking-[0.16em] text-[var(--color-gold)]">
                 {folder.status}
               </span>
             </a>
@@ -2179,25 +2179,25 @@ export function AttorneyBriefBody({
         </div>
       </details>
 
-      <details id="full-record" className="mt-4 border border-[#203a64] bg-[#071126] shadow-sm">
-        <summary className="flex cursor-pointer items-center justify-between gap-3 p-4 text-sm font-black uppercase tracking-normal text-[#fdf8ea] marker:content-[''] sm:p-5">
+      <details id="full-record" className="mt-4 border border-[var(--color-line-soft)] bg-[var(--color-surface)] shadow-sm">
+        <summary className="flex cursor-pointer items-center justify-between gap-3 p-4 text-sm font-black uppercase tracking-normal text-[var(--color-cream)] marker:content-[''] sm:p-5">
           <span>Open full supporting archive</span>
           <span className="border border-[var(--color-gold-bright)]/50 px-2 py-1 text-[10px] text-[var(--color-gold-bright)]">
             Complete record
           </span>
         </summary>
-        <div className="border-t border-white/10 bg-[var(--color-paper)] p-4 text-[var(--color-ink)] sm:p-5">
-          <section className="border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] sm:p-5">
+        <div className="border-t border-[var(--color-cream)]/10 bg-[var(--color-paper)] p-4 text-[var(--color-ink)] sm:p-5">
+          <section className="border border-[var(--color-line-soft)] bg-[var(--color-surface)] p-4 text-[var(--color-cream)] sm:p-5">
             <div className="grid gap-3 lg:grid-cols-[0.38fr_1fr] lg:items-end">
               <div>
                 <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
                   Why take Ryan
                 </p>
-                <h2 className="mt-1 font-sans text-2xl font-black text-[#fdf8ea] sm:text-3xl">
+                <h2 className="mt-1 font-sans text-2xl font-black text-[var(--color-cream)] sm:text-3xl">
                   A high-attention case with a record that can be organized.
                 </h2>
               </div>
-              <p className="text-sm font-semibold leading-6 text-[#cfd9ea]">
+              <p className="text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
                 Not legal advice or a demand. This is the case value story:
                 disciplined representation, a source-backed defense, and a
                 lawyer who can keep the whole picture organized under pressure.
@@ -2205,17 +2205,17 @@ export function AttorneyBriefBody({
             </div>
             <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
               {attorneyValueStory.map((item) => (
-                <section key={item.title} className="border border-white/10 bg-white/[0.055] p-3">
-                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#d8c89e]">
+                <section key={item.title} className="border border-[var(--color-cream)]/10 bg-[var(--color-cream)]/[0.055] p-3">
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-gold)]">
                     {item.label}
                   </p>
-                  <h3 className="mt-2 font-sans text-lg font-black leading-tight text-[#fdf8ea]">
+                  <h3 className="mt-2 font-sans text-lg font-black leading-tight text-[var(--color-cream)]">
                     {item.title}
                   </h3>
-                  <p className="mt-2 text-sm font-semibold leading-6 text-[#cfd9ea]">
+                  <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
                     {item.body}
                   </p>
-                  <p className="mt-3 border-t border-white/10 pt-3 text-xs font-bold leading-5 text-[var(--color-gold-bright)]">
+                  <p className="mt-3 border-t border-[var(--color-cream)]/10 pt-3 text-xs font-bold leading-5 text-[var(--color-gold-bright)]">
                     Proof path: {item.proof}
                   </p>
                 </section>
@@ -2271,26 +2271,26 @@ export function AttorneyBriefBody({
             </section>
           </section>
 
-          <section id="damages-map" className="mt-4 border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea]">
+          <section id="damages-map" className="mt-4 border border-[var(--color-line-soft)] bg-[var(--color-surface)] p-4 text-[var(--color-cream)]">
             <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
               Damages / money map
             </p>
-            <h2 className="mt-2 font-sans text-2xl font-black text-[#fdf8ea]">
+            <h2 className="mt-2 font-sans text-2xl font-black text-[var(--color-cream)]">
               What this has cost Ryan
             </h2>
             <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
               {financialImpact.map((item) => (
-                <section key={item.label} className="border border-white/10 bg-white/5 p-4">
-                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
+                <section key={item.label} className="border border-[var(--color-cream)]/10 bg-[var(--color-cream)]/5 p-4">
+                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-gold)]">
                     {item.label}
                   </p>
-                  <p className="mt-2 font-sans text-3xl font-black text-[#fdf8ea]">
+                  <p className="mt-2 font-sans text-3xl font-black text-[var(--color-cream)]">
                     {item.value}
                   </p>
                   <p className="mt-1 text-xs font-black uppercase tracking-[0.16em] text-[var(--color-gold-bright)]">
                     {item.sub}
                   </p>
-                  <p className="mt-2 text-xs font-semibold leading-5 text-[#cfd9ea]">
+                  <p className="mt-2 text-xs font-semibold leading-5 text-[var(--color-ink-soft)]">
                     {item.body}
                   </p>
                 </section>
@@ -2298,14 +2298,14 @@ export function AttorneyBriefBody({
             </div>
             <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
               {forensicMoneyRecords.map((record) => (
-                <section key={record.label} className="border border-white/10 bg-white/[0.055] p-3">
-                  <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#d8c89e]">
+                <section key={record.label} className="border border-[var(--color-cream)]/10 bg-[var(--color-cream)]/[0.055] p-3">
+                  <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--color-gold)]">
                     {record.label}
                   </p>
-                  <p className="mt-1 font-sans text-2xl font-black text-[#fdf8ea]">
+                  <p className="mt-1 font-sans text-2xl font-black text-[var(--color-cream)]">
                     {record.value}
                   </p>
-                  <p className="mt-2 text-xs font-semibold leading-5 text-[#cfd9ea]">
+                  <p className="mt-2 text-xs font-semibold leading-5 text-[var(--color-ink-soft)]">
                     {record.proof}
                   </p>
                 </section>
@@ -2314,23 +2314,23 @@ export function AttorneyBriefBody({
           </section>
 
           <section className="mt-4 grid gap-4 xl:grid-cols-[0.92fr_1.08fr]">
-            <div className="border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea]">
+            <div className="border border-[var(--color-line-soft)] bg-[var(--color-surface)] p-4 text-[var(--color-cream)]">
               <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
                 Source chain
               </p>
-              <h2 className="mt-2 font-sans text-2xl font-black text-[#fdf8ea]">
+              <h2 className="mt-2 font-sans text-2xl font-black text-[var(--color-cream)]">
                 What needs to be seen plainly
               </h2>
               <div className="mt-4 grid gap-3">
                 {sourceChain.map((item) => (
-                  <div key={item.title} className="border border-white/10 bg-white/5 p-3">
-                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#d8c89e]">
+                  <div key={item.title} className="border border-[var(--color-cream)]/10 bg-[var(--color-cream)]/5 p-3">
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-gold)]">
                       {item.step}
                     </p>
-                    <h3 className="mt-1 font-sans text-lg font-black text-[#fdf8ea]">
+                    <h3 className="mt-1 font-sans text-lg font-black text-[var(--color-cream)]">
                       {item.title}
                     </h3>
-                    <p className="mt-1 text-sm leading-6 text-[#cfd9ea]">{item.body}</p>
+                    <p className="mt-1 text-sm leading-6 text-[var(--color-ink-soft)]">{item.body}</p>
                     <p className="mt-2 text-xs font-bold leading-5 text-[var(--color-gold-bright)]">
                       Why it matters: {item.use}
                     </p>
@@ -2569,7 +2569,7 @@ function FirstOpenCard({
       : tone === "green"
         ? "border-[var(--color-success)] bg-[var(--color-success-soft)]"
         : tone === "blue"
-          ? "border-[#203a64] bg-[#dfe9fb]"
+          ? "border-[var(--color-line-soft)] bg-[var(--color-blue-soft)]"
           : "border-[var(--color-support)] bg-[var(--color-support-soft)]";
 
   return (
@@ -2678,8 +2678,8 @@ function MatterSplitCard({
           className={[
             "px-2 py-1 text-[10px] font-black uppercase tracking-normal",
             urgent
-              ? "bg-[var(--color-accent)] text-white"
-              : "bg-[var(--color-support)] text-[#1a1410]",
+              ? "bg-[var(--color-accent)] text-[var(--color-cream)]"
+              : "bg-[var(--color-support)] text-[var(--color-navy)]",
           ].join(" ")}
         >
           {status}
@@ -2726,7 +2726,7 @@ function ClaimSupportRow({
         : "border-l-[var(--color-support)]";
   const badgeClass =
     tone === "red"
-      ? "bg-[var(--color-accent)] text-white"
+      ? "bg-[var(--color-accent)] text-[var(--color-cream)]"
       : tone === "green"
         ? "bg-[var(--color-success-soft)] text-[var(--color-success)]"
         : "bg-[var(--color-support-soft)] text-[var(--color-support-strong)]";
@@ -2783,7 +2783,7 @@ function InfoRow({
       <dt
         className={[
           "text-[10px] font-black uppercase tracking-[0.2em]",
-          dark ? "text-[#d8c89e]" : "text-[var(--color-ink-soft)]",
+          dark ? "text-[var(--color-gold)]" : "text-[var(--color-ink-soft)]",
         ].join(" ")}
       >
         {label}
@@ -2791,7 +2791,7 @@ function InfoRow({
       <dd
         className={[
           "mt-1 font-semibold leading-6",
-          dark ? "text-[#fdf8ea]" : "text-[var(--color-ink)]",
+          dark ? "text-[var(--color-cream)]" : "text-[var(--color-ink)]",
         ].join(" ")}
       >
         {value}
@@ -2833,7 +2833,7 @@ function ChargeCard({
           className={[
             "px-2 py-1 text-[10px] font-black uppercase",
             isRed
-              ? "bg-[var(--color-accent)] text-white"
+              ? "bg-[var(--color-accent)] text-[var(--color-cream)]"
               : "bg-[var(--color-support-soft)] text-[var(--color-support-strong)]",
           ].join(" ")}
         >

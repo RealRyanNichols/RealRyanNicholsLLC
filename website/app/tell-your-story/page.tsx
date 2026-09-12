@@ -162,7 +162,7 @@ export default function TellYourStoryPage() {
             <div className="rrn-tap-row mt-6">
               <a
                 href="#story-form"
-                className="rrn-tap rounded-lg bg-[var(--color-accent)] px-5 py-3 text-sm font-black text-white"
+                className="rrn-tap rounded-lg bg-[var(--color-accent)] px-5 py-3 text-sm font-black text-[var(--color-cream)]"
               >
                 Tell it now
               </a>
@@ -191,7 +191,7 @@ export default function TellYourStoryPage() {
             </div>
           </div>
 
-          <div className="rounded-lg border border-[var(--color-blue)] bg-[var(--color-blue-strong)] p-5 text-[var(--color-paper)] shadow-xl sm:p-6">
+          <div className="rounded-lg border border-[var(--color-blue)] bg-[var(--color-blue-strong)] p-5 text-[var(--color-cream)] shadow-xl sm:p-6">
             <p className="text-xs font-black uppercase tracking-normal text-[var(--color-gold-bright)]">
               How it works — 3 steps
             </p>
@@ -199,15 +199,15 @@ export default function TellYourStoryPage() {
               {steps.map((item, index) => (
                 <div
                   key={item.title}
-                  className="rounded-lg border border-white/20 bg-white/[0.07] p-4"
+                  className="rounded-lg border border-[var(--color-cream)]/20 bg-[var(--color-cream)]/[0.07] p-4"
                 >
-                  <p className="text-xs font-black uppercase tracking-normal text-white/55">
+                  <p className="text-xs font-black uppercase tracking-normal text-[var(--color-cream)]/55">
                     Step {index + 1}
                   </p>
-                  <h2 className="mt-1 font-display text-2xl font-black tracking-normal text-[var(--color-paper)]">
+                  <h2 className="mt-1 font-display text-2xl font-black tracking-normal text-[var(--color-cream)]">
                     {item.title}
                   </h2>
-                  <p className="mt-2 text-sm leading-relaxed text-white/80">
+                  <p className="mt-2 text-sm leading-relaxed text-[var(--color-cream)]/80">
                     {item.body}
                   </p>
                 </div>
@@ -307,7 +307,7 @@ export default function TellYourStoryPage() {
           </div>
 
           <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
-            <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-blue)]">
+            <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-blue-ink)]">
               Boundaries
             </p>
             <h2 className="mt-2 font-display text-2xl font-black tracking-normal">

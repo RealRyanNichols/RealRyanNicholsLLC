@@ -130,7 +130,7 @@ export function VoiceStoryRecorder({
           className={[
             "inline-flex items-center gap-2 rounded-full px-5 py-3 font-bold text-base transition",
             recording
-              ? "bg-[var(--color-accent)] text-[var(--color-paper)] animate-pulse"
+              ? "bg-[var(--color-accent)] text-[var(--color-cream)] animate-pulse"
               : "border-2 border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent-soft)]",
           ].join(" ")}
         >

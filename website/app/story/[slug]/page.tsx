@@ -79,11 +79,11 @@ export default async function StoryChapterPage({
         secondary={{ href: "/about", label: "The full rescue record" }}
       />
 
-      <p className="text-[11px] uppercase tracking-[0.25em] font-bold text-[var(--color-navy)]">
+      <p className="text-[11px] uppercase tracking-[0.25em] font-bold text-[var(--color-ink)]">
         The rescue record · chapter {idx + 1} of {STORY_CHAPTERS.length}
       </p>
       <div className="mt-2 flex flex-wrap items-baseline gap-3">
-        <span className="rounded bg-[var(--color-ink)] px-2 py-1 text-sm font-bold tabular-nums text-[var(--color-paper)]">
+        <span className="rounded bg-[var(--color-ink)] px-2 py-1 text-sm font-bold tabular-nums text-[var(--color-cream)]">
           {c.year}
         </span>
         <h1 className="font-display text-4xl sm:text-6xl font-bold tracking-tight leading-[1.02]">
@@ -98,7 +98,7 @@ export default async function StoryChapterPage({
       ) : null}
 
       <section className="mt-8 rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6">
-        <p className="text-[10px] uppercase tracking-[0.18em] font-bold text-[var(--color-navy)]">
+        <p className="text-[10px] uppercase tracking-[0.18em] font-bold text-[var(--color-ink)]">
           How Ryan was involved · from the record
         </p>
         <p className="mt-2 text-base sm:text-lg leading-relaxed text-[var(--color-ink)]">
@@ -107,14 +107,14 @@ export default async function StoryChapterPage({
         <p className="mt-3 text-xs text-[var(--color-muted)]">
           Source: the biography filed as Exhibit 288 in United States v.
           Nichols —{" "}
-          <Link href="/about" className="font-bold text-[var(--color-navy)] hover:underline">
+          <Link href="/about" className="font-bold text-[var(--color-ink)] hover:underline">
             read it in full →
           </Link>
         </p>
       </section>
 
       {c.significance ? (
-        <section className="mt-6 rounded-2xl bg-[var(--color-ink)] p-6 text-[var(--color-paper)]">
+        <section className="mt-6 rounded-2xl bg-[var(--color-ink)] p-6 text-[var(--color-cream)]">
           <p className="text-[10px] uppercase tracking-[0.18em] font-bold text-[var(--color-accent)]">
             Why it matters
           </p>
@@ -126,7 +126,7 @@ export default async function StoryChapterPage({
 
       {c.recognition && c.recognition.length > 0 ? (
         <section className="mt-6 rounded-2xl border-2 border-[var(--color-blue)]/40 bg-[var(--color-blue-soft)]/50 p-5">
-          <p className="text-[10px] uppercase tracking-[0.18em] font-bold text-[var(--color-blue)]">
+          <p className="text-[10px] uppercase tracking-[0.18em] font-bold text-[var(--color-blue-ink)]">
             Recognized
           </p>
           {c.recognition.map((r) => (
@@ -173,7 +173,7 @@ export default async function StoryChapterPage({
             </p>
             <Link
               href="/submit"
-              className="mt-3 inline-flex min-h-11 items-center rounded-lg bg-[var(--color-navy)] px-4 py-2 text-sm font-bold text-[#fdf8ea] transition hover:bg-[var(--color-blue)]"
+              className="mt-3 inline-flex min-h-11 items-center rounded-lg bg-[var(--color-gold)] px-4 py-2 text-sm font-bold text-[var(--color-navy)] transition hover:bg-[var(--color-support-strong)]"
             >
               Send what you have →
             </Link>
@@ -196,7 +196,7 @@ export default async function StoryChapterPage({
         {prev ? (
           <Link
             href={`/story/${prev.slug}`}
-            className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4 transition hover:border-[var(--color-navy)]"
+            className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4 transition hover:border-[var(--color-gold)]"
           >
             <p className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-muted)]">
               ← Before this
@@ -211,7 +211,7 @@ export default async function StoryChapterPage({
         {next ? (
           <Link
             href={`/story/${next.slug}`}
-            className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4 text-right transition hover:border-[var(--color-navy)]"
+            className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4 text-right transition hover:border-[var(--color-gold)]"
           >
             <p className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-muted)]">
               What came next →

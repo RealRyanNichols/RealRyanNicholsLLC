@@ -48,8 +48,8 @@ export function PostStatsPanel({
           {pulse.reading_now >= 1 ? (
             <span className="inline-flex items-center gap-1.5">
               <span className="relative flex h-2 w-2" aria-hidden>
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-accent)] opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--color-accent)]" />
               </span>
               <strong className="text-[var(--color-ink)] tabular-nums">{fmt(pulse.reading_now)}</strong>
               <span className="text-[var(--color-ink-soft)]">reading now</span>

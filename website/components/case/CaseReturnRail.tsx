@@ -28,7 +28,7 @@ export function CaseReturnRail({
     >
       <Link
         href={href}
-        className="inline-flex min-h-11 items-center gap-1.5 font-bold text-[var(--color-navy)] hover:underline"
+        className="inline-flex min-h-11 items-center gap-1.5 font-bold text-[var(--color-ink)] hover:underline"
       >
         <span aria-hidden>←</span>
         {label}
@@ -41,7 +41,7 @@ export function CaseReturnRail({
       {secondary ? (
         <Link
           href={secondary.href}
-          className="inline-flex min-h-11 items-center gap-1 font-semibold text-[var(--color-ink-soft)] hover:text-[var(--color-navy)] hover:underline"
+          className="inline-flex min-h-11 items-center gap-1 font-semibold text-[var(--color-ink-soft)] hover:text-[var(--color-gold)] hover:underline"
         >
           {secondary.label}
           <span aria-hidden>→</span>

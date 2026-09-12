@@ -57,7 +57,7 @@ export function CaseSearchForm({
         {q ? (
           <Link
             href={clearHref}
-            className="inline-flex min-h-11 flex-1 items-center justify-center rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-4 text-sm font-bold text-[var(--color-ink-soft)] hover:border-[var(--color-navy)] hover:text-[var(--color-navy)] sm:flex-none"
+            className="inline-flex min-h-11 flex-1 items-center justify-center rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-4 text-sm font-bold text-[var(--color-ink-soft)] hover:border-[var(--color-gold)] hover:text-[var(--color-gold)] sm:flex-none"
           >
             Clear
           </Link>

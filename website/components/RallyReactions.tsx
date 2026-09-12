@@ -65,10 +65,10 @@ export function RallyReactions() {
           type="button"
           onClick={(e) => react(r.emoji, e)}
           aria-label={r.label}
-          className="group inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 transition hover:border-[var(--color-gold-bright)]/50 hover:bg-white/[0.08] active:scale-95"
+          className="group inline-flex items-center gap-1.5 rounded-full border border-[var(--color-cream)]/10 bg-[var(--color-cream)]/[0.04] px-3 py-1.5 transition hover:border-[var(--color-gold-bright)]/50 hover:bg-[var(--color-cream)]/[0.08] active:scale-95"
         >
           <span className="text-base transition group-active:scale-125">{r.emoji}</span>
-          <span className="text-xs font-black tabular-nums text-[#cfd9ea]">
+          <span className="text-xs font-black tabular-nums text-[var(--color-ink-soft)]">
             {r.count.toLocaleString()}
           </span>
         </button>

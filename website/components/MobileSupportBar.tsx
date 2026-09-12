@@ -15,12 +15,12 @@ export function MobileSupportBar() {
     return (
       <div
         data-mobile-support-bar
-        className="rrn-mobile-support-bar fixed bottom-0 left-0 right-0 z-10 border-t border-[var(--color-gold-bright)]/50 bg-[#071126]/95 px-3 pt-2.5 pb-[calc(0.625rem+env(safe-area-inset-bottom))] shadow-[0_-10px_28px_rgba(7,17,38,0.4)] backdrop-blur-xl lg:hidden"
+        className="rrn-mobile-support-bar fixed bottom-0 left-0 right-0 z-10 border-t border-[var(--color-gold-bright)]/50 bg-[var(--color-surface)]/95 px-3 pt-2.5 pb-[calc(0.625rem+env(safe-area-inset-bottom))] shadow-[0_-10px_28px_rgba(7,17,38,0.4)] backdrop-blur-xl lg:hidden"
       >
         <a
           href="#fuel"
           data-track="mobile-bar-fuel"
-          className="mx-auto flex min-h-12 max-w-md items-center justify-center rounded-lg bg-[var(--color-gold-bright)] px-4 text-base font-black text-[#071126]"
+          className="mx-auto flex min-h-12 max-w-md items-center justify-center rounded-lg bg-[var(--color-gold-bright)] px-4 text-base font-black text-[var(--color-navy)]"
         >
           Fuel the machine ↓
         </a>
@@ -40,7 +40,7 @@ export function MobileSupportBar() {
           type="button"
           data-track="mobile-bar-talk"
           onClick={() => window.dispatchEvent(new Event("ryanchat:open"))}
-          className="inline-flex min-h-11 items-center justify-center rounded-lg bg-[var(--color-navy)] px-1 text-center text-xs font-black text-[#fdf8ea]"
+          className="inline-flex min-h-11 items-center justify-center rounded-lg bg-[var(--color-gold)] px-1 text-center text-xs font-black text-[var(--color-navy)]"
         >
           Talk
         </button>

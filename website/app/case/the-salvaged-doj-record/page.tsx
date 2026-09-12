@@ -151,7 +151,7 @@ export default async function SalvagedDojRecordPage({
           reachable home. */}
 
       <section className="mt-8 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-5 sm:p-6">
-        <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-blue)]">
+        <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-blue-ink)]">
           Provenance
         </p>
         <h2 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight font-display">
@@ -211,7 +211,7 @@ export default async function SalvagedDojRecordPage({
           />
           <button
             type="submit"
-            className="rounded-lg border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-3 font-bold hover:bg-[var(--color-accent-strong)]"
+            className="rounded-lg border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-3 font-bold hover:bg-[var(--color-accent-strong)]"
           >
             Search
           </button>
@@ -259,7 +259,7 @@ export default async function SalvagedDojRecordPage({
                       </span>
                     ) : null}
                     {matchedSlug ? (
-                      <span className="rounded-full bg-[var(--color-success)] text-[var(--color-paper)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
+                      <span className="rounded-full bg-[var(--color-success)] text-[var(--color-navy)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
                         ✓ archived
                       </span>
                     ) : null}
@@ -348,7 +348,7 @@ export default async function SalvagedDojRecordPage({
         <div className="mt-5 flex flex-wrap gap-3">
           <Link
             href="/case"
-            className="rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
+            className="rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
           >
             The full case archive →
           </Link>
@@ -360,7 +360,7 @@ export default async function SalvagedDojRecordPage({
           </Link>
           <Link
             href="/submit"
-            className="rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
+            className="rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-cream)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
           >
             Send a tip / receipt
           </Link>

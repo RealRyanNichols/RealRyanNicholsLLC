@@ -77,14 +77,14 @@ export function RescueGallery({ count = 54 }: { count?: number }) {
           <button
             type="button"
             onClick={close}
-            className="absolute right-4 top-4 rounded-full border border-white/30 px-3 py-1 text-sm font-bold text-white hover:bg-white/10"
+            className="absolute right-4 top-4 rounded-full border border-[var(--color-cream)]/30 px-3 py-1 text-sm font-bold text-[var(--color-cream)] hover:bg-[var(--color-cream)]/10"
           >
             Close ✕
           </button>
           <button
             type="button"
             onClick={(e) => { e.stopPropagation(); step(-1); }}
-            className="absolute left-3 rounded-full border border-white/30 px-3 py-2 text-xl font-bold text-white hover:bg-white/10 sm:left-6"
+            className="absolute left-3 rounded-full border border-[var(--color-cream)]/30 px-3 py-2 text-xl font-bold text-[var(--color-cream)] hover:bg-[var(--color-cream)]/10 sm:left-6"
             aria-label="Previous"
           >
             ‹
@@ -99,12 +99,12 @@ export function RescueGallery({ count = 54 }: { count?: number }) {
           <button
             type="button"
             onClick={(e) => { e.stopPropagation(); step(1); }}
-            className="absolute right-3 rounded-full border border-white/30 px-3 py-2 text-xl font-bold text-white hover:bg-white/10 sm:right-6"
+            className="absolute right-3 rounded-full border border-[var(--color-cream)]/30 px-3 py-2 text-xl font-bold text-[var(--color-cream)] hover:bg-[var(--color-cream)]/10 sm:right-6"
             aria-label="Next"
           >
             ›
           </button>
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-black/60 px-4 py-1 text-xs font-semibold text-white">
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-black/60 px-4 py-1 text-xs font-semibold text-[var(--color-cream)]">
             {open + 1} / {count} · realryannichols.com
           </div>
         </div>

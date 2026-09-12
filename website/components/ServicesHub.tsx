@@ -173,16 +173,16 @@ export function ServicesHub() {
           className="object-cover"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-[#100805]/80" aria-hidden="true" />
-        <div className="relative mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 py-8 text-[#fdf8ea] sm:px-6 lg:min-h-[72vh] lg:grid-cols-[1.08fr_0.92fr] lg:items-end lg:py-10">
+        <div className="absolute inset-0 bg-black/80" aria-hidden="true" />
+        <div className="relative mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 py-8 text-[var(--color-cream)] sm:px-6 lg:min-h-[72vh] lg:grid-cols-[1.08fr_0.92fr] lg:items-end lg:py-10">
           <div className="pb-2">
-            <p className="text-xs font-black uppercase tracking-normal text-[#f1c15f]">
+            <p className="text-xs font-black uppercase tracking-normal text-[var(--color-gold)]">
               Business services built around attention, proof, and checkout
             </p>
-            <h1 className="mt-3 max-w-3xl text-4xl font-black leading-[1.04] tracking-normal text-[#fdf8ea] sm:text-5xl lg:text-7xl">
+            <h1 className="mt-3 max-w-3xl text-4xl font-black leading-[1.04] tracking-normal text-[var(--color-cream)] sm:text-5xl lg:text-7xl">
               Turn attention into action.
             </h1>
-            <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#f6efdf] sm:text-lg">
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-[var(--color-cream)] sm:text-lg">
               I build and sharpen owned websites for people who need their story,
               services, records, and audience on a domain they control. Social
               media gets attention. The website captures it.
@@ -196,7 +196,7 @@ export function ServicesHub() {
               </a>
               <Link
                 href="/tell-your-story"
-                className="rrn-tap inline-flex rounded-lg border border-[#d8c89e] bg-[#fdf8ea] px-5 py-3 text-sm font-bold text-[#142a52] transition hover:border-[#fdf8ea]"
+                className="rrn-tap inline-flex rounded-lg border border-[var(--color-gold)] bg-[var(--color-gold)] px-5 py-3 text-sm font-bold text-[var(--color-navy)] transition hover:border-[var(--color-cream)]"
               >
                 Try story flow
               </Link>
@@ -205,7 +205,7 @@ export function ServicesHub() {
 
           <div
             id="story-path"
-            className="rounded-lg border border-[#d8c89e]/50 bg-[#fdf8ea] p-4 text-[var(--color-ink)] shadow-2xl sm:p-5"
+            className="rounded-lg border border-[var(--color-gold)]/50 bg-[var(--color-surface-2)] p-4 text-[var(--color-ink)] shadow-2xl sm:p-5"
           >
             <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
               Proof you can click
@@ -227,7 +227,7 @@ export function ServicesHub() {
               ].map(([title, body]) => (
                 <div
                   key={title}
-                  className="grid grid-cols-[1.5rem_1fr] gap-3 rounded-lg border border-[var(--color-line)] bg-white p-3"
+                  className="grid grid-cols-[1.5rem_1fr] gap-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-3"
                 >
                   <span className="mt-1 flex h-3 w-3 items-center justify-center rounded-full bg-[var(--color-accent)]" aria-hidden />
                   <span>
@@ -308,7 +308,7 @@ export function ServicesHub() {
                     value: event.target.value,
                   });
                 }}
-                className="mt-1 w-full rounded-lg border border-[var(--color-line)] bg-white px-3 py-3 text-sm"
+                className="mt-1 w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-3 text-sm"
               >
                 {PROBLEMS.map((item) => (
                   <option key={item.value} value={item.value}>
@@ -330,7 +330,7 @@ export function ServicesHub() {
                     value: event.target.value,
                   });
                 }}
-                className="mt-1 w-full rounded-lg border border-[var(--color-line)] bg-white px-3 py-3 text-sm"
+                className="mt-1 w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-3 text-sm"
               >
                 {PROOF_MODES.map((item) => (
                   <option key={item.value} value={item.value}>
@@ -339,10 +339,10 @@ export function ServicesHub() {
                 ))}
               </select>
             </label>
-            <div className="rounded-lg border border-[var(--color-line)] bg-white p-3">
+            <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-3">
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <p className="text-xs font-bold uppercase text-[var(--color-blue)]">
+                  <p className="text-xs font-bold uppercase text-[var(--color-blue-ink)]">
                     Recommended
                   </p>
                   <h3 className="mt-1 text-xl font-black tracking-normal">
@@ -399,7 +399,7 @@ export function ServicesHub() {
                 ].join(" ")}
               >
                 <div className="flex items-start justify-between gap-3">
-                  <p className="text-xs font-black uppercase tracking-normal text-[var(--color-blue)]">
+                  <p className="text-xs font-black uppercase tracking-normal text-[var(--color-blue-ink)]">
                     {service.eyebrow}
                   </p>
                   <p className="text-lg font-black text-[var(--color-accent)]">
@@ -450,7 +450,7 @@ export function ServicesHub() {
               ))}
             </div>
             <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <p className="rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] px-4 py-2 text-xs font-black uppercase tracking-normal text-[var(--color-blue)]">
+              <p className="rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] px-4 py-2 text-xs font-black uppercase tracking-normal text-[var(--color-blue-ink)]">
                 {focused.proof}
               </p>
               <TrackerLink
@@ -461,28 +461,28 @@ export function ServicesHub() {
             </div>
           </div>
 
-          <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-blue)] p-5 text-[#fdf8ea] sm:p-6">
-            <p className="text-xs font-black uppercase tracking-normal text-[#d8c89e]">
+          <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-blue)] p-5 text-[var(--color-cream)] sm:p-6">
+            <p className="text-xs font-black uppercase tracking-normal text-[var(--color-gold)]">
               Attention mechanisms
             </p>
-            <h2 className="mt-2 text-3xl font-black tracking-normal text-[#fdf8ea]">
+            <h2 className="mt-2 text-3xl font-black tracking-normal text-[var(--color-cream)]">
               Keep visitors moving.
             </h2>
-            <ul className="mt-5 space-y-3 text-sm leading-relaxed text-[#f6efdf]">
-              <li className="border-l-2 border-[#d8c89e] pl-3">
-                <strong className="text-white">Matcher:</strong> reduces indecision
+            <ul className="mt-5 space-y-3 text-sm leading-relaxed text-[var(--color-cream)]">
+              <li className="border-l-2 border-[var(--color-gold)] pl-3">
+                <strong className="text-[var(--color-cream)]">Matcher:</strong> reduces indecision
                 by telling people the smallest smart service.
               </li>
-              <li className="border-l-2 border-[#d8c89e] pl-3">
-                <strong className="text-white">Proof modules:</strong> show what
+              <li className="border-l-2 border-[var(--color-gold)] pl-3">
+                <strong className="text-[var(--color-cream)]">Proof modules:</strong> show what
                 can live on the site before a buyer has to imagine it.
               </li>
-              <li className="border-l-2 border-[#d8c89e] pl-3">
-                <strong className="text-white">Checkout path:</strong> every
+              <li className="border-l-2 border-[var(--color-gold)] pl-3">
+                <strong className="text-[var(--color-cream)]">Checkout path:</strong> every
                 serious service points to the existing Stripe-backed store.
               </li>
-              <li className="border-l-2 border-[#d8c89e] pl-3">
-                <strong className="text-white">Owned audience frame:</strong>{" "}
+              <li className="border-l-2 border-[var(--color-gold)] pl-3">
+                <strong className="text-[var(--color-cream)]">Owned audience frame:</strong>{" "}
                 social media becomes the billboard; the domain becomes the home.
               </li>
             </ul>
@@ -490,16 +490,16 @@ export function ServicesHub() {
         </div>
       </section>
 
-      <section className="bg-[var(--color-ink)] text-[#fdf8ea]">
+      <section className="bg-[var(--color-ink)] text-[var(--color-cream)]">
         <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-10">
           <div className="max-w-3xl">
-            <p className="text-xs font-black uppercase tracking-normal text-[#d8c89e]">
+            <p className="text-xs font-black uppercase tracking-normal text-[var(--color-gold)]">
               Build menu
             </p>
-            <h2 className="mt-2 text-3xl font-black leading-tight tracking-normal text-[#fdf8ea] lg:text-5xl">
+            <h2 className="mt-2 text-3xl font-black leading-tight tracking-normal text-[var(--color-cream)] lg:text-5xl">
               The site can become the tool, not just the brochure.
             </h2>
-            <p className="mt-4 text-sm leading-relaxed text-[#f6efdf]">
+            <p className="mt-4 text-sm leading-relaxed text-[var(--color-cream)]">
               The best websites give people something to touch: a live counter, a
               file wall, a tip form, a booking path, a feed, a support meter, or a
               private follow-up route. That is what keeps attention on your domain.
@@ -509,12 +509,12 @@ export function ServicesHub() {
             {MODULES.map(([title, body]) => (
               <div
                 key={title}
-                className="rounded-lg border border-[#d8c89e]/40 bg-white/[0.06] p-4"
+                className="rounded-lg border border-[var(--color-gold)]/40 bg-[var(--color-cream)]/[0.06] p-4"
               >
-                <h3 className="font-sans text-base font-black text-[#fdf8ea]">
+                <h3 className="font-sans text-base font-black text-[var(--color-cream)]">
                   {title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-[#f6efdf]">
+                <p className="mt-2 text-sm leading-relaxed text-[var(--color-cream)]">
                   {body}
                 </p>
               </div>

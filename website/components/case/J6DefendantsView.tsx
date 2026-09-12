@@ -47,7 +47,7 @@ export function J6DefendantsView({
       <div className="mb-5 overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)]">
         <div className="grid gap-px bg-[var(--color-line)] md:grid-cols-[1fr_0.8fr]">
           <div className="bg-[var(--color-surface)] p-5">
-            <p className="text-xs uppercase tracking-wider text-[var(--color-navy)] font-bold">
+            <p className="text-xs uppercase tracking-wider text-[var(--color-ink)] font-bold">
               Anti-Weaponization Case Builder
             </p>
             <h2 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight">
@@ -90,8 +90,8 @@ export function J6DefendantsView({
               className={[
                 "inline-flex min-h-11 items-center rounded-full px-3 py-1.5 text-xs font-bold border-2 transition sm:min-h-0",
                 active
-                  ? "border-[var(--color-navy)] bg-[var(--color-navy)] text-[var(--color-paper)]"
-                  : "border-[var(--color-line)] hover:border-[var(--color-navy)]",
+                  ? "border-[var(--color-gold)] bg-[var(--color-gold)] text-[var(--color-navy)]"
+                  : "border-[var(--color-line)] hover:border-[var(--color-gold)]",
               ].join(" ")}
             >
               {label}
@@ -146,11 +146,11 @@ export function J6DefendantsView({
                 <J6ProfileImage person={p} variant="card" />
                 <div className="flex flex-1 flex-col p-4">
                   <div className="flex items-start justify-between gap-2">
-                    <h3 className="text-lg font-black leading-tight tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-blue)]">
+                    <h3 className="text-lg font-black leading-tight tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-blue-ink)]">
                       {p.name}
                     </h3>
                     <span
-                      className="whitespace-nowrap rounded-md px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--color-paper)]"
+                      className="whitespace-nowrap rounded-md px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--color-cream)]"
                       style={{ background: badge.bg }}
                     >
                       {badge.label}
@@ -169,7 +169,7 @@ export function J6DefendantsView({
                       {p.views_count.toLocaleString()} views
                     </span>
                   </div>
-                  <span className="mt-auto pt-4 text-sm font-black text-[var(--color-blue)]">
+                  <span className="mt-auto pt-4 text-sm font-black text-[var(--color-blue-ink)]">
                     View free public profile →
                   </span>
                 </div>

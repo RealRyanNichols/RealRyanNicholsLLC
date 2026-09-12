@@ -157,7 +157,7 @@ export function FuelCheckout({
             data-fuel-cadence="once"
             onClick={() => setCadence("once")}
             className={`min-h-11 rounded-lg px-3 text-sm font-black transition ${
-              !monthly ? "bg-[var(--color-navy)] text-[var(--color-paper)] shadow" : "text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]"
+              !monthly ? "bg-[var(--color-gold)] text-[var(--color-navy)] shadow" : "text-[var(--color-navy)]/80 hover:text-[var(--color-ink)]"
             }`}
           >
             One time
@@ -169,7 +169,7 @@ export function FuelCheckout({
             data-fuel-cadence="monthly"
             onClick={() => setCadence("monthly")}
             className={`min-h-11 rounded-lg px-3 text-sm font-black transition ${
-              monthly ? "bg-[var(--color-navy)] text-[var(--color-paper)] shadow" : "text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]"
+              monthly ? "bg-[var(--color-gold)] text-[var(--color-navy)] shadow" : "text-[var(--color-navy)]/80 hover:text-[var(--color-ink)]"
             }`}
           >
             Monthly · {usdWhole(FUEL_MONTHLY.amountCents)}
@@ -177,19 +177,19 @@ export function FuelCheckout({
         </div>
 
         {monthly ? (
-          <div className="mt-3 rounded-2xl border-2 border-[var(--color-navy)] bg-[var(--color-blue-soft)]/60 p-4 sm:p-5" data-fuel-keeper>
+          <div className="mt-3 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)]/60 p-4 sm:p-5" data-fuel-keeper>
             <div className="flex items-baseline justify-between gap-3">
               <span className="font-display text-3xl font-black tabular-nums tracking-tight text-[var(--color-ink)]">
                 {usdWhole(FUEL_MONTHLY.amountCents)}
                 <span className="text-base font-bold text-[var(--color-muted)]"> a month</span>
               </span>
-              <span className="rounded-full bg-[var(--color-navy)] px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-[var(--color-paper)]">
+              <span className="rounded-full bg-[var(--color-gold)] px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-[var(--color-navy)]">
                 {FUEL_MONTHLY.title}
               </span>
             </div>
             <p className="mt-1 text-base font-bold text-[var(--color-ink)]">{FUEL_MONTHLY.blurb}</p>
             {buysLabel(FUEL_MONTHLY.amountCents) ? (
-              <p className="mt-0.5 text-xs font-black uppercase tracking-wider text-[var(--color-navy)]">
+              <p className="mt-0.5 text-xs font-black uppercase tracking-wider text-[var(--color-ink)]">
                 {buysLabel(FUEL_MONTHLY.amountCents)}, every month
               </p>
             ) : null}
@@ -234,7 +234,7 @@ export function FuelCheckout({
                       {usdWhole(t.amountCents)}
                     </span>
                     {t.featured ? (
-                      <span className="rounded-full bg-[var(--color-accent)] px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-[var(--color-paper)]">
+                      <span className="rounded-full bg-[var(--color-accent)] px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-[var(--color-cream)]">
                         Most asked for
                       </span>
                     ) : null}
@@ -383,8 +383,8 @@ export function FuelCheckout({
 
       {/* The deal, restated right above the button */}
       {haveAmount ? (
-        <div className="rounded-2xl border-2 border-[var(--color-navy)] bg-[var(--color-blue-soft)]/60 p-4 sm:p-5" data-fuel-summary>
-          <p className="text-xs font-black uppercase tracking-wider text-[var(--color-navy)]">The deal</p>
+        <div className="rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)]/60 p-4 sm:p-5" data-fuel-summary>
+          <p className="text-xs font-black uppercase tracking-wider text-[var(--color-ink)]">The deal</p>
           <p className="mt-1 font-display text-xl font-bold tracking-tight text-[var(--color-ink)]">
             {usdWhole(amountCents)}
             {monthly ? " a month" : ""}
@@ -445,7 +445,7 @@ export function FuelCheckout({
 function StepLabel({ n, children }: { n: number; children: React.ReactNode }) {
   return (
     <p className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[var(--color-muted)]">
-      <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[var(--color-navy)] text-[11px] font-black text-[var(--color-paper)]">
+      <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[var(--color-gold)] text-[11px] font-black text-[var(--color-navy)]">
         {n}
       </span>
       <span>{children}</span>

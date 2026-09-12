@@ -249,15 +249,15 @@ export default async function SubmitPage({
       </section>
 
       <section className="rrn-section">
-        <div className="grid gap-5 rounded-lg border border-[var(--color-line)] bg-[var(--color-ink)] p-5 text-white sm:p-6 lg:grid-cols-[1fr_auto] lg:items-center">
+        <div className="grid gap-5 rounded-lg border border-[var(--color-line)] bg-[var(--color-ink)] p-5 text-[var(--color-cream)] sm:p-6 lg:grid-cols-[1fr_auto] lg:items-center">
           <div>
-            <p className="text-xs font-bold uppercase tracking-normal text-white/70">
+            <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-cream)]/70">
               Ask for more
             </p>
             <h2 className="mt-2 font-display text-2xl font-bold leading-tight tracking-normal sm:text-3xl">
               Know someone sitting on receipts?
             </h2>
-            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/80">
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--color-cream)]/80">
               Send them this page. One useful date, docket link, video, report
               number, screenshot, or missing-record lead can change the whole
               timeline.
@@ -266,13 +266,13 @@ export default async function SubmitPage({
           <div className="rrn-tap-row">
             <Link
               href="/submit"
-              className="rrn-tap rounded-lg bg-white px-4 py-2 text-sm font-bold text-[var(--color-ink)] transition hover:bg-[var(--color-paper)]"
+              className="rrn-tap rounded-lg bg-[var(--color-gold)] px-4 py-2 text-sm font-bold text-[var(--color-navy)] transition hover:bg-[var(--color-support-strong)]"
             >
               Open tip line
             </Link>
             <Link
               href="/contact"
-              className="rrn-tap rounded-lg border border-white/40 px-4 py-2 text-sm font-bold text-white transition hover:bg-white/10"
+              className="rrn-tap rounded-lg border border-[var(--color-cream)]/40 px-4 py-2 text-sm font-bold text-[var(--color-cream)] transition hover:bg-[var(--color-cream)]/10"
             >
               Contact Ryan
             </Link>

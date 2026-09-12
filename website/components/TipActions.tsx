@@ -128,7 +128,7 @@ export function TipActions({
             type="button"
             disabled={isPending}
             onClick={() => update(currentStatus as Status, notes)}
-            className="mt-2 text-xs font-semibold rounded-md border border-[var(--color-accent)] bg-[var(--color-accent)] text-white px-3 py-1 hover:bg-[var(--color-accent-strong)] disabled:opacity-50"
+            className="mt-2 text-xs font-semibold rounded-md border border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-3 py-1 hover:bg-[var(--color-accent-strong)] disabled:opacity-50"
           >
             Save notes
           </button>
@@ -220,7 +220,7 @@ export function TipActions({
                 outcome_notes: outcomeNotes.trim() || null,
               })
             }
-            className="border border-[var(--color-accent)] bg-[var(--color-accent)] px-3 py-2 text-xs font-black uppercase tracking-normal text-white hover:bg-[var(--color-accent-strong)] disabled:opacity-50"
+            className="border border-[var(--color-accent)] bg-[var(--color-accent)] px-3 py-2 text-xs font-black uppercase tracking-normal text-[var(--color-cream)] hover:bg-[var(--color-accent-strong)] disabled:opacity-50"
           >
             Save outcome
           </button>

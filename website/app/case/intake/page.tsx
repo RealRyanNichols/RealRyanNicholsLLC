@@ -42,7 +42,7 @@ type Search = { filter?: string; route?: string };
 const statusCopy: Record<IntakeItem["public_status"], { label: string; cls: string }> = {
   received: {
     label: "Received",
-    cls: "border-[var(--color-blue)] bg-[var(--color-blue-soft)] text-[var(--color-blue)]",
+    cls: "border-[var(--color-blue)] bg-[var(--color-blue-soft)] text-[var(--color-blue-ink)]",
   },
   triage: {
     label: "Triage",
@@ -275,7 +275,7 @@ export default async function IntakeLedgerPage({
               carry the most weight. Voice recordings are accepted too —{" "}
               <Link
                 href="/tell-your-story"
-                className="font-bold text-[var(--color-navy)] hover:underline"
+                className="font-bold text-[var(--color-ink)] hover:underline"
               >
                 record yours here
               </Link>
@@ -284,7 +284,7 @@ export default async function IntakeLedgerPage({
             <div className="rrn-tap-row mt-5">
               <Link
                 href="/submit"
-                className="rrn-tap rounded-lg bg-[var(--color-accent)] px-4 py-3 text-sm font-bold text-white transition hover:bg-[var(--color-accent-strong)]"
+                className="rrn-tap rounded-lg bg-[var(--color-accent)] px-4 py-3 text-sm font-bold text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)]"
               >
                 Submit another lead
               </Link>
@@ -309,16 +309,16 @@ export default async function IntakeLedgerPage({
       </section>
 
       <section className="rrn-section">
-        <section className="mb-5 border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm">
+        <section className="mb-5 border border-[var(--color-line-soft)] bg-[var(--color-surface)] p-4 text-[var(--color-cream)] shadow-sm">
           <div className="grid gap-4 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
             <div>
               <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
                 Public action lanes
               </p>
-              <h2 className="mt-1 font-sans text-2xl font-black text-[#fdf8ea]">
+              <h2 className="mt-1 font-sans text-2xl font-black text-[var(--color-cream)]">
                 A receipt is not enough. It has to move.
               </h2>
-              <p className="mt-2 text-sm font-semibold leading-6 text-[#cfd9ea]">
+              <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
                 Each public-safe item gets a lane so people can see what kind of
                 help is needed next without exposing private details.
               </p>
@@ -357,8 +357,8 @@ export default async function IntakeLedgerPage({
             </div>
           </div>
           {routeFilter ? (
-            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border border-white/10 bg-white/[0.055] p-3">
-              <p className="text-sm font-bold leading-6 text-[#cfd9ea]">
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border border-[var(--color-cream)]/10 bg-[var(--color-cream)]/[0.055] p-3">
+              <p className="text-sm font-bold leading-6 text-[var(--color-ink-soft)]">
                 Showing the {publicRouteCopy[routeFilter].label.toLowerCase()} lane.
               </p>
               <Link
@@ -379,7 +379,7 @@ export default async function IntakeLedgerPage({
               className={[
                 "rrn-tap whitespace-nowrap rounded-full border px-4 py-2 text-sm font-bold transition",
                 filter === option.value || (filter === "all" && option.value === "all")
-                  ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-white"
+                  ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)]"
                   : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink)] hover:border-[var(--color-accent)]",
               ].join(" ")}
             >
@@ -575,13 +575,13 @@ function LaneStat({
         "border p-3 transition",
         active
           ? "border-[var(--color-gold-bright)] bg-[var(--color-gold-bright)]/15"
-          : "border-white/10 bg-white/[0.055] hover:border-[var(--color-gold-bright)]/50 hover:bg-[var(--color-gold-bright)]/10",
+          : "border-[var(--color-cream)]/10 bg-[var(--color-cream)]/[0.055] hover:border-[var(--color-gold-bright)]/50 hover:bg-[var(--color-gold-bright)]/10",
       ].join(" ")}
     >
-      <p className="font-sans text-2xl font-black text-[#fdf8ea]">
+      <p className="font-sans text-2xl font-black text-[var(--color-cream)]">
         {value}
       </p>
-      <p className="mt-1 text-[10px] font-black uppercase tracking-[0.14em] text-[#cfd9ea]">
+      <p className="mt-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
         {label}
       </p>
     </Link>
@@ -590,8 +590,8 @@ function LaneStat({
 
 function routeBadgeClass(urgency: IntakeRoutePlan["urgency"]) {
   const base = "px-2 py-1 text-[10px] font-black uppercase tracking-normal";
-  if (urgency === "hot") return `${base} bg-[var(--color-accent)] text-white`;
-  if (urgency === "next") return `${base} bg-[var(--color-support)] text-[#1a1410]`;
+  if (urgency === "hot") return `${base} bg-[var(--color-accent)] text-[var(--color-cream)]`;
+  if (urgency === "next") return `${base} bg-[var(--color-support)] text-[var(--color-navy)]`;
   return `${base} bg-[var(--color-surface-2)] text-[var(--color-ink-soft)]`;
 }
 

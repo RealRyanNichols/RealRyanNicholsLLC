@@ -72,25 +72,25 @@ export default function CitePage() {
         <div className="mt-4 flex flex-wrap gap-x-5 gap-y-1.5 text-xs font-bold">
           <Link
             href="/case?view=documents"
-            className="inline-flex min-h-11 min-w-11 items-center gap-1 text-[var(--color-navy)] hover:underline sm:min-h-0"
+            className="inline-flex min-h-11 min-w-11 items-center gap-1 text-[var(--color-ink)] hover:underline sm:min-h-0"
           >
             The full document archive <span aria-hidden>→</span>
           </Link>
           <Link
             href="/case?view=timeline"
-            className="inline-flex min-h-11 min-w-11 items-center gap-1 text-[var(--color-navy)] hover:underline sm:min-h-0"
+            className="inline-flex min-h-11 min-w-11 items-center gap-1 text-[var(--color-ink)] hover:underline sm:min-h-0"
           >
             The dated timeline <span aria-hidden>→</span>
           </Link>
           <a
             href="/llms.txt"
-            className="inline-flex min-h-11 min-w-11 items-center gap-1 text-[var(--color-navy)] hover:underline sm:min-h-0"
+            className="inline-flex min-h-11 min-w-11 items-center gap-1 text-[var(--color-ink)] hover:underline sm:min-h-0"
           >
             Machine-readable overview (llms.txt) <span aria-hidden>→</span>
           </a>
           <a
             href="/rss.xml"
-            className="inline-flex min-h-11 min-w-11 items-center gap-1 text-[var(--color-navy)] hover:underline sm:min-h-0"
+            className="inline-flex min-h-11 min-w-11 items-center gap-1 text-[var(--color-ink)] hover:underline sm:min-h-0"
           >
             RSS <span aria-hidden>→</span>
           </a>

@@ -26,10 +26,10 @@ export const CLAIM_INK: Record<ClaimLabel, string> = {
 // and fill for identity but set their text in ink-soft: at 10–11px the
 // lighter inks fall under 4.5:1 on their own tints.
 const CHIP: Record<ClaimLabel, string> = {
-  FACT: "border-[var(--color-navy)] bg-[var(--color-navy)] text-[var(--color-paper)]",
-  RECORD: "border-[var(--color-blue)] bg-[var(--color-blue-soft)] text-[var(--color-blue)]",
-  DOCUMENTED: "border-[var(--color-navy)] bg-[var(--color-blue-soft)] text-[var(--color-navy)]",
-  "RYAN STATEMENT": "border-[var(--color-navy)] bg-transparent text-[var(--color-navy)]",
+  FACT: "border-[var(--color-gold)] bg-[var(--color-gold)] text-[var(--color-navy)]",
+  RECORD: "border-[var(--color-blue)] bg-[var(--color-blue-soft)] text-[var(--color-blue-ink)]",
+  DOCUMENTED: "border-[var(--color-blue)] bg-[var(--color-blue-soft)] text-[var(--color-blue-ink)]",
+  "RYAN STATEMENT": "border-[var(--color-gold)] bg-transparent text-[var(--color-ink)]",
   "DOCUMENTED INFERENCE":
     "border-[var(--color-support-strong)] bg-[var(--color-support-soft)] text-[var(--color-ink-soft)]",
   "NEEDS AUTHENTICATION":

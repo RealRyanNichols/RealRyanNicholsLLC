@@ -10,7 +10,7 @@ import { trackEvent } from "@/lib/analytics";
 type Style = "dark" | "cream";
 
 const FIELD =
-  "w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2.5 text-sm text-[var(--color-ink)] outline-none transition focus:border-[var(--color-navy)]";
+  "w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2.5 text-sm text-[var(--color-ink)] outline-none transition focus:border-[var(--color-accent)]";
 
 const LABEL =
   "block text-[11px] font-black uppercase tracking-wider text-[var(--color-muted)]";
@@ -135,7 +135,7 @@ export function ShareCardTool({
               key={p.label}
               type="button"
               onClick={() => applyPreset(p)}
-              className="min-h-11 rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-1.5 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-navy)] hover:text-[var(--color-navy)] sm:min-h-0"
+              className="min-h-11 rounded-md border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-1.5 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-gold)] hover:text-[var(--color-gold)] sm:min-h-0"
             >
               {p.label}
             </button>
@@ -211,8 +211,8 @@ export function ShareCardTool({
                   className={[
                     "rounded-lg border-2 px-3 py-2.5 text-sm font-black capitalize transition",
                     style === s
-                      ? "border-[var(--color-navy)] bg-[var(--color-blue-soft)] text-[var(--color-navy)]"
-                      : "border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink-soft)] hover:border-[var(--color-navy)]",
+                      ? "border-[var(--color-blue)] bg-[var(--color-blue-soft)] text-[var(--color-blue-ink)]"
+                      : "border-[var(--color-line)] bg-[var(--color-surface-2)] text-[var(--color-ink-soft)] hover:border-[var(--color-gold)]",
                   ].join(" ")}
                 >
                   {s === "dark" ? "Dark board" : "Cream paper"}
@@ -234,7 +234,7 @@ export function ShareCardTool({
           <button
             type="button"
             onClick={copyLink}
-            className="rounded-lg border-2 border-[var(--color-navy)]/40 px-4 py-2.5 text-sm font-bold text-[var(--color-navy)] transition hover:border-[var(--color-navy)]"
+            className="rounded-lg border-2 border-[var(--color-line)] px-4 py-2.5 text-sm font-bold text-[var(--color-ink)] transition hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
             aria-live="polite"
           >
             {copied ? "Link copied ✓" : "Copy image link"}
@@ -247,7 +247,7 @@ export function ShareCardTool({
         <p className="mb-2 text-[11px] font-black uppercase tracking-wider text-[var(--color-muted)]">
           Live preview · 1200×630 — exactly what downloads
         </p>
-        <div className="overflow-hidden rounded-xl border-2 border-[var(--color-navy)]/20 bg-[#071126] shadow-md">
+        <div className="overflow-hidden rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
           {previewSrc ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -256,7 +256,7 @@ export function ShareCardTool({
               className="block aspect-[1200/630] w-full"
             />
           ) : (
-            <div className="grid aspect-[1200/630] w-full place-items-center text-sm font-bold text-[#7c8aa6]">
+            <div className="grid aspect-[1200/630] w-full place-items-center text-sm font-bold text-[var(--color-muted)]">
               Rendering…
             </div>
           )}

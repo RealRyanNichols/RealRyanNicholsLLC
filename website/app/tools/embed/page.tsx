@@ -64,8 +64,8 @@ export default async function EmbedHubPage() {
         />
       </div>
 
-      <section className="mt-10 rounded-2xl border-2 border-[var(--color-navy)]/30 bg-[var(--color-blue-soft)]/40 p-6 sm:p-8">
-        <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[var(--color-navy)]">
+      <section className="mt-10 rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-blue-soft)]/40 p-6 sm:p-8">
+        <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[var(--color-ink)]">
           Why this exists
         </p>
         <p className="mt-2 max-w-2xl font-display text-xl font-bold leading-snug text-[var(--color-ink)] sm:text-2xl">
@@ -81,7 +81,7 @@ export default async function EmbedHubPage() {
           </Link>
           <Link
             href="/tools/share-card"
-            className="rounded-full border-2 border-[var(--color-navy)]/40 px-5 py-2.5 text-sm font-bold text-[var(--color-navy)] transition hover:border-[var(--color-navy)]"
+            className="rounded-full border-2 border-[var(--color-line)] px-5 py-2.5 text-sm font-bold text-[var(--color-ink)] transition hover:border-[var(--color-gold)]"
           >
             Make a share card
           </Link>

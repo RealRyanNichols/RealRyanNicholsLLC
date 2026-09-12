@@ -50,7 +50,7 @@ export function FuelLadder({ tiers }: { tiers: ResolvedFuelTier[] }) {
                   <div
                     className={`absolute inset-y-0 left-0 rounded-md ${
                       r.monthly
-                        ? "bg-[var(--color-navy)]"
+                        ? "bg-[var(--color-gold)]"
                         : r.featured
                           ? "bg-[var(--color-accent)]"
                           : "bg-[var(--color-gold-bright)]"
@@ -62,8 +62,8 @@ export function FuelLadder({ tiers }: { tiers: ResolvedFuelTier[] }) {
                     className={`absolute top-1/2 -translate-y-1/2 whitespace-nowrap text-[11px] font-black uppercase tracking-wider ${
                       w >= 45
                         ? r.monthly || r.featured
-                          ? "text-[var(--color-paper)]"
-                          : "text-[#071126]"
+                          ? "text-[var(--color-cream)]"
+                          : "text-[var(--color-ink)]"
                         : "text-[var(--color-ink)]"
                     }`}
                     style={w >= 45 ? { left: 8 } : { left: `calc(${w}% + 8px)` }}

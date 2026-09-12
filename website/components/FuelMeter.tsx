@@ -71,7 +71,7 @@ export function FuelMeter({ initial }: { initial: FuelStatus }) {
 
   return (
     <div
-      className={`rounded-2xl border bg-white/[0.05] p-5 transition-shadow sm:p-6 ${
+      className={`rounded-2xl border bg-[var(--color-cream)]/[0.05] p-5 transition-shadow sm:p-6 ${
         flash ? "border-[var(--color-gold-bright)] shadow-[0_0_0_4px_rgba(225,189,91,0.25)]" : "border-[var(--color-gold-bright)]/40"
       }`}
       data-fuel-meter
@@ -86,34 +86,34 @@ export function FuelMeter({ initial }: { initial: FuelStatus }) {
             </span>
             {month}&apos;s overage tank · live
           </p>
-          <p className="mt-1 font-display text-4xl font-black tabular-nums tracking-tight text-[#fdf8ea] sm:text-5xl" data-fuel-month>
+          <p className="mt-1 font-display text-4xl font-black tabular-nums tracking-tight text-[var(--color-cream)] sm:text-5xl" data-fuel-month>
             {usdWhole(shown)}
-            {target > 0 ? <span className="text-xl font-bold text-[#cfd9ea] sm:text-2xl"> of {usdWhole(target)}</span> : null}
+            {target > 0 ? <span className="text-xl font-bold text-[var(--color-ink-soft)] sm:text-2xl"> of {usdWhole(target)}</span> : null}
           </p>
         </div>
         <div className="text-left sm:text-right">
           {raised ? (
-            <p className="text-sm font-bold text-[#fdf8ea]">
+            <p className="text-sm font-bold text-[var(--color-cream)]">
               {raised.monthCount === 0
                 ? "Nobody yet this month. The first name goes on the wall."
                 : `${raised.monthCount} ${raised.monthCount === 1 ? "person has" : "people have"} fueled it this month`}
               {raised.keepers > 0 ? ` · ${raised.keepers} ${raised.keepers === 1 ? "Keeper" : "Keepers"}` : ""}
             </p>
           ) : null}
-          <p className="text-sm text-[#cfd9ea]">
+          <p className="text-sm text-[var(--color-ink-soft)]">
             {daysLeft === 0 ? "Last day of the month." : `${daysLeft} ${daysLeft === 1 ? "day" : "days"} left in ${month}.`}
             {status.liveNow > 0 ? ` ${status.liveNow} reading right now.` : ""}
           </p>
         </div>
       </div>
-      <div className="mt-4 h-4 w-full overflow-hidden rounded-full bg-white/10">
+      <div className="mt-4 h-4 w-full overflow-hidden rounded-full bg-[var(--color-cream)]/10">
         <div
           className="h-full rounded-full bg-[var(--color-gold-bright)] transition-[width] duration-700"
           style={{ width: `${pct}%` }}
           aria-hidden
         />
       </div>
-      <div className="mt-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-xs text-[#a9b7d0]">
+      <div className="mt-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-xs text-[var(--color-muted)]">
         <span>
           {raised ? `${pct}% of ${month}'s overage is covered.` : "The meter reads the money as it lands."}
           {raised && raised.allTimeCents > 0 ? ` ${usdWhole(raised.allTimeCents)} fueled all time.` : ""}
@@ -125,10 +125,10 @@ export function FuelMeter({ initial }: { initial: FuelStatus }) {
           {status.recent.map((r, i) => (
             <li
               key={`${r.name}-${r.at}-${i}`}
-              className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.06] px-3 py-1 text-xs text-[#fdf8ea]"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-cream)]/10 bg-[var(--color-cream)]/[0.06] px-3 py-1 text-xs text-[var(--color-cream)]"
             >
               <span className="font-bold">{r.name}</span>
-              <span className="text-[#cfd9ea]">{r.tier.toLowerCase()}</span>
+              <span className="text-[var(--color-ink-soft)]">{r.tier.toLowerCase()}</span>
               {r.amount ? <span className="font-mono text-[var(--color-gold-bright)]">${r.amount}</span> : null}
             </li>
           ))}

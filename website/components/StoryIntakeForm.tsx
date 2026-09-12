@@ -336,7 +336,7 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
               setAckRight(false);
               setAckRedact(false);
             }}
-            className="min-h-11 rounded-lg bg-[var(--color-accent)] px-4 py-2 text-sm font-black text-white"
+            className="min-h-11 rounded-lg bg-[var(--color-accent)] px-4 py-2 text-sm font-black text-[var(--color-cream)]"
           >
             Send another story
           </button>
@@ -400,7 +400,7 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
             <select
               value={storyType}
               onChange={(event) => setStoryType(event.target.value as typeof storyType)}
-              className="min-h-11 rounded-lg border border-[var(--color-line)] bg-white px-3 text-sm font-normal"
+              className="min-h-11 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-sm font-normal"
             >
               {STORY_TYPES.map((item) => (
                 <option key={item}>{item}</option>
@@ -475,7 +475,7 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
               <VoiceStoryRecorder onAppendText={appendStoryText} />
             </div>
 
-            <div className="mt-3 rounded-lg border border-[var(--color-line)] bg-white p-3">
+            <div className="mt-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-3">
               <label className="grid gap-1 text-sm font-bold">
                 Transcribe an audio file
                 <input
@@ -493,7 +493,7 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
                   type="button"
                   onClick={transcribeAudio}
                   disabled={!audioFile || audioStatus.kind === "submitting"}
-                  className="min-h-10 rounded-lg border-2 border-[var(--color-blue)] bg-[var(--color-blue)] px-4 py-2 text-sm font-black text-white transition hover:bg-[var(--color-blue-strong)] disabled:opacity-50"
+                  className="min-h-10 rounded-lg border-2 border-[var(--color-blue)] bg-[var(--color-blue)] px-4 py-2 text-sm font-black text-[var(--color-cream)] transition hover:bg-[var(--color-blue-strong)] disabled:opacity-50"
                 >
                   {audioStatus.kind === "submitting"
                     ? "Transcribing..."
@@ -506,7 +506,7 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
                 ) : null}
               </div>
               {audioStatus.kind === "success" ? (
-                <p className="mt-2 text-xs font-bold text-[var(--color-blue)]">
+                <p className="mt-2 text-xs font-bold text-[var(--color-blue-ink)]">
                   Transcript added. Read it once, fix names and dates, then send.
                 </p>
               ) : audioStatus.kind === "error" ? (
@@ -563,7 +563,7 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
                       "min-h-11 rounded-lg border px-3 py-2 text-left text-xs font-black transition",
                       active
                         ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
-                        : "border-[var(--color-line)] bg-white text-[var(--color-ink-soft)] hover:border-[var(--color-accent)]",
+                        : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)]",
                     ].join(" ")}
                   >
                     {tag}
@@ -591,7 +591,7 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
               <select
                 value={privacy}
                 onChange={(event) => setPrivacy(event.target.value as typeof privacy)}
-                className="min-h-11 rounded-lg border border-[var(--color-line)] bg-white px-3 text-sm font-normal"
+                className="min-h-11 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-sm font-normal"
               >
                 {PRIVACY_OPTIONS.map((item) => (
                   <option key={item}>{item}</option>
@@ -603,7 +603,7 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
               <select
                 value={followUp}
                 onChange={(event) => setFollowUp(event.target.value as typeof followUp)}
-                className="min-h-11 rounded-lg border border-[var(--color-line)] bg-white px-3 text-sm font-normal"
+                className="min-h-11 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-sm font-normal"
               >
                 {FOLLOW_UP_OPTIONS.map((item) => (
                   <option key={item}>{item}</option>
@@ -666,7 +666,7 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
           <button
             type="submit"
             disabled={status.kind === "submitting"}
-            className="min-h-12 rounded-lg bg-[var(--color-accent)] px-5 py-3 text-base font-black text-white transition hover:bg-[var(--color-accent-strong)] disabled:opacity-60"
+            className="min-h-12 rounded-lg bg-[var(--color-accent)] px-5 py-3 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)] disabled:opacity-60"
           >
             {status.kind === "submitting" ? "Sending..." : "Send my story"}
           </button>
@@ -674,35 +674,35 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
       </form>
 
       <aside className="grid content-start gap-4">
-        <section className="rounded-lg border border-[var(--color-blue)] bg-[var(--color-blue-strong)] p-4 text-[var(--color-paper)] shadow-xl sm:p-5">
+        <section className="rounded-lg border border-[var(--color-blue)] bg-[var(--color-blue-strong)] p-4 text-[var(--color-cream)] shadow-xl sm:p-5">
           <p className="text-xs font-black uppercase tracking-normal text-[var(--color-gold-bright)]">
             Live preview
           </p>
-          <h2 className="mt-2 font-display text-2xl font-black tracking-normal text-[var(--color-paper)]">
+          <h2 className="mt-2 font-display text-2xl font-black tracking-normal text-[var(--color-cream)]">
             {preview.title}
           </h2>
-          <div className="mt-4 grid gap-2 text-sm text-white/80">
+          <div className="mt-4 grid gap-2 text-sm text-[var(--color-cream)]/80">
             <p>
-              <strong className="text-white">Place:</strong> {preview.place}
+              <strong className="text-[var(--color-cream)]">Place:</strong> {preview.place}
             </p>
             <p>
-              <strong className="text-white">Time:</strong> {preview.time}
+              <strong className="text-[var(--color-cream)]">Time:</strong> {preview.time}
             </p>
             <p>
-              <strong className="text-white">Tags:</strong> {preview.selectedTags}
+              <strong className="text-[var(--color-cream)]">Tags:</strong> {preview.selectedTags}
             </p>
             <p>
-              <strong className="text-white">First proof:</strong> {preview.proofLine}
+              <strong className="text-[var(--color-cream)]">First proof:</strong> {preview.proofLine}
             </p>
             <p>
-              <strong className="text-white">Connected story:</strong> {preview.witnessLine}
+              <strong className="text-[var(--color-cream)]">Connected story:</strong> {preview.witnessLine}
             </p>
           </div>
-          <div className="mt-4 rounded-lg border border-white/15 bg-white/[0.08] p-3">
-            <p className="text-xs font-black uppercase tracking-normal text-white/60">
+          <div className="mt-4 rounded-lg border border-[var(--color-cream)]/15 bg-[var(--color-cream)]/[0.08] p-3">
+            <p className="text-xs font-black uppercase tracking-normal text-[var(--color-cream)]/60">
               Safer public angle
             </p>
-            <p className="mt-2 text-sm leading-relaxed text-white/85">
+            <p className="mt-2 text-sm leading-relaxed text-[var(--color-cream)]/85">
               {preview.publicAngle}
             </p>
           </div>
@@ -739,7 +739,7 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
         </section>
 
         <section className="rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-4 sm:p-5">
-          <p className="text-xs font-black uppercase tracking-normal text-[var(--color-blue)]">
+          <p className="text-xs font-black uppercase tracking-normal text-[var(--color-blue-ink)]">
             What Ryan sees
           </p>
           <ul className="mt-3 grid gap-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
@@ -777,7 +777,7 @@ function Field({
         onChange={(event) => onChange(event.target.value.slice(0, maxLength))}
         placeholder={placeholder}
         autoComplete={autoComplete}
-        className="min-h-11 rounded-lg border border-[var(--color-line)] bg-white px-3 text-sm font-normal"
+        className="min-h-11 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-sm font-normal"
       />
     </label>
   );
@@ -809,7 +809,7 @@ function TextField({
         onChange={(event) => onChange(event.target.value.slice(0, maxLength))}
         rows={rows}
         placeholder={placeholder}
-        className="rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
+        className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm font-normal"
       />
     </label>
   );

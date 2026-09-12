@@ -55,7 +55,7 @@ export default function ToolsPage() {
               </Link>
               <Link
                 href="/store/strategy-call-30"
-                className="inline-flex min-h-11 items-center rounded-md border-2 border-[var(--color-support)] bg-[var(--color-support)] px-4 py-2 text-sm font-black text-[var(--color-ink)] transition hover:bg-[var(--color-support-soft)]"
+                className="inline-flex min-h-11 items-center rounded-md border-2 border-[var(--color-support)] bg-[var(--color-support)] px-4 py-2 text-sm font-black text-[var(--color-navy)] transition hover:bg-[var(--color-support-soft)]"
               >
                 Build with Ryan
               </Link>
@@ -72,10 +72,10 @@ export default function ToolsPage() {
       <section className="mx-auto max-w-6xl px-3 pt-4 sm:px-6">
         <Link
           href="/tools/records-request"
-          className="group flex flex-wrap items-center justify-between gap-4 rounded-2xl border-2 border-[var(--color-navy)] bg-[var(--color-blue-soft)]/50 p-5 transition hover:border-[var(--color-accent)] sm:p-6"
+          className="group flex flex-wrap items-center justify-between gap-4 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)]/50 p-5 transition hover:border-[var(--color-accent)] sm:p-6"
         >
           <div className="min-w-0">
-            <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[var(--color-navy)]">
+            <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[var(--color-ink)]">
               New · Free · No signup
             </p>
             <p className="mt-1 font-display text-xl font-black tracking-tight text-[var(--color-ink)] sm:text-2xl">

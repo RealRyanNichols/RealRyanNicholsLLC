@@ -300,7 +300,7 @@ const FAQ: { q: string; a: string }[] = [
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-blue)]">
+    <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-blue-ink)]">
       {children}
     </p>
   );
@@ -367,15 +367,15 @@ export default function LegalTechBlueprintPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       {/* SECTION 1: Hero */}
-      <section className="relative overflow-hidden border-b border-[var(--color-line)] bg-[var(--color-blue)] text-[var(--color-paper)]">
+      <section className="relative overflow-hidden border-b border-[var(--color-line)] bg-[var(--color-blue)] text-[var(--color-cream)]">
         <div className="mx-auto max-w-5xl px-5 py-16 sm:px-6 sm:py-20 lg:py-28">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-gold)]">
             Real Ryan Nichols LLC / Legal-Tech Blueprint
           </p>
-          <h1 className="mt-5 max-w-4xl font-display text-4xl font-black leading-[1.06] tracking-tight text-white sm:text-5xl lg:text-6xl">
+          <h1 className="mt-5 max-w-4xl font-display text-4xl font-black leading-[1.06] tracking-tight text-[var(--color-cream)] sm:text-5xl lg:text-6xl">
             Build Your Own Legal-Tech Case Dashboard
           </h1>
-          <p className="mt-6 max-w-3xl text-lg font-medium leading-8 text-[#e7ecf6] sm:text-xl sm:leading-9">
+          <p className="mt-6 max-w-3xl text-lg font-medium leading-8 text-[var(--color-ink-soft)] sm:text-xl sm:leading-9">
             I built a working legal case platform to organize records, people,
             evidence, filings, timelines, and public case content. Now I can help
             you build the same kind of foundation for family law: client intake,
@@ -384,31 +384,31 @@ export default function LegalTechBlueprintPage() {
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
               href={INTAKE_PATH}
-              className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-7 py-3.5 text-base font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)]"
+              className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-7 py-3.5 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)]"
             >
               Request the Blueprint
             </Link>
             <a
               href="#packages"
-              className="inline-flex min-h-12 items-center justify-center rounded-lg border border-[var(--color-paper)]/40 bg-white/10 px-7 py-3.5 text-base font-black text-[var(--color-paper)] transition hover:bg-white/20"
+              className="inline-flex min-h-12 items-center justify-center rounded-lg border border-[var(--color-cream)]/40 bg-[var(--color-cream)]/10 px-7 py-3.5 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-cream)]/20"
             >
               View the Packages
             </a>
           </div>
-          <div className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-white/15 pt-6 text-sm font-semibold text-[#c6d2e8]">
+          <div className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-[var(--color-cream)]/15 pt-6 text-sm font-semibold text-[var(--color-ink-soft)]">
             <span className="text-[var(--color-gold)]">Built on real tools:</span>
             <span>Vercel</span>
-            <span aria-hidden className="text-white/30">/</span>
+            <span aria-hidden className="text-[var(--color-cream)]/30">/</span>
             <span>GitHub</span>
-            <span aria-hidden className="text-white/30">/</span>
+            <span aria-hidden className="text-[var(--color-cream)]/30">/</span>
             <span>Supabase</span>
-            <span aria-hidden className="text-white/30">/</span>
+            <span aria-hidden className="text-[var(--color-cream)]/30">/</span>
             <span>Stripe</span>
-            <span className="w-full text-[#c6d2e8] sm:w-auto sm:pl-1">
+            <span className="w-full text-[var(--color-ink-soft)] sm:w-auto sm:pl-1">
               Not a page builder.
             </span>
           </div>
-          <p className="mt-5 max-w-2xl text-sm font-semibold text-[#c6d2e8]">
+          <p className="mt-5 max-w-2xl text-sm font-semibold text-[var(--color-ink-soft)]">
             For attorneys, legal professionals, and case researchers who want more
             than a basic website.
           </p>
@@ -495,7 +495,7 @@ export default function LegalTechBlueprintPage() {
           <div className="mt-7 grid gap-4 sm:gap-5 md:grid-cols-2">
             {SCATTERED.map((body, i) => (
               <div key={body} className="rrn-card p-6">
-                <p className="font-display text-lg font-black text-[var(--color-blue)]">
+                <p className="font-display text-lg font-black text-[var(--color-blue-ink)]">
                   {String(i + 1).padStart(2, "0")}
                 </p>
                 <p className="mt-2 text-base leading-relaxed text-[var(--color-ink-soft)]">
@@ -545,7 +545,7 @@ export default function LegalTechBlueprintPage() {
                 key={item}
                 className="flex items-center gap-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-4 py-3"
               >
-                <span aria-hidden className="font-display text-lg font-black text-[var(--color-blue)]">
+                <span aria-hidden className="font-display text-lg font-black text-[var(--color-blue-ink)]">
                   +
                 </span>
                 <span className="text-sm font-semibold text-[var(--color-ink)]">
@@ -592,7 +592,7 @@ export default function LegalTechBlueprintPage() {
                 className={[
                   "px-6 pt-6",
                   pkg.recommended
-                    ? "bg-[var(--color-blue)] pb-5 text-[var(--color-paper)]"
+                    ? "bg-[var(--color-blue)] pb-5 text-[var(--color-cream)]"
                     : "pb-0",
                 ].join(" ")}
               >
@@ -604,7 +604,7 @@ export default function LegalTechBlueprintPage() {
                 <h3
                   className={[
                     "font-display text-2xl font-black tracking-tight",
-                    pkg.recommended ? "text-[var(--color-paper)]" : "text-[var(--color-ink)]",
+                    pkg.recommended ? "text-[var(--color-cream)]" : "text-[var(--color-ink)]",
                   ].join(" ")}
                 >
                   {pkg.name}
@@ -613,7 +613,7 @@ export default function LegalTechBlueprintPage() {
                   <span
                     className={[
                       "font-display text-4xl font-black tabular-nums",
-                      pkg.recommended ? "text-[var(--color-paper)]" : "text-[var(--color-ink)]",
+                      pkg.recommended ? "text-[var(--color-cream)]" : "text-[var(--color-ink)]",
                     ].join(" ")}
                   >
                     {pkg.price}
@@ -621,7 +621,7 @@ export default function LegalTechBlueprintPage() {
                   <span
                     className={[
                       "text-sm font-bold",
-                      pkg.recommended ? "text-[#cdd9ef]" : "text-[var(--color-muted)]",
+                      pkg.recommended ? "text-[var(--color-ink-soft)]" : "text-[var(--color-muted)]",
                     ].join(" ")}
                   >
                     {pkg.priceNote}
@@ -630,7 +630,7 @@ export default function LegalTechBlueprintPage() {
                 <p
                   className={[
                     "mt-3 text-sm font-bold",
-                    pkg.recommended ? "text-[#e7ecf6]" : "text-[var(--color-blue)]",
+                    pkg.recommended ? "text-[var(--color-ink-soft)]" : "text-[var(--color-blue-ink)]",
                   ].join(" ")}
                 >
                   {pkg.bestFor}
@@ -666,8 +666,8 @@ export default function LegalTechBlueprintPage() {
                     className={[
                       "mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-lg px-5 py-3 text-sm font-black transition",
                       pkg.recommended
-                        ? "bg-[var(--color-accent)] text-[var(--color-paper)] hover:bg-[var(--color-accent-strong)]"
-                        : "border border-[var(--color-blue)] text-[var(--color-blue)] hover:bg-[var(--color-blue)] hover:text-[var(--color-paper)]",
+                        ? "bg-[var(--color-accent)] text-[var(--color-cream)] hover:bg-[var(--color-accent-strong)]"
+                        : "border border-[var(--color-blue)] text-[var(--color-blue-ink)] hover:bg-[var(--color-blue)] hover:text-[var(--color-cream)]",
                     ].join(" ")}
                   >
                     {pkg.ctaLabel}
@@ -679,8 +679,8 @@ export default function LegalTechBlueprintPage() {
                     className={[
                       "mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-lg px-5 py-3 text-sm font-black transition",
                       pkg.recommended
-                        ? "bg-[var(--color-accent)] text-[var(--color-paper)] hover:bg-[var(--color-accent-strong)]"
-                        : "border border-[var(--color-blue)] text-[var(--color-blue)] hover:bg-[var(--color-blue)] hover:text-[var(--color-paper)]",
+                        ? "bg-[var(--color-accent)] text-[var(--color-cream)] hover:bg-[var(--color-accent-strong)]"
+                        : "border border-[var(--color-blue)] text-[var(--color-blue-ink)] hover:bg-[var(--color-blue)] hover:text-[var(--color-cream)]",
                     ].join(" ")}
                   />
                 )}
@@ -795,15 +795,15 @@ export default function LegalTechBlueprintPage() {
       </section>
 
       {/* SECTION 10: Final CTA */}
-      <section className="bg-[var(--color-blue)] text-[var(--color-paper)]">
+      <section className="bg-[var(--color-blue)] text-[var(--color-cream)]">
         <div className="mx-auto max-w-4xl px-5 py-16 text-center sm:px-6 sm:py-20 lg:py-24">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-gold)]">
             My recommendation
           </p>
-          <h2 className="mt-3 font-display text-3xl font-black leading-tight tracking-tight text-[var(--color-paper)] sm:text-4xl">
+          <h2 className="mt-3 font-display text-3xl font-black leading-tight tracking-tight text-[var(--color-cream)] sm:text-4xl">
             Start with the Guided Build Sprint.
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base font-medium leading-7 text-[#e7ecf6] sm:text-lg">
+          <p className="mx-auto mt-4 max-w-2xl text-base font-medium leading-7 text-[var(--color-ink-soft)] sm:text-lg">
             You get the blueprint, the prompts, the full stack, hands-on setup, and
             enough help to get your first version live without getting lost. You
             own everything you build.
@@ -811,14 +811,14 @@ export default function LegalTechBlueprintPage() {
 
           <div className="mx-auto mt-9 grid max-w-3xl gap-4 text-left sm:grid-cols-3">
             {NEXT_STEPS.map((s) => (
-              <div key={s.n} className="rounded-xl border border-white/15 bg-white/5 p-5">
+              <div key={s.n} className="rounded-xl border border-[var(--color-cream)]/15 bg-[var(--color-cream)]/5 p-5">
                 <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-gold)] font-display text-base font-black text-[var(--color-blue-strong)]">
                   {s.n}
                 </span>
-                <p className="mt-3 font-display text-base font-black text-[var(--color-paper)]">
+                <p className="mt-3 font-display text-base font-black text-[var(--color-cream)]">
                   {s.t}
                 </p>
-                <p className="mt-1 text-sm leading-relaxed text-[#c6d2e8]">{s.b}</p>
+                <p className="mt-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">{s.b}</p>
               </div>
             ))}
           </div>
@@ -827,16 +827,16 @@ export default function LegalTechBlueprintPage() {
             <BlueprintBuyButton
               slug="guided_build"
               label="Start With the Guided Build"
-              className="inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--color-accent)] px-8 py-3.5 text-base font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)] sm:w-auto"
+              className="inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--color-accent)] px-8 py-3.5 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)] sm:w-auto"
             />
             <Link
               href="/contact"
-              className="text-sm font-bold text-[#e7ecf6] underline underline-offset-4 transition hover:text-[var(--color-paper)]"
+              className="text-sm font-bold text-[var(--color-ink-soft)] underline underline-offset-4 transition hover:text-[var(--color-cream)]"
             >
               Or ask a question first
             </Link>
           </div>
-          <p className="mt-4 text-sm font-semibold text-[#c6d2e8]">
+          <p className="mt-4 text-sm font-semibold text-[var(--color-ink-soft)]">
             Guided Build Sprint, $5,000 one-time. You own the stack.
           </p>
         </div>
@@ -853,7 +853,7 @@ export default function LegalTechBlueprintPage() {
                 <span>{item.q}</span>
                 <span
                   aria-hidden
-                  className="shrink-0 text-xl font-black text-[var(--color-blue)] transition group-open:rotate-45"
+                  className="shrink-0 text-xl font-black text-[var(--color-blue-ink)] transition group-open:rotate-45"
                 >
                   +
                 </span>
@@ -885,7 +885,7 @@ export default function LegalTechBlueprintPage() {
       {/* Share the offer — reach another attorney who needs it */}
       <section className="rrn-section pt-0">
         <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6">
-          <p className="text-xs font-black uppercase tracking-[0.18em] text-[var(--color-blue)]">
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-[var(--color-blue-ink)]">
             Know an attorney who needs this?
           </p>
           <h2 className="mt-1 font-display text-xl font-black tracking-tight text-[var(--color-ink)] sm:text-2xl">
@@ -913,13 +913,13 @@ export default function LegalTechBlueprintPage() {
           <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               href={INTAKE_PATH}
-              className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-7 py-3.5 text-base font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)]"
+              className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-7 py-3.5 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)]"
             >
               Request the Blueprint
             </Link>
             <a
               href={`mailto:${EMAIL}`}
-              className="text-sm font-bold text-[var(--color-blue)] underline underline-offset-4"
+              className="text-sm font-bold text-[var(--color-blue-ink)] underline underline-offset-4"
             >
               {EMAIL}
             </a>

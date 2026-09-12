@@ -52,10 +52,10 @@ export function NotifySubscribersButton({ postId }: { postId: string }) {
           {state.kind === "sending" ? "Sending…" : "Send to subscribers"}
         </button>
         {state.kind === "done" && (
-          <p className="text-xs text-emerald-700">{state.message}</p>
+          <p className="text-xs text-[var(--color-success)]">{state.message}</p>
         )}
         {state.kind === "error" && (
-          <p className="text-xs text-red-700">{state.message}</p>
+          <p className="text-xs text-[var(--color-danger)]">{state.message}</p>
         )}
       </div>
     </div>

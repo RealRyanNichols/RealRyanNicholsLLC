@@ -102,7 +102,7 @@ export function ClaimForm({
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="w-full rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-white px-5 py-4 font-bold text-lg hover:bg-[var(--color-accent-strong)] transition disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-4 font-bold text-lg hover:bg-[var(--color-accent-strong)] transition disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {status === "submitting" ? "Submitting…" : "Submit claim →"}
       </button>

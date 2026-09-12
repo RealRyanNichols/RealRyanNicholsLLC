@@ -170,7 +170,7 @@ export function OnboardingForm({
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="w-full rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-4 font-bold text-lg hover:bg-[var(--color-accent-strong)] disabled:opacity-50 disabled:cursor-not-allowed transition"
+        className="w-full rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-4 font-bold text-lg hover:bg-[var(--color-accent-strong)] disabled:opacity-50 disabled:cursor-not-allowed transition"
       >
         {status === "submitting" ? "Saving…" : "Save & continue →"}
       </button>

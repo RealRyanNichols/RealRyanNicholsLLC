@@ -119,7 +119,7 @@ export function CaseTimeline({ data }: { data: TimelinePayload }) {
     <div className="space-y-5">
       {/* ── Pivot + filters ───────────────────────────────────────── */}
       <div className="flex flex-wrap items-center gap-3 justify-between">
-        <div className="flex gap-1 bg-[#0a1429] rounded-full p-1 border border-[#3a557c]">
+        <div className="flex gap-1 bg-[var(--color-surface)] rounded-full p-1 border border-[var(--color-line-soft)]">
           <PivotButton
             active={pivot === "sentence_date"}
             onClick={() => setPivot("sentence_date")}
@@ -134,7 +134,7 @@ export function CaseTimeline({ data }: { data: TimelinePayload }) {
           </PivotButton>
         </div>
         <div className="flex flex-wrap items-center gap-2 text-[11px]">
-          <span className="uppercase tracking-wider text-[#7c8aa6] font-bold">
+          <span className="uppercase tracking-wider text-[var(--color-muted)] font-bold">
             Filter
           </span>
           <FilterChip
@@ -159,19 +159,19 @@ export function CaseTimeline({ data }: { data: TimelinePayload }) {
       </div>
 
       {/* ── Histogram ─────────────────────────────────────────────── */}
-      <div className="rounded-2xl border-2 border-[var(--color-blue)] bg-[#0a1429] p-4 sm:p-5">
+      <div className="rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-surface)] p-4 sm:p-5">
         <div className="flex items-baseline justify-between gap-3 flex-wrap mb-3">
           <div>
             <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--color-gold-bright)] font-bold">
               The prosecution wave
             </p>
-            <p className="mt-0.5 text-xs text-[#a9b7d0]">
+            <p className="mt-0.5 text-xs text-[var(--color-muted)]">
               {pivot === "sentence_date" ? "Sentencings" : "Arrests"} per month,
               {" "}January {TIMELINE_START_Y} – December {TIMELINE_END_Y}. Click a
               year band to filter.
             </p>
           </div>
-          <div className="text-xs font-mono text-[#7c8aa6]">
+          <div className="text-xs font-mono text-[var(--color-muted)]">
             showing <span className="text-[var(--color-gold-bright)]">{filteredRows.length}</span>{" "}
             of {pivotTotal}
           </div>
@@ -198,8 +198,8 @@ export function CaseTimeline({ data }: { data: TimelinePayload }) {
               aria-pressed={activeYear === y}
               className={`min-h-11 min-w-11 rounded-full px-3 font-mono text-xs font-bold transition ${
                 activeYear === y
-                  ? "bg-[var(--color-gold-bright)] text-[#0a1429]"
-                  : "border border-[#3a557c] text-[#cfd9ea]"
+                  ? "bg-[var(--color-gold-bright)] text-[var(--color-navy)]"
+                  : "border border-[var(--color-line-soft)] text-[var(--color-ink-soft)]"
               }`}
             >
               {y}
@@ -428,7 +428,7 @@ function TimelineCard({
         </p>
       ) : null}
       {row.claim_status === "verified" ? (
-        <p className="mt-2 text-[10px] uppercase tracking-wider font-bold text-[#3aa672]">
+        <p className="mt-2 text-[10px] uppercase tracking-wider font-bold text-[var(--color-success)]">
           ★ Claimed by defendant
         </p>
       ) : null}
@@ -451,8 +451,8 @@ function PivotButton({
       onClick={onClick}
       className={`min-h-11 rounded-full px-3.5 py-1.5 text-xs font-bold transition sm:min-h-0 ${
         active
-          ? "bg-[var(--color-gold-bright)] text-[#0a1429]"
-          : "text-[#cfd9ea] hover:bg-[#1c2a4a]"
+          ? "bg-[var(--color-gold-bright)] text-[var(--color-navy)]"
+          : "text-[var(--color-ink-soft)] hover:bg-[var(--color-surface-2)]"
       }`}
     >
       {children}
@@ -475,7 +475,7 @@ function FilterChip({
       onClick={onClick}
       className={`min-h-11 min-w-11 rounded-full px-2.5 py-1 text-[11px] font-bold border transition sm:min-h-0 sm:min-w-0 ${
         active
-          ? "border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)]"
+          ? "border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-cream)]"
           : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:border-[var(--color-blue)]"
       }`}
     >

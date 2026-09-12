@@ -20,7 +20,7 @@ export function PostMain({ post }: { post: Post }) {
         ) : directVideoUrl ? (
           <TrackedVideo src={directVideoUrl} title={post.title ?? undefined} />
         ) : (
-          <div className="aspect-video w-full rounded-lg bg-black/90 flex items-center justify-center text-white text-sm">
+          <div className="aspect-video w-full rounded-lg bg-black/90 flex items-center justify-center text-[var(--color-cream)] text-sm">
             {post.mux_status === "errored"
               ? "Video failed to process."
               : "Video is still processing. Check back in a minute."}

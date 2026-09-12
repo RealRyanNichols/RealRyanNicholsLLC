@@ -430,17 +430,17 @@ export function MatterDossier({ matter }: { matter: Matter }) {
         </div>
 
         {matter.redFlags && matter.redFlags.length > 0 ? (
-          <div className="mt-3 border-l-4 border-[#b32419] bg-[#f6dad2] p-3">
-            <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#8d1b13]">
+          <div className="mt-3 border-l-4 border-[var(--color-danger)] bg-[var(--color-accent-soft)] p-3">
+            <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--color-danger)]">
               Rights / red flags
             </p>
             <ul className="mt-1 grid gap-1">
               {matter.redFlags.map((flag) => (
                 <li
                   key={flag}
-                  className="flex gap-2 text-sm font-bold leading-5 text-[#8d1b13]"
+                  className="flex gap-2 text-sm font-bold leading-5 text-[var(--color-danger)]"
                 >
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-[#b32419]" />
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-[var(--color-accent)]" />
                   <span>{flag}</span>
                 </li>
               ))}

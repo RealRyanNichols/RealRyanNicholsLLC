@@ -106,7 +106,7 @@ export default async function J6MissionPage() {
         </p>
 
         {profilesReady > 0 ? (
-          <p className="mt-4 inline-block rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] px-4 py-1.5 text-sm font-bold text-[var(--color-blue)]">
+          <p className="mt-4 inline-block rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] px-4 py-1.5 text-sm font-bold text-[var(--color-blue-ink)]">
             {profilesReady.toLocaleString("en-US")} profiles ready to be claimed
             {profilesClaimed > 0
               ? ` · ${profilesClaimed.toLocaleString("en-US")} already verified`
@@ -153,13 +153,13 @@ export default async function J6MissionPage() {
         <section className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3">
           <Link
             href="/login?next=/account"
-            className="block rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-4 text-center font-bold text-lg hover:bg-[var(--color-accent-strong)] transition"
+            className="block rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-4 text-center font-bold text-lg hover:bg-[var(--color-accent-strong)] transition"
           >
             Get a profile →
           </Link>
           <Link
             href="/submit"
-            className="block rounded-xl border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-4 text-center font-bold text-lg hover:bg-[var(--color-blue-strong)] transition"
+            className="block rounded-xl border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-cream)] px-5 py-4 text-center font-bold text-lg hover:bg-[var(--color-blue-strong)] transition"
           >
             Send a tip / share a name →
           </Link>
@@ -191,33 +191,33 @@ export default async function J6MissionPage() {
 
         {/* The trust argument — why historians, lawyers, and reporters can
             build on this archive instead of starting over. */}
-        <section className="mt-14 rounded-2xl bg-[var(--color-navy)] p-6 sm:p-8 text-[#fdf8ea]">
-          <p className="text-[11px] uppercase tracking-[0.2em] font-bold text-[#8194b4]">
+        <section className="mt-14 rounded-2xl bg-[var(--color-navy)] p-6 sm:p-8 text-[var(--color-cream)]">
+          <p className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--color-muted)]">
             Verified, or it does not post
           </p>
-          <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display text-[#fdf8ea]">
+          <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display text-[var(--color-cream)]">
             Why this record can be trusted.
           </h2>
-          <ul className="mt-4 space-y-3 text-sm sm:text-base leading-relaxed text-[#cfd9ea]">
+          <ul className="mt-4 space-y-3 text-sm sm:text-base leading-relaxed text-[var(--color-ink-soft)]">
             <li>
-              <strong className="text-[#fdf8ea]">Every claim is labeled</strong>{" "}
+              <strong className="text-[var(--color-cream)]">Every claim is labeled</strong>{" "}
               — FACT, STATEMENT, or NEEDS AUTHENTICATION. The archive says what
               it knows and what it does not.
             </li>
             <li>
-              <strong className="text-[#fdf8ea]">Every upload is reviewed</strong>{" "}
+              <strong className="text-[var(--color-cream)]">Every upload is reviewed</strong>{" "}
               — nothing a defendant or witness submits goes public until a
               human checks it.
             </li>
             <li>
-              <strong className="text-[#fdf8ea]">
+              <strong className="text-[var(--color-cream)]">
                 Court records link to the court
               </strong>{" "}
               — filings point at the official docket, so you verify against the
               source, not a screenshot.
             </li>
             <li>
-              <strong className="text-[#fdf8ea]">Every page is citable</strong>{" "}
+              <strong className="text-[var(--color-cream)]">Every page is citable</strong>{" "}
               — permanent URLs, a citation format, and machine-readable
               structure for researchers and AI assistants alike.
             </li>
@@ -289,13 +289,13 @@ export default async function J6MissionPage() {
           <div className="mt-4 flex flex-wrap gap-3 justify-center">
             <Link
               href="/login?next=/account"
-              className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-6 py-3 font-bold hover:bg-[var(--color-accent-strong)] transition"
+              className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-6 py-3 font-bold hover:bg-[var(--color-accent-strong)] transition"
             >
               Get a profile
             </Link>
             <Link
               href="/submit"
-              className="rounded-xl border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-6 py-3 font-bold hover:bg-[var(--color-blue-strong)] transition"
+              className="rounded-xl border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-cream)] px-6 py-3 font-bold hover:bg-[var(--color-blue-strong)] transition"
             >
               Send a tip
             </Link>
@@ -309,7 +309,7 @@ export default async function J6MissionPage() {
 function Step({ n, title, body }: { n: number; title: string; body: string }) {
   return (
     <li className="flex gap-4">
-      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] flex items-center justify-center font-bold text-lg">
+      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[var(--color-accent)] text-[var(--color-cream)] flex items-center justify-center font-bold text-lg">
         {n}
       </div>
       <div className="flex-1 pt-1">

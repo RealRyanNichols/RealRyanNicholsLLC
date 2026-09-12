@@ -178,15 +178,15 @@ function KindBadge({
     },
     event: {
       label: "Timeline",
-      cls: "bg-[var(--color-blue-soft)] text-[var(--color-blue)]",
+      cls: "bg-[var(--color-blue-soft)] text-[var(--color-blue-ink)]",
     },
     grievance: {
       label: "Grievance",
-      cls: "bg-[var(--color-accent)] text-[var(--color-paper)]",
+      cls: "bg-[var(--color-accent)] text-[var(--color-cream)]",
     },
     post: {
       label: "From Ryan",
-      cls: "bg-[var(--color-success)] text-[var(--color-paper)]",
+      cls: "bg-[var(--color-success)] text-[var(--color-navy)]",
     },
   };
   const s = styles[kind];

@@ -55,7 +55,7 @@ export function CaseStatCards({
     >
       {cards.map((c) => (
         <Link key={c.href} href={c.href} className="qa-tile flex flex-col p-4 sm:p-5">
-          <span className="font-display text-3xl font-bold leading-none tracking-tight tabular-nums text-[var(--color-navy)] sm:text-5xl">
+          <span className="font-display text-3xl font-bold leading-none tracking-tight tabular-nums text-[var(--color-ink)] sm:text-5xl">
             {c.n > 0 ? c.n.toLocaleString("en-US") : "—"}
           </span>
           <span className="mt-2 text-[11px] font-black uppercase leading-tight tracking-[0.08em] text-[var(--color-support-strong)] sm:text-xs">
@@ -64,7 +64,7 @@ export function CaseStatCards({
           <span className="mt-2 hidden text-sm leading-snug text-[var(--color-ink-soft)] sm:block">
             {c.desc}
           </span>
-          <span className="mt-auto pt-3 text-xs font-bold text-[var(--color-navy)]">
+          <span className="mt-auto pt-3 text-xs font-bold text-[var(--color-ink)]">
             {c.cta} <span aria-hidden>→</span>
           </span>
         </Link>

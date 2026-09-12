@@ -17,7 +17,7 @@ export async function FuelBand({ className = "" }: { className?: string }) {
   return (
     <section
       className={[
-        "relative overflow-hidden rounded-2xl border-2 border-[var(--color-gold-bright)] bg-[#071126] p-5 text-[#fdf8ea] shadow-md sm:p-6",
+        "relative overflow-hidden rounded-2xl border-2 border-[var(--color-gold-bright)] bg-[var(--color-surface)] p-5 text-[var(--color-cream)] shadow-md sm:p-6",
         className,
       ].join(" ")}
       aria-labelledby="fuel-band-title"
@@ -33,12 +33,12 @@ export async function FuelBand({ className = "" }: { className?: string }) {
           </p>
           <h2
             id="fuel-band-title"
-            className="mt-1 font-display text-2xl font-black leading-tight tracking-tight text-[#fdf8ea] sm:text-3xl"
+            className="mt-1 font-display text-2xl font-black leading-tight tracking-tight text-[var(--color-cream)] sm:text-3xl"
           >
             I pay the subscriptions.{" "}
             <span className="text-[var(--color-gold-bright)]">They run dry every half a week.</span>
           </h2>
-          <p className="mt-2 text-sm font-semibold leading-relaxed text-[#cfd9ea]">
+          <p className="mt-2 text-sm font-semibold leading-relaxed text-[var(--color-ink-soft)]">
             Every article, filing, timeline, and map here is built on AI tokens.
             {subs ? ` The ${subs} a month in subscriptions is on me.` : ""} The overage credits that keep the
             machine running the rest of the week are the ask: {target} a month, billed by the token at published
@@ -48,7 +48,7 @@ export async function FuelBand({ className = "" }: { className?: string }) {
         <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
           <Link
             href="/fuel"
-            className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-gold-bright)] px-6 py-3 text-base font-black text-[#071126] transition hover:brightness-105"
+            className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-gold-bright)] px-6 py-3 text-base font-black text-[var(--color-navy)] transition hover:brightness-105"
           >
             Fuel the overage →
           </Link>

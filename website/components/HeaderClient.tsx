@@ -111,7 +111,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
               />
             ) : (
               <span
-                className="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border-[1.5px] border-[var(--color-navy)] bg-transparent font-display text-sm font-bold text-[var(--color-navy)]"
+                className="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border-[1.5px] border-[var(--color-gold)] bg-transparent font-display text-sm font-bold text-[var(--color-ink)]"
                 aria-hidden
               >
                 RN
@@ -161,7 +161,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             {isAdmin ? (
               <Link
                 href="/admin/new"
-                className="ml-3 inline-flex shrink-0 items-center gap-1 whitespace-nowrap text-xs font-medium text-[var(--color-muted)] underline decoration-[var(--color-line)] underline-offset-4 transition hover:text-[var(--color-navy)] hover:decoration-[var(--color-navy)]"
+                className="ml-3 inline-flex shrink-0 items-center gap-1 whitespace-nowrap text-xs font-medium text-[var(--color-muted)] underline decoration-[var(--color-line)] underline-offset-4 transition hover:text-[var(--color-gold)] hover:decoration-[var(--color-gold)]"
                 aria-label="Write a new post"
               >
                 <PencilIcon />
@@ -171,7 +171,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             {signedIn ? (
               <Link
                 href={officeHref}
-                className="ml-3 inline-flex shrink-0 items-center whitespace-nowrap text-xs font-medium text-[var(--color-muted)] underline decoration-[var(--color-line)] underline-offset-4 transition hover:text-[var(--color-navy)] hover:decoration-[var(--color-navy)]"
+                className="ml-3 inline-flex shrink-0 items-center whitespace-nowrap text-xs font-medium text-[var(--color-muted)] underline decoration-[var(--color-line)] underline-offset-4 transition hover:text-[var(--color-gold)] hover:decoration-[var(--color-gold)]"
                 aria-label={officeLabel}
               >
                 {officeLabel}
@@ -180,7 +180,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             {!signedIn ? (
               <Link
                 href="/login"
-                className="ml-3 inline-flex shrink-0 items-center whitespace-nowrap text-xs font-medium text-[var(--color-muted)] underline decoration-[var(--color-line)] underline-offset-4 transition hover:text-[var(--color-navy)] hover:decoration-[var(--color-navy)]"
+                className="ml-3 inline-flex shrink-0 items-center whitespace-nowrap text-xs font-medium text-[var(--color-muted)] underline decoration-[var(--color-line)] underline-offset-4 transition hover:text-[var(--color-gold)] hover:decoration-[var(--color-gold)]"
               >
                 Sign in
               </Link>
@@ -222,16 +222,16 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             id="mobile-menu"
             role="dialog"
             aria-label="Site menu"
-            className="absolute left-0 right-0 top-full z-30 max-h-[calc(100dvh-4rem)] overflow-y-auto border-b border-[var(--color-line)] bg-[#101a31]/98 px-4 py-4 text-[var(--color-paper)] shadow-2xl backdrop-blur-xl xl:hidden"
+            className="absolute left-0 right-0 top-full z-30 max-h-[calc(100dvh-4rem)] overflow-y-auto border-b border-[var(--color-line)] bg-[var(--color-surface)]/98 px-4 py-4 text-[var(--color-cream)] shadow-2xl backdrop-blur-xl xl:hidden"
           >
             <nav aria-label="Mobile navigation" className="mx-auto flex max-w-3xl flex-col gap-4">
-              <div className="flex items-center justify-between gap-3 border-b border-white/10 pb-3">
-                <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#d8c89e]">
+              <div className="flex items-center justify-between gap-3 border-b border-[var(--color-cream)]/10 pb-3">
+                <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-gold)]">
                   Four doors. No maze.
                 </p>
                 <Link
                   href={signedIn ? officeHref : "/login"}
-                  className="shrink-0 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] font-black uppercase tracking-normal text-[#fdf8ea] transition hover:bg-white/10"
+                  className="shrink-0 rounded-full border border-[var(--color-cream)]/15 bg-[var(--color-cream)]/5 px-3 py-1.5 text-[11px] font-black uppercase tracking-normal text-[var(--color-cream)] transition hover:bg-[var(--color-cream)]/10"
                 >
                   {signedIn ? officeLabel : "Sign in"}
                 </Link>
@@ -240,7 +240,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
               <Link
                 href="/#talk"
                 onClick={() => setOpen(false)}
-                className="flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-gold-bright)] px-4 py-3 text-sm font-bold text-[#071126] transition hover:brightness-105"
+                className="flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-gold-bright)] px-4 py-3 text-sm font-bold text-[var(--color-navy)] transition hover:brightness-105"
               >
                 Talk to Ryan
               </Link>
@@ -254,13 +254,13 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
                       "min-h-[5rem] rounded-lg border px-3 py-3 transition",
                       isActive(pathname, d.href)
                         ? "border-[var(--color-gold-bright)] bg-[var(--color-gold-bright)]/12"
-                        : "border-white/10 bg-white/5 hover:border-[#d8c89e] hover:bg-white/10",
+                        : "border-[var(--color-cream)]/10 bg-[var(--color-cream)]/5 hover:border-[var(--color-gold)] hover:bg-[var(--color-cream)]/10",
                     ].join(" ")}
                   >
-                    <span className="block text-sm font-black leading-tight text-[#fdf8ea]">
+                    <span className="block text-sm font-black leading-tight text-[var(--color-cream)]">
                       {d.label}
                     </span>
-                    <span className="mt-1 block text-[11px] font-semibold leading-snug text-[#cfd9ea]">
+                    <span className="mt-1 block text-[11px] font-semibold leading-snug text-[var(--color-ink-soft)]">
                       {d.desc}
                     </span>
                   </Link>
@@ -289,7 +289,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
                   <Link
                     key={o.href}
                     href={o.href}
-                    className="flex min-h-12 items-center justify-center rounded-lg border border-white/15 bg-white/5 px-3 py-3 text-center text-sm font-black text-[#fdf8ea] transition hover:border-[#d8c89e] hover:bg-white/10"
+                    className="flex min-h-12 items-center justify-center rounded-lg border border-[var(--color-cream)]/15 bg-[var(--color-cream)]/5 px-3 py-3 text-center text-sm font-black text-[var(--color-cream)] transition hover:border-[var(--color-gold)] hover:bg-[var(--color-cream)]/10"
                   >
                     {o.label}
                   </Link>
@@ -298,7 +298,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
 
               {isAdmin ? (
                 <details className="rounded-lg border border-[var(--color-gold-bright)]/30 bg-[var(--color-gold-bright)]/10">
-                  <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between px-3 py-2 text-sm font-black text-[#fdf8ea] [&::-webkit-details-marker]:hidden">
+                  <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between px-3 py-2 text-sm font-black text-[var(--color-cream)] [&::-webkit-details-marker]:hidden">
                     Admin shortcuts
                     <span className="text-[var(--color-gold-bright)]" aria-hidden>
                       +
@@ -309,7 +309,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
                       <Link
                         key={item.href}
                         href={item.href}
-                        className="flex min-h-10 items-center justify-center rounded-lg border border-white/10 bg-white/5 px-2 py-2 text-center text-xs font-black text-[#fdf8ea] transition hover:border-[#d8c89e] hover:bg-white/10"
+                        className="flex min-h-10 items-center justify-center rounded-lg border border-[var(--color-cream)]/10 bg-[var(--color-cream)]/5 px-2 py-2 text-center text-xs font-black text-[var(--color-cream)] transition hover:border-[var(--color-gold)] hover:bg-[var(--color-cream)]/10"
                       >
                         {item.label}
                       </Link>

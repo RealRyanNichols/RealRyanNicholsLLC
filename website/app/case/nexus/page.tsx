@@ -116,7 +116,7 @@ export default async function CaseNexusPage() {
             ))}
             <Link
               href="/submit"
-              className="inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--color-gold-bright)] px-3.5 py-1.5 text-center text-xs font-black uppercase tracking-normal text-[#071126] shadow-sm transition hover:brightness-105 sm:min-h-0"
+              className="inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--color-gold-bright)] px-3.5 py-1.5 text-center text-xs font-black uppercase tracking-normal text-[var(--color-navy)] shadow-sm transition hover:brightness-105 sm:min-h-0"
             >
               + Add a clue
             </Link>
@@ -138,12 +138,12 @@ export default async function CaseNexusPage() {
 
       {/* Read the map — the key to every color, dot, and line on the board.
           Dark investigation-board panel so the graph stops being a mystery. */}
-      <section className="mt-4 overflow-hidden rounded-xl border border-[#1f2f55] bg-[#0a1429] p-5 sm:p-6">
+      <section className="mt-4 overflow-hidden rounded-xl border border-[var(--color-line-soft)] bg-[var(--color-surface)] p-5 sm:p-6">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <p className="text-xs font-black uppercase tracking-[0.18em] text-[var(--color-gold-bright)]">
             Read the map
           </p>
-          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#7c8aa6]">
+          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-muted)]">
             Every dot and line, decoded
           </p>
         </div>
@@ -151,10 +151,10 @@ export default async function CaseNexusPage() {
         <div className="mt-4 grid gap-6 md:grid-cols-3">
           {/* The dots */}
           <div>
-            <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[#cfd9ea]">
+            <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
               The dots — who and what
             </p>
-            <ul className="mt-3 space-y-2 text-sm text-[#dbe4f4]">
+            <ul className="mt-3 space-y-2 text-sm text-[var(--color-ink-soft)]">
               {[
                 ["#1f2f55", "Case", "A case number. Bigger = more defendants on it.", "ring"],
                 ["#e08658", "Defendant — unclaimed", "A person on the record; profile free to claim.", "dot"],
@@ -169,8 +169,8 @@ export default async function CaseNexusPage() {
                     style={shape === "ring" ? { borderColor: "#3a557c", background: color } : { background: color }}
                   />
                   <span>
-                    <span className="font-bold text-white">{label}</span>
-                    <span className="block text-xs leading-snug text-[#9fb0cc]">{sub}</span>
+                    <span className="font-bold text-[var(--color-cream)]">{label}</span>
+                    <span className="block text-xs leading-snug text-[var(--color-muted)]">{sub}</span>
                   </span>
                 </li>
               ))}
@@ -179,10 +179,10 @@ export default async function CaseNexusPage() {
 
           {/* The connectors */}
           <div>
-            <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[#cfd9ea]">
+            <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
               The hubs — what they share
             </p>
-            <ul className="mt-3 space-y-2 text-sm text-[#dbe4f4]">
+            <ul className="mt-3 space-y-2 text-sm text-[var(--color-ink-soft)]">
               {[
                 ["var(--color-gold-bright)", "Source", "The DOJ / salvaged record a case came from."],
                 ["#7fa9e3", "Court", "The court a case was filed in."],
@@ -193,8 +193,8 @@ export default async function CaseNexusPage() {
                 <li key={label} className="flex items-start gap-2.5">
                   <span aria-hidden className="mt-1 h-3 w-3 flex-shrink-0 rounded-full" style={{ background: color }} />
                   <span>
-                    <span className="font-bold text-white">{label}</span>
-                    <span className="block text-xs leading-snug text-[#9fb0cc]">{sub}</span>
+                    <span className="font-bold text-[var(--color-cream)]">{label}</span>
+                    <span className="block text-xs leading-snug text-[var(--color-muted)]">{sub}</span>
                   </span>
                 </li>
               ))}
@@ -203,10 +203,10 @@ export default async function CaseNexusPage() {
 
           {/* How to work it */}
           <div>
-            <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[#cfd9ea]">
+            <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
               How to work the board
             </p>
-            <ul className="mt-3 space-y-2 text-sm text-[#dbe4f4]">
+            <ul className="mt-3 space-y-2 text-sm text-[var(--color-ink-soft)]">
               {[
                 ["Click", "any dot to open who it is and what it touches."],
                 ["Expand", "a node to pull its whole neighborhood onto the board."],
@@ -216,13 +216,13 @@ export default async function CaseNexusPage() {
                 <li key={verb} className="flex items-start gap-2.5">
                   <span aria-hidden className="mt-1.5 h-2 w-6 flex-shrink-0 rounded-full bg-[var(--color-gold-bright)]" />
                   <span>
-                    <span className="font-bold text-white">{verb}</span>{" "}
-                    <span className="text-xs leading-snug text-[#9fb0cc]">{sub}</span>
+                    <span className="font-bold text-[var(--color-cream)]">{verb}</span>{" "}
+                    <span className="text-xs leading-snug text-[var(--color-muted)]">{sub}</span>
                   </span>
                 </li>
               ))}
             </ul>
-            <p className="mt-4 text-xs leading-snug text-[#7c8aa6]">
+            <p className="mt-4 text-xs leading-snug text-[var(--color-muted)]">
               Thicker, brighter lines are the strongest links — a shared source,
               the same court, the same charge. Faint lines are looser threads.
             </p>
@@ -238,23 +238,23 @@ export default async function CaseNexusPage() {
           {connectionTypes.map((c) => (
             <div
               key={c.title}
-              className="group relative overflow-hidden rounded-xl border border-[#1f2f55] bg-[#0a1429] p-5 transition duration-200 hover:-translate-y-0.5 hover:border-[#3a557c]"
+              className="group relative overflow-hidden rounded-xl border border-[var(--color-line-soft)] bg-[var(--color-surface)] p-5 transition duration-200 hover:-translate-y-0.5 hover:border-[var(--color-gold)]"
             >
               <span aria-hidden className="absolute inset-x-0 top-0 h-1" style={{ background: c.color }} />
               <div className="flex items-center justify-between">
                 <span
                   aria-hidden
-                  className="inline-flex h-7 w-7 items-center justify-center rounded-full text-[11px] font-black text-[#071126]"
+                  className="inline-flex h-7 w-7 items-center justify-center rounded-full text-[11px] font-black text-[var(--color-ink)]"
                   style={{ background: c.color }}
                 >
                   {c.n}
                 </span>
                 <span aria-hidden className="h-2.5 w-2.5 rounded-full" style={{ background: c.color }} />
               </div>
-              <h2 className="mt-3 font-display text-lg font-black tracking-normal text-white">
+              <h2 className="mt-3 font-display text-lg font-black tracking-normal text-[var(--color-cream)]">
                 {c.title}
               </h2>
-              <p className="mt-2 text-sm leading-relaxed text-[#a9b7d0]">
+              <p className="mt-2 text-sm leading-relaxed text-[var(--color-muted)]">
                 {c.body}
               </p>
             </div>
@@ -328,13 +328,13 @@ export default async function CaseNexusPage() {
         <div className="mt-5 flex flex-wrap gap-3">
           <Link
             href="/submit"
-            className="rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
+            className="rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-cream)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
           >
             Submit a missing connector →
           </Link>
           <Link
             href="/case/the-salvaged-doj-record"
-            className="rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
+            className="rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
           >
             Browse the salvaged record →
           </Link>

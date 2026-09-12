@@ -183,7 +183,7 @@ export default async function FuelPage({
   return (
     <main className="pb-16">
       {/* ── Hero: the ask, the number, the live meter, the buttons ─────── */}
-      <section className="relative overflow-hidden bg-[#071126] text-[#fdf8ea]">
+      <section className="relative overflow-hidden bg-[var(--color-surface)] text-[var(--color-cream)]">
         <div
           className="pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-[var(--color-gold-bright)]/15 blur-3xl"
           aria-hidden
@@ -196,17 +196,17 @@ export default async function FuelPage({
           <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
             The Token Fund
           </p>
-          <h1 className="mt-3 max-w-3xl font-display text-4xl font-black leading-[1.02] tracking-tight text-[#fdf8ea] sm:text-6xl">
+          <h1 className="mt-3 max-w-3xl font-display text-4xl font-black leading-[1.02] tracking-tight text-[var(--color-cream)] sm:text-6xl">
             I run out of tokens every half a week.
             <br />
             <span className="text-[var(--color-gold-bright)]">You can keep the faucet open.</span>
           </h1>
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-[#cfd9ea] sm:text-xl">
+          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-[var(--color-ink-soft)] sm:text-xl">
             Every article, filing summary, map, timeline, and defendant profile on this site is built with AI
             tokens.{" "}
             {subs ? (
               <>
-                The subscriptions, <strong className="text-[#fdf8ea]">{subs} a month</strong> for {subsNames}, are on
+                The subscriptions, <strong className="text-[var(--color-cream)]">{subs} a month</strong> for {subsNames}, are on
                 me.
               </>
             ) : (
@@ -219,17 +219,17 @@ export default async function FuelPage({
               <>
                 {" "}
                 Your fuel buys those credits. That is the whole ask:{" "}
-                <strong className="text-[#fdf8ea]">{target} a month in overage credits</strong> keeps the machine
+                <strong className="text-[var(--color-cream)]">{target} a month in overage credits</strong> keeps the machine
                 running all week.
               </>
             ) : null}
           </p>
-          <p className="mt-3 max-w-2xl text-lg font-bold leading-relaxed text-[#fdf8ea] sm:text-xl">
+          <p className="mt-3 max-w-2xl text-lg font-bold leading-relaxed text-[var(--color-cream)] sm:text-xl">
             You buy the overage. I do the work. Put in enough and I do some of it for you.
           </p>
 
           {sp.canceled ? (
-            <p className="mt-6 max-w-2xl rounded-lg border border-white/15 bg-white/[0.06] px-4 py-3 text-sm text-[#cfd9ea]">
+            <p className="mt-6 max-w-2xl rounded-lg border border-[var(--color-cream)]/15 bg-[var(--color-cream)]/[0.06] px-4 py-3 text-sm text-[var(--color-ink-soft)]">
               No charge was made. Pick up where you left off whenever you want.
             </p>
           ) : null}
@@ -242,7 +242,7 @@ export default async function FuelPage({
 
           <div className="mt-6">
             <FuelQuickPick tiers={bill.tiers} />
-            <p className="mt-3 text-xs text-[#a9b7d0]">
+            <p className="mt-3 text-xs text-[var(--color-muted)]">
               One tap picks the amount. Stripe takes the card. No account, no app, no middleman. Monthly stops whenever you say.
             </p>
           </div>
@@ -658,7 +658,7 @@ export default async function FuelPage({
                   t.featured
                     ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)]/40"
                     : t.monthly
-                      ? "border-[var(--color-navy)] bg-[var(--color-blue-soft)]/50"
+                      ? "border-[var(--color-blue)] bg-[var(--color-blue-soft)]/50"
                       : "border-[var(--color-line)] bg-[var(--color-surface)]"
                 }`}
               >
@@ -776,11 +776,11 @@ export default async function FuelPage({
             {wall.length > 0 ? "The people keeping the lights on." : "The first names go here."}
           </h2>
           {keepers.length > 0 ? (
-            <div className="mt-4 rounded-2xl border-2 border-[var(--color-navy)] bg-[var(--color-blue-soft)]/50 p-4">
-              <p className="text-xs font-black uppercase tracking-wider text-[var(--color-navy)]">Keepers · every month</p>
+            <div className="mt-4 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)]/50 p-4">
+              <p className="text-xs font-black uppercase tracking-wider text-[var(--color-ink)]">Keepers · every month</p>
               <ul className="mt-2 flex flex-wrap gap-2">
                 {keepers.map((s) => (
-                  <li key={s.id} className="rounded-full bg-[var(--color-navy)] px-3 py-1 text-sm font-bold text-[var(--color-paper)]">
+                  <li key={s.id} className="rounded-full bg-[var(--color-gold)] px-3 py-1 text-sm font-bold text-[var(--color-navy)]">
                     {s.display_name ?? "Anonymous"}
                   </li>
                 ))}
@@ -797,7 +797,7 @@ export default async function FuelPage({
                       <span className="ml-2 font-mono text-xs font-bold text-[var(--color-accent)]">${s.amount}</span>
                     ) : null}
                     {/founding/i.test(s.fuel?.tier ?? "") ? (
-                      <span className="ml-2 rounded-full bg-[var(--color-gold-bright)] px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-[#071126]">
+                      <span className="ml-2 rounded-full bg-[var(--color-gold-bright)] px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-[var(--color-navy)]">
                         Founding
                       </span>
                     ) : null}

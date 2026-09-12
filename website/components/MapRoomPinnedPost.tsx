@@ -72,7 +72,7 @@ export async function MapRoomPinnedPost() {
 
       <Link
         href={`/posts/${post.slug}`}
-        className="mt-5 inline-flex items-center rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
+        className="mt-5 inline-flex items-center rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
       >
         Read the full post →
       </Link>

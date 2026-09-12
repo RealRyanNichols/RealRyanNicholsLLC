@@ -95,11 +95,11 @@ export function RecordWall({
   }
 
   return (
-    <div className="mt-8 overflow-hidden rounded-2xl border-2 border-[var(--color-navy)]/30 bg-[var(--color-blue-soft)]/40">
+    <div className="mt-8 overflow-hidden rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-blue-soft)]/40">
       {/* The teased record — blurred edge so it's obvious something real is here */}
       <div className="relative h-28 bg-gradient-to-b from-[var(--color-navy)]/15 to-transparent">
         <div className="absolute inset-0 flex items-end justify-center pb-3">
-          <span className="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-navy)]/70">
+          <span className="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-ink)]/70">
             The record continues
           </span>
         </div>
@@ -137,7 +137,7 @@ export function RecordWall({
               placeholder="you@email.com"
               autoComplete="email"
               aria-label="Your email"
-              className="w-full flex-1 rounded-full border-2 border-[var(--color-navy)]/25 bg-[var(--color-paper)] px-5 py-3 text-base text-[var(--color-ink)] outline-none transition focus:border-[var(--color-accent)]"
+              className="w-full flex-1 rounded-full border-2 border-[var(--color-line)] bg-[var(--color-paper)] px-5 py-3 text-base text-[var(--color-ink)] outline-none transition focus:border-[var(--color-accent)]"
             />
             <button
               type="submit"
@@ -170,7 +170,7 @@ export function RecordWall({
         <p className="mt-4 text-xs leading-relaxed text-[var(--color-muted)]">
           Are you a J6 defendant or family? Your profile is free and always will
           be —{" "}
-          <Link href="/j6" className="font-semibold text-[var(--color-navy)] underline">
+          <Link href="/j6" className="font-semibold text-[var(--color-ink)] underline">
             claim it here
           </Link>
           .
@@ -180,7 +180,7 @@ export function RecordWall({
               Already have an account?{" "}
               <Link
                 href={`/login?mode=signin&next=${encodeURIComponent(path)}`}
-                className="font-semibold text-[var(--color-navy)] underline"
+                className="font-semibold text-[var(--color-ink)] underline"
               >
                 Sign in
               </Link>

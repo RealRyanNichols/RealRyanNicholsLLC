@@ -37,8 +37,8 @@ export async function RelatedPosts({ slugs }: { slugs: string[] }) {
     .filter((r): r is RelatedRow => Boolean(r));
 
   return (
-    <aside className="not-prose my-8 rounded-lg border border-[#0b1b34]/20 bg-[var(--color-surface)] p-4">
-      <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[var(--color-navy)]">
+    <aside className="not-prose my-8 rounded-lg border border-[var(--color-line-soft)]/20 bg-[var(--color-surface)] p-4">
+      <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[var(--color-ink)]">
         From the archive
       </p>
       <div
@@ -54,7 +54,7 @@ export async function RelatedPosts({ slugs }: { slugs: string[] }) {
             <Link
               key={r.slug}
               href={`/posts/${r.slug}`}
-              className="group overflow-hidden rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] no-underline transition hover:border-[var(--color-navy)]"
+              className="group overflow-hidden rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] no-underline transition hover:border-[var(--color-gold)]"
             >
               {img ? (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -68,7 +68,7 @@ export async function RelatedPosts({ slugs }: { slugs: string[] }) {
                 />
               ) : null}
               <span className="block p-3">
-                <span className="block text-sm font-black leading-snug text-[var(--color-ink)] group-hover:text-[var(--color-navy)]">
+                <span className="block text-sm font-black leading-snug text-[var(--color-ink)] group-hover:text-[var(--color-gold)]">
                   {r.title ?? r.slug}
                 </span>
                 {r.seo_description ? (

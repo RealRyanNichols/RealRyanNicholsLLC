@@ -19,7 +19,7 @@ function SeverityDots({ severity }: { severity: number }) {
           className={[
             "h-1.5 w-1.5 rounded-full",
             i <= severity
-              ? "bg-[var(--color-navy)]"
+              ? "bg-[var(--color-gold)]"
               : "bg-[var(--color-line)]",
           ].join(" ")}
         />
@@ -83,8 +83,8 @@ export function GrievancesView({ grievances }: { grievances: Awaited<ReturnType<
       {groups.map((act) =>
         act.items.length === 0 ? null : (
           <section key={act.label}>
-            <div className="border-l-2 border-[var(--color-navy)] pl-4 mb-4">
-              <p className="text-[10px] uppercase tracking-wider text-[var(--color-navy)] font-bold">
+            <div className="border-l-2 border-[var(--color-gold)] pl-4 mb-4">
+              <p className="text-[10px] uppercase tracking-wider text-[var(--color-ink)] font-bold">
                 {act.tag}
               </p>
               <h2 className="text-lg sm:text-xl font-bold tracking-tight">{act.label}</h2>
@@ -97,7 +97,7 @@ export function GrievancesView({ grievances }: { grievances: Awaited<ReturnType<
                 <Link
                   key={g.id}
                   href={`/case/grievances/${g.slug}`}
-                  className="block group rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-navy)] transition p-5"
+                  className="block group rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-gold)] transition p-5"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">
@@ -110,7 +110,7 @@ export function GrievancesView({ grievances }: { grievances: Awaited<ReturnType<
                         ) : null}
                       </div>
                       <h3 className="text-lg font-bold tracking-tight">
-                        <span className="text-[var(--color-navy)] mr-2">#{g.display_order}</span>
+                        <span className="text-[var(--color-ink)] mr-2">#{g.display_order}</span>
                         {g.title}
                       </h3>
                       {g.summary ? (
@@ -118,7 +118,7 @@ export function GrievancesView({ grievances }: { grievances: Awaited<ReturnType<
                           {g.summary}
                         </p>
                       ) : null}
-                      <span className="mt-3 inline-block text-xs font-bold text-[var(--color-navy)]">
+                      <span className="mt-3 inline-block text-xs font-bold text-[var(--color-ink)]">
                         Read <span aria-hidden>→</span>
                       </span>
                     </div>
@@ -145,14 +145,14 @@ export function TimelineView({ events }: { events: Awaited<ReturnType<typeof get
       {events.map((e) => (
         <li key={e.id} className="relative pl-8 pb-8 border-l border-[var(--color-line)] last:border-l-0">
           <span
-            className="absolute -left-[7px] top-1 h-3.5 w-3.5 rounded-full bg-[var(--color-navy)] ring-4 ring-[var(--color-paper)]"
+            className="absolute -left-[7px] top-1 h-3.5 w-3.5 rounded-full bg-[var(--color-gold)] ring-4 ring-[var(--color-paper)]"
             aria-hidden
           />
           <Link href={`/case/events/${e.slug}`} className="group block">
-            <time className="text-xs uppercase tracking-wider text-[var(--color-navy)] font-bold">
+            <time className="text-xs uppercase tracking-wider text-[var(--color-ink)] font-bold">
               {e.event_date ? format(new Date(e.event_date), "MMMM d, yyyy") : "Date pending verification"}
             </time>
-            <h2 className="mt-1 text-lg font-bold tracking-tight group-hover:text-[var(--color-navy)] transition">
+            <h2 className="mt-1 text-lg font-bold tracking-tight group-hover:text-[var(--color-gold)] transition">
               {e.title}
             </h2>
             {e.description ? (
@@ -163,7 +163,7 @@ export function TimelineView({ events }: { events: Awaited<ReturnType<typeof get
             {e.location ? (
               <p className="mt-1 text-xs text-[var(--color-muted)]">📍 {e.location}</p>
             ) : null}
-            <span className="mt-2 inline-block text-xs font-bold text-[var(--color-navy)]">
+            <span className="mt-2 inline-block text-xs font-bold text-[var(--color-ink)]">
               Read <span aria-hidden>→</span>
             </span>
           </Link>
@@ -184,17 +184,17 @@ export function DocumentsView({ documents }: { documents: Awaited<ReturnType<typ
         <Link
           key={d.id}
           href={`/case/documents/${d.slug}`}
-          className="group flex flex-col overflow-hidden rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] transition hover:border-[var(--color-navy)] hover:shadow-md"
+          className="group flex flex-col overflow-hidden rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] transition hover:border-[var(--color-gold)] hover:shadow-md"
         >
           <div className="relative aspect-[4/3] w-full overflow-hidden">
             {/* The plate always renders underneath. If the scan is missing or
                 the image request fails, this is what shows — a designed tile,
                 never a broken icon or raw alt text bleeding over black. */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 bg-gradient-to-br from-[#16223f] to-[#0b1428] px-3 text-center">
-              <span className="text-[10px] font-black uppercase tracking-[0.18em] text-white/70">
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 bg-gradient-to-br from-[var(--color-surface-2)] to-[var(--color-surface)] px-3 text-center">
+              <span className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-cream)]/70">
                 {d.doc_type}
               </span>
-              <span className="text-[9px] leading-snug text-white/40">
+              <span className="text-[9px] leading-snug text-[var(--color-cream)]/40">
                 Record on file — open to view
               </span>
             </div>
@@ -207,18 +207,18 @@ export function DocumentsView({ documents }: { documents: Awaited<ReturnType<typ
                 className="absolute inset-0 h-full w-full bg-black object-cover object-top transition duration-300 group-hover:scale-[1.03]"
               />
             ) : null}
-            <span className="absolute left-2 top-2 rounded bg-black/75 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-[0.12em] text-white backdrop-blur-sm">
+            <span className="absolute left-2 top-2 rounded bg-black/75 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-[0.12em] text-[var(--color-cream)] backdrop-blur-sm">
               {d.doc_type}
             </span>
           </div>
 
           <div className="flex flex-1 flex-col p-3.5">
             {d.document_date ? (
-              <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--color-navy)]">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--color-ink)]">
                 {format(new Date(d.document_date), "MMM d, yyyy")}
               </p>
             ) : null}
-            <h2 className="mt-1 line-clamp-2 text-sm font-bold leading-snug tracking-tight text-[var(--color-ink)] transition group-hover:text-[var(--color-navy)]">
+            <h2 className="mt-1 line-clamp-2 text-sm font-bold leading-snug tracking-tight text-[var(--color-ink)] transition group-hover:text-[var(--color-gold)]">
               {d.title}
             </h2>
             {d.description ? (
@@ -226,7 +226,7 @@ export function DocumentsView({ documents }: { documents: Awaited<ReturnType<typ
                 {d.description}
               </p>
             ) : null}
-            <span className="mt-auto pt-2.5 text-xs font-bold text-[var(--color-navy)]">
+            <span className="mt-auto pt-2.5 text-xs font-bold text-[var(--color-ink)]">
               Read <span aria-hidden>→</span>
             </span>
           </div>

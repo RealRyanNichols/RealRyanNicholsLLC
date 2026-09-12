@@ -16,15 +16,15 @@ const ROLE_LABEL: Record<CaseAuthorRole, string> = {
 };
 
 const ROLE_CLASS: Record<CaseAuthorRole, string> = {
-  ryan: "bg-[var(--color-blue-soft)] text-[var(--color-navy)] border-[var(--color-navy)]",
-  co_detainee: "bg-amber-900/30 text-amber-200 border-amber-700",
-  attorney: "bg-blue-900/30 text-blue-200 border-blue-700",
+  ryan: "bg-[var(--color-blue-soft)] text-[var(--color-blue-ink)] border-[var(--color-blue)]",
+  co_detainee: "bg-[var(--color-support-soft)] text-[var(--color-tag-procedural)] border-[var(--color-tag-procedural)]/50",
+  attorney: "bg-[var(--color-blue-soft)] text-[var(--color-blue-ink)] border-[var(--color-blue)]/50",
   court: "bg-purple-900/30 text-purple-200 border-purple-700",
-  government: "bg-rose-900/30 text-rose-200 border-rose-700",
-  family: "bg-emerald-900/30 text-emerald-200 border-emerald-700",
-  media: "bg-slate-800 text-slate-300 border-slate-600",
-  evidence: "bg-slate-800 text-slate-300 border-slate-600",
-  other: "bg-slate-800 text-slate-300 border-slate-600",
+  government: "bg-[var(--color-accent-soft)] text-[var(--color-tag-severe)] border-[var(--color-accent)]/50",
+  family: "bg-[var(--color-success-soft)] text-[var(--color-success)] border-[var(--color-success)]/40",
+  media: "bg-[var(--color-surface-2)] text-[var(--color-ink-soft)] border-[var(--color-line-soft)]",
+  evidence: "bg-[var(--color-surface-2)] text-[var(--color-ink-soft)] border-[var(--color-line-soft)]",
+  other: "bg-[var(--color-surface-2)] text-[var(--color-ink-soft)] border-[var(--color-line-soft)]",
 };
 
 const SECTION_LEAD: Record<CaseAuthorRole, string> = {
@@ -144,7 +144,7 @@ function SeriesCard({ series }: { series: DocSeries }) {
       <article className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] overflow-hidden">
         <div className="px-4 pt-3 pb-2 flex items-baseline justify-between gap-3 flex-wrap">
           <div className="min-w-0 flex-1">
-            <p className="text-[10px] uppercase tracking-wider text-[var(--color-navy)] font-bold">
+            <p className="text-[10px] uppercase tracking-wider text-[var(--color-ink)] font-bold">
               {video.platformLabel} · video
               {lead.document_date ? (
                 <> · {format(new Date(lead.document_date), "MMM d, yyyy")}</>
@@ -156,7 +156,7 @@ function SeriesCard({ series }: { series: DocSeries }) {
           </div>
           <Link
             href={`/case/documents/${lead.slug}`}
-            className="inline-flex min-h-11 items-center whitespace-nowrap text-xs font-bold text-[var(--color-navy)] hover:underline sm:min-h-0"
+            className="inline-flex min-h-11 items-center whitespace-nowrap text-xs font-bold text-[var(--color-ink)] hover:underline sm:min-h-0"
           >
             Read →
           </Link>
@@ -174,7 +174,7 @@ function SeriesCard({ series }: { series: DocSeries }) {
   return (
     <Link
       href={`/case/documents/${lead.slug}`}
-      className="group block overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] transition hover:border-[var(--color-navy)] hover:shadow-md sm:flex sm:items-stretch"
+      className="group block overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] transition hover:border-[var(--color-gold)] hover:shadow-md sm:flex sm:items-stretch"
     >
       <div className="shrink-0 sm:w-44">
         {officialOnly ? (
@@ -193,10 +193,10 @@ function SeriesCard({ series }: { series: DocSeries }) {
               <path d="M14 2v6h6" />
               <path d="m9 15 2 2 4-4" />
             </svg>
-            <span className="text-[10px] font-black uppercase tracking-wider text-[#fdf8ea]">
+            <span className="text-[10px] font-black uppercase tracking-wider text-[var(--color-cream)]">
               Official record
             </span>
-            <span className="text-[10px] leading-snug text-[#8194b4]">
+            <span className="text-[10px] leading-snug text-[var(--color-muted)]">
               served from the court docket
             </span>
           </span>
@@ -211,7 +211,7 @@ function SeriesCard({ series }: { series: DocSeries }) {
         )}
       </div>
       <div className="min-w-0 flex-1 p-4">
-        <p className="text-[10px] uppercase tracking-wider text-[var(--color-navy)] font-bold">
+        <p className="text-[10px] uppercase tracking-wider text-[var(--color-ink)] font-bold">
           {lead.doc_type}
           {lead.document_date ? (
             <> · {format(new Date(lead.document_date), "MMM d, yyyy")}</>
@@ -222,7 +222,7 @@ function SeriesCard({ series }: { series: DocSeries }) {
             </span>
           ) : null}
         </p>
-        <p className="mt-1 text-sm font-semibold leading-snug text-[var(--color-ink)] transition group-hover:text-[var(--color-navy)]">
+        <p className="mt-1 text-sm font-semibold leading-snug text-[var(--color-ink)] transition group-hover:text-[var(--color-gold)]">
           {title}
         </p>
         {lead.description ? (
@@ -230,7 +230,7 @@ function SeriesCard({ series }: { series: DocSeries }) {
             {lead.description}
           </p>
         ) : null}
-        <span className="mt-2.5 inline-block text-xs font-bold text-[var(--color-navy)]">
+        <span className="mt-2.5 inline-block text-xs font-bold text-[var(--color-ink)]">
           Read <span aria-hidden>→</span>
         </span>
       </div>

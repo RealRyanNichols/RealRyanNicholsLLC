@@ -59,7 +59,7 @@ export function SubmissionActions({
             type="button"
             disabled={isPending}
             onClick={() => call("approve")}
-            className="rounded-md bg-[var(--color-success)] hover:opacity-90 px-3 py-1.5 text-xs font-bold text-[var(--color-paper)] disabled:opacity-50"
+            className="rounded-md bg-[var(--color-success)] hover:opacity-90 px-3 py-1.5 text-xs font-bold text-[var(--color-navy)] disabled:opacity-50"
             title="Publish on the J6 profile"
           >
             ✓ Approve & publish
@@ -87,7 +87,7 @@ export function SubmissionActions({
               type="button"
               disabled={isPending}
               onClick={() => call("reject", rejectNotes)}
-              className="rounded-md bg-[var(--color-accent)] hover:bg-[var(--color-accent-strong)] px-3 py-1.5 text-xs font-bold text-[var(--color-paper)] disabled:opacity-50"
+              className="rounded-md bg-[var(--color-accent)] hover:bg-[var(--color-accent-strong)] px-3 py-1.5 text-xs font-bold text-[var(--color-cream)] disabled:opacity-50"
             >
               Confirm reject
             </button>

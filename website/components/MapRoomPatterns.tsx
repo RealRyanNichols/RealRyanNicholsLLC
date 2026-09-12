@@ -304,7 +304,7 @@ function StatusBar({
   return (
     <div className="h-8 rounded-lg overflow-hidden border border-[var(--color-line-soft)] flex">
       <div
-        className="h-full flex items-center justify-center text-[10px] font-bold text-[var(--color-paper)] tabular-nums"
+        className="h-full flex items-center justify-center text-[10px] font-bold text-[var(--color-cream)] tabular-nums"
         style={{
           width: `${vP}%`,
           background: "var(--color-success)",
@@ -314,7 +314,7 @@ function StatusBar({
         {vP >= 6 ? verified.toLocaleString() : ""}
       </div>
       <div
-        className="h-full flex items-center justify-center text-[10px] font-bold text-[var(--color-paper)] tabular-nums"
+        className="h-full flex items-center justify-center text-[10px] font-bold text-[var(--color-cream)] tabular-nums"
         style={{
           width: `${pP}%`,
           background: "var(--color-tag-procedural)",
@@ -324,7 +324,7 @@ function StatusBar({
         {pP >= 6 ? pending.toLocaleString() : ""}
       </div>
       <div
-        className="h-full flex items-center justify-center text-[10px] font-bold text-[var(--color-paper)] tabular-nums"
+        className="h-full flex items-center justify-center text-[10px] font-bold text-[var(--color-cream)] tabular-nums"
         style={{
           width: `${uP}%`,
           background: "var(--color-accent)",

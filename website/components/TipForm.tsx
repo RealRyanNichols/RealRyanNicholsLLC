@@ -210,9 +210,9 @@ export function TipForm({
                 className={[
                   "rounded-full px-3 py-1 text-xs font-black uppercase tracking-normal",
                   receipt.route.urgency === "hot"
-                    ? "bg-[var(--color-accent)] text-white"
+                    ? "bg-[var(--color-accent)] text-[var(--color-cream)]"
                     : receipt.route.urgency === "next"
-                      ? "bg-[var(--color-support)] text-[#17120e]"
+                      ? "bg-[var(--color-support)] text-[var(--color-navy)]"
                       : "bg-[var(--color-surface-2)] text-[var(--color-ink-soft)]",
                 ].join(" ")}
               >
@@ -252,7 +252,7 @@ export function TipForm({
               setReceipt(null);
               setStatus("idle");
             }}
-            className="rounded-lg border-2 border-[var(--color-accent)] bg-[var(--color-accent)] px-4 py-2 text-sm font-bold text-white transition hover:bg-[var(--color-accent-strong)]"
+            className="rounded-lg border-2 border-[var(--color-accent)] bg-[var(--color-accent)] px-4 py-2 text-sm font-bold text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)]"
           >
             Send another
           </button>
@@ -425,7 +425,7 @@ export function TipForm({
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="w-full rounded-lg border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-white px-5 py-4 font-bold text-lg hover:bg-[var(--color-accent-strong)] transition disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full rounded-lg border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-4 font-bold text-lg hover:bg-[var(--color-accent-strong)] transition disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {status === "submitting"
           ? "Sending..."

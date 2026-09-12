@@ -23,10 +23,10 @@ export function ReadNext({
         {caseLinks.map((c) => (
           <li
             key={c.href}
-            className="rounded-2xl border border-[var(--color-navy)] bg-[var(--color-surface)] p-5 hover:border-[var(--color-blue)] transition"
+            className="rounded-2xl border border-[var(--color-gold)] bg-[var(--color-surface)] p-5 hover:border-[var(--color-blue)] transition"
           >
             <Link href={c.href} className="block">
-              <p className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-navy)]">
+              <p className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-ink)]">
                 From the case file
               </p>
               <h3 className="mt-1 font-semibold tracking-tight text-lg leading-snug">

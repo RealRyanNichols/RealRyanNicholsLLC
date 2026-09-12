@@ -141,7 +141,7 @@ export function PollCard({
   return (
     <div className="rounded-2xl border border-[var(--color-line)] border-l-4 border-l-[var(--color-gold)] bg-[var(--color-surface)] p-4 sm:p-5">
       <div className="mb-2 flex items-center justify-between gap-3">
-        <p className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-navy)]">
+        <p className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-ink)]">
           {kicker}
           {closed ? " · closed" : ""}
         </p>
@@ -269,7 +269,7 @@ export function PollCard({
               </button>
             </div>
             {err ? (
-              <p className="mt-1.5 text-xs font-semibold text-red-600">{err}</p>
+              <p className="mt-1.5 text-xs font-semibold text-[var(--color-danger)]">{err}</p>
             ) : null}
           </form>
         </div>

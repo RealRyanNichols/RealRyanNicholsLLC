@@ -138,7 +138,7 @@ export function ReactionBar({
           <span
             className={[
               "text-xs font-mono font-bold tabular-nums whitespace-nowrap",
-              tone === "navy" ? "text-[var(--color-navy)]" : "text-[var(--color-accent)]",
+              tone === "navy" ? "text-[var(--color-ink)]" : "text-[var(--color-accent)]",
             ].join(" ")}
           >
             {total.toLocaleString()} {total === 1 ? "reaction" : "reactions"}
@@ -160,10 +160,10 @@ export function ReactionBar({
                 "inline-flex min-h-11 min-w-11 items-center justify-center gap-1 rounded-full border px-2.5 py-1.5 text-sm transition select-none sm:min-h-0 sm:min-w-0",
                 active
                   ? tone === "navy"
-                    ? "border-[var(--color-navy)] bg-[var(--color-blue-soft)] text-[var(--color-navy)] font-bold"
+                    ? "border-[var(--color-blue)] bg-[var(--color-blue-soft)] text-[var(--color-blue-ink)] font-bold"
                     : "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent)] font-bold"
                   : tone === "navy"
-                    ? "border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink-soft)] hover:border-[var(--color-navy)]"
+                    ? "border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink-soft)] hover:border-[var(--color-gold)]"
                     : "border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)]",
               ].join(" ")}
             >

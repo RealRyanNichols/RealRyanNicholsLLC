@@ -130,14 +130,14 @@ export default async function VideosPage(props: {
 
       {!active && j6Videos.length > 0 ? (
         <section className="mt-8 overflow-hidden rounded-xl border-2 border-[var(--color-accent)] shadow-sm">
-          <div className="bg-[#071126] p-5 text-[#fdf8ea] sm:p-7">
+          <div className="bg-[var(--color-surface)] p-5 text-[var(--color-cream)] sm:p-7">
             <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
               J6 Video Drops
             </p>
-            <h2 className="mt-2 font-display text-3xl font-black leading-tight text-[#fdf8ea] sm:text-4xl">
+            <h2 className="mt-2 font-display text-3xl font-black leading-tight text-[var(--color-cream)] sm:text-4xl">
               The footage, released one drop at a time.
             </h2>
-            <p className="mt-3 max-w-2xl text-sm font-semibold leading-relaxed text-[#cfd9ea]">
+            <p className="mt-3 max-w-2xl text-sm font-semibold leading-relaxed text-[var(--color-ink-soft)]">
               Bodycam, tunnel footage, and the receipts from January 6 — pulled
               from my own evidence and dropped here, on a site I own, where no
               algorithm can bury them. More are coming.
@@ -151,7 +151,7 @@ export default async function VideosPage(props: {
               </Link>
               <Link
                 href="/book/preorder"
-                className="inline-flex min-h-11 items-center rounded-md border border-white/15 bg-white/[0.06] px-4 text-sm font-black text-[#fdf8ea] transition hover:bg-white/10"
+                className="inline-flex min-h-11 items-center rounded-md border border-[var(--color-cream)]/15 bg-[var(--color-cream)]/[0.06] px-4 text-sm font-black text-[var(--color-cream)] transition hover:bg-[var(--color-cream)]/10"
               >
                 Get the Book
               </Link>
@@ -218,7 +218,7 @@ function FilterChip({
       className={[
         "inline-flex min-h-11 items-center rounded-full border px-3 py-1.5 text-xs font-bold transition sm:min-h-0",
         active
-          ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)]"
+          ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)]"
           : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]",
       ].join(" ")}
     >

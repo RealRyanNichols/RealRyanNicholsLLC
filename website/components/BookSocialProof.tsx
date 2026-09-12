@@ -7,19 +7,19 @@ function palette(tone: Tone) {
   const dark = tone === "dark";
   return {
     section: dark
-      ? "border-white/15 bg-white/[0.06]"
+      ? "border-[var(--color-cream)]/15 bg-[var(--color-cream)]/[0.06]"
       : "border-[var(--color-line)] bg-[var(--color-surface)]",
     headline: dark ? "text-[var(--color-gold-bright)]" : "text-[var(--color-accent)]",
     dot: dark ? "bg-[var(--color-gold-bright)]" : "bg-[var(--color-accent)]",
-    sub: dark ? "text-[#cfd9ea]" : "text-[var(--color-ink-soft)]",
+    sub: dark ? "text-[var(--color-ink-soft)]" : "text-[var(--color-ink-soft)]",
     recency: dark ? "text-[var(--color-gold-bright)]" : "text-[var(--color-accent)]",
     statAccent: dark ? "text-[var(--color-gold-bright)]" : "text-[var(--color-accent)]",
-    statNormal: dark ? "text-[#fdf8ea]" : "text-[var(--color-ink)]",
-    statLabel: dark ? "text-[#cfd9ea]/70" : "text-[var(--color-muted)]",
-    borderTop: dark ? "border-white/15" : "border-[var(--color-line)]",
-    divider: dark ? "bg-white/15" : "bg-[var(--color-line)]",
-    scarcity: dark ? "text-[#cfd9ea]/70" : "text-[var(--color-muted)]",
-    barBg: dark ? "bg-white/15" : "bg-[var(--color-surface-2)]",
+    statNormal: dark ? "text-[var(--color-cream)]" : "text-[var(--color-ink)]",
+    statLabel: dark ? "text-[var(--color-ink-soft)]/70" : "text-[var(--color-muted)]",
+    borderTop: dark ? "border-[var(--color-cream)]/15" : "border-[var(--color-line)]",
+    divider: dark ? "bg-[var(--color-cream)]/15" : "bg-[var(--color-line)]",
+    scarcity: dark ? "text-[var(--color-ink-soft)]/70" : "text-[var(--color-muted)]",
+    barBg: dark ? "bg-[var(--color-cream)]/15" : "bg-[var(--color-surface-2)]",
     barFill: dark ? "bg-[var(--color-gold-bright)]" : "bg-[var(--color-accent)]",
   };
 }

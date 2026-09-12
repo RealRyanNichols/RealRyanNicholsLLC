@@ -24,7 +24,7 @@ export async function ProfileHero() {
       <div
         className={
           hasCover
-            ? "relative aspect-[3/1] w-full overflow-hidden bg-[#0b1428]"
+            ? "relative aspect-[3/1] w-full overflow-hidden bg-[var(--color-surface)]"
             : "relative h-14 w-full overflow-hidden sm:h-20"
         }
       >
@@ -65,7 +65,7 @@ export async function ProfileHero() {
             />
           ) : (
             <div
-              className="h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] flex items-center justify-center text-xl font-bold flex-shrink-0 ring-4 ring-[var(--color-paper)]"
+              className="h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-[var(--color-accent)] text-[var(--color-cream)] flex items-center justify-center text-xl font-bold flex-shrink-0 ring-4 ring-[var(--color-paper)]"
               style={{ boxShadow: "0 0 40px var(--color-accent-glow)" }}
               aria-hidden
             >

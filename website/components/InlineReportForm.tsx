@@ -115,7 +115,7 @@ export function InlineReportForm({
         <button
           type="submit"
           disabled={status === "submitting"}
-          className="w-full rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-white px-5 py-3.5 font-bold hover:bg-[var(--color-accent-strong)] transition disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-3.5 font-bold hover:bg-[var(--color-accent-strong)] transition disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {status === "submitting" ? "Sending…" : buttonLabel}
         </button>

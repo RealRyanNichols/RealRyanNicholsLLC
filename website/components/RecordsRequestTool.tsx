@@ -291,7 +291,7 @@ export function RecordsRequestTool() {
                 <span
                   aria-hidden
                   className={`flex h-4 w-4 flex-shrink-0 items-center justify-center rounded border text-[10px] font-black ${
-                    picked.has(r.key) ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-white" : "border-[var(--color-line)]"
+                    picked.has(r.key) ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)]" : "border-[var(--color-line)]"
                   }`}
                 >
                   {picked.has(r.key) ? "✓" : ""}
@@ -345,7 +345,7 @@ export function RecordsRequestTool() {
             <button
               type="button"
               onClick={copy}
-              className="min-h-11 rounded-full bg-[var(--color-accent)] px-4 py-1.5 text-xs font-bold text-white transition hover:brightness-105 sm:min-h-0"
+              className="min-h-11 rounded-full bg-[var(--color-accent)] px-4 py-1.5 text-xs font-bold text-[var(--color-cream)] transition hover:brightness-105 sm:min-h-0"
             >
               {copied ? "Copied ✓" : "Copy"}
             </button>

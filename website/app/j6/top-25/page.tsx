@@ -148,23 +148,23 @@ export default async function J6Top25Page() {
         <Link href="/case?view=people" className="inline-flex min-h-11 items-center font-semibold hover:underline sm:min-h-0">All profiles</Link>
       </nav>
 
-      <header className="overflow-hidden rounded-3xl border border-[#26385f] bg-[#071329] px-6 py-8 text-[#f8f2df] shadow-2xl sm:px-10 sm:py-12">
+      <header className="overflow-hidden rounded-3xl border border-[var(--color-line-soft)] bg-[var(--color-surface)] px-6 py-8 text-[var(--color-cream)] shadow-2xl sm:px-10 sm:py-12">
         <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">Community ranking · live vote</p>
         <h1 className="mt-3 max-w-4xl font-display text-4xl font-black leading-[0.95] sm:text-6xl">
           Which January 6 case had the most hype?
         </h1>
-        <p className="mt-5 max-w-3xl text-lg leading-relaxed text-[#cbd5e7] sm:text-xl">
+        <p className="mt-5 max-w-3xl text-lg leading-relaxed text-[var(--color-ink-soft)] sm:text-xl">
           This is a ranking of public attention, media coverage, political focus, and name recognition — not guilt, character, or historical importance. Each confirmed-email account gets one active vote. You may change it at any time.
         </p>
         <div className="mt-7 flex flex-wrap gap-3 text-sm font-bold">
-          <span className="rounded-full border border-[#44577d] bg-[#101f3d] px-4 py-2">{totalVotes.toLocaleString()} total votes</span>
-          <span className="rounded-full border border-[#44577d] bg-[#101f3d] px-4 py-2">One active vote per account</span>
-          <span className="rounded-full border border-[#44577d] bg-[#101f3d] px-4 py-2">Write-ins can enter the Top 25</span>
+          <span className="rounded-full border border-[var(--color-line-soft)] bg-[var(--color-surface)] px-4 py-2">{totalVotes.toLocaleString()} total votes</span>
+          <span className="rounded-full border border-[var(--color-line-soft)] bg-[var(--color-surface)] px-4 py-2">One active vote per account</span>
+          <span className="rounded-full border border-[var(--color-line-soft)] bg-[var(--color-surface)] px-4 py-2">Write-ins can enter the Top 25</span>
         </div>
       </header>
 
       {candidateError ? (
-        <div className="mt-8 rounded-2xl border border-red-300 bg-red-50 p-5 text-sm text-red-900">
+        <div className="mt-8 rounded-2xl border border-[var(--color-accent)]/40 bg-[var(--color-accent-soft)] p-5 text-sm text-[var(--color-danger)]">
           The ranking data could not be loaded. Please try again shortly.
         </div>
       ) : (

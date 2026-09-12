@@ -98,11 +98,14 @@ export default async function HomePage({
           ) : (
             <div>
               {feed.flatMap((p, i) => [
+                // Only the first-screen rows rise in (staggered); deeper rows
+                // render plainly.
                 <PostCard
                   key={p.id}
                   post={p}
                   commentCount={countMap.get(p.id) ?? 0}
                   fallbackImage={ogMap.get(`/posts/${p.slug}`) ?? null}
+                  reveal={i < 3 ? i : undefined}
                 />,
                 // Feed poll right after the lead post (renders only when a
                 // poll is live); book band a few posts later — spaced, so
@@ -134,7 +137,7 @@ export default async function HomePage({
                     key="home-services"
                     className="my-8 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
                   >
-                    <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
+                    <p className="eyebrow">
                       {workCopy.kicker}
                     </p>
                     <p className="mt-2 text-lg font-bold tracking-tight text-[var(--color-ink)]">
@@ -241,7 +244,7 @@ function TipLineCard({
       href="/submit"
       className={`block rounded-2xl bg-[var(--color-surface)] p-5 transition hover:bg-[var(--color-blue-soft)] ${className}`}
     >
-      <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-blue)]">
+      <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-blue-ink)]">
         {copy.kicker}
       </p>
       <p className="mt-1.5 text-base font-bold text-[var(--color-ink)] leading-tight">

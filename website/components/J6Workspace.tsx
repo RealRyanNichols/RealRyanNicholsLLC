@@ -314,7 +314,7 @@ function CaseDetailsForm({ profile }: { profile: J6Profile }) {
         type="button"
         disabled={busy}
         onClick={save}
-        className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 font-bold hover:bg-[var(--color-accent-strong)] disabled:opacity-50"
+        className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-2.5 font-bold hover:bg-[var(--color-accent-strong)] disabled:opacity-50"
       >
         {busy ? "Saving…" : "Save case details →"}
       </button>
@@ -470,7 +470,7 @@ function SubmissionStatusBadge({ status }: { status: string }) {
   const s = styles[status] ?? styles.pending;
   return (
     <span
-      className="flex-shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--color-paper)]"
+      className="flex-shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--color-cream)]"
       style={{ background: s.bg }}
     >
       {s.label}
@@ -548,7 +548,7 @@ function TestimonyForm({
         type="button"
         disabled={busy || body.trim().length === 0}
         onClick={save}
-        className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 font-bold hover:bg-[var(--color-accent-strong)] disabled:opacity-50"
+        className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-2.5 font-bold hover:bg-[var(--color-accent-strong)] disabled:opacity-50"
       >
         {busy ? "Saving…" : "Save my story →"}
       </button>
@@ -652,14 +652,14 @@ function PhotoUploadForm({ personId }: { personId: string }) {
           type="file"
           accept="image/png,image/jpeg,image/webp"
           onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-          className="w-full text-sm file:mr-3 file:rounded-md file:border-0 file:bg-[var(--color-accent)] file:text-[var(--color-paper)] file:font-bold file:px-3 file:py-1.5 file:hover:bg-[var(--color-accent-strong)]"
+          className="w-full text-sm file:mr-3 file:rounded-md file:border-0 file:bg-[var(--color-accent)] file:text-[var(--color-cream)] file:font-bold file:px-3 file:py-1.5 file:hover:bg-[var(--color-accent-strong)]"
         />
       </div>
       {msg ? <p className="text-sm text-[var(--color-accent)]">{msg}</p> : null}
       <button
         type="submit"
         disabled={busy}
-        className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 font-bold hover:bg-[var(--color-accent-strong)] disabled:opacity-50"
+        className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-2.5 font-bold hover:bg-[var(--color-accent-strong)] disabled:opacity-50"
       >
         {busy ? "Uploading…" : "Submit photo →"}
       </button>
@@ -765,7 +765,7 @@ function EmbedForm({ personId }: { personId: string }) {
       <button
         type="submit"
         disabled={busy}
-        className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 font-bold hover:bg-[var(--color-accent-strong)] disabled:opacity-50"
+        className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-2.5 font-bold hover:bg-[var(--color-accent-strong)] disabled:opacity-50"
       >
         {busy ? "Submitting…" : "Submit video →"}
       </button>
@@ -845,7 +845,7 @@ function AvatarUploadForm({
         type="file"
         accept="image/png,image/jpeg,image/webp"
         onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-        className="w-full text-sm file:mr-3 file:rounded-md file:border-0 file:bg-[var(--color-accent)] file:text-[var(--color-paper)] file:font-bold file:px-3 file:py-1.5 file:hover:bg-[var(--color-accent-strong)]"
+        className="w-full text-sm file:mr-3 file:rounded-md file:border-0 file:bg-[var(--color-accent)] file:text-[var(--color-cream)] file:font-bold file:px-3 file:py-1.5 file:hover:bg-[var(--color-accent-strong)]"
       />
       <label className="flex items-start gap-2 text-xs leading-relaxed text-[var(--color-muted)]">
         <input
@@ -866,7 +866,7 @@ function AvatarUploadForm({
       <button
         type="submit"
         disabled={busy}
-        className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 font-bold hover:bg-[var(--color-accent-strong)] disabled:opacity-50"
+        className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-2.5 font-bold hover:bg-[var(--color-accent-strong)] disabled:opacity-50"
       >
         {busy ? "Uploading…" : "Set profile photo →"}
       </button>

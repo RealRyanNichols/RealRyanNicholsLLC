@@ -47,14 +47,14 @@ function CustomTooltip({
   const rows = payload.filter((p) => p.dataKey !== "total" && p.value > 0);
   const total = payload.find((p) => p.dataKey === "total")?.value ?? 0;
   return (
-    <div className="rounded-lg border border-white/10 bg-[#0b0b14]/95 px-3 py-2 text-xs shadow-2xl backdrop-blur">
-      <div className="mb-1.5 font-bold text-white">{label}</div>
+    <div className="rounded-lg border border-[var(--color-cream)]/10 bg-[var(--color-surface-2)]/95 px-3 py-2 text-xs shadow-2xl backdrop-blur">
+      <div className="mb-1.5 font-bold text-[var(--color-cream)]">{label}</div>
       {rows.length === 0 ? (
-        <div className="text-white/50">No arrivals</div>
+        <div className="text-[var(--color-cream)]/50">No arrivals</div>
       ) : (
         rows.map((p) => (
           <div key={p.dataKey} className="flex items-center justify-between gap-4 py-0.5">
-            <span className="flex items-center gap-1.5 text-white/70">
+            <span className="flex items-center gap-1.5 text-[var(--color-cream)]/70">
               <span className="h-2 w-2 rounded-sm" style={{ background: p.color }} />
               {p.name}
             </span>
@@ -64,9 +64,9 @@ function CustomTooltip({
           </div>
         ))
       )}
-      <div className="mt-1.5 flex items-center justify-between gap-4 border-t border-white/10 pt-1.5">
-        <span className="text-white/90 font-semibold">Total reach</span>
-        <span className="font-bold tabular-nums text-white">{total.toLocaleString()}</span>
+      <div className="mt-1.5 flex items-center justify-between gap-4 border-t border-[var(--color-cream)]/10 pt-1.5">
+        <span className="text-[var(--color-cream)]/90 font-semibold">Total reach</span>
+        <span className="font-bold tabular-nums text-[var(--color-cream)]">{total.toLocaleString()}</span>
       </div>
     </div>
   );
@@ -85,15 +85,15 @@ export function ReachLineChart({ data }: { data: ReachDay[] }) {
   }
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-[radial-gradient(120%_120%_at_50%_-10%,#15162b_0%,#0a0a12_55%,#06060c_100%)] p-4 sm:p-5">
+    <div className="relative overflow-hidden rounded-2xl border border-[var(--color-cream)]/10 bg-[radial-gradient(120%_120%_at_50%_-10%,#15162b_0%,#0a0a12_55%,#06060c_100%)] p-4 sm:p-5">
       <div
         className="pointer-events-none absolute -top-24 left-1/2 h-56 w-[120%] -translate-x-1/2 rounded-full opacity-40 blur-3xl"
         style={{ background: "radial-gradient(closest-side, rgba(124,58,237,0.35), transparent)" }}
         aria-hidden
       />
       <div className="relative flex items-baseline justify-between gap-3">
-        <h3 className="text-sm font-bold tracking-tight text-white">The strands</h3>
-        <p className="text-[11px] text-white/45">
+        <h3 className="text-sm font-bold tracking-tight text-[var(--color-cream)]">The strands</h3>
+        <p className="text-[11px] text-[var(--color-cream)]/45">
           Each line is a source of reach. Hover the timeline · click a strand to isolate it.
         </p>
       </div>

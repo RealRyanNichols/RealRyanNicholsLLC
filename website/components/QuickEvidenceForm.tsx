@@ -170,7 +170,7 @@ export function QuickEvidenceForm() {
           <button
             type="button"
             onClick={reset}
-            className="rounded-md bg-[var(--color-accent)] text-[var(--color-paper)] px-4 py-2 text-sm font-bold"
+            className="rounded-md bg-[var(--color-accent)] text-[var(--color-cream)] px-4 py-2 text-sm font-bold"
           >
             + Add another
           </button>
@@ -343,7 +343,7 @@ export function QuickEvidenceForm() {
               className={[
                 "rounded-full border px-3 py-1 text-xs font-bold cursor-pointer transition select-none",
                 themes.has(t.value)
-                  ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)]"
+                  ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)]"
                   : "border-[var(--color-line)] hover:border-[var(--color-accent)]",
               ].join(" ")}
             >
@@ -379,7 +379,7 @@ export function QuickEvidenceForm() {
       <button
         type="submit"
         disabled={busy || !title.trim()}
-        className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-6 py-3 font-bold hover:bg-[var(--color-accent-strong)] disabled:opacity-50"
+        className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-6 py-3 font-bold hover:bg-[var(--color-accent-strong)] disabled:opacity-50"
       >
         {busy ? "Locking in…" : "Lock in evidence →"}
       </button>

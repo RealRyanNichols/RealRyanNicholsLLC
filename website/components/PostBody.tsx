@@ -148,22 +148,22 @@ function CaseBanner({ arg }: { arg?: string }) {
   const banner = parseCaseBannerArg(arg);
   if (!banner) return null;
   return (
-    <section className="not-prose my-8 overflow-hidden rounded-lg border-2 border-[var(--color-ink)] bg-[var(--color-blue-strong)] text-[#fdf8ea] shadow-sm">
-      <div className="border-b border-white/15 bg-black/25 px-5 py-3 text-xs font-black uppercase tracking-normal text-white/80">
+    <section className="not-prose my-8 overflow-hidden rounded-lg border-2 border-[var(--color-ink)] bg-[var(--color-blue-strong)] text-[var(--color-cream)] shadow-sm">
+      <div className="border-b border-[var(--color-cream)]/15 bg-black/25 px-5 py-3 text-xs font-black uppercase tracking-normal text-[var(--color-cream)]/80">
         Public Evidence Wall
       </div>
       <div className="px-5 py-6 sm:px-7 sm:py-8">
-        <h2 className="font-display text-4xl font-black leading-none tracking-normal text-[#fdf8ea] sm:text-6xl">
+        <h2 className="font-display text-4xl font-black leading-none tracking-normal text-[var(--color-cream)] sm:text-6xl">
           {banner.title}
         </h2>
-        <p className="mt-5 max-w-3xl text-base font-medium leading-relaxed text-white/85 sm:text-lg">
+        <p className="mt-5 max-w-3xl text-base font-medium leading-relaxed text-[var(--color-cream)]/85 sm:text-lg">
           {banner.subtitle}
         </p>
         {banner.stats.length > 0 ? (
           <div className="mt-7 grid gap-3 sm:grid-cols-3">
             {banner.stats.map((stat) => (
-              <div key={stat} className="rounded-md border border-white/20 bg-white/10 px-4 py-3">
-                <p className="text-sm font-black leading-snug text-[#fdf8ea]">{stat}</p>
+              <div key={stat} className="rounded-md border border-[var(--color-cream)]/20 bg-[var(--color-cream)]/10 px-4 py-3">
+                <p className="text-sm font-black leading-snug text-[var(--color-cream)]">{stat}</p>
               </div>
             ))}
           </div>
@@ -196,7 +196,7 @@ function ReceiptFigure({
         <div className="flex items-center justify-between gap-3">
           <p className="text-sm font-black leading-snug text-[var(--color-ink)]">{receipt.title}</p>
           {receipt.tag ? (
-            <span className="shrink-0 rounded-full bg-[var(--color-blue-soft)] px-2 py-0.5 text-[0.68rem] font-black uppercase tracking-normal text-[var(--color-blue)]">
+            <span className="shrink-0 rounded-full bg-[var(--color-blue-soft)] px-2 py-0.5 text-[0.68rem] font-black uppercase tracking-normal text-[var(--color-blue-ink)]">
               {receipt.tag}
             </span>
           ) : null}

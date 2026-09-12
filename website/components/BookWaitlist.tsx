@@ -77,7 +77,7 @@ export function BookWaitlist({
 
   const labelClass =
     tone === "dark"
-      ? "text-xs font-black uppercase tracking-[0.14em] text-[#d8c89e]"
+      ? "text-xs font-black uppercase tracking-[0.14em] text-[var(--color-gold)]"
       : "text-xs font-black uppercase tracking-[0.14em] text-[var(--color-muted)]";
 
   return (
@@ -128,14 +128,14 @@ export function BookWaitlist({
       <button
         type="submit"
         disabled={busy}
-        className="min-h-12 rounded-md border-2 border-[var(--color-accent)] bg-[var(--color-accent)] px-4 py-3 text-base font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)] disabled:opacity-60"
+        className="min-h-12 rounded-md border-2 border-[var(--color-accent)] bg-[var(--color-accent)] px-4 py-3 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)] disabled:opacity-60"
       >
         {busy ? "Saving your spot..." : "Reserve my spot + free chapter"}
       </button>
       <p
         className={
           tone === "dark"
-            ? "text-center text-[11px] font-semibold text-[#cfd9ea]"
+            ? "text-center text-[11px] font-semibold text-[var(--color-ink-soft)]"
             : "text-center text-[11px] font-semibold text-[var(--color-muted)]"
         }
       >

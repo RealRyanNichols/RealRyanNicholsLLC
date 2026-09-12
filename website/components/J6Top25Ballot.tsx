@@ -118,17 +118,17 @@ export function J6Top25Ballot({
   return (
     <section className="mt-10">
       {!signedIn ? (
-        <div className="mb-7 rounded-2xl border-2 border-[#d2ad4f] bg-[#fff8df] p-5 text-[#352a12]">
+        <div className="mb-7 rounded-2xl border-2 border-[var(--color-gold)] bg-[var(--color-surface-2)] p-5 text-[var(--color-ink)]">
           <p className="font-black">Sign in to vote.</p>
           <p className="mt-1 text-sm leading-relaxed">
             Voting requires an account with a confirmed email address so each person has one active vote.
           </p>
-          <Link href={loginHref} className="mt-4 inline-flex rounded-xl bg-[#0a1831] px-5 py-3 text-sm font-black text-white">
+          <Link href={loginHref} className="mt-4 inline-flex rounded-xl bg-[#0a1831] px-5 py-3 text-sm font-black text-[var(--color-cream)]">
             Sign in or register →
           </Link>
         </div>
       ) : !verifiedEmail ? (
-        <div className="mb-7 rounded-2xl border-2 border-amber-400 bg-amber-50 p-5 text-amber-950">
+        <div className="mb-7 rounded-2xl border-2 border-[var(--color-tag-procedural)]/50 bg-[var(--color-support-soft)] p-5 text-[var(--color-tag-procedural)]">
           <p className="font-black">Confirm your email before voting.</p>
           <p className="mt-1 text-sm leading-relaxed">
             Open the confirmation email sent when your account was created, then return to this page.
@@ -151,12 +151,12 @@ export function J6Top25Ballot({
               id={candidate.slug}
               className={`relative overflow-hidden rounded-2xl border-2 p-4 transition ${
                 selected
-                  ? "border-[#d2ad4f] bg-[#fff8df] shadow-lg"
+                  ? "border-[var(--color-gold)] bg-[var(--color-surface-2)] shadow-lg"
                   : "border-[var(--color-line)] bg-[var(--color-surface)]"
               }`}
             >
               <div className="flex gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#071329] text-xl font-black text-[var(--color-gold-bright)]">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--color-surface)] text-xl font-black text-[var(--color-gold-bright)]">
                   {index + 1}
                 </div>
                 {candidate.photo_url ? (
@@ -167,7 +167,7 @@ export function J6Top25Ballot({
                     className="h-20 w-16 shrink-0 rounded-xl object-cover"
                   />
                 ) : (
-                  <div className="flex h-20 w-16 shrink-0 items-center justify-center rounded-xl bg-[#dfe5ef] text-xl font-black text-[#26385f]">
+                  <div className="flex h-20 w-16 shrink-0 items-center justify-center rounded-xl bg-[var(--color-blue-soft)] text-xl font-black text-[var(--color-blue-ink)]">
                     {candidate.display_name
                       .split(/\s+/)
                       .slice(0, 2)
@@ -183,7 +183,7 @@ export function J6Top25Ballot({
                         <p className="mt-1 text-xs leading-relaxed text-[var(--color-muted)]">{candidate.role}</p>
                       ) : null}
                     </div>
-                    <span className="rounded-full bg-[#0a1831] px-3 py-1 text-xs font-black text-white">
+                    <span className="rounded-full bg-[#0a1831] px-3 py-1 text-xs font-black text-[var(--color-cream)]">
                       {candidate.vote_count.toLocaleString()} {candidate.vote_count === 1 ? "vote" : "votes"}
                     </span>
                   </div>
@@ -194,7 +194,7 @@ export function J6Top25Ballot({
                     {candidate.profile_slug ? (
                       <Link
                         href={`/case/people/${candidate.profile_slug}`}
-                        className="inline-flex min-h-11 items-center rounded-lg border border-[var(--color-line)] px-3 py-2 text-xs font-black hover:border-[#d2ad4f]"
+                        className="inline-flex min-h-11 items-center rounded-lg border border-[var(--color-line)] px-3 py-2 text-xs font-black hover:border-[var(--color-gold)]"
                       >
                         View profile
                       </Link>
@@ -207,7 +207,7 @@ export function J6Top25Ballot({
                       type="button"
                       disabled={!signedIn || !verifiedEmail || isPending || selected}
                       onClick={() => submitVote(candidate.id)}
-                      className="min-h-11 rounded-lg bg-[#b3212d] px-4 py-2 text-xs font-black text-white disabled:cursor-not-allowed disabled:opacity-50"
+                      className="min-h-11 rounded-lg bg-[var(--color-accent)] px-4 py-2 text-xs font-black text-[var(--color-cream)] disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       {selected ? "Your vote" : isPending ? "Saving…" : "Vote"}
                     </button>
@@ -219,8 +219,8 @@ export function J6Top25Ballot({
         })}
       </div>
 
-      <section className="mt-10 rounded-3xl border-2 border-[#26385f] bg-[#eef2f8] p-6 sm:p-8">
-        <p className="text-xs font-black uppercase tracking-[0.2em] text-[#9b1c29]">Do not see your choice?</p>
+      <section className="mt-10 rounded-3xl border-2 border-[var(--color-line-soft)] bg-[var(--color-surface-2)] p-6 sm:p-8">
+        <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-danger)]">Do not see your choice?</p>
         <h2 className="mt-2 font-display text-3xl font-black">Write someone in.</h2>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[var(--color-ink-soft)]">
           Enter a full name. A write-in becomes part of the live ranking and receives your active vote. Duplicate names and obvious aliases are consolidated during review.
@@ -232,13 +232,13 @@ export function J6Top25Ballot({
             disabled={!signedIn || !verifiedEmail || isPending}
             maxLength={120}
             placeholder="Full name"
-            className="min-h-12 flex-1 rounded-xl border border-[#9aa8bf] bg-white px-4"
+            className="min-h-12 flex-1 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-4"
           />
           <button
             type="button"
             onClick={submitWriteIn}
             disabled={!signedIn || !verifiedEmail || isPending}
-            className="min-h-12 rounded-xl bg-[#071329] px-6 font-black text-white disabled:cursor-not-allowed disabled:opacity-50"
+            className="min-h-12 rounded-xl bg-[var(--color-surface)] px-6 font-black text-[var(--color-cream)] disabled:cursor-not-allowed disabled:opacity-50"
           >
             Add write-in and vote
           </button>

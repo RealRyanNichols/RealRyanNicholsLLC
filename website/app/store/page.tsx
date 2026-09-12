@@ -206,11 +206,11 @@ function ProductCard({ p }: { p: Product }) {
       <div className="relative h-40 w-full overflow-hidden bg-[var(--color-surface-2)]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={image.src} alt={image.alt} className="h-full w-full object-cover" />
-        <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-3 bg-[var(--color-ink)]/88 px-4 py-3 text-white">
-          <span className="text-xs font-bold uppercase tracking-normal text-white/70">
+        <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-3 bg-[var(--color-ink)]/88 px-4 py-3 text-[var(--color-cream)]">
+          <span className="text-xs font-bold uppercase tracking-normal text-[var(--color-cream)]/70">
             {detail?.tag ?? p.type}
           </span>
-          <span className="text-2xl font-bold text-white">
+          <span className="text-2xl font-bold text-[var(--color-cream)]">
             {usd(p.price_cents)}
           </span>
         </div>
@@ -353,7 +353,7 @@ export default async function StorePage() {
               </Link>
               <Link
                 href="#service-options"
-                className="rrn-tap inline-flex rounded-lg border-2 border-[var(--color-blue)] px-5 py-3 text-sm font-bold text-[var(--color-blue)] transition hover:bg-[var(--color-blue-soft)]"
+                className="rrn-tap inline-flex rounded-lg border-2 border-[var(--color-blue)] px-5 py-3 text-sm font-bold text-[var(--color-blue-ink)] transition hover:bg-[var(--color-blue-soft)]"
               >
                 See paid services
               </Link>
@@ -379,7 +379,7 @@ export default async function StorePage() {
                 <p className="text-xs font-black uppercase tracking-normal text-[var(--color-gold-bright)]">
                   The useful path
                 </p>
-                <p className="mt-1 max-w-sm font-display text-2xl font-black leading-tight tracking-normal text-white sm:text-3xl">
+                <p className="mt-1 max-w-sm font-display text-2xl font-black leading-tight tracking-normal text-[var(--color-cream)] sm:text-3xl">
                   Chaos becomes a timeline, index, article, or next move.
                 </p>
               </div>
@@ -391,7 +391,7 @@ export default async function StorePage() {
                     key={item.label}
                     className="grid grid-cols-[2.25rem_1fr] gap-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-3"
                   >
-                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-blue)] text-sm font-black text-[var(--color-paper)]">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-blue)] text-sm font-black text-[var(--color-cream)]">
                       {index + 1}
                     </span>
                     <span>
@@ -511,12 +511,12 @@ export default async function StorePage() {
             ))}
           </section>
 
-          <div className="flex flex-col gap-4 rounded-lg border border-[var(--color-line)] bg-[var(--color-ink)] p-5 text-white sm:flex-row sm:items-center sm:justify-between sm:p-6">
+          <div className="flex flex-col gap-4 rounded-lg border border-[var(--color-line)] bg-[var(--color-ink)] p-5 text-[var(--color-cream)] sm:flex-row sm:items-center sm:justify-between sm:p-6">
             <div>
-              <h2 className="font-display text-2xl font-bold tracking-normal text-white">
+              <h2 className="font-display text-2xl font-bold tracking-normal text-[var(--color-cream)]">
                 Not sure which one you need?
               </h2>
-              <p className="mt-1 max-w-2xl text-sm leading-relaxed text-white/80">
+              <p className="mt-1 max-w-2xl text-sm leading-relaxed text-[var(--color-cream)]/80">
                 Start smaller. Use the guide, send a tip, or book the call.
                 The right first move is the one that gets the facts into order
                 without overbuying.
@@ -525,13 +525,13 @@ export default async function StorePage() {
             <div className="rrn-tap-row flex-none">
               <Link
                 href="/services"
-                className="rrn-tap inline-flex rounded-lg bg-white px-5 py-3 text-sm font-bold text-[var(--color-ink)] transition hover:bg-[var(--color-paper)]"
+                className="rrn-tap inline-flex rounded-lg bg-[var(--color-gold)] px-5 py-3 text-sm font-bold text-[var(--color-navy)] transition hover:bg-[var(--color-support-strong)]"
               >
                 Services guide
               </Link>
               <Link
                 href="/store/strategy-call-30"
-                className="rrn-tap inline-flex rounded-lg border border-white/40 px-5 py-3 text-sm font-bold text-white transition hover:bg-white/10"
+                className="rrn-tap inline-flex rounded-lg border border-[var(--color-cream)]/40 px-5 py-3 text-sm font-bold text-[var(--color-cream)] transition hover:bg-[var(--color-cream)]/10"
               >
                 Book the call
               </Link>

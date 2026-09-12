@@ -149,7 +149,7 @@ export default async function PalettePreviewPage({
             className={[
               "rounded-full px-4 py-2 text-sm font-semibold border-2 transition",
               opt.id === active.id
-                ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-white"
+                ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)]"
                 : "border-[var(--color-line)] hover:border-[var(--color-accent)]",
             ].join(" ")}
           >
@@ -185,7 +185,7 @@ export default async function PalettePreviewPage({
             <div className="mt-6 flex flex-wrap gap-3">
               <button
                 type="button"
-                className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-white px-5 py-3 font-bold hover:bg-[var(--color-accent-strong)] transition"
+                className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-3 font-bold hover:bg-[var(--color-accent-strong)] transition"
               >
                 Get a profile →
               </button>
@@ -256,7 +256,7 @@ export default async function PalettePreviewPage({
                 Unit C-2B without notice. Facility never responded.
               </p>
               <div className="mt-3 flex flex-wrap gap-2 text-xs">
-                <span className="rounded-md bg-[var(--color-accent)] text-white px-2 py-0.5 font-bold uppercase">
+                <span className="rounded-md bg-[var(--color-accent)] text-[var(--color-cream)] px-2 py-0.5 font-bold uppercase">
                   Severe
                 </span>
                 <span className="rounded-md border border-[var(--color-line)] px-2 py-0.5 text-[var(--color-ink-soft)]">

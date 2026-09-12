@@ -209,7 +209,7 @@ export default async function ReceiptsWallPage(props: {
                     <p className="font-display font-bold text-[var(--color-ink)] leading-snug">
                       {b.text}
                     </p>
-                    <span className="flex-shrink-0 rounded bg-[var(--color-accent)] text-[var(--color-paper)] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider">
+                    <span className="flex-shrink-0 rounded bg-[var(--color-accent)] text-[var(--color-cream)] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider">
                       Suspended
                     </span>
                   </div>
@@ -219,7 +219,7 @@ export default async function ReceiptsWallPage(props: {
             </ul>
           </div>
           {/* What stayed up — inverted dark panel for weight */}
-          <div className="px-5 sm:px-7 pb-6 pt-6 sm:pt-0 bg-[var(--color-ink)] text-[var(--color-paper)] sm:bg-transparent sm:text-inherit">
+          <div className="px-5 sm:px-7 pb-6 pt-6 sm:pt-0 bg-[var(--color-ink)] text-[var(--color-cream)] sm:bg-transparent sm:text-inherit">
             <div className="flex items-center gap-2">
               <span className="text-lg">⚠️</span>
               <h3 className="text-sm font-bold uppercase tracking-wider text-[var(--color-accent)]">
@@ -230,11 +230,11 @@ export default async function ReceiptsWallPage(props: {
               {STAYED_UP.map((s) => (
                 <li
                   key={s.text}
-                  className="rounded-xl border border-[var(--color-ink)] bg-[var(--color-ink)] text-[var(--color-paper)] p-3"
+                  className="rounded-xl border border-[var(--color-ink)] bg-[var(--color-ink)] text-[var(--color-cream)] p-3"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <p className="font-display font-bold leading-snug">{s.text}</p>
-                    <span className="flex-shrink-0 rounded border border-[var(--color-paper)]/40 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider opacity-80">
+                    <span className="flex-shrink-0 rounded border border-[var(--color-cream)]/40 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider opacity-80">
                       Still up
                     </span>
                   </div>
@@ -318,7 +318,7 @@ export default async function ReceiptsWallPage(props: {
                 className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6 hover:border-[var(--color-accent)] transition"
               >
                 <div className="flex flex-wrap items-baseline gap-2 mb-2">
-                  <span className="rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
+                  <span className="rounded-full bg-[var(--color-accent)] text-[var(--color-cream)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
                     {CATEGORY_META[it.category].tag}
                   </span>
                   {it.date ? (
@@ -363,7 +363,7 @@ export default async function ReceiptsWallPage(props: {
 
       {/* ---- Submit CTA ---- */}
       <section className="mt-12 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-5 sm:p-7">
-        <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-blue)]">
+        <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-blue-ink)]">
           Witnessing it yourself?
         </p>
         <h2 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight font-display">
@@ -378,7 +378,7 @@ export default async function ReceiptsWallPage(props: {
         <div className="mt-4 flex flex-wrap gap-3">
           <Link
             href="/submit"
-            className="inline-block rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
+            className="inline-block rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-cream)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
           >
             📩 Submit a receipt →
           </Link>
@@ -426,7 +426,7 @@ function Chip({
       className={[
         "inline-flex min-h-11 items-center rounded-full border px-3 py-1.5 text-xs font-bold transition sm:min-h-0",
         active
-          ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)]"
+          ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)]"
           : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]",
       ].join(" ")}
     >

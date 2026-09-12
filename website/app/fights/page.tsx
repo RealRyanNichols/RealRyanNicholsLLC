@@ -146,13 +146,13 @@ export default function FightsPage() {
         <div className="mt-5 flex flex-wrap gap-3">
           <Link
             href="/submit"
-            className="rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
+            className="rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-cream)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
           >
             Send a tip →
           </Link>
           <Link
             href="/support"
-            className="rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
+            className="rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
           >
             Fuel the fight →
           </Link>

@@ -72,7 +72,7 @@ function CounselGate({ error }: { error: boolean }) {
           ) : null}
           <button
             type="submit"
-            className="min-h-11 border border-[var(--color-accent)] bg-[var(--color-accent)] px-4 text-sm font-black uppercase tracking-normal text-white transition hover:bg-[var(--color-accent-strong)]"
+            className="min-h-11 border border-[var(--color-accent)] bg-[var(--color-accent)] px-4 text-sm font-black uppercase tracking-normal text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)]"
           >
             View the brief
           </button>

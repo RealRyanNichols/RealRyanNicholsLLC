@@ -34,7 +34,7 @@ export async function J6PathSplit({
     <section className={className} aria-label="Two ways into the January 6 files">
       {headline ? (
         <>
-          <p className="text-[11px] font-black uppercase tracking-[0.24em] text-[var(--color-navy)]">
+          <p className="text-[11px] font-black uppercase tracking-[0.24em] text-[var(--color-ink)]">
             The January 6 Files
           </p>
           <Heading className="mt-2 font-display text-4xl font-black leading-[0.95] tracking-tight sm:text-6xl">
@@ -47,7 +47,7 @@ export async function J6PathSplit({
           </p>
         </>
       ) : (
-        <p className="text-[11px] font-black uppercase tracking-[0.24em] text-[var(--color-navy)]">
+        <p className="text-[11px] font-black uppercase tracking-[0.24em] text-[var(--color-ink)]">
           The January 6 Files · two ways in, both free, both public
         </p>
       )}
@@ -59,7 +59,7 @@ export async function J6PathSplit({
         <Link
           href="/case/people/ryan-nichols"
           aria-current={active === "ryan" ? "location" : undefined}
-          className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-[var(--color-navy)] p-4 text-[var(--color-paper)] transition hover:shadow-xl sm:p-7"
+          className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-[var(--color-navy)] p-4 text-[var(--color-cream)] transition hover:shadow-xl sm:p-7"
         >
           <div>
             {active === "ryan" ? <HerePill tone="navy" /> : null}
@@ -71,10 +71,10 @@ export async function J6PathSplit({
                 ? totals.daysArrestToPardon.toLocaleString("en-US")
                 : "—"}
             </p>
-            <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--color-paper)]/60 sm:text-xs">
+            <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--color-cream)]/60 sm:text-xs">
               days, arrest to pardon
             </p>
-            <p className="mt-4 hidden text-sm leading-snug text-[var(--color-paper)]/80 sm:block">
+            <p className="mt-4 hidden text-sm leading-snug text-[var(--color-cream)]/80 sm:block">
               The filings, the grievances, the {totals.facilities} facilities
               &mdash; and the judge who said it out loud.
             </p>
@@ -92,11 +92,11 @@ export async function J6PathSplit({
         <Link
           href="/j6"
           aria-current={active === "everyone" ? "location" : undefined}
-          className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border-2 border-[var(--color-navy)]/25 bg-[var(--color-blue-soft)]/50 p-4 transition hover:border-[var(--color-navy)] hover:shadow-xl sm:p-7"
+          className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-blue-soft)]/50 p-4 transition hover:border-[var(--color-gold)] hover:shadow-xl sm:p-7"
         >
           <div>
             {active === "everyone" ? <HerePill tone="cream" /> : null}
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-navy)]">
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-ink)]">
               Everyone else
             </p>
             <p className="mt-3 font-display text-3xl font-black leading-none tracking-tight text-[var(--color-ink)] sm:text-5xl">
@@ -110,7 +110,7 @@ export async function J6PathSplit({
               or read the whole record.
             </p>
           </div>
-          <span className="mt-4 inline-flex min-h-11 items-center gap-1.5 text-sm font-black text-[var(--color-navy)] sm:mt-6 sm:min-h-0">
+          <span className="mt-4 inline-flex min-h-11 items-center gap-1.5 text-sm font-black text-[var(--color-ink)] sm:mt-6 sm:min-h-0">
             Search the archive
             <span aria-hidden className="transition group-hover:translate-x-1">
               &rarr;
@@ -131,7 +131,7 @@ function HerePill({ tone }: { tone: "navy" | "cream" }) {
         "mb-2 inline-flex rounded-full px-2 py-0.5 text-[10px] font-black uppercase tracking-wider",
         tone === "navy"
           ? "bg-[var(--color-gold-bright)] text-[var(--color-navy)]"
-          : "bg-[var(--color-navy)] text-[var(--color-paper)]",
+          : "bg-[var(--color-gold)] text-[var(--color-navy)]",
       ].join(" ")}
     >
       You are here

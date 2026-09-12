@@ -74,8 +74,8 @@ export function PostLivePulse({
       {live ? (
         <>
           <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-accent)] opacity-75" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--color-accent)]" />
           </span>
           <span className="text-[var(--color-ink)] font-bold tabular-nums">
             {pulse.reading_now.toLocaleString()}
@@ -198,8 +198,8 @@ export function PostFollowCapture({
         >
           {pulse.reading_now >= 2 ? (
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-accent)] opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--color-accent)]" />
             </span>
           ) : null}
           {proof}
@@ -238,7 +238,7 @@ export function PostFollowCapture({
                   placeholder="you@example.com"
                   aria-label="Email address (optional)"
                   autoComplete="email"
-                  className="flex-1 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3.5 py-2.5 text-sm focus:outline-none focus:border-[var(--color-accent)]"
+                  className="flex-1 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3.5 py-2.5 text-sm focus:outline-none focus:border-[var(--color-accent)]"
                 />
               ) : null}
               <input
@@ -249,7 +249,7 @@ export function PostFollowCapture({
                 aria-label={emailEnabled ? "Phone number (optional)" : "Phone number"}
                 autoComplete="tel"
                 inputMode="tel"
-                className="flex-1 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3.5 py-2.5 text-sm focus:outline-none focus:border-[var(--color-accent)]"
+                className="flex-1 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3.5 py-2.5 text-sm focus:outline-none focus:border-[var(--color-accent)]"
               />
               <button
                 type="submit"
@@ -266,7 +266,7 @@ export function PostFollowCapture({
               : "Your number is stored until SMS updates go live — unsubscribe anytime. No spam, no selling your data — ever."}
           </p>
           {state.kind === "error" ? (
-            <p className="mt-2 text-sm text-red-700">{state.message}</p>
+            <p className="mt-2 text-sm text-[var(--color-danger)]">{state.message}</p>
           ) : null}
         </div>
       )}

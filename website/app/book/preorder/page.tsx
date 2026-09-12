@@ -47,17 +47,17 @@ export default function BookPreorderPage() {
         cta="See editions"
       />
       {/* Hero */}
-      <section className="border-b border-[#203a64] bg-[#071126] text-[#fdf8ea]">
+      <section className="border-b border-[var(--color-line-soft)] bg-[var(--color-surface)] text-[var(--color-cream)]">
         <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:py-14">
           <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_240px] lg:gap-12">
             <div className="max-w-2xl">
               <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
                 Pre-order · {BOOK.title}
               </p>
-              <h1 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-[#fdf8ea] sm:text-6xl">
+              <h1 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-[var(--color-cream)] sm:text-6xl">
                 Get it first. Own the record directly.
               </h1>
-              <p className="mt-4 max-w-2xl text-base font-semibold leading-7 text-[#cfd9ea] sm:text-lg">
+              <p className="mt-4 max-w-2xl text-base font-semibold leading-7 text-[var(--color-ink-soft)] sm:text-lg">
                 Pre-order direct from me, here, before the book goes to Amazon.
                 Pick the edition that fits — every one helps put the full record
                 in public view.
@@ -72,7 +72,7 @@ export default function BookPreorderPage() {
               <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:items-center">
                 <Link
                   href="#book-offers"
-                  className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)]"
+                  className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)]"
                 >
                   Pre-order now
                   <span className="ml-2">{priceLabel}</span>
@@ -84,7 +84,7 @@ export default function BookPreorderPage() {
                 </Link>
                 <Link
                   href="#book-offers"
-                  className="inline-flex min-h-12 items-center justify-center rounded-lg border border-white/20 bg-white/[0.06] px-6 py-3 text-base font-black text-[#fdf8ea] transition hover:bg-white/10"
+                  className="inline-flex min-h-12 items-center justify-center rounded-lg border border-[var(--color-cream)]/20 bg-[var(--color-cream)]/[0.06] px-6 py-3 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-cream)]/10"
                 >
                   See all editions
                 </Link>
@@ -97,7 +97,7 @@ export default function BookPreorderPage() {
                 alt="Fighting Shadows — a memoir by Ryan Nichols (book cover)"
                 width={1000}
                 height={1333}
-                className="w-full rounded-lg border border-white/15 shadow-2xl shadow-black/50 ring-1 ring-black/20"
+                className="w-full rounded-lg border border-[var(--color-cream)]/15 shadow-2xl shadow-black/50 ring-1 ring-black/20"
               />
             </div>
           </div>

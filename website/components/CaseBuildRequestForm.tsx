@@ -65,7 +65,7 @@ export function CaseBuildRequestForm() {
         </p>
         <a
           href="/case"
-          className="mt-4 inline-flex items-center rounded-lg bg-[var(--color-navy)] px-5 py-2.5 text-sm font-bold text-[#fdf8ea] transition hover:bg-[var(--color-blue)]"
+          className="mt-4 inline-flex items-center rounded-lg bg-[var(--color-gold)] px-5 py-2.5 text-sm font-bold text-[var(--color-navy)] transition hover:bg-[var(--color-support-strong)]"
         >
           See the live example →
         </a>

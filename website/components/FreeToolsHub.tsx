@@ -510,7 +510,7 @@ export function FreeToolsHub() {
         <a
           href="#tool-wish"
           onClick={() => trackEvent("tool_wish_button_click")}
-          className="mt-2 grid min-h-12 place-items-center rounded-md border-2 border-[var(--color-support)] bg-[var(--color-support)] px-3 py-2 text-center text-sm font-black text-[#1a1410] transition hover:bg-[var(--color-support-soft)]"
+          className="mt-2 grid min-h-12 place-items-center rounded-md border-2 border-[var(--color-support)] bg-[var(--color-support)] px-3 py-2 text-center text-sm font-black text-[var(--color-navy)] transition hover:bg-[var(--color-support-soft)]"
         >
           Wish for a tool
         </a>
@@ -643,7 +643,7 @@ export function FreeToolsHub() {
           <button
             type="submit"
             disabled={busy}
-            className="min-h-12 rounded-md border-2 border-[var(--color-accent)] bg-[var(--color-accent)] px-4 py-3 text-sm font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)] disabled:opacity-60"
+            className="min-h-12 rounded-md border-2 border-[var(--color-accent)] bg-[var(--color-accent)] px-4 py-3 text-sm font-black text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)] disabled:opacity-60"
           >
             {busy ? "Building..." : activeTool.button}
           </button>
@@ -699,7 +699,7 @@ export function FreeToolsHub() {
             <div className="mt-4 grid gap-2 sm:grid-cols-2">
               <Link
                 href={result.result.nextPath.href}
-                className="grid min-h-11 place-items-center rounded-md border-2 border-[var(--color-accent)] bg-[var(--color-accent)] px-4 py-2 text-center text-sm font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)]"
+                className="grid min-h-11 place-items-center rounded-md border-2 border-[var(--color-accent)] bg-[var(--color-accent)] px-4 py-2 text-center text-sm font-black text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)]"
               >
                 {result.result.nextPath.label}
               </Link>
@@ -730,7 +730,7 @@ export function FreeToolsHub() {
                   className={[
                     "min-h-11 rounded-md border px-4 py-2 text-sm font-black transition",
                     supportReady
-                      ? "border-[var(--color-support)] bg-[var(--color-support)] text-[#1a1410] hover:bg-[#e1b94e]"
+                      ? "border-[var(--color-support)] bg-[var(--color-support)] text-[var(--color-navy)] hover:bg-[var(--color-support-strong)]"
                       : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-muted)]",
                   ].join(" ")}
                 >
@@ -856,7 +856,7 @@ export function FreeToolsHub() {
             <button
               type="submit"
               disabled={wishBusy}
-              className="min-h-12 rounded-md border-2 border-[var(--color-ink)] bg-[var(--color-ink)] px-4 py-3 text-sm font-black text-[var(--color-paper)] transition hover:bg-[var(--color-ink-soft)] disabled:opacity-60"
+              className="min-h-12 rounded-md border-2 border-[var(--color-ink)] bg-[var(--color-ink)] px-4 py-3 text-sm font-black text-[var(--color-cream)] transition hover:bg-[var(--color-ink-soft)] disabled:opacity-60"
             >
               {wishBusy ? "Saving wish..." : "Submit tool wish"}
             </button>

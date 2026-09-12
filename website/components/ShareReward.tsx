@@ -27,7 +27,7 @@ export function ShareReward({
       className="pointer-events-none absolute left-1/2 top-0 z-40 -translate-x-1/2 -translate-y-full"
     >
       <div className="relative flex flex-col items-center">
-        <span className="animate-share-pop whitespace-nowrap rounded-full border border-[var(--color-accent)] bg-[var(--color-paper)] px-3 py-1 text-[11px] font-bold text-[var(--color-accent)] shadow-lg">
+        <span className="animate-share-pop whitespace-nowrap rounded-full border border-[var(--color-accent)] bg-[var(--color-surface-2)] px-3 py-1 text-[11px] font-bold text-[var(--color-accent)] shadow-lg">
           {label} 🇺🇸
         </span>
         <span className="absolute left-1/2 top-full h-0 w-0">

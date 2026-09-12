@@ -26,7 +26,7 @@ export function ClaimMeHero({
         </p>
         {views > 0 || shares > 0 ? (
           <p
-            className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[var(--color-blue)] whitespace-nowrap"
+            className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[var(--color-blue-ink)] whitespace-nowrap"
             aria-label={`${views} people have viewed this profile, ${shares} shares`}
           >
             <span className="tabular-nums">{views.toLocaleString()}</span> watching
@@ -69,13 +69,13 @@ export function ClaimMeHero({
       <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 gap-3">
         <Link
           href={claimHref}
-          className="block rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-4 text-center font-bold text-base sm:text-lg hover:bg-[var(--color-accent-strong)] transition"
+          className="block rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-4 text-center font-bold text-base sm:text-lg hover:bg-[var(--color-accent-strong)] transition"
         >
           I am {firstName} — claim this profile →
         </Link>
         <Link
           href={`/submit?type=j6&about=${encodeURIComponent(name)}`}
-          className="block rounded-xl border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-4 text-center font-bold text-base sm:text-lg hover:bg-[var(--color-blue-strong)] transition"
+          className="block rounded-xl border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-cream)] px-5 py-4 text-center font-bold text-base sm:text-lg hover:bg-[var(--color-blue-strong)] transition"
         >
           Not me — send a tip →
         </Link>
@@ -139,7 +139,7 @@ export function ClaimMeFooter({ name }: { name: string }) {
 function Step({ n, title, body }: { n: number; title: string; body: string }) {
   return (
     <li className="flex gap-4">
-      <div className="flex-shrink-0 w-9 h-9 rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] flex items-center justify-center font-bold">
+      <div className="flex-shrink-0 w-9 h-9 rounded-full bg-[var(--color-accent)] text-[var(--color-cream)] flex items-center justify-center font-bold">
         {n}
       </div>
       <div className="flex-1 pt-0.5">

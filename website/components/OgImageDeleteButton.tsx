@@ -35,7 +35,7 @@ export function OgImageDeleteButton({ path }: { path: string }) {
           type="button"
           onClick={onDelete}
           disabled={isPending}
-          className="text-xs font-bold rounded-md border border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-2.5 py-1 hover:opacity-90 disabled:opacity-50"
+          className="text-xs font-bold rounded-md border border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-2.5 py-1 hover:opacity-90 disabled:opacity-50"
         >
           Confirm delete
         </button>

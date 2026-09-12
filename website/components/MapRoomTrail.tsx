@@ -130,7 +130,7 @@ export async function MapRoomTrail() {
               className="group block h-full rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-accent)] p-5 transition"
             >
               <div className="flex items-center gap-2 mb-2">
-                <span className="rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider tabular-nums">
+                <span className="rounded-full bg-[var(--color-accent)] text-[var(--color-cream)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider tabular-nums">
                   #{i + 1}
                 </span>
                 <span className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">

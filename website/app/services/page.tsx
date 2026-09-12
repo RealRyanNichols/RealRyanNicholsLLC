@@ -38,7 +38,7 @@ export default function ServicesPage() {
               href="/book"
               className="group rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 transition hover:border-[var(--color-accent)]"
             >
-              <p className="text-xs font-black uppercase tracking-wider text-[var(--color-blue)]">
+              <p className="text-xs font-black uppercase tracking-wider text-[var(--color-blue-ink)]">
                 The book
               </p>
               <h3 className="mt-2 text-2xl font-black tracking-tight text-[var(--color-ink)]">
@@ -57,7 +57,7 @@ export default function ServicesPage() {
               href="/store"
               className="group rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 transition hover:border-[var(--color-accent)]"
             >
-              <p className="text-xs font-black uppercase tracking-wider text-[var(--color-blue)]">
+              <p className="text-xs font-black uppercase tracking-wider text-[var(--color-blue-ink)]">
                 The store
               </p>
               <h3 className="mt-2 text-2xl font-black tracking-tight text-[var(--color-ink)]">

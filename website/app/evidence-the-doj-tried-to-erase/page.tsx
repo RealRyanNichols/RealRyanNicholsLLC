@@ -87,7 +87,7 @@ export default async function EvidenceErasedPage() {
   return (
     <article className="mx-auto max-w-5xl px-4 py-8 sm:py-12">
       {/* ── Hero — dark command-screen gravity ───────────────────── */}
-      <div className="rounded-3xl border-2 border-[var(--color-blue)] bg-gradient-to-br from-[#0a1429] via-[#0e1a36] to-[#1c2a4a] p-6 sm:p-10 relative overflow-hidden">
+      <div className="rounded-3xl border-2 border-[var(--color-blue)] bg-gradient-to-br from-[var(--color-surface)] via-[var(--color-surface)] to-[var(--color-surface-2)] p-6 sm:p-10 relative overflow-hidden">
         <div
           className="pointer-events-none absolute -top-32 -right-32 h-80 w-80 rounded-full blur-3xl"
           style={{ background: "rgba(127, 227, 169, 0.16)" }}
@@ -97,23 +97,23 @@ export default async function EvidenceErasedPage() {
           <span className="inline-block w-2 h-2 rounded-full bg-[var(--color-gold-bright)] animate-pulse" />
           Public record · preserved · verifiable
         </p>
-        <h1 className="relative mt-3 text-4xl sm:text-6xl font-bold tracking-tight leading-[1.02] font-display text-[var(--color-paper)]">
+        <h1 className="relative mt-3 text-4xl sm:text-6xl font-bold tracking-tight leading-[1.02] font-display text-[var(--color-cream)]">
           Evidence the DOJ Tried to Erase
         </h1>
-        <p className="relative mt-5 text-base sm:text-xl text-[#cfd9ea] leading-relaxed max-w-3xl">
+        <p className="relative mt-5 text-base sm:text-xl text-[var(--color-ink-soft)] leading-relaxed max-w-3xl">
           The Biden Justice Department published a master list of every
           American it prosecuted for January 6 — every name, every charge,
           every sentence, every court filing. Then, after President Trump
-          pardoned us on <strong className="text-[var(--color-paper)]">January 20, 2025</strong>,
+          pardoned us on <strong className="text-[var(--color-cream)]">January 20, 2025</strong>,
           they took it down. The page that documented what they did now
-          returns <span className="font-mono text-[#ff9b9b]">&ldquo;Page not found.&rdquo;</span>
+          returns <span className="font-mono text-[var(--color-tag-severe)]">&ldquo;Page not found.&rdquo;</span>
         </p>
-        <p className="relative mt-4 text-base sm:text-xl text-[#cfd9ea] leading-relaxed max-w-3xl">
+        <p className="relative mt-4 text-base sm:text-xl text-[var(--color-ink-soft)] leading-relaxed max-w-3xl">
           We pulled the last complete snapshot before it vanished.{" "}
           <strong className="text-[var(--color-gold-bright)]">Every name. Every case number.
           Every document.</strong> It is all here, it is all verifiable
           against the Internet Archive, and{" "}
-          <strong className="text-[var(--color-paper)]">it is not coming down.</strong>
+          <strong className="text-[var(--color-cream)]">it is not coming down.</strong>
         </p>
 
         {/* Counters */}
@@ -217,7 +217,7 @@ export default async function EvidenceErasedPage() {
 
       {/* ── Provenance — this is what makes it evidence ───────────── */}
       <section className="mt-10 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-5 sm:p-6">
-        <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-blue)]">
+        <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-blue-ink)]">
           Why this is evidence, not a claim
         </p>
         <h2 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight font-display">
@@ -235,7 +235,7 @@ export default async function EvidenceErasedPage() {
           href={WAYBACK}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-3 inline-block font-mono text-xs sm:text-sm text-[var(--color-blue)] underline break-all hover:text-[var(--color-blue-strong)]"
+          className="mt-3 inline-block font-mono text-xs sm:text-sm text-[var(--color-blue-ink)] underline break-all hover:text-[var(--color-blue-strong)]"
         >
           {WAYBACK}
         </a>
@@ -259,13 +259,13 @@ export default async function EvidenceErasedPage() {
         <div className="mt-5 flex flex-wrap gap-3">
           <Link
             href="/j6"
-            className="rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
+            className="rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
           >
             J6 defendant? Claim your profile →
           </Link>
           <Link
             href="/support"
-            className="rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
+            className="rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-cream)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
           >
             Help keep it online →
           </Link>
@@ -289,11 +289,11 @@ export default async function EvidenceErasedPage() {
 
 function DarkStat({ value, label }: { value: number; label: string }) {
   return (
-    <div className="rounded-xl border border-[#3a557c] bg-[#0a1429]/60 p-4">
+    <div className="rounded-xl border border-[var(--color-line-soft)] bg-[var(--color-surface)]/60 p-4">
       <div className="text-3xl sm:text-4xl font-bold tabular-nums tracking-tight leading-none text-[var(--color-gold-bright)]">
         {value.toLocaleString()}
       </div>
-      <div className="mt-2 text-[10px] uppercase tracking-wider text-[#a9b7d0] font-bold">
+      <div className="mt-2 text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
         {label}
       </div>
     </div>

@@ -13,6 +13,7 @@ export function PostCard({
   commentCount,
   truncate = true,
   fallbackImage = null,
+  reveal,
 }: {
   post: Post;
   commentCount: number;
@@ -20,6 +21,9 @@ export function PostCard({
   // Custom OG thumbnail (from page_og_images) used as the card art ONLY when a
   // text post has no visual of its own — never over an embed, image, or video.
   fallbackImage?: string | null;
+  // Stagger step for the theater reveal (first-screen cards only). When set,
+  // the row rises in once as it enters the viewport, delayed by this step.
+  reveal?: number;
 }) {
   const when = post.published_at
     ? formatDistanceToNowStrict(new Date(post.published_at), { addSuffix: true })
@@ -29,7 +33,11 @@ export function PostCard({
   const readingMinutes = readingTimeMinutes(post);
 
   return (
-    <article className="group/card border-b border-[var(--color-line)] py-7 first:pt-2 transition">
+    <article
+      className="group/card border-b border-[var(--color-line)] py-7 first:pt-2 transition"
+      data-reveal={reveal === undefined ? undefined : true}
+      style={reveal === undefined ? undefined : ({ "--d": reveal } as React.CSSProperties)}
+    >
       <header className="flex items-center justify-between gap-3 mb-3">
         <div className="flex items-center gap-2 text-xs text-[var(--color-muted)]">
           {post.pinned && (
@@ -130,7 +138,7 @@ function PostCardBody({
   if (post.type === "note") {
     return (
       <Link href={`/posts/${post.slug}`} className="block group">
-        <p className="text-lg leading-relaxed whitespace-pre-wrap group-hover:text-[var(--color-accent)] transition">
+        <p className="text-lg leading-relaxed whitespace-pre-wrap group-hover:text-[var(--color-gold)] transition">
           {post.body}
         </p>
       </Link>
@@ -142,7 +150,7 @@ function PostCardBody({
       <>
         {post.title ? (
           <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-3">
-            <Link href={`/posts/${post.slug}`} className="hover:underline underline-offset-4">
+            <Link href={`/posts/${post.slug}`} className="transition hover:text-[var(--color-gold)] hover:underline underline-offset-4">
               {post.title}
             </Link>
           </h2>
@@ -169,11 +177,11 @@ function PostCardBody({
     return (
       <>
         <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-3">
-          <Link href={`/posts/${post.slug}`} className="hover:underline underline-offset-4">
+          <Link href={`/posts/${post.slug}`} className="transition hover:text-[var(--color-gold)] hover:underline underline-offset-4">
             {post.title ?? "Untitled video"}
           </Link>
         </h2>
-        <Link href={`/posts/${post.slug}`} className="block relative aspect-video rounded-lg overflow-hidden bg-black border border-[var(--color-line)] group">
+        <Link href={`/posts/${post.slug}`} className="group relative block aspect-video overflow-hidden rounded-xl border border-[var(--color-line)] bg-black shadow-[0_16px_40px_rgba(0,0,0,0.35)]">
           {thumb ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={thumb} alt="" className="absolute inset-0 w-full h-full object-cover" />
@@ -188,11 +196,11 @@ function PostCardBody({
           ) : null}
           <div className="absolute inset-0 flex items-center justify-center">
             {isProcessing ? (
-              <span className="rounded-full bg-black/70 text-white text-sm px-4 py-2">
+              <span className="rounded-full bg-black/70 text-[var(--color-cream)] text-sm px-4 py-2">
                 Processing video…
               </span>
             ) : (
-              <span className="rounded-full bg-white/95 text-[var(--color-ink)] w-16 h-16 flex items-center justify-center shadow-md group-hover:scale-105 transition">
+              <span className="rounded-full bg-[var(--color-cream)]/95 text-[var(--color-navy)] w-16 h-16 flex items-center justify-center shadow-md group-hover:scale-105 transition">
                 <svg viewBox="0 0 24 24" className="w-7 h-7 ml-1" fill="currentColor" aria-hidden>
                   <path d="M8 5v14l11-7z" />
                 </svg>
@@ -200,7 +208,7 @@ function PostCardBody({
             )}
           </div>
           {post.duration_seconds ? (
-            <span className="absolute bottom-2 right-2 rounded bg-black/70 text-white text-xs px-1.5 py-0.5">
+            <span className="absolute bottom-2 right-2 rounded bg-black/70 text-[var(--color-cream)] text-xs px-1.5 py-0.5">
               {formatDuration(post.duration_seconds)}
             </span>
           ) : null}
@@ -230,12 +238,12 @@ function PostCardBody({
     <>
       {cardImage ? (
         // A card image (own thumbnail, or the OG fallback) leads the card:
-        // art first, then the headline, then a plain-text excerpt. On phones
-        // the art runs edge to edge; from sm up it sits inside the column.
+        // art first, then the headline, then a plain-text excerpt. The art
+        // sits in a rounded, hairlined frame at every width (the theater).
         <>
           <Link
             href={`/posts/${post.slug}`}
-            className="relative -mx-4 block aspect-video overflow-hidden bg-[var(--color-surface)] sm:mx-0 sm:rounded-xl sm:border sm:border-[var(--color-line)]"
+            className="relative block aspect-video overflow-hidden rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -246,7 +254,7 @@ function PostCardBody({
             />
           </Link>
           <h2 className="mt-4 font-display text-2xl font-bold leading-tight tracking-tight sm:text-3xl">
-            <Link href={`/posts/${post.slug}`} className="hover:underline underline-offset-4">
+            <Link href={`/posts/${post.slug}`} className="transition hover:text-[var(--color-gold)] hover:underline underline-offset-4">
               {post.title ?? "Untitled"}
             </Link>
           </h2>
@@ -257,7 +265,7 @@ function PostCardBody({
       ) : null}
       {cardImage ? null : (
         <h2 className="font-display text-2xl font-bold leading-tight tracking-tight sm:text-3xl">
-          <Link href={`/posts/${post.slug}`} className="hover:underline underline-offset-4">
+          <Link href={`/posts/${post.slug}`} className="transition hover:text-[var(--color-gold)] hover:underline underline-offset-4">
             {post.title ?? "Untitled"}
           </Link>
         </h2>
@@ -300,7 +308,7 @@ function PhotoGrid({ media }: { media: MediaItem[] }) {
     // image lands at zero height, then snaps to full size and shoves the rest
     // of the feed down the page — the single biggest layout-shift source here.
     return (
-      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)]">
+      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] shadow-[0_16px_40px_rgba(0,0,0,0.35)]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={m.url}
@@ -323,11 +331,11 @@ function PhotoGrid({ media }: { media: MediaItem[] }) {
       }
     >
       {media.slice(0, 4).map((m, i) => (
-        <div key={m.url} className="relative aspect-square overflow-hidden rounded-md border border-[var(--color-line)]">
+        <div key={m.url} className="relative aspect-square overflow-hidden rounded-lg border border-[var(--color-line)]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={m.url} alt={m.alt ?? ""} className="absolute inset-0 w-full h-full object-cover" />
           {i === 3 && media.length > 4 ? (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/50 text-white text-xl font-semibold">
+            <div className="absolute inset-0 flex items-center justify-center bg-black/50 text-[var(--color-cream)] text-xl font-semibold">
               +{media.length - 4}
             </div>
           ) : null}

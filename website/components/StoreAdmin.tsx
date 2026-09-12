@@ -157,7 +157,7 @@ function ProductRow({ product, onDone }: { product: Product; onDone: () => void 
         </p>
       </div>
       <span
-        className="rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--color-paper)]"
+        className="rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--color-cream)]"
         style={{
           background: product.active
             ? "var(--color-success)"
@@ -187,11 +187,11 @@ function ProductRow({ product, onDone }: { product: Product; onDone: () => void 
         type="button"
         disabled={busy}
         onClick={() => patch({ active: !product.active })}
-        className="rounded-lg border-2 border-[var(--color-accent)] px-3 py-1 text-xs font-bold text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-paper)] transition disabled:opacity-60"
+        className="rounded-lg border-2 border-[var(--color-accent)] px-3 py-1 text-xs font-bold text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-cream)] transition disabled:opacity-60"
       >
         {product.active ? "Unpublish" : "Publish"}
       </button>
-      {msg ? <span className="w-full text-xs text-red-700">{msg}</span> : null}
+      {msg ? <span className="w-full text-xs text-[var(--color-danger)]">{msg}</span> : null}
     </div>
   );
 }

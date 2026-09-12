@@ -186,7 +186,7 @@ export default function ContactPage() {
           </div>
 
           <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-5">
-            <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-blue)]">
+            <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-blue-ink)]">
               Example
             </p>
             <h3 className="mt-2 font-display text-2xl font-bold tracking-normal">
@@ -271,13 +271,13 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="border-t border-[var(--color-line)] bg-[var(--color-ink)] text-[var(--color-paper)]">
+      <section className="border-t border-[var(--color-line)] bg-[var(--color-ink)] text-[var(--color-cream)]">
         <div className="rrn-section grid gap-5 lg:grid-cols-[1fr_auto] lg:items-center">
           <div>
             <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-line)]">
               Direct contact
             </p>
-            <h2 className="mt-2 font-display text-3xl font-bold tracking-normal text-[var(--color-paper)]">
+            <h2 className="mt-2 font-display text-3xl font-bold tracking-normal text-[var(--color-cream)]">
               Prefer email or text?
             </h2>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--color-line-soft)]">
@@ -288,13 +288,13 @@ export default function ContactPage() {
           <div className="rrn-tap-row">
             <a
               href="mailto:Ryan@RealRyanNichols.com"
-              className="rrn-tap inline-flex rounded-lg border border-[var(--color-paper)] px-4 py-2 text-sm font-bold text-[var(--color-paper)] transition hover:bg-[var(--color-paper)] hover:text-[var(--color-ink)]"
+              className="rrn-tap inline-flex rounded-lg border border-[var(--color-cream)] px-4 py-2 text-sm font-bold text-[var(--color-cream)] transition hover:bg-[var(--color-paper)] hover:text-[var(--color-ink)]"
             >
               Ryan@RealRyanNichols.com
             </a>
             <a
               href="tel:+19033458990"
-              className="rrn-tap inline-flex rounded-lg border border-[var(--color-paper)] px-4 py-2 text-sm font-bold text-[var(--color-paper)] transition hover:bg-[var(--color-paper)] hover:text-[var(--color-ink)]"
+              className="rrn-tap inline-flex rounded-lg border border-[var(--color-cream)] px-4 py-2 text-sm font-bold text-[var(--color-cream)] transition hover:bg-[var(--color-paper)] hover:text-[var(--color-ink)]"
             >
               Call/Text (903) 345-8990
             </a>

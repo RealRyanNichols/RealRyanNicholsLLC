@@ -41,7 +41,7 @@ export function SupportNoteModerator({
     <div className="mt-3 flex flex-wrap items-center gap-2">
       {isPublished ? (
         <>
-          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-1 text-xs font-bold text-emerald-700">
+          <span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-success-soft)] border border-[var(--color-success)]/40 px-2.5 py-1 text-xs font-bold text-[var(--color-success)]">
             ● On the wall
           </span>
           <button
@@ -58,12 +58,12 @@ export function SupportNoteModerator({
           type="button"
           onClick={() => update("published")}
           disabled={busy}
-          className="rounded-full bg-[var(--color-accent)] px-3 py-1 text-xs font-bold text-white hover:opacity-90 disabled:opacity-50"
+          className="rounded-full bg-[var(--color-accent)] px-3 py-1 text-xs font-bold text-[var(--color-cream)] hover:opacity-90 disabled:opacity-50"
         >
           {busy ? "…" : "Publish to wall →"}
         </button>
       )}
-      {err ? <span className="text-xs font-bold text-red-600">{err}</span> : null}
+      {err ? <span className="text-xs font-bold text-[var(--color-danger)]">{err}</span> : null}
     </div>
   );
 }

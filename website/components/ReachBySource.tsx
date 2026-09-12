@@ -78,13 +78,13 @@ export async function ReachBySource({ excludeSelf }: { excludeSelf: boolean }) {
         <div className="flex items-center gap-1 rounded-full border border-[var(--color-line)] p-1 text-xs">
           <Link
             href="/admin/analytics?reach=all#reach-by-source"
-            className={`rounded-full px-3 py-1 font-bold ${!excludeSelf ? "bg-[var(--color-accent)] text-[var(--color-paper)]" : "text-[var(--color-ink-soft)]"}`}
+            className={`rounded-full px-3 py-1 font-bold ${!excludeSelf ? "bg-[var(--color-accent)] text-[var(--color-cream)]" : "text-[var(--color-ink-soft)]"}`}
           >
             Everyone
           </Link>
           <Link
             href="/admin/analytics?reach=strict#reach-by-source"
-            className={`rounded-full px-3 py-1 font-bold ${excludeSelf ? "bg-[var(--color-accent)] text-[var(--color-paper)]" : "text-[var(--color-ink-soft)]"}`}
+            className={`rounded-full px-3 py-1 font-bold ${excludeSelf ? "bg-[var(--color-accent)] text-[var(--color-cream)]" : "text-[var(--color-ink-soft)]"}`}
           >
             Exclude my activity
           </Link>

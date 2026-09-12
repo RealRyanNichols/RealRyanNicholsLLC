@@ -87,7 +87,7 @@ export default function CaseBuilderPage() {
         </Link>
       </nav>
 
-      <p className="text-[11px] uppercase tracking-[0.25em] font-bold text-[var(--color-navy)]">
+      <p className="text-[11px] uppercase tracking-[0.25em] font-bold text-[var(--color-ink)]">
         Case Builder · by Ryan Nichols
       </p>
       <h1 className="mt-2 font-display text-4xl sm:text-6xl font-bold tracking-tight leading-[1.02]">
@@ -95,7 +95,7 @@ export default function CaseBuilderPage() {
       </h1>
       <p className="mt-4 max-w-2xl text-base sm:text-lg leading-relaxed text-[var(--color-ink-soft)]">
         Ryan built the archive for his own federal case —{" "}
-        <Link href="/case" className="font-semibold text-[var(--color-navy)] underline underline-offset-4">
+        <Link href="/case" className="font-semibold text-[var(--color-ink)] underline underline-offset-4">
           United States v. Nichols
         </Link>{" "}
         — from inside a jail cell: over a thousand public documents, a dated
@@ -127,7 +127,7 @@ export default function CaseBuilderPage() {
           replies to every request personally.{" "}
           <strong className="text-[var(--color-ink)]">
             January 6 defendants: your case profile is free, forever —{" "}
-            <Link href="/j6" className="text-[var(--color-navy)] underline underline-offset-2">
+            <Link href="/j6" className="text-[var(--color-ink)] underline underline-offset-2">
               claim it here
             </Link>
             .
@@ -135,7 +135,7 @@ export default function CaseBuilderPage() {
         </p>
       </section>
 
-      <section className="mt-10 rounded-2xl border-2 border-[var(--color-navy)]/30 bg-[var(--color-surface)] p-6 sm:p-8">
+      <section className="mt-10 rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-6 sm:p-8">
         <h2 className="text-xl sm:text-2xl font-bold tracking-tight font-display">
           Request a case build
         </h2>

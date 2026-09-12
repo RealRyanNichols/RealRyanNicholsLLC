@@ -83,7 +83,7 @@ export function ImportReviewRow({
         <div className="flex-1 min-w-0">
           <div className="flex items-center flex-wrap gap-2 text-xs">
             {importanceScore > 0 ? (
-              <span className="rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] px-2 py-0.5 font-bold uppercase tracking-wider">
+              <span className="rounded-full bg-[var(--color-accent)] text-[var(--color-cream)] px-2 py-0.5 font-bold uppercase tracking-wider">
                 ★ {importanceScore}
               </span>
             ) : null}
@@ -97,7 +97,7 @@ export function ImportReviewRow({
                 className={[
                   "rounded-full px-2 py-0.5 font-bold uppercase tracking-wider",
                   reviewStatus === "approved"
-                    ? "bg-[var(--color-success)] text-[var(--color-paper)]"
+                    ? "bg-[var(--color-success)] text-[var(--color-navy)]"
                     : "bg-[var(--color-accent-soft)] text-[var(--color-accent)] border border-[var(--color-accent)]",
                 ].join(" ")}
               >
@@ -171,7 +171,7 @@ export function ImportReviewRow({
               type="button"
               disabled={busy}
               onClick={() => act("approve")}
-              className="rounded-md bg-[var(--color-success)] text-[var(--color-paper)] hover:opacity-90 px-3 py-1.5 text-xs font-bold disabled:opacity-50"
+              className="rounded-md bg-[var(--color-success)] text-[var(--color-navy)] hover:opacity-90 px-3 py-1.5 text-xs font-bold disabled:opacity-50"
             >
               ✓ Approve
             </button>
@@ -179,7 +179,7 @@ export function ImportReviewRow({
               type="button"
               disabled={busy}
               onClick={onReject}
-              className="rounded-md border border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-paper)] px-3 py-1.5 text-xs font-semibold disabled:opacity-50"
+              className="rounded-md border border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-cream)] px-3 py-1.5 text-xs font-semibold disabled:opacity-50"
             >
               ✗ Reject
             </button>

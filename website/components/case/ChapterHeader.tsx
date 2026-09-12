@@ -4,11 +4,11 @@ import type { ReactNode } from "react";
 // tracked, navy. Before this there were a dozen hand-copied versions of the
 // same three classes across the page; change it here, it changes everywhere.
 const EYEBROW_TONE = {
-  navy: "text-[var(--color-navy)]",
+  navy: "text-[var(--color-ink)]",
   // The blue cards (recognition, attorney briefing) carry blue ink.
-  blue: "text-[var(--color-blue)]",
+  blue: "text-[var(--color-blue-ink)]",
   // On the navy bands: the muted steel the site has always used there.
-  cream: "text-[#8194b4]",
+  cream: "text-[var(--color-muted)]",
 } as const;
 
 export function Eyebrow({

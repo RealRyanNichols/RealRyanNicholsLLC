@@ -68,7 +68,7 @@ export default async function LiveStreamPage({
         <p
           className={[
             "text-xs uppercase tracking-wider font-black",
-            stream.status === "live" ? "text-red-700" : "text-[var(--color-accent)]",
+            stream.status === "live" ? "text-[var(--color-danger)]" : "text-[var(--color-accent)]",
           ].join(" ")}
         >
           {liveStatusLabel(stream.status)}
@@ -92,7 +92,7 @@ export default async function LiveStreamPage({
               streamType={isEnded ? "on-demand" : "live"}
             />
           ) : (
-            <div className="aspect-video rounded-lg bg-black text-white grid place-items-center px-6 text-center text-sm">
+            <div className="aspect-video rounded-lg bg-black text-[var(--color-cream)] grid place-items-center px-6 text-center text-sm">
               {isEnded
                 ? "This live stream has ended. If a replay is published, it will show up in Videos."
                 : "The live player is waiting for video."}
@@ -101,7 +101,7 @@ export default async function LiveStreamPage({
           <div className="mt-4 flex flex-wrap gap-2">
             <Link
               href="/support"
-              className="rounded-full bg-[var(--color-accent)] px-4 py-2 text-sm font-black text-[var(--color-paper)]"
+              className="rounded-full bg-[var(--color-accent)] px-4 py-2 text-sm font-black text-[var(--color-cream)]"
             >
               Support the work
             </Link>

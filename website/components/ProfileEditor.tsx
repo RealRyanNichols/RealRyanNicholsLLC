@@ -165,7 +165,7 @@ export function ProfileEditor({ initial }: { initial: Initial }) {
       </button>
 
       {state.kind === "saved" ? (
-        <p className="text-sm text-emerald-400">Saved ✓</p>
+        <p className="text-sm text-[var(--color-success)]">Saved ✓</p>
       ) : null}
       {state.kind === "error" ? (
         <p className="text-sm text-[var(--color-accent)]">{state.message}</p>

@@ -21,14 +21,14 @@ const RESTRICTED: ReceiptLabel[] = ["PRIVATE / NOT PUBLIC", "SEALED"];
 function chipClass(label: ReceiptLabel): string {
   switch (label) {
     case "FACT":
-      return "bg-[var(--color-gold-bright)] text-[#061020]";
+      return "bg-[var(--color-gold-bright)] text-[var(--color-navy)]";
     case "NEEDS AUTHENTICATION":
-      return "bg-[#8a6d1f]/60 text-[#f4efe4]";
+      return "bg-[var(--color-gold)]/60 text-[var(--color-navy)]";
     case "PRIVATE / NOT PUBLIC":
     case "SEALED":
-      return "bg-[#3a4358] text-[#cfd9ea]";
+      return "bg-[var(--color-surface-2)] text-[var(--color-ink-soft)]";
     default: // RYAN STATEMENT, DOCUMENTED INFERENCE
-      return "border border-[#f4efe4]/50 text-[#f4efe4]";
+      return "border border-[var(--color-cream)]/50 text-[var(--color-cream)]";
   }
 }
 
@@ -48,7 +48,7 @@ export function Receipt({ value }: { value: Record<string, unknown> }) {
   return (
     <aside
       id={exhibitId || undefined}
-      className="not-prose my-7 overflow-hidden rounded-lg border-l-4 border-[var(--color-gold-bright)] bg-[#0b1b34] text-[#f4efe4]"
+      className="not-prose my-7 overflow-hidden rounded-lg border-l-4 border-[var(--color-gold-bright)] bg-[var(--color-surface)] text-[var(--color-cream)]"
     >
       <div className="p-5 sm:p-6">
         <div className="flex flex-wrap items-center gap-2">
@@ -69,14 +69,14 @@ export function Receipt({ value }: { value: Record<string, unknown> }) {
           ) : null}
         </div>
 
-        <p className="mt-3 text-base font-bold leading-snug text-[#f4efe4] sm:text-lg">
+        <p className="mt-3 text-base font-bold leading-snug text-[var(--color-cream)] sm:text-lg">
           {claim}
         </p>
 
         {image ? <ReceiptImage src={image} alt={claim} /> : null}
 
         {source ? (
-          <p className="mt-3 text-sm text-[#a9b7d0]">
+          <p className="mt-3 text-sm text-[var(--color-muted)]">
             <span className="font-bold uppercase tracking-wider text-[11px] text-[var(--color-gold-bright)]">
               Source:
             </span>{" "}
@@ -85,7 +85,7 @@ export function Receipt({ value }: { value: Record<string, unknown> }) {
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-semibold text-[#cfd9ea] underline decoration-[var(--color-gold-bright)] underline-offset-2"
+                className="font-semibold text-[var(--color-ink-soft)] underline decoration-[var(--color-gold-bright)] underline-offset-2"
               >
                 {source} <span aria-hidden>↗</span>
               </a>
@@ -96,13 +96,13 @@ export function Receipt({ value }: { value: Record<string, unknown> }) {
         ) : null}
 
         {restricted ? (
-          <p className="mt-3 text-xs font-semibold text-[#a9b7d0]">
+          <p className="mt-3 text-xs font-semibold text-[var(--color-muted)]">
             The underlying record is not public. The claim stands on the label
             above; the paper stays where the law puts it.
           </p>
         ) : null}
 
-        {note ? <p className="mt-2 text-xs italic text-[#a9b7d0]">{note}</p> : null}
+        {note ? <p className="mt-2 text-xs italic text-[var(--color-muted)]">{note}</p> : null}
       </div>
     </aside>
   );

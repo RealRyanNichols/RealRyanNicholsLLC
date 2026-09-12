@@ -42,7 +42,7 @@ export default function AboutPage() {
 
       {/* status badges */}
       <div className="mt-4 flex flex-wrap gap-2">
-        <span className="rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] px-3 py-1 text-xs font-bold">
+        <span className="rounded-full bg-[var(--color-accent)] text-[var(--color-cream)] px-3 py-1 text-xs font-bold">
           ★ Pardoned — Jan 20, 2025
         </span>
         <span className="rounded-full border-2 border-[var(--color-success)] text-[var(--color-success)] px-3 py-1 text-xs font-bold">
@@ -63,7 +63,7 @@ export default function AboutPage() {
       <div className="mt-6 flex flex-wrap gap-3">
         <Link
           href="/case"
-          className="rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
+          className="rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
         >
           The J6 Case →
         </Link>
@@ -75,7 +75,7 @@ export default function AboutPage() {
         </Link>
         <Link
           href="/book/preorder"
-          className="rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
+          className="rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-cream)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
         >
           Get the Book
         </Link>
@@ -144,7 +144,7 @@ export default function AboutPage() {
             <li key={op.title} className="relative pl-6">
               <span className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full bg-[var(--color-accent)] ring-4 ring-[var(--color-paper)]" />
               <div className="flex flex-wrap items-baseline gap-2">
-                <span className="rounded bg-[var(--color-ink)] text-[var(--color-paper)] px-1.5 py-0.5 text-[10px] font-bold tabular-nums">
+                <span className="rounded bg-[var(--color-ink)] text-[var(--color-cream)] px-1.5 py-0.5 text-[10px] font-bold tabular-nums">
                   {op.year}
                 </span>
                 <h3 className="text-base sm:text-lg font-bold tracking-tight font-display">
@@ -159,14 +159,14 @@ export default function AboutPage() {
 
       {/* ---- Recognition ---- */}
       <section className="mt-8 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-5 sm:p-6">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-blue)] font-bold">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-blue-ink)] font-bold">
           Recognized for the rescues
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
           {RECOGNITION.map((r) => (
             <span
               key={r}
-              className="rounded-full border border-[var(--color-blue)]/30 bg-[var(--color-paper)] px-3 py-1 text-xs font-bold text-[var(--color-blue)]"
+              className="rounded-full border border-[var(--color-blue)]/30 bg-[var(--color-paper)] px-3 py-1 text-xs font-bold text-[var(--color-blue-ink)]"
             >
               {r}
             </span>

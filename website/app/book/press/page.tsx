@@ -39,15 +39,15 @@ export default function BookPressPage() {
   return (
     <article className="rrn-page">
       {/* Hero */}
-      <section className="border-b border-[#203a64] bg-[#071126] text-[#fdf8ea]">
+      <section className="border-b border-[var(--color-line-soft)] bg-[var(--color-surface)] text-[var(--color-cream)]">
         <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:py-14">
           <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
             {BOOK.title} · Press &amp; media
           </p>
-          <h1 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-[#fdf8ea] sm:text-6xl">
+          <h1 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-[var(--color-cream)] sm:text-6xl">
             For press, podcasts, and media.
           </h1>
-          <p className="mt-4 max-w-2xl text-base font-semibold leading-7 text-[#cfd9ea] sm:text-lg">
+          <p className="mt-4 max-w-2xl text-base font-semibold leading-7 text-[var(--color-ink-soft)] sm:text-lg">
             Everything you need to cover the book or book an interview. For
             anything else, reach out through the contact page.
           </p>
@@ -120,13 +120,13 @@ export default function BookPressPage() {
           <div className="mt-5 flex flex-col gap-3 sm:flex-row">
             <Link
               href="/contact"
-              className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)]"
+              className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)]"
             >
               Request an interview
             </Link>
             <Link
               href="/book"
-              className="inline-flex min-h-12 items-center justify-center rounded-lg border-2 border-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-accent)] transition hover:bg-[var(--color-accent)] hover:text-[var(--color-paper)]"
+              className="inline-flex min-h-12 items-center justify-center rounded-lg border-2 border-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-accent)] transition hover:bg-[var(--color-accent)] hover:text-[var(--color-cream)]"
             >
               View the book
             </Link>
@@ -161,21 +161,21 @@ export default function BookPressPage() {
       </section>
 
       {/* Email signup */}
-      <section className="border-t border-[var(--color-line)] bg-[#071126] text-[#fdf8ea]">
+      <section className="border-t border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-cream)]">
         <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6 lg:py-16">
           <div className="text-center">
-            <h2 className="font-display text-3xl font-black leading-tight tracking-normal text-[#fdf8ea] sm:text-4xl">
+            <h2 className="font-display text-3xl font-black leading-tight tracking-normal text-[var(--color-cream)] sm:text-4xl">
               Stay on the press list.
             </h2>
-            <p className="mt-3 text-base font-semibold leading-7 text-[#cfd9ea]">
+            <p className="mt-3 text-base font-semibold leading-7 text-[var(--color-ink-soft)]">
               Get the release date, review copies when available, and book news
               first.
             </p>
           </div>
-          <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.06] p-4 sm:p-6">
+          <div className="mt-6 rounded-xl border border-[var(--color-cream)]/10 bg-[var(--color-cream)]/[0.06] p-4 sm:p-6">
             <BookEmailSignup source="book_press" tone="dark" />
           </div>
-          <p className="mt-6 text-center text-sm text-[#cfd9ea]">
+          <p className="mt-6 text-center text-sm text-[var(--color-ink-soft)]">
             <Link href="/book" className="font-semibold underline hover:text-[var(--color-gold-bright)]">
               ← Back to the book
             </Link>

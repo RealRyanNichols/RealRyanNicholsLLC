@@ -42,7 +42,7 @@ export function ClaimActions({ claimId }: { claimId: string }) {
             type="button"
             disabled={isPending}
             onClick={() => act("approve")}
-            className="text-sm font-bold rounded-md border-2 border-[var(--color-success)] bg-[var(--color-success)] text-white px-4 py-1.5 hover:opacity-90 disabled:opacity-50"
+            className="text-sm font-bold rounded-md border-2 border-[var(--color-success)] bg-[var(--color-success)] text-[var(--color-navy)] px-4 py-1.5 hover:opacity-90 disabled:opacity-50"
           >
             Approve this claim
           </button>
@@ -72,7 +72,7 @@ export function ClaimActions({ claimId }: { claimId: string }) {
               type="button"
               disabled={isPending}
               onClick={() => act("reject")}
-              className="text-sm font-bold rounded-md border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-white px-4 py-1.5 hover:opacity-90 disabled:opacity-50"
+              className="text-sm font-bold rounded-md border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-4 py-1.5 hover:opacity-90 disabled:opacity-50"
             >
               Confirm reject
             </button>
@@ -89,7 +89,7 @@ export function ClaimActions({ claimId }: { claimId: string }) {
           </div>
         </div>
       )}
-      {error ? <p className="mt-2 text-xs text-red-500">{error}</p> : null}
+      {error ? <p className="mt-2 text-xs text-[var(--color-danger)]">{error}</p> : null}
     </div>
   );
 }

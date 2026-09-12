@@ -91,7 +91,7 @@ function TileCard({
     tone === "accent"
       ? "text-[var(--color-accent)]"
       : tone === "blue"
-      ? "text-[var(--color-blue)]"
+      ? "text-[var(--color-blue-ink)]"
       : "text-[var(--color-ink)]";
 
   const inner = (

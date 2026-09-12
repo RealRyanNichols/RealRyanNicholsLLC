@@ -65,7 +65,7 @@ export function QueueActions({
             type="button"
             disabled={!!busy}
             onClick={() => act("approve")}
-            className="min-h-10 rounded-lg border border-[var(--color-navy)] px-3.5 py-1.5 text-sm font-bold text-[var(--color-navy)] transition hover:bg-[var(--color-navy)] hover:text-[#fdf8ea] disabled:opacity-50"
+            className="min-h-10 rounded-lg border border-[var(--color-line)] px-3.5 py-1.5 text-sm font-bold text-[var(--color-ink)] transition hover:bg-[var(--color-gold)] hover:text-[var(--color-gold)] disabled:opacity-50"
           >
             {busy === "approve" ? "Approving…" : "Approve"}
           </button>

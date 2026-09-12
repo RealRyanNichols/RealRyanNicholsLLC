@@ -36,14 +36,14 @@ export function J6ProfileImage({
         : "Archive card · not a photograph";
   const badgeClass =
     portraitKind === "cleared"
-      ? "bg-emerald-800 text-white"
+      ? "bg-[var(--color-success)] text-[var(--color-navy)]"
       : isEditorialPortrait
-        ? "bg-amber-700 text-white"
-        : "bg-[#071123] text-[var(--color-gold-bright)]";
+        ? "bg-[var(--color-tag-procedural)] text-[var(--color-navy)]"
+        : "bg-[var(--color-surface)] text-[var(--color-gold-bright)]";
 
   if (variant === "card") {
     return (
-      <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#071123]">
+      <div className="relative aspect-[4/5] w-full overflow-hidden bg-[var(--color-surface)]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={imageUrl}
@@ -52,7 +52,7 @@ export function J6ProfileImage({
             "h-full w-full",
             hasPublishedPortrait
               ? "object-cover object-top"
-              : "bg-[#071123] object-contain",
+              : "bg-[var(--color-surface)] object-contain",
           ].join(" ")}
         />
         <span
@@ -78,7 +78,7 @@ export function J6ProfileImage({
             "w-full object-cover",
             hasPublishedPortrait
               ? "max-h-[560px] object-top"
-              : "max-h-[560px] bg-[#071123] object-contain",
+              : "max-h-[560px] bg-[var(--color-surface)] object-contain",
           ].join(" ")}
         />
         <span

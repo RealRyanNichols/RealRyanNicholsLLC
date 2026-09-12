@@ -23,7 +23,7 @@ export function ReceiptImage({ src, alt }: { src: string; alt: string }) {
           role="dialog"
           aria-modal="true"
           aria-label="Exhibit image, full size"
-          className="fixed inset-0 z-50 grid cursor-zoom-out place-items-center bg-[#061020]/95 p-4"
+          className="fixed inset-0 z-50 grid cursor-zoom-out place-items-center bg-[var(--color-surface)]/95 p-4"
           onClick={() => setOpen(false)}
           onKeyDown={(e) => {
             if (e.key === "Escape") setOpen(false);
@@ -35,7 +35,7 @@ export function ReceiptImage({ src, alt }: { src: string; alt: string }) {
           <button
             type="button"
             onClick={() => setOpen(false)}
-            className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-[#0b1b34] text-xl font-bold text-[#f4efe4]"
+            className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-[var(--color-surface)] text-xl font-bold text-[var(--color-cream)]"
             aria-label="Close"
           >
             ×

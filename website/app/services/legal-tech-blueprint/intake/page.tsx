@@ -14,15 +14,15 @@ export const metadata: Metadata = {
 export default function BlueprintIntakePage() {
   return (
     <article className="rrn-page">
-      <section className="border-b border-[var(--color-line)] bg-[var(--color-blue)] text-[var(--color-paper)]">
+      <section className="border-b border-[var(--color-line)] bg-[var(--color-blue)] text-[var(--color-cream)]">
         <div className="mx-auto max-w-4xl px-5 py-14 sm:px-6 lg:py-16">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-gold)]">
             DIY Blueprint + Prompt Stack
           </p>
-          <h1 className="mt-4 font-display text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
+          <h1 className="mt-4 font-display text-3xl font-black leading-tight tracking-tight text-[var(--color-cream)] sm:text-4xl lg:text-5xl">
             Tell me what you need. I will build your prompt stack around it.
           </h1>
-          <p className="mt-4 max-w-2xl text-base font-medium leading-7 text-[#e7ecf6] sm:text-lg">
+          <p className="mt-4 max-w-2xl text-base font-medium leading-7 text-[var(--color-ink-soft)] sm:text-lg">
             Fill out as much or as little as you want. Every answer helps me
             tailor the roadmap, the database structure, and the prompts to your
             practice. Only your email is needed, and checkout collects that too.
@@ -30,7 +30,7 @@ export default function BlueprintIntakePage() {
           <div className="mt-5">
             <Link
               href="/services/legal-tech-blueprint#packages"
-              className="text-sm font-bold text-[#e7ecf6] underline underline-offset-4 transition hover:text-white"
+              className="text-sm font-bold text-[var(--color-ink-soft)] underline underline-offset-4 transition hover:text-[var(--color-cream)]"
             >
               Back to all packages
             </Link>

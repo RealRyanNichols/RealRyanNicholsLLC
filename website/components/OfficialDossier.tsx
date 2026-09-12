@@ -56,12 +56,12 @@ export function OfficialDossier({
 
       {/* Header plate — dark "case file" band so an official's dossier reads as
           a record, not a bio. */}
-      <div className="overflow-hidden rounded-3xl border border-[var(--color-line)] bg-[#0b1428] text-white shadow-sm">
+      <div className="overflow-hidden rounded-3xl border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-cream)] shadow-sm">
         <div className="flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:p-8">
           {/* Photo / seal */}
           <div className="shrink-0">
             {dossier.photoUrl ? (
-              <div className="h-28 w-28 overflow-hidden rounded-2xl border border-white/15 bg-white/5">
+              <div className="h-28 w-28 overflow-hidden rounded-2xl border border-[var(--color-cream)]/15 bg-[var(--color-cream)]/5">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={dossier.photoUrl}
@@ -70,11 +70,11 @@ export function OfficialDossier({
                 />
               </div>
             ) : (
-              <div className="flex h-28 w-28 flex-col items-center justify-center rounded-2xl border border-white/15 bg-gradient-to-br from-[#16223f] to-[#0b1428]">
-                <span className="font-display text-3xl font-black tracking-tight text-white/90">
+              <div className="flex h-28 w-28 flex-col items-center justify-center rounded-2xl border border-[var(--color-cream)]/15 bg-gradient-to-br from-[var(--color-surface-2)] to-[var(--color-surface)]">
+                <span className="font-display text-3xl font-black tracking-tight text-[var(--color-cream)]/90">
                   {dossier.seal}
                 </span>
-                <span className="mt-1 px-2 text-center text-[8px] font-semibold uppercase leading-tight tracking-wider text-white/45">
+                <span className="mt-1 px-2 text-center text-[8px] font-semibold uppercase leading-tight tracking-wider text-[var(--color-cream)]/45">
                   Photo pending verified public image
                 </span>
               </div>
@@ -85,10 +85,10 @@ export function OfficialDossier({
             <p className="text-[11px] font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
               {dossier.kicker}
             </p>
-            <h1 className="mt-1 font-display text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl">
+            <h1 className="mt-1 font-display text-3xl font-black leading-tight tracking-tight text-[var(--color-cream)] sm:text-4xl">
               {dossier.name}
             </h1>
-            <p className="mt-1.5 text-sm font-semibold text-white/70">
+            <p className="mt-1.5 text-sm font-semibold text-[var(--color-cream)]/70">
               {dossier.role} · {dossier.agency}
             </p>
           </div>
@@ -139,7 +139,7 @@ export function OfficialDossier({
 
       {/* The record — labeled claims */}
       <section className="mt-8">
-        <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[var(--color-navy)]">
+        <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[var(--color-ink)]">
           The record
         </p>
         <div className="mt-4 space-y-4">
@@ -160,14 +160,14 @@ export function OfficialDossier({
                       href={c.source.href}
                       target="_blank"
                       rel="noopener noreferrer nofollow"
-                      className="mt-2 inline-flex min-h-11 items-center gap-1 text-xs font-bold text-[var(--color-navy)] hover:underline sm:min-h-0"
+                      className="mt-2 inline-flex min-h-11 items-center gap-1 text-xs font-bold text-[var(--color-ink)] hover:underline sm:min-h-0"
                     >
                       {c.source.label} <span aria-hidden>↗</span>
                     </a>
                   ) : (
                     <Link
                       href={c.source.href}
-                      className="mt-2 inline-flex min-h-11 items-center gap-1 text-xs font-bold text-[var(--color-navy)] hover:underline sm:min-h-0"
+                      className="mt-2 inline-flex min-h-11 items-center gap-1 text-xs font-bold text-[var(--color-ink)] hover:underline sm:min-h-0"
                     >
                       {c.source.label} <span aria-hidden>→</span>
                     </Link>
@@ -182,7 +182,7 @@ export function OfficialDossier({
       {/* Conduct timeline */}
       {dossier.timeline.length > 0 ? (
         <section className="mt-10">
-          <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[var(--color-navy)]">
+          <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[var(--color-ink)]">
             The sequence
           </p>
           <ol className="mt-4 relative ml-3 space-y-5 border-l-2 border-[var(--color-line)]">
@@ -190,7 +190,7 @@ export function OfficialDossier({
               <li key={i} className="relative pl-6">
                 <span className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full bg-[var(--color-accent)] ring-4 ring-[var(--color-paper)]" />
                 <div className="flex flex-wrap items-baseline gap-2">
-                  <span className="rounded bg-[var(--color-ink)] px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[var(--color-paper)]">
+                  <span className="rounded bg-[var(--color-ink)] px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[var(--color-cream)]">
                     {t.tag}
                   </span>
                   <span className="text-xs font-semibold text-[var(--color-muted)]">
@@ -199,7 +199,7 @@ export function OfficialDossier({
                 </div>
                 {t.href ? (
                   <Link href={t.href} className="group mt-1 block">
-                    <h3 className="font-display text-base font-bold tracking-tight transition group-hover:text-[var(--color-navy)] sm:text-lg">
+                    <h3 className="font-display text-base font-bold tracking-tight transition group-hover:text-[var(--color-gold)] sm:text-lg">
                       {t.title} →
                     </h3>
                     <p className="mt-0.5 text-sm leading-snug text-[var(--color-ink-soft)]">
@@ -224,8 +224,8 @@ export function OfficialDossier({
 
       {/* What this proves / does not prove */}
       <section className="mt-10 grid gap-4 sm:grid-cols-2">
-        <div className="rounded-2xl border-2 border-[var(--color-navy)]/25 bg-[var(--color-blue-soft)]/40 p-5">
-          <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--color-navy)]">
+        <div className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-blue-soft)]/40 p-5">
+          <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--color-ink)]">
             What the record shows
           </p>
           <ul className="mt-3 space-y-2">
@@ -234,7 +234,7 @@ export function OfficialDossier({
                 key={i}
                 className="flex gap-2 text-sm leading-relaxed text-[var(--color-ink)]"
               >
-                <span aria-hidden className="text-[var(--color-navy)]">
+                <span aria-hidden className="text-[var(--color-ink)]">
                   ✓
                 </span>
                 <span>{p}</span>
@@ -295,14 +295,14 @@ export function OfficialDossier({
                   href={src.href}
                   target="_blank"
                   rel="noopener noreferrer nofollow"
-                  className="font-semibold text-[var(--color-navy)] hover:underline"
+                  className="font-semibold text-[var(--color-ink)] hover:underline"
                 >
                   {src.label} ↗
                 </a>
               ) : (
                 <Link
                   href={src.href}
-                  className="font-semibold text-[var(--color-navy)] hover:underline"
+                  className="font-semibold text-[var(--color-ink)] hover:underline"
                 >
                   {src.label} →
                 </Link>
@@ -316,7 +316,7 @@ export function OfficialDossier({
       </section>
 
       {/* Standard call to action — the archive's rule of engagement. */}
-      <section className="mt-8 rounded-2xl border-2 border-[var(--color-navy)]/30 bg-[var(--color-blue-soft)]/40 p-5 sm:p-6">
+      <section className="mt-8 rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-blue-soft)]/40 p-5 sm:p-6">
         <p className="font-display text-lg font-bold leading-snug text-[var(--color-ink)]">
           Do not threaten anyone. Do not harass anyone. Do not contact him in my
           name.

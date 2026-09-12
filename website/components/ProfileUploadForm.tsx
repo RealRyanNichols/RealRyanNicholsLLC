@@ -148,7 +148,7 @@ export function ProfileUploadForm({
         <p className="text-sm text-[var(--color-accent)]">{state.message}</p>
       ) : null}
       {state.kind === "success" ? (
-        <p className="text-sm text-emerald-400">{state.message}</p>
+        <p className="text-sm text-[var(--color-success)]">{state.message}</p>
       ) : null}
     </form>
   );

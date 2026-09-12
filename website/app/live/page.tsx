@@ -50,7 +50,7 @@ export default async function LivePage() {
             </p>
             <Link
               href="/videos"
-              className="mt-5 inline-flex min-h-11 items-center rounded-full bg-[var(--color-accent)] px-5 py-2.5 text-sm font-black text-[var(--color-paper)]"
+              className="mt-5 inline-flex min-h-11 items-center rounded-full bg-[var(--color-accent)] px-5 py-2.5 text-sm font-black text-[var(--color-cream)]"
             >
               Open videos
             </Link>
@@ -75,7 +75,7 @@ export default async function LivePage() {
         </Link>
       </nav>
       <header className="mb-5">
-        <p className="text-xs uppercase tracking-wider text-red-700 font-black">
+        <p className="text-xs uppercase tracking-wider text-[var(--color-danger)] font-black">
           {liveStatusLabel(stream.status)}
         </p>
         <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-5xl">
@@ -92,14 +92,14 @@ export default async function LivePage() {
           {stream.mux_playback_id ? (
             <LivePlayer playbackId={stream.mux_playback_id} title={stream.title} />
           ) : (
-            <div className="aspect-video rounded-lg bg-black text-white grid place-items-center text-sm">
+            <div className="aspect-video rounded-lg bg-black text-[var(--color-cream)] grid place-items-center text-sm">
               Player is not ready yet.
             </div>
           )}
           <div className="mt-4 flex flex-wrap gap-2">
             <Link
               href={`/live/${stream.slug}`}
-              className="rounded-full bg-red-700 px-4 py-2 text-sm font-black text-white hover:bg-red-800"
+              className="rounded-full bg-[var(--color-accent)] px-4 py-2 text-sm font-black text-[var(--color-cream)] hover:bg-[var(--color-accent-strong)]"
             >
               Permanent live link
             </Link>

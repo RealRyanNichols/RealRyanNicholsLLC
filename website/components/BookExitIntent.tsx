@@ -47,25 +47,25 @@ export function BookExitIntent({
       onClick={() => setOpen(false)}
     >
       <div
-        className="relative w-full max-w-md rounded-2xl border border-[var(--color-gold-bright)]/50 bg-[#0b1b34] p-6 shadow-2xl"
+        className="relative w-full max-w-md rounded-2xl border border-[var(--color-gold-bright)]/50 bg-[var(--color-surface)] p-6 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           type="button"
           onClick={() => setOpen(false)}
           aria-label="Close"
-          className="absolute right-3 top-3 text-2xl leading-none text-[#8194b4] hover:text-[#fdf8ea]"
+          className="absolute right-3 top-3 text-2xl leading-none text-[var(--color-muted)] hover:text-[var(--color-cream)]"
         >
           ×
         </button>
         <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-gold-bright)]">
           Before you go
         </p>
-        <h2 className="mt-2 font-display text-2xl font-black leading-tight text-[#fdf8ea]">
+        <h2 className="mt-2 font-display text-2xl font-black leading-tight text-[var(--color-cream)]">
           They tried to bury this story. I wrote it down.
         </h2>
-        <p className="mt-2 text-sm font-semibold leading-relaxed text-[#cfd9ea]">
-          <span className="font-black text-[#fdf8ea]">Fighting Shadows</span> — my
+        <p className="mt-2 text-sm font-semibold leading-relaxed text-[var(--color-ink-soft)]">
+          <span className="font-black text-[var(--color-cream)]">Fighting Shadows</span> — my
           memoir of January 6 — is{" "}
           {listLabel ? (
             <span className="line-through opacity-60">{listLabel}</span>
@@ -76,14 +76,14 @@ export function BookExitIntent({
         <Link
           href="/book/preorder"
           onClick={() => setOpen(false)}
-          className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--color-gold-bright)] px-5 py-3 text-base font-black text-[#0b1b34] transition hover:brightness-105"
+          className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--color-gold-bright)] px-5 py-3 text-base font-black text-[var(--color-navy)] transition hover:brightness-105"
         >
           Pre-order for {priceLabel}
         </Link>
-        <div className="my-4 flex items-center gap-3 text-[11px] font-black uppercase tracking-wider text-[#8194b4]">
-          <span className="h-px flex-1 bg-white/15" />
+        <div className="my-4 flex items-center gap-3 text-[11px] font-black uppercase tracking-wider text-[var(--color-muted)]">
+          <span className="h-px flex-1 bg-[var(--color-cream)]/15" />
           or just get on the list
-          <span className="h-px flex-1 bg-white/15" />
+          <span className="h-px flex-1 bg-[var(--color-cream)]/15" />
         </div>
         <BookEmailSignup source="book_exit_intent" />
       </div>

@@ -176,7 +176,7 @@ export function GuidedHelpDesk({ source = "guided-help-desk" }: { source?: strin
             <input
               value={name}
               onChange={(event) => setName(event.target.value.slice(0, 120))}
-              className="min-h-11 rounded-lg border border-[var(--color-line)] bg-white px-3 text-sm font-normal"
+              className="min-h-11 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-sm font-normal"
               placeholder="Optional"
               autoComplete="name"
             />
@@ -186,7 +186,7 @@ export function GuidedHelpDesk({ source = "guided-help-desk" }: { source?: strin
             <input
               value={contact}
               onChange={(event) => setContact(event.target.value.slice(0, 120))}
-              className="min-h-11 rounded-lg border border-[var(--color-line)] bg-white px-3 text-sm font-normal"
+              className="min-h-11 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-sm font-normal"
               placeholder="Optional, only if follow-up is okay"
               autoComplete="email"
             />
@@ -198,7 +198,7 @@ export function GuidedHelpDesk({ source = "guided-help-desk" }: { source?: strin
           <select
             value={situation}
             onChange={(event) => setSituation(event.target.value as typeof situation)}
-            className="min-h-11 rounded-lg border border-[var(--color-line)] bg-white px-3 text-sm font-normal"
+            className="min-h-11 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-sm font-normal"
           >
             {SITUATIONS.map((item) => (
               <option key={item}>{item}</option>
@@ -211,7 +211,7 @@ export function GuidedHelpDesk({ source = "guided-help-desk" }: { source?: strin
           <select
             value={privacy}
             onChange={(event) => setPrivacy(event.target.value as typeof privacy)}
-            className="min-h-11 rounded-lg border border-[var(--color-line)] bg-white px-3 text-sm font-normal"
+            className="min-h-11 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-sm font-normal"
           >
             {PRIVACY.map((item) => (
               <option key={item}>{item}</option>
@@ -226,7 +226,7 @@ export function GuidedHelpDesk({ source = "guided-help-desk" }: { source?: strin
             value={question}
             onChange={(event) => setQuestion(event.target.value.slice(0, 700))}
             rows={3}
-            className="rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
+            className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm font-normal"
             placeholder="Example: I need to know if these records show misconduct, what is missing, and how to explain it without exposing myself."
           />
         </label>
@@ -238,7 +238,7 @@ export function GuidedHelpDesk({ source = "guided-help-desk" }: { source?: strin
             value={facts}
             onChange={(event) => setFacts(event.target.value.slice(0, 1400))}
             rows={5}
-            className="rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
+            className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm font-normal"
             placeholder="Dates, people, agencies, court names, locations, and the short version in plain English."
           />
         </label>
@@ -249,7 +249,7 @@ export function GuidedHelpDesk({ source = "guided-help-desk" }: { source?: strin
             value={proof}
             onChange={(event) => setProof(event.target.value.slice(0, 900))}
             rows={3}
-            className="rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
+            className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm font-normal"
             placeholder="Screenshots, videos, filings, links, report numbers, docket entries, witnesses, public posts."
           />
         </label>
@@ -259,7 +259,7 @@ export function GuidedHelpDesk({ source = "guided-help-desk" }: { source?: strin
           <input
             value={need}
             onChange={(event) => setNeed(event.target.value.slice(0, 220))}
-            className="min-h-11 rounded-lg border border-[var(--color-line)] bg-white px-3 text-sm font-normal"
+            className="min-h-11 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-sm font-normal"
           />
         </label>
 
@@ -272,7 +272,7 @@ export function GuidedHelpDesk({ source = "guided-help-desk" }: { source?: strin
           </p>
           <ol className="mt-3 grid gap-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
             {steps.map((step) => (
-              <li key={step} className="rounded-lg bg-white px-3 py-2">
+              <li key={step} className="rounded-lg bg-[var(--color-surface)] px-3 py-2">
                 {step}
               </li>
             ))}
@@ -296,14 +296,14 @@ export function GuidedHelpDesk({ source = "guided-help-desk" }: { source?: strin
         <button
           type="submit"
           disabled={state.kind === "saving"}
-          className="min-h-11 rounded-full bg-[var(--color-accent)] px-5 py-3 text-sm font-black text-[var(--color-paper)] disabled:opacity-60"
+          className="min-h-11 rounded-full bg-[var(--color-accent)] px-5 py-3 text-sm font-black text-[var(--color-cream)] disabled:opacity-60"
         >
           {state.kind === "saving" ? "Saving..." : "Save this private profile"}
         </button>
       </form>
 
       {state.kind === "saved" ? (
-        <div className="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm leading-relaxed text-emerald-800">
+        <div className="mt-4 rounded-lg border border-[var(--color-success)]/40 bg-[var(--color-success-soft)] p-4 text-sm leading-relaxed text-[var(--color-success)]">
           <p className="font-bold">{state.message}</p>
           <p className="mt-1">
             Need paid help organizing the whole record?{" "}
@@ -315,7 +315,7 @@ export function GuidedHelpDesk({ source = "guided-help-desk" }: { source?: strin
         </div>
       ) : null}
       {state.kind === "error" ? (
-        <p className="mt-4 text-sm font-bold text-red-700">{state.message}</p>
+        <p className="mt-4 text-sm font-bold text-[var(--color-danger)]">{state.message}</p>
       ) : null}
     </section>
   );

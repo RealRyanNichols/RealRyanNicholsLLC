@@ -92,7 +92,7 @@ export function BlueprintIntakeForm() {
         <button
           type="submit"
           disabled={busy}
-          className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--color-accent)] px-6 py-3.5 text-base font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)] disabled:opacity-60 sm:w-auto"
+          className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--color-accent)] px-6 py-3.5 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)] disabled:opacity-60 sm:w-auto"
         >
           {busy
             ? "Starting checkout..."

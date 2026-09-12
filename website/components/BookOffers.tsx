@@ -41,8 +41,8 @@ export function BookOffers({
         const ctaClass = [
           "mt-5 w-full inline-flex min-h-12 items-center justify-center rounded-lg px-5 py-3 text-sm font-black transition disabled:opacity-60",
           featured
-            ? "bg-[var(--color-accent)] text-[var(--color-paper)] hover:bg-[var(--color-accent-strong)]"
-            : "border-2 border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-paper)]",
+            ? "bg-[var(--color-accent)] text-[var(--color-cream)] hover:bg-[var(--color-accent-strong)]"
+            : "border-2 border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-cream)]",
         ].join(" ");
         const ctaText = `${ctaLabel} · ${formatUsd(tierPriceUsd(tier))}`;
         return (
@@ -56,11 +56,11 @@ export function BookOffers({
             ].join(" ")}
           >
             {featured ? (
-              <span className="absolute -top-3 left-5 rounded-full bg-[var(--color-accent)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--color-paper)]">
+              <span className="absolute -top-3 left-5 rounded-full bg-[var(--color-accent)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--color-cream)]">
                 Best physical edition
               </span>
             ) : sale.onSale ? (
-              <span className="absolute -top-3 left-5 rounded-full bg-[var(--color-accent)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--color-paper)]">
+              <span className="absolute -top-3 left-5 rounded-full bg-[var(--color-accent)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--color-cream)]">
                 Launch price · Save {sale.percentOff}%
               </span>
             ) : null}

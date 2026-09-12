@@ -154,12 +154,12 @@ export default async function AccountPage() {
           This account is banned. Contact the site admin if you think this is in error.
         </div>
       ) : isPending ? (
-        <div className="mt-6 rounded-xl border border-amber-700 bg-amber-950/30 px-4 py-3 text-sm text-amber-200">
+        <div className="mt-6 rounded-xl border border-[var(--color-tag-procedural)]/50 bg-[var(--color-support-soft)] px-4 py-3 text-sm text-[var(--color-tag-procedural)]">
           <strong>Pending review.</strong> An admin will verify your real name before your
           comments are visible publicly. Fill out your profile below to speed it up.
         </div>
       ) : isVerified ? (
-        <div className="mt-6 rounded-xl border border-emerald-800 bg-emerald-950/30 px-4 py-3 text-sm text-emerald-200">
+        <div className="mt-6 rounded-xl border border-[var(--color-success)]/40 bg-[var(--color-success-soft)] px-4 py-3 text-sm text-[var(--color-success)]">
           ✓ Verified account.
         </div>
       ) : null}
@@ -292,38 +292,38 @@ function AdminOfficeCard() {
   ];
 
   return (
-    <section className="mt-6 overflow-hidden rounded-2xl border-2 border-[#203a64] bg-[#071126] text-[#fdf8ea] shadow-xl">
-      <div className="border-b border-white/10 p-4 sm:flex sm:items-center sm:justify-between sm:gap-4">
+    <section className="mt-6 overflow-hidden rounded-2xl border-2 border-[var(--color-line-soft)] bg-[var(--color-surface)] text-[var(--color-cream)] shadow-xl">
+      <div className="border-b border-[var(--color-cream)]/10 p-4 sm:flex sm:items-center sm:justify-between sm:gap-4">
         <div>
           <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
             Admin Office
           </p>
-          <h2 className="mt-1 text-2xl font-black tracking-tight text-[#fdf8ea]">
+          <h2 className="mt-1 text-2xl font-black tracking-tight text-[var(--color-cream)]">
             Your backend is one click away.
           </h2>
-          <p className="mt-1 max-w-2xl text-sm leading-relaxed text-[#cfd9ea]">
+          <p className="mt-1 max-w-2xl text-sm leading-relaxed text-[var(--color-ink-soft)]">
             Money, messages, tips, posts, and analytics are grouped here so you
             do not have to dig through the public site.
           </p>
         </div>
         <Link
           href="/admin"
-          className="mt-4 inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--color-gold-bright)] px-5 text-sm font-black uppercase tracking-normal text-[#071126] transition hover:bg-[#a7efc4] sm:mt-0"
+          className="mt-4 inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--color-gold-bright)] px-5 text-sm font-black uppercase tracking-normal text-[var(--color-navy)] transition hover:bg-[var(--color-success)] sm:mt-0"
         >
           Open Office
         </Link>
       </div>
-      <div className="grid gap-px bg-white/10 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-px bg-[var(--color-cream)]/10 sm:grid-cols-2 lg:grid-cols-3">
         {links.map((link) => (
           <Link
             key={link.href}
             href={link.href}
-            className="block bg-[#101a31] p-4 transition hover:bg-[#142447]"
+            className="block bg-[var(--color-surface)] p-4 transition hover:bg-[var(--color-surface-2)]"
           >
-            <span className="block text-sm font-black text-[#fdf8ea]">
+            <span className="block text-sm font-black text-[var(--color-cream)]">
               {link.label}
             </span>
-            <span className="mt-1 block text-xs font-semibold text-[#cfd9ea]">
+            <span className="mt-1 block text-xs font-semibold text-[var(--color-ink-soft)]">
               {link.sub}
             </span>
           </Link>
@@ -340,7 +340,7 @@ function Stat({ label, value, sub }: { label: string; value: string | number; su
       <div className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] mt-0.5 font-semibold">
         {label}
       </div>
-      {sub ? <div className="text-[11px] text-amber-400 mt-0.5">{sub}</div> : null}
+      {sub ? <div className="text-[11px] text-[var(--color-tag-procedural)] mt-0.5">{sub}</div> : null}
     </div>
   );
 }
@@ -349,11 +349,11 @@ function StatusBadge({ status }: { status: string }) {
   const map: Record<string, { label: string; cls: string }> = {
     approved: {
       label: "approved",
-      cls: "bg-emerald-950/40 border-emerald-700 text-emerald-300",
+      cls: "bg-[var(--color-success-soft)] border-[var(--color-success)]/40 text-[var(--color-success)]",
     },
     pending: {
       label: "pending review",
-      cls: "bg-amber-950/40 border-amber-700 text-amber-300",
+      cls: "bg-[var(--color-support-soft)] border-[var(--color-tag-procedural)]/50 text-[var(--color-tag-procedural)]",
     },
     hidden: { label: "hidden", cls: "bg-[var(--color-accent-soft)] border-[var(--color-accent)] text-[var(--color-accent)]" },
     deleted: { label: "deleted", cls: "bg-[var(--color-accent-soft)] border-[var(--color-accent)] text-[var(--color-accent)]" },

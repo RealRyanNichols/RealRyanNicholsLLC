@@ -133,7 +133,7 @@ export function IntakeSignalForm({
             type="button"
             disabled={isPending}
             onClick={() => submit(selected)}
-            className="rrn-tap mt-3 w-full rounded-lg bg-[var(--color-ink)] px-4 py-2 text-sm font-bold text-white transition hover:bg-[var(--color-accent)] disabled:opacity-50"
+            className="rrn-tap mt-3 w-full rounded-lg bg-[var(--color-ink)] px-4 py-2 text-sm font-bold text-[var(--color-cream)] transition hover:bg-[var(--color-accent)] disabled:opacity-50"
           >
             {isPending ? "Saving..." : "Send signal"}
           </button>

@@ -100,12 +100,12 @@ export function PostAdminRow({
           <div className="flex items-center gap-2 flex-wrap text-xs text-[var(--color-muted)]">
             <TypeBadge type={type} />
             {pinned ? (
-              <span className="rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
+              <span className="rounded-full bg-[var(--color-accent)] text-[var(--color-cream)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
                 📌 PINNED
               </span>
             ) : null}
             {status === "draft" ? (
-              <span className="rounded-full bg-[var(--color-tag-procedural)] text-[var(--color-paper)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
+              <span className="rounded-full bg-[var(--color-tag-procedural)] text-[var(--color-navy)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
                 DRAFT
               </span>
             ) : null}
@@ -148,7 +148,7 @@ export function PostAdminRow({
               "rounded-md px-3 py-1.5 text-xs font-bold transition disabled:opacity-50",
               pinned
                 ? "border border-[var(--color-line)] hover:border-[var(--color-accent)]"
-                : "bg-[var(--color-accent)] text-[var(--color-paper)] hover:bg-[var(--color-accent-strong)]",
+                : "bg-[var(--color-accent)] text-[var(--color-cream)] hover:bg-[var(--color-accent-strong)]",
             ].join(" ")}
             title={pinned ? "Remove pin" : "Pin to top of feed"}
           >
@@ -169,7 +169,7 @@ export function PostAdminRow({
               type="button"
               disabled={busy || !canPublish}
               onClick={() => patch({ status: "published" })}
-              className="rounded-md bg-[var(--color-success)] hover:opacity-90 px-3 py-1.5 text-xs font-bold text-[var(--color-paper)] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="rounded-md bg-[var(--color-success)] hover:opacity-90 px-3 py-1.5 text-xs font-bold text-[var(--color-navy)] disabled:opacity-50 disabled:cursor-not-allowed"
               title={
                 canPublish
                   ? "Publish - show in public feed"
@@ -197,7 +197,7 @@ export function PostAdminRow({
             type="button"
             disabled={busy}
             onClick={destroy}
-            className="rounded-md border border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-paper)] px-3 py-1.5 text-xs font-semibold disabled:opacity-50"
+            className="rounded-md border border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-cream)] px-3 py-1.5 text-xs font-semibold disabled:opacity-50"
             title="Delete permanently"
           >
             🗑️ Delete
@@ -222,14 +222,14 @@ function VideoStateBadge({
 }) {
   if (direct) {
     return (
-      <span className="rounded-full bg-[var(--color-success)] text-[var(--color-paper)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
+      <span className="rounded-full bg-[var(--color-success)] text-[var(--color-navy)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
         DIRECT FILE READY
       </span>
     );
   }
   if (ready) {
     return (
-      <span className="rounded-full bg-[var(--color-success)] text-[var(--color-paper)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
+      <span className="rounded-full bg-[var(--color-success)] text-[var(--color-navy)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
         READY TO PUBLISH
       </span>
     );
@@ -252,9 +252,9 @@ function VideoStateBadge({
 function TypeBadge({ type }: { type: string }) {
   const styles: Record<string, string> = {
     text: "bg-[var(--color-surface-2)] text-[var(--color-ink-soft)]",
-    note: "bg-[var(--color-blue-soft)] text-[var(--color-blue)]",
-    photo: "bg-[var(--color-tag-procedural)] text-[var(--color-paper)]",
-    video: "bg-[var(--color-accent)] text-[var(--color-paper)]",
+    note: "bg-[var(--color-blue-soft)] text-[var(--color-blue-ink)]",
+    photo: "bg-[var(--color-tag-procedural)] text-[var(--color-navy)]",
+    video: "bg-[var(--color-accent)] text-[var(--color-cream)]",
   };
   return (
     <span

@@ -70,7 +70,7 @@ export function PendingProfileActions({ id }: { id: string }) {
       )}
       <Link
         href="/admin/users?filter=pending"
-        className="text-xs font-semibold text-[var(--color-navy)] hover:underline"
+        className="text-xs font-semibold text-[var(--color-ink)] hover:underline"
       >
         Review →
       </Link>

@@ -66,7 +66,7 @@ export function BlueprintLeadForm() {
         <button
           type="submit"
           disabled={state === "busy"}
-          className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-blue)] px-6 py-3 text-sm font-black text-[var(--color-paper)] transition hover:bg-[var(--color-blue-strong)] disabled:opacity-60"
+          className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-blue)] px-6 py-3 text-sm font-black text-[var(--color-cream)] transition hover:bg-[var(--color-blue-strong)] disabled:opacity-60"
         >
           {state === "busy" ? "Sending..." : "Send me the breakdown"}
         </button>

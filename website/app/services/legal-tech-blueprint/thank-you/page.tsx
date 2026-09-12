@@ -95,15 +95,15 @@ export default async function BlueprintThankYouPage({
 
   return (
     <article className="rrn-page">
-      <section className="bg-[var(--color-blue)] text-[var(--color-paper)]">
+      <section className="bg-[var(--color-blue)] text-[var(--color-cream)]">
         <div className="mx-auto max-w-3xl px-5 py-16 text-center sm:px-6 lg:py-20">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-gold)]">
             Legal-Tech Blueprint
           </p>
-          <h1 className="mt-3 font-display text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl">
+          <h1 className="mt-3 font-display text-4xl font-black leading-tight tracking-tight text-[var(--color-cream)] sm:text-5xl">
             {firstName ? `Thank you, ${firstName}.` : "Thank you. You are in."}
           </h1>
-          <p className="mt-4 text-base font-medium leading-7 text-[#e7ecf6] sm:text-lg">
+          <p className="mt-4 text-base font-medium leading-7 text-[var(--color-ink-soft)] sm:text-lg">
             {order?.package_name
               ? `Your purchase of the ${order.package_name} is confirmed.`
               : "Your purchase is confirmed."}{" "}
@@ -137,13 +137,13 @@ export default async function BlueprintThankYouPage({
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Link
             href="/services/legal-tech-blueprint"
-            className="inline-flex min-h-12 items-center justify-center rounded-lg border-2 border-[var(--color-blue)] px-6 py-3 text-base font-black text-[var(--color-blue)] transition hover:bg-[var(--color-blue)] hover:text-[var(--color-paper)]"
+            className="inline-flex min-h-12 items-center justify-center rounded-lg border-2 border-[var(--color-blue)] px-6 py-3 text-base font-black text-[var(--color-blue-ink)] transition hover:bg-[var(--color-blue)] hover:text-[var(--color-cream)]"
           >
             Back to the offer
           </Link>
           <Link
             href="/contact"
-            className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)]"
+            className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)]"
           >
             Contact Ryan
           </Link>

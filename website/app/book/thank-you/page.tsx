@@ -140,15 +140,15 @@ export default async function BookThankYouPage({
           kind={bought ? `book_${bought}` : "book_preorder"}
         />
       ) : null}
-      <section className="bg-[#071126] text-[#fdf8ea]">
+      <section className="bg-[var(--color-surface)] text-[var(--color-cream)]">
         <div className="mx-auto max-w-2xl px-4 py-16 text-center sm:px-6 lg:py-20">
           <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
             {BOOK.title}
           </p>
-          <h1 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-[#fdf8ea] sm:text-6xl">
+          <h1 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-[var(--color-cream)] sm:text-6xl">
             Thank you. You are on the record.
           </h1>
-          <p className="mt-4 text-base font-semibold leading-7 text-[#cfd9ea] sm:text-lg">
+          <p className="mt-4 text-base font-semibold leading-7 text-[var(--color-ink-soft)] sm:text-lg">
             Your pre-order helps put the full story in public view — and gets it
             to you first. Here is what happens next.
           </p>
@@ -178,18 +178,18 @@ export default async function BookThankYouPage({
         </div>
 
         {/* Account access — where the digital copy is delivered */}
-        <div className="mt-6 overflow-hidden rounded-xl border-2 border-[#203a64] bg-[#071126] p-5 text-[#fdf8ea] shadow-md sm:p-6">
+        <div className="mt-6 overflow-hidden rounded-xl border-2 border-[var(--color-line-soft)] bg-[var(--color-surface)] p-5 text-[var(--color-cream)] shadow-md sm:p-6">
           <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
             Your account
           </p>
-          <h2 className="mt-1 font-display text-2xl font-black tracking-tight text-[#fdf8ea]">
+          <h2 className="mt-1 font-display text-2xl font-black tracking-tight text-[var(--color-cream)]">
             Get into your reading account
           </h2>
-          <p className="mt-1.5 text-sm font-semibold leading-relaxed text-[#cfd9ea]">
+          <p className="mt-1.5 text-sm font-semibold leading-relaxed text-[var(--color-ink-soft)]">
             Your pre-order is saved to your account so your copy is never tied to
             a link you might lose. Sign in with{" "}
             {orderEmail ? (
-              <span className="font-black text-[#fdf8ea]">{orderEmail}</span>
+              <span className="font-black text-[var(--color-cream)]">{orderEmail}</span>
             ) : (
               "the email you just used at checkout"
             )}{" "}
@@ -198,7 +198,7 @@ export default async function BookThankYouPage({
           </p>
           <Link
             href="/login?mode=magic&next=/account"
-            className="mt-4 inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-gold-bright)] px-6 py-3 text-sm font-black text-[#071126] transition hover:bg-[#a7efc4]"
+            className="mt-4 inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-gold-bright)] px-6 py-3 text-sm font-black text-[var(--color-navy)] transition hover:bg-[var(--color-success)]"
           >
             Access your copy →
           </Link>
@@ -236,7 +236,7 @@ export default async function BookThankYouPage({
             <BookBuyButton
               slug={upsell.slug}
               label={`Add it · ${formatUsd(tierPriceUsd(upsell))}`}
-              className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--color-accent)] px-5 py-3 text-sm font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)] disabled:opacity-60"
+              className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--color-accent)] px-5 py-3 text-sm font-black text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)] disabled:opacity-60"
             />
           </div>
         ) : null}
@@ -267,13 +267,13 @@ export default async function BookThankYouPage({
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Link
             href="/book/updates"
-            className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)]"
+            className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)]"
           >
             See book updates
           </Link>
           <Link
             href="/book"
-            className="inline-flex min-h-12 items-center justify-center rounded-lg border-2 border-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-accent)] transition hover:bg-[var(--color-accent)] hover:text-[var(--color-paper)]"
+            className="inline-flex min-h-12 items-center justify-center rounded-lg border-2 border-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-accent)] transition hover:bg-[var(--color-accent)] hover:text-[var(--color-cream)]"
           >
             Back to the book
           </Link>

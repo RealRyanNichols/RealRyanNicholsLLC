@@ -38,13 +38,13 @@ export default async function StatsEmbedPage() {
       href="https://realryannichols.com/case"
       target="_blank"
       rel="noopener noreferrer"
-      className="block overflow-hidden rounded-lg border border-[#1f2f55] bg-[#071126] no-underline"
+      className="block overflow-hidden rounded-lg border border-[var(--color-line-soft)] bg-[var(--color-surface)] no-underline"
     >
       <div className="flex items-center justify-between gap-3 border-b border-[var(--color-gold-bright)]/20 px-4 py-2">
         <span className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-gold-bright)]">
           The J6 Case Archive · live
         </span>
-        <span className="text-[10px] font-bold text-[#a9b7d0]">
+        <span className="text-[10px] font-bold text-[var(--color-muted)]">
           realryannichols.com
         </span>
       </div>
@@ -53,10 +53,10 @@ export default async function StatsEmbedPage() {
           .filter(([n]) => n > 0)
           .map(([n, label]) => (
             <span key={label} className="block">
-              <span className="block text-xl font-black tabular-nums leading-none text-[#f4efe4]">
+              <span className="block text-xl font-black tabular-nums leading-none text-[var(--color-cream)]">
                 {n.toLocaleString("en-US")}
               </span>
-              <span className="mt-1 block text-[9px] font-bold uppercase tracking-wider text-[#7c8aa6]">
+              <span className="mt-1 block text-[9px] font-bold uppercase tracking-wider text-[var(--color-muted)]">
                 {label}
               </span>
             </span>

@@ -7,7 +7,7 @@ import { trackEvent } from "@/lib/analytics";
 const MuxPlayer = dynamic(() => import("@mux/mux-player-react"), {
   ssr: false,
   loading: () => (
-    <div className="aspect-video w-full rounded-lg bg-black/90 flex items-center justify-center text-white text-sm">
+    <div className="aspect-video w-full rounded-lg bg-black/90 flex items-center justify-center text-[var(--color-cream)] text-sm">
       Loading live player...
     </div>
   ),

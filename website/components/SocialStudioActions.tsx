@@ -65,7 +65,7 @@ export function VariantActions({
       <button
         type="button"
         onClick={copy}
-        className="rounded-md bg-[var(--color-navy)] px-3 py-1.5 text-xs font-black text-[#fdf8ea] transition hover:bg-[var(--color-blue-strong)]"
+        className="rounded-md bg-[var(--color-gold)] px-3 py-1.5 text-xs font-black text-[var(--color-navy)] transition hover:bg-[var(--color-support-strong)]"
         aria-live="polite"
       >
         {copied ? "Copied ✓" : "Copy"}
@@ -73,7 +73,7 @@ export function VariantActions({
       <button
         type="button"
         onClick={download}
-        className="rounded-md border border-[var(--color-line)] px-3 py-1.5 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-navy)] hover:text-[var(--color-navy)]"
+        className="rounded-md border border-[var(--color-line)] px-3 py-1.5 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
       >
         Download .txt
       </button>
@@ -142,7 +142,7 @@ export function RegenerateButton({ postId }: { postId: string }) {
         type="button"
         onClick={regenerate}
         disabled={busy}
-        className="rounded-md border border-[var(--color-navy)]/40 px-3 py-1.5 text-xs font-bold text-[var(--color-navy)] transition hover:border-[var(--color-navy)] disabled:opacity-50"
+        className="rounded-md border border-[var(--color-line)] px-3 py-1.5 text-xs font-bold text-[var(--color-ink)] transition hover:border-[var(--color-gold)] disabled:opacity-50"
       >
         {busy ? "Writing…" : "Generate drafts"}
       </button>

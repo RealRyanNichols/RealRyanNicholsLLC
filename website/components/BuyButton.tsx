@@ -55,7 +55,7 @@ export function BuyButton({
       >
         {busy ? "Starting…" : label}
       </button>
-      {err ? <p className="mt-2 text-sm text-red-700">{err}</p> : null}
+      {err ? <p className="mt-2 text-sm text-[var(--color-danger)]">{err}</p> : null}
     </div>
   );
 }

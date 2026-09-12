@@ -28,7 +28,7 @@ export function GoDeeper({ totals, className = "" }: { totals: Totals; className
     { href: "/rss.xml", label: "RSS", file: true },
   ];
   const linkCls =
-    "inline-flex min-h-11 min-w-11 items-center gap-1.5 text-sm font-semibold text-[var(--color-navy)] hover:underline";
+    "inline-flex min-h-11 min-w-11 items-center gap-1.5 text-sm font-semibold text-[var(--color-ink)] hover:underline";
   return (
     <section id="go-deeper" className={`border-t-2 border-[var(--color-line)] pt-10 ${className}`}>
       <Eyebrow>Go deeper</Eyebrow>

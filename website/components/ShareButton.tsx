@@ -28,12 +28,13 @@ export function ShareButton({
   /** "navy" for pages that allow flag red on one element only (/case). */
   tone?: "accent" | "navy";
 }) {
+  // "navy" is the no-red tone; on the theater floor it lights gold instead.
   const hoverCls =
     tone === "navy"
-      ? "hover:border-[var(--color-navy)] hover:text-[var(--color-navy)]"
+      ? "hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
       : "hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]";
   const itemHoverCls =
-    tone === "navy" ? "hover:text-[var(--color-navy)]" : "hover:text-[var(--color-accent)]";
+    tone === "navy" ? "hover:text-[var(--color-gold)]" : "hover:text-[var(--color-accent)]";
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [supportsNative, setSupportsNative] = useState(false);
@@ -129,7 +130,7 @@ export function ShareButton({
         Share
         {shownCount > 0 ? (
           <span
-            className={`tabular-nums font-bold ${tone === "navy" ? "text-[var(--color-navy)]" : "text-[var(--color-accent)]"}`}
+            className={`tabular-nums font-bold ${tone === "navy" ? "text-[var(--color-gold)]" : "text-[var(--color-accent)]"}`}
           >
             {formatShareCount(shownCount)}
           </span>

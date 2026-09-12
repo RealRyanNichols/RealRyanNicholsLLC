@@ -124,7 +124,7 @@ export default async function FightPage(props: { params: Promise<{ slug: string 
               key={i}
               className="flex gap-3 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4"
             >
-              <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] text-xs font-bold tabular-nums">
+              <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[var(--color-accent)] text-[var(--color-cream)] text-xs font-bold tabular-nums">
                 {i + 1}
               </span>
               <span className="text-base text-[var(--color-ink)] leading-snug font-semibold">
@@ -218,13 +218,13 @@ export default async function FightPage(props: { params: Promise<{ slug: string 
         <div className="mt-5 flex flex-wrap gap-3">
           <Link
             href="/book/preorder"
-            className="rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
+            className="rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
           >
             Get the Book →
           </Link>
           <Link
             href="/submit"
-            className="rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
+            className="rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-cream)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
           >
             Send a tip →
           </Link>
