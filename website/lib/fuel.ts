@@ -245,6 +245,41 @@ export const FABLE_RATES = {
   checkedOn: "September 7, 2026",
 } as const;
 
+// The other faucet. OpenAI sells Codex overage as credits. The base rate is
+// off Ryan's own ChatGPT desktop app (Settings, Usage & billing, Auto-reload)
+// on the date below: $5.00 is 125 credits, so a credit is four cents. The
+// packs and their badges are quoted as the screen shows them; what the
+// badges do to the price is not stated there, so nothing here assumes it.
+export const OPENAI_CREDITS = {
+  usdPerCredit: 5 / 125,
+  minBalanceUsd: 5,
+  minBalanceCredits: 125,
+  packs: [
+    { usd: 100, credits: 2_500, badge: "20% off" },
+    { usd: 200, credits: 5_000, badge: "30% off" },
+    { usd: 1_000, credits: 25_000, badge: "40% off" },
+  ],
+  checkedOn: "September 8, 2026",
+  source: "Ryan's ChatGPT desktop app, Usage & billing",
+} as const;
+
+// Credits per million tokens for the Codex model Ryan runs, from
+// learn.chatgpt.com/docs/pricing on September 7, 2026.
+export const CODEX_RATES = {
+  model: "GPT-6 Astra",
+  creditsPerMTok: { input: 250, cached: 25, output: 1_250 },
+  checkedOn: "September 7, 2026",
+} as const;
+
+// Dollars per million tokens on the OpenAI side: credits times the credit
+// price. At four cents a credit that is $10 in, $1 cached, $50 out, the
+// same sticker as Claude Fable 5.1 for input and output.
+export function codexUsdPerMTok(): { input: number; cached: number; output: number } {
+  const c = CODEX_RATES.creditsPerMTok;
+  const p = OPENAI_CREDITS.usdPerCredit;
+  return { input: c.input * p, cached: c.cached * p, output: c.output * p };
+}
+
 // 2. The token mix Ryan's own work burns: for every output token, the input
 //    and cache-read tokens that travel with it. Read with ccusage off his Mac
 //    for Aug 19 to Sep 7, 2026 (20 active days; docs/usage-receipts-2026-09.md).

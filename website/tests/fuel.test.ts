@@ -5,6 +5,9 @@ import {
   FUEL_MAX_CENTS,
   FUEL_MONTHLY,
   FUEL_TIME_FLOOR_CENTS,
+  FABLE_RATES,
+  OPENAI_CREDITS,
+  codexUsdPerMTok,
   MEASURED_DAY_CENTS,
   WORKING_DAY_HOURS,
   compactTokens,
@@ -152,4 +155,15 @@ test("fuel notes round-trip through the support_intents message field", () => {
   assert.deepEqual(parseFuelMessage(formatFuelMessage("Spark", "")), { tier: "Spark", ask: "" });
   assert.equal(parseFuelMessage("Keep going, Ryan."), null);
   assert.equal(parseFuelMessage(null), null);
+});
+
+test("the OpenAI faucet prices out to the same sticker as Claude", () => {
+  // $5 is 125 credits on Ryan's billing screen: four cents a credit.
+  assert.ok(Math.abs(OPENAI_CREDITS.usdPerCredit - 0.04) < 1e-12);
+  const usd = codexUsdPerMTok();
+  assert.deepEqual(usd, { input: 10, cached: 1, output: 50 });
+  assert.equal(usd.input, FABLE_RATES.input);
+  assert.equal(usd.output, FABLE_RATES.output);
+  // The packs on the screen are all at the base rate; the badges are quoted, not applied.
+  for (const p of OPENAI_CREDITS.packs) assert.equal(p.credits, p.usd * 25);
 });
