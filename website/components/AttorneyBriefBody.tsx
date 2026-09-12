@@ -1394,7 +1394,7 @@ export function AttorneyBriefBody({
       >
         <div className="grid gap-5 lg:grid-cols-[1fr_18rem] lg:items-start">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
+            <p className="eyebrow">
               Attorney cover sheet
             </p>
             <h1 className="mt-2 max-w-3xl text-3xl font-black leading-[0.98] text-[var(--color-cream)] sm:text-5xl lg:text-6xl">
@@ -1425,7 +1425,7 @@ export function AttorneyBriefBody({
             <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-gold)]">
               Dallas meeting
             </p>
-            <h2 className="mt-2 font-sans text-xl font-black text-[var(--color-cream)]">
+            <h2 className="mt-2 font-display text-xl font-black text-[var(--color-cream)]">
               Dallas criminal-defense meeting
             </h2>
             <dl className="mt-3 grid gap-3">
@@ -1478,7 +1478,7 @@ export function AttorneyBriefBody({
                 </span>
                 {item.label}
               </p>
-              <h2 className="mt-3 font-sans text-xl font-black leading-tight text-[var(--color-cream)]">
+              <h2 className="mt-3 font-display text-xl font-black leading-tight text-[var(--color-cream)]">
                 {item.title}
               </h2>
               <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
@@ -1492,7 +1492,7 @@ export function AttorneyBriefBody({
           <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-tag-severe)]">
             Core disputed fact
           </p>
-          <h2 className="mt-2 font-sans text-xl font-black leading-tight text-[var(--color-cream)] sm:text-2xl">
+          <h2 className="mt-2 font-display text-xl font-black leading-tight text-[var(--color-cream)] sm:text-2xl">
             Public allegation says displayed / hand on grip. Ryan disputes
             pulling, pointing, brandishing, firing, or threatening.
           </h2>
@@ -1510,7 +1510,7 @@ export function AttorneyBriefBody({
         <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
           Executive summary
         </p>
-        <h2 className="mt-1 font-sans text-2xl font-black leading-tight text-[var(--color-ink)] sm:text-3xl">
+        <h2 className="mt-1 font-display text-2xl font-black leading-tight text-[var(--color-ink)] sm:text-3xl">
           The whole case, in one breath.
         </h2>
         <p className="mt-3 max-w-4xl text-base font-semibold leading-7 text-[var(--color-ink)]">
@@ -1551,7 +1551,7 @@ export function AttorneyBriefBody({
             <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
               Open first
             </p>
-            <h2 className="mt-1 font-sans text-2xl font-black leading-tight sm:text-3xl">
+            <h2 className="mt-1 font-display text-2xl font-black leading-tight sm:text-3xl">
               Four proof doors. Open these first.
             </h2>
           </div>
@@ -1576,7 +1576,7 @@ export function AttorneyBriefBody({
             <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
               Filed drawers
             </p>
-            <h2 className="mt-1 font-sans text-2xl font-black leading-tight sm:text-3xl">
+            <h2 className="mt-1 font-display text-2xl font-black leading-tight sm:text-3xl">
               The depth is visible without being loud.
             </h2>
           </div>
@@ -1602,7 +1602,7 @@ export function AttorneyBriefBody({
             <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
               Sorted by matter
             </p>
-            <h2 className="mt-1 font-sans text-2xl font-black leading-tight text-[var(--color-ink)] sm:text-3xl">
+            <h2 className="mt-1 font-display text-2xl font-black leading-tight text-[var(--color-ink)] sm:text-3xl">
               Each fight on its own — then the through-line.
             </h2>
           </div>
@@ -1644,7 +1644,7 @@ export function AttorneyBriefBody({
           <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-danger)]">
             The pattern — line by line
           </p>
-          <h2 className="mt-1 font-sans text-2xl font-black leading-tight text-[var(--color-ink)] sm:text-3xl">
+          <h2 className="mt-1 font-display text-2xl font-black leading-tight text-[var(--color-ink)] sm:text-3xl">
             Three times the claim is &ldquo;Nichols had a gun.&rdquo; Three times
             the record says no.
           </h2>
@@ -1705,10 +1705,10 @@ export function AttorneyBriefBody({
         id="civil-throughline"
         className="mt-4 border border-[var(--color-line-soft)] bg-[var(--color-surface)] p-4 text-[var(--color-cream)] shadow-sm sm:p-5"
       >
-        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
+        <p className="eyebrow">
           The civil throughline
         </p>
-        <h2 className="mt-1 font-sans text-2xl font-black leading-tight text-[var(--color-cream)] sm:text-3xl">
+        <h2 className="mt-1 font-display text-2xl font-black leading-tight text-[var(--color-cream)] sm:text-3xl">
           Bo Rogers, Bonnie, and Wholesale Universe all run back to Harrison
           County.
         </h2>
@@ -1773,7 +1773,7 @@ export function AttorneyBriefBody({
             <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
               Go get it
             </p>
-            <h2 className="mt-1 font-sans text-2xl font-black leading-tight text-[var(--color-ink)] sm:text-3xl">
+            <h2 className="mt-1 font-display text-2xl font-black leading-tight text-[var(--color-ink)] sm:text-3xl">
               Records to demand — the subpoena and 39.14 board.
             </h2>
           </div>
@@ -1784,12 +1784,14 @@ export function AttorneyBriefBody({
         </div>
         <div className="mt-4 grid gap-3 md:grid-cols-2">
           {recordsToDemand.map((group) => {
+            // Theme tokens, not literals: these render as inline styles in
+            // the DOM, so var(--color-...) resolves.
             const hex =
               group.tone === "red"
-                ? "#b32419"
+                ? "var(--color-tag-severe)"
                 : group.tone === "gold"
-                  ? "#8f6b16"
-                  : "#1d3a6b";
+                  ? "var(--color-gold)"
+                  : "var(--color-blue-ink)";
             return (
               <section
                 key={group.holder}
@@ -1826,10 +1828,10 @@ export function AttorneyBriefBody({
         id="longview-report"
         className="mt-4 border border-[var(--color-line-soft)] bg-[var(--color-surface)] p-4 text-[var(--color-cream)] shadow-sm sm:p-5"
       >
-        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
+        <p className="eyebrow">
           Criminal referral — Longview PD case 260630230
         </p>
-        <h2 className="mt-1 font-sans text-2xl font-black leading-tight text-[var(--color-cream)] sm:text-3xl">
+        <h2 className="mt-1 font-display text-2xl font-black leading-tight text-[var(--color-cream)] sm:text-3xl">
           What Ryan reported, and what still needs to be investigated.
         </h2>
         <p className="mt-2 max-w-3xl text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
@@ -1883,7 +1885,7 @@ export function AttorneyBriefBody({
             <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
               At a glance
             </p>
-            <h2 className="mt-1 font-sans text-2xl font-black leading-tight sm:text-3xl">
+            <h2 className="mt-1 font-display text-2xl font-black leading-tight sm:text-3xl">
               The case in charts.
             </h2>
           </div>
@@ -1977,7 +1979,7 @@ export function AttorneyBriefBody({
             <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
               Criminal lane first
             </p>
-            <h2 className="mt-1 font-sans text-3xl font-black leading-tight">
+            <h2 className="mt-1 font-display text-3xl font-black leading-tight">
               The case is simpler when the charges stay clean.
             </h2>
           </div>
@@ -2003,10 +2005,10 @@ export function AttorneyBriefBody({
         </summary>
         <div className="grid gap-4 border-t border-[var(--color-line)] p-4 lg:grid-cols-[0.9fr_1.1fr]">
         <section className="border border-[var(--color-line-soft)] bg-[var(--color-surface)] p-4 text-[var(--color-cream)] shadow-sm sm:p-5">
-          <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
+          <p className="eyebrow">
             Open first
           </p>
-          <h2 className="mt-1 font-sans text-2xl font-black text-[var(--color-cream)]">
+          <h2 className="mt-1 font-display text-2xl font-black text-[var(--color-cream)]">
             Give counsel the door, not the warehouse.
           </h2>
           <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
@@ -2035,7 +2037,7 @@ export function AttorneyBriefBody({
           <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
             What the page is saying
           </p>
-          <h2 className="mt-1 font-sans text-2xl font-black">
+          <h2 className="mt-1 font-display text-2xl font-black">
             You do not have to show everything to show you have everything.
           </h2>
           <div className="mt-4 grid gap-2">
@@ -2059,7 +2061,7 @@ export function AttorneyBriefBody({
                 <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
                   {item.label}
                 </p>
-                <p className="mt-1 font-sans text-2xl font-black">
+                <p className="display mt-1 text-2xl text-[var(--color-gold)]">
                   {item.value}
                 </p>
                 <p className="mt-1 text-xs font-bold leading-5 text-[var(--color-accent)]">
@@ -2082,10 +2084,10 @@ export function AttorneyBriefBody({
         <div className="border-t border-[var(--color-cream)]/10 p-4 sm:p-5">
         <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
+            <p className="eyebrow">
               Source folders
             </p>
-            <h2 className="mt-1 font-sans text-2xl font-black text-[var(--color-cream)]">
+            <h2 className="mt-1 font-display text-2xl font-black text-[var(--color-cream)]">
               Four controlled entry points.
             </h2>
           </div>
@@ -2137,7 +2139,7 @@ export function AttorneyBriefBody({
                 <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-ink-soft)]">
                   {lane.label}
                 </p>
-                <h3 className="mt-2 font-sans text-lg font-black leading-tight">
+                <h3 className="mt-2 font-display text-lg font-black leading-tight">
                   {lane.title}
                 </h3>
                 <p className="mt-2 text-xs font-semibold leading-5 text-[var(--color-ink-soft)]">
@@ -2190,10 +2192,10 @@ export function AttorneyBriefBody({
           <section className="border border-[var(--color-line-soft)] bg-[var(--color-surface)] p-4 text-[var(--color-cream)] sm:p-5">
             <div className="grid gap-3 lg:grid-cols-[0.38fr_1fr] lg:items-end">
               <div>
-                <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
+                <p className="eyebrow">
                   Why take Ryan
                 </p>
-                <h2 className="mt-1 font-sans text-2xl font-black text-[var(--color-cream)] sm:text-3xl">
+                <h2 className="mt-1 font-display text-2xl font-black text-[var(--color-cream)] sm:text-3xl">
                   A high-attention case with a record that can be organized.
                 </h2>
               </div>
@@ -2209,7 +2211,7 @@ export function AttorneyBriefBody({
                   <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-gold)]">
                     {item.label}
                   </p>
-                  <h3 className="mt-2 font-sans text-lg font-black leading-tight text-[var(--color-cream)]">
+                  <h3 className="mt-2 font-display text-lg font-black leading-tight text-[var(--color-cream)]">
                     {item.title}
                   </h3>
                   <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
@@ -2228,7 +2230,7 @@ export function AttorneyBriefBody({
               <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
                 Working theory
               </p>
-              <h2 className="mt-2 font-sans text-2xl font-black">
+              <h2 className="mt-2 font-display text-2xl font-black">
                 Pull every claim back to source.
               </h2>
               <ul className="mt-4 space-y-2">
@@ -2245,7 +2247,7 @@ export function AttorneyBriefBody({
               <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
                 Chronology
               </p>
-              <h2 className="mt-2 font-sans text-2xl font-black">
+              <h2 className="mt-2 font-display text-2xl font-black">
                 What touches what
               </h2>
               <div className="mt-4 grid gap-2">
@@ -2258,7 +2260,7 @@ export function AttorneyBriefBody({
                       {event.date}
                     </p>
                     <div>
-                      <h3 className="font-sans text-base font-black">
+                      <h3 className="font-display text-base font-black">
                         {event.title}
                       </h3>
                       <p className="mt-1 text-xs font-semibold leading-5 text-[var(--color-ink-soft)]">
@@ -2272,10 +2274,10 @@ export function AttorneyBriefBody({
           </section>
 
           <section id="damages-map" className="mt-4 border border-[var(--color-line-soft)] bg-[var(--color-surface)] p-4 text-[var(--color-cream)]">
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
+            <p className="eyebrow">
               Damages / money map
             </p>
-            <h2 className="mt-2 font-sans text-2xl font-black text-[var(--color-cream)]">
+            <h2 className="mt-2 font-display text-2xl font-black text-[var(--color-cream)]">
               What this has cost Ryan
             </h2>
             <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
@@ -2284,7 +2286,7 @@ export function AttorneyBriefBody({
                   <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-gold)]">
                     {item.label}
                   </p>
-                  <p className="mt-2 font-sans text-3xl font-black text-[var(--color-cream)]">
+                  <p className="display mt-2 text-3xl text-[var(--color-gold)]">
                     {item.value}
                   </p>
                   <p className="mt-1 text-xs font-black uppercase tracking-[0.16em] text-[var(--color-gold-bright)]">
@@ -2302,7 +2304,7 @@ export function AttorneyBriefBody({
                   <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--color-gold)]">
                     {record.label}
                   </p>
-                  <p className="mt-1 font-sans text-2xl font-black text-[var(--color-cream)]">
+                  <p className="display mt-1 text-2xl text-[var(--color-gold)]">
                     {record.value}
                   </p>
                   <p className="mt-2 text-xs font-semibold leading-5 text-[var(--color-ink-soft)]">
@@ -2315,10 +2317,10 @@ export function AttorneyBriefBody({
 
           <section className="mt-4 grid gap-4 xl:grid-cols-[0.92fr_1.08fr]">
             <div className="border border-[var(--color-line-soft)] bg-[var(--color-surface)] p-4 text-[var(--color-cream)]">
-              <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
+              <p className="eyebrow">
                 Source chain
               </p>
-              <h2 className="mt-2 font-sans text-2xl font-black text-[var(--color-cream)]">
+              <h2 className="mt-2 font-display text-2xl font-black text-[var(--color-cream)]">
                 What needs to be seen plainly
               </h2>
               <div className="mt-4 grid gap-3">
@@ -2327,7 +2329,7 @@ export function AttorneyBriefBody({
                     <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-gold)]">
                       {item.step}
                     </p>
-                    <h3 className="mt-1 font-sans text-lg font-black text-[var(--color-cream)]">
+                    <h3 className="mt-1 font-display text-lg font-black text-[var(--color-cream)]">
                       {item.title}
                     </h3>
                     <p className="mt-1 text-sm leading-6 text-[var(--color-ink-soft)]">{item.body}</p>
@@ -2343,7 +2345,7 @@ export function AttorneyBriefBody({
               <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
                 People map
               </p>
-              <h2 className="mt-2 font-sans text-2xl font-black">
+              <h2 className="mt-2 font-display text-2xl font-black">
                 Names in the record
               </h2>
               <div className="mt-4 grid gap-2 md:grid-cols-2">
@@ -2362,7 +2364,7 @@ export function AttorneyBriefBody({
           <section className="mt-4 grid gap-4 lg:grid-cols-2">
             {evidenceLanes.map((lane) => (
               <section key={lane.title} className="border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
-                <h2 className="font-sans text-xl font-black">{lane.title}</h2>
+                <h2 className="font-display text-xl font-black">{lane.title}</h2>
                 <ul className="mt-3 space-y-2">
                   {lane.items.map((item) => (
                     <li key={item} className="flex gap-2 text-sm leading-6 text-[var(--color-ink-soft)]">
@@ -2377,7 +2379,7 @@ export function AttorneyBriefBody({
           <section className="mt-4 grid gap-4 lg:grid-cols-2">
             {divorceBusinessLanes.map((lane) => (
               <section key={lane.title} className="border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
-                <h2 className="font-sans text-xl font-black">{lane.title}</h2>
+                <h2 className="font-display text-xl font-black">{lane.title}</h2>
                 <ul className="mt-3 space-y-2">
                   {lane.items.map((item) => (
                     <li key={item} className="flex gap-2 text-sm leading-6 text-[var(--color-ink-soft)]">
@@ -2392,7 +2394,7 @@ export function AttorneyBriefBody({
           <section className="mt-4 grid gap-4 lg:grid-cols-1">
             {j6DamageLanes.map((lane) => (
               <section key={lane.title} className="border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-4">
-                <h2 className="font-sans text-xl font-black">{lane.title}</h2>
+                <h2 className="font-display text-xl font-black">{lane.title}</h2>
                 <ul className="mt-3 grid gap-2 md:grid-cols-2">
                   {lane.items.map((item) => (
                     <li key={item} className="flex gap-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
@@ -2408,13 +2410,13 @@ export function AttorneyBriefBody({
             <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
               Political / public-pressure context
             </p>
-            <h2 className="mt-2 font-sans text-2xl font-black">
+            <h2 className="mt-2 font-display text-2xl font-black">
               Use only what can be proven.
             </h2>
             <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
               {politicalContextLanes.map((lane) => (
                 <section key={lane.title} className="border border-[var(--color-line)] bg-[var(--color-paper)] p-3">
-                  <h3 className="font-sans text-lg font-black leading-tight">
+                  <h3 className="font-display text-lg font-black leading-tight">
                     {lane.title}
                   </h3>
                   <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
@@ -2441,7 +2443,7 @@ export function AttorneyBriefBody({
           <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
             Open items
           </p>
-          <h2 className="mt-2 font-sans text-2xl font-black">
+          <h2 className="mt-2 font-display text-2xl font-black">
             The next packet should answer these.
           </h2>
           <div className="mt-4 grid gap-2 md:grid-cols-2">
@@ -2539,7 +2541,7 @@ function Metric({
           : "border-[var(--color-line)] bg-[var(--color-paper)]",
       ].join(" ")}
     >
-      <p className="text-2xl font-black">{value}</p>
+      <p className="text-2xl font-black text-[var(--color-ink)]">{value}</p>
       <p className="mt-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-ink-soft)]">
         {label}
       </p>
@@ -2581,7 +2583,7 @@ function FirstOpenCard({
       ].join(" ")}
     >
       <div className="flex items-start justify-between gap-3">
-        <span className="inline-flex h-9 w-9 items-center justify-center border border-black/10 bg-[var(--color-paper)] font-sans text-xl font-black text-[var(--color-ink)]">
+        <span className="inline-flex h-9 w-9 items-center justify-center border border-[var(--color-line)] bg-[var(--color-paper)] font-sans text-xl font-black text-[var(--color-ink)]">
           {step}
         </span>
         <span className="text-[10px] font-black uppercase tracking-normal text-[var(--color-accent)] transition group-hover:translate-x-0.5">
@@ -2589,7 +2591,7 @@ function FirstOpenCard({
         </span>
       </div>
       <div>
-        <h3 className="font-sans text-xl font-black leading-tight text-[var(--color-ink)]">
+        <h3 className="font-display text-xl font-black leading-tight text-[var(--color-ink)]">
           {title}
         </h3>
         <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
@@ -2613,12 +2615,12 @@ function PacketJump({
 }) {
   const tone =
     label === "Criminal"
-      ? "#b32419"
+      ? "var(--color-tag-severe)"
       : label === "Receipts"
-        ? "#2d6a4f"
+        ? "var(--color-success)"
         : label === "Law"
-          ? "#8f6b16"
-          : "#1d3a6b";
+          ? "var(--color-gold)"
+          : "var(--color-blue-ink)";
 
   return (
     <a
@@ -2637,7 +2639,7 @@ function PacketJump({
           Open
         </span>
       </div>
-      <h3 className="mt-2 font-sans text-xl font-black leading-tight text-[var(--color-ink)]">
+      <h3 className="mt-2 font-display text-xl font-black leading-tight text-[var(--color-ink)]">
         {title}
       </h3>
       <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
@@ -2685,7 +2687,7 @@ function MatterSplitCard({
           {status}
         </span>
       </div>
-      <h2 className="mt-2 font-sans text-2xl font-black">{title}</h2>
+      <h2 className="mt-2 font-display text-2xl font-black">{title}</h2>
       <ul className="mt-3 grid gap-2">
         {items.map((item) => (
           <li key={item} className="flex gap-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
@@ -2840,7 +2842,7 @@ function ChargeCard({
           {status}
         </span>
       </div>
-      <h2 className="mt-2 font-sans text-2xl font-black">{title}</h2>
+      <h2 className="mt-2 font-display text-2xl font-black">{title}</h2>
       <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
         {summary}
       </p>

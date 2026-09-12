@@ -140,7 +140,7 @@ export function FuelCheckout({
   }
 
   const field =
-    "w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3.5 py-3 text-base text-[var(--color-ink)] focus:border-[var(--color-accent)] focus:outline-none min-h-11";
+    "w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3.5 py-3 text-base text-[var(--color-ink)] focus:border-[var(--color-accent)] focus:outline-none min-h-11";
 
   return (
     <form onSubmit={submit} data-fuel-form className="space-y-8">
@@ -157,7 +157,7 @@ export function FuelCheckout({
             data-fuel-cadence="once"
             onClick={() => setCadence("once")}
             className={`min-h-11 rounded-lg px-3 text-sm font-black transition ${
-              !monthly ? "bg-[var(--color-gold)] text-[var(--color-navy)] shadow" : "text-[var(--color-navy)]/80 hover:text-[var(--color-ink)]"
+              !monthly ? "bg-[var(--color-gold)] text-[var(--color-navy)] shadow" : "text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]"
             }`}
           >
             One time
@@ -169,7 +169,7 @@ export function FuelCheckout({
             data-fuel-cadence="monthly"
             onClick={() => setCadence("monthly")}
             className={`min-h-11 rounded-lg px-3 text-sm font-black transition ${
-              monthly ? "bg-[var(--color-gold)] text-[var(--color-navy)] shadow" : "text-[var(--color-navy)]/80 hover:text-[var(--color-ink)]"
+              monthly ? "bg-[var(--color-gold)] text-[var(--color-navy)] shadow" : "text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]"
             }`}
           >
             Monthly · {usdWhole(FUEL_MONTHLY.amountCents)}
@@ -179,7 +179,7 @@ export function FuelCheckout({
         {monthly ? (
           <div className="mt-3 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)]/60 p-4 sm:p-5" data-fuel-keeper>
             <div className="flex items-baseline justify-between gap-3">
-              <span className="font-display text-3xl font-black tabular-nums tracking-tight text-[var(--color-ink)]">
+              <span className="display text-3xl tabular-nums text-[var(--color-gold)]">
                 {usdWhole(FUEL_MONTHLY.amountCents)}
                 <span className="text-base font-bold text-[var(--color-muted)]"> a month</span>
               </span>
@@ -196,7 +196,7 @@ export function FuelCheckout({
             <ul className="mt-2 space-y-1 text-sm text-[var(--color-ink-soft)]">
               {FUEL_MONTHLY.gets.map((g) => (
                 <li key={g} className="flex gap-2">
-                  <span className="text-[var(--color-accent)]" aria-hidden>
+                  <span className="text-[var(--color-gold)]" aria-hidden>
                     ✓
                   </span>
                   <span>{g}</span>
@@ -225,29 +225,29 @@ export function FuelCheckout({
                   }}
                   className={`relative min-h-11 rounded-2xl border-2 p-4 text-left transition ${
                     on
-                      ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] shadow-md"
-                      : "border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-accent)]"
+                      ? "border-[var(--color-gold)] bg-[var(--color-support-soft)] shadow-[0_20px_50px_rgba(0,0,0,0.4)]"
+                      : "border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-gold)]"
                   }`}
                 >
                   <div className="flex items-baseline justify-between gap-3">
-                    <span className="font-display text-3xl font-black tabular-nums tracking-tight text-[var(--color-ink)]">
+                    <span className="display text-3xl tabular-nums text-[var(--color-gold)]">
                       {usdWhole(t.amountCents)}
                     </span>
                     {t.featured ? (
-                      <span className="rounded-full bg-[var(--color-accent)] px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-[var(--color-cream)]">
+                      <span className="rounded-full bg-[var(--color-gold)] px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-[var(--color-navy)]">
                         Most asked for
                       </span>
                     ) : null}
                   </div>
                   <p className="mt-1 text-base font-bold text-[var(--color-ink)]">{t.title}</p>
                   {time ? (
-                    <p className="mt-0.5 text-xs font-black uppercase tracking-wider text-[var(--color-accent)]">{time}</p>
+                    <p className="mt-0.5 text-xs font-black uppercase tracking-wider text-[var(--color-gold)]">{time}</p>
                   ) : null}
                   <p className="mt-1.5 text-sm text-[var(--color-ink-soft)]">{t.blurb}</p>
                   <ul className="mt-2 space-y-1 text-sm text-[var(--color-ink-soft)]">
                     {t.gets.map((g) => (
                       <li key={g} className="flex gap-2">
-                        <span className="text-[var(--color-accent)]" aria-hidden>
+                        <span className="text-[var(--color-gold)]" aria-hidden>
                           ✓
                         </span>
                         <span>{g}</span>
@@ -262,7 +262,7 @@ export function FuelCheckout({
             <label
               className={`flex min-h-11 flex-col justify-center rounded-2xl border-2 p-4 transition ${
                 !tierSlug
-                  ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] shadow-md"
+                  ? "border-[var(--color-gold)] bg-[var(--color-support-soft)] shadow-[0_20px_50px_rgba(0,0,0,0.4)]"
                   : "border-[var(--color-line)] bg-[var(--color-surface)]"
               }`}
             >
@@ -291,7 +291,7 @@ export function FuelCheckout({
                 />
               </span>
               {!tierSlug && Number.isFinite(customCents) && customCents >= FUEL_FLOOR_CENTS ? (
-                <span className="mt-2 text-xs font-black uppercase tracking-wider text-[var(--color-accent)]">
+                <span className="mt-2 text-xs font-black uppercase tracking-wider text-[var(--color-gold)]">
                   {buysLabel(customCents) ?? ""}
                   {selected ? ` · ${selected.title} tier` : ""}
                 </span>
@@ -384,7 +384,7 @@ export function FuelCheckout({
       {/* The deal, restated right above the button */}
       {haveAmount ? (
         <div className="rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)]/60 p-4 sm:p-5" data-fuel-summary>
-          <p className="text-xs font-black uppercase tracking-wider text-[var(--color-ink)]">The deal</p>
+          <p className="eyebrow">The deal</p>
           <p className="mt-1 font-display text-xl font-bold tracking-tight text-[var(--color-ink)]">
             {usdWhole(amountCents)}
             {monthly ? " a month" : ""}
@@ -400,7 +400,7 @@ export function FuelCheckout({
             <ul className="mt-2 space-y-1 text-sm text-[var(--color-ink)]">
               {earned.map((g) => (
                 <li key={g} className="flex gap-2">
-                  <span className="text-[var(--color-accent)]" aria-hidden>
+                  <span className="text-[var(--color-gold)]" aria-hidden>
                     ✓
                   </span>
                   <span>{g}</span>

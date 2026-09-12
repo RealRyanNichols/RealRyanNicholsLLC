@@ -42,7 +42,7 @@ export function J6ClaimButton({ slug }: { slug: string }) {
         type="button"
         onClick={go}
         disabled={busy}
-        className="w-full rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-6 py-3 text-base font-bold text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-cream)] transition disabled:opacity-60"
+        className="w-full rounded-full border-2 border-[var(--color-accent)] bg-transparent px-6 py-3 text-base font-bold text-[var(--color-ink)] hover:bg-[var(--color-accent)] hover:text-[var(--color-cream)] transition disabled:opacity-60"
       >
         {busy ? "Claiming…" : "Claim free — verified J6 defendant"}
       </button>

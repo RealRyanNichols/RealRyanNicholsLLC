@@ -23,7 +23,7 @@ export async function SiteMomentum({ variant = "wide" }: { variant?: "wide" | "c
   type Tile = {
     label: string;
     value: number;
-    tone: "ink" | "accent" | "blue";
+    tone: "ink" | "gold" | "blue";
     href?: string;
   };
 
@@ -32,7 +32,7 @@ export async function SiteMomentum({ variant = "wide" }: { variant?: "wide" | "c
       ? [
           { label: "Profiles ready", value: profilesReady ?? 0, tone: "blue", href: "/case?view=people&filter=unclaimed" },
           { label: "Documents", value: documents ?? 0, tone: "ink", href: "/case?view=documents" },
-          { label: "Total reach", value: totalViews, tone: "accent", href: "/?sort=trending" },
+          { label: "Total reach", value: totalViews, tone: "gold", href: "/?sort=trending" },
           { label: "Days since pardon", value: daysSincePardon, tone: "ink" },
         ]
       : [
@@ -44,17 +44,18 @@ export async function SiteMomentum({ variant = "wide" }: { variant?: "wide" | "c
           { label: "Grievance patterns", value: grievances ?? 0, tone: "ink", href: "/case?view=grievances" },
           // Same counter /about/numbers documents as "Total reach": every
           // successful load, humans and bots alike. The label says so.
-          { label: "Total reach", value: totalViews, tone: "accent", href: "/?sort=trending" },
-          { label: "Total shares", value: totalShares, tone: "accent", href: "/?sort=trending" },
+          { label: "Total reach", value: totalViews, tone: "gold", href: "/?sort=trending" },
+          { label: "Total shares", value: totalShares, tone: "gold", href: "/?sort=trending" },
         ];
 
   return (
     <section
       className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6"
       aria-label="Site momentum"
+      data-reveal
     >
       <div className="flex items-baseline justify-between gap-3 mb-4">
-        <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+        <p className="eyebrow">
           The J6 Case · live
         </p>
         <p className="text-xs text-[var(--color-muted)]">
@@ -68,8 +69,8 @@ export async function SiteMomentum({ variant = "wide" }: { variant?: "wide" | "c
             : "grid-cols-2 sm:grid-cols-3"
         }`}
       >
-        {tiles.map((t) => (
-          <TileCard key={t.label} {...t} />
+        {tiles.map((t, i) => (
+          <TileCard key={t.label} d={i} {...t} />
         ))}
       </div>
     </section>
@@ -81,15 +82,18 @@ function TileCard({
   value,
   tone,
   href,
+  d,
 }: {
   label: string;
   value: number;
-  tone: "ink" | "accent" | "blue";
+  tone: "ink" | "gold" | "blue";
   href?: string;
+  // Reveal stagger index.
+  d: number;
 }) {
   const valueCls =
-    tone === "accent"
-      ? "text-[var(--color-accent)]"
+    tone === "gold"
+      ? "text-[var(--color-gold)]"
       : tone === "blue"
       ? "text-[var(--color-blue-ink)]"
       : "text-[var(--color-ink)]";
@@ -97,7 +101,8 @@ function TileCard({
   const inner = (
     <>
       <div
-        className={`text-3xl sm:text-4xl font-bold tabular-nums tracking-tight leading-none ${valueCls}`}
+        className={`display text-4xl sm:text-5xl tabular-nums ${valueCls}`}
+        data-count={value > 0 ? value : undefined}
       >
         {value.toLocaleString()}
       </div>
@@ -105,7 +110,7 @@ function TileCard({
         {label}
       </div>
       {href ? (
-        <div className="mt-2 text-[10px] sm:text-xs text-[var(--color-accent)] font-bold">
+        <div className="mt-2 text-[11px] sm:text-xs text-[var(--color-gold)] font-bold">
           View →
         </div>
       ) : null}
@@ -113,17 +118,23 @@ function TileCard({
   );
 
   const baseCls =
-    "block rounded-xl border border-[var(--color-line-soft)] bg-[var(--color-paper)] p-4 sm:p-5 min-h-[112px] sm:min-h-[128px]";
+    "block rounded-xl border border-[var(--color-line)] bg-[var(--color-surface-2)] p-4 sm:p-5 min-h-[112px] sm:min-h-[128px]";
 
   if (href) {
     return (
       <Link
         href={href}
-        className={`${baseCls} hover:border-[var(--color-accent)] transition`}
+        className={`${baseCls} hover:border-[var(--color-gold)] transition`}
+        data-reveal
+        style={{ "--d": d } as React.CSSProperties}
       >
         {inner}
       </Link>
     );
   }
-  return <div className={baseCls}>{inner}</div>;
+  return (
+    <div className={baseCls} data-reveal style={{ "--d": d } as React.CSSProperties}>
+      {inner}
+    </div>
+  );
 }

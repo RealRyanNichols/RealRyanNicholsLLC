@@ -83,7 +83,7 @@ function StatTile({
   value,
   label,
   prefix = "",
-  accent = "#fdf8ea",
+  accent = "var(--color-cream)",
   live = false,
 }: {
   value: number;
@@ -101,7 +101,7 @@ function StatTile({
         </span>
       ) : null}
       <div
-        className="font-display text-2xl font-black tabular-nums tracking-tight sm:text-3xl"
+        className="display text-3xl tabular-nums sm:text-4xl"
         style={{ color: accent }}
       >
         {prefix}
@@ -128,9 +128,7 @@ function MilestoneRoadmap({ total, milestones }: { total: number; milestones: Mi
   return (
     <section className="mt-4 rounded-xl border border-[var(--color-cream)]/10 bg-[var(--color-cream)]/[0.03] p-4">
       <div className="flex items-center justify-between gap-3">
-        <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
-          Milestones — what we unlock together
-        </p>
+        <p className="eyebrow">Milestones — what we unlock together</p>
         {next ? (
           <p className="text-xs font-bold text-[var(--color-cream)]">
             <span className="text-[var(--color-gold-bright)]">{(next.points - total).toLocaleString()}</span> pts to{" "}
@@ -157,13 +155,13 @@ function MilestoneRoadmap({ total, milestones }: { total: number; milestones: Mi
               ].join(" ")}
             >
               <div className="flex items-center justify-between gap-2">
-                <span className="font-display text-lg font-black tabular-nums text-[var(--color-cream)]">
+                <span className="display text-xl tabular-nums text-[var(--color-cream)]">
                   {m.points.toLocaleString()}
                 </span>
                 <span
                   className={[
                     "rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-wider",
-                    reached ? "bg-[var(--color-live)] text-[var(--color-navy)]" : isNext ? "bg-[var(--color-gold-bright)] text-[var(--color-navy)]" : "bg-[var(--color-cream)]/10 text-[var(--color-navy)]",
+                    reached ? "bg-[var(--color-live)] text-[var(--color-navy)]" : isNext ? "bg-[var(--color-gold-bright)] text-[var(--color-navy)]" : "bg-[var(--color-cream)]/10 text-[var(--color-muted)]",
                   ].join(" ")}
                 >
                   {reached ? "Unlocked" : isNext ? "Next" : "Locked"}
@@ -191,9 +189,7 @@ function ActivityFeed({ recent: recentRaw }: { recent: Recent[] }) {
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-live)] opacity-70" />
           <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--color-live)]" />
         </span>
-        <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
-          Live activity
-        </p>
+        <p className="eyebrow">Live activity</p>
       </div>
       {recent.length === 0 ? (
         <p className="mt-3 text-xs text-[var(--color-muted)]">Quiet for a moment…</p>
@@ -366,9 +362,7 @@ export function SituationRoom({
               <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[var(--color-live)] shadow-[0_0_10px_rgba(127,227,169,0.8)]" />
             </span>
             <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.28em] text-[var(--color-gold-bright)]">
-                Situation Room
-              </p>
+              <p className="eyebrow">Situation Room</p>
               <p className="text-sm font-bold text-[var(--color-cream)]">
                 Live data &amp; the record, in one place
               </p>
@@ -393,14 +387,12 @@ export function SituationRoom({
         <section className="mt-5 rounded-xl border border-[var(--color-gold-bright)]/25 bg-[var(--color-gold-bright)]/[0.06] p-4 sm:p-5">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
-                The Rally
-              </p>
+              <p className="eyebrow">The Rally</p>
               <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
                 Every share and signup moves this meter.
               </p>
             </div>
-            <p className="relative font-display text-2xl font-black tabular-nums text-[var(--color-cream)] sm:text-3xl">
+            <p className="display relative text-3xl tabular-nums text-[var(--color-gold)] sm:text-4xl">
               <CountUp value={total} />
               <span className="text-base font-bold text-[var(--color-muted)]">
                 {" "}
@@ -420,7 +412,7 @@ export function SituationRoom({
             className={`mt-3 h-3 w-full overflow-hidden rounded-full bg-[var(--color-cream)]/10 transition ${pop ? "ring-2 ring-[var(--color-live)]/60" : ""}`}
           >
             <div
-              className="h-full rounded-full bg-[linear-gradient(90deg,var(--color-gold-bright),#f0d27a)] transition-[width] duration-700"
+              className="h-full rounded-full bg-[linear-gradient(90deg,var(--color-gold-bright),var(--color-support-strong))] transition-[width] duration-700"
               style={{ width: `${pct}%` }}
             />
           </div>
@@ -449,7 +441,7 @@ export function SituationRoom({
                 for the AI tokens building all of this. */}
             <a
               href="/book/preorder"
-              className="inline-flex min-h-11 items-center rounded-full border border-[var(--color-gold-bright)]/60 bg-[var(--color-gold-bright)] px-4 py-2.5 text-sm font-black tracking-tight text-[var(--color-navy)] transition hover:bg-[var(--color-support-strong)]"
+              className="btn-accent inline-flex min-h-11 items-center px-4 py-2.5 text-sm tracking-tight"
             >
               Get the Book →
             </a>
@@ -482,7 +474,7 @@ export function SituationRoom({
         <section className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           <StatTile value={t?.live_now ?? 0} label="reading now" accent="var(--color-live)" live />
           <StatTile value={t?.total_views ?? 0} label="total reach" />
-          <StatTile value={r?.share_arrivals ?? 0} label="share arrivals" accent="#7fa9e3" />
+          <StatTile value={r?.share_arrivals ?? 0} label="share arrivals" accent="var(--color-blue-ink)" />
           <StatTile value={t?.documents ?? 0} label="evidence documents" accent="var(--color-gold-bright)" />
           <StatTile value={t?.defendants ?? 0} label="J6 defendants tracked" accent="var(--color-gold-bright)" />
           <StatTile value={t?.days_since_pardon ?? 0} label="days since the pardon" />

@@ -124,7 +124,7 @@ function InfoTip({ text }: { text: string }) {
       </button>
       <span
         role="tooltip"
-        className="pointer-events-none absolute left-1/2 top-full z-30 mt-1.5 hidden w-64 -translate-x-1/2 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-2.5 text-[11px] leading-snug text-[var(--color-ink-soft)] shadow-xl group-hover:block group-focus-within:block"
+        className="pointer-events-none absolute left-1/2 top-full z-30 mt-1.5 hidden w-64 -translate-x-1/2 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] p-2.5 text-[11px] leading-snug text-[var(--color-ink-soft)] shadow-xl group-hover:block group-focus-within:block"
       >
         {text}
       </span>

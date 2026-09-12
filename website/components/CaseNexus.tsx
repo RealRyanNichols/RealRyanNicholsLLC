@@ -116,28 +116,31 @@ function nodeRadius(n: RawNode): number {
   if (n.type === "defendant") return 5.5;
   return 3;
 }
+// Every color below is a theme token: the graph is SVG in the DOM, so
+// var(--color-...) resolves. The mirrored brand values live in
+// styles/tokens.css and lib/palette.ts.
 function nodeFill(n: RawNode): string {
   if (n.type === "connector") {
     if (n.connector_kind === "source") return "var(--color-gold-bright)";
-    if (n.connector_kind === "court") return "#7fa9e3";
-    if (n.connector_kind === "facility") return "#ffd166";
-    if (n.connector_kind === "charge") return "#f08a8a";
-    return "#d8c89e";
+    if (n.connector_kind === "court") return "var(--color-blue-ink)";
+    if (n.connector_kind === "facility") return "var(--color-gold-light)";
+    if (n.connector_kind === "charge") return "var(--color-tag-severe)";
+    return "var(--color-parchment-line)";
   }
-  if (n.type === "case") return "#1f2f55";
+  if (n.type === "case") return "var(--color-surface-2)";
   if (n.type === "defendant") {
     if (n.claim_status === "verified") return "var(--color-gold-bright)";
-    if (n.claim_status === "pending") return "#ffd166";
-    return "#e08658";
+    if (n.claim_status === "pending") return "var(--color-gold-light)";
+    return "var(--color-clay)";
   }
-  return "#7c8aa6";
+  return "var(--color-muted)";
 }
 function nodeStroke(n: RawNode, selected: boolean): string {
-  if (selected) return "#ffffff";
-  if (n.type === "connector") return "#d8e4f7";
-  if (n.type === "case") return "#3a557c";
-  if (n.type === "defendant" && n.claim_status === "verified") return "#3aa672";
-  return "#0e1a36";
+  if (selected) return "var(--color-cream)";
+  if (n.type === "connector") return "var(--color-ink-soft)";
+  if (n.type === "case") return "var(--color-blue)";
+  if (n.type === "defendant" && n.claim_status === "verified") return "var(--color-success)";
+  return "var(--color-paper)";
 }
 
 function connectorRank(kind: RawConnectorKind): number {
@@ -155,13 +158,13 @@ function connectorRank(kind: RawConnectorKind): number {
 }
 
 function linkStroke(kind: RawEdge["kind"]): string {
-  if (kind === "has_document") return "#3a557c";
-  if (kind === "member_of") return "#6389bd";
+  if (kind === "has_document") return "var(--color-line-soft)";
+  if (kind === "member_of") return "var(--color-blue)";
   if (kind === "sourced_by") return "var(--color-gold-bright)";
-  if (kind === "filed_in") return "#7fa9e3";
-  if (kind === "shared_facility") return "#ffd166";
-  if (kind === "shared_charge") return "#f08a8a";
-  return "#d8c89e";
+  if (kind === "filed_in") return "var(--color-blue-ink)";
+  if (kind === "shared_facility") return "var(--color-gold-light)";
+  if (kind === "shared_charge") return "var(--color-tag-severe)";
+  return "var(--color-parchment-line)";
 }
 
 function linkWidth(kind: RawEdge["kind"]): number {
@@ -968,7 +971,7 @@ export function CaseNexus({
   return (
     <div className="relative">
       <div className="grid gap-3 xl:grid-cols-[minmax(0,1fr)_20rem] 2xl:grid-cols-[minmax(0,1fr)_21rem]">
-        <div className="relative min-w-0 overflow-hidden rounded-xl border-2 border-[var(--color-blue)] bg-[var(--color-surface)]">
+        <div className="relative min-w-0 overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
           <div className="min-w-0 overflow-hidden">
             <svg
               ref={svgRef}
@@ -1003,7 +1006,7 @@ export function CaseNexus({
                       y1={(l.source as SimNode).y ?? 0}
                       x2={(l.target as SimNode).x ?? 0}
                       y2={(l.target as SimNode).y ?? 0}
-                      stroke={onTrace ? "#9df0c0" : linkStroke(l.kind)}
+                      stroke={onTrace ? "var(--color-live)" : linkStroke(l.kind)}
                       strokeWidth={onTrace ? linkWidth(l.kind) + 1.6 : linkWidth(l.kind)}
                       strokeOpacity={
                         linkHidden
@@ -1058,7 +1061,7 @@ export function CaseNexus({
                         cy={sn.y ?? sn.targetY ?? 0}
                         r={nodeRadius(sn.node) + (emphasize ? 3 : 0)}
                         fill={nodeFill(sn.node)}
-                        stroke={isTraceEnd ? "#9df0c0" : nodeStroke(sn.node, isSelected)}
+                        stroke={isTraceEnd ? "var(--color-live)" : nodeStroke(sn.node, isSelected)}
                         strokeWidth={emphasize ? 3 : 1.2}
                         style={{ cursor: "pointer" }}
                         onClick={(e) => {
@@ -1078,9 +1081,9 @@ export function CaseNexus({
                           fontSize={sn.node.type === "connector" ? "9" : sn.node.type === "case" ? "10" : "8"}
                           fontFamily="ui-monospace, monospace"
                           fontWeight={sn.node.type === "connector" || sn.node.type === "case" ? "800" : "600"}
-                          fill={emphasize ? "#ffffff" : "#d8e4f7"}
+                          fill={emphasize ? "var(--color-cream)" : "var(--color-muted)"}
                           paintOrder="stroke"
-                          stroke="#071126"
+                          stroke="var(--color-paper)"
                           strokeWidth="3"
                         >
                           {labelForMap(sn.node)}
@@ -1193,7 +1196,7 @@ export function CaseNexus({
           ) : null}
         </div>
 
-        <aside className="rounded-xl border-2 border-[var(--color-line-soft)] bg-[var(--color-surface)] p-3 text-[var(--color-ink-soft)] sm:p-4 xl:max-h-[min(44vh,480px)] xl:overflow-auto 2xl:max-h-[min(48vh,520px)]">
+        <aside className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-3 text-[var(--color-ink-soft)] shadow-[0_20px_50px_rgba(0,0,0,0.4)] sm:p-4 xl:max-h-[min(44vh,480px)] xl:overflow-auto 2xl:max-h-[min(48vh,520px)]">
           {traceMode ? (
             <div className="mb-3 rounded-md border border-[var(--color-success)]/50 bg-[var(--color-success)]/10 p-3">
               <div className="flex items-center justify-between">
@@ -1518,13 +1521,13 @@ export function CaseNexus({
               video, statement, and facility links.
             </p>
             <div className="grid grid-cols-2 gap-x-3 gap-y-1">
-              <LegendDot color="var(--color-gold-bright)" stroke="#d8e4f7">source hub</LegendDot>
-              <LegendDot color="#7fa9e3" stroke="#d8e4f7">court hub</LegendDot>
-              <LegendDot color="#1f2f55" stroke="#3a557c">case</LegendDot>
-              <LegendDot color="var(--color-gold-bright)" stroke="#3aa672">verified</LegendDot>
-              <LegendDot color="#ffd166" stroke="#0e1a36">pending</LegendDot>
-              <LegendDot color="#e08658" stroke="#0e1a36">unclaimed</LegendDot>
-              <LegendDot color="#7c8aa6" stroke="#0e1a36">document</LegendDot>
+              <LegendDot color="var(--color-gold-bright)" stroke="var(--color-ink-soft)">source hub</LegendDot>
+              <LegendDot color="var(--color-blue-ink)" stroke="var(--color-ink-soft)">court hub</LegendDot>
+              <LegendDot color="var(--color-surface-2)" stroke="var(--color-blue)">case</LegendDot>
+              <LegendDot color="var(--color-gold-bright)" stroke="var(--color-success)">verified</LegendDot>
+              <LegendDot color="var(--color-gold-light)" stroke="var(--color-paper)">pending</LegendDot>
+              <LegendDot color="var(--color-clay)" stroke="var(--color-paper)">unclaimed</LegendDot>
+              <LegendDot color="var(--color-muted)" stroke="var(--color-paper)">document</LegendDot>
             </div>
           </div>
         </aside>

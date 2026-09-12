@@ -85,12 +85,12 @@ export async function MapRoomPatterns() {
 
   return (
     <section className="mt-10">
-      <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
-        Patterns
-      </p>
-      <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
-        Shapes hidden in the archive.
-      </h2>
+      <div data-reveal>
+        <p className="eyebrow">Patterns</p>
+        <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
+          Shapes hidden in the archive.
+        </h2>
+      </div>
       <p className="mt-2 text-sm text-[var(--color-ink-soft)] max-w-3xl">
         Four small panels — what the data on file looks like right now,
         before any scraper enrichment. Click any band to deep-link into
@@ -171,7 +171,7 @@ export async function MapRoomPatterns() {
           </div>
           <Link
             href="/case?view=grievances"
-            className="mt-4 inline-flex min-h-11 items-center text-xs font-semibold text-[var(--color-accent)] hover:underline sm:min-h-0"
+            className="mt-4 inline-flex min-h-11 items-center text-xs font-semibold text-[var(--color-gold)] hover:underline sm:min-h-0"
           >
             See every grievance →
           </Link>
@@ -208,7 +208,7 @@ export async function MapRoomPatterns() {
           </div>
           <Link
             href="/case?view=documents"
-            className="mt-4 inline-block text-xs font-semibold text-[var(--color-accent)] hover:underline"
+            className="mt-4 inline-block text-xs font-semibold text-[var(--color-gold)] hover:underline"
           >
             See every document →
           </Link>
@@ -249,7 +249,7 @@ export async function MapRoomPatterns() {
           </div>
           <Link
             href="/case?view=timeline"
-            className="mt-4 inline-block text-xs font-semibold text-[var(--color-accent)] hover:underline"
+            className="mt-4 inline-block text-xs font-semibold text-[var(--color-gold)] hover:underline"
           >
             See the timeline →
           </Link>
@@ -274,8 +274,8 @@ function Panel({
   children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
-      <h3 className="text-base sm:text-lg font-bold tracking-tight">{title}</h3>
+    <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-[0_16px_40px_rgba(0,0,0,0.3)]">
+      <h3 className="font-display text-base sm:text-lg font-bold tracking-tight">{title}</h3>
       {hint ? (
         <p className="mt-1 text-xs text-[var(--color-muted)] leading-snug">
           {hint}
@@ -303,32 +303,25 @@ function StatusBar({
   const uP = (unclaimed / total) * 100;
   return (
     <div className="h-8 rounded-lg overflow-hidden border border-[var(--color-line-soft)] flex">
+      {/* The label rides on the band, so each band carries the ink that reads
+          on it: navy on the light greens and ambers, cream on the flag red. */}
       <div
-        className="h-full flex items-center justify-center text-[10px] font-bold text-[var(--color-cream)] tabular-nums"
-        style={{
-          width: `${vP}%`,
-          background: "var(--color-success)",
-        }}
+        className="h-full flex items-center justify-center bg-[var(--color-success)] text-[10px] font-bold text-[var(--color-navy)] tabular-nums"
+        style={{ width: `${vP}%` }}
         title={`${verified} verified`}
       >
         {vP >= 6 ? verified.toLocaleString() : ""}
       </div>
       <div
-        className="h-full flex items-center justify-center text-[10px] font-bold text-[var(--color-cream)] tabular-nums"
-        style={{
-          width: `${pP}%`,
-          background: "var(--color-tag-procedural)",
-        }}
+        className="h-full flex items-center justify-center bg-[var(--color-tag-procedural)] text-[10px] font-bold text-[var(--color-navy)] tabular-nums"
+        style={{ width: `${pP}%` }}
         title={`${pending} pending`}
       >
         {pP >= 6 ? pending.toLocaleString() : ""}
       </div>
       <div
-        className="h-full flex items-center justify-center text-[10px] font-bold text-[var(--color-cream)] tabular-nums"
-        style={{
-          width: `${uP}%`,
-          background: "var(--color-accent)",
-        }}
+        className="h-full flex items-center justify-center bg-[var(--color-accent)] text-[10px] font-bold text-[var(--color-cream)] tabular-nums"
+        style={{ width: `${uP}%` }}
         title={`${unclaimed} unclaimed`}
       >
         {uP >= 6 ? unclaimed.toLocaleString() : ""}
@@ -351,18 +344,18 @@ function Legend({
   return (
     <Link
       href={href}
-      className="group rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] px-2.5 py-1.5 hover:border-[var(--color-accent)] transition"
+      className="group rounded-md border border-[var(--color-line)] bg-[var(--color-surface-2)] px-2.5 py-1.5 hover:border-[var(--color-gold)] transition"
     >
       <div className="flex items-center gap-1.5">
         <span
           className="inline-block w-2.5 h-2.5 rounded-full flex-shrink-0"
           style={{ background: color }}
         />
-        <span className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-muted)] group-hover:text-[var(--color-accent)]">
+        <span className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-muted)] group-hover:text-[var(--color-gold)]">
           {label}
         </span>
       </div>
-      <div className="text-base font-bold tabular-nums mt-0.5">
+      <div className="display text-lg tabular-nums mt-0.5 text-[var(--color-ink)]">
         {n.toLocaleString()}
       </div>
     </Link>

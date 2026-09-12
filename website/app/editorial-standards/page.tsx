@@ -12,12 +12,22 @@ export const metadata: Metadata = {
 export default function EditorialStandardsPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-12">
-      <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
+      <p className="eyebrow" data-reveal>
         How this site handles the truth
       </p>
-      <h1 className="mt-2 font-display text-4xl font-black tracking-tight sm:text-5xl">
+      <h1
+        className="mt-2 font-display text-4xl font-black tracking-tight sm:text-5xl"
+        data-reveal
+        style={{ "--d": 1 } as React.CSSProperties}
+      >
         Editorial Standards
       </h1>
+      <div
+        className="mt-4 h-[3px] w-[4.5rem] bg-[var(--color-gold)]"
+        aria-hidden
+        data-reveal
+        style={{ "--d": 2 } as React.CSSProperties}
+      />
       <p className="mt-4 text-lg leading-relaxed text-[var(--color-ink-soft)]">
         This site mixes one man&apos;s personal testimony with documented,
         evidence-driven work. These standards exist so you always know which is

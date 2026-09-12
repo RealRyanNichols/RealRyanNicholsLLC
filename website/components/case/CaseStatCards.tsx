@@ -53,9 +53,18 @@ export function CaseStatCards({
       aria-label="The case in numbers"
       className={`grid grid-cols-2 gap-3 lg:grid-cols-4 ${className}`}
     >
-      {cards.map((c) => (
-        <Link key={c.href} href={c.href} className="qa-tile flex flex-col p-4 sm:p-5">
-          <span className="font-display text-3xl font-bold leading-none tracking-tight tabular-nums text-[var(--color-ink)] sm:text-5xl">
+      {cards.map((c, i) => (
+        <Link
+          key={c.href}
+          href={c.href}
+          className="qa-tile flex flex-col p-4 sm:p-5"
+          data-reveal
+          style={{ "--d": i } as React.CSSProperties}
+        >
+          <span
+            className="display text-4xl tabular-nums text-[var(--color-gold-bright)] sm:text-6xl"
+            data-count={c.n > 0 ? c.n : undefined}
+          >
             {c.n > 0 ? c.n.toLocaleString("en-US") : "—"}
           </span>
           <span className="mt-2 text-[11px] font-black uppercase leading-tight tracking-[0.08em] text-[var(--color-support-strong)] sm:text-xs">

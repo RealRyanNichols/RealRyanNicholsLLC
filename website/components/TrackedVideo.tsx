@@ -43,7 +43,7 @@ export function TrackedVideo({
       onTimeUpdate={onTimeUpdate}
       onEnded={() => trackEvent("video_complete", props())}
       onError={() => trackEvent("video_error", props())}
-      className="aspect-video w-full rounded-lg bg-black"
+      className="aspect-video w-full rounded-xl border border-[var(--color-line)] bg-black"
     />
   );
 }

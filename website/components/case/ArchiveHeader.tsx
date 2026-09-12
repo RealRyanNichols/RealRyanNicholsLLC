@@ -58,10 +58,10 @@ export function ArchiveHeader({
       {/* One unified stat block — the four headline numbers, then the four
           secondary ones, adjacent. No buttons splitting them apart. */}
       <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl">
-        <BigStat label="Days, arrest to pardon" value={totals.daysArrestToPardon.toLocaleString()} />
-        <BigStat label="Grievances filed" value={String(totals.grievances)} />
-        <BigStat label="Documents on file" value={String(totals.documents)} />
-        <BigStat label="Co-detainees corroborating" value={String(totals.corroborators)} />
+        <BigStat label="Days, arrest to pardon" n={totals.daysArrestToPardon} d={0} />
+        <BigStat label="Grievances filed" n={totals.grievances} d={1} />
+        <BigStat label="Documents on file" n={totals.documents} d={2} />
+        <BigStat label="Co-detainees corroborating" n={totals.corroborators} d={3} />
       </div>
 
       <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2 max-w-3xl">
@@ -101,7 +101,8 @@ export function ArchiveHeader({
       {ryan ? (
         <Link
           href="/case/people/ryan-nichols"
-          className="mt-6 block overflow-hidden rounded-2xl border-2 border-[var(--color-ink)] bg-[var(--color-surface)] hover:border-[var(--color-gold)] transition group"
+          data-reveal
+          className="mt-6 block overflow-hidden rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] shadow-[0_20px_50px_rgba(0,0,0,0.4)] hover:border-[var(--color-gold)] transition group"
         >
           <div className="flex flex-col sm:flex-row">
             {ryanPhoto ? (
@@ -113,9 +114,7 @@ export function ArchiveHeader({
               />
             ) : null}
             <div className="flex-1 p-5 sm:p-6">
-              <p className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--color-ink)]">
-                The lead case · ✓ verified
-              </p>
+              <p className="eyebrow">The lead case · ✓ verified</p>
               <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
                 United States v. Nichols
               </h2>
@@ -180,9 +179,7 @@ export function ArchiveHeader({
       {/* Explore-the-case hub — every tool with its function spelled out,
           so nothing is a mystery and Evidence stays front-and-center. */}
       <section className="mt-8">
-        <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold mb-3">
-          Explore this case
-        </p>
+        <p className="eyebrow mb-3">Explore this case</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           <HubCard
             href="/case/the-salvaged-doj-record"
@@ -223,11 +220,21 @@ export function ArchiveHeader({
   );
 }
 
-function BigStat({ label, value }: { label: string; value: string }) {
+// The four headline numbers: gold, condensed, counting up where the count is
+// live. The formatted value is server-rendered inside, so the number reads
+// with JavaScript off.
+function BigStat({ label, n, d }: { label: string; n: number; d: number }) {
   return (
-    <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
-      <div className="text-3xl sm:text-4xl font-bold tracking-tight leading-none text-[var(--color-ink)]">
-        {value}
+    <div
+      data-reveal
+      style={{ "--d": d } as React.CSSProperties}
+      className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
+    >
+      <div
+        className="display text-3xl sm:text-4xl leading-none tabular-nums text-[var(--color-gold)]"
+        data-count={n > 0 ? n : undefined}
+      >
+        {n.toLocaleString("en-US")}
       </div>
       <div className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold mt-2">
         {label}
@@ -260,7 +267,7 @@ function HubCard({
     <Link
       href={href}
       className={[
-        "block rounded-2xl border-2 p-4 transition group",
+        "block rounded-2xl border-2 p-4 shadow-[0_16px_40px_rgba(0,0,0,0.3)] transition group",
         featured
           ? "border-[var(--color-blue)] bg-[var(--color-blue-soft)]/60"
           : "border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-gold)]",

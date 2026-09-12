@@ -129,7 +129,7 @@ export default async function PalettePreviewPage({
 
   return (
     <article className="mx-auto max-w-5xl px-4 py-8">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+      <p className="eyebrow">
         Admin · palette preview
       </p>
       <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">
@@ -316,28 +316,31 @@ function GrievanceCard({
   title: string;
   summary: string;
 }) {
+  // Swatch colors come from the tokens, never a hex literal, and each label
+  // carries the ink its own swatch can hold: cream on the dark reds and blue,
+  // navy on the light amber and green.
   const tones: Record<
     string,
     { bg: string; fg: string; label: string }
   > = {
     severe: {
       bg: "var(--color-accent)",
-      fg: "#fff",
+      fg: "var(--color-cream)",
       label: "Severe",
     },
     procedural: {
-      bg: "#d97706",
-      fg: "#fff",
+      bg: "var(--color-tag-procedural)",
+      fg: "var(--color-navy)",
       label: "Procedural",
     },
     institutional: {
-      bg: "#1e40af",
-      fg: "#fff",
+      bg: "var(--color-blue)",
+      fg: "var(--color-cream)",
       label: "Institutional",
     },
     resolved: {
-      bg: "#16a34a",
-      fg: "#fff",
+      bg: "var(--color-tag-resolved)",
+      fg: "var(--color-navy)",
       label: "Resolved",
     },
   };

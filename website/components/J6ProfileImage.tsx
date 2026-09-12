@@ -39,7 +39,7 @@ export function J6ProfileImage({
       ? "bg-[var(--color-success)] text-[var(--color-navy)]"
       : isEditorialPortrait
         ? "bg-[var(--color-tag-procedural)] text-[var(--color-navy)]"
-        : "bg-[var(--color-surface)] text-[var(--color-gold-bright)]";
+        : "border border-[var(--color-line)] bg-[var(--color-surface-2)] text-[var(--color-gold)]";
 
   if (variant === "card") {
     return (
@@ -68,7 +68,7 @@ export function J6ProfileImage({
   }
 
   return (
-    <figure className="mt-5 overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-paper)]">
+    <figure className="panel mt-5 overflow-hidden rounded-2xl">
       <div className="relative">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -101,7 +101,7 @@ export function J6ProfileImage({
         {!hasPublishedPortrait ? (
           <Link
             href={`/case/people/${person.slug}/suggest`}
-            className="shrink-0 font-black text-[var(--color-accent)] hover:underline"
+            className="shrink-0 font-black text-[var(--color-gold)] hover:underline"
           >
             Suggest a verified portrait →
           </Link>
@@ -110,7 +110,7 @@ export function J6ProfileImage({
             href={person.photo_source_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="shrink-0 font-black text-[var(--color-accent)] hover:underline"
+            className="shrink-0 font-black text-[var(--color-gold)] hover:underline"
           >
             Image source →
           </a>

@@ -18,7 +18,9 @@ export default function manifest(): MetadataRoute.Manifest {
     dir: "ltr",
     display: "standalone",
     orientation: "portrait",
-    background_color: "#faf7f0",
+    // The theater floor (--color-paper in app/globals.css); the splash screen
+    // behind the icon while the app boots.
+    background_color: "#06101f",
     theme_color: "#0b1b34",
     categories: ["news", "social", "lifestyle"],
     icons: [

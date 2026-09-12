@@ -34,7 +34,7 @@ export function CappedSampleStrip({
       data-capped-sample
       data-cap-hit={hit ? "true" : "false"}
       role="note"
-      className={`flex flex-wrap items-baseline gap-x-3 gap-y-1 rounded-lg border border-[var(--color-amber)]/40 bg-[var(--color-amber)]/10 px-3 py-2 text-[11px] leading-snug text-[var(--color-amber)] ${className}`}
+      className={`flex flex-wrap items-baseline gap-x-3 gap-y-1 rounded-lg border border-[var(--color-tag-procedural)]/40 bg-[var(--color-tag-procedural)]/10 px-3 py-2 text-[11px] leading-snug text-[var(--color-tag-procedural)] ${className}`}
     >
       <span className="font-black uppercase tracking-wider">Capped sample · {windowLabel}</span>
       {samples.map((s) => (

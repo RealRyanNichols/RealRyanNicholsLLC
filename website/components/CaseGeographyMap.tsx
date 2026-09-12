@@ -12,6 +12,7 @@ import type {
   FeatureCollection,
 } from "geojson";
 import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
+import { PALETTE } from "@/lib/palette";
 
 // ─── Wire types from case_geo_aggregate / case_geo_state ─────────────
 type StateRow = {
@@ -61,17 +62,25 @@ const statesFC = feature(topo, topo.objects.states) as FeatureCollection<
 const PATH_GEN = geoPath(geoIdentity());
 
 // ─── Choropleth color ramp (terminal-greens to keep it on-brand) ─────
+// The ramp is mixed numerically, so it cannot read a CSS variable: both
+// endpoints come from PALETTE, which mirrors styles/tokens.css. A state
+// with nobody on the record keeps the panel's own navy.
+const RAMP_LOW = rgbOf(PALETTE.greenDeep);
+const RAMP_HIGH = rgbOf(PALETTE.live);
+
+function rgbOf(hex: string): [number, number, number] {
+  const n = parseInt(hex.slice(1), 16);
+  return [(n >> 16) & 0xff, (n >> 8) & 0xff, n & 0xff];
+}
+
 function colorFor(count: number, maxCount: number): string {
-  if (count === 0) return "#1c2a4a";
+  if (count === 0) return "var(--color-surface-2)";
   // Map 1..maxCount to t in [0,1] using a sqrt so the smaller states
   // still get visible color, otherwise the FL/TX dominate.
   const t = Math.sqrt(count / Math.max(1, maxCount));
-  // Interpolate from navy → green
-  const r1 = 0x28, g1 = 0x3d, b1 = 0x6e; // #283d6e
-  const r2 = 0x7f, g2 = 0xe3, b2 = 0xa9; // PALETTE.live — the live green, mixed numerically
-  const r = Math.round(r1 + (r2 - r1) * t);
-  const g = Math.round(g1 + (g2 - g1) * t);
-  const b = Math.round(b1 + (b2 - b1) * t);
+  const r = Math.round(RAMP_LOW[0] + (RAMP_HIGH[0] - RAMP_LOW[0]) * t);
+  const g = Math.round(RAMP_LOW[1] + (RAMP_HIGH[1] - RAMP_LOW[1]) * t);
+  const b = Math.round(RAMP_LOW[2] + (RAMP_HIGH[2] - RAMP_LOW[2]) * t);
   return `rgb(${r},${g},${b})`;
 }
 
@@ -120,7 +129,7 @@ export function CaseGeographyMap({ data }: { data: GeoPayload }) {
 
   return (
     <div className="space-y-4">
-      <div className="relative rounded-2xl overflow-hidden border-2 border-[var(--color-blue)] bg-[var(--color-surface)]">
+      <div className="relative rounded-2xl overflow-hidden border border-[var(--color-line)] bg-[var(--color-surface)] shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
         <svg
           ref={svgRef}
           data-geo-map
@@ -142,7 +151,7 @@ export function CaseGeographyMap({ data }: { data: GeoPayload }) {
                 key={nm}
                 d={d}
                 fill={fill}
-                stroke={isSelected ? "#ffffff" : "#0a1429"}
+                stroke={isSelected ? "var(--color-cream)" : "var(--color-paper)"}
                 strokeWidth={isSelected ? 1.5 : 0.5}
                 onMouseEnter={(e) => {
                   const rect = svgRef.current?.getBoundingClientRect();
@@ -181,11 +190,14 @@ export function CaseGeographyMap({ data }: { data: GeoPayload }) {
 
         {/* Top-left header */}
         <div className="absolute top-3 left-3 z-10 max-w-[16rem]">
-          <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[var(--color-gold-bright)] flex items-center gap-1.5">
+          <p className="eyebrow flex items-center gap-1.5">
             <span className="inline-block w-2 h-2 rounded-full bg-[var(--color-gold-bright)] animate-pulse" />
             Geography · J6 defendants
           </p>
-          <p className="mt-1 text-3xl sm:text-4xl font-bold tabular-nums tracking-tight font-display text-[var(--color-cream)] leading-none drop-shadow">
+          <p
+            data-count={data.totals.with_location > 0 ? data.totals.with_location : undefined}
+            className="display mt-1 text-4xl sm:text-5xl tabular-nums text-[var(--color-gold)] drop-shadow"
+          >
             {data.totals.with_location.toLocaleString()}
           </p>
           <p className="text-[11px] text-[var(--color-muted)] mt-0.5">
@@ -218,7 +230,7 @@ export function CaseGeographyMap({ data }: { data: GeoPayload }) {
         {/* Hover chip */}
         {hover ? (
           <div
-            className="absolute z-10 pointer-events-none bg-[var(--color-surface)] border border-[var(--color-gold-bright)] rounded-md px-3 py-2 text-[11px] font-mono shadow-lg"
+            className="absolute z-10 pointer-events-none bg-[var(--color-surface-2)] text-[var(--color-cream)] border border-[var(--color-line)] rounded-md px-3 py-2 text-[11px] font-mono shadow-[0_20px_50px_rgba(0,0,0,0.4)]"
             style={{
               left: Math.min(hover.x + 10, W - 200),
               top: Math.max(hover.y - 60, 10),
@@ -246,13 +258,11 @@ export function CaseGeographyMap({ data }: { data: GeoPayload }) {
 
       {/* Top-15 states ranked list */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        <div className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-paper)] p-5">
-          <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">
-            Top states by defendants
-          </p>
+        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
+          <p className="eyebrow">Top states by defendants</p>
           <table className="mt-3 w-full text-sm">
             <thead>
-              <tr className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] border-b border-[var(--color-line)]">
+              <tr className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] border-b border-[var(--color-line-soft)]">
                 <th className="text-left py-1.5 font-bold">State</th>
                 <th className="text-right py-1.5 font-bold">Defendants</th>
                 <th className="text-right py-1.5 font-bold">Sentenced</th>
@@ -262,7 +272,7 @@ export function CaseGeographyMap({ data }: { data: GeoPayload }) {
               {data.states.slice(0, 15).map((s) => (
                 <tr
                   key={s.name}
-                  className="border-b border-[var(--color-line)] last:border-0 cursor-pointer hover:bg-[var(--color-surface)]"
+                  className="border-b border-[var(--color-line-soft)] last:border-0 cursor-pointer hover:bg-[var(--color-surface-2)]"
                   onClick={() => void openState(s.name)}
                 >
                   <td className="py-2 font-bold text-[var(--color-ink)]">
@@ -282,7 +292,7 @@ export function CaseGeographyMap({ data }: { data: GeoPayload }) {
 
         {/* Selected state drawer */}
         {selected ? (
-          <div className="rounded-2xl border-2 border-[var(--color-gold-bright)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] p-5">
+          <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
             <div className="flex items-baseline justify-between gap-3 flex-wrap mb-3">
               <h3 className="text-lg font-bold tracking-tight text-[var(--color-cream)]">
                 {selected}
@@ -341,7 +351,7 @@ export function CaseGeographyMap({ data }: { data: GeoPayload }) {
             )}
           </div>
         ) : (
-          <div className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-5 text-sm text-[var(--color-ink-soft)] flex items-center justify-center min-h-[8rem]">
+          <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 text-sm text-[var(--color-ink-soft)] shadow-[0_20px_50px_rgba(0,0,0,0.4)] flex items-center justify-center min-h-[8rem]">
             <p className="italic">
               Click a state on the map (or in the table) to see every
               defendant from there.

@@ -23,10 +23,10 @@ function chipClass(label: ReceiptLabel): string {
     case "FACT":
       return "bg-[var(--color-gold-bright)] text-[var(--color-navy)]";
     case "NEEDS AUTHENTICATION":
-      return "bg-[var(--color-gold)]/60 text-[var(--color-navy)]";
+      return "border border-[var(--color-gold-bright)]/50 text-[var(--color-gold-bright)]";
     case "PRIVATE / NOT PUBLIC":
     case "SEALED":
-      return "bg-[var(--color-surface-2)] text-[var(--color-ink-soft)]";
+      return "border border-[var(--color-line-soft)] text-[var(--color-muted)]";
     default: // RYAN STATEMENT, DOCUMENTED INFERENCE
       return "border border-[var(--color-cream)]/50 text-[var(--color-cream)]";
   }

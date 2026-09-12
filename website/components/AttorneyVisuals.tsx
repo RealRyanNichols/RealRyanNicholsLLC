@@ -8,24 +8,44 @@ import type { ReactNode } from "react";
 export type Tone = "red" | "gold" | "green" | "navy";
 export type BarItem = { label: string; valueText: string; tone?: Tone };
 
-const TONE_HEX: Record<Tone, string> = {
-  red: "#b32419",
-  gold: "#c89b2f",
-  green: "#2d6a4f",
-  navy: "#1d3a6b",
+// Tone colors for fills, bars, and the band across the top of a matter.
+// Every value is a theme token: these render as inline styles in the DOM,
+// so var(--color-...) resolves.
+const TONE_FILL: Record<Tone, string> = {
+  red: "var(--color-accent)",
+  gold: "var(--color-gold)",
+  green: "var(--color-success)",
+  navy: "var(--color-blue)",
 };
 
-// Tone colors tuned for TEXT on light backgrounds. Gold is darkened so it
-// stays legible on the cream surface; use TONE_HEX for fills/bars/bands.
-const TONE_TEXT_HEX: Record<Tone, string> = {
-  red: "#b32419",
-  gold: "#8f6b16",
-  green: "#2d6a4f",
-  navy: "#1d3a6b",
+// Tone colors tuned for TEXT on the navy panels; brighter than the fills so
+// a headline or a dollar figure holds up against the surface behind it.
+const TONE_TEXT: Record<Tone, string> = {
+  red: "var(--color-tag-severe)",
+  gold: "var(--color-gold)",
+  green: "var(--color-success)",
+  navy: "var(--color-blue-ink)",
 };
 
-const INK = "#1a1410";
-const MUTED = "#7a6a52";
+// Type carried ON a tone band. Gold and green are light bands, so they take
+// navy type; red and blue are saturated, so they take cream.
+const TONE_ON_BAND: Record<Tone, string> = {
+  red: "var(--color-cream)",
+  gold: "var(--color-navy)",
+  green: "var(--color-navy)",
+  navy: "var(--color-cream)",
+};
+
+// The hairline drawn on top of a tone band, in the band's own type color.
+const TONE_ON_BAND_LINE: Record<Tone, string> = {
+  red: "rgba(253, 248, 234, 0.4)",
+  gold: "rgba(0, 0, 0, 0.3)",
+  green: "rgba(0, 0, 0, 0.3)",
+  navy: "rgba(253, 248, 234, 0.4)",
+};
+
+const INK = "var(--color-ink)";
+const MUTED = "var(--color-muted)";
 
 // Pull the largest concrete dollar magnitude out of a label such as "$45-50M",
 // "$411,501.15", "$750K-1.5M", or "$10,300 lead". Returns null when there is no
@@ -56,10 +76,8 @@ export function ChartCard({
   children: ReactNode;
 }) {
   return (
-    <section className="border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm">
-      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
-        {eyebrow}
-      </p>
+    <section className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
+      <p className="eyebrow">{eyebrow}</p>
       <h3 className="mt-1 font-sans text-lg font-black leading-tight text-[var(--color-ink)]">
         {title}
       </h3>
@@ -86,7 +104,7 @@ export function KpiStat({
     <div className="border border-[var(--color-line)] bg-[var(--color-paper)] p-3">
       <p
         className="font-sans text-2xl font-black leading-none sm:text-3xl"
-        style={{ color: TONE_TEXT_HEX[tone] }}
+        style={{ color: TONE_TEXT[tone] }}
       >
         {value}
       </p>
@@ -138,7 +156,7 @@ export function MoneyBars({
               </span>
               <span
                 className="font-sans text-sm font-black tabular-nums"
-                style={{ color: TONE_TEXT_HEX[tone] }}
+                style={{ color: TONE_TEXT[tone] }}
               >
                 {item.valueText}
               </span>
@@ -148,7 +166,7 @@ export function MoneyBars({
                 className="h-full rounded-r-sm"
                 style={{
                   width: `${Math.min(100, pct)}%`,
-                  backgroundColor: TONE_HEX[tone],
+                  backgroundColor: TONE_FILL[tone],
                   opacity: pending ? 0.45 : 1,
                   backgroundImage: pending
                     ? "repeating-linear-gradient(45deg, rgba(255,255,255,0.55) 0 4px, transparent 4px 8px)"
@@ -195,7 +213,7 @@ export function ReadinessDonut({
               cy="70"
               r={r}
               fill="none"
-              stroke={TONE_HEX[seg.tone]}
+              stroke={TONE_FILL[seg.tone]}
               strokeWidth="16"
               strokeDasharray={`${dash} ${circ - dash}`}
               strokeDashoffset={-offset}
@@ -227,7 +245,7 @@ export function ReadinessDonut({
           <li key={seg.label} className="flex items-center gap-2">
             <span
               className="h-3 w-3 shrink-0"
-              style={{ backgroundColor: TONE_HEX[seg.tone] }}
+              style={{ backgroundColor: TONE_FILL[seg.tone] }}
             />
             <span className="text-xs font-bold leading-5 text-[var(--color-ink-soft)]">
               <span className="font-black tabular-nums">{seg.value}</span> {seg.label}
@@ -254,7 +272,7 @@ export function ChargeStatusList({
           <span className="flex min-w-0 items-center gap-2">
             <span
               className="h-2.5 w-2.5 shrink-0 rounded-full"
-              style={{ backgroundColor: TONE_HEX[item.tone] }}
+              style={{ backgroundColor: TONE_FILL[item.tone] }}
             />
             <span className="truncate text-sm font-black text-[var(--color-ink)]">
               {item.title}
@@ -263,8 +281,8 @@ export function ChargeStatusList({
           <span
             className="shrink-0 px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.08em]"
             style={{
-              backgroundColor: TONE_HEX[item.tone],
-              color: item.tone === "gold" ? INK : "#ffffff",
+              backgroundColor: TONE_FILL[item.tone],
+              color: TONE_ON_BAND[item.tone],
             }}
           >
             {item.status}
@@ -293,11 +311,11 @@ export function BriefTimeline({
           <li key={`${item.date}-${item.title}`} className="relative">
             <span
               className="absolute -left-[1.6rem] top-1 h-3.5 w-3.5 rounded-full border-2 border-[var(--color-surface)]"
-              style={{ backgroundColor: TONE_HEX[tone] }}
+              style={{ backgroundColor: TONE_FILL[tone] }}
             />
             <p
               className="text-[11px] font-black uppercase tracking-[0.14em]"
-              style={{ color: TONE_TEXT_HEX[tone] }}
+              style={{ color: TONE_TEXT[tone] }}
             >
               {item.date}
             </p>
@@ -342,11 +360,11 @@ export function MatterNav({ matters }: { matters: Matter[] }) {
           key={m.id}
           href={`#${m.id}`}
           className="inline-flex items-center gap-2 border bg-[var(--color-surface)] px-3 py-1.5 text-xs font-black uppercase tracking-[0.06em] transition hover:bg-[var(--color-paper)]"
-          style={{ borderColor: TONE_HEX[m.tone], color: TONE_TEXT_HEX[m.tone] }}
+          style={{ borderColor: TONE_FILL[m.tone], color: TONE_TEXT[m.tone] }}
         >
           <span
             className="h-2 w-2 rounded-full"
-            style={{ backgroundColor: TONE_HEX[m.tone] }}
+            style={{ backgroundColor: TONE_FILL[m.tone] }}
           />
           {m.name}
         </a>
@@ -359,9 +377,9 @@ export function MatterNav({ matters }: { matters: Matter[] }) {
 // its own — what it is, what is disputed, the packet to pull, the people, and
 // the dollar exposure.
 export function MatterDossier({ matter }: { matter: Matter }) {
-  const fill = TONE_HEX[matter.tone];
-  const text = TONE_TEXT_HEX[matter.tone];
-  const onBand = matter.tone === "gold" ? "#1a1410" : "#ffffff";
+  const fill = TONE_FILL[matter.tone];
+  const text = TONE_TEXT[matter.tone];
+  const onBand = TONE_ON_BAND[matter.tone];
   return (
     <section
       id={matter.id}
@@ -382,8 +400,7 @@ export function MatterDossier({ matter }: { matter: Matter }) {
           className="border px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.06em]"
           style={{
             color: onBand,
-            borderColor:
-              onBand === "#ffffff" ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.3)",
+            borderColor: TONE_ON_BAND_LINE[matter.tone],
           }}
         >
           {matter.statute}

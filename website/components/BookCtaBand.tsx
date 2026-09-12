@@ -35,16 +35,14 @@ export function BookCtaBand({
   return (
     <section
       className={[
-        "rounded-2xl border-2 bg-[var(--color-surface)] p-5 text-[var(--color-cream)] shadow-md sm:p-6",
+        "rounded-2xl border-2 bg-[var(--color-surface)] p-5 text-[var(--color-cream)] shadow-[0_20px_50px_rgba(0,0,0,0.4)] sm:p-6",
         gold ? "border-[var(--color-gold-bright)]" : "border-[var(--color-accent)]",
         className,
       ].join(" ")}
     >
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-gold-bright)]">
-            {BOOK.title} · Pre-order
-          </p>
+          <p className="eyebrow">{BOOK.title} · Pre-order</p>
           <Heading className="mt-1 font-display text-2xl font-black leading-tight tracking-tight text-[var(--color-cream)] sm:text-3xl">
             Early access for{" "}
             <span className="text-[var(--color-gold-bright)]">{price}</span>
@@ -74,18 +72,13 @@ export function BookCtaBand({
         <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
           <Link
             href="/book/preorder"
-            className={[
-              "inline-flex min-h-12 items-center justify-center rounded-lg px-6 py-3 text-base font-black transition",
-              gold
-                ? "bg-[var(--color-gold-bright)] text-[var(--color-navy)] hover:bg-[var(--color-gold-light)]"
-                : "bg-[var(--color-accent)] text-[var(--color-cream)] hover:bg-[var(--color-accent-strong)]",
-            ].join(" ")}
+            className="btn-accent inline-flex min-h-12 items-center justify-center rounded-lg px-6 py-3 text-base font-black"
           >
             Pre-order now
           </Link>
           <Link
             href="/book"
-            className="inline-flex min-h-12 items-center justify-center rounded-lg border border-[var(--color-cream)]/20 bg-[var(--color-cream)]/[0.06] px-6 py-3 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-cream)]/10"
+            className="btn-blue inline-flex min-h-12 items-center justify-center rounded-lg px-6 py-3 text-base font-black"
           >
             See the book
           </Link>

@@ -76,10 +76,10 @@ export default async function BriefPage() {
       <header className="border-b border-[var(--color-line)] pb-6 print:border-black">
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div className="min-w-0">
-            <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold print:text-black">
+            <p className="text-xs uppercase tracking-wider text-[var(--color-gold)] font-bold print:text-black">
               Compensation Brief
             </p>
-            <h1 className="mt-2 text-3xl sm:text-5xl font-bold tracking-tight leading-[1.05]">
+            <h1 className="mt-2 font-display text-3xl sm:text-5xl font-bold tracking-tight leading-[1.05]">
               United States v. Nichols
             </h1>
             <p className="mt-3 text-base text-[var(--color-ink-soft)] max-w-2xl leading-relaxed print:text-black">

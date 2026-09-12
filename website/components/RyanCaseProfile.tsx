@@ -300,7 +300,7 @@ export function RyanCaseProfile({
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-blue-soft)]/40 px-5 py-4">
         <p className="text-sm font-bold text-[var(--color-ink)]">
           This case anchors the{" "}
-          <span className="text-[var(--color-ink)]">January 6 Case Archive</span>{" "}
+          <span className="text-[var(--color-gold)]">January 6 Case Archive</span>{" "}
           — every defendant who joins stacks their record into it.
         </p>
         <Link
@@ -394,7 +394,7 @@ export function RyanCaseProfile({
                 <span className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full bg-[var(--color-gold)] ring-4 ring-[var(--color-paper)]" />
                 <Link href={`/story/${storySlugFor(op)}`} className="group block">
                   <div className="flex flex-wrap items-baseline gap-2">
-                    <span className="rounded bg-[var(--color-ink)] text-[var(--color-cream)] px-1.5 py-0.5 text-[10px] font-bold tabular-nums">
+                    <span className="rounded bg-[var(--color-gold)] text-[var(--color-navy)] px-1.5 py-0.5 text-[10px] font-bold tabular-nums">
                       {op.year}
                     </span>
                     <h4 className="text-base sm:text-lg font-bold tracking-tight font-display transition group-hover:text-[var(--color-gold)]">
@@ -429,7 +429,7 @@ export function RyanCaseProfile({
                     ? "/story/hurricane-florence-2018"
                     : "/about"
                 }
-                className="rounded-full border border-[var(--color-blue)]/30 bg-[var(--color-paper)] px-3 py-1 text-xs font-bold text-[var(--color-blue-ink)] transition hover:border-[var(--color-blue)] hover:bg-[var(--color-blue-soft)]"
+                className="rounded-full border border-[var(--color-blue)]/30 bg-[var(--color-surface)] px-3 py-1 text-xs font-bold text-[var(--color-blue-ink)] transition hover:border-[var(--color-blue)] hover:bg-[var(--color-blue-soft)]"
               >
                 {r} →
               </Link>
@@ -515,7 +515,7 @@ export function RyanCaseProfile({
             <li key={e.date} className="relative pl-6">
               <span className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full bg-[var(--color-gold)] ring-4 ring-[var(--color-paper)]" />
               <div className="flex flex-wrap items-baseline gap-2">
-                <span className="rounded bg-[var(--color-ink)] text-[var(--color-cream)] px-1.5 py-0.5 text-[10px] font-bold tabular-nums">
+                <span className="rounded bg-[var(--color-gold)] text-[var(--color-navy)] px-1.5 py-0.5 text-[10px] font-bold tabular-nums">
                   {e.date}
                 </span>
                 <h3 className="text-base sm:text-lg font-bold tracking-tight font-display">{e.title}</h3>
@@ -683,7 +683,7 @@ export function RyanCaseProfile({
           ))}
         </div>
 
-        <div className="mt-6 rounded-2xl bg-[var(--color-surface-2)] p-4 sm:p-5">
+        <div className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface-2)] p-4 sm:p-5">
           <Eyebrow>The {totals.facilities} facilities, as he lists them</Eyebrow>
           <div className="mt-2 flex flex-wrap gap-1.5">
             {[
@@ -701,7 +701,7 @@ export function RyanCaseProfile({
               <Link
                 key={f}
                 href="/case/geography"
-                className="rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-1 text-xs font-semibold text-[var(--color-ink-soft)] transition hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
+                className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1 text-xs font-semibold text-[var(--color-ink-soft)] transition hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
               >
                 {f} →
               </Link>
@@ -715,7 +715,7 @@ export function RyanCaseProfile({
         </div>
 
         {/* Statement intake — the archive grows one account at a time. */}
-        <div className="mt-8 rounded-2xl bg-[var(--color-navy)] p-6 sm:p-8 text-[var(--color-cream)]">
+        <div className="mt-8 rounded-2xl border border-[var(--color-line)] bg-[var(--color-navy)] p-6 text-[var(--color-cream)] shadow-[0_20px_50px_rgba(0,0,0,0.4)] sm:p-8">
           <Eyebrow tone="cream">Statement intake</Eyebrow>
           <h3 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display text-[var(--color-cream)]">
             Were you there? The archive has room for your statement.
@@ -729,7 +729,7 @@ export function RyanCaseProfile({
           <div className="mt-5 flex flex-wrap items-center gap-4">
             <Link
               href="/case/intake"
-              className="inline-flex items-center rounded-lg bg-[var(--color-gold)] px-5 py-2.5 text-sm font-bold text-[var(--color-navy)] transition hover:bg-[var(--color-support-strong)]"
+              className="btn-blue inline-flex items-center px-5 py-2.5 text-sm"
             >
               Add your statement →
             </Link>
@@ -788,7 +788,7 @@ export function RyanCaseProfile({
                   className="h-28 w-full border-b border-[var(--color-line)] object-cover"
                 />
                 <div className="p-4">
-                  <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] font-bold text-[var(--color-ink)]">
+                  <div className="eyebrow flex items-center gap-2">
                     {p.category ? <span>{p.category}</span> : null}
                     {p.published_at ? (
                       <span className="text-[var(--color-muted)]">
@@ -839,7 +839,7 @@ export function RyanCaseProfile({
           />
           <Link
             href="/case?view=documents"
-            className="btn-accent mt-4 inline-flex items-center px-5 py-2.5 text-sm"
+            className="btn-blue mt-4 inline-flex items-center px-5 py-2.5 text-sm"
           >
             Open all {totals.documents.toLocaleString()} documents →
           </Link>
@@ -987,7 +987,7 @@ function AttorneyBriefing() {
         </span>
       </div>
 
-      <h2 className="mt-4 text-2xl sm:text-4xl font-bold tracking-tight font-display leading-[1.08] text-[var(--color-blue-strong)]">
+      <h2 className="mt-4 text-2xl sm:text-4xl font-bold tracking-tight font-display leading-[1.08] text-[var(--color-blue-ink)]">
         Counsel evaluating my case — start here.
       </h2>
       <p className="mt-3 text-sm sm:text-base text-[var(--color-ink-soft)] leading-relaxed max-w-2xl">
@@ -1008,7 +1008,7 @@ function AttorneyBriefing() {
           ["Prior matter", "Pardoned · dismissed w/ prejudice"],
           ["Motions filed", "11 + recusal, public"],
         ].map(([k, v]) => (
-          <div key={k} className="rounded-2xl border border-[var(--color-blue)]/20 bg-[var(--color-paper)] p-3">
+          <div key={k} className="rounded-2xl border border-[var(--color-blue)]/20 bg-[var(--color-surface)] p-3">
             <dt className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">{k}</dt>
             <dd className="mt-1 text-sm font-bold text-[var(--color-ink)] leading-snug">{v}</dd>
           </div>
@@ -1023,7 +1023,7 @@ function AttorneyBriefing() {
             <Link
               key={it.href}
               href={it.href}
-              className="group rounded-2xl border border-[var(--color-blue)]/20 bg-[var(--color-paper)] p-4 hover:border-[var(--color-blue)] transition"
+              className="group rounded-2xl border border-[var(--color-blue)]/20 bg-[var(--color-surface)] p-4 hover:border-[var(--color-blue)] transition"
             >
               <p className="text-sm font-bold text-[var(--color-ink)] group-hover:text-[var(--color-blue-ink)] transition leading-snug">
                 {it.label}
@@ -1041,7 +1041,7 @@ function AttorneyBriefing() {
       </div>
 
       {/* Contact — attorneys */}
-      <div className="mt-7 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-paper)] p-5">
+      <div className="mt-7 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-surface)] p-5">
         <Eyebrow tone="blue">Attorneys — reach me directly</Eyebrow>
         <p className="mt-2 text-sm text-[var(--color-ink-soft)] leading-relaxed max-w-2xl">
           If you practice criminal defense, First Amendment, or civil-rights litigation

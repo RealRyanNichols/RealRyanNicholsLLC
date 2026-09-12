@@ -21,6 +21,11 @@ export const PALETTE = {
   sky: "#38bdf8",
   // Amber for "watch" tones and capped-sample strips.
   amber: "#b45309",
+  // Violet for the AI-agent series on the reach charts.
+  violet: "#c084fc",
+  // Warm clay orange: the evidence graph's unclaimed-person nodes. It is the
+  // one hue in the node legend the theater palette has no near match for.
+  clay: "#e08658",
   // Third-party brand colors, used only to color their traffic sources.
   brandFacebook: "#4267B2",
   brandGoogle: "#34a853",
@@ -38,6 +43,8 @@ export const CSS_TOKEN: Record<PaletteKey, `--color-${string}`> = {
   greenDeep: "--color-green-deep",
   sky: "--color-sky",
   amber: "--color-amber",
+  violet: "--color-violet",
+  clay: "--color-clay",
   brandFacebook: "--color-brand-facebook",
   brandGoogle: "--color-brand-google",
   brandInstagram: "--color-brand-instagram",

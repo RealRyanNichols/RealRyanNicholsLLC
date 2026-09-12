@@ -144,7 +144,7 @@ export function QuickEvidenceForm() {
 
   if (done) {
     return (
-      <div className="rounded-xl border-2 border-[var(--color-success)] bg-[var(--color-surface)] p-5">
+      <div className="rounded-2xl border border-[var(--color-success)] bg-[var(--color-surface)] p-5">
         <h2 className="text-xl font-bold tracking-tight">✓ Locked in.</h2>
         <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
           Live on the site at{" "}
@@ -188,7 +188,7 @@ export function QuickEvidenceForm() {
   }
 
   return (
-    <form onSubmit={submit} className="space-y-4">
+    <form onSubmit={submit} className="space-y-4 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-5">
       <Field
         label="Source URL"
         hint="Where it came from — tweet URL, news link, video link. Optional but recommended."
@@ -343,8 +343,8 @@ export function QuickEvidenceForm() {
               className={[
                 "rounded-full border px-3 py-1 text-xs font-bold cursor-pointer transition select-none",
                 themes.has(t.value)
-                  ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)]"
-                  : "border-[var(--color-line)] hover:border-[var(--color-accent)]",
+                  ? "border-[var(--color-gold)] bg-[var(--color-gold-soft)] text-[var(--color-gold)]"
+                  : "border-[var(--color-line)] hover:border-[var(--color-gold)]",
               ].join(" ")}
             >
               <input
@@ -371,7 +371,7 @@ export function QuickEvidenceForm() {
       </Field>
 
       {err ? (
-        <p className="rounded-md bg-[var(--color-accent-soft)] border border-[var(--color-accent)] px-3 py-2 text-sm text-[var(--color-accent)]">
+        <p className="rounded-md border border-[var(--color-danger)] bg-[var(--color-accent-soft)] px-3 py-2 text-sm text-[var(--color-danger)]">
           {err}
         </p>
       ) : null}
@@ -379,7 +379,7 @@ export function QuickEvidenceForm() {
       <button
         type="submit"
         disabled={busy || !title.trim()}
-        className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-6 py-3 font-bold hover:bg-[var(--color-accent-strong)] disabled:opacity-50"
+        className="btn-accent px-6 py-3 disabled:opacity-50"
       >
         {busy ? "Locking in…" : "Lock in evidence →"}
       </button>
@@ -388,7 +388,7 @@ export function QuickEvidenceForm() {
 }
 
 const input =
-  "w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2.5 text-sm focus:outline-none focus:border-[var(--color-accent)]";
+  "w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2.5 text-sm text-[var(--color-ink)] focus:outline-none focus:border-[var(--color-accent)]";
 
 function Field({
   label,
@@ -403,7 +403,7 @@ function Field({
 }) {
   return (
     <div>
-      <label className="text-xs font-bold block mb-1.5">
+      <label className="mb-1.5 block text-xs font-bold text-[var(--color-ink-soft)]">
         {label}
         {required ? <span className="text-[var(--color-accent)] ml-1">*</span> : null}
       </label>

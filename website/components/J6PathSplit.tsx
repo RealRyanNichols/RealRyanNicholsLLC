@@ -34,9 +34,7 @@ export async function J6PathSplit({
     <section className={className} aria-label="Two ways into the January 6 files">
       {headline ? (
         <>
-          <p className="text-[11px] font-black uppercase tracking-[0.24em] text-[var(--color-ink)]">
-            The January 6 Files
-          </p>
+          <p className="eyebrow">The January 6 Files</p>
           <Heading className="mt-2 font-display text-4xl font-black leading-[0.95] tracking-tight sm:text-6xl">
             Where do you
             <br />
@@ -47,7 +45,7 @@ export async function J6PathSplit({
           </p>
         </>
       ) : (
-        <p className="text-[11px] font-black uppercase tracking-[0.24em] text-[var(--color-ink)]">
+        <p className="eyebrow">
           The January 6 Files · two ways in, both free, both public
         </p>
       )}
@@ -59,14 +57,16 @@ export async function J6PathSplit({
         <Link
           href="/case/people/ryan-nichols"
           aria-current={active === "ryan" ? "location" : undefined}
-          className="group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-[var(--color-navy)] p-4 text-[var(--color-cream)] transition hover:shadow-xl sm:p-7"
+          data-reveal
+          className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-navy)] p-4 text-[var(--color-cream)] shadow-[0_20px_50px_rgba(0,0,0,0.4)] transition hover:border-[var(--color-gold)] sm:p-7"
         >
           <div>
             {active === "ryan" ? <HerePill tone="navy" /> : null}
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-gold-bright)]">
-              One man&rsquo;s case
-            </p>
-            <p className="mt-3 font-display text-3xl font-black leading-none tracking-tight text-[var(--color-gold-bright)] sm:text-5xl">
+            <p className="eyebrow">One man&rsquo;s case</p>
+            <p
+              className="display mt-3 text-4xl leading-none tabular-nums text-[var(--color-gold)] sm:text-6xl"
+              data-count={totals.daysArrestToPardon > 0 ? totals.daysArrestToPardon : undefined}
+            >
               {totals.daysArrestToPardon > 0
                 ? totals.daysArrestToPardon.toLocaleString("en-US")
                 : "—"}
@@ -92,14 +92,17 @@ export async function J6PathSplit({
         <Link
           href="/j6"
           aria-current={active === "everyone" ? "location" : undefined}
-          className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-blue-soft)]/50 p-4 transition hover:border-[var(--color-gold)] hover:shadow-xl sm:p-7"
+          data-reveal
+          style={{ "--d": 1 } as React.CSSProperties}
+          className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-blue-soft)]/50 p-4 shadow-[0_20px_50px_rgba(0,0,0,0.4)] transition hover:border-[var(--color-gold)] sm:p-7"
         >
           <div>
             {active === "everyone" ? <HerePill tone="cream" /> : null}
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-ink)]">
-              Everyone else
-            </p>
-            <p className="mt-3 font-display text-3xl font-black leading-none tracking-tight text-[var(--color-ink)] sm:text-5xl">
+            <p className="eyebrow">Everyone else</p>
+            <p
+              className="display mt-3 text-4xl leading-none tabular-nums text-[var(--color-ink)] sm:text-6xl"
+              data-count={defendants > 0 ? defendants : undefined}
+            >
               {defendants > 0 ? defendants.toLocaleString("en-US") : "—"}
             </p>
             <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--color-muted)] sm:text-xs">

@@ -17,7 +17,7 @@ export function RadarFrame({
   return (
     <div
       data-radar-frame
-      className="relative min-h-[240px] overflow-hidden rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-surface)] aspect-[4/3] sm:min-h-0 sm:aspect-[16/9] lg:aspect-[2/1]"
+      className="relative min-h-[240px] overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] shadow-[0_20px_50px_rgba(0,0,0,0.4)] aspect-[4/3] sm:min-h-0 sm:aspect-[16/9] lg:aspect-[2/1]"
     >
       {children}
 
@@ -30,7 +30,7 @@ export function RadarFrame({
         </div>
         <div
           data-live-now
-          className="mt-1 text-3xl sm:text-5xl font-bold tabular-nums tracking-tight font-display text-[var(--color-cream)] leading-none drop-shadow"
+          className="display mt-1 text-4xl sm:text-6xl tabular-nums text-[var(--color-gold)] drop-shadow"
         >
           {liveNow.toLocaleString()}
         </div>

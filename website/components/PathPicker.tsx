@@ -199,7 +199,7 @@ export function PathPicker({ variant = "band" }: { variant?: Variant }) {
   if (collapsedBand) {
     // Phones start here: one compact row, so the feed is a thumb-scroll away.
     return (
-      <section className="mx-auto max-w-3xl rounded-2xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4 shadow-sm sm:p-5">
+      <section className="mx-auto max-w-3xl rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-[0_12px_30px_rgba(0,0,0,0.35)] sm:p-5">
         <button
           type="button"
           onClick={() => setBandOpen(true)}
@@ -235,7 +235,7 @@ export function PathPicker({ variant = "band" }: { variant?: Variant }) {
   }
 
   return (
-    <section className="mx-auto max-w-3xl rounded-2xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4 shadow-sm sm:p-5">
+    <section className="mx-auto max-w-3xl rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-[0_12px_30px_rgba(0,0,0,0.35)] sm:p-5">
       {inner}
     </section>
   );

@@ -41,7 +41,7 @@ export function ArticleFigure({ value }: { value: Record<string, unknown> }) {
 
   return (
     <figure className={`not-prose my-8 ${WIDTHS[width] ?? WIDTHS.full}`}>
-      <div className="overflow-hidden rounded-lg border border-[var(--color-line-soft)]/20 bg-[var(--color-surface)]">
+      <div className="panel overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={resolveSrc(src)}

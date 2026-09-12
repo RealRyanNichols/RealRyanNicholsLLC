@@ -34,7 +34,7 @@ export default function ToolsPage() {
       <section className="border-b border-[var(--color-line)] bg-[var(--color-paper)]">
         <div className="mx-auto grid max-w-6xl gap-4 px-4 py-5 sm:px-6 lg:grid-cols-[1fr_0.8fr] lg:items-end lg:py-8">
           <div>
-            <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-success)]">
+            <p className="eyebrow">
               Free tools / public patterns
             </p>
             <h1 className="mt-2 font-display text-3xl font-black leading-tight tracking-normal text-[var(--color-ink)] sm:text-4xl">
@@ -55,7 +55,7 @@ export default function ToolsPage() {
               </Link>
               <Link
                 href="/store/strategy-call-30"
-                className="inline-flex min-h-11 items-center rounded-md border-2 border-[var(--color-support)] bg-[var(--color-support)] px-4 py-2 text-sm font-black text-[var(--color-navy)] transition hover:bg-[var(--color-support-soft)]"
+                className="btn-accent inline-flex min-h-11 items-center px-4 py-2 text-sm"
               >
                 Build with Ryan
               </Link>
@@ -75,7 +75,7 @@ export default function ToolsPage() {
           className="group flex flex-wrap items-center justify-between gap-4 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)]/50 p-5 transition hover:border-[var(--color-accent)] sm:p-6"
         >
           <div className="min-w-0">
-            <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[var(--color-ink)]">
+            <p className="eyebrow">
               New · Free · No signup
             </p>
             <p className="mt-1 font-display text-xl font-black tracking-tight text-[var(--color-ink)] sm:text-2xl">

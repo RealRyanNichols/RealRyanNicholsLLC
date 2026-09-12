@@ -132,16 +132,21 @@ export default function TellYourStoryPage() {
           sizes="100vw"
           className="object-cover opacity-[0.16]"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--color-paper)_0%,rgba(247,243,235,0.95)_42%,rgba(247,243,235,0.76)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--color-paper)_0%,var(--color-paper)_46%,transparent_100%)]" />
 
         <div className="rrn-hero-inner grid gap-6 lg:grid-cols-[0.92fr_1.08fr] lg:gap-8">
           <div className="flex flex-col justify-center">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
+            <p className="eyebrow" data-reveal>
               Tell Your Story
             </p>
-            <h1 className="rrn-hero-title mt-3 max-w-3xl">
+            <h1
+              className="display mt-3 max-w-3xl text-4xl sm:text-5xl lg:text-6xl"
+              data-reveal
+              style={{ "--d": 1 } as React.CSSProperties}
+            >
               Something happen to you that wasn&apos;t right? Tell it here.
             </h1>
+            <div className="mt-4 h-[3px] w-[4.5rem] bg-[var(--color-gold)]" aria-hidden />
             <p className="rrn-lead mt-4 max-w-2xl">
               In your own words — anonymously if you want. No account, no cost.
               Ryan reads every single one himself, and your story might be the
@@ -182,7 +187,7 @@ export default function TellYourStoryPage() {
                   <a
                     key={item}
                     href="#story-form"
-                    className="inline-flex min-h-11 items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1.5 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] sm:min-h-0"
+                    className="inline-flex min-h-11 items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1.5 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-gold)] hover:text-[var(--color-gold)] sm:min-h-0"
                   >
                     {item}
                   </a>
@@ -241,7 +246,7 @@ export default function TellYourStoryPage() {
 
       <section className="rrn-section">
         <div className="rrn-card p-5 sm:p-6">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
+          <p className="eyebrow">
             Before you submit — how this works
           </p>
           <h2 className="rrn-section-title mt-2">
@@ -275,7 +280,7 @@ export default function TellYourStoryPage() {
       <section className="rrn-section">
         <div className="grid gap-6 lg:grid-cols-[1fr_0.9fr] lg:items-start">
           <div>
-            <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-accent)]">
+            <p className="eyebrow">
               The hook is clarity
             </p>
             <h2 className="rrn-section-title mt-2">
@@ -307,7 +312,7 @@ export default function TellYourStoryPage() {
           </div>
 
           <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
-            <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-blue-ink)]">
+            <p className="eyebrow">
               Boundaries
             </p>
             <h2 className="mt-2 font-display text-2xl font-black tracking-normal">

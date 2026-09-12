@@ -25,7 +25,7 @@ export function FuelLadder({ tiers }: { tiers: ResolvedFuelTier[] }) {
   const perOutput = costPerOutputTokenUsd();
 
   return (
-    <div className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-6" data-fuel-ladder>
+    <div className="panel p-4 sm:p-6" data-fuel-ladder>
       <ol className="space-y-3">
         {rows.map((r) => {
           // Square-root scale so a $5 bar is visible next to the month bar.
@@ -39,32 +39,27 @@ export function FuelLadder({ tiers }: { tiers: ResolvedFuelTier[] }) {
               className="grid grid-cols-[5.5rem_1fr] items-center gap-3 sm:grid-cols-[7rem_1fr_14rem]"
             >
               <div>
-                <p className="font-display text-xl font-black tabular-nums tracking-tight text-[var(--color-ink)] sm:text-2xl">
+                <p className="font-display text-xl font-black tabular-nums tracking-tight text-[var(--color-gold)] sm:text-2xl">
                   {usdWhole(r.amountCents)}
                   {r.monthly ? <span className="text-xs font-bold text-[var(--color-muted)]">/mo</span> : null}
                 </p>
                 <p className="text-[11px] font-black uppercase tracking-wider text-[var(--color-muted)]">{r.title}</p>
               </div>
               <div className="min-w-0">
-                <div className="relative h-8 w-full overflow-hidden rounded-md bg-[var(--color-surface-2)]">
+                <div className="relative h-8 w-full overflow-hidden rounded-md bg-[var(--color-line-soft)]">
                   <div
                     className={`absolute inset-y-0 left-0 rounded-md ${
-                      r.monthly
-                        ? "bg-[var(--color-gold)]"
-                        : r.featured
-                          ? "bg-[var(--color-accent)]"
-                          : "bg-[var(--color-gold-bright)]"
+                      r.monthly || r.featured
+                        ? "bg-[var(--color-support-strong)]"
+                        : "bg-[var(--color-gold)]"
                     }`}
                     style={{ width: `${w}%` }}
                   />
-                  {/* The label rides inside a wide bar and just past a narrow one. */}
+                  {/* The label rides inside a wide bar and just past a narrow
+                      one. Inside the bar it sits on gold, so it reads navy. */}
                   <span
                     className={`absolute top-1/2 -translate-y-1/2 whitespace-nowrap text-[11px] font-black uppercase tracking-wider ${
-                      w >= 45
-                        ? r.monthly || r.featured
-                          ? "text-[var(--color-cream)]"
-                          : "text-[var(--color-ink)]"
-                        : "text-[var(--color-ink)]"
+                      w >= 45 ? "text-[var(--color-navy)]" : "text-[var(--color-ink)]"
                     }`}
                     style={w >= 45 ? { left: 8 } : { left: `calc(${w}% + 8px)` }}
                   >

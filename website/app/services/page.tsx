@@ -26,7 +26,7 @@ export default function ServicesPage() {
           hub, not only website services. No donations, just offers. */}
       <section className="border-t border-[var(--color-line)] bg-[var(--color-paper)]">
         <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-          <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+          <p className="eyebrow" data-reveal>
             More from Ryan
           </p>
           <h2 className="mt-2 font-display text-3xl font-black tracking-tight">
@@ -36,9 +36,10 @@ export default function ServicesPage() {
           <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
             <Link
               href="/book"
-              className="group rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 transition hover:border-[var(--color-accent)]"
+              className="group panel p-6 transition hover:border-[var(--color-gold)]"
+              data-reveal
             >
-              <p className="text-xs font-black uppercase tracking-wider text-[var(--color-blue-ink)]">
+              <p className="eyebrow">
                 The book
               </p>
               <h3 className="mt-2 text-2xl font-black tracking-tight text-[var(--color-ink)]">
@@ -55,9 +56,11 @@ export default function ServicesPage() {
 
             <Link
               href="/store"
-              className="group rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 transition hover:border-[var(--color-accent)]"
+              className="group panel p-6 transition hover:border-[var(--color-gold)]"
+              data-reveal
+              style={{ "--d": 1 } as React.CSSProperties}
             >
-              <p className="text-xs font-black uppercase tracking-wider text-[var(--color-blue-ink)]">
+              <p className="eyebrow">
                 The store
               </p>
               <h3 className="mt-2 text-2xl font-black tracking-tight text-[var(--color-ink)]">

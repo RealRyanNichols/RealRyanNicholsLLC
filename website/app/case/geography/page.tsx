@@ -61,10 +61,8 @@ export default async function CaseGeographyPage() {
 
   return (
     <article className="mx-auto max-w-6xl px-4 py-6 sm:py-8">
-      <header className="max-w-3xl mb-5">
-        <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-gold-bright)] font-bold">
-          The Geography · realryannichols.com
-        </p>
+      <header className="max-w-3xl mb-5" data-reveal>
+        <p className="eyebrow">The Geography · realryannichols.com</p>
         <h1 className="mt-2 text-3xl sm:text-5xl font-bold tracking-tight leading-[1.05] font-display">
           They came from every state.
         </h1>
@@ -78,13 +76,14 @@ export default async function CaseGeographyPage() {
 
       {/* ---- Stat band ---- */}
       <section className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-        <GeoStat n={payload.totals.all_j6} label="Defendants prosecuted" sub="The full wave" />
-        <GeoStat n={payload.totals.distinct_states} label="States represented" sub="Plus D.C." />
-        <GeoStat n={payload.totals.with_location} label="Plotted on the map" sub="Located to a state" />
+        <GeoStat n={payload.totals.all_j6} label="Defendants prosecuted" sub="The full wave" d={0} />
+        <GeoStat n={payload.totals.distinct_states} label="States represented" sub="Plus D.C." d={1} />
+        <GeoStat n={payload.totals.with_location} label="Plotted on the map" sub="Located to a state" d={2} />
         <GeoStat
           n={topState?.defendants ?? 0}
           label={topState ? `Most: ${topState.name}` : "Most arrests"}
           sub="Leading the country"
+          d={3}
         />
       </section>
 
@@ -102,7 +101,7 @@ export default async function CaseGeographyPage() {
 
       {/* ---- Leaderboard ---- */}
       {ranked.length > 0 ? (
-        <section className="mt-8 rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6">
+        <section className="mt-8 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.4)] sm:p-6">
           <h2 className="text-xl sm:text-2xl font-bold tracking-tight font-display">
             The prosecution leaderboard
           </h2>
@@ -121,7 +120,7 @@ export default async function CaseGeographyPage() {
                 </span>
                 <div className="flex-1 h-5 rounded bg-[var(--color-surface-2)] overflow-hidden">
                   <div
-                    className="h-full rounded bg-[var(--color-accent)]"
+                    className="h-full rounded bg-[var(--color-gold)]"
                     style={{ width: `${Math.max(4, (s.defendants / maxDef) * 100)}%` }}
                   />
                 </div>
@@ -156,10 +155,24 @@ export default async function CaseGeographyPage() {
   );
 }
 
-function GeoStat({ n, label, sub }: { n: number; label: string; sub: string }) {
+function GeoStat({
+  n,
+  label,
+  sub,
+  d = 0,
+}: {
+  n: number;
+  label: string;
+  sub: string;
+  d?: number;
+}) {
   return (
-    <div className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4">
-      <div className="text-3xl sm:text-4xl font-bold tracking-tight leading-none text-[var(--color-accent)] font-display tabular-nums">
+    <div
+      data-reveal
+      style={{ "--d": d } as React.CSSProperties}
+      className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-[0_20px_50px_rgba(0,0,0,0.4)]"
+    >
+      <div className="display text-4xl sm:text-5xl text-[var(--color-gold)] tabular-nums">
         {n}
       </div>
       <div className="mt-2 text-sm font-bold text-[var(--color-ink)] leading-tight">{label}</div>
@@ -182,9 +195,9 @@ function CrossLink({
   return (
     <Link
       href={href}
-      className="block rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4 hover:border-[var(--color-accent)] transition group"
+      className="block rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-[0_20px_50px_rgba(0,0,0,0.4)] hover:border-[var(--color-gold)] transition group"
     >
-      <p className="text-sm font-bold tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">
+      <p className="text-sm font-bold tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-gold)]">
         {title}
       </p>
       <p className="mt-1 text-xs leading-snug text-[var(--color-ink-soft)]">

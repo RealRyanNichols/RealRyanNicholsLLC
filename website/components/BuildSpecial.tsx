@@ -75,7 +75,7 @@ function LiveViewers() {
       : `${p.today.toLocaleString()} people here today`;
   return (
     <div className="mt-5 flex justify-center">
-      <span className="inline-flex items-center gap-2 rounded-full border border-[var(--color-line-soft)] bg-[var(--color-cream)]/[0.05] px-4 py-1.5 text-sm font-semibold text-[var(--color-ink-soft)]">
+      <span className="inline-flex items-center gap-2 rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-1.5 text-sm font-semibold text-[var(--color-ink-soft)]">
         <span className="relative flex h-2 w-2">
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-success)] opacity-75" />
           <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--color-success)]" />
@@ -113,13 +113,13 @@ function ReserveButton() {
           type="button"
           onClick={checkout}
           disabled={loading}
-          className="w-full rounded-2xl bg-[var(--color-gold)] px-8 py-4 text-lg font-black text-[var(--color-navy)] transition hover:bg-[var(--color-support-strong)] disabled:opacity-60 sm:w-auto"
+          className="btn-accent w-full px-8 py-4 text-lg font-black disabled:opacity-60 sm:w-auto"
         >
           {loading ? "Opening secure checkout…" : "Reserve your build — pay securely ($250) →"}
         </button>
         <Link
           href="/contact"
-          className="w-full rounded-2xl border border-[var(--color-line-soft)] bg-[var(--color-cream)]/[0.05] px-8 py-4 text-center text-lg font-bold text-[var(--color-cream)] transition hover:border-[var(--color-gold)] sm:w-auto"
+          className="btn-ghost w-full px-8 py-4 text-center text-lg font-bold sm:w-auto"
         >
           Talk it through first
         </Link>
@@ -139,11 +139,11 @@ export function BuildSpecial() {
   return (
     <div className="bg-[var(--color-paper)] text-[var(--color-cream)]">
       <div className="mx-auto max-w-4xl px-4 py-12 sm:py-16">
-        <p className="text-center text-[11px] font-black uppercase tracking-[0.28em] text-[var(--color-gold)]">
+        <p className="eyebrow text-center">
           Real Ryan Nichols LLC · Custom websites
         </p>
 
-        <h1 className="mt-4 text-center text-4xl font-black leading-[1.05] text-[var(--color-cream)] sm:text-6xl">
+        <h1 className="display mt-4 text-center text-5xl text-[var(--color-cream)] sm:text-7xl">
           I&apos;ll build you a website
           <br />
           just like <span className="text-[var(--color-gold)]">this one.</span>
@@ -158,7 +158,7 @@ export function BuildSpecial() {
 
         <div className="mt-6 flex items-end justify-center gap-3">
           <span className="text-2xl text-[var(--color-muted)] line-through sm:text-3xl">$997</span>
-          <span className="text-6xl font-black leading-none text-[var(--color-gold)] sm:text-8xl">$250</span>
+          <span className="display text-6xl tabular-nums text-[var(--color-gold)] sm:text-8xl">$250</span>
           <span className="pb-2 text-sm font-bold text-[var(--color-ink-soft)]">founder rate</span>
         </div>
         <p className="mt-2 text-center text-sm text-[var(--color-muted)]">
@@ -180,7 +180,7 @@ export function BuildSpecial() {
           {FOR_WHO.map((w) => (
             <span
               key={w}
-              className="rounded-full border border-[var(--color-line-soft)] bg-[var(--color-cream)]/[0.05] px-4 py-2 text-sm font-semibold text-[var(--color-ink-soft)]"
+              className="rounded-full border border-[var(--color-line-soft)] bg-[var(--color-surface)] px-4 py-2 text-sm font-semibold text-[var(--color-ink-soft)]"
             >
               {w}
             </span>
@@ -200,7 +200,7 @@ export function BuildSpecial() {
           {INCLUDES.map((item) => (
             <span
               key={item}
-              className="rounded-full border border-[var(--color-line-soft)] bg-[var(--color-cream)]/[0.05] px-4 py-2 text-sm font-semibold text-[var(--color-ink-soft)]"
+              className="rounded-full border border-[var(--color-line-soft)] bg-[var(--color-surface)] px-4 py-2 text-sm font-semibold text-[var(--color-ink-soft)]"
             >
               {item}
             </span>
@@ -212,14 +212,14 @@ export function BuildSpecial() {
           What you get
         </h2>
         <div className="mt-5 grid gap-3 sm:grid-cols-3">
-          <Feature title="Your own platform" body="Your site, your domain, your audience — no algorithm in the middle, no platform that can ban you." />
-          <Feature title="Built like mine" body="The same modern, fast, fully-mobile stack as this site. It will look professional." />
-          <Feature title="Built to last" body="Clean code and a real database — not a template you'll outgrow in a month." />
+          <Feature reveal={0} title="Your own platform" body="Your site, your domain, your audience — no algorithm in the middle, no platform that can ban you." />
+          <Feature reveal={1} title="Built like mine" body="The same modern, fast, fully-mobile stack as this site. It will look professional." />
+          <Feature reveal={2} title="Built to last" body="Clean code and a real database — not a template you'll outgrow in a month." />
         </div>
 
         {/* Timeline + what's not included */}
         <div className="mt-12 grid gap-4 sm:grid-cols-2">
-          <div className="rounded-2xl border border-[var(--color-line-soft)] bg-[var(--color-cream)]/[0.04] p-5">
+          <div className="panel p-5" data-reveal>
             <h3 className="text-lg font-black text-[var(--color-gold)]">Timeline</h3>
             <ul className="mt-3 space-y-2 text-sm text-[var(--color-ink-soft)]">
               <li>✅ Access within <strong>3–7 days</strong> of kickoff.</li>
@@ -228,7 +228,7 @@ export function BuildSpecial() {
               <li>✅ <strong>Warranty:</strong> if something I built breaks in normal use, I fix it.</li>
             </ul>
           </div>
-          <div className="rounded-2xl border border-[var(--color-line-soft)] bg-[var(--color-cream)]/[0.04] p-5">
+          <div className="panel p-5" data-reveal style={{ "--d": 1 } as React.CSSProperties}>
             <h3 className="text-lg font-black text-[var(--color-gold)]">What&apos;s not included</h3>
             <ul className="mt-3 space-y-2 text-sm text-[var(--color-ink-soft)]">
               <li>• Paid ad spend or ad management.</li>
@@ -277,7 +277,7 @@ export function BuildSpecial() {
         </ul>
 
         {/* Terms — DRAFT */}
-        <div className="mt-16 rounded-2xl border border-[var(--color-line-soft)] bg-[var(--color-cream)]/[0.03] p-6">
+        <div className="panel mt-16 p-6">
           <h2 className="text-xl font-black text-[var(--color-cream)]">Terms, in plain English</h2>
           <ul className="mt-3 space-y-2 text-sm text-[var(--color-ink-soft)]">
             <li>
@@ -311,7 +311,7 @@ export function BuildSpecial() {
           investigative work, not hit pieces.
         </p>
         <div className="mt-5 grid gap-3 sm:grid-cols-2">
-          <div className="rounded-2xl border border-[var(--color-line-soft)] bg-[var(--color-cream)]/[0.04] p-5">
+          <div className="panel p-5" data-reveal>
             <div className="font-black text-[var(--color-gold)]">🔎 Full investigation + article — $997</div>
             <p className="mt-1.5 text-sm text-[var(--color-ink-soft)]">
               Bring me a matter that deserves daylight. I investigate it, we work
@@ -319,7 +319,7 @@ export function BuildSpecial() {
               write and publish a thorough, sourced piece.
             </p>
           </div>
-          <div className="rounded-2xl border border-[var(--color-line-soft)] bg-[var(--color-cream)]/[0.04] p-5">
+          <div className="panel p-5" data-reveal style={{ "--d": 1 } as React.CSSProperties}>
             <div className="font-black text-[var(--color-gold)]">⚡ Quick package &amp; publish — $197</div>
             <p className="mt-1.5 text-sm text-[var(--color-ink-soft)]">
               You already have the evidence — documents, screenshots, links. You
@@ -337,7 +337,7 @@ export function BuildSpecial() {
         </p>
 
         {/* Book path — donations retired; the "no build needed" door sells. */}
-        <div className="mt-16 rounded-2xl border border-[var(--color-line-soft)] bg-[var(--color-cream)]/[0.04] p-6 text-center">
+        <div className="panel mt-16 p-6 text-center">
           <h2 className="text-2xl font-black text-[var(--color-cream)] sm:text-3xl">
             Don&apos;t need a build? Take the story home.
           </h2>
@@ -348,7 +348,7 @@ export function BuildSpecial() {
           <div className="mt-5">
             <Link
               href="/book/preorder"
-              className="inline-flex items-center rounded-full border-2 border-[var(--color-gold)] px-7 py-3 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-gold)] hover:text-[var(--color-navy)]"
+              className="inline-flex items-center rounded-full border-2 border-[var(--color-gold)] px-7 py-3 text-base font-black text-[var(--color-gold)] transition hover:bg-[var(--color-gold)] hover:text-[var(--color-navy)]"
             >
               Get the Book →
             </Link>
@@ -365,9 +365,21 @@ export function BuildSpecial() {
   );
 }
 
-function Feature({ title, body }: { title: string; body: string }) {
+function Feature({
+  title,
+  body,
+  reveal,
+}: {
+  title: string;
+  body: string;
+  reveal?: number;
+}) {
   return (
-    <div className="rounded-2xl border border-[var(--color-line-soft)] bg-[var(--color-cream)]/[0.04] p-5">
+    <div
+      className="panel p-5"
+      data-reveal={reveal === undefined ? undefined : true}
+      style={reveal === undefined ? undefined : ({ "--d": reveal } as React.CSSProperties)}
+    >
       <div className="font-black text-[var(--color-gold)]">{title}</div>
       <p className="mt-1.5 text-sm text-[var(--color-ink-soft)]">{body}</p>
     </div>

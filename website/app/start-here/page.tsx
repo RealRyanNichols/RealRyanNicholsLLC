@@ -62,12 +62,22 @@ export default function StartHerePage() {
   return (
     <article className="mx-auto max-w-4xl px-4 py-12">
       {/* Hero */}
-      <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
+      <p className="eyebrow" data-reveal>
         New here
       </p>
-      <h1 className="mt-2 font-display text-4xl font-black tracking-tight sm:text-5xl">
+      <h1
+        className="display mt-3 text-5xl sm:text-7xl"
+        data-reveal
+        style={{ "--d": 1 } as React.CSSProperties}
+      >
         Start Here
       </h1>
+      <div
+        className="mt-5 h-[3px] w-[4.5rem] bg-[var(--color-gold)]"
+        aria-hidden
+        data-reveal
+        style={{ "--d": 2 } as React.CSSProperties}
+      />
       <p className="mt-4 max-w-2xl text-lg leading-relaxed text-[var(--color-ink-soft)]">
         This is Ryan Nichols&apos;s site. It does four jobs — pick the door that
         fits why you came, and you&apos;ll be where you need to be in a few
@@ -92,17 +102,19 @@ export default function StartHerePage() {
 
       {/* Four jobs */}
       <section className="mt-12">
-        <h2 className="font-display text-2xl text-[var(--color-ink)]">
+        <h2 className="font-display text-2xl text-[var(--color-ink)]" data-reveal>
           What this site is for
         </h2>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           {JOBS.map((j) => (
             <div
               key={j.n}
-              className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
+              className="panel p-5"
+              data-reveal
+              style={{ "--d": Number(j.n) } as React.CSSProperties}
             >
               <div className="flex items-baseline gap-2">
-                <span className="font-display text-2xl font-black text-[var(--color-accent)]">
+                <span className="display text-3xl text-[var(--color-gold)]">
                   {j.n}
                 </span>
                 <h3 className="text-base font-bold text-[var(--color-ink)]">
@@ -119,7 +131,7 @@ export default function StartHerePage() {
 
       {/* Four routing cards */}
       <section className="mt-12">
-        <h2 className="font-display text-2xl text-[var(--color-ink)]">
+        <h2 className="font-display text-2xl text-[var(--color-ink)]" data-reveal>
           Pick your door
         </h2>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
@@ -127,12 +139,12 @@ export default function StartHerePage() {
             <Link
               key={c.href}
               href={c.href}
-              className="group rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 transition hover:border-[var(--color-accent)]"
+              className="panel group p-5 transition hover:border-[var(--color-gold)]"
             >
-              <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--color-accent)]">
+              <p className="eyebrow">
                 {c.kicker}
               </p>
-              <h3 className="mt-1 text-lg font-bold tracking-tight text-[var(--color-ink)] transition group-hover:text-[var(--color-accent)]">
+              <h3 className="mt-1 text-lg font-bold tracking-tight text-[var(--color-ink)] transition group-hover:text-[var(--color-gold)]">
                 {c.title} →
               </h3>
               <p className="mt-1.5 text-sm leading-relaxed text-[var(--color-ink-soft)]">
@@ -144,8 +156,8 @@ export default function StartHerePage() {
       </section>
 
       {/* Trust note */}
-      <section className="mt-12 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
-        <h2 className="text-sm font-black uppercase tracking-wider text-[var(--color-muted)]">
+      <section className="panel mt-12 p-5" data-reveal>
+        <h2 className="eyebrow">
           A note on what you&apos;ll read
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">

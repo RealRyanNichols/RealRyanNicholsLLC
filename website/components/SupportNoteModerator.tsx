@@ -58,7 +58,7 @@ export function SupportNoteModerator({
           type="button"
           onClick={() => update("published")}
           disabled={busy}
-          className="rounded-full bg-[var(--color-accent)] px-3 py-1 text-xs font-bold text-[var(--color-cream)] hover:opacity-90 disabled:opacity-50"
+          className="rounded-full bg-[var(--color-gold)] px-3 py-1 text-xs font-bold text-[var(--color-navy)] transition hover:bg-[var(--color-support-strong)] disabled:opacity-50"
         >
           {busy ? "…" : "Publish to wall →"}
         </button>

@@ -54,7 +54,7 @@ export default async function BookDownloadPage({
     return (
       <Shell>
         <div className="text-center">
-          <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
+          <p className="eyebrow">
             {BOOK.title}
           </p>
           <h1 className="mt-3 font-display text-4xl font-black leading-tight tracking-tight text-[var(--color-cream)] sm:text-5xl">
@@ -67,13 +67,13 @@ export default async function BookDownloadPage({
           <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:justify-center">
             <Link
               href="/book"
-              className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)]"
+              className="btn-accent inline-flex min-h-12 items-center justify-center px-6 py-3 text-base"
             >
               Go to the book
             </Link>
             <Link
               href="/contact"
-              className="inline-flex min-h-12 items-center justify-center rounded-lg border border-[var(--color-cream)]/20 bg-[var(--color-cream)]/[0.06] px-6 py-3 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-cream)]/10"
+              className="btn-blue inline-flex min-h-12 items-center justify-center px-6 py-3 text-base"
             >
               Contact Ryan
             </Link>
@@ -87,7 +87,7 @@ export default async function BookDownloadPage({
     return (
       <Shell>
         <div className="text-center">
-          <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
+          <p className="eyebrow">
             {BOOK.title}
           </p>
           <h1 className="mt-3 font-display text-4xl font-black leading-tight tracking-tight text-[var(--color-cream)] sm:text-5xl">
@@ -100,7 +100,7 @@ export default async function BookDownloadPage({
           <div className="mt-7">
             <Link
               href="/book"
-              className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)]"
+              className="btn-accent inline-flex min-h-12 items-center justify-center px-6 py-3 text-base"
             >
               Back to the book
             </Link>
@@ -115,7 +115,7 @@ export default async function BookDownloadPage({
 
   return (
     <Shell>
-      <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
+      <p className="eyebrow">
         {BOOK.title} · Your download
       </p>
       <h1 className="mt-3 font-display text-4xl font-black leading-tight tracking-tight text-[var(--color-cream)] sm:text-5xl">
@@ -129,7 +129,7 @@ export default async function BookDownloadPage({
         .
       </p>
 
-      <div className="mt-7 rounded-xl border border-[var(--color-cream)]/12 bg-[var(--color-cream)]/[0.05] p-6">
+      <div className="mt-7 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface-2)] p-6" data-reveal>
         {fileReady ? (
           <>
             <h2 className="font-display text-2xl font-black tracking-normal text-[var(--color-cream)]">
@@ -140,7 +140,7 @@ export default async function BookDownloadPage({
             </p>
             <a
               href={`/book/download/${token}/file`}
-              className="mt-5 inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)]"
+              className="btn-accent mt-5 inline-flex min-h-12 items-center justify-center px-6 py-3 text-base"
             >
               Download the book
             </a>
@@ -157,7 +157,7 @@ export default async function BookDownloadPage({
             </p>
             <Link
               href="/book/updates"
-              className="mt-5 inline-flex min-h-12 items-center justify-center rounded-lg border border-[var(--color-cream)]/20 bg-[var(--color-cream)]/[0.06] px-6 py-3 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-cream)]/10"
+              className="btn-blue mt-5 inline-flex min-h-12 items-center justify-center px-6 py-3 text-base"
             >
               See book updates
             </Link>
@@ -165,7 +165,7 @@ export default async function BookDownloadPage({
         )}
       </div>
 
-      <div className="mt-6 rounded-xl border border-[var(--color-cream)]/12 bg-[var(--color-cream)]/[0.04] p-5 text-center">
+      <div className="mt-6 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface-2)] p-5 text-center" data-reveal>
         <p className="font-display text-base font-black text-[var(--color-cream)]">
           Keep this in your account
         </p>
@@ -175,7 +175,7 @@ export default async function BookDownloadPage({
         </p>
         <Link
           href="/login?mode=magic&next=/account"
-          className="mt-3 inline-flex min-h-11 items-center justify-center rounded-lg border border-[var(--color-cream)]/20 bg-[var(--color-cream)]/[0.06] px-5 py-2.5 text-sm font-black text-[var(--color-cream)] transition hover:bg-[var(--color-cream)]/10"
+          className="btn-blue mt-3 inline-flex min-h-11 items-center justify-center px-5 py-2.5 text-sm"
         >
           Go to my account
         </Link>

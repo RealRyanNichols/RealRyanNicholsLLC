@@ -67,13 +67,14 @@ export default async function HomePage({
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <div className="lg:col-span-2">
+      {/* The title card runs the full width; the feed and the sidebar start
+          under it. */}
+      <div className="lg:col-span-3">
         <LiveNowBanner stream={activeLiveStream} />
         <ProfileHero />
-
-        <div className="mt-4">
-          <PathPicker variant="band" />
-        </div>
+      </div>
+      <div className="lg:col-span-2">
+        <PathPicker variant="band" />
 
         {/* Feed sits directly under the hero — people come to read first.
             The take-action blocks are woven into the feed below at spaced
@@ -270,7 +271,7 @@ function SortTab({
       className={[
         "inline-flex min-h-11 items-center px-4 py-2.5 -mb-px border-b-2 text-sm font-bold tracking-tight transition",
         active
-          ? "border-[var(--color-accent)] text-[var(--color-ink)]"
+          ? "border-[var(--color-gold)] text-[var(--color-ink)]"
           : "border-transparent text-[var(--color-muted)] hover:text-[var(--color-ink)]",
       ].join(" ")}
     >

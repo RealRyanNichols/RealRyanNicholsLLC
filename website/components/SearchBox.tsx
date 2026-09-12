@@ -116,13 +116,13 @@ export function SearchBox({
             autoFocus={autoFocus}
             placeholder={placeholder}
             aria-label="Search the site"
-            className="w-full rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] py-2.5 pl-10 pr-4 text-sm text-[var(--color-ink)] outline-none transition focus:border-[var(--color-accent)]"
+            className="w-full rounded-full border border-[var(--color-line)] bg-[var(--color-surface-2)] py-2.5 pl-10 pr-4 text-sm text-[var(--color-ink)] outline-none transition focus:border-[var(--color-accent)]"
           />
         </div>
       </form>
 
       {showDropdown ? (
-        <div className="absolute z-50 mt-2 w-full overflow-hidden rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] shadow-xl">
+        <div className="absolute z-50 mt-2 w-full overflow-hidden rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
           {loading && !hits ? (
             <p className="px-4 py-3 text-sm text-[var(--color-muted)]">Searching…</p>
           ) : hits && hits.length > 0 ? (
@@ -154,7 +154,7 @@ export function SearchBox({
                 <Link
                   href={`/search?q=${encodeURIComponent(q.trim())}`}
                   onClick={() => setOpen(false)}
-                  className="block px-4 py-2.5 text-sm font-bold text-[var(--color-accent)] transition hover:bg-[var(--color-surface-2)]"
+                  className="block px-4 py-2.5 text-sm font-bold text-[var(--color-gold)] transition hover:bg-[var(--color-surface-2)]"
                 >
                   See all results →
                 </Link>

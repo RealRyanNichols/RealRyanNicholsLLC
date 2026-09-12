@@ -159,12 +159,10 @@ export function CaseTimeline({ data }: { data: TimelinePayload }) {
       </div>
 
       {/* ── Histogram ─────────────────────────────────────────────── */}
-      <div className="rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-surface)] p-4 sm:p-5">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-[0_20px_50px_rgba(0,0,0,0.4)] sm:p-5">
         <div className="flex items-baseline justify-between gap-3 flex-wrap mb-3">
           <div>
-            <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--color-gold-bright)] font-bold">
-              The prosecution wave
-            </p>
+            <p className="eyebrow">The prosecution wave</p>
             <p className="mt-0.5 text-xs text-[var(--color-muted)]">
               {pivot === "sentence_date" ? "Sentencings" : "Arrests"} per month,
               {" "}January {TIMELINE_START_Y} – December {TIMELINE_END_Y}. Click a
@@ -298,7 +296,7 @@ function Histogram({
               y1={y}
               x2={W - PAD_R}
               y2={y}
-              stroke="#1f2f55"
+              stroke="var(--color-line-soft)"
               strokeWidth={0.5}
             />
             <text
@@ -308,7 +306,7 @@ function Histogram({
               textAnchor="end"
               fontSize="8"
               fontFamily="ui-monospace, monospace"
-              fill="#7c8aa6"
+              fill="var(--color-muted)"
             >
               {v}
             </text>
@@ -331,7 +329,7 @@ function Histogram({
               y={y}
               width={Math.max(0.5, barW - 1)}
               height={h}
-              fill={isActiveYear ? "var(--color-gold-bright)" : "#3a557c"}
+              fill={isActiveYear ? "var(--color-gold-bright)" : "var(--color-blue)"}
               fillOpacity={isActiveYear ? 0.85 : 0.4}
             >
               {/* One string child: React 19 serializes a multi-child SVG
@@ -367,8 +365,8 @@ function Histogram({
             fontFamily="ui-monospace, monospace"
             fill={
               activeYear === "all" || activeYear === band.y
-                ? "#cfd9ea"
-                : "#5a7aa6"
+                ? "var(--color-ink-soft)"
+                : "var(--color-muted)"
             }
           >
             {band.y}
@@ -401,7 +399,7 @@ function TimelineCard({
   const d = dateStr ? parseISO(dateStr) : null;
   const verb = pivot === "sentence_date" ? "Sentenced" : "Arrested";
   return (
-    <li className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-3.5 hover:border-[var(--color-blue)] transition">
+    <li className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-3.5 hover:border-[var(--color-gold)] transition">
       <div className="flex items-baseline justify-between gap-3">
         <Link
           href={`/case/people/${row.slug}`}

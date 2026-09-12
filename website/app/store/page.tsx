@@ -189,7 +189,7 @@ const recordFlow = [
   },
 ];
 
-function ProductCard({ p }: { p: Product }) {
+function ProductCard({ p, reveal }: { p: Product; reveal?: number }) {
   const detail = PRODUCT_DETAILS[p.slug];
   const image = p.image_url
     ? { src: p.image_url, alt: p.name }
@@ -202,15 +202,17 @@ function ProductCard({ p }: { p: Product }) {
     <Link
       href={`/store/${p.slug}`}
       className="group flex h-full flex-col overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] transition hover:border-[var(--color-accent)]"
+      data-reveal={reveal === undefined ? undefined : ""}
+      style={{ "--d": reveal ?? 0 } as React.CSSProperties}
     >
       <div className="relative h-40 w-full overflow-hidden bg-[var(--color-surface-2)]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={image.src} alt={image.alt} className="h-full w-full object-cover" />
-        <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-3 bg-[var(--color-ink)]/88 px-4 py-3 text-[var(--color-cream)]">
-          <span className="text-xs font-bold uppercase tracking-normal text-[var(--color-cream)]/70">
+        <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-3 border-t border-[var(--color-line)] bg-[var(--color-paper)]/88 px-4 py-3 text-[var(--color-cream)]">
+          <span className="text-xs font-bold uppercase tracking-normal text-[var(--color-muted)]">
             {detail?.tag ?? p.type}
           </span>
-          <span className="text-2xl font-bold text-[var(--color-cream)]">
+          <span className="display text-2xl text-[var(--color-gold)]">
             {usd(p.price_cents)}
           </span>
         </div>
@@ -316,13 +318,13 @@ export default async function StorePage() {
             className="h-full w-full object-cover"
           />
         </div>
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--color-paper)_0%,rgba(246,239,223,0.96)_48%,rgba(246,239,223,0.88)_100%)]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-paper)] via-[var(--color-paper)]/95 to-[var(--color-paper)]/80" />
         <div className="rrn-hero-inner relative grid gap-6 lg:grid-cols-[1fr_0.92fr] lg:gap-8">
           <div className="flex flex-col justify-center">
-            <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+            <p className="eyebrow">
               Store / Story / Record / Service
             </p>
-            <h1 className="rrn-hero-title mt-3 max-w-3xl">
+            <h1 className="display mt-3 max-w-3xl text-5xl sm:text-6xl lg:text-7xl">
               Bring the mess. Build the record.
             </h1>
             <p className="rrn-lead mt-4 max-w-2xl">
@@ -330,10 +332,12 @@ export default async function StorePage() {
               a clearer review, article angle, service order, or support flow.
             </p>
             <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4">
-              {heroSignals.map(([title, body]) => (
+              {heroSignals.map(([title, body], i) => (
                 <div
                   key={title}
                   className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-3"
+                  data-reveal
+                  style={{ "--d": i } as React.CSSProperties}
                 >
                   <p className="text-sm font-black text-[var(--color-ink)]">
                     {title}
@@ -374,9 +378,9 @@ export default async function StorePage() {
                 alt="A visual of organized evidence and a master exhibit index."
                 className="h-full w-full object-cover"
               />
-              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(20,42,82,0.06),rgba(20,42,82,0.82))]" />
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[var(--color-paper)]/85" />
               <div className="absolute bottom-4 left-4 right-4">
-                <p className="text-xs font-black uppercase tracking-normal text-[var(--color-gold-bright)]">
+                <p className="eyebrow">
                   The useful path
                 </p>
                 <p className="mt-1 max-w-sm font-display text-2xl font-black leading-tight tracking-normal text-[var(--color-cream)] sm:text-3xl">
@@ -420,7 +424,7 @@ export default async function StorePage() {
 
       <section className="rrn-section pt-0">
         <div className="mb-4">
-          <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+          <p className="eyebrow" data-reveal>
             Choose your lane
           </p>
           <h2 className="mt-2 font-display text-3xl font-black tracking-normal">
@@ -428,11 +432,13 @@ export default async function StorePage() {
           </h2>
         </div>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {decisionCards.map((card) => (
+          {decisionCards.map((card, i) => (
             <Link
               key={card.title}
               href={card.href}
               className="rrn-card group block min-h-32 p-4 transition hover:border-[var(--color-accent)]"
+              data-reveal
+              style={{ "--d": i } as React.CSSProperties}
             >
               <h2 className="font-display text-xl font-bold tracking-normal group-hover:text-[var(--color-accent)]">
                 {card.title}
@@ -477,7 +483,7 @@ export default async function StorePage() {
             <section key={group.type}>
               <div className="flex flex-col gap-2 border-b border-[var(--color-line)] pb-3 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-accent)]">
+                  <p className="eyebrow">
                     Checkout
                   </p>
                   <h2 className="font-display text-3xl font-bold tracking-normal">
@@ -491,8 +497,9 @@ export default async function StorePage() {
                 ) : null}
               </div>
               <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                {group.items.map((p) => (
-                  <ProductCard key={p.slug} p={p} />
+                {/* Only the first row of each shelf rises in; deeper cards render plainly. */}
+                {group.items.map((p, i) => (
+                  <ProductCard key={p.slug} p={p} reveal={i < 4 ? i : undefined} />
                 ))}
               </div>
             </section>
@@ -511,12 +518,12 @@ export default async function StorePage() {
             ))}
           </section>
 
-          <div className="flex flex-col gap-4 rounded-lg border border-[var(--color-line)] bg-[var(--color-ink)] p-5 text-[var(--color-cream)] sm:flex-row sm:items-center sm:justify-between sm:p-6">
+          <div className="panel flex flex-col gap-4 p-5 text-[var(--color-cream)] sm:flex-row sm:items-center sm:justify-between sm:p-6" data-reveal>
             <div>
               <h2 className="font-display text-2xl font-bold tracking-normal text-[var(--color-cream)]">
                 Not sure which one you need?
               </h2>
-              <p className="mt-1 max-w-2xl text-sm leading-relaxed text-[var(--color-cream)]/80">
+              <p className="mt-1 max-w-2xl text-sm leading-relaxed text-[var(--color-ink-soft)]">
                 Start smaller. Use the guide, send a tip, or book the call.
                 The right first move is the one that gets the facts into order
                 without overbuying.
@@ -525,13 +532,13 @@ export default async function StorePage() {
             <div className="rrn-tap-row flex-none">
               <Link
                 href="/services"
-                className="rrn-tap inline-flex rounded-lg bg-[var(--color-gold)] px-5 py-3 text-sm font-bold text-[var(--color-navy)] transition hover:bg-[var(--color-support-strong)]"
+                className="rrn-tap btn-accent inline-flex px-5 py-3 text-sm"
               >
                 Services guide
               </Link>
               <Link
                 href="/store/strategy-call-30"
-                className="rrn-tap inline-flex rounded-lg border border-[var(--color-cream)]/40 px-5 py-3 text-sm font-bold text-[var(--color-cream)] transition hover:bg-[var(--color-cream)]/10"
+                className="rrn-tap btn-blue inline-flex px-5 py-3 text-sm"
               >
                 Book the call
               </Link>

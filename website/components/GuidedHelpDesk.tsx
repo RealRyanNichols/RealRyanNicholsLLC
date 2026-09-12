@@ -156,9 +156,9 @@ export function GuidedHelpDesk({ source = "guided-help-desk" }: { source?: strin
   return (
     <section
       id="guided-assistant"
-      className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-xl sm:p-5"
+      className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-xl sm:p-5"
     >
-      <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+      <p className="eyebrow">
         Private help desk
       </p>
       <h2 className="mt-2 font-display text-2xl font-black tracking-normal sm:text-3xl">
@@ -171,7 +171,7 @@ export function GuidedHelpDesk({ source = "guided-help-desk" }: { source?: strin
 
       <form onSubmit={submit} className="mt-5 grid gap-4">
         <div className="grid gap-3 sm:grid-cols-2">
-          <label className="grid gap-1 text-sm font-bold">
+          <label className="grid gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
             Name
             <input
               value={name}
@@ -181,7 +181,7 @@ export function GuidedHelpDesk({ source = "guided-help-desk" }: { source?: strin
               autoComplete="name"
             />
           </label>
-          <label className="grid gap-1 text-sm font-bold">
+          <label className="grid gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
             Email or phone
             <input
               value={contact}
@@ -193,7 +193,7 @@ export function GuidedHelpDesk({ source = "guided-help-desk" }: { source?: strin
           </label>
         </div>
 
-        <label className="grid gap-1 text-sm font-bold">
+        <label className="grid gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
           What kind of help do you need?
           <select
             value={situation}
@@ -206,7 +206,7 @@ export function GuidedHelpDesk({ source = "guided-help-desk" }: { source?: strin
           </select>
         </label>
 
-        <label className="grid gap-1 text-sm font-bold">
+        <label className="grid gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
           Source protection
           <select
             value={privacy}
@@ -219,7 +219,7 @@ export function GuidedHelpDesk({ source = "guided-help-desk" }: { source?: strin
           </select>
         </label>
 
-        <label className="grid gap-1 text-sm font-bold">
+        <label className="grid gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
           What question do you need answered?
           <textarea
             required
@@ -231,7 +231,7 @@ export function GuidedHelpDesk({ source = "guided-help-desk" }: { source?: strin
           />
         </label>
 
-        <label className="grid gap-1 text-sm font-bold">
+        <label className="grid gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
           What happened?
           <textarea
             required
@@ -243,7 +243,7 @@ export function GuidedHelpDesk({ source = "guided-help-desk" }: { source?: strin
           />
         </label>
 
-        <label className="grid gap-1 text-sm font-bold">
+        <label className="grid gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
           What proof exists?
           <textarea
             value={proof}
@@ -254,7 +254,7 @@ export function GuidedHelpDesk({ source = "guided-help-desk" }: { source?: strin
           />
         </label>
 
-        <label className="grid gap-1 text-sm font-bold">
+        <label className="grid gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
           What do you want resolved?
           <input
             value={need}
@@ -263,7 +263,7 @@ export function GuidedHelpDesk({ source = "guided-help-desk" }: { source?: strin
           />
         </label>
 
-        <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-4">
+        <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] p-4">
           <p className="text-sm font-black text-[var(--color-ink)]">
             Your tailored answer
           </p>
@@ -279,7 +279,7 @@ export function GuidedHelpDesk({ source = "guided-help-desk" }: { source?: strin
           </ol>
         </div>
 
-        <label className="flex gap-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-3 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+        <label className="flex gap-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] p-3 text-sm leading-relaxed text-[var(--color-ink-soft)]">
           <input
             type="checkbox"
             checked={ack}
@@ -296,7 +296,7 @@ export function GuidedHelpDesk({ source = "guided-help-desk" }: { source?: strin
         <button
           type="submit"
           disabled={state.kind === "saving"}
-          className="min-h-11 rounded-full bg-[var(--color-accent)] px-5 py-3 text-sm font-black text-[var(--color-cream)] disabled:opacity-60"
+          className="btn-accent min-h-11 px-5 py-3 text-sm disabled:opacity-60"
         >
           {state.kind === "saving" ? "Saving..." : "Save this private profile"}
         </button>

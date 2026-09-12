@@ -24,7 +24,7 @@ export function DemandAction({ slug }: { slug?: string }) {
   }
 
   return (
-    <div className="not-prose rounded-2xl border-2 border-[var(--color-ink)] bg-[var(--color-ink)] text-[var(--color-cream)] p-6">
+    <div className="not-prose rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-cream)] p-6">
       <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
         Demand an investigation
       </p>
@@ -47,7 +47,7 @@ export function DemandAction({ slug }: { slug?: string }) {
         <button
           type="button"
           onClick={copy}
-          className="rounded-full border-2 border-[var(--color-cream)]/40 px-5 py-2.5 text-sm font-bold text-[var(--color-cream)] hover:border-[var(--color-accent)] transition"
+          className="rounded-full border border-[var(--color-line)] px-5 py-2.5 text-sm font-bold text-[var(--color-cream)] transition hover:border-[var(--color-gold)] hover:bg-[var(--color-gold-soft)]"
         >
           {copied ? "Copied ✓" : "Copy the text"}
         </button>

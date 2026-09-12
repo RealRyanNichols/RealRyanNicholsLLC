@@ -19,7 +19,7 @@ const ROLE_CLASS: Record<CaseAuthorRole, string> = {
   ryan: "bg-[var(--color-blue-soft)] text-[var(--color-blue-ink)] border-[var(--color-blue)]",
   co_detainee: "bg-[var(--color-support-soft)] text-[var(--color-tag-procedural)] border-[var(--color-tag-procedural)]/50",
   attorney: "bg-[var(--color-blue-soft)] text-[var(--color-blue-ink)] border-[var(--color-blue)]/50",
-  court: "bg-purple-900/30 text-purple-200 border-purple-700",
+  court: "bg-[var(--color-surface-2)] text-[var(--color-violet)] border-[var(--color-violet)]/50",
   government: "bg-[var(--color-accent-soft)] text-[var(--color-tag-severe)] border-[var(--color-accent)]/50",
   family: "bg-[var(--color-success-soft)] text-[var(--color-success)] border-[var(--color-success)]/40",
   media: "bg-[var(--color-surface-2)] text-[var(--color-ink-soft)] border-[var(--color-line-soft)]",
@@ -178,11 +178,11 @@ function SeriesCard({ series }: { series: DocSeries }) {
     >
       <div className="shrink-0 sm:w-44">
         {officialOnly ? (
-          <span className="flex h-40 w-full flex-col items-center justify-center gap-1.5 bg-[var(--color-navy)] p-4 text-center sm:h-full">
+          <span className="flex h-40 w-full flex-col items-center justify-center gap-1.5 border-r border-[var(--color-line-soft)] bg-[var(--color-surface-2)] p-4 text-center sm:h-full">
             <svg
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#fdf8ea"
+              stroke="var(--color-cream)"
               strokeWidth="1.6"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -206,7 +206,7 @@ function SeriesCard({ series }: { series: DocSeries }) {
             src={`/api/case-doc/${lead.slug}/image`}
             alt=""
             loading="lazy"
-            className="h-40 w-full bg-black object-cover object-top sm:h-full"
+            className="h-40 w-full bg-[var(--color-surface-2)] object-cover object-top sm:h-full"
           />
         )}
       </div>

@@ -148,18 +148,27 @@ export default async function J6Top25Page() {
         <Link href="/case?view=people" className="inline-flex min-h-11 items-center font-semibold hover:underline sm:min-h-0">All profiles</Link>
       </nav>
 
-      <header className="overflow-hidden rounded-3xl border border-[var(--color-line-soft)] bg-[var(--color-surface)] px-6 py-8 text-[var(--color-cream)] shadow-2xl sm:px-10 sm:py-12">
-        <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">Community ranking · live vote</p>
+      <header
+        className="panel overflow-hidden rounded-3xl px-6 py-8 text-[var(--color-ink)] sm:px-10 sm:py-12"
+        data-reveal
+      >
+        <p className="eyebrow">Community ranking · live vote</p>
         <h1 className="mt-3 max-w-4xl font-display text-4xl font-black leading-[0.95] sm:text-6xl">
           Which January 6 case had the most hype?
         </h1>
+        <div className="mt-5 h-[3px] w-[4.5rem] bg-[var(--color-gold)]" aria-hidden />
         <p className="mt-5 max-w-3xl text-lg leading-relaxed text-[var(--color-ink-soft)] sm:text-xl">
           This is a ranking of public attention, media coverage, political focus, and name recognition — not guilt, character, or historical importance. Each confirmed-email account gets one active vote. You may change it at any time.
         </p>
         <div className="mt-7 flex flex-wrap gap-3 text-sm font-bold">
-          <span className="rounded-full border border-[var(--color-line-soft)] bg-[var(--color-surface)] px-4 py-2">{totalVotes.toLocaleString()} total votes</span>
-          <span className="rounded-full border border-[var(--color-line-soft)] bg-[var(--color-surface)] px-4 py-2">One active vote per account</span>
-          <span className="rounded-full border border-[var(--color-line-soft)] bg-[var(--color-surface)] px-4 py-2">Write-ins can enter the Top 25</span>
+          <span className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface-2)] px-4 py-2">
+            <span className="text-[var(--color-gold)] tabular-nums" data-count={totalVotes > 0 ? totalVotes : undefined}>
+              {totalVotes.toLocaleString()}
+            </span>{" "}
+            total votes
+          </span>
+          <span className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface-2)] px-4 py-2">One active vote per account</span>
+          <span className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface-2)] px-4 py-2">Write-ins can enter the Top 25</span>
         </div>
       </header>
 
@@ -176,7 +185,7 @@ export default async function J6Top25Page() {
         />
       )}
 
-      <section className="mt-12 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 sm:p-8">
+      <section className="panel mt-12 p-6 sm:p-8" data-reveal>
         <h2 className="font-display text-2xl font-black">How replacement works</h2>
         <p className="mt-3 max-w-3xl leading-relaxed text-[var(--color-ink-soft)]">
           The original list starts with 25 seeded names. A valid write-in becomes a candidate and receives the nominating account’s vote. When a write-in earns enough votes to move above a current member, the live ranking changes automatically. The underlying archive profile remains intact even when a person moves in or out of this public-attention ranking.

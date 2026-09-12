@@ -71,13 +71,23 @@ export default async function FightPage(props: { params: Promise<{ slug: string 
         </Link>
       </nav>
 
-      <div className="rounded-3xl border-2 border-[var(--color-accent)] bg-gradient-to-br from-[var(--color-accent-soft)] to-[var(--color-surface)] p-6 sm:p-10">
-        <p className="text-[11px] uppercase tracking-[0.25em] text-[var(--color-accent)] font-bold">
+      <div className="rounded-3xl border border-[var(--color-line)] bg-gradient-to-br from-[var(--color-surface-2)] to-[var(--color-navy)] p-6 sm:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
+        <p className="eyebrow" data-reveal>
           {fight.tag}
         </p>
-        <h1 className="mt-2 text-4xl sm:text-5xl font-bold tracking-tight leading-[1.04] font-display">
+        <h1
+          className="mt-2 text-4xl sm:text-5xl font-bold tracking-tight leading-[1.04] font-display"
+          data-reveal
+          style={{ "--d": 1 } as React.CSSProperties}
+        >
           {fight.title}
         </h1>
+        <div
+          className="mt-5 h-[3px] w-[4.5rem] bg-[var(--color-gold)]"
+          aria-hidden
+          data-reveal
+          style={{ "--d": 2 } as React.CSSProperties}
+        />
         <p className="mt-4 text-base sm:text-xl text-[var(--color-ink-soft)] leading-relaxed">
           {fight.lede}
         </p>
@@ -95,8 +105,8 @@ export default async function FightPage(props: { params: Promise<{ slug: string 
       </div>
 
       {/* What's at stake */}
-      <section className="mt-8 rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-5 sm:p-6">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+      <section className="mt-8 rounded-2xl border border-[var(--color-line)] border-l-4 border-l-[var(--color-gold)] bg-[var(--color-surface)] p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.4)]" data-reveal>
+        <p className="eyebrow">
           What&apos;s at stake
         </p>
         <p className="mt-2 text-lg sm:text-xl font-bold tracking-tight font-display text-[var(--color-ink)] leading-snug">
@@ -114,7 +124,7 @@ export default async function FightPage(props: { params: Promise<{ slug: string 
 
       {/* Where I stand — the planks */}
       <section className="mt-10">
-        <h2 className="text-xl font-bold tracking-tight font-display">Where I stand</h2>
+        <h2 className="text-xl font-bold tracking-tight font-display" data-reveal>Where I stand</h2>
         <p className="mt-1 text-sm text-[var(--color-muted)]">
           Not slogans — concrete positions.
         </p>
@@ -124,7 +134,7 @@ export default async function FightPage(props: { params: Promise<{ slug: string 
               key={i}
               className="flex gap-3 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4"
             >
-              <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[var(--color-accent)] text-[var(--color-cream)] text-xs font-bold tabular-nums">
+              <span className="display flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[var(--color-gold)] text-[var(--color-navy)] text-sm tabular-nums">
                 {i + 1}
               </span>
               <span className="text-base text-[var(--color-ink)] leading-snug font-semibold">
@@ -137,7 +147,7 @@ export default async function FightPage(props: { params: Promise<{ slug: string 
 
       {fight.statements && fight.statements.length > 0 ? (
         <section className="mt-10">
-          <h2 className="text-xl font-bold tracking-tight font-display">In my own words</h2>
+          <h2 className="text-xl font-bold tracking-tight font-display" data-reveal>In my own words</h2>
           <div className="mt-4 space-y-4">
             {fight.statements.map((s, i) => {
               if (s.kind === "tweet" || s.kind === "video") {
@@ -146,7 +156,7 @@ export default async function FightPage(props: { params: Promise<{ slug: string 
               return (
                 <blockquote
                   key={i}
-                  className="border-l-4 border-[var(--color-accent)] pl-4 py-1 text-[var(--color-ink-soft)]"
+                  className="border-l-4 border-[var(--color-gold)] pl-4 py-1 text-[var(--color-ink-soft)]"
                 >
                   <p className="text-lg leading-relaxed">&ldquo;{s.text}&rdquo;</p>
                   {s.sourceUrl ? (
@@ -154,7 +164,7 @@ export default async function FightPage(props: { params: Promise<{ slug: string 
                       href={s.sourceUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-1 inline-block text-xs font-semibold text-[var(--color-accent)] hover:underline"
+                      className="mt-1 inline-block text-xs font-semibold text-[var(--color-gold)] hover:underline"
                     >
                       {s.sourceLabel ?? "Source"}
                       {s.date ? ` · ${s.date}` : ""} →
@@ -169,7 +179,7 @@ export default async function FightPage(props: { params: Promise<{ slug: string 
 
       {receipts.length > 0 ? (
         <section className="mt-10">
-          <h2 className="text-xl font-bold tracking-tight font-display">The receipts</h2>
+          <h2 className="text-xl font-bold tracking-tight font-display" data-reveal>The receipts</h2>
           <p className="mt-1 text-sm text-[var(--color-muted)]">
             Not talk — documented, on this site.
           </p>
@@ -178,12 +188,12 @@ export default async function FightPage(props: { params: Promise<{ slug: string 
               <Link
                 key={p.slug}
                 href={`/posts/${p.slug}`}
-                className="block rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 hover:border-[var(--color-accent)] transition"
+                className="block rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 hover:border-[var(--color-gold)] transition"
               >
                 <p className="text-sm font-bold text-[var(--color-ink)] leading-snug">
                   {p.title ?? "Read the post"}
                 </p>
-                <span className="mt-1 inline-block text-xs font-semibold text-[var(--color-accent)]">
+                <span className="mt-1 inline-block text-xs font-semibold text-[var(--color-gold)]">
                   Read it →
                 </span>
               </Link>
@@ -198,7 +208,7 @@ export default async function FightPage(props: { params: Promise<{ slug: string 
             <Link
               key={l.href}
               href={l.href}
-              className="rounded-full border-2 border-[var(--color-line)] px-4 py-2 text-sm font-bold text-[var(--color-ink-soft)] hover:border-[var(--color-accent)]"
+              className="btn-ghost rounded-full px-4 py-2 text-sm"
             >
               {l.label} →
             </Link>
@@ -206,7 +216,7 @@ export default async function FightPage(props: { params: Promise<{ slug: string 
         </section>
       ) : null}
 
-      <section className="mt-10 rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-6 sm:p-8">
+      <section className="panel mt-10 p-6 sm:p-8" data-reveal>
         <h2 className="text-xl sm:text-2xl font-bold tracking-tight font-display">
           Take this fight home.
         </h2>
@@ -218,13 +228,13 @@ export default async function FightPage(props: { params: Promise<{ slug: string 
         <div className="mt-5 flex flex-wrap gap-3">
           <Link
             href="/book/preorder"
-            className="rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
+            className="btn-accent rounded-full px-5 py-2.5 text-sm"
           >
             Get the Book →
           </Link>
           <Link
             href="/submit"
-            className="rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-cream)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
+            className="btn-blue rounded-full px-5 py-2.5 text-sm font-bold"
           >
             Send a tip →
           </Link>
@@ -232,7 +242,7 @@ export default async function FightPage(props: { params: Promise<{ slug: string 
       </section>
 
       <section className="mt-10 border-t border-[var(--color-line)] pt-6">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-muted)] font-bold">
+        <p className="eyebrow" data-reveal>
           The other fights
         </p>
         <div className="mt-3 grid gap-2 sm:grid-cols-2">
@@ -240,9 +250,9 @@ export default async function FightPage(props: { params: Promise<{ slug: string 
             <Link
               key={f.slug}
               href={`/fights/${f.slug}`}
-              className="block rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 hover:border-[var(--color-accent)] transition"
+              className="block rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 hover:border-[var(--color-gold)] transition"
             >
-              <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+              <p className="eyebrow">
                 {f.tag}
               </p>
               <p className="mt-1 text-sm font-bold text-[var(--color-ink)]">{f.title}</p>

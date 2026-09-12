@@ -71,22 +71,24 @@ export function FuelMeter({ initial }: { initial: FuelStatus }) {
 
   return (
     <div
-      className={`rounded-2xl border bg-[var(--color-cream)]/[0.05] p-5 transition-shadow sm:p-6 ${
-        flash ? "border-[var(--color-gold-bright)] shadow-[0_0_0_4px_rgba(225,189,91,0.25)]" : "border-[var(--color-gold-bright)]/40"
+      className={`rounded-2xl border bg-[var(--color-surface)] p-5 transition-shadow sm:p-6 ${
+        flash
+          ? "border-[var(--color-gold-bright)] shadow-[0_0_0_4px_var(--color-support-glow),0_20px_50px_rgba(0,0,0,0.4)]"
+          : "border-[var(--color-line)] shadow-[0_20px_50px_rgba(0,0,0,0.4)]"
       }`}
       data-fuel-meter
       aria-live="polite"
     >
       <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
         <div>
-          <p className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-[var(--color-gold-bright)]">
+          <p className="eyebrow flex items-center gap-2">
             <span className="relative flex h-2.5 w-2.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-live)] opacity-75" />
               <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[var(--color-live)]" />
             </span>
             {month}&apos;s overage tank · live
           </p>
-          <p className="mt-1 font-display text-4xl font-black tabular-nums tracking-tight text-[var(--color-cream)] sm:text-5xl" data-fuel-month>
+          <p className="display mt-1 text-4xl tabular-nums text-[var(--color-gold)] sm:text-5xl" data-fuel-month>
             {usdWhole(shown)}
             {target > 0 ? <span className="text-xl font-bold text-[var(--color-ink-soft)] sm:text-2xl"> of {usdWhole(target)}</span> : null}
           </p>
@@ -106,9 +108,9 @@ export function FuelMeter({ initial }: { initial: FuelStatus }) {
           </p>
         </div>
       </div>
-      <div className="mt-4 h-4 w-full overflow-hidden rounded-full bg-[var(--color-cream)]/10">
+      <div className="mt-4 h-4 w-full overflow-hidden rounded-full bg-[var(--color-line-soft)]">
         <div
-          className="h-full rounded-full bg-[var(--color-gold-bright)] transition-[width] duration-700"
+          className="h-full rounded-full bg-[var(--color-gold)] transition-[width] duration-700"
           style={{ width: `${pct}%` }}
           aria-hidden
         />
@@ -125,7 +127,7 @@ export function FuelMeter({ initial }: { initial: FuelStatus }) {
           {status.recent.map((r, i) => (
             <li
               key={`${r.name}-${r.at}-${i}`}
-              className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-cream)]/10 bg-[var(--color-cream)]/[0.06] px-3 py-1 text-xs text-[var(--color-cream)]"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-line-soft)] bg-[var(--color-surface-2)] px-3 py-1 text-xs text-[var(--color-cream)]"
             >
               <span className="font-bold">{r.name}</span>
               <span className="text-[var(--color-ink-soft)]">{r.tier.toLowerCase()}</span>

@@ -160,7 +160,7 @@ export function CaseUploadForm() {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="e.g. Motion for Reconsideration of Detention Order"
-          className="w-full rounded-md border border-[var(--color-line)] px-3 py-2 text-sm"
+          className="w-full rounded-md border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm"
         />
       </div>
 
@@ -170,7 +170,7 @@ export function CaseUploadForm() {
           <select
             value={docType}
             onChange={(e) => setDocType(e.target.value as DocType)}
-            className="w-full rounded-md border border-[var(--color-line)] px-3 py-2 text-sm"
+            className="w-full rounded-md border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm"
           >
             {DOC_TYPES.map((t) => (
               <option key={t.value} value={t.value}>
@@ -187,7 +187,7 @@ export function CaseUploadForm() {
             type="date"
             value={docDate}
             onChange={(e) => setDocDate(e.target.value)}
-            className="w-full rounded-md border border-[var(--color-line)] px-3 py-2 text-sm"
+            className="w-full rounded-md border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm"
           />
         </div>
       </div>
@@ -201,7 +201,7 @@ export function CaseUploadForm() {
           onChange={(e) => setDescription(e.target.value)}
           rows={3}
           placeholder="What is this and why does it matter?"
-          className="w-full rounded-md border border-[var(--color-line)] px-3 py-2 text-sm"
+          className="w-full rounded-md border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm"
         />
       </div>
 
@@ -213,7 +213,7 @@ export function CaseUploadForm() {
           value={source}
           onChange={(e) => setSource(e.target.value)}
           placeholder='e.g. "US District Court / PACER" or "Personal scan"'
-          className="w-full rounded-md border border-[var(--color-line)] px-3 py-2 text-sm"
+          className="w-full rounded-md border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm"
         />
       </div>
 
@@ -226,8 +226,8 @@ export function CaseUploadForm() {
             className={[
               "rounded-full px-4 py-1.5 text-xs font-semibold transition border",
               visibility === "public"
-                ? "bg-[var(--color-accent)] text-[var(--color-cream)] border-transparent"
-                : "border-[var(--color-line)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)]",
+                ? "bg-[var(--color-blue)] text-[var(--color-cream)] border-transparent"
+                : "border-[var(--color-line)] text-[var(--color-ink-soft)] hover:border-[var(--color-gold)]",
             ].join(" ")}
           >
             Public
@@ -238,8 +238,8 @@ export function CaseUploadForm() {
             className={[
               "rounded-full px-4 py-1.5 text-xs font-semibold transition border",
               visibility === "private"
-                ? "bg-[var(--color-accent)] text-[var(--color-cream)] border-transparent"
-                : "border-[var(--color-line)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)]",
+                ? "bg-[var(--color-blue)] text-[var(--color-cream)] border-transparent"
+                : "border-[var(--color-line)] text-[var(--color-ink-soft)] hover:border-[var(--color-gold)]",
             ].join(" ")}
           >
             Private (admin only)

@@ -15,7 +15,7 @@ export function MobileSupportBar() {
     return (
       <div
         data-mobile-support-bar
-        className="rrn-mobile-support-bar fixed bottom-0 left-0 right-0 z-10 border-t border-[var(--color-gold-bright)]/50 bg-[var(--color-surface)]/95 px-3 pt-2.5 pb-[calc(0.625rem+env(safe-area-inset-bottom))] shadow-[0_-10px_28px_rgba(7,17,38,0.4)] backdrop-blur-xl lg:hidden"
+        className="rrn-mobile-support-bar fixed bottom-0 left-0 right-0 z-10 border-t border-[var(--color-gold-bright)]/50 bg-[var(--color-surface)]/95 px-3 pt-2.5 pb-[calc(0.625rem+env(safe-area-inset-bottom))] shadow-[0_-10px_28px_rgba(0,0,0,0.45)] backdrop-blur-xl lg:hidden"
       >
         <a
           href="#fuel"
@@ -30,7 +30,7 @@ export function MobileSupportBar() {
   return (
     <div
       data-mobile-support-bar
-      className="rrn-mobile-support-bar fixed bottom-0 left-0 right-0 z-10 border-t border-[var(--color-line)] bg-[var(--color-paper)]/95 px-3 pt-2.5 pb-[calc(0.625rem+env(safe-area-inset-bottom))] shadow-[0_-10px_28px_rgba(26,20,16,0.14)] backdrop-blur-xl lg:hidden"
+      className="rrn-mobile-support-bar fixed bottom-0 left-0 right-0 z-10 border-t border-[var(--color-line)] bg-[var(--color-surface)]/95 px-3 pt-2.5 pb-[calc(0.625rem+env(safe-area-inset-bottom))] shadow-[0_-10px_28px_rgba(0,0,0,0.4)] backdrop-blur-xl lg:hidden"
     >
       <nav
         aria-label="Mobile quick actions"

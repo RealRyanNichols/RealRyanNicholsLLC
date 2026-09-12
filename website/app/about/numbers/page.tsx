@@ -11,7 +11,10 @@ export const metadata = pageMetadata({
 function Q({ q, children }: { q: string; children: React.ReactNode }) {
   return (
     <section className="mt-8">
-      <h2 className="text-xl sm:text-2xl font-bold tracking-tight font-display text-[var(--color-ink)]">
+      <h2
+        className="text-xl sm:text-2xl font-bold tracking-tight font-display text-[var(--color-ink)]"
+        data-reveal
+      >
         {q}
       </h2>
       <div className="mt-2 space-y-3 text-[var(--color-ink-soft)] leading-relaxed">{children}</div>
@@ -22,12 +25,22 @@ function Q({ q, children }: { q: string; children: React.ReactNode }) {
 export default function NumbersPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+      <p className="eyebrow" data-reveal>
         Transparency
       </p>
-      <h1 className="mt-2 text-4xl sm:text-5xl font-bold tracking-tight leading-[1.05]">
+      <h1
+        className="mt-2 text-4xl sm:text-5xl font-bold tracking-tight leading-[1.05]"
+        data-reveal
+        style={{ "--d": 1 } as React.CSSProperties}
+      >
         How the numbers work
       </h1>
+      <div
+        className="mt-4 h-[3px] w-[4.5rem] bg-[var(--color-gold)]"
+        aria-hidden
+        data-reveal
+        style={{ "--d": 2 } as React.CSSProperties}
+      />
       <p className="mt-4 text-base sm:text-lg text-[var(--color-ink-soft)] leading-relaxed">
         I publish my own reach numbers, so I owe you a plain explanation of what
         they mean. No black box. Here is exactly what each number on this site

@@ -20,7 +20,7 @@ export async function FuelAsk({ className = "" }: { className?: string }) {
   return (
     <aside
       className={[
-        "relative overflow-hidden rounded-2xl border-2 border-[var(--color-gold-bright)] bg-[var(--color-surface)] p-5 text-[var(--color-cream)] shadow-md sm:p-6",
+        "relative overflow-hidden rounded-2xl border-2 border-[var(--color-gold-bright)] bg-[var(--color-surface)] p-5 text-[var(--color-cream)] shadow-[0_20px_50px_rgba(0,0,0,0.4)] sm:p-6",
         className,
       ].join(" ")}
       aria-labelledby="fuel-ask-title"
@@ -31,9 +31,7 @@ export async function FuelAsk({ className = "" }: { className?: string }) {
         aria-hidden
       />
       <div className="relative">
-        <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-gold-bright)]">
-          Before you go
-        </p>
+        <p className="eyebrow">Before you go</p>
         <h2
           id="fuel-ask-title"
           className="mt-1 font-display text-2xl font-black leading-tight tracking-tight text-[var(--color-cream)] sm:text-3xl"
@@ -63,14 +61,14 @@ export async function FuelAsk({ className = "" }: { className?: string }) {
             <Link
               key={t.slug}
               href={`/fuel?tier=${t.slug}#fuel`}
-              className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-gold-bright)] px-5 py-3 font-display text-lg font-black tabular-nums text-[var(--color-navy)] transition hover:brightness-105"
+              className="btn-accent inline-flex min-h-12 items-center justify-center rounded-lg px-5 py-3 font-display text-lg font-black tabular-nums"
             >
               {usdWhole(t.amountCents)}
             </Link>
           ))}
           <Link
             href="/fuel"
-            className="inline-flex min-h-12 items-center justify-center rounded-lg border border-[var(--color-cream)]/25 px-5 py-3 text-sm font-bold text-[var(--color-cream)] transition hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)]"
+            className="btn-ghost inline-flex min-h-12 items-center justify-center rounded-lg px-5 py-3 text-sm font-bold"
           >
             See what it buys →
           </Link>

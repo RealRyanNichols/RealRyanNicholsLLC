@@ -43,7 +43,7 @@ export function BookStickyBuyBar({
       aria-hidden={!show}
     >
       <div className="mx-auto max-w-3xl px-3 pb-3">
-        <div className="flex items-center gap-3 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-3 shadow-2xl">
+        <div className="flex items-center gap-3 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)]/95 p-3 shadow-[0_-10px_40px_rgba(0,0,0,0.55)] backdrop-blur">
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-black text-[var(--color-ink)]">
               Fighting Shadows — launch price
@@ -52,12 +52,12 @@ export function BookStickyBuyBar({
               {listLabel ? (
                 <span className="line-through opacity-60">{listLabel}</span>
               ) : null}{" "}
-              <span className="text-[var(--color-accent)]">{priceLabel}</span>
+              <span className="font-black text-[var(--color-gold)]">{priceLabel}</span>
             </p>
           </div>
           <Link
             href={href}
-            className="inline-flex min-h-11 shrink-0 items-center rounded-lg bg-[var(--color-accent)] px-4 py-2.5 text-sm font-black text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)]"
+            className="btn-accent inline-flex min-h-11 shrink-0 items-center rounded-lg px-4 py-2.5 text-sm font-black"
           >
             {cta}
           </Link>

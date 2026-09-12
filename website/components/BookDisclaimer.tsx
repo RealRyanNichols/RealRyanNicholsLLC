@@ -4,9 +4,7 @@ export function BookDisclaimer({ className = "" }: { className?: string }) {
     <div
       className={`rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 text-sm leading-relaxed text-[var(--color-ink-soft)] sm:p-5 ${className}`}
     >
-      <p className="text-xs font-black uppercase tracking-[0.18em] text-[var(--color-muted)]">
-        A note on the record
-      </p>
+      <p className="eyebrow">A note on the record</p>
       <p className="mt-2">
         <strong className="text-[var(--color-ink)]">Fighting Shadows</strong> is
         a first-person memoir and documented account. Some events are based on

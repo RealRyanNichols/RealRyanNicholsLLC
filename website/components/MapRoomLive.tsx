@@ -126,8 +126,8 @@ function BigCounter({
   sub?: string;
 }) {
   return (
-    <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2.5 sm:rounded-xl sm:px-4 sm:py-3">
-      <div className="text-2xl font-bold tabular-nums tracking-tight leading-none text-[var(--color-ink)] sm:text-4xl">
+    <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2.5 shadow-[0_20px_50px_rgba(0,0,0,0.4)] sm:rounded-xl sm:px-4 sm:py-3">
+      <div className="display text-3xl tabular-nums text-[var(--color-gold)] sm:text-4xl">
         {value.toLocaleString()}
       </div>
       <div className="mt-1.5 text-[9px] uppercase tracking-wider text-[var(--color-muted)] font-bold sm:mt-2 sm:text-[10px]">
@@ -152,8 +152,8 @@ function DayCounter({
   sub: string;
 }) {
   return (
-    <div className="rounded-lg border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] px-3 py-2.5 sm:rounded-xl sm:px-4 sm:py-3">
-      <div className="text-2xl font-bold tabular-nums tracking-tight leading-none text-[var(--color-blue-ink)] sm:text-4xl">
+    <div className="rounded-lg border border-[var(--color-blue)] bg-[var(--color-blue-soft)] px-3 py-2.5 shadow-[0_20px_50px_rgba(0,0,0,0.4)] sm:rounded-xl sm:px-4 sm:py-3">
+      <div className="display text-3xl tabular-nums text-[var(--color-blue-ink)] sm:text-4xl">
         {value.toLocaleString()}
       </div>
       <div className="mt-1.5 text-[9px] uppercase tracking-wider text-[var(--color-blue-ink)] font-bold sm:mt-2 sm:text-[10px]">

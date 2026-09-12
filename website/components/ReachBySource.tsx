@@ -26,13 +26,15 @@ type Overview = {
 // the "Total reach" tile all say the same number of days.
 const REACH_WINDOW_DAYS = 90;
 
+// Tokens, not hex: these become inline backgrounds in the DOM. Same six
+// colors ReachLineChart draws its strands with, so legend and chart agree.
 const CLASS_META: { key: string; label: string; color: string }[] = [
   { key: "human", label: "Humans", color: "var(--color-accent)" },
-  { key: "search-bot", label: "Search bots", color: "#3b82f6" },
-  { key: "ai-bot", label: "AI agents", color: "#a855f7" },
-  { key: "social-bot", label: "Social previews", color: "#22c55e" },
-  { key: "uptime-bot", label: "Uptime/tools", color: "#9ca3af" },
-  { key: "unknown", label: "Unclassified", color: "#6b7280" },
+  { key: "search-bot", label: "Search bots", color: "var(--color-sky)" },
+  { key: "ai-bot", label: "AI agents", color: "var(--color-violet)" },
+  { key: "social-bot", label: "Social previews", color: "var(--color-success)" },
+  { key: "uptime-bot", label: "Uptime/tools", color: "var(--color-ink-soft)" },
+  { key: "unknown", label: "Unclassified", color: "var(--color-muted)" },
 ];
 
 function fmt(n: number | null | undefined): string {
@@ -218,7 +220,7 @@ function pct(part: number, whole: number): string {
 }
 
 function classColor(key: string): string {
-  return CLASS_META.find((c) => c.key === key)?.color ?? "#6b7280";
+  return CLASS_META.find((c) => c.key === key)?.color ?? "var(--color-muted)";
 }
 
 function MiniStat({ label, value, sub }: { label: string; value: string; sub?: string }) {

@@ -47,7 +47,7 @@ export function BookExitIntent({
       onClick={() => setOpen(false)}
     >
       <div
-        className="relative w-full max-w-md rounded-2xl border border-[var(--color-gold-bright)]/50 bg-[var(--color-surface)] p-6 shadow-2xl"
+        className="relative w-full max-w-md rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)]/95 p-6 shadow-[0_30px_80px_rgba(0,0,0,0.6)] backdrop-blur"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -58,9 +58,7 @@ export function BookExitIntent({
         >
           ×
         </button>
-        <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-gold-bright)]">
-          Before you go
-        </p>
+        <p className="eyebrow">Before you go</p>
         <h2 className="mt-2 font-display text-2xl font-black leading-tight text-[var(--color-cream)]">
           They tried to bury this story. I wrote it down.
         </h2>
@@ -76,14 +74,14 @@ export function BookExitIntent({
         <Link
           href="/book/preorder"
           onClick={() => setOpen(false)}
-          className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--color-gold-bright)] px-5 py-3 text-base font-black text-[var(--color-navy)] transition hover:brightness-105"
+          className="btn-accent mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-lg px-5 py-3 text-base font-black"
         >
           Pre-order for {priceLabel}
         </Link>
         <div className="my-4 flex items-center gap-3 text-[11px] font-black uppercase tracking-wider text-[var(--color-muted)]">
-          <span className="h-px flex-1 bg-[var(--color-cream)]/15" />
+          <span className="h-px flex-1 bg-[var(--color-line-soft)]" />
           or just get on the list
-          <span className="h-px flex-1 bg-[var(--color-cream)]/15" />
+          <span className="h-px flex-1 bg-[var(--color-line-soft)]" />
         </div>
         <BookEmailSignup source="book_exit_intent" />
       </div>

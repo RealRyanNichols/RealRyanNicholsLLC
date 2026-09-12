@@ -123,7 +123,7 @@ export function J6Top25Ballot({
           <p className="mt-1 text-sm leading-relaxed">
             Voting requires an account with a confirmed email address so each person has one active vote.
           </p>
-          <Link href={loginHref} className="mt-4 inline-flex rounded-xl bg-[#0a1831] px-5 py-3 text-sm font-black text-[var(--color-cream)]">
+          <Link href={loginHref} className="btn-blue mt-4 inline-flex rounded-xl px-5 py-3 text-sm font-black">
             Sign in or register →
           </Link>
         </div>
@@ -156,7 +156,7 @@ export function J6Top25Ballot({
               }`}
             >
               <div className="flex gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[var(--color-surface)] text-xl font-black text-[var(--color-gold-bright)]">
+                <div className="display flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-[var(--color-line)] bg-[var(--color-surface-2)] text-2xl text-[var(--color-gold)]">
                   {index + 1}
                 </div>
                 {candidate.photo_url ? (
@@ -164,7 +164,7 @@ export function J6Top25Ballot({
                   <img
                     src={candidate.photo_url}
                     alt={`${candidate.display_name} profile`}
-                    className="h-20 w-16 shrink-0 rounded-xl object-cover"
+                    className="h-20 w-16 shrink-0 rounded-xl border border-[var(--color-line)] object-cover"
                   />
                 ) : (
                   <div className="flex h-20 w-16 shrink-0 items-center justify-center rounded-xl bg-[var(--color-blue-soft)] text-xl font-black text-[var(--color-blue-ink)]">
@@ -183,7 +183,7 @@ export function J6Top25Ballot({
                         <p className="mt-1 text-xs leading-relaxed text-[var(--color-muted)]">{candidate.role}</p>
                       ) : null}
                     </div>
-                    <span className="rounded-full bg-[#0a1831] px-3 py-1 text-xs font-black text-[var(--color-cream)]">
+                    <span className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-1 text-xs font-black text-[var(--color-gold)]">
                       {candidate.vote_count.toLocaleString()} {candidate.vote_count === 1 ? "vote" : "votes"}
                     </span>
                   </div>
@@ -207,7 +207,7 @@ export function J6Top25Ballot({
                       type="button"
                       disabled={!signedIn || !verifiedEmail || isPending || selected}
                       onClick={() => submitVote(candidate.id)}
-                      className="min-h-11 rounded-lg bg-[var(--color-accent)] px-4 py-2 text-xs font-black text-[var(--color-cream)] disabled:cursor-not-allowed disabled:opacity-50"
+                      className="btn-blue min-h-11 rounded-lg px-4 py-2 text-xs font-black disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       {selected ? "Your vote" : isPending ? "Saving…" : "Vote"}
                     </button>
@@ -219,8 +219,8 @@ export function J6Top25Ballot({
         })}
       </div>
 
-      <section className="mt-10 rounded-3xl border-2 border-[var(--color-line-soft)] bg-[var(--color-surface-2)] p-6 sm:p-8">
-        <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-danger)]">Do not see your choice?</p>
+      <section className="mt-10 rounded-3xl border-2 border-[var(--color-line)] bg-[var(--color-surface-2)] p-6 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.4)]" data-reveal>
+        <p className="eyebrow">Do not see your choice?</p>
         <h2 className="mt-2 font-display text-3xl font-black">Write someone in.</h2>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[var(--color-ink-soft)]">
           Enter a full name. A write-in becomes part of the live ranking and receives your active vote. Duplicate names and obvious aliases are consolidated during review.
@@ -238,7 +238,7 @@ export function J6Top25Ballot({
             type="button"
             onClick={submitWriteIn}
             disabled={!signedIn || !verifiedEmail || isPending}
-            className="min-h-12 rounded-xl bg-[var(--color-surface)] px-6 font-black text-[var(--color-cream)] disabled:cursor-not-allowed disabled:opacity-50"
+            className="btn-accent min-h-12 rounded-xl px-6 font-black disabled:cursor-not-allowed disabled:opacity-50"
           >
             Add write-in and vote
           </button>

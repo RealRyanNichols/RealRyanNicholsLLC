@@ -57,7 +57,7 @@ export default async function UserProfilePage({
         </Link>
       </nav>
 
-      <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 sm:p-8">
+      <div className="panel p-6 sm:p-8" data-reveal>
         <div className="flex flex-col sm:flex-row items-start gap-5">
           {profile.avatar_url ? (
             <Image
@@ -65,7 +65,7 @@ export default async function UserProfilePage({
               alt={profile.display_name ?? `@${profile.username}`}
               width={120}
               height={120}
-              className="h-24 w-24 rounded-full object-cover flex-shrink-0 ring-2 ring-[var(--color-line)]"
+              className="h-24 w-24 rounded-full object-cover flex-shrink-0 ring-2 ring-[var(--color-gold)]"
               unoptimized={profile.avatar_url.startsWith("http")}
             />
           ) : (

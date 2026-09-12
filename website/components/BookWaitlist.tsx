@@ -4,7 +4,7 @@ import { useState } from "react";
 import { trackEvent } from "@/lib/analytics";
 
 const inputClass =
-  "w-full rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] px-3.5 py-3 text-base text-[var(--color-ink)] outline-none transition focus:border-[var(--color-accent)]";
+  "w-full rounded-md border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3.5 py-3 text-base text-[var(--color-ink)] outline-none transition focus:border-[var(--color-accent)]";
 
 export function BookWaitlist({
   source = "book_page",
@@ -128,7 +128,7 @@ export function BookWaitlist({
       <button
         type="submit"
         disabled={busy}
-        className="min-h-12 rounded-md border-2 border-[var(--color-accent)] bg-[var(--color-accent)] px-4 py-3 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)] disabled:opacity-60"
+        className="btn-accent min-h-12 rounded-md px-4 py-3 text-base font-black disabled:opacity-60"
       >
         {busy ? "Saving your spot..." : "Reserve my spot + free chapter"}
       </button>

@@ -32,10 +32,8 @@ export function CaseInfoCard({ person }: { person: CasePerson }) {
 
   return (
     <section className="mt-10 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-ink)] font-bold">
-        The case file
-      </p>
-      <h2 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight">
+      <p className="eyebrow">The case file</p>
+      <h2 className="mt-1 font-display text-xl sm:text-2xl font-bold tracking-tight">
         On the record
       </h2>
 
@@ -83,7 +81,7 @@ export function CaseInfoCard({ person }: { person: CasePerson }) {
             {(person.charges ?? []).map((c) => (
               <li
                 key={c}
-                className="text-sm font-mono text-[var(--color-ink)] before:content-['§'] before:mr-2 before:text-[var(--color-navy)]"
+                className="text-sm font-mono text-[var(--color-ink)] before:content-['§'] before:mr-2 before:text-[var(--color-gold)]"
               >
                 {c}
               </li>

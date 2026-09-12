@@ -105,16 +105,21 @@ export default async function SubmitPage({
           sizes="100vw"
           className="object-cover opacity-[0.18]"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--color-paper)_0%,rgba(247,243,235,0.94)_42%,rgba(247,243,235,0.78)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--color-paper)_0%,var(--color-paper)_46%,transparent_100%)]" />
 
         <div className="rrn-hero-inner grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-8">
           <div className="flex flex-col justify-center">
-            <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-accent)]">
+            <p className="eyebrow" data-reveal>
               Real Ryan Nichols LLC / Tip line
             </p>
-            <h1 className="rrn-hero-title mt-3 max-w-2xl">
+            <h1
+              className="display mt-3 max-w-2xl text-4xl sm:text-5xl lg:text-6xl"
+              data-reveal
+              style={{ "--d": 1 } as React.CSSProperties}
+            >
               Send the record before it disappears.
             </h1>
+            <div className="mt-4 h-[3px] w-[4.5rem] bg-[var(--color-gold)]" aria-hidden />
             <p className="rrn-lead mt-4 max-w-xl">
               If you have screenshots, court links, videos, filings, names,
               dates, or a story people keep burying, send it here. The goal is
@@ -151,7 +156,7 @@ export default async function SubmitPage({
 
           <div className="rrn-card p-4 shadow-xl sm:p-5">
             <div className="mb-4 border-b border-[var(--color-line)] pb-4">
-              <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-muted)]">
+              <p className="eyebrow">
                 No account required
               </p>
               <h2 className="mt-1 font-display text-2xl font-bold tracking-normal">
@@ -169,7 +174,7 @@ export default async function SubmitPage({
       <section className="rrn-section">
         <div className="grid gap-6 lg:grid-cols-[0.78fr_1.22fr] lg:gap-8">
           <div>
-            <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-accent)]">
+            <p className="eyebrow">
               What we do with tips
             </p>
             <h2 className="rrn-section-title mt-2">
@@ -211,7 +216,7 @@ export default async function SubmitPage({
       <section className="border-y border-[var(--color-line)] bg-[var(--color-surface)]">
         <div className="rrn-section grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8">
           <div>
-            <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-accent)]">
+            <p className="eyebrow">
               What to send
             </p>
             <h2 className="rrn-section-title mt-2">
@@ -221,7 +226,7 @@ export default async function SubmitPage({
               {qualityChecks.map((item) => (
                 <div
                   key={item}
-                  className="flex items-center gap-3 border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2"
+                  className="flex items-center gap-3 border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2"
                 >
                   <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-[var(--color-accent)]" />
                   <span className="text-sm font-bold text-[var(--color-ink)]">
@@ -232,7 +237,7 @@ export default async function SubmitPage({
             </div>
           </div>
 
-          <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-4">
+          <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] p-4">
             <h3 className="font-display text-xl font-bold tracking-normal">
               Good leads include:
             </h3>
@@ -249,9 +254,9 @@ export default async function SubmitPage({
       </section>
 
       <section className="rrn-section">
-        <div className="grid gap-5 rounded-lg border border-[var(--color-line)] bg-[var(--color-ink)] p-5 text-[var(--color-cream)] sm:p-6 lg:grid-cols-[1fr_auto] lg:items-center">
+        <div className="grid gap-5 rounded-lg border border-[var(--color-line)] bg-[var(--color-navy)] p-5 text-[var(--color-cream)] sm:p-6 lg:grid-cols-[1fr_auto] lg:items-center">
           <div>
-            <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-cream)]/70">
+            <p className="eyebrow">
               Ask for more
             </p>
             <h2 className="mt-2 font-display text-2xl font-bold leading-tight tracking-normal sm:text-3xl">
@@ -272,7 +277,7 @@ export default async function SubmitPage({
             </Link>
             <Link
               href="/contact"
-              className="rrn-tap rounded-lg border border-[var(--color-cream)]/40 px-4 py-2 text-sm font-bold text-[var(--color-cream)] transition hover:bg-[var(--color-cream)]/10"
+              className="rrn-tap rounded-lg border border-[var(--color-line)] px-4 py-2 text-sm font-bold text-[var(--color-cream)] transition hover:border-[var(--color-gold)] hover:bg-[var(--color-gold-soft)]"
             >
               Contact Ryan
             </Link>

@@ -47,10 +47,8 @@ export function J6DefendantsView({
       <div className="mb-5 overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)]">
         <div className="grid gap-px bg-[var(--color-line)] md:grid-cols-[1fr_0.8fr]">
           <div className="bg-[var(--color-surface)] p-5">
-            <p className="text-xs uppercase tracking-wider text-[var(--color-ink)] font-bold">
-              Anti-Weaponization Case Builder
-            </p>
-            <h2 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight">
+            <p className="eyebrow">Anti-Weaponization Case Builder</p>
+            <h2 className="mt-1 font-display text-xl sm:text-2xl font-bold tracking-tight">
               {heading}
             </h2>
             <p className="mt-2 text-sm text-[var(--color-ink-soft)] leading-relaxed max-w-2xl">
@@ -130,12 +128,24 @@ export function J6DefendantsView({
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {people.map((p) => {
+            // Each badge carries its own ink: gold and green take navy type,
+            // blue takes cream. A cream label on a gold or green chip is
+            // unreadable.
             const badge =
               p.claim_status === "verified"
-                ? { label: "Verified", bg: "var(--color-success)" }
+                ? {
+                    label: "Verified",
+                    cls: "bg-[var(--color-success)] text-[var(--color-navy)]",
+                  }
                 : p.claim_status === "pending"
-                  ? { label: "Claim pending", bg: "var(--color-blue)" }
-                  : { label: "Ready to claim", bg: "var(--color-support)" };
+                  ? {
+                      label: "Claim pending",
+                      cls: "bg-[var(--color-blue)] text-[var(--color-cream)]",
+                    }
+                  : {
+                      label: "Ready to claim",
+                      cls: "bg-[var(--color-gold)] text-[var(--color-navy)]",
+                    };
             return (
               <Link
                 key={p.id}
@@ -150,8 +160,7 @@ export function J6DefendantsView({
                       {p.name}
                     </h3>
                     <span
-                      className="whitespace-nowrap rounded-md px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--color-cream)]"
-                      style={{ background: badge.bg }}
+                      className={`whitespace-nowrap rounded-md px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${badge.cls}`}
                     >
                       {badge.label}
                     </span>

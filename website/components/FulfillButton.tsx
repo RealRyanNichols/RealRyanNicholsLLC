@@ -33,7 +33,7 @@ export function FulfillButton({
       type="button"
       disabled={busy}
       onClick={toggle}
-      className="rounded-lg border-2 border-[var(--color-accent)] px-3 py-1 text-xs font-bold text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-cream)] transition disabled:opacity-60"
+      className="btn-ghost rounded-lg px-3 py-1 text-xs font-bold disabled:opacity-60"
     >
       {busy ? "…" : fulfilled ? "Mark unfulfilled" : "Mark fulfilled"}
     </button>

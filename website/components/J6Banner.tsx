@@ -20,7 +20,10 @@ export async function J6Banner({
     >
       <div className="flex items-center gap-4">
         <div className="flex-shrink-0">
-          <div className="text-3xl sm:text-4xl font-bold tabular-nums tracking-tight text-[var(--color-blue-ink)] group-hover:text-[var(--color-cream)]">
+          <div
+            className="display text-4xl sm:text-5xl tabular-nums text-[var(--color-blue-ink)] group-hover:text-[var(--color-cream)]"
+            data-count={profilesReady > 0 ? profilesReady : undefined}
+          >
             {profilesReady.toLocaleString("en-US")}
           </div>
         </div>

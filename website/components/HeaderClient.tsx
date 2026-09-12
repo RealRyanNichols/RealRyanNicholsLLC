@@ -90,7 +90,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
   return (
     <>
       {!isAdminPath ? <HeaderStatusStrip /> : null}
-      <header className="sticky top-0 z-30 border-b border-[var(--color-line)] bg-[var(--color-paper)]/90 backdrop-blur-xl">
+      <header className="sticky top-0 z-30 border-b border-[var(--color-line)] bg-[var(--color-surface)]/85 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-3 sm:px-5">
           <Link
             href="/"
@@ -117,7 +117,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
                 RN
               </span>
             )}
-            <span className="truncate text-sm font-bold tracking-tight text-[var(--color-ink)] transition group-hover:text-[var(--color-accent)] min-[360px]:text-base">
+            <span className="truncate text-sm font-bold tracking-tight text-[var(--color-ink)] transition group-hover:text-[var(--color-gold)] min-[360px]:text-base">
               Ryan Nichols
             </span>
           </Link>
@@ -134,7 +134,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
               href="/search"
               aria-label="Search"
               aria-current={isActive(pathname, "/search") ? "page" : undefined}
-              className="inline-flex h-9 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-[var(--color-line)] px-3 text-xs font-semibold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-soft)] hover:text-[var(--color-accent)]"
+              className="inline-flex h-9 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-[var(--color-line)] px-3 text-xs font-semibold text-[var(--color-ink-soft)] transition hover:border-[var(--color-gold)] hover:bg-[var(--color-gold-soft)] hover:text-[var(--color-gold)]"
             >
               <MagnifierIcon />
               <span>Search</span>
@@ -192,7 +192,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
             <Link
               href="/search"
               aria-label="Search"
-              className="hidden h-11 w-11 items-center justify-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] min-[360px]:inline-flex"
+              className="hidden h-11 w-11 items-center justify-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink)] transition hover:border-[var(--color-gold)] hover:text-[var(--color-gold)] min-[360px]:inline-flex"
             >
               <MagnifierIcon />
             </Link>
@@ -209,7 +209,7 @@ export function HeaderClient({ avatarUrl, signedIn, isAdmin }: Props) {
               aria-label={open ? "Close menu" : "Open menu"}
               aria-expanded={open}
               aria-controls="mobile-menu"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink)] transition hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
             >
               {open ? <CloseIcon /> : <MenuIcon />}
             </button>
@@ -350,8 +350,8 @@ function NavLink({
       className={[
         "whitespace-nowrap rounded-md px-2.5 py-1.5 font-medium transition",
         active
-          ? "bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
-          : "text-[var(--color-ink-soft)] hover:bg-[var(--color-accent-soft)] hover:text-[var(--color-accent)]",
+          ? "bg-[var(--color-gold-soft)] text-[var(--color-gold)]"
+          : "text-[var(--color-ink-soft)] hover:bg-[var(--color-gold-soft)] hover:text-[var(--color-gold)]",
       ].join(" ")}
     >
       {children}

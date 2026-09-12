@@ -135,7 +135,7 @@ export function TipActions({
         </div>
       ) : null}
 
-      <section className="mt-3 border border-[var(--color-line)] bg-[var(--color-paper)] p-3">
+      <section className="mt-3 border border-[var(--color-line)] bg-[var(--color-surface-2)] p-3">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-muted)]">

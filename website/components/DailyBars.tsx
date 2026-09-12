@@ -17,7 +17,7 @@ export function DailyBars({
   mobileMax = DAILY_BARS_MOBILE_MAX,
   minPct = DAILY_BARS_MIN_PCT,
   heightClass = "h-44",
-  barClass = "bg-[var(--color-accent)]",
+  barClass = "bg-[var(--color-gold-bright)]",
   unit = "views",
 }: {
   rows: DailyBarRow[];
@@ -37,7 +37,7 @@ export function DailyBars({
       data-daily-bars
       data-mobile-max={mobileMax}
       data-min-pct={minPct}
-      className={`flex items-end gap-1 sm:gap-1.5 ${heightClass}`}
+      className={`flex items-end gap-1 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-3 sm:gap-1.5 ${heightClass}`}
     >
       {rows.map((r, i) => {
         const views = r.views ?? 0;

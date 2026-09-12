@@ -50,12 +50,13 @@ export default function CaseReviewPage() {
           sizes="100vw"
           className="object-cover opacity-[0.2]"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--color-paper)_0%,rgba(246,239,223,0.96)_44%,rgba(246,239,223,0.8)_100%)]" />
+        {/* The scrim that lets the hero copy read over the photo: the floor,
+            falling off to the right so the picture stays visible behind the
+            intake panel. */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-paper)] via-[var(--color-paper)]/92 to-[var(--color-paper)]/70" />
         <div className="rrn-hero-inner grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-8">
           <div className="flex flex-col justify-center">
-            <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
-              Case review intake
-            </p>
+            <p className="eyebrow">Case review intake</p>
             <h1 className="rrn-hero-title mt-3 max-w-3xl">
               Get the facts into a form people can follow.
             </h1>
@@ -94,15 +95,15 @@ export default function CaseReviewPage() {
             <Link
               key={item.title}
               href={item.href}
-              className="rrn-card group block min-h-36 p-4 transition hover:border-[var(--color-accent)] sm:p-5"
+              className="rrn-card group block min-h-36 p-4 transition hover:border-[var(--color-gold)] sm:p-5"
             >
-              <h2 className="font-display text-2xl font-black tracking-normal group-hover:text-[var(--color-accent)]">
+              <h2 className="font-display text-2xl font-black tracking-normal group-hover:text-[var(--color-gold)]">
                 {item.title}
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
                 {item.body}
               </p>
-              <p className="mt-4 text-sm font-black text-[var(--color-accent)]">
+              <p className="mt-4 text-sm font-black text-[var(--color-gold)]">
                 {item.cta} -&gt;
               </p>
             </Link>
@@ -113,9 +114,7 @@ export default function CaseReviewPage() {
       <section className="border-y border-[var(--color-line)] bg-[var(--color-surface)]">
         <div className="rrn-section grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
-            <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
-              Response boundaries
-            </p>
+            <p className="eyebrow">Response boundaries</p>
             <h2 className="rrn-section-title mt-2">
               People deserve answers. You still need boundaries.
             </h2>

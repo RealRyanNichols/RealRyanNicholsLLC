@@ -17,10 +17,11 @@ export async function FuelBand({ className = "" }: { className?: string }) {
   return (
     <section
       className={[
-        "relative overflow-hidden rounded-2xl border-2 border-[var(--color-gold-bright)] bg-[var(--color-surface)] p-5 text-[var(--color-cream)] shadow-md sm:p-6",
+        "relative overflow-hidden rounded-2xl border-2 border-[var(--color-gold-bright)] bg-[var(--color-surface)] p-5 text-[var(--color-cream)] shadow-[0_20px_50px_rgba(0,0,0,0.4)] sm:p-6",
         className,
       ].join(" ")}
       aria-labelledby="fuel-band-title"
+      data-reveal
     >
       <div
         className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-[var(--color-gold-bright)]/15 blur-3xl"
@@ -28,9 +29,7 @@ export async function FuelBand({ className = "" }: { className?: string }) {
       />
       <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-gold-bright)]">
-            Token Fund
-          </p>
+          <p className="eyebrow">Token Fund</p>
           <h2
             id="fuel-band-title"
             className="mt-1 font-display text-2xl font-black leading-tight tracking-tight text-[var(--color-cream)] sm:text-3xl"
@@ -48,7 +47,7 @@ export async function FuelBand({ className = "" }: { className?: string }) {
         <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
           <Link
             href="/fuel"
-            className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-gold-bright)] px-6 py-3 text-base font-black text-[var(--color-navy)] transition hover:brightness-105"
+            className="btn-accent inline-flex min-h-12 items-center justify-center rounded-lg px-6 py-3 text-base font-black"
           >
             Fuel the overage →
           </Link>

@@ -19,10 +19,17 @@ import { DAILY_BARS_MOBILE_MAX } from "@/components/DailyBars";
 const tooltipStyle = {
   borderRadius: 8,
   border: "1px solid var(--color-line)",
-  background: "var(--color-paper)",
+  background: "var(--color-surface-2)",
   fontSize: 12,
-  color: "var(--color-ink)",
+  color: "var(--color-cream)",
 };
+
+// Axis ticks and legend read as quiet cream on the dark floor; grid lines and
+// the hover cursor use the quiet in-panel divider.
+const axisTick = { fontSize: 10, fill: "var(--color-muted)" };
+const axisLine = { stroke: "var(--color-line-soft)" };
+const legendStyle = { fontSize: 12, color: "var(--color-muted)" };
+const cursorFill = { fill: "var(--color-line-soft)" };
 
 // Same breakpoint as Tailwind's `sm`, so this chart and the server-rendered
 // DailyBars agree on when a screen is "narrow".
@@ -57,19 +64,25 @@ export function VisitorTrendChart({ data }: { data: TrendDay[] }) {
   const visible = narrow ? data.slice(-DAILY_BARS_MOBILE_MAX) : data;
   const rows = visible.map((d) => ({ ...d, label: d.day.slice(5) }));
   return (
-    <div className="h-72 w-full" data-visitor-trend data-bars={rows.length}>
+    <div
+      className="h-72 w-full rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-3"
+      data-visitor-trend
+      data-bars={rows.length}
+    >
       <ResponsiveContainer width="100%" height="100%">
         <ComposedChart data={rows} margin={{ top: 8, right: 8, bottom: 0, left: -18 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.07)" vertical={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--color-line-soft)" vertical={false} />
           <XAxis
             dataKey="label"
-            tick={{ fontSize: 10 }}
+            tick={axisTick}
+            axisLine={axisLine}
+            tickLine={axisLine}
             interval="preserveStartEnd"
             minTickGap={18}
           />
-          <YAxis tick={{ fontSize: 10 }} width={44} />
-          <Tooltip contentStyle={tooltipStyle} cursor={{ fill: "rgba(0,0,0,0.04)" }} />
-          <Legend wrapperStyle={{ fontSize: 12 }} />
+          <YAxis tick={axisTick} axisLine={axisLine} tickLine={axisLine} width={44} />
+          <Tooltip contentStyle={tooltipStyle} cursor={cursorFill} />
+          <Legend wrapperStyle={legendStyle} />
           <Bar
             dataKey="views"
             name="Views"
@@ -96,25 +109,36 @@ export type SourceRow = { source: string; views: number; visitors: number };
 
 function sourceColor(source: string): string {
   if (source === "Facebook") return "var(--color-brand-facebook)";
-  if (source.startsWith("X")) return "#111827";
+  // X's mark is black on light and cream on dark. This floor is dark.
+  if (source.startsWith("X")) return "var(--color-cream)";
   if (source.includes("Google")) return "var(--color-brand-google)";
-  if (source.startsWith("Direct")) return "#9ca3af";
-  if (source === "Internal links") return "var(--color-line)";
+  if (source.startsWith("Direct")) return "var(--color-muted)";
+  if (source === "Internal links") return "var(--color-blue-ink)";
   if (source.includes("search")) return "var(--color-sky)";
   if (source === "Instagram") return "var(--color-brand-instagram)";
   if (source === "Truth Social") return "var(--color-gold-bright)";
-  if (source === "Gab") return "#28a745";
-  return "#7fa9e3";
+  if (source === "Gab") return "var(--color-success)";
+  return "var(--color-violet)";
 }
 
 export function TrafficSourcesChart({ data }: { data: SourceRow[] }) {
   return (
-    <div style={{ height: Math.max(200, data.length * 34) }} className="w-full">
+    <div
+      style={{ height: Math.max(200, data.length * 34) }}
+      className="w-full rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-3"
+    >
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} layout="vertical" margin={{ top: 0, right: 16, bottom: 0, left: 8 }}>
           <XAxis type="number" hide />
-          <YAxis type="category" dataKey="source" width={108} tick={{ fontSize: 11 }} />
-          <Tooltip contentStyle={tooltipStyle} cursor={{ fill: "rgba(0,0,0,0.04)" }} />
+          <YAxis
+            type="category"
+            dataKey="source"
+            width={108}
+            tick={{ fontSize: 11, fill: "var(--color-muted)" }}
+            axisLine={axisLine}
+            tickLine={axisLine}
+          />
+          <Tooltip contentStyle={tooltipStyle} cursor={cursorFill} />
           <Bar dataKey="views" name="Views" radius={[0, 4, 4, 0]}>
             {data.map((d) => (
               <Cell key={d.source} fill={sourceColor(d.source)} />
@@ -146,7 +170,7 @@ export function ActivityHeatmap({ data }: { data: HeatCell[] }) {
     if (c.views > max) max = c.views;
   }
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-3">
       <div className="min-w-[680px]">
         <div className="mb-1 flex items-center gap-0.5 pl-10">
           {Array.from({ length: 24 }).map((_, h) => (
@@ -166,12 +190,12 @@ export function ActivityHeatmap({ data }: { data: HeatCell[] }) {
               const pct = Math.round((0.16 + t * 0.84) * 100);
               const bg =
                 v === 0
-                  ? "var(--color-surface)"
+                  ? "var(--color-surface-2)"
                   : `color-mix(in srgb, var(--color-gold-bright) ${pct}%, transparent)`;
               return (
                 <div
                   key={hour}
-                  className="h-5 flex-1 rounded-[2px] border border-black/5"
+                  className="h-5 flex-1 rounded-[2px] border border-[var(--color-line-soft)]"
                   style={{ background: bg }}
                   title={`${label} ${hourLabel(hour)} — ${v.toLocaleString()} views`}
                 />

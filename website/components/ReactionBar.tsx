@@ -131,7 +131,7 @@ export function ReactionBar({
   return (
     <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-3 sm:p-4">
       <div className="flex items-center justify-between gap-3 mb-2">
-        <p className="text-[11px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
+        <p className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-gold)]">
           {prompt}
         </p>
         {total > 0 ? (
@@ -159,12 +159,8 @@ export function ReactionBar({
               className={[
                 "inline-flex min-h-11 min-w-11 items-center justify-center gap-1 rounded-full border px-2.5 py-1.5 text-sm transition select-none sm:min-h-0 sm:min-w-0",
                 active
-                  ? tone === "navy"
-                    ? "border-[var(--color-blue)] bg-[var(--color-blue-soft)] text-[var(--color-blue-ink)] font-bold"
-                    : "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent)] font-bold"
-                  : tone === "navy"
-                    ? "border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink-soft)] hover:border-[var(--color-gold)]"
-                    : "border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)]",
+                  ? "border-[var(--color-gold)] bg-[var(--color-gold-soft)] text-[var(--color-gold)] font-bold"
+                  : "border-[var(--color-line)] bg-transparent text-[var(--color-ink-soft)] hover:border-[var(--color-gold)]",
               ].join(" ")}
             >
               <span aria-hidden className="text-base leading-none">{icon}</span>

@@ -104,7 +104,7 @@ export function HeaderStatusStrip() {
 
   return (
     <>
-      <div className="border-b border-[var(--color-cream)]/5 bg-[linear-gradient(90deg,#0a1326_0%,#0d1830_50%,#0a1326_100%)] text-[var(--color-ink-soft)]">
+      <div className="border-b border-[var(--color-cream)]/5 bg-[linear-gradient(90deg,var(--color-paper)_0%,var(--color-surface)_50%,var(--color-paper)_100%)] text-[var(--color-ink-soft)]">
         <div className="mx-auto flex min-h-11 max-w-5xl items-center justify-between gap-3 px-3 text-[11px] sm:h-8 sm:min-h-0 sm:px-4">
           <button
             type="button"

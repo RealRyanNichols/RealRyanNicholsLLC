@@ -301,20 +301,21 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
             ← Back to feed
           </Link>
         </nav>
-        <header className="mb-5">
-          <div className="flex items-center gap-2 text-xs text-[var(--color-muted)] mb-2">
+        {/* The title card is the only thing on a reading page that moves. */}
+        <header className="mb-5" data-reveal>
+          <div className="mb-2 flex flex-wrap items-center gap-2">
             {post.pinned && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-accent-soft)] text-[var(--color-accent)] px-2 py-0.5 font-medium">
+              <span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-accent-soft)] text-[var(--color-accent)] px-2 py-0.5 text-xs font-medium">
                 Pinned
               </span>
             )}
             {post.category && (
-              <span className="uppercase tracking-wider">{post.category}</span>
+              <span className="eyebrow">{post.category}</span>
             )}
             {post.published_at && (
               <>
-                <span aria-hidden>·</span>
-                <time dateTime={post.published_at}>
+                <span className="eyebrow" aria-hidden>·</span>
+                <time className="eyebrow" dateTime={post.published_at}>
                   {format(new Date(post.published_at), "MMMM d, yyyy")}
                 </time>
               </>

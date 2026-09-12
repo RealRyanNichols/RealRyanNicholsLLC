@@ -130,11 +130,11 @@ export function PrivateMessageBox({
   return (
     <section
       id="private-message"
-      className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-5"
+      className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-5"
     >
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-xs uppercase tracking-normal text-[var(--color-muted)] font-bold">
+          <p className="eyebrow">
             Private lane
           </p>
           <h2 className="mt-1 font-display text-2xl font-bold tracking-normal">
@@ -164,7 +164,7 @@ export function PrivateMessageBox({
         <form onSubmit={onSubmit} className="mt-4 grid gap-4">
           {expandedIntake ? (
             <div className="grid gap-3 sm:grid-cols-2">
-              <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink)]">
+              <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
                 What is this about?
                 <select
                   value={topic}
@@ -179,7 +179,7 @@ export function PrivateMessageBox({
                   <option>Other private message</option>
                 </select>
               </label>
-              <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink)]">
+              <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
                 Timing
                 <select
                   value={urgency}
@@ -191,7 +191,7 @@ export function PrivateMessageBox({
                   <option>Urgent, but not an emergency</option>
                 </select>
               </label>
-              <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink)]">
+              <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
                 Source protection
                 <select
                   value={privacyNeed}
@@ -204,7 +204,7 @@ export function PrivateMessageBox({
                   <option>I am willing to be on the record</option>
                 </select>
               </label>
-              <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink)]">
+              <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
                 Follow-up
                 <select
                   value={replyPreference}
@@ -220,7 +220,7 @@ export function PrivateMessageBox({
             </div>
           ) : null}
 
-          <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink)]">
+          <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
             Name
             <input
               value={displayName}
@@ -232,7 +232,7 @@ export function PrivateMessageBox({
             />
           </label>
           <div className="grid gap-3 sm:grid-cols-2">
-            <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink)]">
+            <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
               Email
               <input
                 type="email"
@@ -244,7 +244,7 @@ export function PrivateMessageBox({
                 className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm font-normal"
               />
             </label>
-            <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink)]">
+            <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
               Phone
               <input
                 type="tel"
@@ -257,7 +257,7 @@ export function PrivateMessageBox({
               />
             </label>
           </div>
-          <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink)]">
+          <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
             Subject
             <input
               value={subject}
@@ -267,7 +267,7 @@ export function PrivateMessageBox({
               className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm font-normal"
             />
           </label>
-          <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink)]">
+          <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
             Private message
             <textarea
               required
@@ -286,7 +286,7 @@ export function PrivateMessageBox({
             />
           </label>
           {expandedIntake ? (
-            <label className="flex gap-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-3 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+            <label className="flex gap-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] p-3 text-sm leading-relaxed text-[var(--color-ink-soft)]">
               <input
                 type="checkbox"
                 checked={acknowledged}
@@ -305,7 +305,7 @@ export function PrivateMessageBox({
           <button
             type="submit"
             disabled={state.kind === "submitting"}
-            className="min-h-11 rounded-full bg-[var(--color-accent)] px-4 py-2 text-sm font-black text-[var(--color-cream)] disabled:opacity-60"
+            className="btn-accent min-h-11 px-4 py-2 text-sm disabled:opacity-60"
           >
             {state.kind === "submitting" ? "Sending..." : submitLabel}
           </button>

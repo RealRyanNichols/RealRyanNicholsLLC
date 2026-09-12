@@ -15,7 +15,10 @@ export function CaseHero({
   roleLine: string;
 }) {
   return (
-    <header className="rounded-3xl bg-[var(--color-navy)] p-6 text-[var(--color-cream)] sm:p-9">
+    <header
+      className="relative overflow-hidden rounded-3xl border border-[var(--color-line)] bg-[var(--color-navy)] p-6 text-[var(--color-cream)] shadow-[0_24px_60px_rgba(0,0,0,0.4)] sm:p-9"
+      data-reveal
+    >
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
           <p className="text-[11px] font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
@@ -41,7 +44,10 @@ export function CaseHero({
       {/* The number is the headline. The unit lives inside the h1 so the
           heading reads as a sentence to a screen reader and a search engine. */}
       <h1 className="mt-6 font-display font-black leading-none tracking-tight">
-        <span className="block text-6xl tabular-nums text-[var(--color-gold-bright)] sm:text-8xl">
+        <span
+          className="display block text-7xl tabular-nums text-[var(--color-gold-bright)] sm:text-9xl"
+          data-count={days > 0 ? days : undefined}
+        >
           {days > 0 ? days.toLocaleString("en-US") : "—"}
         </span>
         <span className="mt-3 block font-sans text-sm font-bold uppercase tracking-[0.18em] text-[var(--color-cream)]/75 sm:text-base">
@@ -56,7 +62,7 @@ export function CaseHero({
       <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
         <a
           href="#chapter-one"
-          className="inline-flex min-h-12 items-center justify-center gap-1.5 rounded-lg bg-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)]"
+          className="btn-danger inline-flex min-h-12 items-center justify-center gap-1.5 px-6 py-3 text-base"
         >
           Read the record <span aria-hidden>↓</span>
         </a>

@@ -173,7 +173,7 @@ export function TipForm({
 
   if (status === "ok") {
     return (
-      <div className="rounded-lg border-2 border-[var(--color-accent)] bg-[var(--color-surface)] p-6">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6">
         <h2 className="font-display text-2xl font-bold tracking-normal">
           {isProfileSuggestion
             ? "Profile update received for review."
@@ -196,7 +196,7 @@ export function TipForm({
           </div>
         ) : null}
         {receipt?.route ? (
-          <div className="mt-4 border-2 border-[var(--color-line)] bg-[var(--color-paper)] p-4">
+          <div className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface-2)] p-4">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-success)]">
@@ -239,7 +239,7 @@ export function TipForm({
             ) : null}
           </div>
         ) : null}
-        <div className="mt-4 grid gap-2 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-3 text-sm text-[var(--color-ink-soft)]">
+        <div className="mt-4 grid gap-2 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] p-3 text-sm text-[var(--color-ink-soft)]">
           <p className="font-bold text-[var(--color-ink)]">What happens now:</p>
           <p>The tip gets sorted into the intake ledger immediately.</p>
           <p>Other people can help verify, connect, dispute, or add related context.</p>
@@ -305,7 +305,7 @@ export function TipForm({
         </div>
       ) : (
         <div>
-          <label className="block text-sm font-semibold mb-1.5">
+          <label className="mb-1.5 block text-sm font-semibold text-[var(--color-ink-soft)]">
             What kind of tip is this?
             <span className="text-[var(--color-accent)] ml-1">*</span>
           </label>
@@ -320,10 +320,10 @@ export function TipForm({
                 }}
                 aria-pressed={category === c.value}
                 className={[
-                  "min-h-12 rounded-lg border-2 px-3 py-2 text-left text-sm font-bold transition",
+                  "min-h-12 rounded-lg border px-3 py-2 text-left text-sm font-bold transition",
                   category === c.value
-                    ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
-                    : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)]",
+                    ? "border-[var(--color-gold)] bg-[var(--color-gold-soft)] text-[var(--color-gold)]"
+                    : "border-[var(--color-line)] bg-transparent text-[var(--color-ink-soft)] hover:border-[var(--color-gold)]",
                 ].join(" ")}
               >
                 {c.label}
@@ -403,12 +403,12 @@ export function TipForm({
       </div>
 
       {errorMsg ? (
-        <p className="text-sm text-[var(--color-accent)] bg-[var(--color-accent-soft)] border border-[var(--color-accent)] rounded-lg px-3 py-2">
+        <p className="rounded-lg border border-[var(--color-danger)] bg-[var(--color-accent-soft)] px-3 py-2 text-sm text-[var(--color-danger)]">
           {errorMsg}
         </p>
       ) : null}
 
-      <label className="flex gap-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-3 text-xs leading-relaxed text-[var(--color-ink-soft)]">
+      <label className="flex gap-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-3 text-xs leading-relaxed text-[var(--color-ink-soft)]">
         <input
           type="checkbox"
           required
@@ -425,7 +425,7 @@ export function TipForm({
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="w-full rounded-lg border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-4 font-bold text-lg hover:bg-[var(--color-accent-strong)] transition disabled:opacity-50 disabled:cursor-not-allowed"
+        className="btn-accent w-full px-5 py-4 text-lg disabled:cursor-not-allowed disabled:opacity-50"
       >
         {status === "submitting"
           ? "Sending..."
@@ -471,7 +471,7 @@ function Field({
     "w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2.5 text-base focus:outline-none focus:border-[var(--color-accent)]";
   return (
     <div>
-      <label htmlFor={id} className="block text-sm font-semibold mb-1.5">
+      <label htmlFor={id} className="mb-1.5 block text-sm font-semibold text-[var(--color-ink-soft)]">
         {label}
         {required ? <span className="text-[var(--color-accent)] ml-1">*</span> : null}
       </label>

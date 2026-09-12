@@ -87,9 +87,7 @@ export default function CaseBuilderPage() {
         </Link>
       </nav>
 
-      <p className="text-[11px] uppercase tracking-[0.25em] font-bold text-[var(--color-ink)]">
-        Case Builder · by Ryan Nichols
-      </p>
+      <p className="eyebrow">Case Builder · by Ryan Nichols</p>
       <h1 className="mt-2 font-display text-4xl sm:text-6xl font-bold tracking-tight leading-[1.02]">
         Your case, documented so the world can check it.
       </h1>
@@ -110,12 +108,14 @@ export default function CaseBuilderPage() {
           What a case build includes
         </h2>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          {DELIVERABLES.map((d) => (
+          {DELIVERABLES.map((d, i) => (
             <div
               key={d.title}
-              className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4"
+              data-reveal
+              style={{ "--d": i } as React.CSSProperties}
+              className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-[0_16px_40px_rgba(0,0,0,0.3)]"
             >
-              <p className="text-sm font-bold text-[var(--color-ink)]">{d.title}</p>
+              <p className="font-display text-sm font-bold text-[var(--color-ink)]">{d.title}</p>
               <p className="mt-1 text-sm leading-snug text-[var(--color-ink-soft)]">
                 {d.detail}
               </p>

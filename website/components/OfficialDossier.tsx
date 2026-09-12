@@ -56,7 +56,10 @@ export function OfficialDossier({
 
       {/* Header plate — dark "case file" band so an official's dossier reads as
           a record, not a bio. */}
-      <div className="overflow-hidden rounded-3xl border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-cream)] shadow-sm">
+      <div
+        data-reveal
+        className="overflow-hidden rounded-3xl border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-cream)] shadow-[0_24px_60px_rgba(0,0,0,0.45)]"
+      >
         <div className="flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:p-8">
           {/* Photo / seal */}
           <div className="shrink-0">
@@ -82,9 +85,7 @@ export function OfficialDossier({
           </div>
 
           <div className="min-w-0">
-            <p className="text-[11px] font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
-              {dossier.kicker}
-            </p>
+            <p className="eyebrow">{dossier.kicker}</p>
             <h1 className="mt-1 font-display text-3xl font-black leading-tight tracking-tight text-[var(--color-cream)] sm:text-4xl">
               {dossier.name}
             </h1>
@@ -121,10 +122,8 @@ export function OfficialDossier({
       </div>
 
       {/* Legend */}
-      <div className="mt-8 rounded-2xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4">
-        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-muted)]">
-          How to read this record
-        </p>
+      <div className="mt-8 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+        <p className="eyebrow">How to read this record</p>
         <div className="mt-3 grid gap-2 sm:grid-cols-2">
           {usedLabels.map((l) => (
             <div key={l} className="flex items-center gap-2">
@@ -139,9 +138,7 @@ export function OfficialDossier({
 
       {/* The record — labeled claims */}
       <section className="mt-8">
-        <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[var(--color-ink)]">
-          The record
-        </p>
+        <p className="eyebrow">The record</p>
         <div className="mt-4 space-y-4">
           {dossier.claims.map((c, i) => {
             return (
@@ -160,14 +157,14 @@ export function OfficialDossier({
                       href={c.source.href}
                       target="_blank"
                       rel="noopener noreferrer nofollow"
-                      className="mt-2 inline-flex min-h-11 items-center gap-1 text-xs font-bold text-[var(--color-ink)] hover:underline sm:min-h-0"
+                      className="mt-2 inline-flex min-h-11 items-center gap-1 text-xs font-bold text-[var(--color-gold)] hover:underline sm:min-h-0"
                     >
                       {c.source.label} <span aria-hidden>↗</span>
                     </a>
                   ) : (
                     <Link
                       href={c.source.href}
-                      className="mt-2 inline-flex min-h-11 items-center gap-1 text-xs font-bold text-[var(--color-ink)] hover:underline sm:min-h-0"
+                      className="mt-2 inline-flex min-h-11 items-center gap-1 text-xs font-bold text-[var(--color-gold)] hover:underline sm:min-h-0"
                     >
                       {c.source.label} <span aria-hidden>→</span>
                     </Link>
@@ -182,15 +179,13 @@ export function OfficialDossier({
       {/* Conduct timeline */}
       {dossier.timeline.length > 0 ? (
         <section className="mt-10">
-          <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[var(--color-ink)]">
-            The sequence
-          </p>
+          <p className="eyebrow">The sequence</p>
           <ol className="mt-4 relative ml-3 space-y-5 border-l-2 border-[var(--color-line)]">
             {dossier.timeline.map((t, i) => (
               <li key={i} className="relative pl-6">
                 <span className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full bg-[var(--color-accent)] ring-4 ring-[var(--color-paper)]" />
                 <div className="flex flex-wrap items-baseline gap-2">
-                  <span className="rounded bg-[var(--color-ink)] px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[var(--color-cream)]">
+                  <span className="rounded bg-[var(--color-gold)] px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[var(--color-navy)]">
                     {t.tag}
                   </span>
                   <span className="text-xs font-semibold text-[var(--color-muted)]">
@@ -225,7 +220,7 @@ export function OfficialDossier({
       {/* What this proves / does not prove */}
       <section className="mt-10 grid gap-4 sm:grid-cols-2">
         <div className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-blue-soft)]/40 p-5">
-          <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--color-ink)]">
+          <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--color-blue-ink)]">
             What the record shows
           </p>
           <ul className="mt-3 space-y-2">
@@ -234,7 +229,7 @@ export function OfficialDossier({
                 key={i}
                 className="flex gap-2 text-sm leading-relaxed text-[var(--color-ink)]"
               >
-                <span aria-hidden className="text-[var(--color-ink)]">
+                <span aria-hidden className="text-[var(--color-blue-ink)]">
                   ✓
                 </span>
                 <span>{p}</span>
@@ -263,7 +258,7 @@ export function OfficialDossier({
       </section>
 
       {/* What I need next */}
-      <section className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-paper)] p-5">
+      <section className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
         <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--color-accent)]">
           What I need next
         </p>
@@ -284,9 +279,7 @@ export function OfficialDossier({
 
       {/* Sources */}
       <section className="mt-6">
-        <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[var(--color-muted)]">
-          Sources
-        </p>
+        <p className="eyebrow">Sources</p>
         <ul className="mt-3 space-y-2">
           {dossier.sources.map((src, i) => (
             <li key={i} className="text-sm">

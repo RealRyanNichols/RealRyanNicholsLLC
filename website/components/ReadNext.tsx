@@ -16,7 +16,7 @@ export function ReadNext({
   if (posts.length === 0 && caseLinks.length === 0) return null;
   return (
     <section className="mt-12 border-t border-[var(--color-line)] pt-8">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] mb-4">
+      <p className="eyebrow mb-4">
         Read next
       </p>
       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -26,7 +26,7 @@ export function ReadNext({
             className="rounded-2xl border border-[var(--color-gold)] bg-[var(--color-surface)] p-5 hover:border-[var(--color-blue)] transition"
           >
             <Link href={c.href} className="block">
-              <p className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-ink)]">
+              <p className="eyebrow">
                 From the case file
               </p>
               <h3 className="mt-1 font-semibold tracking-tight text-lg leading-snug">

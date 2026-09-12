@@ -80,13 +80,23 @@ export default async function SearchPage({
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 sm:py-10">
-      <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
+      <p className="eyebrow" data-reveal>
         Search
       </p>
-      <h1 className="mt-2 font-display text-3xl font-black tracking-tight sm:text-4xl">
+      <h1
+        className="mt-2 font-display text-3xl font-black tracking-tight sm:text-4xl"
+        data-reveal
+        style={{ "--d": 1 } as React.CSSProperties}
+      >
         Find anything in the record.
       </h1>
-      <p className="mt-2 max-w-2xl text-[var(--color-ink-soft)]">
+      <div
+        className="mt-4 h-[3px] w-[4.5rem] bg-[var(--color-gold)]"
+        aria-hidden
+        data-reveal
+        style={{ "--d": 2 } as React.CSSProperties}
+      />
+      <p className="mt-3 max-w-2xl text-[var(--color-ink-soft)]">
         Every article, post, and video — searchable by keyword, person, court
         term, or topic. Type a name, a charge, an agency, a date.
       </p>
@@ -101,7 +111,7 @@ export default async function SearchPage({
           <Link
             key={t}
             href={`/search?q=${encodeURIComponent(t)}`}
-            className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1.5 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1.5 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
           >
             {t}
           </Link>
@@ -136,7 +146,7 @@ export default async function SearchPage({
                         </>
                       ) : null}
                     </div>
-                    <h2 className="mt-1 font-display text-xl font-black leading-snug text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">
+                    <h2 className="mt-1 font-display text-xl font-black leading-snug text-[var(--color-ink)] group-hover:text-[var(--color-gold)]">
                       {r.title ?? r.slug}
                     </h2>
                     {r.excerpt ? (
@@ -151,7 +161,7 @@ export default async function SearchPage({
                         <Link
                           key={tag}
                           href={`/search?q=${encodeURIComponent(tag)}`}
-                          className="rounded-full bg-[var(--color-surface-2)] px-2 py-0.5 text-[11px] font-bold text-[var(--color-ink-soft)] transition hover:text-[var(--color-accent)]"
+                          className="rounded-full bg-[var(--color-surface-2)] px-2 py-0.5 text-[11px] font-bold text-[var(--color-ink-soft)] transition hover:text-[var(--color-gold)]"
                         >
                           #{tag}
                         </Link>
@@ -162,16 +172,16 @@ export default async function SearchPage({
               ))}
             </ul>
           ) : (
-            <div className="mt-6 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 text-center">
+            <div className="panel mt-6 p-6 text-center">
               <p className="font-bold text-[var(--color-ink)]">No matches for “{q}.”</p>
               <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
                 Try a person&apos;s name, a charge, an agency, or a single
                 keyword. Or browse{" "}
-                <Link href="/" className="font-bold text-[var(--color-accent)] hover:underline">
+                <Link href="/" className="font-bold text-[var(--color-gold)] hover:underline">
                   the feed
                 </Link>{" "}
                 and{" "}
-                <Link href="/case" className="font-bold text-[var(--color-accent)] hover:underline">
+                <Link href="/case" className="font-bold text-[var(--color-gold)] hover:underline">
                   the case
                 </Link>
                 .

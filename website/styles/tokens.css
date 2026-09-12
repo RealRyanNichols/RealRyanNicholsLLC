@@ -20,6 +20,11 @@
   --color-sky: #38bdf8;
   /* Amber for "watch" tones and capped-sample strips. */
   --color-amber: #b45309;
+  /* Violet for the AI-agent series on the reach charts. */
+  --color-violet: #c084fc;
+  /* Warm clay orange: the evidence graph's unclaimed-person nodes. It is the
+     one hue in the node legend the theater palette has no near match for. */
+  --color-clay: #e08658;
   /* Third-party brand colors, used only to color their traffic sources. */
   --color-brand-facebook: #4267B2;
   --color-brand-google: #34a853;

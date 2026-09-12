@@ -465,6 +465,32 @@
   border-bottom: 1px solid var(--color-line);
 }
 
+/* The home title card's photo shade: navy falls off toward the copy so the
+   type never crosses the face. Up from the bottom on phones (the copy sits
+   under the photo), in from the right on wider screens (the copy sits
+   beside it). */
+.home-hero-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    var(--color-navy) 0%,
+    color-mix(in srgb, var(--color-navy) 72%, transparent) 22%,
+    transparent 58%
+  );
+}
+@media (min-width: 640px) {
+  .home-hero-shade {
+    background: linear-gradient(
+      to left,
+      var(--color-navy) 0%,
+      color-mix(in srgb, var(--color-navy) 72%, transparent) 22%,
+      transparent 62%
+    );
+  }
+}
+
 /* Film grain: a fixed, viewport-sized sheet of turbulence that steps around
    six times a second. One composited layer, mounted once by
    components/SiteEffects.tsx; off under reduced motion and on admin. */

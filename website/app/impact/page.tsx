@@ -58,21 +58,21 @@ async function getImpactCounts() {
 export default async function ImpactPage() {
   const [totals, counts] = await Promise.all([getCaseTotals(), getImpactCounts()]);
 
-  const ledger: { n: string; label: string; sub: string }[] = [
-    { n: counts.profiles.toLocaleString(), label: "J6 defendant profiles", sub: "Free, theirs forever" },
-    { n: "1,092", label: "DOJ defendants mirrored", sub: "Salvaged from the scrubbed Capitol Breach list" },
-    { n: totals.documents.toLocaleString(), label: "Case documents preserved", sub: "Evidence kept in public" },
-    { n: totals.ryanFiledGrievances.toLocaleString(), label: "Grievances Ryan filed", sub: "Documented from inside detention" },
-    { n: String(totals.events), label: "Case events mapped", sub: "The timeline, sourced" },
-    { n: counts.posts.toLocaleString(), label: "Investigations published", sub: "Reports + dispatches" },
-    { n: String(totals.facilities), label: "Facilities documented", sub: "Where he was held" },
-    { n: String(counts.videos), label: "Videos owned here", sub: "Not on anyone else's platform" },
+  const ledger: { n: string; raw: number; label: string; sub: string }[] = [
+    { n: counts.profiles.toLocaleString(), raw: counts.profiles, label: "J6 defendant profiles", sub: "Free, theirs forever" },
+    { n: "1,092", raw: 1092, label: "DOJ defendants mirrored", sub: "Salvaged from the scrubbed Capitol Breach list" },
+    { n: totals.documents.toLocaleString(), raw: totals.documents, label: "Case documents preserved", sub: "Evidence kept in public" },
+    { n: totals.ryanFiledGrievances.toLocaleString(), raw: totals.ryanFiledGrievances, label: "Grievances Ryan filed", sub: "Documented from inside detention" },
+    { n: String(totals.events), raw: totals.events, label: "Case events mapped", sub: "The timeline, sourced" },
+    { n: counts.posts.toLocaleString(), raw: counts.posts, label: "Investigations published", sub: "Reports + dispatches" },
+    { n: String(totals.facilities), raw: totals.facilities, label: "Facilities documented", sub: "Where he was held" },
+    { n: String(counts.videos), raw: counts.videos, label: "Videos owned here", sub: "Not on anyone else's platform" },
   ];
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-10">
       {/* ---- Hero ---- */}
-      <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+      <p className="eyebrow">
         Impact · the record
       </p>
       <h1 className="mt-2 text-4xl sm:text-6xl font-bold tracking-tight leading-[1.02] font-display">
@@ -93,12 +93,17 @@ export default async function ImpactPage() {
           Live numbers, straight from the record — not estimates.
         </p>
         <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {ledger.map((s) => (
+          {ledger.map((s, i) => (
             <div
               key={s.label}
-              className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4"
+              className="panel p-4"
+              data-reveal
+              style={{ "--d": i % 4 } as React.CSSProperties}
             >
-              <div className="text-3xl sm:text-4xl font-bold tracking-tight leading-none text-[var(--color-accent)] font-display tabular-nums">
+              <div
+                className="display text-4xl sm:text-5xl leading-none text-[var(--color-gold)] tabular-nums"
+                data-count={s.raw}
+              >
                 {s.n}
               </div>
               <div className="mt-2 text-sm font-bold text-[var(--color-ink)] leading-tight">{s.label}</div>

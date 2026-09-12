@@ -59,8 +59,8 @@ export function ArticleEmbed({ value }: { value: Record<string, unknown> }) {
   const src = embedUrl(platform, url);
 
   return (
-    <figure className="not-prose my-8 overflow-hidden rounded-lg border border-[var(--color-line-soft)]/25 bg-[var(--color-surface)] text-[var(--color-cream)]">
-      <div className="flex items-center justify-between gap-3 border-b border-[var(--color-cream)]/10 px-4 py-2.5">
+    <figure className="panel not-prose my-8 overflow-hidden text-[var(--color-cream)]">
+      <div className="flex items-center justify-between gap-3 border-b border-[var(--color-line-soft)] px-4 py-2.5">
         <span className="text-[11px] font-black uppercase tracking-[0.16em] text-[var(--color-gold-bright)]">
           {PLATFORM_NAMES[platform]}
         </span>

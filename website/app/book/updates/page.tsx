@@ -40,9 +40,9 @@ export default function BookUpdatesPage() {
   return (
     <article className="rrn-page">
       {/* Hero */}
-      <section className="border-b border-[var(--color-line-soft)] bg-[var(--color-surface)] text-[var(--color-cream)]">
+      <section className="border-b border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-cream)]">
         <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:py-14">
-          <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
+          <p className="eyebrow">
             {BOOK.title} · Updates
           </p>
           <h1 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-[var(--color-cream)] sm:text-6xl">
@@ -58,10 +58,15 @@ export default function BookUpdatesPage() {
       {/* Update log */}
       <section className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:py-14">
         <ol className="relative border-l-2 border-[var(--color-line)]">
-          {BOOK_UPDATES.map((u) => (
-            <li key={`${u.date}-${u.title}`} className="mb-8 ml-6 last:mb-0">
+          {BOOK_UPDATES.map((u, i) => (
+            <li
+              key={`${u.date}-${u.title}`}
+              className="mb-8 ml-6 last:mb-0"
+              data-reveal={i < 12 ? "" : undefined}
+              style={{ "--d": Math.min(i, 5) } as React.CSSProperties}
+            >
               <span
-                className="absolute -left-[7px] mt-1.5 h-3 w-3 rounded-full border-2 border-[var(--color-cream)] bg-[var(--color-accent)]"
+                className="absolute -left-[7px] mt-1.5 h-3 w-3 rounded-full border-2 border-[var(--color-gold)] bg-[var(--color-accent)]"
                 aria-hidden
               />
               <div className="flex flex-wrap items-center gap-2">
@@ -98,7 +103,7 @@ export default function BookUpdatesPage() {
               Milestones, the release date, and the opening chapter free.
             </p>
           </div>
-          <div className="mt-6 rounded-xl border border-[var(--color-cream)]/10 bg-[var(--color-cream)]/[0.06] p-4 sm:p-6">
+          <div className="mt-6 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface-2)] p-4 sm:p-6">
             <BookEmailSignup source="book_updates" tone="dark" />
           </div>
           <p className="mt-6 text-center text-sm text-[var(--color-ink-soft)]">

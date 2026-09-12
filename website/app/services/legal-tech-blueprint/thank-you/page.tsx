@@ -95,9 +95,9 @@ export default async function BlueprintThankYouPage({
 
   return (
     <article className="rrn-page">
-      <section className="bg-[var(--color-blue)] text-[var(--color-cream)]">
+      <section className="band text-[var(--color-cream)]">
         <div className="mx-auto max-w-3xl px-5 py-16 text-center sm:px-6 lg:py-20">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-gold)]">
+          <p className="eyebrow">
             Legal-Tech Blueprint
           </p>
           <h1 className="mt-3 font-display text-4xl font-black leading-tight tracking-tight text-[var(--color-cream)] sm:text-5xl">
@@ -117,7 +117,9 @@ export default async function BlueprintThankYouPage({
           {steps.map((s, i) => (
             <div
               key={s.title}
-              className="flex gap-4 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
+              className="panel flex gap-4 p-5"
+              data-reveal
+              style={{ "--d": i } as React.CSSProperties}
             >
               <span className="font-mono text-sm font-black text-[var(--color-muted)]">
                 {String(i + 1).padStart(2, "0")}
@@ -137,13 +139,13 @@ export default async function BlueprintThankYouPage({
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Link
             href="/services/legal-tech-blueprint"
-            className="inline-flex min-h-12 items-center justify-center rounded-lg border-2 border-[var(--color-blue)] px-6 py-3 text-base font-black text-[var(--color-blue-ink)] transition hover:bg-[var(--color-blue)] hover:text-[var(--color-cream)]"
+            className="btn-blue inline-flex min-h-12 items-center justify-center px-6 py-3 text-base"
           >
             Back to the offer
           </Link>
           <Link
             href="/contact"
-            className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)]"
+            className="btn-accent inline-flex min-h-12 items-center justify-center px-6 py-3 text-base"
           >
             Contact Ryan
           </Link>

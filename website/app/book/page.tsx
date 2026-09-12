@@ -94,14 +94,14 @@ export default function BookPage() {
       <BookExitIntent priceLabel={priceLabel} listLabel={listLabel} />
       <BookStickyBuyBar priceLabel={priceLabel} listLabel={listLabel} />
       {/* Hero */}
-      <section className="border-b border-[var(--color-line-soft)] bg-[var(--color-surface)] text-[var(--color-cream)]">
+      <section className="border-b border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-cream)]">
         <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:py-16">
           <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-12">
             <div className="max-w-3xl">
-              <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
+              <p className="eyebrow">
                 Pre-order · A memoir by {BOOK.author}
               </p>
-              <h1 className="mt-3 font-display text-5xl font-black leading-[0.95] tracking-tight text-[var(--color-cream)] sm:text-7xl">
+              <h1 className="display mt-3 text-5xl text-[var(--color-cream)] sm:text-7xl">
                 {BOOK.title}
               </h1>
               <p className="mt-4 max-w-2xl font-display text-lg font-black uppercase leading-snug tracking-[0.04em] text-[var(--color-gold-bright)] sm:text-xl">
@@ -113,27 +113,30 @@ export default function BookPage() {
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
                 <Link
                   href="/book/preorder"
-                  className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)]"
+                  className="btn-accent inline-flex min-h-12 items-center justify-center px-6 py-3 text-base"
                 >
                   Pre-order the book
                 </Link>
                 <Link
                   href="/book/updates"
-                  className="inline-flex min-h-12 items-center justify-center rounded-lg border border-[var(--color-cream)]/20 bg-[var(--color-cream)]/[0.06] px-6 py-3 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-cream)]/10"
+                  className="btn-blue inline-flex min-h-12 items-center justify-center px-6 py-3 text-base"
                 >
                   Read the updates
                 </Link>
               </div>
             </div>
+            {/* The cover is the page's one photo, so it sits in a framed panel. */}
             <div className="order-first mx-auto w-full max-w-[240px] sm:max-w-[280px] lg:order-none lg:max-w-none">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={BOOK.cover}
-                alt="Fighting Shadows — a memoir by Ryan Nichols (book cover)"
-                width={1000}
-                height={1333}
-                className="w-full rounded-lg border border-[var(--color-cream)]/15 shadow-2xl shadow-black/50 ring-1 ring-black/20"
-              />
+              <div className="panel p-2.5" data-reveal>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={BOOK.cover}
+                  alt="Fighting Shadows — a memoir by Ryan Nichols (book cover)"
+                  width={1000}
+                  height={1333}
+                  className="w-full rounded-lg"
+                />
+              </div>
             </div>
           </div>
 
@@ -149,9 +152,10 @@ export default function BookPage() {
           {/* Email signup — above the fold */}
           <div
             id="book-list"
-            className="mt-10 rounded-xl border border-[var(--color-cream)]/10 bg-[var(--color-cream)]/[0.06] p-5 sm:p-6"
+            className="mt-10 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface-2)] p-5 sm:p-6"
+            data-reveal
           >
-            <p className="text-sm font-black uppercase tracking-[0.16em] text-[var(--color-gold-bright)]">
+            <p className="eyebrow">
               Get on the list
             </p>
             <p className="mb-3 mt-1 font-display text-lg font-black leading-tight text-[var(--color-cream)]">
@@ -163,8 +167,8 @@ export default function BookPage() {
       </section>
 
       {/* Positioning */}
-      <section className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:py-14">
-        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+      <section className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:py-14" data-reveal>
+        <p className="eyebrow">
           What this book is
         </p>
         <h2 className="mt-2 font-display text-3xl font-black leading-tight tracking-normal sm:text-4xl">
@@ -179,7 +183,7 @@ export default function BookPage() {
       {/* What it covers */}
       <section className="border-y border-[var(--color-line)] bg-[var(--color-paper)]">
         <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:py-14">
-          <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+          <p className="eyebrow">
             What the book covers
           </p>
           <h2 className="mt-2 font-display text-3xl font-black leading-tight tracking-normal sm:text-4xl">
@@ -189,9 +193,11 @@ export default function BookPage() {
             {BOOK_COVERS.map((c, i) => (
               <div
                 key={c.title}
-                className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-sm"
+                className="panel p-5"
+                data-reveal
+                style={{ "--d": i % 2 } as React.CSSProperties}
               >
-                <p className="font-mono text-xs font-black text-[var(--color-muted)]">
+                <p className="font-mono text-xs font-black text-[var(--color-gold)]">
                   {String(i + 1).padStart(2, "0")}
                 </p>
                 <h3 className="mt-1 font-display text-xl font-black tracking-normal text-[var(--color-ink)]">
@@ -208,14 +214,14 @@ export default function BookPage() {
 
       {/* Why I am writing this */}
       <section className="border-b border-[var(--color-line)] bg-[var(--color-accent-soft)]">
-        <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:py-14">
-          <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+        <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:py-14" data-reveal>
+          <p className="eyebrow">
             Why I am writing this
           </p>
           <p className="mt-3 font-display text-2xl font-black leading-snug tracking-normal text-[var(--color-ink)] sm:text-3xl">
             {whyImWriting}
           </p>
-          <p className="mt-4 text-sm font-bold uppercase tracking-[0.14em] text-[var(--color-accent)]">
+          <p className="mt-4 text-sm font-bold uppercase tracking-[0.14em] text-[var(--color-gold)]">
             — {BOOK.author}
           </p>
         </div>
@@ -223,7 +229,7 @@ export default function BookPage() {
 
       {/* Pre-order offers */}
       <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:py-14">
-        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+        <p className="eyebrow" data-reveal>
           Pre-order
         </p>
         <h2 className="mt-2 font-display text-3xl font-black leading-tight tracking-normal sm:text-4xl">
@@ -246,7 +252,7 @@ export default function BookPage() {
           See full details on the{" "}
           <Link
             href="/book/preorder"
-            className="font-black text-[var(--color-accent)] underline underline-offset-4"
+            className="font-black text-[var(--color-gold)] underline underline-offset-4"
           >
             pre-order page
           </Link>
@@ -257,7 +263,7 @@ export default function BookPage() {
       {/* Evidence / archive connection */}
       <section className="bg-[var(--color-surface)] text-[var(--color-cream)]">
         <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:py-14">
-          <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
+          <p className="eyebrow" data-reveal>
             The book and the record
           </p>
           <h2 className="mt-2 font-display text-3xl font-black leading-tight tracking-normal text-[var(--color-cream)] sm:text-4xl">
@@ -268,11 +274,13 @@ export default function BookPage() {
             bodycam, and grievances — that you can read for yourself.
           </p>
           <div className="mt-6 grid gap-3 sm:grid-cols-3">
-            {archiveLinks.map((a) => (
+            {archiveLinks.map((a, i) => (
               <Link
                 key={a.href}
                 href={a.href}
-                className="group rounded-xl border border-[var(--color-cream)]/12 bg-[var(--color-cream)]/[0.05] p-5 transition hover:border-[var(--color-gold-bright)]/60"
+                className="group rounded-xl border border-[var(--color-line)] bg-[var(--color-surface-2)] p-5 transition hover:border-[var(--color-gold)]"
+                data-reveal
+                style={{ "--d": i } as React.CSSProperties}
               >
                 <h3 className="font-display text-xl font-black tracking-normal text-[var(--color-cream)]">
                   {a.label}
@@ -291,7 +299,7 @@ export default function BookPage() {
 
       {/* FAQ */}
       <section className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:py-14">
-        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+        <p className="eyebrow" data-reveal>
           Questions
         </p>
         <h2 className="mt-2 font-display text-3xl font-black leading-tight tracking-normal sm:text-4xl">
@@ -303,7 +311,7 @@ export default function BookPage() {
               <summary className="flex cursor-pointer list-none items-center justify-between gap-3 font-display text-lg font-black tracking-normal text-[var(--color-ink)] [&::-webkit-details-marker]:hidden">
                 {item.q}
                 <span
-                  className="text-xl font-black text-[var(--color-accent)] transition group-open:rotate-45"
+                  className="text-xl font-black text-[var(--color-gold)] transition group-open:rotate-45"
                   aria-hidden
                 >
                   +
@@ -332,19 +340,19 @@ export default function BookPage() {
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
             <Link
               href="/book/preorder"
-              className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)]"
+              className="btn-accent inline-flex min-h-12 items-center justify-center px-6 py-3 text-base"
             >
               Pre-order the book
             </Link>
             <Link
               href="#book-list"
-              className="inline-flex min-h-12 items-center justify-center rounded-lg border border-[var(--color-cream)]/20 bg-[var(--color-cream)]/[0.06] px-6 py-3 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-cream)]/10"
+              className="btn-blue inline-flex min-h-12 items-center justify-center px-6 py-3 text-base"
             >
               Get on the list
             </Link>
           </div>
           <div className="mt-8">
-            <BookDisclaimer className="border-[var(--color-cream)]/10 bg-[var(--color-cream)]/[0.05] text-[var(--color-ink-soft)]" />
+            <BookDisclaimer className="border-[var(--color-line-soft)] bg-[var(--color-surface-2)] text-[var(--color-ink-soft)]" />
           </div>
           <p className="mt-6 text-center text-sm text-[var(--color-ink-soft)]">
             <Link href="/" className="font-semibold underline hover:text-[var(--color-gold-bright)]">

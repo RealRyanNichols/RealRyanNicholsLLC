@@ -7,20 +7,20 @@ function palette(tone: Tone) {
   const dark = tone === "dark";
   return {
     section: dark
-      ? "border-[var(--color-cream)]/15 bg-[var(--color-cream)]/[0.06]"
+      ? "border-[var(--color-line-soft)] bg-[var(--color-surface-2)]"
       : "border-[var(--color-line)] bg-[var(--color-surface)]",
-    headline: dark ? "text-[var(--color-gold-bright)]" : "text-[var(--color-accent)]",
-    dot: dark ? "bg-[var(--color-gold-bright)]" : "bg-[var(--color-accent)]",
-    sub: dark ? "text-[var(--color-ink-soft)]" : "text-[var(--color-ink-soft)]",
-    recency: dark ? "text-[var(--color-gold-bright)]" : "text-[var(--color-accent)]",
-    statAccent: dark ? "text-[var(--color-gold-bright)]" : "text-[var(--color-accent)]",
-    statNormal: dark ? "text-[var(--color-cream)]" : "text-[var(--color-ink)]",
-    statLabel: dark ? "text-[var(--color-ink-soft)]/70" : "text-[var(--color-muted)]",
-    borderTop: dark ? "border-[var(--color-cream)]/15" : "border-[var(--color-line)]",
-    divider: dark ? "bg-[var(--color-cream)]/15" : "bg-[var(--color-line)]",
-    scarcity: dark ? "text-[var(--color-ink-soft)]/70" : "text-[var(--color-muted)]",
-    barBg: dark ? "bg-[var(--color-cream)]/15" : "bg-[var(--color-surface-2)]",
-    barFill: dark ? "bg-[var(--color-gold-bright)]" : "bg-[var(--color-accent)]",
+    headline: "text-[var(--color-gold)]",
+    dot: "bg-[var(--color-gold)]",
+    sub: "text-[var(--color-ink-soft)]",
+    recency: "text-[var(--color-gold)]",
+    statAccent: "text-[var(--color-gold)]",
+    statNormal: "text-[var(--color-ink)]",
+    statLabel: "text-[var(--color-muted)]",
+    borderTop: dark ? "border-[var(--color-line-soft)]" : "border-[var(--color-line)]",
+    divider: dark ? "bg-[var(--color-line-soft)]" : "bg-[var(--color-line)]",
+    scarcity: "text-[var(--color-muted)]",
+    barBg: "bg-[var(--color-line-soft)]",
+    barFill: "bg-[var(--color-gold)]",
   };
 }
 
@@ -39,7 +39,7 @@ function Stat({
     <div className="min-w-[5rem]">
       <div
         className={[
-          "font-display text-3xl font-black tabular-nums sm:text-4xl",
+          "display text-3xl tabular-nums sm:text-4xl",
           accent ? p.statAccent : p.statNormal,
         ].join(" ")}
       >
@@ -88,7 +88,12 @@ export async function BookSocialProof({
 
   return (
     <section
-      className={["rounded-xl border p-4 sm:p-5", p.section, className].join(" ")}
+      data-reveal
+      className={[
+        "rounded-xl border p-4 shadow-[0_20px_50px_rgba(0,0,0,0.35)] sm:p-5",
+        p.section,
+        className,
+      ].join(" ")}
     >
       <div className="flex flex-col items-center gap-1 text-center">
         <div className="flex items-center gap-2">
@@ -107,8 +112,9 @@ export async function BookSocialProof({
             />
           </span>
           <span
+            data-count={community}
             className={[
-              "font-display text-4xl font-black tabular-nums sm:text-5xl",
+              "display text-4xl tabular-nums sm:text-5xl",
               p.headline,
             ].join(" ")}
           >

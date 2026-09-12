@@ -10,7 +10,7 @@ export function BookPromo({ className = "" }: { className?: string }) {
   return (
     <Link
       href="/book"
-      className={`group block rounded-2xl border border-[var(--color-line-soft)] bg-[var(--color-surface)] p-4 text-[var(--color-cream)] transition hover:border-[var(--color-gold-bright)]/60 ${className}`}
+      className={`group block rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 text-[var(--color-cream)] shadow-[0_20px_50px_rgba(0,0,0,0.4)] transition hover:border-[var(--color-gold-bright)] ${className}`}
     >
       <div className="flex items-center gap-4">
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -19,12 +19,10 @@ export function BookPromo({ className = "" }: { className?: string }) {
           alt="Fighting Shadows — a memoir by Ryan Nichols"
           width={1000}
           height={1333}
-          className="w-16 shrink-0 rounded border border-[var(--color-cream)]/15 shadow-lg shadow-black/40"
+          className="w-16 shrink-0 rounded border border-[var(--color-line)] shadow-lg shadow-black/40"
         />
         <div className="min-w-0">
-          <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-gold-bright)]">
-            Pre-order · The book
-          </p>
+          <p className="eyebrow">Pre-order · The book</p>
           <p className="mt-0.5 font-display text-xl font-black leading-none tracking-tight text-[var(--color-cream)]">
             Fighting Shadows
           </p>

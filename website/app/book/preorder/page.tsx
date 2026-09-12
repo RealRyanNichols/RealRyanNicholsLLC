@@ -47,14 +47,14 @@ export default function BookPreorderPage() {
         cta="See editions"
       />
       {/* Hero */}
-      <section className="border-b border-[var(--color-line-soft)] bg-[var(--color-surface)] text-[var(--color-cream)]">
+      <section className="border-b border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-cream)]">
         <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:py-14">
           <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_240px] lg:gap-12">
             <div className="max-w-2xl">
-              <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
+              <p className="eyebrow">
                 Pre-order · {BOOK.title}
               </p>
-              <h1 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-[var(--color-cream)] sm:text-6xl">
+              <h1 className="display mt-3 text-4xl text-[var(--color-cream)] sm:text-6xl">
                 Get it first. Own the record directly.
               </h1>
               <p className="mt-4 max-w-2xl text-base font-semibold leading-7 text-[var(--color-ink-soft)] sm:text-lg">
@@ -72,7 +72,7 @@ export default function BookPreorderPage() {
               <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:items-center">
                 <Link
                   href="#book-offers"
-                  className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)]"
+                  className="btn-accent inline-flex min-h-12 items-center justify-center px-6 py-3 text-base"
                 >
                   Pre-order now
                   <span className="ml-2">{priceLabel}</span>
@@ -84,21 +84,24 @@ export default function BookPreorderPage() {
                 </Link>
                 <Link
                   href="#book-offers"
-                  className="inline-flex min-h-12 items-center justify-center rounded-lg border border-[var(--color-cream)]/20 bg-[var(--color-cream)]/[0.06] px-6 py-3 text-base font-black text-[var(--color-cream)] transition hover:bg-[var(--color-cream)]/10"
+                  className="btn-blue inline-flex min-h-12 items-center justify-center px-6 py-3 text-base"
                 >
                   See all editions
                 </Link>
               </div>
             </div>
+            {/* The cover sits in a framed panel, same as /book. */}
             <div className="order-first mx-auto w-full max-w-[200px] sm:max-w-[240px] lg:order-none lg:max-w-none">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={BOOK.cover}
-                alt="Fighting Shadows — a memoir by Ryan Nichols (book cover)"
-                width={1000}
-                height={1333}
-                className="w-full rounded-lg border border-[var(--color-cream)]/15 shadow-2xl shadow-black/50 ring-1 ring-black/20"
-              />
+              <div className="panel p-2" data-reveal>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={BOOK.cover}
+                  alt="Fighting Shadows — a memoir by Ryan Nichols (book cover)"
+                  width={1000}
+                  height={1333}
+                  className="w-full rounded-lg"
+                />
+              </div>
             </div>
           </div>
 
@@ -139,17 +142,19 @@ export default function BookPreorderPage() {
       {/* Why it costs what it does */}
       <section className="border-y border-[var(--color-line)] bg-[var(--color-paper)]">
         <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:py-14">
-          <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+          <p className="eyebrow" data-reveal>
             Why it costs what it does
           </p>
           <h2 className="mt-2 font-display text-3xl font-black leading-tight tracking-normal sm:text-4xl">
             You are not overpaying for paper.
           </h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-3">
-            {WHY_PRICE.map((w) => (
+            {WHY_PRICE.map((w, i) => (
               <div
                 key={w.title}
-                className="rounded-xl border-l-4 border-[var(--color-accent)] bg-[var(--color-surface)] p-5 shadow-sm"
+                className="rounded-xl border-l-4 border-[var(--color-accent)] bg-[var(--color-surface)] p-5 shadow-[0_18px_40px_rgba(0,0,0,0.35)]"
+                data-reveal
+                style={{ "--d": i } as React.CSSProperties}
               >
                 <h3 className="font-display text-xl font-black tracking-normal text-[var(--color-ink)]">
                   {w.title}
@@ -166,7 +171,7 @@ export default function BookPreorderPage() {
       {/* Reserve / email capture */}
       <section className="border-y border-[var(--color-line)] bg-[var(--color-paper)]">
         <div id="reserve" className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:py-14">
-          <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+          <p className="eyebrow" data-reveal>
             Not ready to pre-order?
           </p>
           <h2 className="mt-2 font-display text-3xl font-black leading-tight tracking-normal sm:text-4xl">
@@ -176,7 +181,7 @@ export default function BookPreorderPage() {
             No pressure. Add your email for the release date, book updates, and
             the opening chapter free — and pre-order whenever you are ready.
           </p>
-          <div className="mt-5 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-sm sm:p-6">
+          <div className="panel mt-5 p-5 sm:p-6">
             <BookEmailSignup source="book_preorder" />
           </div>
         </div>
@@ -184,7 +189,7 @@ export default function BookPreorderPage() {
 
       {/* How it works */}
       <section className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:py-14">
-        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+        <p className="eyebrow" data-reveal>
           How the pre-order works
         </p>
         <div className="mt-5 grid gap-4 sm:grid-cols-3">
@@ -204,10 +209,12 @@ export default function BookPreorderPage() {
               t: "You get the book",
               b: "Digital editions deliver by secure link. Signed copies confirm shipping details before they go out.",
             },
-          ].map((s) => (
+          ].map((s, i) => (
             <div
               key={s.n}
-              className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-sm"
+              className="panel p-5"
+              data-reveal
+              style={{ "--d": i } as React.CSSProperties}
             >
               <p className="font-mono text-xs font-black text-[var(--color-muted)]">{s.n}</p>
               <h3 className="mt-1 font-display text-xl font-black tracking-normal text-[var(--color-ink)]">
@@ -225,7 +232,7 @@ export default function BookPreorderPage() {
         <p className="mt-6 text-sm text-[var(--color-muted)]">
           <Link
             href="/book"
-            className="font-semibold underline underline-offset-4 hover:text-[var(--color-accent)]"
+            className="font-semibold underline underline-offset-4 hover:text-[var(--color-gold)]"
           >
             ← Back to the book
           </Link>

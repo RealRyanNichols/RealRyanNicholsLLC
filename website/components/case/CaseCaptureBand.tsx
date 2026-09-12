@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { SignupForm } from "@/components/SignupForm";
 import { SITE } from "@/lib/site";
 
-// The in-story capture band on /case: a cream pause in the record with one
+// The in-story capture band on /case: a raised pause in the record with one
 // line, the sitewide follow form (email or phone, one button, the same
 // /api/subscribe wiring and subscribe_* events the footer uses), and, for
 // the book slot, the book band above the form. Exactly two of these render

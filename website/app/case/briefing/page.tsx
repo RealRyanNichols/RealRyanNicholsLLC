@@ -32,10 +32,8 @@ export default function CaseBriefingPage() {
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-6 sm:py-8">
-      <header className="mb-5">
-        <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-gold-bright)] font-bold">
-          The Briefing Desk · realryannichols.com
-        </p>
+      <header className="mb-5" data-reveal>
+        <p className="eyebrow">The Briefing Desk · realryannichols.com</p>
         <h1 className="mt-2 text-3xl sm:text-5xl font-bold tracking-tight leading-[1.05] font-display">
           Ask the J6 archive.
         </h1>
@@ -52,9 +50,7 @@ export default function CaseBriefingPage() {
         <CaseBriefingForm />
       ) : (
         <section className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-6">
-          <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">
-            Status
-          </p>
+          <p className="eyebrow">Status</p>
           <h2 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight font-display">
             Coming soon — needs an LLM API key.
           </h2>
@@ -143,9 +139,9 @@ function CrossLink({
   return (
     <Link
       href={href}
-      className="block rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4 hover:border-[var(--color-accent)] transition group"
+      className="block rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-[0_16px_40px_rgba(0,0,0,0.3)] hover:border-[var(--color-gold)] transition group"
     >
-      <p className="text-sm font-bold tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">
+      <p className="font-display text-sm font-bold tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-gold)]">
         {title}
       </p>
       <p className="mt-1 text-xs leading-snug text-[var(--color-ink-soft)]">

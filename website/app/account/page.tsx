@@ -308,7 +308,7 @@ function AdminOfficeCard() {
         </div>
         <Link
           href="/admin"
-          className="mt-4 inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--color-gold-bright)] px-5 text-sm font-black uppercase tracking-normal text-[var(--color-navy)] transition hover:bg-[var(--color-success)] sm:mt-0"
+          className="mt-4 inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--color-gold-bright)] px-5 text-sm font-black uppercase tracking-normal text-[var(--color-navy)] transition hover:bg-[var(--color-support-strong)] sm:mt-0"
         >
           Open Office
         </Link>

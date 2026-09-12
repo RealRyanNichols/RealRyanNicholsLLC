@@ -92,8 +92,7 @@ export function WorldMap({
                 y1={eq0[1]}
                 x2={eq1[0]}
                 y2={eq1[1]}
-                stroke="var(--color-line)"
-                strokeOpacity="0.25"
+                stroke="var(--color-line-soft)"
                 strokeWidth="0.4"
               />
             ) : null}
@@ -103,8 +102,7 @@ export function WorldMap({
                 y1={pm0[1]}
                 x2={pm1[0]}
                 y2={pm1[1]}
-                stroke="var(--color-line)"
-                strokeOpacity="0.25"
+                stroke="var(--color-line-soft)"
                 strokeWidth="0.4"
               />
             ) : null}
@@ -117,7 +115,7 @@ export function WorldMap({
         <path
           key={i}
           d={d}
-          fill="var(--color-paper)"
+          fill="var(--color-surface-2)"
           stroke="var(--color-line)"
           strokeWidth="0.5"
           opacity="0.92"

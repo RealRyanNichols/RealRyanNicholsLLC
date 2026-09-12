@@ -113,7 +113,7 @@ export function VoiceStoryRecorder({
 
   if (supported === false) {
     return (
-      <p className="rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-xs text-[var(--color-muted)]">
+      <p className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-xs text-[var(--color-muted)]">
         Talk-to-text isn&apos;t supported in this browser. Open this page in
         Chrome, Edge, or Safari to dictate — or just type your story below.
       </p>
@@ -121,7 +121,7 @@ export function VoiceStoryRecorder({
   }
 
   return (
-    <div className="rounded-xl border-2 border-dashed border-[var(--color-accent)] bg-[var(--color-paper)] p-4">
+    <div className="rounded-xl border border-dashed border-[var(--color-line)] bg-[var(--color-surface-2)] p-4">
       <div className="flex flex-wrap items-center gap-3">
         <button
           type="button"

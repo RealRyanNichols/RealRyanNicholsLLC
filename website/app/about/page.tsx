@@ -11,8 +11,8 @@ export const metadata = pageMetadata({
 
 function Stat({ n, label, sub }: { n: string; label: string; sub?: string }) {
   return (
-    <div className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4">
-      <div className="text-2xl sm:text-3xl font-bold tracking-tight leading-none text-[var(--color-accent)] font-display tabular-nums">
+    <div className="panel p-4">
+      <div className="display text-3xl sm:text-4xl leading-none text-[var(--color-gold)] tabular-nums">
         {n}
       </div>
       <div className="mt-2 text-sm font-bold text-[var(--color-ink)] leading-tight">{label}</div>
@@ -29,20 +29,47 @@ export default function AboutPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-12">
       {/* ---- Dossier header ---- */}
-      <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
-        Dossier · realryannichols.com
-      </p>
-      <h1 className="mt-2 text-4xl sm:text-6xl font-bold tracking-tight font-display leading-[1.02]">
-        Ryan Nichols
-      </h1>
-      <p className="mt-3 text-base sm:text-lg text-[var(--color-ink)] font-semibold leading-relaxed">
-        U.S. Marine Corps veteran · Search-and-Rescue specialist · Founder of
-        Wholesale Universe · Father of two.
-      </p>
+      <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-6">
+        <figure
+          className="panel w-28 shrink-0 overflow-hidden p-2 sm:w-36"
+          data-reveal
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/avatar.jpg"
+            alt="Ryan Nichols"
+            width={320}
+            height={320}
+            className="block aspect-square w-full rounded-xl object-cover"
+          />
+        </figure>
+        <div className="min-w-0">
+          <p className="eyebrow" data-reveal style={{ "--d": 1 } as React.CSSProperties}>
+            Dossier · realryannichols.com
+          </p>
+          <h1
+            className="display mt-2 text-5xl sm:text-7xl"
+            data-reveal
+            style={{ "--d": 2 } as React.CSSProperties}
+          >
+            Ryan Nichols
+          </h1>
+          <div
+            className="mt-4 h-[3px] w-[4.5rem] bg-[var(--color-gold)]"
+            aria-hidden
+            data-reveal
+            style={{ "--d": 3 } as React.CSSProperties}
+          />
+          <p className="mt-4 text-base sm:text-lg text-[var(--color-ink)] font-semibold leading-relaxed">
+            U.S. Marine Corps veteran · Search-and-Rescue specialist · Founder of
+            Wholesale Universe · Father of two.
+          </p>
+        </div>
+      </div>
 
       {/* status badges */}
       <div className="mt-4 flex flex-wrap gap-2">
-        <span className="rounded-full bg-[var(--color-accent)] text-[var(--color-cream)] px-3 py-1 text-xs font-bold">
+        <span className="rounded-full bg-[var(--color-gold)] text-[var(--color-navy)] px-3 py-1 text-xs font-bold">
           ★ Pardoned — Jan 20, 2025
         </span>
         <span className="rounded-full border-2 border-[var(--color-success)] text-[var(--color-success)] px-3 py-1 text-xs font-bold">
@@ -63,19 +90,19 @@ export default function AboutPage() {
       <div className="mt-6 flex flex-wrap gap-3">
         <Link
           href="/case"
-          className="rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
+          className="btn-accent rounded-full px-5 py-2.5 text-sm"
         >
           The J6 Case →
         </Link>
         <Link
           href="/jan-6"
-          className="rounded-full border-2 border-[var(--color-line)] bg-[var(--color-surface)] px-5 py-2.5 text-sm font-bold text-[var(--color-ink)] hover:border-[var(--color-accent)]"
+          className="btn-ghost rounded-full px-5 py-2.5 text-sm"
         >
           My Jan 6 story
         </Link>
         <Link
           href="/book/preorder"
-          className="rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-cream)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
+          className="btn-blue rounded-full px-5 py-2.5 text-sm font-bold"
         >
           Get the Book
         </Link>
@@ -90,8 +117,8 @@ export default function AboutPage() {
       </section>
 
       {/* ---- Service record ---- */}
-      <section className="mt-6 rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+      <section className="panel mt-6 p-5 sm:p-6" data-reveal>
+        <p className="eyebrow">
           Service record · USMC 2010–2014
         </p>
         <h2 className="mt-1 text-2xl font-bold tracking-tight font-display">
@@ -122,7 +149,7 @@ export default function AboutPage() {
             {DECORATIONS.map((d) => (
               <span
                 key={d}
-                className="rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-1 text-xs font-bold text-[var(--color-ink)]"
+                className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-1 text-xs font-bold text-[var(--color-ink)]"
               >
                 🎖 {d}
               </span>
@@ -133,18 +160,18 @@ export default function AboutPage() {
 
       {/* ---- Disaster operations log ---- */}
       <section className="mt-6">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+        <p className="eyebrow" data-reveal>
           Search & rescue · the operations log
         </p>
-        <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
+        <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display" data-reveal>
           Two dozen-plus deployments. A partial record.
         </h2>
         <ol className="mt-5 relative border-l-2 border-[var(--color-line)] ml-3 space-y-5">
           {OPERATIONS.map((op) => (
             <li key={op.title} className="relative pl-6">
-              <span className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full bg-[var(--color-accent)] ring-4 ring-[var(--color-paper)]" />
+              <span className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full bg-[var(--color-gold)] ring-4 ring-[var(--color-paper)]" />
               <div className="flex flex-wrap items-baseline gap-2">
-                <span className="rounded bg-[var(--color-ink)] text-[var(--color-cream)] px-1.5 py-0.5 text-[10px] font-bold tabular-nums">
+                <span className="rounded border border-[var(--color-line)] bg-[var(--color-support-soft)] text-[var(--color-gold)] px-1.5 py-0.5 text-[10px] font-bold tabular-nums">
                   {op.year}
                 </span>
                 <h3 className="text-base sm:text-lg font-bold tracking-tight font-display">
@@ -158,7 +185,7 @@ export default function AboutPage() {
       </section>
 
       {/* ---- Recognition ---- */}
-      <section className="mt-8 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-5 sm:p-6">
+      <section className="mt-8 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.4)]" data-reveal>
         <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-blue-ink)] font-bold">
           Recognized for the rescues
         </p>
@@ -166,7 +193,7 @@ export default function AboutPage() {
           {RECOGNITION.map((r) => (
             <span
               key={r}
-              className="rounded-full border border-[var(--color-blue)]/30 bg-[var(--color-paper)] px-3 py-1 text-xs font-bold text-[var(--color-blue-ink)]"
+              className="rounded-full border border-[var(--color-blue)]/30 bg-[var(--color-surface-2)] px-3 py-1 text-xs font-bold text-[var(--color-blue-ink)]"
             >
               {r}
             </span>
@@ -185,11 +212,11 @@ export default function AboutPage() {
           because the man behind the case file deserves to be known for
           what he did BEFORE the government weaponized him. */}
       <section className="mt-12 border-t-2 border-[var(--color-line)] pt-10">
-        <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">
+        <p className="eyebrow" data-reveal>
           The biography · Written by Bonnie Nichols · Filed as
           court exhibit, December 14, 2021
         </p>
-        <h2 className="mt-3 text-2xl sm:text-3xl font-bold tracking-tight font-display">
+        <h2 className="mt-3 text-2xl sm:text-3xl font-bold tracking-tight font-display" data-reveal>
           The man behind the case file
         </h2>
         <p className="mt-3 text-sm text-[var(--color-muted)] italic">

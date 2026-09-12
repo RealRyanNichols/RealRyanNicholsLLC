@@ -39,13 +39,14 @@ export function J6DirectoryHero({
           : "A searchable, evidence-first directory of public January 6 profiles. Find a person by name or case number, inspect the available record, and help fill an honest gap with a source.";
 
   return (
-    <section className="overflow-hidden rounded-2xl border-2 border-[var(--color-line-soft)] bg-[var(--color-surface)] text-[var(--color-cream)] shadow-2xl">
+    <section
+      data-reveal
+      className="overflow-hidden rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-cream)] shadow-[0_24px_60px_rgba(0,0,0,0.45)]"
+    >
       <div className="grid gap-px bg-[var(--color-cream)]/10 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="bg-[var(--color-surface)] p-5 sm:p-7">
-          <p className="text-[11px] font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
-            {kicker}
-          </p>
-          <h1 className="mt-3 text-3xl font-black leading-[1.02] tracking-tight text-[var(--color-cream)] sm:text-5xl">
+          <p className="eyebrow">{kicker}</p>
+          <h1 className="display mt-3 text-4xl text-[var(--color-cream)] sm:text-6xl">
             {title}
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-[var(--color-ink-soft)] sm:text-lg">
@@ -78,7 +79,7 @@ export function J6DirectoryHero({
           <div className="mt-6 flex flex-col gap-2 sm:flex-row">
             <Link
               href={`#${J6_PROFILE_LIST_ID}`}
-              className="inline-flex min-h-12 items-center justify-center rounded-xl bg-[var(--color-gold-bright)] px-5 py-3 text-sm font-black uppercase tracking-wider text-[var(--color-navy)] transition hover:bg-[var(--color-success)]"
+              className="btn-accent inline-flex min-h-12 items-center justify-center rounded-xl px-5 py-3 text-sm font-black uppercase tracking-wider"
             >
               Find your name
             </Link>
@@ -120,7 +121,10 @@ function J6HeroStat({
     tone === "green" ? "text-[var(--color-gold-bright)]" : tone === "gold" ? "text-[var(--color-gold-light)]" : "text-[var(--color-blue-ink)]";
   return (
     <div className="bg-[var(--color-surface)] p-4 sm:p-5">
-      <div className={`font-mono text-3xl font-black leading-none tabular-nums ${color}`}>
+      <div
+        className={`display text-4xl leading-none tabular-nums ${color}`}
+        data-count={value > 0 ? value : undefined}
+      >
         {value.toLocaleString()}
       </div>
       <div className="mt-2 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-ink-soft)]">

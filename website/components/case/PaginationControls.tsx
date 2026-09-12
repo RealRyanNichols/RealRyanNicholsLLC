@@ -38,7 +38,7 @@ export function PaginationControls({
           "inline-flex min-h-11 items-center rounded-lg border px-3 text-xs font-black uppercase",
           page <= 1
             ? "pointer-events-none border-[var(--color-line)] text-[var(--color-muted)] opacity-50"
-            : "border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink)] hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]",
+            : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink)] hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]",
         ].join(" ")}
       >
         Previous
@@ -53,7 +53,7 @@ export function PaginationControls({
           "inline-flex min-h-11 items-center rounded-lg border px-3 text-xs font-black uppercase",
           page >= pageCount
             ? "pointer-events-none border-[var(--color-line)] text-[var(--color-muted)] opacity-50"
-            : "border-[var(--color-blue)] bg-[var(--color-blue-soft)]/60 text-[var(--color-blue-ink)] hover:bg-[var(--color-gold)] hover:text-[var(--color-gold)]",
+            : "border-[var(--color-blue)] bg-[var(--color-blue-soft)]/60 text-[var(--color-blue-ink)] hover:border-[var(--color-gold)] hover:bg-[var(--color-gold)] hover:text-[var(--color-navy)]",
         ].join(" ")}
       >
         Next

@@ -14,9 +14,9 @@ export const metadata: Metadata = {
 export default function BlueprintIntakePage() {
   return (
     <article className="rrn-page">
-      <section className="border-b border-[var(--color-line)] bg-[var(--color-blue)] text-[var(--color-cream)]">
+      <section className="band text-[var(--color-cream)]">
         <div className="mx-auto max-w-4xl px-5 py-14 sm:px-6 lg:py-16">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-gold)]">
+          <p className="eyebrow">
             DIY Blueprint + Prompt Stack
           </p>
           <h1 className="mt-4 font-display text-3xl font-black leading-tight tracking-tight text-[var(--color-cream)] sm:text-4xl lg:text-5xl">

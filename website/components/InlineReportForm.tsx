@@ -68,7 +68,7 @@ export function InlineReportForm({
 
   if (status === "ok") {
     return (
-      <div className="not-prose rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-surface)] p-6">
+      <div className="not-prose rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6">
         <h3 className="text-xl font-bold tracking-tight font-display">Report received.</h3>
         <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
           Thank you. It&apos;s reviewed by hand and added to the record. If you left
@@ -79,11 +79,11 @@ export function InlineReportForm({
   }
 
   const inputCls =
-    "w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2.5 text-base focus:outline-none focus:border-[var(--color-accent)]";
+    "w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2.5 text-base text-[var(--color-ink)] focus:outline-none focus:border-[var(--color-accent)]";
 
   return (
-    <div className="not-prose rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-surface)] p-6">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+    <div className="not-prose rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6">
+      <p className="eyebrow">
         {kicker}
       </p>
       <h3 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight font-display">
@@ -110,12 +110,12 @@ export function InlineReportForm({
           />
         </div>
         {err ? (
-          <p className="text-sm font-semibold text-[var(--color-accent)]">{err}</p>
+          <p className="text-sm font-semibold text-[var(--color-danger)]">{err}</p>
         ) : null}
         <button
           type="submit"
           disabled={status === "submitting"}
-          className="w-full rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-3.5 font-bold hover:bg-[var(--color-accent-strong)] transition disabled:opacity-50 disabled:cursor-not-allowed"
+          className="btn-accent w-full px-5 py-3.5 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {status === "submitting" ? "Sending…" : buttonLabel}
         </button>

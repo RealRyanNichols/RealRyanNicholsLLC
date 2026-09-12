@@ -92,7 +92,7 @@ export default async function SuccessPage({
           : "A receipt is on its way to your email."}
       </p>
       {lineItems.length > 0 ? (
-        <div className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 text-left">
+        <div className="panel mt-6 p-4 text-left" data-reveal>
           {lineItems.map((li, i) => (
             <div key={i} className="flex justify-between text-sm py-1">
               <span className="text-[var(--color-ink-soft)]">
@@ -104,7 +104,7 @@ export default async function SuccessPage({
           ))}
           <div className="mt-2 border-t border-[var(--color-line)] pt-2 flex justify-between font-bold">
             <span>Total</span>
-            <span className="font-mono text-[var(--color-accent)]">
+            <span className="font-mono text-[var(--color-gold)]">
               {usd(amount)}
             </span>
           </div>
@@ -121,8 +121,8 @@ export default async function SuccessPage({
       </div>
 
       {boughtBook ? (
-        <div className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 text-left">
-          <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--color-accent)]">
+        <div className="panel mt-6 p-5 text-left" data-reveal>
+          <p className="eyebrow">
             While you wait for the book
           </p>
           <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
@@ -137,8 +137,8 @@ export default async function SuccessPage({
           </Link>
         </div>
       ) : (
-        <div className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 text-left">
-          <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--color-accent)]">
+        <div className="panel mt-6 p-5 text-left" data-reveal>
+          <p className="eyebrow">
             One more thing
           </p>
           <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">

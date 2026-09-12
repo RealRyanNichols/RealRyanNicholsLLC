@@ -193,10 +193,10 @@ export default async function FuelPage({
           aria-hidden
         />
         <div className="relative mx-auto max-w-5xl px-4 py-12 sm:py-16">
-          <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
+          <p className="eyebrow">
             The Token Fund
           </p>
-          <h1 className="mt-3 max-w-3xl font-display text-4xl font-black leading-[1.02] tracking-tight text-[var(--color-cream)] sm:text-6xl">
+          <h1 className="display mt-3 max-w-3xl text-4xl text-[var(--color-cream)] sm:text-6xl">
             I run out of tokens every half a week.
             <br />
             <span className="text-[var(--color-gold-bright)]">You can keep the faucet open.</span>
@@ -229,7 +229,7 @@ export default async function FuelPage({
           </p>
 
           {sp.canceled ? (
-            <p className="mt-6 max-w-2xl rounded-lg border border-[var(--color-cream)]/15 bg-[var(--color-cream)]/[0.06] px-4 py-3 text-sm text-[var(--color-ink-soft)]">
+            <p className="mt-6 max-w-2xl rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-4 py-3 text-sm text-[var(--color-ink-soft)]">
               No charge was made. Pick up where you left off whenever you want.
             </p>
           ) : null}
@@ -252,7 +252,7 @@ export default async function FuelPage({
       <div className="mx-auto max-w-5xl px-4">
         {/* ── What your fuel does ───────────────────────────────────────── */}
         <section className="mt-12" aria-labelledby="fuel-ladder-title">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">What your fuel does</p>
+          <p className="eyebrow">What your fuel does</p>
           <h2 id="fuel-ladder-title" className="mt-1 font-display text-2xl font-bold tracking-tight sm:text-3xl">
             {usdWhole(500)} buys about {roundWords(five.words)} words. {usdWhole(5_000)} buys {fifty}.
           </h2>
@@ -269,7 +269,7 @@ export default async function FuelPage({
         {/* ── The math, in the open ────────────────────────────────────── */}
         <section className="mt-12" aria-labelledby="fuel-math">
           <div className="flex flex-wrap items-center gap-2">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">The math, in the open</p>
+            <p className="eyebrow">The math, in the open</p>
             <span className="rounded-full border border-[var(--color-gold-bright)] bg-[var(--color-support-soft)] px-2 py-0.5 text-[11px] font-black uppercase tracking-wider text-[var(--color-support-strong)]">
               Estimate
             </span>
@@ -284,7 +284,7 @@ export default async function FuelPage({
             that runs on credits, the real number replaces it.
           </p>
           <div className="mt-5 grid gap-3 md:grid-cols-2">
-            <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+            <div className="panel p-4" data-reveal>
               <p className="text-[11px] font-black uppercase tracking-wider text-[var(--color-muted)]">Input 1 · the rate card</p>
               <p className="mt-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">
                 <strong className="text-[var(--color-ink)]">{FABLE_RATES.model}:</strong> ${FABLE_RATES.input} per million tokens
@@ -292,7 +292,7 @@ export default async function FuelPage({
                 pricing page on {FABLE_RATES.checkedOn}. Usage credits are billed at exactly these rates.
               </p>
             </div>
-            <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+            <div className="panel p-4" data-reveal style={{ "--d": 1 } as React.CSSProperties}>
               <p className="text-[11px] font-black uppercase tracking-wider text-[var(--color-muted)]">Input 2 · my measured mix</p>
               <p className="mt-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">
                 For every output token, my work carries{" "}
@@ -319,7 +319,7 @@ export default async function FuelPage({
               <tbody className="divide-y divide-[var(--color-line)]">
                 {mathRows.map((r) => (
                   <tr key={r.slug}>
-                    <td className="px-4 py-2.5 font-display text-lg font-black tabular-nums text-[var(--color-ink)]">
+                    <td className="px-4 py-2.5 display text-lg tabular-nums text-[var(--color-gold)]">
                       {usdWhole(r.amountCents)}
                       {r.slug === FUEL_MONTHLY.slug ? <span className="text-xs font-bold text-[var(--color-muted)]">/mo</span> : null}
                     </td>
@@ -344,7 +344,7 @@ export default async function FuelPage({
                   {MEASURED_DAYS.map((d) => (
                     <tr key={d.label}>
                       <td className="px-4 py-2.5 text-[var(--color-ink-soft)]">{d.label}</td>
-                      <td className="px-4 py-2.5 text-right font-display text-lg font-black tabular-nums text-[var(--color-ink)]">
+                      <td className="px-4 py-2.5 text-right display text-lg tabular-nums text-[var(--color-gold)]">
                         {usdWhole(d.cents)}
                       </td>
                     </tr>
@@ -369,7 +369,7 @@ export default async function FuelPage({
 
         {/* ── Why articles ─────────────────────────────────────────────── */}
         <section className="mt-12" aria-labelledby="fuel-why-articles">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">Why articles</p>
+          <p className="eyebrow">Why articles</p>
           <h2 id="fuel-why-articles" className="mt-1 font-display text-2xl font-bold tracking-tight sm:text-3xl">
             A post dies in a day. An article is an evergreen billboard.
           </h2>
@@ -406,7 +406,7 @@ export default async function FuelPage({
             <ol className="grid grid-cols-3 gap-2" aria-label="How one article works">
               {BILLBOARD.map((s, i) => (
                 <li key={s.t} className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-2.5 sm:p-3">
-                  <span className="font-display text-2xl font-black tabular-nums text-[var(--color-accent)]">{i + 1}</span>
+                  <span className="display text-2xl tabular-nums text-[var(--color-gold)]">{i + 1}</span>
                   <span className="mt-0.5 block text-xs font-bold leading-tight text-[var(--color-ink)] sm:text-sm">{s.t}</span>
                   <span className="mt-1 block text-[11px] leading-snug text-[var(--color-muted)]">{s.s}</span>
                 </li>
@@ -417,7 +417,7 @@ export default async function FuelPage({
 
         {/* ── Not just articles ────────────────────────────────────────── */}
         <section className="mt-12" aria-labelledby="fuel-more">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">Not just articles</p>
+          <p className="eyebrow">Not just articles</p>
           <h2 id="fuel-more" className="mt-1 font-display text-2xl font-bold tracking-tight sm:text-3xl">
             Articles are one thing that comes out of the machine.
           </h2>
@@ -444,17 +444,26 @@ export default async function FuelPage({
         {/* ── The good the fuel did ─────────────────────────────────────── */}
         {archives.length > 0 ? (
           <section className="mt-12" aria-labelledby="fuel-good">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
+            <p className="eyebrow">
               What the machine already built
             </p>
             <h2 id="fuel-good" className="mt-1 font-display text-2xl font-bold tracking-tight sm:text-3xl">
               Not a promise. A record you can open.
             </h2>
             <div className="mt-5 grid gap-3 sm:grid-cols-2">
-              {archives.map((a) => (
-                <Link key={a.label} href={a.href} className="qa-tile group flex items-center justify-between gap-4 p-4 sm:p-5">
+              {archives.map((a, i) => (
+                <Link
+                  key={a.label}
+                  href={a.href}
+                  className="qa-tile group flex items-center justify-between gap-4 p-4 sm:p-5"
+                  data-reveal
+                  style={{ "--d": i } as React.CSSProperties}
+                >
                   <div className="min-w-0">
-                    <p className="font-display text-3xl font-black tabular-nums tracking-tight text-[var(--color-ink)] sm:text-4xl">
+                    <p
+                      className="display text-4xl tabular-nums text-[var(--color-gold)] sm:text-5xl"
+                      data-count={a.value}
+                    >
                       {a.value.toLocaleString("en-US")}
                     </p>
                     <p className="mt-1 text-sm font-bold leading-snug text-[var(--color-ink-soft)]">{a.label}</p>
@@ -546,7 +555,7 @@ export default async function FuelPage({
               </p>
               {bill.overage ? (
                 <>
-                  <p className="mt-1 font-display text-3xl font-black tabular-nums tracking-tight text-[var(--color-ink)]">
+                  <p className="display mt-1 text-4xl tabular-nums text-[var(--color-gold)]">
                     {usdWhole(bill.overage.amount_cents)}
                     <span className="text-sm font-bold text-[var(--color-muted)]">/mo</span>
                   </p>
@@ -580,7 +589,7 @@ export default async function FuelPage({
         {/* ── Why I ask ─────────────────────────────────────────────────── */}
         <section className="mt-12 grid gap-6 lg:grid-cols-[1.2fr_1fr] lg:items-start">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">Why I ask</p>
+            <p className="eyebrow">Why I ask</p>
             <h2 className="mt-1 font-display text-2xl font-bold tracking-tight sm:text-3xl">
               I would rather earn it. This is the closest thing I have.
             </h2>
@@ -640,7 +649,7 @@ export default async function FuelPage({
 
         {/* ── $50 and up: my time ──────────────────────────────────────── */}
         <section id="fuel-time" className="mt-12 scroll-mt-24" aria-labelledby="fuel-time-title">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">The deal</p>
+          <p className="eyebrow">The deal</p>
           <h2 id="fuel-time-title" className="mt-1 font-display text-2xl font-bold tracking-tight sm:text-3xl">
             Under {floor}, you fuel the machine. {floor} and up, you get me.
           </h2>
@@ -663,7 +672,7 @@ export default async function FuelPage({
                 }`}
               >
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <p className="font-display text-2xl font-black tabular-nums tracking-tight text-[var(--color-ink)]">
+                  <p className="display text-3xl tabular-nums text-[var(--color-gold)]">
                     {usdWhole(t.amountCents)}
                     {t.monthly ? <span className="text-sm font-bold text-[var(--color-muted)]">/mo</span> : null}
                   </p>
@@ -695,7 +704,7 @@ export default async function FuelPage({
 
         {/* ── The form ─────────────────────────────────────────────────── */}
         <section id="fuel" className="mt-14 scroll-mt-24" aria-labelledby="fuel-form-title">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">Fuel the machine</p>
+          <p className="eyebrow">Fuel the machine</p>
           <h2 id="fuel-form-title" className="mt-1 font-display text-3xl font-black tracking-tight sm:text-4xl">
             Pick your fuel. Every tier includes everything below it.
           </h2>
@@ -771,7 +780,7 @@ export default async function FuelPage({
 
         {/* ── The wall ─────────────────────────────────────────────────── */}
         <section className="mt-12" aria-labelledby="fuel-wall" id="fuel-wall">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">The Fuel wall</p>
+          <p className="eyebrow">The Fuel wall</p>
           <h2 className="mt-1 font-display text-2xl font-bold tracking-tight sm:text-3xl">
             {wall.length > 0 ? "The people keeping the lights on." : "The first names go here."}
           </h2>
@@ -825,7 +834,7 @@ export default async function FuelPage({
 
         {/* ── Share ────────────────────────────────────────────────────── */}
         <section className="mt-12">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">Not today?</p>
+          <p className="eyebrow">Not today?</p>
           <h2 className="mt-1 font-display text-2xl font-bold tracking-tight">Put this in front of one more person.</h2>
           <div className="mt-4">
             <ShareRail

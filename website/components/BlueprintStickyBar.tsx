@@ -27,7 +27,7 @@ export function BlueprintStickyBar() {
   if (dismissed || !show) return null;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--color-cream)]/15 bg-[var(--color-blue)] text-[var(--color-cream)] shadow-[0_-8px_24px_rgba(0,0,0,0.25)]">
+    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--color-line)] bg-[var(--color-surface)]/95 text-[var(--color-cream)] shadow-[0_-10px_40px_rgba(0,0,0,0.55)] backdrop-blur">
       <div className="mx-auto flex max-w-5xl items-center gap-3 px-4 py-3 sm:px-6">
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-black text-[var(--color-cream)]">
@@ -40,7 +40,7 @@ export function BlueprintStickyBar() {
         <a
           href="#packages"
           onClick={() => trackEvent("blueprint_sticky_cta", {})}
-          className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-lg bg-[var(--color-accent)] px-5 py-2.5 text-sm font-black text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)]"
+          className="btn-accent inline-flex min-h-11 shrink-0 items-center justify-center rounded-lg px-5 py-2.5 text-sm font-black"
         >
           Choose your package
         </a>

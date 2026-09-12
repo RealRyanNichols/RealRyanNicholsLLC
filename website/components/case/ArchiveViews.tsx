@@ -83,10 +83,8 @@ export function GrievancesView({ grievances }: { grievances: Awaited<ReturnType<
       {groups.map((act) =>
         act.items.length === 0 ? null : (
           <section key={act.label}>
-            <div className="border-l-2 border-[var(--color-gold)] pl-4 mb-4">
-              <p className="text-[10px] uppercase tracking-wider text-[var(--color-ink)] font-bold">
-                {act.tag}
-              </p>
+            <div data-reveal className="border-l-2 border-[var(--color-gold)] pl-4 mb-4">
+              <p className="eyebrow">{act.tag}</p>
               <h2 className="text-lg sm:text-xl font-bold tracking-tight">{act.label}</h2>
               <p className="text-sm text-[var(--color-ink-soft)] mt-1 max-w-2xl leading-relaxed">
                 {act.lead}
@@ -109,8 +107,8 @@ export function GrievancesView({ grievances }: { grievances: Awaited<ReturnType<
                           </span>
                         ) : null}
                       </div>
-                      <h3 className="text-lg font-bold tracking-tight">
-                        <span className="text-[var(--color-ink)] mr-2">#{g.display_order}</span>
+                      <h3 className="font-display text-lg font-bold tracking-tight">
+                        <span className="text-[var(--color-gold)] mr-2">#{g.display_order}</span>
                         {g.title}
                       </h3>
                       {g.summary ? (
@@ -123,7 +121,9 @@ export function GrievancesView({ grievances }: { grievances: Awaited<ReturnType<
                       </span>
                     </div>
                     <div className="flex-shrink-0 text-right">
-                      <div className="text-2xl font-bold leading-none">{g.count}</div>
+                      <div className="display text-2xl leading-none tabular-nums text-[var(--color-gold)]">
+                        {g.count}
+                      </div>
                       <div className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] mt-1">
                         filings
                       </div>
@@ -149,10 +149,10 @@ export function TimelineView({ events }: { events: Awaited<ReturnType<typeof get
             aria-hidden
           />
           <Link href={`/case/events/${e.slug}`} className="group block">
-            <time className="text-xs uppercase tracking-wider text-[var(--color-ink)] font-bold">
+            <time className="eyebrow block">
               {e.event_date ? format(new Date(e.event_date), "MMMM d, yyyy") : "Date pending verification"}
             </time>
-            <h2 className="mt-1 text-lg font-bold tracking-tight group-hover:text-[var(--color-gold)] transition">
+            <h2 className="mt-1 font-display text-lg font-bold tracking-tight group-hover:text-[var(--color-gold)] transition">
               {e.title}
             </h2>
             {e.description ? (
@@ -214,7 +214,7 @@ export function DocumentsView({ documents }: { documents: Awaited<ReturnType<typ
 
           <div className="flex flex-1 flex-col p-3.5">
             {d.document_date ? (
-              <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--color-ink)]">
+              <p className="eyebrow">
                 {format(new Date(d.document_date), "MMM d, yyyy")}
               </p>
             ) : null}

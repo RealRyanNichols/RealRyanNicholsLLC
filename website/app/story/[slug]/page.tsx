@@ -79,26 +79,40 @@ export default async function StoryChapterPage({
         secondary={{ href: "/about", label: "The full rescue record" }}
       />
 
-      <p className="text-[11px] uppercase tracking-[0.25em] font-bold text-[var(--color-ink)]">
+      <p className="eyebrow" data-reveal>
         The rescue record · chapter {idx + 1} of {STORY_CHAPTERS.length}
       </p>
-      <div className="mt-2 flex flex-wrap items-baseline gap-3">
-        <span className="rounded bg-[var(--color-ink)] px-2 py-1 text-sm font-bold tabular-nums text-[var(--color-cream)]">
+      <div
+        className="mt-2 flex flex-wrap items-baseline gap-3"
+        data-reveal
+        style={{ "--d": 1 } as React.CSSProperties}
+      >
+        <span className="rounded border border-[var(--color-line)] bg-[var(--color-support-soft)] px-2 py-1 text-sm font-bold tabular-nums text-[var(--color-gold)]">
           {c.year}
         </span>
         <h1 className="font-display text-4xl sm:text-6xl font-bold tracking-tight leading-[1.02]">
           {c.title}
         </h1>
       </div>
+      <div
+        className="mt-5 h-[3px] w-[4.5rem] bg-[var(--color-gold)]"
+        aria-hidden
+        data-reveal
+        style={{ "--d": 2 } as React.CSSProperties}
+      />
 
       {c.context ? (
-        <p className="mt-6 text-lg sm:text-xl leading-relaxed text-[var(--color-ink-soft)]">
+        <p
+          className="mt-6 text-lg sm:text-xl leading-relaxed text-[var(--color-ink-soft)]"
+          data-reveal
+          style={{ "--d": 3 } as React.CSSProperties}
+        >
           {c.context}
         </p>
       ) : null}
 
-      <section className="mt-8 rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6">
-        <p className="text-[10px] uppercase tracking-[0.18em] font-bold text-[var(--color-ink)]">
+      <section className="panel mt-8 p-5 sm:p-6">
+        <p className="eyebrow">
           How Ryan was involved · from the record
         </p>
         <p className="mt-2 text-base sm:text-lg leading-relaxed text-[var(--color-ink)]">
@@ -114,11 +128,11 @@ export default async function StoryChapterPage({
       </section>
 
       {c.significance ? (
-        <section className="mt-6 rounded-2xl bg-[var(--color-ink)] p-6 text-[var(--color-cream)]">
-          <p className="text-[10px] uppercase tracking-[0.18em] font-bold text-[var(--color-accent)]">
+        <section className="mt-6 rounded-2xl border border-[var(--color-line)] border-l-4 border-l-[var(--color-gold)] bg-[var(--color-surface)] p-6 shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
+          <p className="eyebrow">
             Why it matters
           </p>
-          <p className="mt-2 font-display text-lg sm:text-xl font-bold leading-snug">
+          <p className="mt-2 font-display text-lg sm:text-xl font-bold leading-snug text-[var(--color-ink)]">
             {c.significance}
           </p>
         </section>
@@ -139,22 +153,22 @@ export default async function StoryChapterPage({
 
       {/* Media — fills as the archive digitizes each deployment. */}
       <section className="mt-8">
-        <p className="text-[10px] uppercase tracking-[0.18em] font-bold text-[var(--color-muted)]">
+        <p className="eyebrow">
           Pictures & footage
         </p>
         {c.media.length > 0 ? (
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             {c.media.map((m) => (
-              <figure key={m.src}>
+              <figure key={m.src} className="panel overflow-hidden p-2">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={m.src}
                   alt={m.alt}
-                  className="w-full rounded-xl border border-[var(--color-line)] object-cover"
+                  className="w-full rounded-xl object-cover"
                   loading="lazy"
                 />
                 {m.caption ? (
-                  <figcaption className="mt-1 text-xs text-[var(--color-muted)]">
+                  <figcaption className="px-1 pb-1 pt-2 text-xs text-[var(--color-muted)]">
                     {m.caption}
                   </figcaption>
                 ) : null}
@@ -162,7 +176,7 @@ export default async function StoryChapterPage({
             ))}
           </div>
         ) : (
-          <div className="mt-3 rounded-2xl border border-dashed border-[var(--color-line)] bg-[var(--color-paper)] p-5">
+          <div className="mt-3 rounded-2xl border border-dashed border-[var(--color-line)] bg-[var(--color-surface)] p-5">
             <p className="text-sm text-[var(--color-ink-soft)]">
               Photos and footage from this deployment are being added from the
               archive.{" "}
@@ -173,7 +187,7 @@ export default async function StoryChapterPage({
             </p>
             <Link
               href="/submit"
-              className="mt-3 inline-flex min-h-11 items-center rounded-lg bg-[var(--color-gold)] px-4 py-2 text-sm font-bold text-[var(--color-navy)] transition hover:bg-[var(--color-support-strong)]"
+              className="btn-accent mt-3 inline-flex min-h-11 items-center rounded-lg px-4 py-2 text-sm"
             >
               Send what you have →
             </Link>

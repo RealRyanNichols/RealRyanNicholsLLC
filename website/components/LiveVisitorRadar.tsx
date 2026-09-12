@@ -371,7 +371,13 @@ export function LiveVisitorRadar({ initial }: { initial: RadarPing[] }) {
         <g transform={transform}>
           {/* Land, one path per polygon. */}
           {LAND_PATHS.map((d, i) => (
-            <path key={i} d={d} fill="#1c2a4a" stroke="#3a557c" strokeWidth={0.5} />
+            <path
+              key={i}
+              d={d}
+              fill="var(--color-surface-2)"
+              stroke="var(--color-line)"
+              strokeWidth={0.5}
+            />
           ))}
 
           {/* US state outlines, so a dot reads as "in Texas" at a glance. */}
@@ -382,7 +388,7 @@ export function LiveVisitorRadar({ initial }: { initial: RadarPing[] }) {
                 data-state={s.code}
                 d={s.path}
                 fill="none"
-                stroke="#3a557c"
+                stroke="var(--color-line-soft)"
                 strokeWidth={0.4}
               />
             ))}
@@ -391,7 +397,7 @@ export function LiveVisitorRadar({ initial }: { initial: RadarPing[] }) {
           {/* Individual visitor pings. */}
           {projected.map(({ p, x, y }) => {
             const isSel = selected?.ping_id === p.ping_id;
-            const color = isSel ? "#fff" : "var(--color-live)";
+            const color = isSel ? "var(--color-cream)" : "var(--color-live)";
             const label = pingLabel(p);
             return (
               <g
@@ -416,7 +422,7 @@ export function LiveVisitorRadar({ initial }: { initial: RadarPing[] }) {
                   cy={y}
                   r={dotR}
                   fill={color}
-                  stroke={isSel ? "var(--color-live)" : "#0e1a36"}
+                  stroke={isSel ? "var(--color-live)" : "var(--color-paper)"}
                   strokeWidth={strokeW}
                 />
                 <title>{label}</title>

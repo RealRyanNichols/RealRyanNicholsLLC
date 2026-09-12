@@ -153,7 +153,7 @@ const TOOLS: {
 ];
 
 const input =
-  "w-full rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2.5 text-sm text-[var(--color-ink)] outline-none transition focus:border-[var(--color-accent)]";
+  "w-full rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2.5 text-sm text-[var(--color-ink)] outline-none transition focus:border-[var(--color-accent)]";
 
 const USE_GATE = 5;
 
@@ -498,7 +498,7 @@ export function FreeToolsHub() {
             </button>
           ))}
         </div>
-        <div className="mt-2 rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] p-3 text-xs leading-relaxed text-[var(--color-ink-soft)]">
+        <div className="mt-2 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-3 text-xs leading-relaxed text-[var(--color-ink-soft)]">
           <p className="font-black uppercase tracking-normal text-[var(--color-muted)]">
             Data rule
           </p>
@@ -510,7 +510,7 @@ export function FreeToolsHub() {
         <a
           href="#tool-wish"
           onClick={() => trackEvent("tool_wish_button_click")}
-          className="mt-2 grid min-h-12 place-items-center rounded-md border-2 border-[var(--color-support)] bg-[var(--color-support)] px-3 py-2 text-center text-sm font-black text-[var(--color-navy)] transition hover:bg-[var(--color-support-soft)]"
+          className="btn-ghost mt-2 grid min-h-12 place-items-center px-3 py-2 text-center text-sm"
         >
           Wish for a tool
         </a>
@@ -519,7 +519,7 @@ export function FreeToolsHub() {
       <div className="grid min-w-0 gap-3">
       <section className="min-w-0 overflow-hidden rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] shadow-sm">
         <div className="border-b border-[var(--color-line)] p-4 sm:p-5">
-          <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+          <p className="eyebrow">
             Free tool
           </p>
           <h2 className="mt-1 font-display text-2xl font-bold leading-tight tracking-normal sm:text-3xl">
@@ -531,7 +531,7 @@ export function FreeToolsHub() {
               spot patterns, missing records, local issues, and tools worth
               funding.
             </p>
-            <div className="grid grid-cols-[1fr_auto] items-center gap-2 rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 md:min-w-48">
+            <div className="grid grid-cols-[1fr_auto] items-center gap-2 rounded-md border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 md:min-w-48">
               <span className="text-[11px] font-black uppercase text-[var(--color-muted)]">
                 Successful uses
               </span>
@@ -557,7 +557,7 @@ export function FreeToolsHub() {
             <MotionFields value={motion} onChange={setMotion} />
           )}
 
-          <details className="rounded-md border border-[var(--color-line)] bg-[var(--color-paper)]">
+          <details className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface-2)]">
             <summary className="grid min-h-11 cursor-pointer list-none grid-cols-[1fr_auto] items-center gap-3 px-3 py-2 text-sm font-black [&::-webkit-details-marker]:hidden">
               <span>
                 Optional: help map the pattern
@@ -672,7 +672,7 @@ export function FreeToolsHub() {
               <button
                 type="button"
                 onClick={copyResult}
-                className="rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-xs font-black uppercase tracking-normal transition hover:border-[var(--color-success)]"
+                className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-xs font-black uppercase tracking-normal transition hover:border-[var(--color-success)]"
               >
                 Copy
               </button>
@@ -711,7 +711,7 @@ export function FreeToolsHub() {
               </Link>
             </div>
 
-            <section className="mt-4 rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] p-3">
+            <section className="mt-4 rounded-md border border-[var(--color-line)] bg-[var(--color-surface-2)] p-3">
               <div className="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-center">
                 <div>
                   <p className="text-xs font-black uppercase tracking-normal text-[var(--color-support-strong)]">
@@ -856,7 +856,7 @@ export function FreeToolsHub() {
             <button
               type="submit"
               disabled={wishBusy}
-              className="min-h-12 rounded-md border-2 border-[var(--color-ink)] bg-[var(--color-ink)] px-4 py-3 text-sm font-black text-[var(--color-cream)] transition hover:bg-[var(--color-ink-soft)] disabled:opacity-60"
+              className="btn-accent min-h-12 px-4 py-3 text-sm disabled:opacity-60"
             >
               {wishBusy ? "Saving wish..." : "Submit tool wish"}
             </button>
@@ -1247,7 +1247,7 @@ function Field({
   children: React.ReactNode;
 }) {
   return (
-    <label className="grid gap-1 text-sm font-bold text-[var(--color-ink)]">
+    <label className="grid gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
       <span>
         {label}
         {required ? <span className="text-[var(--color-accent)]"> *</span> : null}

@@ -54,7 +54,7 @@ const WAYS = [
 export default function SupportPage() {
   return (
     <main className="mx-auto max-w-4xl px-4 py-12">
-      <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
+      <p className="eyebrow">
         Support the work
       </p>
       <h1 className="mt-2 font-display text-4xl font-black tracking-tight sm:text-5xl">
@@ -68,9 +68,10 @@ export default function SupportPage() {
 
       <Link
         href="/fuel"
-        className="mt-6 block rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-5 transition hover:bg-[var(--color-accent)]/15 sm:p-6"
+        className="mt-6 block rounded-2xl border-2 border-[var(--color-gold)] bg-[var(--color-support-soft)] p-5 transition hover:bg-[var(--color-gold)]/15 sm:p-6"
+        data-reveal
       >
-        <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--color-accent)]">
+        <p className="eyebrow">
           The Token Fund
         </p>
         <p className="mt-1 font-display text-2xl font-black tracking-tight text-[var(--color-ink)]">
@@ -82,7 +83,7 @@ export default function SupportPage() {
           mail, an article on the topic you pick. Every tier is a trade, and the
           bill is published.
         </p>
-        <span className="mt-3 inline-block text-sm font-bold text-[var(--color-accent)]">See the tiers →</span>
+        <span className="mt-3 inline-block text-sm font-bold text-[var(--color-gold)]">See the tiers →</span>
       </Link>
 
       {/* Lead: the book */}
@@ -92,13 +93,15 @@ export default function SupportPage() {
 
       {/* The three ways to own it */}
       <section className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {WAYS.map((w) => (
+        {WAYS.map((w, i) => (
           <Link
             key={w.href}
             href={w.href}
-            className="group flex flex-col rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 transition hover:border-[var(--color-accent)]"
+            className="group panel flex flex-col p-5 transition hover:border-[var(--color-gold)]"
+            data-reveal
+            style={{ "--d": i } as React.CSSProperties}
           >
-            <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--color-accent)]">
+            <p className="eyebrow">
               {w.kicker}
             </p>
             <h2 className="mt-1 text-lg font-bold tracking-tight text-[var(--color-ink)] transition group-hover:text-[var(--color-accent)]">
@@ -115,7 +118,7 @@ export default function SupportPage() {
       </section>
 
       {/* Free ways that still matter */}
-      <section className="mt-10 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6">
+      <section className="panel mt-10 p-5 sm:p-6">
         <h2 className="text-sm font-black uppercase tracking-wider text-[var(--color-muted)]">
           Not buying today?
         </h2>

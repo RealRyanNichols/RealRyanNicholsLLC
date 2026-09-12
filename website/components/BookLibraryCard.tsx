@@ -30,8 +30,8 @@ export function BookLibraryCard({
   ].filter((c): c is string => Boolean(c));
 
   return (
-    <section className="mt-6 overflow-hidden rounded-2xl border-2 border-[var(--color-line-soft)] bg-[var(--color-surface)] text-[var(--color-cream)] shadow-xl">
-      <div className="border-b border-[var(--color-cream)]/10 p-5 sm:flex sm:items-center sm:gap-5">
+    <section className="mt-6 overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-cream)] shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
+      <div className="border-b border-[var(--color-line-soft)] p-5 sm:flex sm:items-center sm:gap-5">
         <div className="hidden w-[88px] shrink-0 sm:block">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -39,13 +39,11 @@ export function BookLibraryCard({
             alt={`${BOOK.title} — cover`}
             width={1000}
             height={1333}
-            className="w-full rounded-md border border-[var(--color-cream)]/15 shadow-lg shadow-black/40"
+            className="w-full rounded-md border border-[var(--color-line)] shadow-lg shadow-black/40"
           />
         </div>
         <div className="mt-3 sm:mt-0">
-          <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
-            Your library
-          </p>
+          <p className="eyebrow">Your library</p>
           <h2 className="mt-1 font-display text-2xl font-black tracking-tight text-[var(--color-cream)]">
             {BOOK.title}
           </h2>
@@ -69,7 +67,7 @@ export function BookLibraryCard({
 
       <div className="p-5">
         {fileReady && token ? (
-          <div className="rounded-xl border border-[var(--color-cream)]/12 bg-[var(--color-cream)]/[0.05] p-5">
+          <div className="rounded-xl border border-[var(--color-line-soft)] bg-[var(--color-surface-2)] p-5">
             <h3 className="font-display text-xl font-black text-[var(--color-cream)]">
               Your digital edition is ready.
             </h3>
@@ -80,20 +78,20 @@ export function BookLibraryCard({
             <div className="mt-4 flex flex-col gap-3 sm:flex-row">
               <a
                 href={`/book/download/${token}/file`}
-                className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-gold-bright)] px-6 py-3 text-sm font-black text-[var(--color-navy)] transition hover:bg-[var(--color-success)]"
+                className="btn-accent inline-flex min-h-12 items-center justify-center rounded-lg px-6 py-3 text-sm font-black"
               >
                 Download the book
               </a>
               <Link
                 href={`/book/download/${token}`}
-                className="inline-flex min-h-12 items-center justify-center rounded-lg border border-[var(--color-cream)]/20 bg-[var(--color-cream)]/[0.06] px-6 py-3 text-sm font-black text-[var(--color-cream)] transition hover:bg-[var(--color-cream)]/10"
+                className="btn-blue inline-flex min-h-12 items-center justify-center rounded-lg px-6 py-3 text-sm font-black"
               >
                 Open your download page
               </Link>
             </div>
           </div>
         ) : (
-          <div className="rounded-xl border border-[var(--color-cream)]/12 bg-[var(--color-cream)]/[0.05] p-5">
+          <div className="rounded-xl border border-[var(--color-line-soft)] bg-[var(--color-surface-2)] p-5">
             <div className="flex items-center gap-2">
               <span className="relative flex h-2.5 w-2.5">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-live)] opacity-75" />
@@ -113,7 +111,7 @@ export function BookLibraryCard({
             </p>
             <Link
               href="/book/updates"
-              className="mt-4 inline-flex min-h-11 items-center justify-center rounded-lg border border-[var(--color-cream)]/20 bg-[var(--color-cream)]/[0.06] px-5 py-2.5 text-sm font-black text-[var(--color-cream)] transition hover:bg-[var(--color-cream)]/10"
+              className="btn-ghost mt-4 inline-flex min-h-11 items-center justify-center rounded-lg px-5 py-2.5 text-sm font-black"
             >
               See book updates
             </Link>
@@ -124,7 +122,7 @@ export function BookLibraryCard({
           {orders.map((o) => (
             <div
               key={o.id}
-              className="flex items-center justify-between gap-3 rounded-lg border border-[var(--color-cream)]/10 bg-[var(--color-cream)]/[0.04] px-4 py-2.5 text-sm"
+              className="flex items-center justify-between gap-3 rounded-lg border border-[var(--color-line-soft)] bg-[var(--color-surface-2)] px-4 py-2.5 text-sm"
             >
               <span className="font-bold text-[var(--color-cream)]">
                 {o.product_name ?? "Fighting Shadows pre-order"}

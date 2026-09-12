@@ -11,7 +11,7 @@ function Check() {
       strokeWidth="2.5"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-accent)]"
+      className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-gold)]"
       aria-hidden
     >
       <polyline points="4 10 9 15 16 6" />
@@ -35,32 +35,32 @@ export function BookOffers({
 }) {
   return (
     <div className="grid gap-4 lg:grid-cols-3 lg:items-start">
-      {BOOK_TIERS.map((tier) => {
+      {BOOK_TIERS.map((tier, i) => {
         const featured = Boolean(tier.featured);
         const sale = tierSale(tier);
         const ctaClass = [
-          "mt-5 w-full inline-flex min-h-12 items-center justify-center rounded-lg px-5 py-3 text-sm font-black transition disabled:opacity-60",
-          featured
-            ? "bg-[var(--color-accent)] text-[var(--color-cream)] hover:bg-[var(--color-accent-strong)]"
-            : "border-2 border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-cream)]",
+          "mt-5 w-full inline-flex min-h-12 items-center justify-center rounded-lg px-5 py-3 text-sm font-black disabled:opacity-60",
+          featured ? "btn-accent" : "btn-ghost",
         ].join(" ");
         const ctaText = `${ctaLabel} · ${formatUsd(tierPriceUsd(tier))}`;
         return (
           <div
             key={tier.slug}
+            data-reveal
+            style={{ "--d": i } as React.CSSProperties}
             className={[
-              "relative flex h-full flex-col rounded-xl border-2 bg-[var(--color-surface)] p-5 shadow-sm sm:p-6",
+              "relative flex h-full flex-col rounded-xl border bg-[var(--color-surface)] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.4)] sm:p-6",
               featured || sale.onSale
-                ? "border-[var(--color-accent)] shadow-md"
+                ? "border-[var(--color-gold)]"
                 : "border-[var(--color-line)]",
             ].join(" ")}
           >
             {featured ? (
-              <span className="absolute -top-3 left-5 rounded-full bg-[var(--color-accent)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--color-cream)]">
+              <span className="absolute -top-3 left-5 rounded-full bg-[var(--color-gold)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--color-navy)]">
                 Best physical edition
               </span>
             ) : sale.onSale ? (
-              <span className="absolute -top-3 left-5 rounded-full bg-[var(--color-accent)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--color-cream)]">
+              <span className="absolute -top-3 left-5 rounded-full bg-[var(--color-gold)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--color-navy)]">
                 Launch price · Save {sale.percentOff}%
               </span>
             ) : null}
@@ -83,11 +83,11 @@ export function BookOffers({
                   {formatUsd(tier.listPriceUsd)}
                 </span>
               ) : null}
-              <span className="font-display text-4xl font-black tabular-nums text-[var(--color-ink)]">
+              <span className="display text-4xl tabular-nums text-[var(--color-gold)]">
                 {formatUsd(tierPriceUsd(tier))}
               </span>
               {sale.onSale ? (
-                <span className="rounded bg-[var(--color-accent-soft)] px-1.5 py-0.5 text-[11px] font-black uppercase tracking-wide text-[var(--color-accent)]">
+                <span className="rounded bg-[var(--color-support-soft)] px-1.5 py-0.5 text-[11px] font-black uppercase tracking-wide text-[var(--color-gold)]">
                   {sale.percentOff}% off
                 </span>
               ) : (

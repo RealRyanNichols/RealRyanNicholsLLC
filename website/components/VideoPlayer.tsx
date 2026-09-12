@@ -50,13 +50,13 @@ export function VideoPlayer({
   // tall portrait video doesn't dominate on desktop; landscape videos still
   // render normally.
   return (
-    <div className="w-full overflow-hidden rounded-lg bg-black flex justify-center">
+    <div className="panel flex w-full justify-center overflow-hidden">
       <MuxPlayer
         playbackId={playbackId}
         poster={poster}
         metadata={{ video_title: title ?? "Untitled" }}
         streamType="on-demand"
-        accentColor="#1a1a1a"
+        accentColor="var(--color-gold)"
         onPlay={() => trackEvent("video_play", props())}
         onPause={() => trackEvent("video_pause", props())}
         onTimeUpdate={onTimeUpdate}

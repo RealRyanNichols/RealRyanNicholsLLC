@@ -81,10 +81,10 @@ export function CaseBriefingForm() {
               setQuery(e.target.value);
             }}
             placeholder="Defendant name or case number"
-            className="w-full rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm font-mono focus:border-[var(--color-blue)] focus:outline-none"
+            className="w-full rounded-md border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm font-mono focus:border-[var(--color-blue)] focus:outline-none"
           />
           {hits.length > 0 && !picked ? (
-            <ul className="absolute top-full mt-1 left-0 right-0 bg-[var(--color-paper)] border border-[var(--color-line)] rounded-md shadow-lg max-h-72 overflow-auto z-20">
+            <ul className="absolute top-full mt-1 left-0 right-0 bg-[var(--color-surface-2)] border border-[var(--color-line)] rounded-md shadow-[0_20px_50px_rgba(0,0,0,0.5)] max-h-72 overflow-auto z-20">
               {hits.map((h) => (
                 <li key={h.id}>
                   <button
@@ -94,7 +94,7 @@ export function CaseBriefingForm() {
                       setQuery("");
                       setHits([]);
                     }}
-                    className="w-full text-left px-3 py-2 hover:bg-[var(--color-surface)] flex items-baseline justify-between gap-3"
+                    className="w-full text-left px-3 py-2 hover:bg-[var(--color-surface)] hover:text-[var(--color-gold)] flex items-baseline justify-between gap-3"
                   >
                     <span className="text-sm">
                       <span
@@ -143,7 +143,7 @@ export function CaseBriefingForm() {
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           placeholder="e.g. Was a plea agreement reached? What's the sentence pattern across this case?"
-          className="w-full rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm focus:border-[var(--color-blue)] focus:outline-none"
+          className="w-full rounded-md border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm focus:border-[var(--color-blue)] focus:outline-none"
         />
         <p className="mt-1.5 text-[11px] text-[var(--color-muted)]">
           Leave blank for a default briefing (status, key facts, open
@@ -155,7 +155,7 @@ export function CaseBriefingForm() {
         type="button"
         onClick={generate}
         disabled={!picked || loading}
-        className="w-full rounded-full bg-[var(--color-blue)] text-[var(--color-cream)] px-5 py-3 text-sm font-bold hover:bg-[var(--color-blue-strong)] disabled:opacity-50 transition"
+        className="btn-accent w-full rounded-full px-5 py-3 text-sm disabled:opacity-50"
       >
         {loading ? "Generating briefing…" : "Generate briefing →"}
       </button>
@@ -165,7 +165,7 @@ export function CaseBriefingForm() {
           {briefing.ok ? (
             <>
               <div className="flex items-baseline justify-between mb-3">
-                <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[var(--color-gold-bright)]">
+                <p className="eyebrow">
                   Briefing {briefing.cached ? "· cached" : "· fresh"}
                 </p>
               </div>

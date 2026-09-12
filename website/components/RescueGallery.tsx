@@ -53,7 +53,7 @@ export function RescueGallery({ count = 54 }: { count?: number }) {
             key={i}
             type="button"
             onClick={() => setOpen(i)}
-            className="group relative aspect-square overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)]"
+            className="group relative aspect-square overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-cream)]"
             aria-label={`Open rescue photo ${i + 1}`}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}

@@ -148,7 +148,7 @@ function CaseBanner({ arg }: { arg?: string }) {
   const banner = parseCaseBannerArg(arg);
   if (!banner) return null;
   return (
-    <section className="not-prose my-8 overflow-hidden rounded-lg border-2 border-[var(--color-ink)] bg-[var(--color-blue-strong)] text-[var(--color-cream)] shadow-sm">
+    <section className="not-prose my-8 overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-blue-strong)] text-[var(--color-cream)]">
       <div className="border-b border-[var(--color-cream)]/15 bg-black/25 px-5 py-3 text-xs font-black uppercase tracking-normal text-[var(--color-cream)]/80">
         Public Evidence Wall
       </div>
@@ -182,7 +182,7 @@ function ReceiptFigure({
   imageClassName: string;
 }) {
   return (
-    <figure className="overflow-hidden rounded-lg border-2 border-[var(--color-line)] bg-[var(--color-surface)] shadow-sm">
+    <figure className="overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
       <div className="bg-black">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img

@@ -97,7 +97,7 @@ export function RecordWall({
   return (
     <div className="mt-8 overflow-hidden rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-blue-soft)]/40">
       {/* The teased record — blurred edge so it's obvious something real is here */}
-      <div className="relative h-28 bg-gradient-to-b from-[var(--color-navy)]/15 to-transparent">
+      <div className="relative h-28 bg-gradient-to-b from-[var(--color-surface)] to-transparent">
         <div className="absolute inset-0 flex items-end justify-center pb-3">
           <span className="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-ink)]/70">
             The record continues
@@ -106,7 +106,7 @@ export function RecordWall({
       </div>
 
       <div className="p-6 sm:p-8">
-        <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
+        <p className="eyebrow">
           Free — but not anonymous
         </p>
         <h2 className="mt-2 font-display text-2xl font-black leading-tight tracking-tight sm:text-3xl">
@@ -137,7 +137,7 @@ export function RecordWall({
               placeholder="you@email.com"
               autoComplete="email"
               aria-label="Your email"
-              className="w-full flex-1 rounded-full border-2 border-[var(--color-line)] bg-[var(--color-paper)] px-5 py-3 text-base text-[var(--color-ink)] outline-none transition focus:border-[var(--color-accent)]"
+              className="w-full flex-1 rounded-full border-2 border-[var(--color-line)] bg-[var(--color-surface)] px-5 py-3 text-base text-[var(--color-ink)] outline-none transition focus:border-[var(--color-accent)]"
             />
             <button
               type="submit"
@@ -154,7 +154,7 @@ export function RecordWall({
             placeholder="Your name (optional)"
             autoComplete="name"
             aria-label="Your name, optional"
-            className="w-full rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] px-5 py-2.5 text-sm text-[var(--color-ink)] outline-none transition focus:border-[var(--color-accent)] sm:max-w-xs"
+            className="w-full rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-5 py-2.5 text-sm text-[var(--color-ink)] outline-none transition focus:border-[var(--color-accent)] sm:max-w-xs"
           />
           {error ? (
             <p className="text-sm font-semibold text-[var(--color-accent)]">{error}</p>
