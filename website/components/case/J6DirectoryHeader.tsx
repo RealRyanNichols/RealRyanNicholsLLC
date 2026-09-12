@@ -12,14 +12,16 @@ import type { J6Filter } from "@/components/case/archive";
 // (a CSS reorder at one breakpoint moved the mismatch to the other).
 // While a search is on, the hero stays out: the match line then sits
 // directly above the tabs and the matching profiles, with no pitch to
-// scroll past on a phone. Nothing moves on load.
+// scroll past on a phone, and the page does not fetch the hero's counts.
+// Nothing moves on load.
 export function J6DirectoryHeader({
   counts,
   j6Filter,
   q,
   total,
 }: {
-  counts: Awaited<ReturnType<typeof getJ6ClaimCounts>>;
+  // The hero's four counts; null while searching, when no hero renders.
+  counts: Awaited<ReturnType<typeof getJ6ClaimCounts>> | null;
   j6Filter: J6Filter;
   q: string;
   // Matches in this bucket for the current query.
@@ -44,7 +46,7 @@ export function J6DirectoryHeader({
         ) : null}
       </div>
 
-      {q ? null : <J6DirectoryHero counts={counts} activeFilter={j6Filter} />}
+      {!q && counts ? <J6DirectoryHero counts={counts} activeFilter={j6Filter} /> : null}
     </header>
   );
 }

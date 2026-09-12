@@ -169,7 +169,9 @@ export default async function CasePage({
   if (shouldRenderJ6Directory(tab)) {
     const [j6Page, j6Counts] = await Promise.all([
       getJ6PeoplePage({ claimStatus: j6Filter, q, page, pageSize: 48 }),
-      getJ6ClaimCounts(),
+      // The hero and its four counts stay out while searching, so a search
+      // does not wait on the five count queries behind them.
+      q ? null : getJ6ClaimCounts(),
     ]);
     const { pageCount } = pageDirectory({
       total: j6Page.total,
