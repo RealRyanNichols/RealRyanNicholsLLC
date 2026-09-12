@@ -177,7 +177,7 @@ export function AdminChatConsole({ sessions }: { sessions: SessionSummary[] }) {
                   {s.firstQuestion}
                 </p>
                 {s.human_active ? (
-                  <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-emerald-500" />
+                  <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-[var(--color-success)]" />
                 ) : null}
               </div>
               <p className="mt-1 flex flex-wrap items-center gap-x-2 text-[11px] text-[var(--color-muted)]">
@@ -225,7 +225,7 @@ export function AdminChatConsole({ sessions }: { sessions: SessionSummary[] }) {
                 <button
                   type="button"
                   onClick={() => setMode(true)}
-                  className="shrink-0 rounded-full bg-emerald-600 px-3 py-1.5 text-xs font-black text-white transition hover:brightness-105"
+                  className="shrink-0 rounded-full bg-[var(--color-success)] px-3 py-1.5 text-xs font-black text-[var(--color-navy)] transition hover:brightness-105"
                 >
                   Take over & reply
                 </button>
@@ -236,7 +236,7 @@ export function AdminChatConsole({ sessions }: { sessions: SessionSummary[] }) {
               {thread.map((m, i) =>
                 m.role === "user" ? (
                   <div key={i} className="flex justify-start">
-                    <div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-[var(--color-paper)] px-3.5 py-2 text-sm text-[var(--color-ink)]">
+                    <div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-[var(--color-surface-2)] px-3.5 py-2 text-sm text-[var(--color-ink)]">
                       {m.content}
                     </div>
                   </div>
@@ -245,7 +245,7 @@ export function AdminChatConsole({ sessions }: { sessions: SessionSummary[] }) {
                     <span
                       className={[
                         "mb-1 mr-1 text-[10px] font-black uppercase tracking-wider",
-                        m.fromAdmin ? "text-emerald-600" : "text-[var(--color-muted)]",
+                        m.fromAdmin ? "text-[var(--color-success)]" : "text-[var(--color-muted)]",
                       ].join(" ")}
                     >
                       {m.fromAdmin ? "You · live" : "Ryan's AI"}
@@ -277,12 +277,12 @@ export function AdminChatConsole({ sessions }: { sessions: SessionSummary[] }) {
                 }}
                 rows={1}
                 placeholder="Type your reply to them…"
-                className="min-h-[42px] max-h-32 flex-1 resize-none rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] px-3.5 py-2.5 text-sm text-[var(--color-ink)] outline-none focus:border-[var(--color-accent)]"
+                className="min-h-[42px] max-h-32 flex-1 resize-none rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-3.5 py-2.5 text-sm text-[var(--color-ink)] outline-none focus:border-[var(--color-accent)]"
               />
               <button
                 type="submit"
                 disabled={sending || !input.trim()}
-                className="rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-black text-white transition hover:brightness-105 disabled:opacity-40"
+                className="rounded-xl bg-[var(--color-success)] px-4 py-2.5 text-sm font-black text-[var(--color-navy)] transition hover:brightness-105 disabled:opacity-40"
               >
                 Send
               </button>

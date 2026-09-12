@@ -170,7 +170,7 @@ export default async function AdminToolsPage() {
           </div>
           <Link
             href="/tools#tool-wish"
-            className="rounded-lg border-2 border-[var(--color-support)] bg-[var(--color-support)] px-4 py-2 text-sm font-black text-[var(--color-ink)] transition hover:bg-[var(--color-support-soft)]"
+            className="btn-accent rounded-lg px-4 py-2 text-sm font-black"
           >
             Open wish form
           </Link>
@@ -200,7 +200,7 @@ export default async function AdminToolsPage() {
                     })}
                   </p>
                 </div>
-                <div className="rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-xs font-black uppercase text-[var(--color-muted)]">
+                <div className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-xs font-black uppercase text-[var(--color-muted)]">
                   {wish.free_slot_number
                     ? `Free ${wish.free_slot_number}/3`
                     : `$${(wish.estimated_starting_price_cents / 100).toFixed(2)}+ quote`}
@@ -231,7 +231,7 @@ export default async function AdminToolsPage() {
                   {wish.clue_tags.slice(0, 12).map((tag) => (
                     <span
                       key={tag}
-                      className="rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] px-2 py-0.5 text-[10px] font-bold text-[var(--color-muted)]"
+                      className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface-2)] px-2 py-0.5 text-[10px] font-bold text-[var(--color-muted)]"
                     >
                       {tag}
                     </span>
@@ -296,7 +296,7 @@ export default async function AdminToolsPage() {
                 {run.clue_tags.slice(0, 12).map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] px-2 py-0.5 text-[10px] font-bold text-[var(--color-muted)]"
+                    className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface-2)] px-2 py-0.5 text-[10px] font-bold text-[var(--color-muted)]"
                   >
                     {tag}
                   </span>
@@ -319,7 +319,7 @@ function InfoBlock({
 }) {
   const visible = lines.filter((line): line is string => Boolean(line));
   return (
-    <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-3">
+    <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] p-3">
       <p className="text-[10px] font-black uppercase tracking-normal text-[var(--color-muted)]">
         {label}
       </p>

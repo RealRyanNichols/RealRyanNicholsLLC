@@ -266,7 +266,7 @@ export function ScanCurator({ doc, nextSlug, prevSlug }: { doc: Doc; nextSlug: s
             type="button"
             disabled={busy}
             onClick={() => quickArchive("duplicate")}
-            className="rounded-lg border border-[var(--color-line)] px-3 py-2 text-xs hover:border-amber-600 hover:text-amber-400"
+            className="rounded-lg border border-[var(--color-line)] px-3 py-2 text-xs hover:border-[var(--color-tag-procedural)] hover:text-[var(--color-tag-procedural)]"
           >
             Mark duplicate → Next
           </button>
@@ -274,7 +274,7 @@ export function ScanCurator({ doc, nextSlug, prevSlug }: { doc: Doc; nextSlug: s
             type="button"
             disabled={busy}
             onClick={() => quickArchive("irrelevant")}
-            className="rounded-lg border border-[var(--color-line)] px-3 py-2 text-xs hover:border-amber-600 hover:text-amber-400"
+            className="rounded-lg border border-[var(--color-line)] px-3 py-2 text-xs hover:border-[var(--color-tag-procedural)] hover:text-[var(--color-tag-procedural)]"
           >
             Irrelevant → Next
           </button>

@@ -61,7 +61,7 @@ export function AdminNav() {
     <>
       {/* Mobile: one slim sticky bar — where you are, the one gold action,
           and a single menu. Nothing else. */}
-      <div className="lg:hidden sticky top-16 z-20 -mx-4 mb-5 border-b border-[#203a64] bg-[#071126]/96 px-4 py-2.5 text-[#fdf8ea] backdrop-blur-xl">
+      <div className="lg:hidden sticky top-16 z-20 -mx-4 mb-5 border-b border-[var(--color-line)] bg-[var(--color-surface)]/96 px-4 py-2.5 text-[var(--color-cream)] backdrop-blur-xl">
         <div className="flex items-center justify-between gap-2">
           <details className="group relative min-w-0 flex-1">
             <summary className="flex min-h-10 cursor-pointer list-none items-center gap-2 marker:hidden">
@@ -82,7 +82,7 @@ export function AdminNav() {
             </summary>
             <nav
               aria-label="Admin navigation"
-              className="absolute left-0 top-full z-30 mt-2 max-h-[60vh] w-64 overflow-y-auto rounded-md border border-[#203a64] bg-[#071126] p-2 shadow-xl"
+              className="absolute left-0 top-full z-30 mt-2 max-h-[60vh] w-64 overflow-y-auto rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-2 shadow-xl"
             >
               {DAILY.map((item) => (
                 <RailLink
@@ -91,7 +91,7 @@ export function AdminNav() {
                   active={isActivePath(pathname, item.href)}
                 />
               ))}
-              <p className="mt-2 border-t border-white/10 px-2 pb-1 pt-2 text-[10px] font-black uppercase tracking-[0.18em] text-[#8194b4]">
+              <p className="mt-2 border-t border-[var(--color-line-soft)] px-2 pb-1 pt-2 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-muted)]">
                 More tools
               </p>
               {MORE.map((item) => (
@@ -105,7 +105,7 @@ export function AdminNav() {
           </details>
           <Link
             href="/admin/new"
-            className="shrink-0 rounded-md bg-[var(--color-gold-bright)] px-3.5 py-2 text-xs font-black uppercase tracking-normal text-[#071126] transition hover:bg-[#f0d48a]"
+            className="btn-accent shrink-0 rounded-md px-3.5 py-2 text-xs font-black uppercase tracking-normal"
           >
             New post
           </Link>
@@ -118,13 +118,13 @@ export function AdminNav() {
         className="hidden text-sm lg:sticky lg:top-20 lg:block"
         aria-label="Admin navigation"
       >
-        <div className="rounded-md border border-[#203a64] bg-[#071126] p-3 text-[#fdf8ea]">
+        <div className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] p-3 text-[var(--color-cream)]">
           <p className="px-2 text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
             Admin
           </p>
           <Link
             href="/admin/new"
-            className="mt-3 flex min-h-10 items-center justify-center rounded-md bg-[var(--color-gold-bright)] px-3 text-xs font-black uppercase tracking-normal text-[#071126] transition hover:bg-[#f0d48a]"
+            className="btn-accent mt-3 flex min-h-10 items-center justify-center rounded-md px-3 text-xs font-black uppercase tracking-normal"
           >
             New post
           </Link>
@@ -137,8 +137,8 @@ export function AdminNav() {
               />
             ))}
           </div>
-          <details className="group mt-2 border-t border-white/10 pt-2" open={moreActive}>
-            <summary className="flex min-h-9 cursor-pointer list-none items-center justify-between rounded-md px-2 text-[10px] font-black uppercase tracking-[0.18em] text-[#8194b4] transition hover:text-[var(--color-gold-bright)] marker:hidden">
+          <details className="group mt-2 border-t border-[var(--color-line-soft)] pt-2" open={moreActive}>
+            <summary className="flex min-h-9 cursor-pointer list-none items-center justify-between rounded-md px-2 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-muted)] transition hover:text-[var(--color-gold-bright)] marker:hidden">
               More tools
               <span className="text-sm text-[var(--color-gold-bright)] transition group-open:rotate-45" aria-hidden>
                 +
@@ -167,8 +167,8 @@ function RailLink({ item, active }: { item: AdminItem; active: boolean }) {
       className={[
         "flex min-h-9 items-center rounded-md border-l-2 px-2.5 text-[0.85rem] font-bold transition",
         active
-          ? "border-[var(--color-gold-bright)] bg-white/[0.07] text-[var(--color-gold-bright)]"
-          : "border-transparent text-[#cfd9ea] hover:bg-white/5 hover:text-[#fdf8ea]",
+          ? "border-[var(--color-gold-bright)] bg-[var(--color-gold-soft)] text-[var(--color-gold-bright)]"
+          : "border-transparent text-[var(--color-ink-soft)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-ink)]",
       ].join(" ")}
     >
       {item.label}
