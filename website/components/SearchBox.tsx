@@ -154,7 +154,7 @@ export function SearchBox({
                 <Link
                   href={`/search?q=${encodeURIComponent(q.trim())}`}
                   onClick={() => setOpen(false)}
-                  className="block px-4 py-2.5 text-sm font-bold text-[var(--color-accent)] transition hover:bg-[var(--color-surface-2)]"
+                  className="flex min-h-11 items-center px-4 py-2.5 text-sm font-bold text-[var(--color-accent)] transition hover:bg-[var(--color-surface-2)] sm:min-h-0"
                 >
                   See all results →
                 </Link>

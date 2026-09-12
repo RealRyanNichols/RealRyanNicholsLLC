@@ -4,6 +4,19 @@ import { format } from "date-fns";
 import { SearchBox } from "@/components/SearchBox";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { SITE } from "@/lib/site";
+import { unstable_cache } from "next/cache";
+import {
+  getGrievances,
+  getJ6PeoplePage,
+  getEvents,
+  getDocumentsIndex,
+  type CaseDocumentIndexRow,
+  type CaseEvent,
+  type CaseGrievance,
+  type CasePerson,
+} from "@/lib/case";
+import { filterArchive } from "@/components/case/archive";
+import { Highlight, excerptAround } from "@/components/case/Highlight";
 
 export const dynamic = "force-dynamic";
 
@@ -46,6 +59,25 @@ function readQuery(sp: Record<string, string | string[] | undefined>): string {
   return (v ?? "").trim().slice(0, 120);
 }
 
+// The case record the search reads: every public grievance and event, and
+// a slim index of every public document (no transcripts). Fetched once and
+// kept for five minutes across requests, the same ISR window the case
+// archive uses, so an ordinary search does not re-download the record.
+// People are not here: they come from the directory's own server-side
+// query per search (getJ6PeoplePage), which is one narrow request.
+const getCaseCorpus = unstable_cache(
+  async () => {
+    const [grievances, events, documents] = await Promise.all([
+      getGrievances(),
+      getEvents(),
+      getDocumentsIndex(),
+    ]);
+    return { grievances, events, documents };
+  },
+  ["search-case-corpus"],
+  { revalidate: 300 },
+);
+
 export async function generateMetadata({
   searchParams,
 }: {
@@ -71,11 +103,44 @@ export default async function SearchPage({
 }) {
   const q = readQuery(await searchParams);
 
+  // One query, two scopes: the posts index (search_posts) and the case
+  // record, filtered exactly the way /case?q= filters it
+  // (components/case/archive.ts). A defendant's name or the word
+  // "grievance" typed into the header lands in the case files too.
   let results: Hit[] = [];
+  let caseHits: CaseHits | null = null;
   if (q.length >= 2) {
     const supabase = getSupabaseStaticClient();
-    const { data } = await supabase.rpc("search_posts", { q, max_results: 50 });
+    const [{ data }, corpus, j6] = await Promise.all([
+      supabase.rpc("search_posts", { q, max_results: 50 }),
+      getCaseCorpus(),
+      // People come from the directory's own query (J6 defendants, by
+      // name, case number, or role), so the sample here and the "All N"
+      // link into /case?view=people show the same result set.
+      getJ6PeoplePage({ claimStatus: "all", q, page: 1, pageSize: 24 }),
+    ]);
     results = (data ?? []) as Hit[];
+    const found = filterArchive({
+      q,
+      j6Filter: "all",
+      grievances: corpus.grievances,
+      people: [],
+      events: corpus.events,
+      documents: corpus.documents,
+      peopleNamed: 0,
+    });
+    caseHits = {
+      grievances: found.filteredGrievances,
+      events: found.filteredEvents,
+      people: j6.people,
+      peopleTotal: j6.total,
+      documents: found.filteredDocuments,
+      total:
+        found.filteredGrievances.length +
+        found.filteredEvents.length +
+        j6.total +
+        found.filteredDocuments.length,
+    };
   }
 
   return (
@@ -87,8 +152,9 @@ export default async function SearchPage({
         Find anything in the record.
       </h1>
       <p className="mt-2 max-w-2xl text-[var(--color-ink-soft)]">
-        Every article, post, and video — searchable by keyword, person, court
-        term, or topic. Type a name, a charge, an agency, a date.
+        Every article, post, and video, and the case files — searchable by
+        keyword, person, court term, or topic. Type a name, a charge, an
+        agency, a date.
       </p>
 
       <div className="mt-5">
@@ -96,7 +162,7 @@ export default async function SearchPage({
       </div>
 
       {/* Quick topics */}
-      <div className="mt-4 flex flex-wrap gap-2">
+      <div className="chip-row mt-4 flex flex-wrap gap-2">
         {SUGGESTED.map((t) => (
           <Link
             key={t}
@@ -111,7 +177,8 @@ export default async function SearchPage({
       {q.length >= 2 ? (
         <div className="mt-8">
           <p className="text-sm text-[var(--color-muted)]">
-            {results.length} result{results.length === 1 ? "" : "s"} for{" "}
+            {results.length} result{results.length === 1 ? "" : "s"} in articles and
+            videos for{" "}
             <span className="font-bold text-[var(--color-ink)]">“{q}”</span>
           </p>
 
@@ -146,7 +213,7 @@ export default async function SearchPage({
                     ) : null}
                   </Link>
                   {r.tags && r.tags.length > 0 ? (
-                    <div className="mt-2 flex flex-wrap gap-1.5">
+                    <div className="chip-row mt-2 flex flex-wrap gap-1.5">
                       {r.tags.slice(0, 6).map((tag) => (
                         <Link
                           key={tag}
@@ -163,7 +230,7 @@ export default async function SearchPage({
             </ul>
           ) : (
             <div className="mt-6 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 text-center">
-              <p className="font-bold text-[var(--color-ink)]">No matches for “{q}.”</p>
+              <p className="font-bold text-[var(--color-ink)]">No articles or videos match “{q}.”</p>
               <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
                 Try a person&apos;s name, a charge, an agency, or a single
                 keyword. Or browse{" "}
@@ -178,6 +245,8 @@ export default async function SearchPage({
               </p>
             </div>
           )}
+
+          {caseHits ? <CaseFilesHits hits={caseHits} q={q} /> : null}
         </div>
       ) : (
         <p className="mt-8 text-sm text-[var(--color-muted)]">
@@ -185,5 +254,167 @@ export default async function SearchPage({
         </p>
       )}
     </div>
+  );
+}
+
+type CaseHits = {
+  grievances: CaseGrievance[];
+  events: CaseEvent[];
+  // The directory's first page for the query, and its full count.
+  people: CasePerson[];
+  peopleTotal: number;
+  documents: CaseDocumentIndexRow[];
+  total: number;
+};
+
+// How many hits each section shows here before handing off to /case?q=,
+// where the full list lives with its own paging.
+const CASE_SAMPLE = 3;
+
+// A snippet is a pointer, not the record: the full text lives on the hit's
+// own page. About SNIPPET characters, taken around the first occurrence of
+// the query when the field has one (so the mark is in the sample), else
+// from the field's opening. Clipped before it is marked so a dozen hits
+// stay a few KB.
+const SNIPPET = 120;
+function snippet(text: string | null | undefined, q: string): string | null {
+  const around = excerptAround(text, q, Math.floor(SNIPPET / 2));
+  if (around) return around;
+  if (!text) return null;
+  const t = text.trim();
+  return t.length <= SNIPPET ? t : `${t.slice(0, SNIPPET).replace(/\s+\S*$/, "")}…`;
+}
+
+// The second scope: what the query found in the case record, a sample per
+// section with the matched word marked, each hit linking to its own page,
+// and one door to the full results on /case.
+function CaseFilesHits({ hits, q }: { hits: CaseHits; q: string }) {
+  const encoded = encodeURIComponent(q);
+  // Each section's count is the full result set the "All N" link opens;
+  // the items are its sample. Three sections filter the cached corpus the
+  // way /case?q= does; people carry the directory's own count.
+  const sections = [
+    {
+      key: "grievances",
+      label: "Grievances",
+      href: `/case?view=grievances&q=${encoded}`,
+      count: hits.grievances.length,
+      items: hits.grievances.map((g) => ({
+        slug: g.slug,
+        href: `/case/grievances/${g.slug}`,
+        title: g.title,
+        sub: snippet(g.summary, q) ?? snippet(g.body, q),
+      })),
+    },
+    {
+      key: "timeline",
+      label: "Timeline",
+      href: `/case?view=timeline&q=${encoded}`,
+      count: hits.events.length,
+      items: hits.events.map((e) => ({
+        slug: e.slug,
+        href: `/case/events/${e.slug}`,
+        title: e.title,
+        sub: snippet(e.description, q),
+      })),
+    },
+    {
+      key: "people",
+      label: "People",
+      href: `/case?view=people&q=${encoded}`,
+      count: hits.peopleTotal,
+      items: hits.people.map((p) => ({
+        slug: p.slug,
+        href: `/case/people/${p.slug}`,
+        title: p.name,
+        sub: [p.case_number, p.role].filter(Boolean).join(" · ") || null,
+      })),
+    },
+    {
+      key: "documents",
+      label: "Documents",
+      href: `/case?view=documents&q=${encoded}`,
+      count: hits.documents.length,
+      items: hits.documents.map((d) => ({
+        slug: d.slug,
+        href: `/case/documents/${d.slug}`,
+        title: d.title,
+        sub: snippet(d.description, q) ?? ([d.doc_type, d.source].filter(Boolean).join(" · ") || null),
+      })),
+    },
+  ];
+
+  return (
+    <section className="mt-10" aria-labelledby="case-files-hits">
+      <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-navy)]">
+        In the case files
+      </p>
+      <h2
+        id="case-files-hits"
+        className="mt-1 font-display text-2xl font-black tracking-tight text-[var(--color-ink)]"
+      >
+        {hits.total.toLocaleString("en-US")} match{hits.total === 1 ? "" : "es"} in the
+        record for “{q}”
+      </h2>
+
+      {hits.total === 0 ? (
+        <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
+          Nothing in the grievances, timeline, people, or documents matches that.{" "}
+          <Link href="/case" className="font-bold text-[var(--color-navy)] hover:underline">
+            Browse the case
+          </Link>
+          .
+        </p>
+      ) : (
+        <>
+          {sections
+            .filter((s) => s.count > 0)
+            .map((s) => (
+              <div key={s.key} className="mt-6">
+                <div className="flex items-baseline justify-between gap-3">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--color-ink-soft)]">
+                    {s.label}{" "}
+                    <span className="text-[var(--color-muted)]">
+                      ({s.count.toLocaleString("en-US")})
+                    </span>
+                  </h3>
+                  {s.count > CASE_SAMPLE ? (
+                    <Link
+                      href={s.href}
+                      className="inline-flex min-h-11 items-center gap-1 text-xs font-bold text-[var(--color-navy)] hover:underline sm:min-h-0"
+                    >
+                      All {s.count.toLocaleString("en-US")}
+                      <span aria-hidden>→</span>
+                    </Link>
+                  ) : null}
+                </div>
+                <ul className="mt-1 divide-y divide-[var(--color-line)]">
+                  {s.items.slice(0, CASE_SAMPLE).map((item) => (
+                    <li key={item.slug}>
+                      <Link href={item.href} className="group block py-3">
+                        <p className="font-bold leading-snug text-[var(--color-ink)] group-hover:text-[var(--color-navy)]">
+                          <Highlight text={item.title} q={q} />
+                        </p>
+                        {item.sub ? (
+                          <p className="mt-0.5 line-clamp-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+                            <Highlight text={item.sub} q={q} />
+                          </p>
+                        ) : null}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          <Link
+            href={`/case?q=${encoded}`}
+            className="mt-6 inline-flex min-h-11 items-center gap-1.5 rounded-full border-2 border-[var(--color-navy)] bg-[var(--color-blue-soft)]/60 px-5 text-sm font-bold text-[var(--color-navy)] transition hover:bg-[var(--color-navy)] hover:text-[var(--color-paper)]"
+          >
+            Open all {hits.total.toLocaleString("en-US")} in the case files
+            <span aria-hidden>→</span>
+          </Link>
+        </>
+      )}
+    </section>
   );
 }
