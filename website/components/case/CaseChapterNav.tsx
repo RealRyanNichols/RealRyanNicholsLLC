@@ -84,8 +84,8 @@ export function CaseChapterNav({
                   className={[
                     "-ml-0.5 block border-l-2 py-1.5 pl-3 font-semibold leading-snug transition",
                     active
-                      ? "border-[var(--color-navy)] text-[var(--color-navy)]"
-                      : "border-transparent text-[var(--color-ink-soft)] hover:text-[var(--color-navy)]",
+                      ? "border-[var(--color-gold)] text-[var(--color-ink)]"
+                      : "border-transparent text-[var(--color-ink-soft)] hover:text-[var(--color-gold)]",
                   ].join(" ")}
                 >
                   {label(c)}
@@ -116,7 +116,7 @@ export function CaseChapterNav({
                 className={[
                   "inline-flex min-h-11 items-center whitespace-nowrap rounded-full border px-3.5 text-xs font-bold transition",
                   active
-                    ? "border-[var(--color-navy)] bg-[var(--color-navy)] text-[var(--color-paper)]"
+                    ? "border-[var(--color-gold)] bg-[var(--color-gold)] text-[var(--color-navy)]"
                     : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)]",
                 ].join(" ")}
               >

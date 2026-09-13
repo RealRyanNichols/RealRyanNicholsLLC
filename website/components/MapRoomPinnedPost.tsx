@@ -29,11 +29,9 @@ export async function MapRoomPinnedPost() {
   const isTruncated = bodyText.length > 360;
 
   return (
-    <section className="mt-10 rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-surface)] p-5 sm:p-6">
+    <section className="mt-10 rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.4)] sm:p-6">
       <div className="flex items-baseline justify-between gap-3 flex-wrap">
-        <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
-          From Ryan&apos;s desk
-        </p>
+        <p className="eyebrow">From Ryan&apos;s desk</p>
         <p className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
           {post.published_at
             ? formatDistanceToNowStrict(new Date(post.published_at), {
@@ -46,7 +44,7 @@ export async function MapRoomPinnedPost() {
       <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display leading-tight">
         <Link
           href={`/posts/${post.slug}`}
-          className="hover:text-[var(--color-accent)]"
+          className="hover:text-[var(--color-gold)]"
         >
           {post.title ?? (bodyText ? `${bodyText.slice(0, 80)}…` : "Untitled")}
         </Link>
@@ -72,7 +70,7 @@ export async function MapRoomPinnedPost() {
 
       <Link
         href={`/posts/${post.slug}`}
-        className="mt-5 inline-flex items-center rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
+        className="btn-accent mt-5 inline-flex items-center rounded-full px-5 py-2.5 text-sm"
       >
         Read the full post →
       </Link>

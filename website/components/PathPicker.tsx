@@ -125,10 +125,10 @@ export function PathPicker({ variant = "band" }: { variant?: Variant }) {
     <div className="w-full">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className={`text-[10px] font-black uppercase tracking-[0.18em] ${dark ? "text-[var(--color-gold-bright)]" : "text-[var(--color-navy)]"}`}>
+          <p className={`text-[10px] font-black uppercase tracking-[0.18em] ${dark ? "text-[var(--color-gold-bright)]" : "text-[var(--color-ink)]"}`}>
             {step === "intent" ? "Welcome — glad you're here" : "One more thing"}
           </p>
-          <h2 className={`mt-0.5 font-display text-lg font-bold tracking-tight sm:text-xl ${dark ? "text-[#fdf8ea]" : "text-[var(--color-ink)]"}`}>
+          <h2 className={`mt-0.5 font-display text-lg font-bold tracking-tight sm:text-xl ${dark ? "text-[var(--color-cream)]" : "text-[var(--color-ink)]"}`}>
             {step === "intent" ? "What brings you by today?" : "How'd you find me?"}
           </h2>
         </div>
@@ -136,7 +136,7 @@ export function PathPicker({ variant = "band" }: { variant?: Variant }) {
           type="button"
           onClick={dismiss}
           aria-label="Dismiss"
-          className={`-mr-2 -mt-2 grid h-11 w-11 shrink-0 place-items-center rounded-full transition ${dark ? "text-[#8194b4] hover:bg-white/10 hover:text-[#fdf8ea]" : "text-[var(--color-muted)] hover:bg-[var(--color-surface)] hover:text-[var(--color-ink)]"}`}
+          className={`-mr-2 -mt-2 grid h-11 w-11 shrink-0 place-items-center rounded-full transition ${dark ? "text-[var(--color-muted)] hover:bg-[var(--color-cream)]/10 hover:text-[var(--color-cream)]" : "text-[var(--color-muted)] hover:bg-[var(--color-surface)] hover:text-[var(--color-ink)]"}`}
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" className="h-5 w-5" aria-hidden>
             <line x1="6" y1="6" x2="18" y2="18" />
@@ -154,14 +154,14 @@ export function PathPicker({ variant = "band" }: { variant?: Variant }) {
               onClick={() => pickIntent(d)}
               className={
                 dark
-                  ? "group rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-left transition hover:border-[var(--color-gold-bright)] hover:bg-[var(--color-gold-bright)]/10"
-                  : "group rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-3 text-left transition hover:border-[var(--color-navy)] hover:bg-[var(--color-blue-soft)]"
+                  ? "group rounded-xl border border-[var(--color-cream)]/15 bg-[var(--color-cream)]/5 px-4 py-3 text-left transition hover:border-[var(--color-gold-bright)] hover:bg-[var(--color-gold-bright)]/10"
+                  : "group rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-3 text-left transition hover:border-[var(--color-gold)] hover:bg-[var(--color-blue-soft)]"
               }
             >
-              <span className={`block text-sm font-bold ${dark ? "text-[#fdf8ea] group-hover:text-[var(--color-gold-bright)]" : "text-[var(--color-ink)] group-hover:text-[var(--color-navy)]"}`}>
+              <span className={`block text-sm font-bold ${dark ? "text-[var(--color-cream)] group-hover:text-[var(--color-gold-bright)]" : "text-[var(--color-ink)] group-hover:text-[var(--color-gold)]"}`}>
                 {d.label}
               </span>
-              <span className={`mt-0.5 block text-xs ${dark ? "text-[#cfd9ea]" : "text-[var(--color-ink-soft)]"}`}>{d.sub}</span>
+              <span className={`mt-0.5 block text-xs ${dark ? "text-[var(--color-ink-soft)]" : "text-[var(--color-ink-soft)]"}`}>{d.sub}</span>
             </button>
           ))}
         </div>
@@ -174,8 +174,8 @@ export function PathPicker({ variant = "band" }: { variant?: Variant }) {
               onClick={() => pickSource(s.key)}
               className={
                 dark
-                  ? "rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-bold text-[#fdf8ea] transition hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)]"
-                  : "rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3.5 py-1.5 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-navy)] hover:text-[var(--color-navy)]"
+                  ? "rounded-full border border-[var(--color-cream)]/15 bg-[var(--color-cream)]/5 px-3.5 py-1.5 text-xs font-bold text-[var(--color-cream)] transition hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)]"
+                  : "rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3.5 py-1.5 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
               }
             >
               {s.label}
@@ -189,7 +189,7 @@ export function PathPicker({ variant = "band" }: { variant?: Variant }) {
   if (variant === "overlay") {
     return (
       <div className="fixed inset-x-0 bottom-0 z-40 px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] sm:px-4">
-        <div className="mx-auto max-w-xl rounded-2xl border border-[var(--color-gold-bright)]/40 bg-[#0b1b34]/[0.97] p-4 shadow-2xl backdrop-blur-xl sm:p-5">
+        <div className="mx-auto max-w-xl rounded-2xl border border-[var(--color-gold-bright)]/40 bg-[var(--color-surface)]/[0.97] p-4 shadow-2xl backdrop-blur-xl sm:p-5">
           {inner}
         </div>
       </div>
@@ -199,7 +199,7 @@ export function PathPicker({ variant = "band" }: { variant?: Variant }) {
   if (collapsedBand) {
     // Phones start here: one compact row, so the feed is a thumb-scroll away.
     return (
-      <section className="mx-auto max-w-3xl rounded-2xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4 shadow-sm sm:p-5">
+      <section className="mx-auto max-w-3xl rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-[0_12px_30px_rgba(0,0,0,0.35)] sm:p-5">
         <button
           type="button"
           onClick={() => setBandOpen(true)}
@@ -207,7 +207,7 @@ export function PathPicker({ variant = "band" }: { variant?: Variant }) {
           className="flex w-full items-center justify-between gap-3 text-left"
         >
           <span className="min-w-0">
-            <span className="block text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-navy)]">
+            <span className="block text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-ink)]">
               Welcome — glad you&apos;re here
             </span>
             <span className="mt-0.5 block truncate font-display text-lg font-bold tracking-tight text-[var(--color-ink)]">
@@ -235,7 +235,7 @@ export function PathPicker({ variant = "band" }: { variant?: Variant }) {
   }
 
   return (
-    <section className="mx-auto max-w-3xl rounded-2xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4 shadow-sm sm:p-5">
+    <section className="mx-auto max-w-3xl rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-[0_12px_30px_rgba(0,0,0,0.35)] sm:p-5">
       {inner}
     </section>
   );

@@ -402,7 +402,7 @@ export function Composer({
       {/* The box */}
       <div className="p-4 sm:p-5">
         <div className="flex items-center justify-between gap-3">
-          <span className="rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] px-2.5 py-0.5 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--color-muted)]">
+          <span className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface-2)] px-2.5 py-0.5 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--color-muted)]">
             Posting as: {typeLabel}
           </span>
           {prefill?.sourceTipId ? (
@@ -447,7 +447,7 @@ export function Composer({
                   onClick={() =>
                     setImages((prev) => prev.filter((_, j) => j !== i))
                   }
-                  className="absolute -right-1.5 -top-1.5 grid h-6 w-6 place-items-center rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] text-xs shadow"
+                  className="absolute -right-1.5 -top-1.5 grid h-6 w-6 place-items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface-2)] text-xs text-[var(--color-ink)] shadow"
                 >
                   ×
                 </button>
@@ -458,7 +458,7 @@ export function Composer({
 
         {/* Video chip + cover */}
         {video ? (
-          <div className="mt-3 flex flex-wrap items-center gap-3 rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-3">
+          <div className="mt-3 flex flex-wrap items-center gap-3 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface-2)] p-3">
             {poster ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -481,7 +481,7 @@ export function Composer({
                 <button
                   type="button"
                   onClick={() => posterInputRef.current?.click()}
-                  className="text-[var(--color-navy)] hover:underline"
+                  className="text-[var(--color-blue-ink)] hover:underline"
                 >
                   Replace cover
                 </button>
@@ -514,7 +514,7 @@ export function Composer({
               <button
                 type="button"
                 onClick={() => inputRefs.current[def.key]?.click()}
-                className="inline-flex min-h-11 items-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3.5 py-2 text-sm font-bold text-[var(--color-ink)] transition hover:border-[var(--color-navy)]"
+                className="inline-flex min-h-11 items-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3.5 py-2 text-sm font-bold text-[var(--color-ink)] transition hover:border-[var(--color-gold)]"
               >
                 {def.kind === "image" ? <PhotoIcon /> : <VideoIcon />}
                 {def.label}
@@ -540,7 +540,7 @@ export function Composer({
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="min-h-11 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-2.5 py-2 text-sm"
+                className="min-h-11 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-2.5 py-2 text-sm"
                 aria-label="Video channel"
               >
                 <option value="">Channel…</option>
@@ -557,7 +557,7 @@ export function Composer({
                 list="composer-categories"
                 placeholder="Category"
                 maxLength={60}
-                className="min-h-11 w-32 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-2.5 py-2 text-sm"
+                className="min-h-11 w-32 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-2.5 py-2 text-sm"
               />
             )}
             <datalist id="composer-categories">
@@ -589,7 +589,7 @@ export function Composer({
               {typeof busy.progress === "number" ? (
                 <div className="mt-1 h-1.5 w-full max-w-56 overflow-hidden rounded-full bg-[var(--color-line-soft)]">
                   <div
-                    className="h-full bg-[var(--color-navy)] transition-[width]"
+                    className="h-full bg-[var(--color-gold)] transition-[width]"
                     style={{ width: `${Math.round(busy.progress * 100)}%` }}
                   />
                 </div>

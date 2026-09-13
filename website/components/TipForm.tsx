@@ -173,7 +173,7 @@ export function TipForm({
 
   if (status === "ok") {
     return (
-      <div className="rounded-lg border-2 border-[var(--color-accent)] bg-[var(--color-surface)] p-6">
+      <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6">
         <h2 className="font-display text-2xl font-bold tracking-normal">
           {isProfileSuggestion
             ? "Profile update received for review."
@@ -196,7 +196,7 @@ export function TipForm({
           </div>
         ) : null}
         {receipt?.route ? (
-          <div className="mt-4 border-2 border-[var(--color-line)] bg-[var(--color-paper)] p-4">
+          <div className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface-2)] p-4">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-success)]">
@@ -210,9 +210,9 @@ export function TipForm({
                 className={[
                   "rounded-full px-3 py-1 text-xs font-black uppercase tracking-normal",
                   receipt.route.urgency === "hot"
-                    ? "bg-[var(--color-accent)] text-white"
+                    ? "bg-[var(--color-accent)] text-[var(--color-cream)]"
                     : receipt.route.urgency === "next"
-                      ? "bg-[var(--color-support)] text-[#17120e]"
+                      ? "bg-[var(--color-support)] text-[var(--color-navy)]"
                       : "bg-[var(--color-surface-2)] text-[var(--color-ink-soft)]",
                 ].join(" ")}
               >
@@ -239,7 +239,7 @@ export function TipForm({
             ) : null}
           </div>
         ) : null}
-        <div className="mt-4 grid gap-2 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-3 text-sm text-[var(--color-ink-soft)]">
+        <div className="mt-4 grid gap-2 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] p-3 text-sm text-[var(--color-ink-soft)]">
           <p className="font-bold text-[var(--color-ink)]">What happens now:</p>
           <p>The tip gets sorted into the intake ledger immediately.</p>
           <p>Other people can help verify, connect, dispute, or add related context.</p>
@@ -252,13 +252,13 @@ export function TipForm({
               setReceipt(null);
               setStatus("idle");
             }}
-            className="rounded-lg border-2 border-[var(--color-accent)] bg-[var(--color-accent)] px-4 py-2 text-sm font-bold text-white transition hover:bg-[var(--color-accent-strong)]"
+            className="rounded-lg border-2 border-[var(--color-accent)] bg-[var(--color-accent)] px-4 py-2 text-sm font-bold text-[var(--color-cream)] transition hover:bg-[var(--color-accent-strong)]"
           >
             Send another
           </button>
           <a
             href={receipt?.ledgerUrl ?? "/case/intake"}
-            className="rounded-lg border border-[var(--color-line)] px-4 py-2 text-sm font-bold text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="rounded-lg border border-[var(--color-line)] px-4 py-2 text-sm font-bold text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)]"
           >
             See my receipt
           </a>
@@ -272,7 +272,7 @@ export function TipForm({
           <button
             type="button"
             onClick={shareTipLine}
-            className="rounded-lg border border-[var(--color-line)] px-4 py-2 text-sm font-bold text-[var(--color-accent)] transition hover:bg-[var(--color-accent-soft)]"
+            className="rounded-lg border border-[var(--color-line)] px-4 py-2 text-sm font-bold text-[var(--color-accent-ink)] transition hover:bg-[var(--color-accent-soft)]"
           >
             {shareStatus === "copied" ? "Link copied" : "Share the tip line"}
           </button>
@@ -305,9 +305,9 @@ export function TipForm({
         </div>
       ) : (
         <div>
-          <label className="block text-sm font-semibold mb-1.5">
+          <label className="mb-1.5 block text-sm font-semibold text-[var(--color-ink-soft)]">
             What kind of tip is this?
-            <span className="text-[var(--color-accent)] ml-1">*</span>
+            <span className="text-[var(--color-accent-ink)] ml-1">*</span>
           </label>
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
             {CATEGORIES.map((c) => (
@@ -320,10 +320,10 @@ export function TipForm({
                 }}
                 aria-pressed={category === c.value}
                 className={[
-                  "min-h-12 rounded-lg border-2 px-3 py-2 text-left text-sm font-bold transition",
+                  "min-h-12 rounded-lg border px-3 py-2 text-left text-sm font-bold transition",
                   category === c.value
-                    ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
-                    : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)]",
+                    ? "border-[var(--color-gold)] bg-[var(--color-gold-soft)] text-[var(--color-gold)]"
+                    : "border-[var(--color-line)] bg-transparent text-[var(--color-ink-soft)] hover:border-[var(--color-gold)]",
                 ].join(" ")}
               >
                 {c.label}
@@ -403,12 +403,12 @@ export function TipForm({
       </div>
 
       {errorMsg ? (
-        <p className="text-sm text-[var(--color-accent)] bg-[var(--color-accent-soft)] border border-[var(--color-accent)] rounded-lg px-3 py-2">
+        <p className="rounded-lg border border-[var(--color-danger)] bg-[var(--color-accent-soft)] px-3 py-2 text-sm text-[var(--color-danger)]">
           {errorMsg}
         </p>
       ) : null}
 
-      <label className="flex gap-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-3 text-xs leading-relaxed text-[var(--color-ink-soft)]">
+      <label className="flex gap-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-3 text-xs leading-relaxed text-[var(--color-ink-soft)]">
         <input
           type="checkbox"
           required
@@ -425,7 +425,7 @@ export function TipForm({
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="w-full rounded-lg border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-white px-5 py-4 font-bold text-lg hover:bg-[var(--color-accent-strong)] transition disabled:opacity-50 disabled:cursor-not-allowed"
+        className="btn-accent w-full px-5 py-4 text-lg disabled:cursor-not-allowed disabled:opacity-50"
       >
         {status === "submitting"
           ? "Sending..."
@@ -471,9 +471,9 @@ function Field({
     "w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2.5 text-base focus:outline-none focus:border-[var(--color-accent)]";
   return (
     <div>
-      <label htmlFor={id} className="block text-sm font-semibold mb-1.5">
+      <label htmlFor={id} className="mb-1.5 block text-sm font-semibold text-[var(--color-ink-soft)]">
         {label}
-        {required ? <span className="text-[var(--color-accent)] ml-1">*</span> : null}
+        {required ? <span className="text-[var(--color-accent-ink)] ml-1">*</span> : null}
       </label>
       {textarea ? (
         <textarea

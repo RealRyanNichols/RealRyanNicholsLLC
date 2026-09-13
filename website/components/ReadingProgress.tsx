@@ -35,7 +35,7 @@ export function ReadingProgress() {
       className="pointer-events-none fixed inset-x-0 top-0 z-[60] h-[3px] bg-transparent"
     >
       <div
-        className="h-full bg-[var(--color-navy)] transition-[width] duration-150 ease-out"
+        className="h-full bg-[var(--color-gold)] transition-[width] duration-150 ease-out"
         style={{ width: `${pct}%` }}
       />
     </div>

@@ -39,16 +39,17 @@ export function J6DirectoryHero({
           : "A searchable, evidence-first directory of public January 6 profiles. Find a person by name or case number, inspect the available record, and help fill an honest gap with a source.";
 
   return (
-    <section className="overflow-hidden rounded-2xl border-2 border-[#1f2f55] bg-[#071123] text-[#fdf8ea] shadow-2xl">
-      <div className="grid gap-px bg-white/10 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="bg-[#071123] p-5 sm:p-7">
-          <p className="text-[11px] font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
-            {kicker}
-          </p>
-          <h1 className="mt-3 text-3xl font-black leading-[1.02] tracking-tight text-[#fdf8ea] sm:text-5xl">
+    <section
+      data-reveal
+      className="overflow-hidden rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-cream)] shadow-[0_24px_60px_rgba(0,0,0,0.45)]"
+    >
+      <div className="grid gap-px bg-[var(--color-cream)]/10 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="bg-[var(--color-surface)] p-5 sm:p-7">
+          <p className="eyebrow">{kicker}</p>
+          <h1 className="display mt-3 text-4xl text-[var(--color-cream)] sm:text-6xl">
             {title}
           </h1>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-[#cfd9ea] sm:text-lg">
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-[var(--color-ink-soft)] sm:text-lg">
             {lead}
           </p>
 
@@ -57,7 +58,7 @@ export function J6DirectoryHero({
               <p className="text-sm font-black uppercase tracking-wider text-[var(--color-gold-bright)]">
                 What you can add after verification
               </p>
-              <div className="mt-3 grid gap-2 text-sm text-[#fdf8ea] sm:grid-cols-2">
+              <div className="mt-3 grid gap-2 text-sm text-[var(--color-cream)] sm:grid-cols-2">
                 {[
                   "Your timeline",
                   "Court filings",
@@ -78,25 +79,25 @@ export function J6DirectoryHero({
           <div className="mt-6 flex flex-col gap-2 sm:flex-row">
             <Link
               href={`#${J6_PROFILE_LIST_ID}`}
-              className="inline-flex min-h-12 items-center justify-center rounded-xl bg-[var(--color-gold-bright)] px-5 py-3 text-sm font-black uppercase tracking-wider text-[#071123] transition hover:bg-[#a7efc4]"
+              className="btn-accent inline-flex min-h-12 items-center justify-center rounded-xl px-5 py-3 text-sm font-black uppercase tracking-wider"
             >
               Find your name
             </Link>
             <Link
               href="/submit?type=j6"
-              className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#7fa9e3]/60 bg-[#7fa9e3]/10 px-5 py-3 text-sm font-black uppercase tracking-wider text-[#dce8ff] transition hover:bg-[#7fa9e3] hover:text-[#071123]"
+              className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[var(--color-blue)]/60 bg-[var(--color-blue-soft)] px-5 py-3 text-sm font-black uppercase tracking-wider text-[var(--color-blue-ink)] transition hover:bg-[var(--color-blue)] hover:text-[var(--color-ink)]"
             >
               Send evidence or a lead
             </Link>
           </div>
-          <p className="mt-3 text-xs leading-relaxed text-[#9fb0ca]">
+          <p className="mt-3 text-xs leading-relaxed text-[var(--color-muted)]">
             This is not a law firm and not legal advice. It is an evidence-first
             public-record and case-organization system. Private details stay
             private until they are safe and approved to publish.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-px bg-white/10 sm:grid-cols-4 lg:grid-cols-2">
+        <div className="grid grid-cols-2 gap-px bg-[var(--color-cream)]/10 sm:grid-cols-4 lg:grid-cols-2">
           <J6HeroStat label="Total J6 profiles" value={counts.total} tone="blue" />
           <J6HeroStat label="Docket numbers" value={counts.withCaseNumber} tone="gold" />
           <J6HeroStat label="Verified" value={counts.verified} tone="green" />
@@ -117,13 +118,16 @@ function J6HeroStat({
   tone: "green" | "gold" | "blue";
 }) {
   const color =
-    tone === "green" ? "text-[var(--color-gold-bright)]" : tone === "gold" ? "text-[var(--color-gold-light)]" : "text-[#7fa9e3]";
+    tone === "green" ? "text-[var(--color-gold-bright)]" : tone === "gold" ? "text-[var(--color-gold-light)]" : "text-[var(--color-blue-ink)]";
   return (
-    <div className="bg-[#0d1a33] p-4 sm:p-5">
-      <div className={`font-mono text-3xl font-black leading-none tabular-nums ${color}`}>
+    <div className="bg-[var(--color-surface)] p-4 sm:p-5">
+      <div
+        className={`display text-4xl leading-none tabular-nums ${color}`}
+        data-count={value > 0 ? value : undefined}
+      >
         {value.toLocaleString()}
       </div>
-      <div className="mt-2 text-[10px] font-black uppercase tracking-[0.18em] text-[#cfd9ea]">
+      <div className="mt-2 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-ink-soft)]">
         {label}
       </div>
     </div>

@@ -130,11 +130,11 @@ export function PrivateMessageBox({
   return (
     <section
       id="private-message"
-      className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-5"
+      className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-5"
     >
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-xs uppercase tracking-normal text-[var(--color-muted)] font-bold">
+          <p className="eyebrow">
             Private lane
           </p>
           <h2 className="mt-1 font-display text-2xl font-bold tracking-normal">
@@ -164,12 +164,12 @@ export function PrivateMessageBox({
         <form onSubmit={onSubmit} className="mt-4 grid gap-4">
           {expandedIntake ? (
             <div className="grid gap-3 sm:grid-cols-2">
-              <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink)]">
+              <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
                 What is this about?
                 <select
                   value={topic}
                   onChange={(event) => setTopic(event.target.value)}
-                  className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
+                  className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm font-normal"
                 >
                   <option>Sensitive records or evidence</option>
                   <option>Public corruption or misconduct tip</option>
@@ -179,24 +179,24 @@ export function PrivateMessageBox({
                   <option>Other private message</option>
                 </select>
               </label>
-              <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink)]">
+              <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
                 Timing
                 <select
                   value={urgency}
                   onChange={(event) => setUrgency(event.target.value)}
-                  className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
+                  className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm font-normal"
                 >
                   <option>Can wait for review</option>
                   <option>Time-sensitive this week</option>
                   <option>Urgent, but not an emergency</option>
                 </select>
               </label>
-              <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink)]">
+              <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
                 Source protection
                 <select
                   value={privacyNeed}
                   onChange={(event) => setPrivacyNeed(event.target.value)}
-                  className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
+                  className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm font-normal"
                 >
                   <option>Do not publish my name or identifying details</option>
                   <option>You may use my role, not my name</option>
@@ -204,12 +204,12 @@ export function PrivateMessageBox({
                   <option>I am willing to be on the record</option>
                 </select>
               </label>
-              <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink)]">
+              <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
                 Follow-up
                 <select
                   value={replyPreference}
                   onChange={(event) => setReplyPreference(event.target.value)}
-                  className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
+                  className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm font-normal"
                 >
                   <option>Email is best if I leave one</option>
                   <option>Text or phone is best if I leave a number</option>
@@ -220,7 +220,7 @@ export function PrivateMessageBox({
             </div>
           ) : null}
 
-          <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink)]">
+          <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
             Name
             <input
               value={displayName}
@@ -228,11 +228,11 @@ export function PrivateMessageBox({
               placeholder="Optional"
               aria-label="Name"
               autoComplete="name"
-              className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
+              className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm font-normal"
             />
           </label>
           <div className="grid gap-3 sm:grid-cols-2">
-            <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink)]">
+            <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
               Email
               <input
                 type="email"
@@ -241,10 +241,10 @@ export function PrivateMessageBox({
                 placeholder="Optional"
                 aria-label="Email"
                 autoComplete="email"
-                className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
+                className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm font-normal"
               />
             </label>
-            <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink)]">
+            <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
               Phone
               <input
                 type="tel"
@@ -253,21 +253,21 @@ export function PrivateMessageBox({
                 placeholder="Optional"
                 aria-label="Phone"
                 autoComplete="tel"
-                className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
+                className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm font-normal"
               />
             </label>
           </div>
-          <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink)]">
+          <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
             Subject
             <input
               value={subject}
               onChange={(event) => setSubject(event.target.value.slice(0, 160))}
               placeholder="Short title"
               aria-label="Subject"
-              className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
+              className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm font-normal"
             />
           </label>
-          <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink)]">
+          <label className="grid min-w-0 gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
             Private message
             <textarea
               required
@@ -282,11 +282,11 @@ export function PrivateMessageBox({
               }
               aria-label="Private message"
               rows={expandedIntake ? 8 : 5}
-              className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
+              className="w-full min-w-0 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm font-normal"
             />
           </label>
           {expandedIntake ? (
-            <label className="flex gap-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-3 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+            <label className="flex gap-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] p-3 text-sm leading-relaxed text-[var(--color-ink-soft)]">
               <input
                 type="checkbox"
                 checked={acknowledged}
@@ -305,7 +305,7 @@ export function PrivateMessageBox({
           <button
             type="submit"
             disabled={state.kind === "submitting"}
-            className="min-h-11 rounded-full bg-[var(--color-accent)] px-4 py-2 text-sm font-black text-[var(--color-paper)] disabled:opacity-60"
+            className="btn-accent min-h-11 px-4 py-2 text-sm disabled:opacity-60"
           >
             {state.kind === "submitting" ? "Sending..." : submitLabel}
           </button>
@@ -314,7 +314,7 @@ export function PrivateMessageBox({
 
       {state.kind === "success" ? (
         <div className="mt-3 border border-[var(--color-success)] bg-[var(--color-success-soft)] p-3 text-sm text-[var(--color-ink)]">
-          <p className="font-bold text-emerald-800">{state.message}</p>
+          <p className="font-bold text-[var(--color-success)]">{state.message}</p>
           {state.publicRef ? (
             <p className="mt-1 font-mono text-xs font-black uppercase tracking-normal text-[var(--color-muted)]">
               Public-safe receipt: {state.publicRef}
@@ -333,7 +333,7 @@ export function PrivateMessageBox({
         </div>
       ) : null}
       {state.kind === "error" ? (
-        <p className="mt-3 text-sm text-red-700">{state.message}</p>
+        <p className="mt-3 text-sm text-[var(--color-danger)]">{state.message}</p>
       ) : null}
     </section>
   );

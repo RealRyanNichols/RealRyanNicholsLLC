@@ -165,12 +165,22 @@ export default async function ReceiptsWallPage(props: {
   return (
     <main className="mx-auto max-w-5xl px-4 py-10">
       {/* ---- Hero ---- */}
-      <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+      <p className="eyebrow" data-reveal>
         Receipts wall
       </p>
-      <h1 className="mt-2 text-3xl sm:text-5xl font-bold tracking-tight leading-[1.05] font-display">
+      <h1
+        className="display mt-3 text-4xl sm:text-6xl"
+        data-reveal
+        style={{ "--d": 1 } as React.CSSProperties}
+      >
         Every brigade, threat, and ban — kept in public.
       </h1>
+      <div
+        className="mt-5 h-[3px] w-[4.5rem] bg-[var(--color-gold)]"
+        aria-hidden
+        data-reveal
+        style={{ "--d": 2 } as React.CSSProperties}
+      />
       <p className="mt-4 text-base sm:text-lg text-[var(--color-ink-soft)] max-w-3xl leading-relaxed">
         Pardoned by President Trump on January 20, 2025. Charges{" "}
         <strong>dismissed with prejudice</strong>. The case cannot be brought
@@ -181,9 +191,12 @@ export default async function ReceiptsWallPage(props: {
       </p>
 
       {/* ---- The double standard ---- */}
-      <section className="mt-8 rounded-3xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] overflow-hidden">
+      <section
+        className="mt-8 rounded-3xl border border-[var(--color-line)] bg-[var(--color-surface)] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.4)]"
+        data-reveal
+      >
         <div className="px-5 sm:px-7 pt-6">
-          <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+          <p className="eyebrow">
             The double standard · in their own words
           </p>
           <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
@@ -192,10 +205,10 @@ export default async function ReceiptsWallPage(props: {
         </div>
         <div className="mt-5 grid sm:grid-cols-2">
           {/* What got him banned */}
-          <div className="px-5 sm:px-7 pb-6 sm:border-r-2 border-[var(--color-line)]">
+          <div className="px-5 sm:px-7 pb-6 sm:border-r border-[var(--color-line)]">
             <div className="flex items-center gap-2">
               <span className="text-lg">🚫</span>
-              <h3 className="text-sm font-bold uppercase tracking-wider text-[var(--color-accent)]">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-[var(--color-gold)]">
                 What got me banned
               </h3>
             </div>
@@ -203,13 +216,13 @@ export default async function ReceiptsWallPage(props: {
               {BANNED_FOR.map((b) => (
                 <li
                   key={b.text}
-                  className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-3"
+                  className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface-2)] p-3"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <p className="font-display font-bold text-[var(--color-ink)] leading-snug">
                       {b.text}
                     </p>
-                    <span className="flex-shrink-0 rounded bg-[var(--color-accent)] text-[var(--color-paper)] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider">
+                    <span className="flex-shrink-0 rounded bg-[var(--color-accent)] text-[var(--color-cream)] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider">
                       Suspended
                     </span>
                   </div>
@@ -219,10 +232,10 @@ export default async function ReceiptsWallPage(props: {
             </ul>
           </div>
           {/* What stayed up — inverted dark panel for weight */}
-          <div className="px-5 sm:px-7 pb-6 pt-6 sm:pt-0 bg-[var(--color-ink)] text-[var(--color-paper)] sm:bg-transparent sm:text-inherit">
+          <div className="px-5 sm:px-7 pb-6 pt-6 sm:pt-0 bg-[var(--color-surface-2)] text-[var(--color-ink)] sm:bg-transparent sm:text-inherit">
             <div className="flex items-center gap-2">
               <span className="text-lg">⚠️</span>
-              <h3 className="text-sm font-bold uppercase tracking-wider text-[var(--color-accent)]">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-[var(--color-gold)]">
                 What they let stay up
               </h3>
             </div>
@@ -230,11 +243,11 @@ export default async function ReceiptsWallPage(props: {
               {STAYED_UP.map((s) => (
                 <li
                   key={s.text}
-                  className="rounded-xl border border-[var(--color-ink)] bg-[var(--color-ink)] text-[var(--color-paper)] p-3"
+                  className="rounded-xl border border-[var(--color-accent)]/40 bg-[var(--color-accent-soft)] text-[var(--color-ink)] p-3"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <p className="font-display font-bold leading-snug">{s.text}</p>
-                    <span className="flex-shrink-0 rounded border border-[var(--color-paper)]/40 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider opacity-80">
+                    <span className="flex-shrink-0 rounded border border-[var(--color-cream)]/40 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider opacity-80">
                       Still up
                     </span>
                   </div>
@@ -244,7 +257,7 @@ export default async function ReceiptsWallPage(props: {
             </ul>
           </div>
         </div>
-        <p className="px-5 sm:px-7 py-4 bg-[var(--color-accent-soft)] text-sm sm:text-base font-bold text-[var(--color-accent-strong)] text-center">
+        <p className="px-5 sm:px-7 py-4 bg-[var(--color-accent-soft)] text-sm sm:text-base font-bold text-[var(--color-ink)] text-center">
           Trivial words: banned. Death wishes: allowed. That&apos;s not
           moderation — that&apos;s a thumb on the scale.
         </p>
@@ -278,7 +291,7 @@ export default async function ReceiptsWallPage(props: {
       {/* ---- Ledger ---- */}
       <section className="mt-8">
         <div className="flex flex-wrap items-center justify-between gap-3 border-b-2 border-[var(--color-line)] pb-3">
-          <h2 className="text-xl sm:text-2xl font-bold tracking-tight font-display">
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight font-display" data-reveal>
             The ledger
           </h2>
           {allItems.length > 0 ? (
@@ -306,7 +319,7 @@ export default async function ReceiptsWallPage(props: {
                 ? "The ledger is still filling. As receipts come in — DMs, X mentions, comments, news, court filings, ban notices — they get documented here permanently."
                 : "No receipts in this category yet. "}
               {allItems.length > 0 && activeType ? (
-                <Link href="/the-harassment" className="not-italic font-semibold text-[var(--color-accent)] hover:underline">
+                <Link href="/the-harassment" className="not-italic font-semibold text-[var(--color-gold)] hover:underline">
                   Show all →
                 </Link>
               ) : null}
@@ -315,10 +328,10 @@ export default async function ReceiptsWallPage(props: {
             items.map((it) => (
               <article
                 key={`${it.kind}-${it.id}`}
-                className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6 hover:border-[var(--color-accent)] transition"
+                className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6 hover:border-[var(--color-gold)] transition"
               >
                 <div className="flex flex-wrap items-baseline gap-2 mb-2">
-                  <span className="rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
+                  <span className="rounded-full bg-[var(--color-accent)] text-[var(--color-cream)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
                     {CATEGORY_META[it.category].tag}
                   </span>
                   {it.date ? (
@@ -331,7 +344,7 @@ export default async function ReceiptsWallPage(props: {
                   ) : null}
                 </div>
                 <h3 className="text-lg sm:text-xl font-bold tracking-tight leading-snug">
-                  <Link href={it.href} className="hover:text-[var(--color-accent)]">
+                  <Link href={it.href} className="hover:text-[var(--color-gold)]">
                     {it.title}
                   </Link>
                 </h3>
@@ -341,7 +354,7 @@ export default async function ReceiptsWallPage(props: {
                   </p>
                 ) : null}
                 <div className="mt-3 flex flex-wrap gap-3 text-xs">
-                  <Link href={it.href} className="inline-flex min-h-11 items-center text-[var(--color-accent)] font-semibold hover:underline sm:min-h-0">
+                  <Link href={it.href} className="inline-flex min-h-11 items-center text-[var(--color-gold)] font-semibold hover:underline sm:min-h-0">
                     Read the full receipt →
                   </Link>
                   {it.external ? (
@@ -349,7 +362,7 @@ export default async function ReceiptsWallPage(props: {
                       href={it.external}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[var(--color-muted)] hover:text-[var(--color-accent)] hover:underline"
+                      className="text-[var(--color-muted)] hover:text-[var(--color-gold)] hover:underline"
                     >
                       Original source ↗
                     </a>
@@ -362,8 +375,8 @@ export default async function ReceiptsWallPage(props: {
       </section>
 
       {/* ---- Submit CTA ---- */}
-      <section className="mt-12 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-5 sm:p-7">
-        <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-blue)]">
+      <section className="mt-12 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-5 sm:p-7 shadow-[0_20px_50px_rgba(0,0,0,0.4)]" data-reveal>
+        <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-blue-ink)]">
           Witnessing it yourself?
         </p>
         <h2 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight font-display">
@@ -378,13 +391,13 @@ export default async function ReceiptsWallPage(props: {
         <div className="mt-4 flex flex-wrap gap-3">
           <Link
             href="/submit"
-            className="inline-block rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
+            className="btn-accent inline-flex items-center rounded-full px-5 py-2.5 text-sm"
           >
             📩 Submit a receipt →
           </Link>
           <Link
             href="/case"
-            className="inline-block rounded-full border-2 border-[var(--color-line)] bg-[var(--color-surface)] px-5 py-2.5 text-sm font-bold text-[var(--color-ink)] hover:border-[var(--color-accent)]"
+            className="btn-ghost inline-flex items-center rounded-full px-5 py-2.5 text-sm"
           >
             The J6 Case →
           </Link>
@@ -396,8 +409,11 @@ export default async function ReceiptsWallPage(props: {
 
 function Stat({ n, label, sub }: { n: number; label: string; sub: string }) {
   return (
-    <div className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4">
-      <div className="text-3xl sm:text-4xl font-bold tracking-tight leading-none text-[var(--color-accent)] font-display tabular-nums">
+    <div className="panel p-4" data-reveal>
+      <div
+        className="display text-4xl sm:text-5xl leading-none text-[var(--color-gold)] tabular-nums"
+        data-count={n > 0 ? n : undefined}
+      >
         {n}
       </div>
       <div className="mt-2 text-sm font-bold text-[var(--color-ink)] leading-tight">{label}</div>
@@ -426,8 +442,8 @@ function Chip({
       className={[
         "inline-flex min-h-11 items-center rounded-full border px-3 py-1.5 text-xs font-bold transition sm:min-h-0",
         active
-          ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)]"
-          : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]",
+          ? "border-[var(--color-gold)] bg-[var(--color-gold)] text-[var(--color-navy)]"
+          : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]",
       ].join(" ")}
     >
       {label} · {count}

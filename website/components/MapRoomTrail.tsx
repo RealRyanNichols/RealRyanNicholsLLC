@@ -110,12 +110,12 @@ export async function MapRoomTrail() {
 
   return (
     <section className="mt-10">
-      <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
-        Trail of the week
-      </p>
-      <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
-        What people are reading right now.
-      </h2>
+      <div data-reveal>
+        <p className="eyebrow">Trail of the week</p>
+        <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
+          What people are reading right now.
+        </h2>
+      </div>
       <p className="mt-2 text-sm text-[var(--color-ink-soft)] max-w-3xl">
         The six pages with the most attention across the case archive.
         Click any one — it&apos;ll be on someone&apos;s screen by the time
@@ -127,17 +127,17 @@ export async function MapRoomTrail() {
           <li key={`${it.kind}-${it.slug}`}>
             <Link
               href={it.href}
-              className="group block h-full rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-accent)] p-5 transition"
+              className="group block h-full rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] shadow-[0_16px_40px_rgba(0,0,0,0.3)] hover:border-[var(--color-gold)] p-5 transition"
             >
               <div className="flex items-center gap-2 mb-2">
-                <span className="rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider tabular-nums">
+                <span className="rounded-full bg-[var(--color-gold)] text-[var(--color-navy)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider tabular-nums">
                   #{i + 1}
                 </span>
                 <span className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
                   {it.sub}
                 </span>
               </div>
-              <h3 className="text-base sm:text-lg font-bold tracking-tight leading-tight group-hover:text-[var(--color-accent)] line-clamp-3">
+              <h3 className="font-display text-base sm:text-lg font-bold tracking-tight leading-tight group-hover:text-[var(--color-gold)] line-clamp-3">
                 {it.title}
               </h3>
               <p className="mt-3 text-xs text-[var(--color-muted)] tabular-nums">

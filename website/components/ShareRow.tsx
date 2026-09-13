@@ -31,7 +31,7 @@ export function ShareRow() {
   const fbHref = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
 
   const btn =
-    "inline-flex items-center justify-center gap-1.5 rounded-full border-2 border-[var(--color-ink)] px-3 py-2.5 text-sm font-bold text-[var(--color-ink)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-2)] transition";
+    "inline-flex items-center justify-center gap-1.5 rounded-full border-2 border-[var(--color-line)] px-3 py-2.5 text-sm font-bold text-[var(--color-ink)] bg-[var(--color-surface)] hover:border-[var(--color-gold)] hover:bg-[var(--color-gold-soft)] transition";
 
   return (
     <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-5">

@@ -129,7 +129,7 @@ export default async function PalettePreviewPage({
 
   return (
     <article className="mx-auto max-w-5xl px-4 py-8">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+      <p className="eyebrow">
         Admin · palette preview
       </p>
       <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">
@@ -149,7 +149,7 @@ export default async function PalettePreviewPage({
             className={[
               "rounded-full px-4 py-2 text-sm font-semibold border-2 transition",
               opt.id === active.id
-                ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-white"
+                ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)]"
                 : "border-[var(--color-line)] hover:border-[var(--color-accent)]",
             ].join(" ")}
           >
@@ -164,7 +164,7 @@ export default async function PalettePreviewPage({
         style={active.vars as React.CSSProperties}
       >
         <div className="bg-[var(--color-paper)] text-[var(--color-ink)] p-6 sm:p-10">
-          <div className="text-xs uppercase tracking-wider font-bold text-[var(--color-accent)]">
+          <div className="text-xs uppercase tracking-wider font-bold text-[var(--color-accent-ink)]">
             {active.name}
           </div>
           <p className="mt-1 text-sm text-[var(--color-ink-soft)] max-w-2xl">
@@ -173,7 +173,7 @@ export default async function PalettePreviewPage({
 
           {/* Mock hero */}
           <section className="mt-8">
-            <p className="text-xs uppercase tracking-[0.2em] font-bold text-[var(--color-accent)]">
+            <p className="text-xs uppercase tracking-[0.2em] font-bold text-[var(--color-accent-ink)]">
               Ryan Nichols · A Promise
             </p>
             <h2 className="mt-3 text-4xl sm:text-5xl font-bold tracking-tight font-display leading-[1.05]">
@@ -185,7 +185,7 @@ export default async function PalettePreviewPage({
             <div className="mt-6 flex flex-wrap gap-3">
               <button
                 type="button"
-                className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-white px-5 py-3 font-bold hover:bg-[var(--color-accent-strong)] transition"
+                className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-3 font-bold hover:bg-[var(--color-accent-strong)] transition"
               >
                 Get a profile →
               </button>
@@ -256,7 +256,7 @@ export default async function PalettePreviewPage({
                 Unit C-2B without notice. Facility never responded.
               </p>
               <div className="mt-3 flex flex-wrap gap-2 text-xs">
-                <span className="rounded-md bg-[var(--color-accent)] text-white px-2 py-0.5 font-bold uppercase">
+                <span className="rounded-md bg-[var(--color-accent)] text-[var(--color-cream)] px-2 py-0.5 font-bold uppercase">
                   Severe
                 </span>
                 <span className="rounded-md border border-[var(--color-line)] px-2 py-0.5 text-[var(--color-ink-soft)]">
@@ -281,7 +281,7 @@ export default async function PalettePreviewPage({
               the{" "}
               <a
                 href="#"
-                className="text-[var(--color-accent)] font-semibold hover:underline"
+                className="text-[var(--color-accent-ink)] font-semibold hover:underline"
               >
                 water shut off
               </a>
@@ -316,28 +316,31 @@ function GrievanceCard({
   title: string;
   summary: string;
 }) {
+  // Swatch colors come from the tokens, never a hex literal, and each label
+  // carries the ink its own swatch can hold: cream on the dark reds and blue,
+  // navy on the light amber and green.
   const tones: Record<
     string,
     { bg: string; fg: string; label: string }
   > = {
     severe: {
       bg: "var(--color-accent)",
-      fg: "#fff",
+      fg: "var(--color-cream)",
       label: "Severe",
     },
     procedural: {
-      bg: "#d97706",
-      fg: "#fff",
+      bg: "var(--color-tag-procedural)",
+      fg: "var(--color-navy)",
       label: "Procedural",
     },
     institutional: {
-      bg: "#1e40af",
-      fg: "#fff",
+      bg: "var(--color-blue)",
+      fg: "var(--color-cream)",
       label: "Institutional",
     },
     resolved: {
-      bg: "#16a34a",
-      fg: "#fff",
+      bg: "var(--color-tag-resolved)",
+      fg: "var(--color-navy)",
       label: "Resolved",
     },
   };

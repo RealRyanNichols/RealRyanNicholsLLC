@@ -19,7 +19,7 @@ const LiveVisitorRadar = dynamic(
     loading: () => (
       <p
         data-radar-loading
-        className="pointer-events-none absolute bottom-2 left-3 z-10 text-[9px] font-mono uppercase tracking-wider text-[#7c8aa6]"
+        className="pointer-events-none absolute bottom-2 left-3 z-10 text-[9px] font-mono uppercase tracking-wider text-[var(--color-muted)]"
       >
         Loading live map…
       </p>
@@ -126,8 +126,8 @@ function BigCounter({
   sub?: string;
 }) {
   return (
-    <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2.5 sm:rounded-xl sm:px-4 sm:py-3">
-      <div className="text-2xl font-bold tabular-nums tracking-tight leading-none text-[var(--color-ink)] sm:text-4xl">
+    <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2.5 shadow-[0_20px_50px_rgba(0,0,0,0.4)] sm:rounded-xl sm:px-4 sm:py-3">
+      <div className="display text-3xl tabular-nums text-[var(--color-gold)] sm:text-4xl">
         {value.toLocaleString()}
       </div>
       <div className="mt-1.5 text-[9px] uppercase tracking-wider text-[var(--color-muted)] font-bold sm:mt-2 sm:text-[10px]">
@@ -152,11 +152,11 @@ function DayCounter({
   sub: string;
 }) {
   return (
-    <div className="rounded-lg border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] px-3 py-2.5 sm:rounded-xl sm:px-4 sm:py-3">
-      <div className="text-2xl font-bold tabular-nums tracking-tight leading-none text-[var(--color-blue)] sm:text-4xl">
+    <div className="rounded-lg border border-[var(--color-blue)] bg-[var(--color-blue-soft)] px-3 py-2.5 shadow-[0_20px_50px_rgba(0,0,0,0.4)] sm:rounded-xl sm:px-4 sm:py-3">
+      <div className="display text-3xl tabular-nums text-[var(--color-blue-ink)] sm:text-4xl">
         {value.toLocaleString()}
       </div>
-      <div className="mt-1.5 text-[9px] uppercase tracking-wider text-[var(--color-blue)] font-bold sm:mt-2 sm:text-[10px]">
+      <div className="mt-1.5 text-[9px] uppercase tracking-wider text-[var(--color-blue-ink)] font-bold sm:mt-2 sm:text-[10px]">
         {label}
       </div>
       <div className="mt-0.5 text-[10px] text-[var(--color-ink-soft)] sm:text-[11px]">

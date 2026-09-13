@@ -28,13 +28,15 @@ export function GoDeeper({ totals, className = "" }: { totals: Totals; className
     { href: "/rss.xml", label: "RSS", file: true },
   ];
   const linkCls =
-    "inline-flex min-h-11 min-w-11 items-center gap-1.5 text-sm font-semibold text-[var(--color-navy)] hover:underline";
+    "inline-flex min-h-11 min-w-11 items-center gap-1.5 text-sm font-semibold text-[var(--color-ink)] hover:underline";
   return (
     <section id="go-deeper" className={`border-t-2 border-[var(--color-line)] pt-10 ${className}`}>
-      <Eyebrow>Go deeper</Eyebrow>
-      <h2 className="mt-1 font-display text-2xl font-bold tracking-tight sm:text-3xl">
-        Everything is public. Walk it yourself.
-      </h2>
+      <div data-reveal>
+        <Eyebrow>Go deeper</Eyebrow>
+        <h2 className="mt-1 font-display text-2xl font-bold tracking-tight sm:text-3xl">
+          Everything is public. Walk it yourself.
+        </h2>
+      </div>
       {/* One column on a phone so a label never breaks mid-word beside its
           count; two and three columns as the width allows. */}
       <ul className="mt-4 grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-3">

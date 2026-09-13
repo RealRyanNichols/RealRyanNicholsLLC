@@ -36,14 +36,14 @@ export function J6ProfileImage({
         : "Archive card · not a photograph";
   const badgeClass =
     portraitKind === "cleared"
-      ? "bg-emerald-800 text-white"
+      ? "bg-[var(--color-success)] text-[var(--color-navy)]"
       : isEditorialPortrait
-        ? "bg-amber-700 text-white"
-        : "bg-[#071123] text-[var(--color-gold-bright)]";
+        ? "bg-[var(--color-tag-procedural)] text-[var(--color-navy)]"
+        : "border border-[var(--color-line)] bg-[var(--color-surface-2)] text-[var(--color-gold)]";
 
   if (variant === "card") {
     return (
-      <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#071123]">
+      <div className="relative aspect-[4/5] w-full overflow-hidden bg-[var(--color-surface)]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={imageUrl}
@@ -52,7 +52,7 @@ export function J6ProfileImage({
             "h-full w-full",
             hasPublishedPortrait
               ? "object-cover object-top"
-              : "bg-[#071123] object-contain",
+              : "bg-[var(--color-surface)] object-contain",
           ].join(" ")}
         />
         <span
@@ -68,7 +68,7 @@ export function J6ProfileImage({
   }
 
   return (
-    <figure className="mt-5 overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-paper)]">
+    <figure className="panel mt-5 overflow-hidden">
       <div className="relative">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -78,7 +78,7 @@ export function J6ProfileImage({
             "w-full object-cover",
             hasPublishedPortrait
               ? "max-h-[560px] object-top"
-              : "max-h-[560px] bg-[#071123] object-contain",
+              : "max-h-[560px] bg-[var(--color-surface)] object-contain",
           ].join(" ")}
         />
         <span
@@ -101,7 +101,7 @@ export function J6ProfileImage({
         {!hasPublishedPortrait ? (
           <Link
             href={`/case/people/${person.slug}/suggest`}
-            className="shrink-0 font-black text-[var(--color-accent)] hover:underline"
+            className="shrink-0 font-black text-[var(--color-gold)] hover:underline"
           >
             Suggest a verified portrait →
           </Link>
@@ -110,7 +110,7 @@ export function J6ProfileImage({
             href={person.photo_source_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="shrink-0 font-black text-[var(--color-accent)] hover:underline"
+            className="shrink-0 font-black text-[var(--color-gold)] hover:underline"
           >
             Image source →
           </a>

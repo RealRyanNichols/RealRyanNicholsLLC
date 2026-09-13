@@ -35,7 +35,7 @@ export function TipEvidenceButton({ tipId }: { tipId: string }) {
 
   if (state === "done") {
     return (
-      <span className="inline-flex items-center gap-2 border border-[#3aa672]/50 bg-[#3aa672]/10 px-3 py-2 text-xs font-black uppercase tracking-normal text-[var(--color-green-deep)]">
+      <span className="inline-flex items-center gap-2 border border-[var(--color-success)]/50 bg-[var(--color-success-soft)] px-3 py-2 text-xs font-black uppercase tracking-normal text-[var(--color-success)]">
         ✓ Saved to evidence (private)
         <a href="/admin/case" className="underline">
           open
@@ -49,11 +49,11 @@ export function TipEvidenceButton({ tipId }: { tipId: string }) {
       type="button"
       onClick={save}
       disabled={state === "saving"}
-      className="border border-[#3aa672]/60 bg-[#3aa672]/10 px-3 py-2 text-xs font-black uppercase tracking-normal text-[var(--color-green-deep)] transition hover:bg-[#3aa672]/20 disabled:opacity-60"
+      className="border border-[var(--color-success)]/60 bg-[var(--color-success-soft)] px-3 py-2 text-xs font-black uppercase tracking-normal text-[var(--color-success)] transition hover:bg-[var(--color-success)]/20 disabled:opacity-60"
       title="Files this tip's link as a private exhibit to verify"
     >
       {state === "saving" ? "Saving…" : "📎 Save to evidence"}
-      {error ? <span className="ml-1 normal-case text-[#e0362c]">· {error}</span> : null}
+      {error ? <span className="ml-1 normal-case text-[var(--color-danger)]">· {error}</span> : null}
     </button>
   );
 }

@@ -73,7 +73,7 @@ export function ProfileEditor({ initial }: { initial: Initial }) {
   return (
     <form
       onSubmit={onSubmit}
-      className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6 space-y-5"
+      className="panel p-5 sm:p-6 space-y-5"
     >
       <div>
         <label className="text-xs uppercase tracking-wider text-[var(--color-muted)] block mb-2">
@@ -85,7 +85,7 @@ export function ProfileEditor({ initial }: { initial: Initial }) {
           value={fullName}
           onChange={(e) => setFullName(e.target.value)}
           placeholder="First Middle Last"
-          className="w-full rounded-md border border-[var(--color-line)] px-3 py-2 text-sm"
+          className="w-full rounded-md border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm"
         />
         <p className="mt-1.5 text-xs text-[var(--color-muted)]">
           Admin sees this. Not public. Required for verification.
@@ -103,7 +103,7 @@ export function ProfileEditor({ initial }: { initial: Initial }) {
           value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
           placeholder="How you want to appear publicly"
-          className="w-full rounded-md border border-[var(--color-line)] px-3 py-2 text-sm"
+          className="w-full rounded-md border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm"
         />
       </div>
 
@@ -121,7 +121,7 @@ export function ProfileEditor({ initial }: { initial: Initial }) {
             setUsername(e.target.value.replace(/[^a-zA-Z0-9_-]/g, ""))
           }
           placeholder="e.g. johnsmith"
-          className="w-full rounded-md border border-[var(--color-line)] px-3 py-2 text-sm font-mono"
+          className="w-full rounded-md border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm font-mono"
         />
         <p className="mt-1.5 text-xs text-[var(--color-muted)]">
           Public profile URL: /u/{username || "yourname"}
@@ -138,7 +138,7 @@ export function ProfileEditor({ initial }: { initial: Initial }) {
           value={bio}
           onChange={(e) => setBio(e.target.value)}
           placeholder="A sentence or two about you."
-          className="w-full rounded-md border border-[var(--color-line)] px-3 py-2 text-sm"
+          className="w-full rounded-md border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm"
         />
       </div>
 
@@ -152,7 +152,7 @@ export function ProfileEditor({ initial }: { initial: Initial }) {
           value={location}
           onChange={(e) => setLocation(e.target.value)}
           placeholder="City, State"
-          className="w-full rounded-md border border-[var(--color-line)] px-3 py-2 text-sm"
+          className="w-full rounded-md border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm"
         />
       </div>
 
@@ -165,10 +165,10 @@ export function ProfileEditor({ initial }: { initial: Initial }) {
       </button>
 
       {state.kind === "saved" ? (
-        <p className="text-sm text-emerald-400">Saved ✓</p>
+        <p className="text-sm text-[var(--color-success)]">Saved ✓</p>
       ) : null}
       {state.kind === "error" ? (
-        <p className="text-sm text-[var(--color-accent)]">{state.message}</p>
+        <p className="text-sm text-[var(--color-danger)]">{state.message}</p>
       ) : null}
     </form>
   );

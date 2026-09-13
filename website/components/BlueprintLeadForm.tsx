@@ -61,12 +61,12 @@ export function BlueprintLeadForm() {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@firm.com"
           aria-label="Your email"
-          className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-4 py-3 text-sm text-[var(--color-ink)]"
+          className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-3 text-sm text-[var(--color-ink)]"
         />
         <button
           type="submit"
           disabled={state === "busy"}
-          className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-blue)] px-6 py-3 text-sm font-black text-[var(--color-paper)] transition hover:bg-[var(--color-blue-strong)] disabled:opacity-60"
+          className="btn-blue inline-flex min-h-12 items-center justify-center rounded-lg px-6 py-3 text-sm font-black disabled:opacity-60"
         >
           {state === "busy" ? "Sending..." : "Send me the breakdown"}
         </button>
@@ -77,10 +77,10 @@ export function BlueprintLeadForm() {
         rows={2}
         placeholder="Optional: what is the one thing you want this to solve?"
         aria-label="Your question (optional)"
-        className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-4 py-2.5 text-sm text-[var(--color-ink)]"
+        className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-2.5 text-sm text-[var(--color-ink)]"
       />
       {error ? (
-        <p className="text-sm font-bold text-[var(--color-accent)]">{error}</p>
+        <p className="text-sm font-bold text-[var(--color-accent-ink)]">{error}</p>
       ) : null}
       <p className="text-xs font-semibold text-[var(--color-muted)]">
         No spam. Just the breakdown and an answer to your question.

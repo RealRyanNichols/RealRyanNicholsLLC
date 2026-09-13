@@ -91,13 +91,27 @@ export default async function J6MissionPage() {
             tap back. */}
         <J6PathSplit active="everyone" className="mb-10" />
 
-        <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+        <p className="eyebrow" data-reveal>
           The January 6 Case Archive · founded by Ryan Nichols
         </p>
-        <h1 className="mt-3 text-4xl sm:text-6xl font-bold tracking-tight font-display leading-[1.05]">
+        <h1
+          className="display mt-3 text-5xl sm:text-7xl"
+          data-reveal
+          style={{ "--d": 1 } as React.CSSProperties}
+        >
           The largest public case archive of January 6.
         </h1>
-        <p className="mt-5 text-xl sm:text-2xl text-[var(--color-ink-soft)] leading-snug">
+        <div
+          className="mt-5 h-[3px] w-[4.5rem] bg-[var(--color-gold)]"
+          aria-hidden
+          data-reveal
+          style={{ "--d": 2 } as React.CSSProperties}
+        />
+        <p
+          className="mt-5 text-xl sm:text-2xl text-[var(--color-ink-soft)] leading-snug"
+          data-reveal
+          style={{ "--d": 3 } as React.CSSProperties}
+        >
           Built from the inside.{" "}
           {defendantsTotal > 0
             ? `${defendantsTotal.toLocaleString("en-US")} defendants on record. `
@@ -106,7 +120,7 @@ export default async function J6MissionPage() {
         </p>
 
         {profilesReady > 0 ? (
-          <p className="mt-4 inline-block rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] px-4 py-1.5 text-sm font-bold text-[var(--color-blue)]">
+          <p className="mt-4 inline-block rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] px-4 py-1.5 text-sm font-bold text-[var(--color-blue-ink)]">
             {profilesReady.toLocaleString("en-US")} profiles ready to be claimed
             {profilesClaimed > 0
               ? ` · ${profilesClaimed.toLocaleString("en-US")} already verified`
@@ -153,13 +167,13 @@ export default async function J6MissionPage() {
         <section className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3">
           <Link
             href="/login?next=/account"
-            className="block rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-4 text-center font-bold text-lg hover:bg-[var(--color-accent-strong)] transition"
+            className="btn-accent block rounded-xl px-5 py-4 text-center text-lg"
           >
             Get a profile →
           </Link>
           <Link
             href="/submit"
-            className="block rounded-xl border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-4 text-center font-bold text-lg hover:bg-[var(--color-blue-strong)] transition"
+            className="btn-blue block rounded-xl px-5 py-4 text-center text-lg font-bold"
           >
             Send a tip / share a name →
           </Link>
@@ -167,7 +181,7 @@ export default async function J6MissionPage() {
 
         {/* How it works */}
         <section className="mt-14">
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight font-display">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight font-display" data-reveal>
             How it works
           </h2>
           <ol className="mt-5 space-y-5">
@@ -191,33 +205,33 @@ export default async function J6MissionPage() {
 
         {/* The trust argument — why historians, lawyers, and reporters can
             build on this archive instead of starting over. */}
-        <section className="mt-14 rounded-2xl bg-[var(--color-navy)] p-6 sm:p-8 text-[#fdf8ea]">
-          <p className="text-[11px] uppercase tracking-[0.2em] font-bold text-[#8194b4]">
+        <section className="panel mt-14 p-6 sm:p-8 text-[var(--color-ink)]" data-reveal>
+          <p className="eyebrow">
             Verified, or it does not post
           </p>
-          <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display text-[#fdf8ea]">
+          <h2 className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight font-display">
             Why this record can be trusted.
           </h2>
-          <ul className="mt-4 space-y-3 text-sm sm:text-base leading-relaxed text-[#cfd9ea]">
+          <ul className="mt-4 space-y-3 text-sm sm:text-base leading-relaxed text-[var(--color-ink-soft)]">
             <li>
-              <strong className="text-[#fdf8ea]">Every claim is labeled</strong>{" "}
+              <strong className="text-[var(--color-ink)]">Every claim is labeled</strong>{" "}
               — FACT, STATEMENT, or NEEDS AUTHENTICATION. The archive says what
               it knows and what it does not.
             </li>
             <li>
-              <strong className="text-[#fdf8ea]">Every upload is reviewed</strong>{" "}
+              <strong className="text-[var(--color-ink)]">Every upload is reviewed</strong>{" "}
               — nothing a defendant or witness submits goes public until a
               human checks it.
             </li>
             <li>
-              <strong className="text-[#fdf8ea]">
+              <strong className="text-[var(--color-ink)]">
                 Court records link to the court
               </strong>{" "}
               — filings point at the official docket, so you verify against the
               source, not a screenshot.
             </li>
             <li>
-              <strong className="text-[#fdf8ea]">Every page is citable</strong>{" "}
+              <strong className="text-[var(--color-ink)]">Every page is citable</strong>{" "}
               — permanent URLs, a citation format, and machine-readable
               structure for researchers and AI assistants alike.
             </li>
@@ -226,7 +240,7 @@ export default async function J6MissionPage() {
 
         {/* Why this matters */}
         <section className="mt-14">
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight font-display">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight font-display" data-reveal>
             Why we are doing this in public
           </h2>
           <div className="mt-5 space-y-4 text-base sm:text-lg leading-relaxed">
@@ -251,8 +265,8 @@ export default async function J6MissionPage() {
         </section>
 
         {/* Live counter — what is already in the archive */}
-        <section className="mt-14 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6">
-          <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">
+        <section className="panel mt-14 p-6" data-reveal>
+          <p className="eyebrow">
             Already in the archive
           </p>
           <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-4">
@@ -267,14 +281,14 @@ export default async function J6MissionPage() {
             See what a profile looks like:{" "}
             <Link
               href="/case/people/ryan-nichols"
-              className="text-[var(--color-accent)] font-semibold hover:underline"
+              className="text-[var(--color-accent-ink)] font-semibold hover:underline"
             >
               Ryan Nichols
             </Link>
             {" · "}
             <Link
               href="/case"
-              className="text-[var(--color-accent)] font-semibold hover:underline"
+              className="text-[var(--color-accent-ink)] font-semibold hover:underline"
             >
               The full case archive
             </Link>
@@ -289,13 +303,13 @@ export default async function J6MissionPage() {
           <div className="mt-4 flex flex-wrap gap-3 justify-center">
             <Link
               href="/login?next=/account"
-              className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-6 py-3 font-bold hover:bg-[var(--color-accent-strong)] transition"
+              className="btn-accent rounded-xl px-6 py-3"
             >
               Get a profile
             </Link>
             <Link
               href="/submit"
-              className="rounded-xl border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-6 py-3 font-bold hover:bg-[var(--color-blue-strong)] transition"
+              className="btn-blue rounded-xl px-6 py-3 font-bold"
             >
               Send a tip
             </Link>
@@ -309,7 +323,7 @@ export default async function J6MissionPage() {
 function Step({ n, title, body }: { n: number; title: string; body: string }) {
   return (
     <li className="flex gap-4">
-      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] flex items-center justify-center font-bold text-lg">
+      <div className="display flex-shrink-0 w-10 h-10 rounded-full bg-[var(--color-gold)] text-[var(--color-navy)] flex items-center justify-center text-xl leading-none pt-0.5">
         {n}
       </div>
       <div className="flex-1 pt-1">
@@ -325,7 +339,10 @@ function Step({ n, title, body }: { n: number; title: string; body: string }) {
 function Stat({ n, label }: { n: number; label: string }) {
   return (
     <div>
-      <div className="text-3xl sm:text-4xl font-bold tracking-tight tabular-nums">
+      <div
+        className="display text-4xl sm:text-5xl tabular-nums text-[var(--color-gold)]"
+        data-count={n > 0 ? n : undefined}
+      >
         {n.toLocaleString()}
       </div>
       <div className="text-xs uppercase tracking-wider text-[var(--color-muted)] mt-1 font-semibold">

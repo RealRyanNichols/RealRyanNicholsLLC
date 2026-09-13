@@ -79,11 +79,11 @@ export function StoryProtectionDemo() {
   return (
     <section
       id="article-demo"
-      className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-lg sm:p-6"
+      className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-lg sm:p-6"
     >
       <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
         <div>
-          <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-accent)]">
+          <p className="eyebrow">
             Live demo
           </p>
           <h2 className="mt-2 font-display text-3xl font-bold leading-tight tracking-normal">
@@ -136,8 +136,8 @@ export function StoryProtectionDemo() {
                   className={[
                     "rounded-lg border px-3 py-3 text-left transition",
                     mode === m.value
-                      ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)]"
-                      : "border-[var(--color-line)] bg-[var(--color-paper)] hover:border-[var(--color-accent)]",
+                      ? "border-[var(--color-gold)] bg-[var(--color-gold-soft)]"
+                      : "border-[var(--color-line)] bg-transparent hover:border-[var(--color-gold)]",
                   ].join(" ")}
                 >
                   <span className="block text-sm font-bold text-[var(--color-ink)]">
@@ -152,9 +152,9 @@ export function StoryProtectionDemo() {
           </div>
         </div>
 
-        <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-4">
+        <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] p-4">
           <div className="border-b border-[var(--color-line)] pb-3">
-            <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-accent)]">
+            <p className="eyebrow">
               Article preview
             </p>
             <h3 className="mt-2 font-display text-3xl font-bold leading-tight tracking-normal">
@@ -205,7 +205,7 @@ export function StoryProtectionDemo() {
             </a>
             <a
               href="/submit"
-              className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[var(--color-line)] px-4 py-2 text-sm font-bold text-[var(--color-accent)] transition hover:bg-[var(--color-accent-soft)]"
+              className="inline-flex min-h-11 items-center justify-center rounded-lg border border-[var(--color-line)] px-4 py-2 text-sm font-bold text-[var(--color-accent-ink)] transition hover:bg-[var(--color-accent-soft)]"
             >
               Submit a tip
             </a>
@@ -229,11 +229,11 @@ function Field({
 }) {
   const id = `story-demo-${label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
   const className =
-    "w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2.5 text-sm leading-relaxed focus:outline-none focus:border-[var(--color-accent)]";
+    "w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2.5 text-sm leading-relaxed focus:outline-none focus:border-[var(--color-accent)]";
 
   return (
     <label htmlFor={id} className="block">
-      <span className="mb-1.5 block text-sm font-bold text-[var(--color-ink)]">
+      <span className="mb-1.5 block text-sm font-bold text-[var(--color-ink-soft)]">
         {label}
       </span>
       {rows ? (

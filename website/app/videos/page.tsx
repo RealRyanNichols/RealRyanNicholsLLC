@@ -102,13 +102,23 @@ export default async function VideosPage(props: {
         </Link>
       </nav>
       <header className="border-b border-[var(--color-line)] pb-5">
-        <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+        <p className="eyebrow" data-reveal>
           Site-owned video
         </p>
-        <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">
+        <h1
+          className="display mt-3 text-4xl sm:text-6xl"
+          data-reveal
+          style={{ "--d": 1 } as React.CSSProperties}
+        >
           Watch here. Not on social media.
         </h1>
-        <p className="mt-3 text-[var(--color-ink-soft)]">
+        <div
+          className="mt-5 h-[3px] w-[4.5rem] bg-[var(--color-gold)]"
+          aria-hidden
+          data-reveal
+          style={{ "--d": 2 } as React.CSSProperties}
+        />
+        <p className="mt-4 text-[var(--color-ink-soft)]">
           Videos live on RealRyanNichols.com. Share the link, but the playback
           happens here.
         </p>
@@ -129,15 +139,18 @@ export default async function VideosPage(props: {
       </header>
 
       {!active && j6Videos.length > 0 ? (
-        <section className="mt-8 overflow-hidden rounded-xl border-2 border-[var(--color-accent)] shadow-sm">
-          <div className="bg-[#071126] p-5 text-[#fdf8ea] sm:p-7">
-            <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
+        <section
+          className="mt-8 overflow-hidden rounded-xl border border-[var(--color-line)] shadow-[0_20px_50px_rgba(0,0,0,0.4)]"
+          data-reveal
+        >
+          <div className="bg-[var(--color-surface-2)] p-5 text-[var(--color-ink)] sm:p-7">
+            <p className="eyebrow">
               J6 Video Drops
             </p>
-            <h2 className="mt-2 font-display text-3xl font-black leading-tight text-[#fdf8ea] sm:text-4xl">
+            <h2 className="mt-2 font-display text-3xl font-black leading-tight text-[var(--color-ink)] sm:text-4xl">
               The footage, released one drop at a time.
             </h2>
-            <p className="mt-3 max-w-2xl text-sm font-semibold leading-relaxed text-[#cfd9ea]">
+            <p className="mt-3 max-w-2xl text-sm font-semibold leading-relaxed text-[var(--color-ink-soft)]">
               Bodycam, tunnel footage, and the receipts from January 6 — pulled
               from my own evidence and dropped here, on a site I own, where no
               algorithm can bury them. More are coming.
@@ -145,20 +158,20 @@ export default async function VideosPage(props: {
             <div className="mt-4 flex flex-wrap gap-2">
               <Link
                 href="/videos?channel=j6"
-                className="inline-flex min-h-11 items-center rounded-md border border-[var(--color-gold-bright)]/60 bg-[var(--color-gold-bright)]/15 px-4 text-sm font-black text-[var(--color-gold-bright)] transition hover:bg-[var(--color-gold-bright)]/25"
+                className="btn-accent inline-flex min-h-11 items-center rounded-md px-4 text-sm"
               >
                 See all J6 drops · {j6Videos.length}
               </Link>
               <Link
                 href="/book/preorder"
-                className="inline-flex min-h-11 items-center rounded-md border border-white/15 bg-white/[0.06] px-4 text-sm font-black text-[#fdf8ea] transition hover:bg-white/10"
+                className="btn-ghost inline-flex min-h-11 items-center rounded-md px-4 text-sm font-black"
               >
                 Get the Book
               </Link>
             </div>
           </div>
-          <div className="bg-[var(--color-surface)] p-4 sm:p-5">
-            <p className="mb-3 text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+          <div className="border-t border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-5">
+            <p className="eyebrow mb-3">
               Latest drop
             </p>
             <PostCard
@@ -173,7 +186,7 @@ export default async function VideosPage(props: {
 
       {allVideos.length === 0 ? (
         <section className="py-12">
-          <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 text-center">
+          <div className="panel p-6 text-center" data-reveal>
             <h2 className="text-xl font-bold tracking-tight">No videos are public yet.</h2>
             <p className="mt-2 text-sm text-[var(--color-muted)]">
               When Ryan publishes the first upload, it will land here.
@@ -186,7 +199,7 @@ export default async function VideosPage(props: {
             <p className="mb-4 text-sm text-[var(--color-muted)]">
               Showing <strong className="text-[var(--color-ink)]">{active.channel}</strong> —{" "}
               {videos.length} video{videos.length === 1 ? "" : "s"}.{" "}
-              <Link href="/videos" className="text-[var(--color-accent)] hover:underline font-semibold">
+              <Link href="/videos" className="text-[var(--color-gold)] hover:underline font-semibold">
                 Show all
               </Link>
             </p>
@@ -218,8 +231,8 @@ function FilterChip({
       className={[
         "inline-flex min-h-11 items-center rounded-full border px-3 py-1.5 text-xs font-bold transition sm:min-h-0",
         active
-          ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)]"
-          : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]",
+          ? "border-[var(--color-gold)] bg-[var(--color-gold)] text-[var(--color-navy)]"
+          : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]",
       ].join(" ")}
     >
       {label} · {count}

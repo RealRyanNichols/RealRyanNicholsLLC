@@ -186,7 +186,7 @@ export default async function AdminDonationsPage() {
       <section className="mt-6 rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-surface)] p-4 sm:p-5">
         <div className="flex flex-wrap items-baseline justify-between gap-3">
           <div>
-            <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--color-accent)]">
+            <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--color-accent-ink)]">
               Token Fund · /fuel
             </p>
             <h2 className="mt-1 text-lg font-bold tracking-tight">
@@ -195,7 +195,7 @@ export default async function AdminDonationsPage() {
                 : "Money totals need SUPABASE_SERVICE_ROLE_KEY"}
             </h2>
           </div>
-          <a href="/fuel" className="text-xs font-bold text-[var(--color-accent)] underline underline-offset-4">
+          <a href="/fuel" className="text-xs font-bold text-[var(--color-accent-ink)] underline underline-offset-4">
             Open the public page →
           </a>
         </div>
@@ -239,7 +239,7 @@ export default async function AdminDonationsPage() {
                             i.status === "paid"
                               ? "border-[var(--color-success)] text-[var(--color-success)]"
                               : i.status === "started"
-                                ? "border-[var(--color-amber)] text-[var(--color-amber)]"
+                                ? "border-[var(--color-tag-procedural)] text-[var(--color-tag-procedural)]"
                                 : "border-[var(--color-line)] text-[var(--color-muted)]"
                           }`}
                         >
@@ -322,7 +322,7 @@ export default async function AdminDonationsPage() {
         </>
       ) : (
         <section className="mt-6 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-6">
-          <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-blue)]">
+          <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-blue-ink)]">
             Connect Stripe to see revenue
           </p>
           <h2 className="mt-1 text-xl font-bold tracking-tight font-display">
@@ -460,13 +460,13 @@ function Stat({
         "rounded-2xl border-2 p-4",
         accent
           ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)]"
-          : "border-[var(--color-line)] bg-[var(--color-paper)]",
+          : "border-[var(--color-line)] bg-[var(--color-surface)]",
       ].join(" ")}
     >
       <div
         className={[
           "text-3xl font-bold tabular-nums tracking-tight leading-none",
-          accent ? "text-[var(--color-accent)]" : "text-[var(--color-ink)]",
+          accent ? "text-[var(--color-accent-ink)]" : "text-[var(--color-ink)]",
         ].join(" ")}
       >
         {value}

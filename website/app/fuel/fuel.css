@@ -16,7 +16,7 @@
 .ft-theater {
   --ft-deep: #06101f;
   --ft-glass: rgba(6, 16, 31, 0.72);
-  --ft-cream: var(--color-paper);
+  --ft-cream: var(--color-cream);
   --ft-mist: rgba(253, 248, 234, 0.74);
   --ft-dim: rgba(253, 248, 234, 0.5);
   --ft-gold: var(--color-gold-bright);
@@ -127,31 +127,8 @@
 .ft-rail a.is-active::before {
   box-shadow: 0 0 0 4px rgba(225, 189, 91, 0.18), 0 0 16px rgba(225, 189, 91, 0.7);
 }
-/* Over the paper sections (the deal, the form) the rail sits on cream, so it
-   switches to the site's ink and navy instead of vanishing. */
-.ft-rail.is-paper a {
-  color: var(--color-muted);
-}
-.ft-rail.is-paper a::before {
-  border-color: var(--color-muted);
-}
-.ft-rail.is-paper a span {
-  background: var(--color-surface);
-  color: var(--color-ink);
-}
-.ft-rail.is-paper a.is-active {
-  color: var(--color-accent);
-}
-.ft-rail.is-paper a.is-active::before,
-.ft-rail.is-paper a.is-done::before {
-  background: var(--color-navy);
-  border-color: var(--color-navy);
-}
-.ft-rail.is-paper a.is-active::before {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 18%, transparent);
-}
+/* The paper sections are on the floor now like everything else, so the
+   rail keeps its gold everywhere. */
 
 /* Film grain: a fixed, viewport-sized sheet of turbulence that steps around
    six times a second. Cheap (one composited layer); off screen it fades. */
@@ -942,7 +919,7 @@ a.ft-tile:hover {
   color: var(--color-ink);
 }
 .ft-paper .ft-kicker {
-  color: var(--color-accent);
+  color: var(--color-accent-ink);
 }
 .ft-paper p.ft-lead {
   margin-top: 1rem;

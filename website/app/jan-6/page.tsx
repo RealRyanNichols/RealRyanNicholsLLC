@@ -41,19 +41,37 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function JanSixPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-12">
-      <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight">Jan 6</h1>
-      <p className="mt-3 text-sm text-[var(--color-muted)]">
+      {/* The kicker the page already carried, moved above the title so the
+          front door reads the way the theater does: eyebrow, display, rule. */}
+      <p className="eyebrow" data-reveal>
         In my own words. Updated periodically.
       </p>
+      <h1
+        className="display mt-3 text-5xl sm:text-7xl"
+        data-reveal
+        style={{ "--d": 1 } as React.CSSProperties}
+      >
+        Jan 6
+      </h1>
+      <div
+        className="mt-5 h-[3px] w-[4.5rem] bg-[var(--color-gold)]"
+        aria-hidden
+        data-reveal
+        style={{ "--d": 2 } as React.CSSProperties}
+      />
 
-      <figure className="mt-6 rounded-xl overflow-hidden border border-[var(--color-line)] bg-[var(--color-surface)]">
+      <figure
+        className="panel mt-6 overflow-hidden"
+        data-reveal
+        style={{ "--d": 3 } as React.CSSProperties}
+      >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/uploads/ryan-dc-jail.jpg"
           alt="Ryan Nichols inside the DC Jail during pretrial detention."
           className="w-full h-auto block"
         />
-        <figcaption className="px-4 py-3 text-xs text-[var(--color-muted)]">
+        <figcaption className="border-t border-[var(--color-line-soft)] px-4 py-3 text-xs text-[var(--color-muted)]">
           Inside the DC Jail. Pretrial detention, before the pardon.
         </figcaption>
       </figure>

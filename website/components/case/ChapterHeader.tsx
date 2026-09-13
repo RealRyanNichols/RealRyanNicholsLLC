@@ -1,14 +1,15 @@
 import type { ReactNode } from "react";
 
 // The one eyebrow every section of the case page uses: 11px, uppercase,
-// tracked, navy. Before this there were a dozen hand-copied versions of the
+// tracked, gold. Before this there were a dozen hand-copied versions of the
 // same three classes across the page; change it here, it changes everywhere.
 const EYEBROW_TONE = {
-  navy: "text-[var(--color-navy)]",
+  // The theater kicker: gold on the dark floor.
+  navy: "text-[var(--color-gold)]",
   // The blue cards (recognition, attorney briefing) carry blue ink.
-  blue: "text-[var(--color-blue)]",
+  blue: "text-[var(--color-blue-ink)]",
   // On the navy bands: the muted steel the site has always used there.
-  cream: "text-[#8194b4]",
+  cream: "text-[var(--color-muted)]",
 } as const;
 
 export function Eyebrow({
@@ -44,7 +45,7 @@ export function ChapterHeader({
   subtitle: ReactNode;
 }) {
   return (
-    <header>
+    <header data-reveal>
       <Eyebrow>
         {n ? <>Chapter {n} · </> : null}
         {label}

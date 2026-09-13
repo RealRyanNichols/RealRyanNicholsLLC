@@ -103,14 +103,14 @@ export function ProfileUploadForm({
           type="file"
           accept="image/jpeg,image/png,image/webp,image/heic"
           onChange={(e) => setAvatarFile(e.target.files?.[0] ?? null)}
-          className="block text-sm"
+          className="block text-sm file:mr-3 file:rounded-md file:border file:border-[var(--color-line)] file:bg-[var(--color-surface-2)] file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-[var(--color-ink)]"
         />
         {currentAvatar ? (
           <button
             type="button"
             onClick={() => clearOne("avatar_url")}
             disabled={busy}
-            className="mt-2 text-xs text-[var(--color-muted)] hover:text-[var(--color-accent)] underline underline-offset-4"
+            className="mt-2 text-xs text-[var(--color-muted)] hover:text-[var(--color-accent-ink)] underline underline-offset-4"
           >
             Remove current avatar
           </button>
@@ -123,14 +123,14 @@ export function ProfileUploadForm({
           type="file"
           accept="image/jpeg,image/png,image/webp,image/heic"
           onChange={(e) => setCoverFile(e.target.files?.[0] ?? null)}
-          className="block text-sm"
+          className="block text-sm file:mr-3 file:rounded-md file:border file:border-[var(--color-line)] file:bg-[var(--color-surface-2)] file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-[var(--color-ink)]"
         />
         {currentCover ? (
           <button
             type="button"
             onClick={() => clearOne("cover_url")}
             disabled={busy}
-            className="mt-2 text-xs text-[var(--color-muted)] hover:text-[var(--color-accent)] underline underline-offset-4"
+            className="mt-2 text-xs text-[var(--color-muted)] hover:text-[var(--color-accent-ink)] underline underline-offset-4"
           >
             Remove current cover
           </button>
@@ -145,10 +145,10 @@ export function ProfileUploadForm({
         {busy ? state.label : "Save"}
       </button>
       {state.kind === "error" ? (
-        <p className="text-sm text-[var(--color-accent)]">{state.message}</p>
+        <p className="text-sm text-[var(--color-danger)]">{state.message}</p>
       ) : null}
       {state.kind === "success" ? (
-        <p className="text-sm text-emerald-400">{state.message}</p>
+        <p className="text-sm text-[var(--color-success)]">{state.message}</p>
       ) : null}
     </form>
   );

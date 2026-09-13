@@ -77,10 +77,10 @@ export default async function BriefPage() {
       <header className="border-b border-[var(--color-line)] pb-6 print:border-black">
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div className="min-w-0">
-            <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold print:text-black">
+            <p className="text-xs uppercase tracking-wider text-[var(--color-gold)] font-bold print:text-black">
               Compensation Brief
             </p>
-            <h1 className="mt-2 text-3xl sm:text-5xl font-bold tracking-tight leading-[1.05]">
+            <h1 className="mt-2 font-display text-3xl sm:text-5xl font-bold tracking-tight leading-[1.05]">
               United States v. Nichols
             </h1>
             <p className="mt-3 text-base text-[var(--color-ink-soft)] max-w-2xl leading-relaxed print:text-black">
@@ -193,7 +193,7 @@ export default async function BriefPage() {
                 className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 print:break-inside-avoid print:bg-white print:border-black"
               >
                 <div className="flex items-baseline gap-2 flex-wrap">
-                  <span className="text-xs font-bold text-[var(--color-accent)] print:text-black">
+                  <span className="text-xs font-bold text-[var(--color-accent-ink)] print:text-black">
                     #{g.display_order}
                   </span>
                   <h3 className="font-bold text-base">{g.title}</h3>
@@ -214,7 +214,7 @@ export default async function BriefPage() {
                 <p className="mt-2 print:hidden">
                   <Link
                     href={`/case/grievances/${g.slug}`}
-                    className="text-xs font-semibold text-[var(--color-accent)] hover:underline"
+                    className="text-xs font-semibold text-[var(--color-accent-ink)] hover:underline"
                   >
                     Open detail page →
                   </Link>
@@ -266,7 +266,7 @@ export default async function BriefPage() {
               className="rounded border border-[var(--color-line)] bg-[var(--color-surface)] p-3 print:bg-white print:border-black print:break-inside-avoid"
             >
               <p className="font-bold text-sm">{p.name}</p>
-              <p className="text-xs text-[var(--color-accent)] font-semibold print:text-black">
+              <p className="text-xs text-[var(--color-accent-ink)] font-semibold print:text-black">
                 {p.role}
                 {p.agency ? ` · ${p.agency}` : ""}
               </p>
@@ -291,7 +291,7 @@ export default async function BriefPage() {
               key={e.id}
               className="border-l-2 border-[var(--color-accent)] pl-4 print:border-black print:break-inside-avoid"
             >
-              <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold print:text-black">
+              <p className="text-xs uppercase tracking-wider text-[var(--color-accent-ink)] font-bold print:text-black">
                 {e.event_date ? format(new Date(e.event_date), "MMMM d, yyyy") : "Date pending verification"}
               </p>
               <p className="font-bold mt-1">{e.title}</p>
@@ -313,7 +313,7 @@ export default async function BriefPage() {
         <p className="text-sm text-[var(--color-muted)] mb-4 print:text-black">
           Indictments, dockets, motions, rulings, transcripts, affidavits.
           Personal scans and contemporaneous cell notes are catalogued at{" "}
-          <Link href="/case?view=documents" className="text-[var(--color-accent)] underline">
+          <Link href="/case?view=documents" className="text-[var(--color-accent-ink)] underline">
             /case?view=documents
           </Link>
           .
@@ -324,7 +324,7 @@ export default async function BriefPage() {
               key={d.id}
               className="flex items-baseline gap-3 text-sm rounded border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 print:bg-white print:border-black print:break-inside-avoid"
             >
-              <span className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-accent)] print:text-black w-20 flex-shrink-0">
+              <span className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-accent-ink)] print:text-black w-20 flex-shrink-0">
                 {d.doc_type}
               </span>
               {d.document_date ? (
@@ -339,7 +339,7 @@ export default async function BriefPage() {
                 href={d.file_url ?? d.external_url ?? "#"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs font-bold text-[var(--color-accent)] hover:underline whitespace-nowrap print:text-black"
+                className="text-xs font-bold text-[var(--color-accent-ink)] hover:underline whitespace-nowrap print:text-black"
               >
                 Open
               </a>
@@ -381,7 +381,7 @@ export default async function BriefPage() {
         <p>
           Brief generated {format(new Date(), "MMMM d, yyyy 'at' h:mm a")} from
           live data at{" "}
-          <Link href="/case" className="underline text-[var(--color-accent)] print:text-black">
+          <Link href="/case" className="underline text-[var(--color-accent-ink)] print:text-black">
             realryannichols.com/case
           </Link>
           . This page updates automatically as new documents are added.

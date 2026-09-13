@@ -37,7 +37,7 @@ function embedUrl(platform: Platform, url: string): string | null {
     if (platform === "x") {
       const id = u.pathname.match(/\/status\/(\d+)/)?.[1];
       return id
-        ? `https://platform.twitter.com/embed/Tweet.html?id=${id}&theme=light&dnt=true`
+        ? `https://platform.twitter.com/embed/Tweet.html?id=${id}&theme=dark&dnt=true`
         : null;
     }
     if (platform === "facebook") {
@@ -59,8 +59,8 @@ export function ArticleEmbed({ value }: { value: Record<string, unknown> }) {
   const src = embedUrl(platform, url);
 
   return (
-    <figure className="not-prose my-8 overflow-hidden rounded-lg border border-[#0b1b34]/25 bg-[#0b1b34] text-[#f4efe4]">
-      <div className="flex items-center justify-between gap-3 border-b border-[#f4efe4]/10 px-4 py-2.5">
+    <figure className="panel not-prose my-8 overflow-hidden text-[var(--color-cream)]">
+      <div className="flex items-center justify-between gap-3 border-b border-[var(--color-line-soft)] px-4 py-2.5">
         <span className="text-[11px] font-black uppercase tracking-[0.16em] text-[var(--color-gold-bright)]">
           {PLATFORM_NAMES[platform]}
         </span>
@@ -68,14 +68,14 @@ export function ArticleEmbed({ value }: { value: Record<string, unknown> }) {
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="truncate text-xs font-semibold text-[#a9b7d0] underline underline-offset-2"
+          className="truncate text-xs font-semibold text-[var(--color-muted)] underline underline-offset-2"
         >
           {url.replace(/^https?:\/\//, "").slice(0, 60)}
         </a>
       </div>
 
       {caption ? (
-        <p className="px-4 pt-3 text-sm leading-relaxed text-[#cfd9ea]">{caption}</p>
+        <p className="px-4 pt-3 text-sm leading-relaxed text-[var(--color-ink-soft)]">{caption}</p>
       ) : null}
 
       {loaded && src ? (
@@ -86,7 +86,7 @@ export function ArticleEmbed({ value }: { value: Record<string, unknown> }) {
             sandbox="allow-scripts allow-same-origin allow-popups"
             referrerPolicy="no-referrer"
             loading="lazy"
-            className="h-[480px] w-full rounded-md border-0 bg-white"
+            className={`h-[480px] w-full rounded-md border-0 ${platform === "x" ? "bg-[var(--color-surface)]" : "bg-white"}`}
           />
         </div>
       ) : (
@@ -95,7 +95,7 @@ export function ArticleEmbed({ value }: { value: Record<string, unknown> }) {
             <button
               type="button"
               onClick={() => setLoaded(true)}
-              className="inline-flex min-h-11 items-center rounded-md bg-[var(--color-gold-bright)] px-5 text-sm font-black text-[#061020] transition hover:bg-[#f0d48a]"
+              className="inline-flex min-h-11 items-center rounded-md bg-[var(--color-gold-bright)] px-5 text-sm font-black text-[var(--color-navy)] transition hover:bg-[var(--color-support-strong)]"
             >
               Load this post
             </button>
@@ -104,12 +104,12 @@ export function ArticleEmbed({ value }: { value: Record<string, unknown> }) {
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-11 items-center rounded-md bg-[var(--color-gold-bright)] px-5 text-sm font-black text-[#061020] transition hover:bg-[#f0d48a]"
+              className="inline-flex min-h-11 items-center rounded-md bg-[var(--color-gold-bright)] px-5 text-sm font-black text-[var(--color-navy)] transition hover:bg-[var(--color-support-strong)]"
             >
               Open on {PLATFORM_NAMES[platform].split(" ")[0]}
             </a>
           )}
-          <p className="mt-2 text-[11px] text-[#a9b7d0]">
+          <p className="mt-2 text-[11px] text-[var(--color-muted)]">
             Nothing loads from the platform until you choose to load it.
           </p>
         </div>

@@ -68,16 +68,26 @@ export default async function LiveStreamPage({
         <p
           className={[
             "text-xs uppercase tracking-wider font-black",
-            stream.status === "live" ? "text-red-700" : "text-[var(--color-accent)]",
+            stream.status === "live" ? "text-[var(--color-danger)]" : "text-[var(--color-accent-ink)]",
           ].join(" ")}
         >
           {liveStatusLabel(stream.status)}
         </p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-5xl">
+        <h1
+          className="display mt-2 text-4xl sm:text-6xl"
+          data-reveal
+          style={{ "--d": 1 } as React.CSSProperties}
+        >
           {stream.title}
         </h1>
+        <div
+          className="mt-4 h-[3px] w-[4.5rem] bg-[var(--color-gold)]"
+          aria-hidden
+          data-reveal
+          style={{ "--d": 2 } as React.CSSProperties}
+        />
         {stream.description ? (
-          <p className="mt-3 max-w-3xl text-[var(--color-ink-soft)]">
+          <p className="mt-4 max-w-3xl text-[var(--color-ink-soft)]">
             {stream.description}
           </p>
         ) : null}
@@ -92,7 +102,7 @@ export default async function LiveStreamPage({
               streamType={isEnded ? "on-demand" : "live"}
             />
           ) : (
-            <div className="aspect-video rounded-lg bg-black text-white grid place-items-center px-6 text-center text-sm">
+            <div className="aspect-video rounded-lg bg-black text-[var(--color-cream)] grid place-items-center px-6 text-center text-sm">
               {isEnded
                 ? "This live stream has ended. If a replay is published, it will show up in Videos."
                 : "The live player is waiting for video."}
@@ -101,14 +111,14 @@ export default async function LiveStreamPage({
           <div className="mt-4 flex flex-wrap gap-2">
             <Link
               href="/support"
-              className="rounded-full bg-[var(--color-accent)] px-4 py-2 text-sm font-black text-[var(--color-paper)]"
+              className="btn-accent rounded-full px-4 py-2 text-sm"
             >
               Support the work
             </Link>
             <ShareButton url={liveUrl(stream.slug)} title={stream.title} compact />
             <Link
               href="/videos"
-              className="rounded-full border border-[var(--color-line)] px-4 py-2 text-sm font-black hover:border-[var(--color-accent)]"
+              className="btn-ghost rounded-full px-4 py-2 text-sm font-black"
             >
               Video archive
             </Link>
@@ -117,8 +127,8 @@ export default async function LiveStreamPage({
 
         <aside className="space-y-4">
           <SignupForm emailEnabled={emailSignupEnabled} />
-          <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
-            <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">
+          <div className="panel p-5">
+            <p className="eyebrow">
               Share this page
             </p>
             <p className="mt-2 break-all text-sm font-semibold text-[var(--color-ink)]">

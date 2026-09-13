@@ -18,10 +18,10 @@ const DESCRIPTION =
   "A public evidence map for connecting J6 cases by case number, defendant, clue, witness statement, court document, video, picture, and archived record.";
 
 const connectionTypes: { n: string; title: string; body: string; color: string }[] = [
-  { n: "01", title: "Court documents", color: "#7fa9e3", body: "Dockets, filings, exhibits, orders, plea papers, sentencing records, and archived DOJ documents." },
+  { n: "01", title: "Court documents", color: "var(--color-blue-ink)", body: "Dockets, filings, exhibits, orders, plea papers, sentencing records, and archived DOJ documents." },
   { n: "02", title: "Witness statements", color: "var(--color-gold-bright)", body: "People who saw the same event, heard the same instruction, received the same treatment, or can confirm a timeline." },
-  { n: "03", title: "Photos and videos", color: "#ffd166", body: "Public clips, bodycam references, livestreams, still frames, metadata, timestamps, and location context." },
-  { n: "04", title: "Shared clues", color: "#f08a8a", body: "Names, agencies, prosecutors, officers, facilities, dates, charges, locations, aliases, URLs, and repeated fact patterns." },
+  { n: "03", title: "Photos and videos", color: "var(--color-gold-light)", body: "Public clips, bodycam references, livestreams, still frames, metadata, timestamps, and location context." },
+  { n: "04", title: "Shared clues", color: "var(--color-tag-severe)", body: "Names, agencies, prosecutors, officers, facilities, dates, charges, locations, aliases, URLs, and repeated fact patterns." },
 ];
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -83,11 +83,9 @@ export default async function CaseNexusPage() {
 
   return (
     <article className="mx-auto max-w-[92rem] px-3 py-3 sm:px-4 sm:py-5">
-      <header className="mb-3">
+      <header className="mb-3" data-reveal>
         <div className="max-w-3xl">
-          <p className="text-xs font-black uppercase tracking-normal text-[var(--color-gold-bright)]">
-            The Case Nexus · connect every clue
-          </p>
+          <p className="eyebrow">The Case Nexus · connect every clue</p>
           <h1 className="mt-1 font-display text-3xl font-black leading-[1.02] tracking-normal sm:text-4xl">
             Every case. Every clue. One nexus.
           </h1>
@@ -98,31 +96,35 @@ export default async function CaseNexusPage() {
           </p>
           <div className="mt-3 flex flex-wrap items-center gap-1.5">
             {([
-              ["Case", "#1f2f55"],
-              ["Person", "#e08658"],
-              ["Document", "#7c8aa6"],
-              ["Witness", "#7fa9e3"],
-              ["Video", "#ffd166"],
-              ["Photo", "#f08a8a"],
+              ["Case", "var(--color-surface-2)"],
+              ["Person", "var(--color-clay)"],
+              ["Document", "var(--color-muted)"],
+              ["Witness", "var(--color-blue-ink)"],
+              ["Video", "var(--color-gold-light)"],
+              ["Photo", "var(--color-tag-severe)"],
               ["Clue", "var(--color-gold-bright)"],
             ] as const).map(([label, color]) => (
               <span
                 key={label}
                 className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] py-1 pl-2 pr-2.5 text-[11px] font-bold uppercase tracking-normal text-[var(--color-ink)]"
               >
-                <span aria-hidden className="h-2 w-2 rounded-full" style={{ background: color }} />
+                <span
+                  aria-hidden
+                  className="h-2 w-2 rounded-full ring-1 ring-[var(--color-line-soft)]"
+                  style={{ background: color }}
+                />
                 {label}
               </span>
             ))}
             <Link
               href="/submit"
-              className="inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--color-gold-bright)] px-3.5 py-1.5 text-center text-xs font-black uppercase tracking-normal text-[#071126] shadow-sm transition hover:brightness-105 sm:min-h-0"
+              className="btn-accent inline-flex min-h-11 items-center justify-center px-3.5 py-1.5 text-center text-xs uppercase tracking-normal sm:min-h-0"
             >
               + Add a clue
             </Link>
             <Link
               href="/tell-your-story"
-              className="inline-flex min-h-11 items-center justify-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3.5 py-1.5 text-center text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-gold-bright)] hover:text-[var(--color-accent)] sm:min-h-0"
+              className="inline-flex min-h-11 items-center justify-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3.5 py-1.5 text-center text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-gold-bright)] hover:text-[var(--color-accent-ink)] sm:min-h-0"
             >
               Tell story
             </Link>
@@ -138,12 +140,10 @@ export default async function CaseNexusPage() {
 
       {/* Read the map — the key to every color, dot, and line on the board.
           Dark investigation-board panel so the graph stops being a mystery. */}
-      <section className="mt-4 overflow-hidden rounded-xl border border-[#1f2f55] bg-[#0a1429] p-5 sm:p-6">
-        <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <p className="text-xs font-black uppercase tracking-[0.18em] text-[var(--color-gold-bright)]">
-            Read the map
-          </p>
-          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#7c8aa6]">
+      <section className="mt-4 overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.4)] sm:p-6">
+        <div className="flex flex-wrap items-baseline justify-between gap-2" data-reveal>
+          <p className="eyebrow">Read the map</p>
+          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-muted)]">
             Every dot and line, decoded
           </p>
         </div>
@@ -151,26 +151,26 @@ export default async function CaseNexusPage() {
         <div className="mt-4 grid gap-6 md:grid-cols-3">
           {/* The dots */}
           <div>
-            <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[#cfd9ea]">
+            <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
               The dots — who and what
             </p>
-            <ul className="mt-3 space-y-2 text-sm text-[#dbe4f4]">
+            <ul className="mt-3 space-y-2 text-sm text-[var(--color-ink-soft)]">
               {[
-                ["#1f2f55", "Case", "A case number. Bigger = more defendants on it.", "ring"],
-                ["#e08658", "Defendant — unclaimed", "A person on the record; profile free to claim.", "dot"],
+                ["var(--color-surface-2)", "Case", "A case number. Bigger = more defendants on it.", "ring"],
+                ["var(--color-clay)", "Defendant — unclaimed", "A person on the record; profile free to claim.", "dot"],
                 ["var(--color-gold-bright)", "Defendant — verified", "A profile claimed and confirmed.", "dot"],
-                ["#ffd166", "Defendant — pending", "A claim in review.", "dot"],
-                ["#7c8aa6", "Document", "A filing, order, exhibit, or scan.", "dot"],
+                ["var(--color-gold-light)", "Defendant — pending", "A claim in review.", "dot"],
+                ["var(--color-muted)", "Document", "A filing, order, exhibit, or scan.", "dot"],
               ].map(([color, label, sub, shape]) => (
                 <li key={label} className="flex items-start gap-2.5">
                   <span
                     aria-hidden
                     className={shape === "ring" ? "mt-0.5 h-3.5 w-3.5 flex-shrink-0 rounded-full border-2" : "mt-1 h-3 w-3 flex-shrink-0 rounded-full"}
-                    style={shape === "ring" ? { borderColor: "#3a557c", background: color } : { background: color }}
+                    style={shape === "ring" ? { borderColor: "var(--color-blue)", background: color } : { background: color }}
                   />
                   <span>
-                    <span className="font-bold text-white">{label}</span>
-                    <span className="block text-xs leading-snug text-[#9fb0cc]">{sub}</span>
+                    <span className="font-bold text-[var(--color-cream)]">{label}</span>
+                    <span className="block text-xs leading-snug text-[var(--color-muted)]">{sub}</span>
                   </span>
                 </li>
               ))}
@@ -179,22 +179,22 @@ export default async function CaseNexusPage() {
 
           {/* The connectors */}
           <div>
-            <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[#cfd9ea]">
+            <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
               The hubs — what they share
             </p>
-            <ul className="mt-3 space-y-2 text-sm text-[#dbe4f4]">
+            <ul className="mt-3 space-y-2 text-sm text-[var(--color-ink-soft)]">
               {[
                 ["var(--color-gold-bright)", "Source", "The DOJ / salvaged record a case came from."],
-                ["#7fa9e3", "Court", "The court a case was filed in."],
-                ["#ffd166", "Facility", "A jail or prison in the record."],
-                ["#f08a8a", "Charge", "A charge shared across defendants."],
-                ["#d8c89e", "Agency · year · pattern", "Other shared threads that tie cases together."],
+                ["var(--color-blue-ink)", "Court", "The court a case was filed in."],
+                ["var(--color-gold-light)", "Facility", "A jail or prison in the record."],
+                ["var(--color-tag-severe)", "Charge", "A charge shared across defendants."],
+                ["var(--color-parchment-line)", "Agency · year · pattern", "Other shared threads that tie cases together."],
               ].map(([color, label, sub]) => (
                 <li key={label} className="flex items-start gap-2.5">
                   <span aria-hidden className="mt-1 h-3 w-3 flex-shrink-0 rounded-full" style={{ background: color }} />
                   <span>
-                    <span className="font-bold text-white">{label}</span>
-                    <span className="block text-xs leading-snug text-[#9fb0cc]">{sub}</span>
+                    <span className="font-bold text-[var(--color-cream)]">{label}</span>
+                    <span className="block text-xs leading-snug text-[var(--color-muted)]">{sub}</span>
                   </span>
                 </li>
               ))}
@@ -203,10 +203,10 @@ export default async function CaseNexusPage() {
 
           {/* How to work it */}
           <div>
-            <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[#cfd9ea]">
+            <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
               How to work the board
             </p>
-            <ul className="mt-3 space-y-2 text-sm text-[#dbe4f4]">
+            <ul className="mt-3 space-y-2 text-sm text-[var(--color-ink-soft)]">
               {[
                 ["Click", "any dot to open who it is and what it touches."],
                 ["Expand", "a node to pull its whole neighborhood onto the board."],
@@ -216,13 +216,13 @@ export default async function CaseNexusPage() {
                 <li key={verb} className="flex items-start gap-2.5">
                   <span aria-hidden className="mt-1.5 h-2 w-6 flex-shrink-0 rounded-full bg-[var(--color-gold-bright)]" />
                   <span>
-                    <span className="font-bold text-white">{verb}</span>{" "}
-                    <span className="text-xs leading-snug text-[#9fb0cc]">{sub}</span>
+                    <span className="font-bold text-[var(--color-cream)]">{verb}</span>{" "}
+                    <span className="text-xs leading-snug text-[var(--color-muted)]">{sub}</span>
                   </span>
                 </li>
               ))}
             </ul>
-            <p className="mt-4 text-xs leading-snug text-[#7c8aa6]">
+            <p className="mt-4 text-xs leading-snug text-[var(--color-muted)]">
               Thicker, brighter lines are the strongest links — a shared source,
               the same court, the same charge. Faint lines are looser threads.
             </p>
@@ -231,30 +231,32 @@ export default async function CaseNexusPage() {
       </section>
 
       <section className="mt-5">
-        <p className="mb-3 text-xs font-black uppercase tracking-[0.18em] text-[var(--color-accent)]">
+        <p className="eyebrow mb-3" data-reveal>
           The four ways one case connects to another
         </p>
         <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          {connectionTypes.map((c) => (
+          {connectionTypes.map((c, i) => (
             <div
               key={c.title}
-              className="group relative overflow-hidden rounded-xl border border-[#1f2f55] bg-[#0a1429] p-5 transition duration-200 hover:-translate-y-0.5 hover:border-[#3a557c]"
+              data-reveal
+              style={{ "--d": i } as React.CSSProperties}
+              className="group relative overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.4)] transition duration-200 hover:-translate-y-0.5 hover:border-[var(--color-gold)]"
             >
               <span aria-hidden className="absolute inset-x-0 top-0 h-1" style={{ background: c.color }} />
               <div className="flex items-center justify-between">
                 <span
                   aria-hidden
-                  className="inline-flex h-7 w-7 items-center justify-center rounded-full text-[11px] font-black text-[#071126]"
+                  className="inline-flex h-7 w-7 items-center justify-center rounded-full text-[11px] font-black text-[var(--color-navy)]"
                   style={{ background: c.color }}
                 >
                   {c.n}
                 </span>
                 <span aria-hidden className="h-2.5 w-2.5 rounded-full" style={{ background: c.color }} />
               </div>
-              <h2 className="mt-3 font-display text-lg font-black tracking-normal text-white">
+              <h2 className="mt-3 font-display text-lg font-black tracking-normal text-[var(--color-cream)]">
                 {c.title}
               </h2>
-              <p className="mt-2 text-sm leading-relaxed text-[#a9b7d0]">
+              <p className="mt-2 text-sm leading-relaxed text-[var(--color-muted)]">
                 {c.body}
               </p>
             </div>
@@ -293,10 +295,8 @@ export default async function CaseNexusPage() {
       </section>
 
       {/* What it is */}
-      <section className="mt-10 rounded-lg border-2 border-[var(--color-line)] bg-[var(--color-paper)] p-5 sm:p-6">
-        <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
-          What this is becoming
-        </p>
+      <section className="mt-10 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.4)] sm:p-6">
+        <p className="eyebrow" data-reveal>What this is becoming</p>
         <h2 className="mt-1 font-display text-3xl font-black tracking-normal">
           A public case web: facts, claims, documents, media, and witness
           statements connected by the thing they share.
@@ -328,13 +328,13 @@ export default async function CaseNexusPage() {
         <div className="mt-5 flex flex-wrap gap-3">
           <Link
             href="/submit"
-            className="rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
+            className="btn-blue px-5 py-2.5 text-sm"
           >
             Submit a missing connector →
           </Link>
           <Link
             href="/case/the-salvaged-doj-record"
-            className="rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
+            className="rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
           >
             Browse the salvaged record →
           </Link>
@@ -356,9 +356,9 @@ function CrossLink({
   return (
     <Link
       href={href}
-      className="block rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4 hover:border-[var(--color-accent)] transition group"
+      className="block rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-[0_20px_50px_rgba(0,0,0,0.4)] hover:border-[var(--color-gold)] transition group"
     >
-      <p className="text-sm font-bold tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">
+      <p className="text-sm font-bold tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-gold)]">
         {title}
       </p>
       <p className="mt-1 text-xs leading-snug text-[var(--color-ink-soft)]">

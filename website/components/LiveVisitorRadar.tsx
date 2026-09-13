@@ -333,7 +333,7 @@ export function LiveVisitorRadar({ initial }: { initial: RadarPing[] }) {
   const transform = `translate(${W / 2 + view.x} ${H / 2 + view.y}) scale(${view.scale}) translate(${-W / 2} ${-H / 2})`;
 
   const controlBtn =
-    "grid h-11 w-11 place-items-center rounded-md border border-[#3a557c] bg-[#0a1429] text-[#cfd9ea] hover:bg-[#1c2a4a] font-bold text-lg";
+    "grid h-11 w-11 place-items-center rounded-md border border-[var(--color-line-soft)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:bg-[var(--color-surface-2)] font-bold text-lg";
 
   return (
     <>
@@ -371,7 +371,13 @@ export function LiveVisitorRadar({ initial }: { initial: RadarPing[] }) {
         <g transform={transform}>
           {/* Land, one path per polygon. */}
           {LAND_PATHS.map((d, i) => (
-            <path key={i} d={d} fill="#1c2a4a" stroke="#3a557c" strokeWidth={0.5} />
+            <path
+              key={i}
+              d={d}
+              fill="var(--color-surface-2)"
+              stroke="var(--color-line)"
+              strokeWidth={0.5}
+            />
           ))}
 
           {/* US state outlines, so a dot reads as "in Texas" at a glance. */}
@@ -382,7 +388,7 @@ export function LiveVisitorRadar({ initial }: { initial: RadarPing[] }) {
                 data-state={s.code}
                 d={s.path}
                 fill="none"
-                stroke="#3a557c"
+                stroke="var(--color-line-soft)"
                 strokeWidth={0.4}
               />
             ))}
@@ -391,7 +397,7 @@ export function LiveVisitorRadar({ initial }: { initial: RadarPing[] }) {
           {/* Individual visitor pings. */}
           {projected.map(({ p, x, y }) => {
             const isSel = selected?.ping_id === p.ping_id;
-            const color = isSel ? "#fff" : "var(--color-live)";
+            const color = isSel ? "var(--color-cream)" : "var(--color-live)";
             const label = pingLabel(p);
             return (
               <g
@@ -416,7 +422,7 @@ export function LiveVisitorRadar({ initial }: { initial: RadarPing[] }) {
                   cy={y}
                   r={dotR}
                   fill={color}
-                  stroke={isSel ? "var(--color-live)" : "#0e1a36"}
+                  stroke={isSel ? "var(--color-live)" : "var(--color-paper)"}
                   strokeWidth={strokeW}
                 />
                 <title>{label}</title>
@@ -428,11 +434,11 @@ export function LiveVisitorRadar({ initial }: { initial: RadarPing[] }) {
 
       {/* Controls: 44px targets, top-right. */}
       <div className="absolute top-3 right-3 z-10 flex flex-col items-end gap-1.5">
-        <div className="flex overflow-hidden rounded-md border border-[#3a557c] bg-[#0a1429]">
+        <div className="flex overflow-hidden rounded-md border border-[var(--color-line-soft)] bg-[var(--color-surface)]">
           <button
             type="button"
             onClick={showUnitedStates}
-            className="h-11 min-w-11 px-3 text-[10px] font-black uppercase tracking-wider text-[var(--color-live)] hover:bg-[#1c2a4a]"
+            className="h-11 min-w-11 px-3 text-[10px] font-black uppercase tracking-wider text-[var(--color-live)] hover:bg-[var(--color-surface-2)]"
             aria-label="Focus radar on the United States"
             aria-pressed={isUsView}
           >
@@ -441,7 +447,7 @@ export function LiveVisitorRadar({ initial }: { initial: RadarPing[] }) {
           <button
             type="button"
             onClick={showWorld}
-            className="h-11 min-w-11 border-l border-[#3a557c] px-3 text-[10px] font-black uppercase tracking-wider text-[#cfd9ea] hover:bg-[#1c2a4a]"
+            className="h-11 min-w-11 border-l border-[var(--color-line-soft)] px-3 text-[10px] font-black uppercase tracking-wider text-[var(--color-ink-soft)] hover:bg-[var(--color-surface-2)]"
             aria-label="Show the whole world"
             aria-pressed={!isUsView}
           >
@@ -481,17 +487,17 @@ export function LiveVisitorRadar({ initial }: { initial: RadarPing[] }) {
           type="button"
           data-ping-chip
           onClick={() => setSelected(null)}
-          className="absolute bottom-3 left-3 z-10 flex min-h-11 max-w-[calc(100%-1.5rem)] items-center gap-2 rounded-full border border-[var(--color-live)] bg-[#0a1429]/95 px-4 text-left text-sm font-bold text-[var(--color-paper)] shadow-lg"
+          className="absolute bottom-3 left-3 z-10 flex min-h-11 max-w-[calc(100%-1.5rem)] items-center gap-2 rounded-full border border-[var(--color-live)] bg-[var(--color-surface)]/95 px-4 text-left text-sm font-bold text-[var(--color-cream)] shadow-lg"
           aria-label={`Visitor reading from ${pingLabel(selected)}. Tap to dismiss.`}
         >
           <span className="inline-block h-2 w-2 shrink-0 rounded-full bg-[var(--color-live)]" aria-hidden />
           <span className="truncate">{pingLabel(selected)}</span>
-          <span className="text-xs font-normal text-[#7c8aa6]" aria-hidden>
+          <span className="text-xs font-normal text-[var(--color-muted)]" aria-hidden>
             ×
           </span>
         </button>
       ) : (
-        <p className="pointer-events-none absolute bottom-2 left-3 z-10 select-none text-[9px] font-mono uppercase tracking-wider text-[#7c8aa6]">
+        <p className="pointer-events-none absolute bottom-2 left-3 z-10 select-none text-[9px] font-mono uppercase tracking-wider text-[var(--color-muted)]">
           {projected.length.toLocaleString()} plotted · {usCount.toLocaleString()} U.S. · drag to pan · pinch or scroll to zoom · tap a dot
         </p>
       )}

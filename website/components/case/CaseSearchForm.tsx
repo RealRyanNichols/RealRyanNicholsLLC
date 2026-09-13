@@ -6,6 +6,9 @@ import type { J6Filter, Tab } from "@/components/case/archive";
 // so it works with no JavaScript and lands on the archive with a hit count
 // per section. This is the case record's search; the sitewide /search
 // covers posts and videos.
+//
+// Blue, not gold: every view that carries this box already spends its one
+// solid gold button on that view's own primary action.
 export function CaseSearchForm({
   q = "",
   view,
@@ -54,14 +57,14 @@ export function CaseSearchForm({
       <div className="flex gap-2">
         <button
           type="submit"
-          className="btn-accent min-h-11 flex-1 rounded-xl px-5 text-sm font-bold sm:flex-none"
+          className="btn-blue min-h-11 flex-1 rounded-xl px-5 text-sm font-bold sm:flex-none"
         >
           Search
         </button>
         {q ? (
           <Link
             href={clearHref}
-            className="inline-flex min-h-11 flex-1 items-center justify-center rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-4 text-sm font-bold text-[var(--color-ink-soft)] hover:border-[var(--color-navy)] hover:text-[var(--color-navy)] sm:flex-none"
+            className="inline-flex min-h-11 flex-1 items-center justify-center rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-4 text-sm font-bold text-[var(--color-ink-soft)] hover:border-[var(--color-gold)] hover:text-[var(--color-gold)] sm:flex-none"
           >
             Clear
           </Link>

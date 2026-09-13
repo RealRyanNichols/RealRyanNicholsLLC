@@ -178,7 +178,7 @@ function DocumentRow({ doc }: { doc: Doc }) {
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full rounded border border-[var(--color-line)] bg-[var(--color-paper)] px-2 py-1 text-sm"
+            className="w-full rounded border border-[var(--color-line)] bg-[var(--color-surface)] px-2 py-1 text-sm"
           />
         </div>
         <div className="grid grid-cols-2 gap-3">
@@ -187,7 +187,7 @@ function DocumentRow({ doc }: { doc: Doc }) {
             <select
               value={docType}
               onChange={(e) => setDocType(e.target.value)}
-              className="w-full rounded border border-[var(--color-line)] bg-[var(--color-paper)] px-2 py-1 text-sm"
+              className="w-full rounded border border-[var(--color-line)] bg-[var(--color-surface)] px-2 py-1 text-sm"
             >
               {DOC_TYPES.map((t) => (
                 <option key={t.value} value={t.value}>{t.label}</option>
@@ -200,7 +200,7 @@ function DocumentRow({ doc }: { doc: Doc }) {
               type="date"
               value={docDate}
               onChange={(e) => setDocDate(e.target.value)}
-              className="w-full rounded border border-[var(--color-line)] bg-[var(--color-paper)] px-2 py-1 text-sm"
+              className="w-full rounded border border-[var(--color-line)] bg-[var(--color-surface)] px-2 py-1 text-sm"
             />
           </div>
         </div>
@@ -210,7 +210,7 @@ function DocumentRow({ doc }: { doc: Doc }) {
             rows={2}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full rounded border border-[var(--color-line)] bg-[var(--color-paper)] px-2 py-1 text-sm"
+            className="w-full rounded border border-[var(--color-line)] bg-[var(--color-surface)] px-2 py-1 text-sm"
           />
         </div>
         <div>
@@ -222,7 +222,7 @@ function DocumentRow({ doc }: { doc: Doc }) {
               className={[
                 "rounded-full px-3 py-1 text-xs font-bold border",
                 visibility === "public"
-                  ? "bg-[var(--color-accent)] text-[var(--color-paper)] border-transparent"
+                  ? "bg-[var(--color-accent)] text-[var(--color-cream)] border-transparent"
                   : "border-[var(--color-line)] text-[var(--color-ink-soft)]",
               ].join(" ")}
             >Public</button>
@@ -232,7 +232,7 @@ function DocumentRow({ doc }: { doc: Doc }) {
               className={[
                 "rounded-full px-3 py-1 text-xs font-bold border",
                 visibility === "private"
-                  ? "bg-[var(--color-accent)] text-[var(--color-paper)] border-transparent"
+                  ? "bg-[var(--color-accent)] text-[var(--color-cream)] border-transparent"
                   : "border-[var(--color-line)] text-[var(--color-ink-soft)]",
               ].join(" ")}
             >Private</button>
@@ -251,7 +251,7 @@ function DocumentRow({ doc }: { doc: Doc }) {
             type="button"
             onClick={() => setEditing(false)}
             disabled={busy}
-            className="rounded-full border border-[var(--color-line)] px-3 py-1.5 text-xs font-semibold text-[var(--color-ink-soft)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="rounded-full border border-[var(--color-line)] px-3 py-1.5 text-xs font-semibold text-[var(--color-ink-soft)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)]"
           >
             Cancel
           </button>
@@ -260,12 +260,12 @@ function DocumentRow({ doc }: { doc: Doc }) {
             type="button"
             onClick={del}
             disabled={busy}
-            className="rounded-full bg-red-800 hover:bg-red-700 px-3 py-1.5 text-xs font-bold text-white disabled:opacity-60"
+            className="rounded-full bg-[var(--color-accent-strong)] hover:bg-[var(--color-accent)] px-3 py-1.5 text-xs font-bold text-[var(--color-cream)] disabled:opacity-60"
           >
             Delete
           </button>
         </div>
-        {err ? <p className="text-xs text-[var(--color-accent)]">{err}</p> : null}
+        {err ? <p className="text-xs text-[var(--color-accent-ink)]">{err}</p> : null}
       </li>
     );
   }
@@ -274,7 +274,7 @@ function DocumentRow({ doc }: { doc: Doc }) {
     <li className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2.5 flex items-center justify-between gap-3">
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-accent)]">
+          <span className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-accent-ink)]">
             {doc.doc_type}
           </span>
           {doc.document_date ? (
@@ -283,7 +283,7 @@ function DocumentRow({ doc }: { doc: Doc }) {
             </span>
           ) : null}
           {doc.visibility === "private" ? (
-            <span className="text-[10px] rounded-full bg-amber-900/30 border border-amber-700 text-amber-300 px-1.5 py-0.5 uppercase tracking-wider font-bold">
+            <span className="text-[10px] rounded-full bg-[var(--color-support-soft)] border border-[var(--color-tag-procedural)] text-[var(--color-tag-procedural)] px-1.5 py-0.5 uppercase tracking-wider font-bold">
               private
             </span>
           ) : null}
@@ -299,7 +299,7 @@ function DocumentRow({ doc }: { doc: Doc }) {
         <button
           type="button"
           onClick={() => setEditing(true)}
-          className="text-xs font-semibold text-[var(--color-accent)] hover:underline whitespace-nowrap"
+          className="text-xs font-semibold text-[var(--color-accent-ink)] hover:underline whitespace-nowrap"
         >
           Edit
         </button>
@@ -307,7 +307,7 @@ function DocumentRow({ doc }: { doc: Doc }) {
           href={doc.file_url ?? doc.external_url ?? "#"}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-xs font-semibold text-[var(--color-ink-soft)] hover:text-[var(--color-accent)] whitespace-nowrap"
+          className="text-xs font-semibold text-[var(--color-ink-soft)] hover:text-[var(--color-accent-ink)] whitespace-nowrap"
         >
           Open
         </a>

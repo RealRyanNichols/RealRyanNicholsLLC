@@ -30,8 +30,8 @@ export default async function CounselPage({
 function CounselGate({ error }: { error: boolean }) {
   return (
     <main className="mx-auto flex min-h-[80vh] w-full max-w-md flex-col justify-center px-4 py-16">
-      <div className="border border-[var(--color-line)] bg-[var(--color-surface)] p-6 shadow-sm">
-        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+      <div className="border border-[var(--color-line)] bg-[var(--color-surface)] p-6 shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
+        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent-ink)]">
           Confidential
         </p>
         <h1 className="mt-2 font-sans text-2xl font-black leading-tight text-[var(--color-ink)]">
@@ -50,7 +50,7 @@ function CounselGate({ error }: { error: boolean }) {
               name="username"
               autoComplete="username"
               required
-              className="min-h-11 border border-[var(--color-line)] bg-[var(--color-paper)] px-3 text-sm font-semibold text-[var(--color-ink)] outline-none focus:border-[var(--color-accent)]"
+              className="min-h-11 border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 text-sm font-semibold text-[var(--color-ink)] outline-none focus:border-[var(--color-accent)]"
             />
           </label>
           <label className="grid gap-1">
@@ -62,17 +62,17 @@ function CounselGate({ error }: { error: boolean }) {
               type="password"
               autoComplete="current-password"
               required
-              className="min-h-11 border border-[var(--color-line)] bg-[var(--color-paper)] px-3 text-sm font-semibold text-[var(--color-ink)] outline-none focus:border-[var(--color-accent)]"
+              className="min-h-11 border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 text-sm font-semibold text-[var(--color-ink)] outline-none focus:border-[var(--color-accent)]"
             />
           </label>
           {error ? (
-            <p className="text-xs font-bold text-[var(--color-accent)]">
+            <p className="text-xs font-bold text-[var(--color-accent-ink)]">
               That username and password did not match. Try again.
             </p>
           ) : null}
           <button
             type="submit"
-            className="min-h-11 border border-[var(--color-accent)] bg-[var(--color-accent)] px-4 text-sm font-black uppercase tracking-normal text-white transition hover:bg-[var(--color-accent-strong)]"
+            className="btn-accent min-h-11 px-4 text-sm font-black uppercase tracking-normal"
           >
             View the brief
           </button>

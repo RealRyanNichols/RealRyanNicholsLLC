@@ -23,13 +23,15 @@ export type ReachDay = {
   total: number;
 };
 
+// Same six colors the ReachBySource legend uses, so a strand and its legend
+// swatch always agree. Tokens, not hex: these are SVG paints in the DOM.
 const SERIES: { key: keyof ReachDay; label: string; color: string }[] = [
-  { key: "human", label: "Humans", color: "#fb923c" },
+  { key: "human", label: "Humans", color: "var(--color-accent)" },
   { key: "search", label: "Search bots", color: "var(--color-sky)" },
-  { key: "ai", label: "AI agents", color: "#c084fc" },
-  { key: "social", label: "Social previews", color: "#34d399" },
-  { key: "uptime", label: "Uptime / tools", color: "#cbd5e1" },
-  { key: "unknown", label: "Unclassified", color: "#94a3b8" },
+  { key: "ai", label: "AI agents", color: "var(--color-violet)" },
+  { key: "social", label: "Social previews", color: "var(--color-success)" },
+  { key: "uptime", label: "Uptime / tools", color: "var(--color-ink-soft)" },
+  { key: "unknown", label: "Unclassified", color: "var(--color-muted)" },
 ];
 
 type TooltipPayload = { dataKey: string; name: string; color: string; value: number };
@@ -47,14 +49,14 @@ function CustomTooltip({
   const rows = payload.filter((p) => p.dataKey !== "total" && p.value > 0);
   const total = payload.find((p) => p.dataKey === "total")?.value ?? 0;
   return (
-    <div className="rounded-lg border border-white/10 bg-[#0b0b14]/95 px-3 py-2 text-xs shadow-2xl backdrop-blur">
-      <div className="mb-1.5 font-bold text-white">{label}</div>
+    <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)]/95 px-3 py-2 text-xs shadow-2xl backdrop-blur">
+      <div className="mb-1.5 font-bold text-[var(--color-cream)]">{label}</div>
       {rows.length === 0 ? (
-        <div className="text-white/50">No arrivals</div>
+        <div className="text-[var(--color-cream)]/50">No arrivals</div>
       ) : (
         rows.map((p) => (
           <div key={p.dataKey} className="flex items-center justify-between gap-4 py-0.5">
-            <span className="flex items-center gap-1.5 text-white/70">
+            <span className="flex items-center gap-1.5 text-[var(--color-cream)]/70">
               <span className="h-2 w-2 rounded-sm" style={{ background: p.color }} />
               {p.name}
             </span>
@@ -64,9 +66,9 @@ function CustomTooltip({
           </div>
         ))
       )}
-      <div className="mt-1.5 flex items-center justify-between gap-4 border-t border-white/10 pt-1.5">
-        <span className="text-white/90 font-semibold">Total reach</span>
-        <span className="font-bold tabular-nums text-white">{total.toLocaleString()}</span>
+      <div className="mt-1.5 flex items-center justify-between gap-4 border-t border-[var(--color-line-soft)] pt-1.5">
+        <span className="text-[var(--color-cream)]/90 font-semibold">Total reach</span>
+        <span className="font-bold tabular-nums text-[var(--color-cream)]">{total.toLocaleString()}</span>
       </div>
     </div>
   );
@@ -85,26 +87,27 @@ export function ReachLineChart({ data }: { data: ReachDay[] }) {
   }
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-[radial-gradient(120%_120%_at_50%_-10%,#15162b_0%,#0a0a12_55%,#06060c_100%)] p-4 sm:p-5">
+    <div className="relative overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-5">
+      {/* A stage light over the panel, not a second palette. */}
       <div
         className="pointer-events-none absolute -top-24 left-1/2 h-56 w-[120%] -translate-x-1/2 rounded-full opacity-40 blur-3xl"
-        style={{ background: "radial-gradient(closest-side, rgba(124,58,237,0.35), transparent)" }}
+        style={{ background: "radial-gradient(closest-side, var(--color-support-glow), transparent)" }}
         aria-hidden
       />
       <div className="relative flex items-baseline justify-between gap-3">
-        <h3 className="text-sm font-bold tracking-tight text-white">The strands</h3>
-        <p className="text-[11px] text-white/45">
+        <h3 className="text-sm font-bold tracking-tight text-[var(--color-cream)]">The strands</h3>
+        <p className="text-[11px] text-[var(--color-cream)]/45">
           Each line is a source of reach. Hover the timeline · click a strand to isolate it.
         </p>
       </div>
 
-      <div className="relative mt-3 h-[320px] w-full [&_.recharts-cartesian-axis-tick_text]:fill-white/45 [&_.recharts-line-curve]:[filter:drop-shadow(0_0_5px_rgba(255,255,255,0.22))]">
+      <div className="relative mt-3 h-[320px] w-full [&_.recharts-cartesian-axis-tick_text]:fill-[var(--color-muted)] [&_.recharts-line-curve]:[filter:drop-shadow(0_0_5px_rgba(0,0,0,0.45))]">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData} margin={{ top: 8, right: 12, bottom: 0, left: -18 }}>
-            <CartesianGrid stroke="rgba(255,255,255,0.06)" vertical={false} />
+            <CartesianGrid stroke="var(--color-line-soft)" vertical={false} />
             <XAxis
               dataKey="label"
-              stroke="rgba(255,255,255,0.2)"
+              stroke="var(--color-line-soft)"
               tickLine={false}
               axisLine={false}
               fontSize={11}
@@ -112,7 +115,7 @@ export function ReachLineChart({ data }: { data: ReachDay[] }) {
               minTickGap={24}
             />
             <YAxis
-              stroke="rgba(255,255,255,0.2)"
+              stroke="var(--color-line-soft)"
               tickLine={false}
               axisLine={false}
               fontSize={11}
@@ -121,11 +124,11 @@ export function ReachLineChart({ data }: { data: ReachDay[] }) {
             />
             <Tooltip
               content={<CustomTooltip />}
-              cursor={{ stroke: "rgba(255,255,255,0.25)", strokeWidth: 1, strokeDasharray: "4 4" }}
+              cursor={{ stroke: "var(--color-muted)", strokeWidth: 1, strokeDasharray: "4 4" }}
             />
             <Legend
               onClick={(e) => toggle(String(e.dataKey))}
-              wrapperStyle={{ fontSize: 11, cursor: "pointer", paddingTop: 6 }}
+              wrapperStyle={{ fontSize: 11, cursor: "pointer", paddingTop: 6, color: "var(--color-muted)" }}
               iconType="plainline"
             />
             {SERIES.map((s, i) => (

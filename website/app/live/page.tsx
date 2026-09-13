@@ -29,19 +29,29 @@ export default async function LivePage() {
     return (
       <main className="mx-auto max-w-5xl px-4 py-10">
         <header className="border-b border-[var(--color-line)] pb-6">
-          <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+          <p className="eyebrow" data-reveal>
             RealRyanNichols.com/live
           </p>
-          <h1 className="mt-2 text-4xl font-black tracking-tight">
+          <h1
+            className="display mt-3 text-5xl sm:text-6xl"
+            data-reveal
+            style={{ "--d": 1 } as React.CSSProperties}
+          >
             Ryan is not live right now.
           </h1>
-          <p className="mt-3 max-w-2xl text-[var(--color-ink-soft)]">
+          <div
+            className="mt-5 h-[3px] w-[4.5rem] bg-[var(--color-gold)]"
+            aria-hidden
+            data-reveal
+            style={{ "--d": 2 } as React.CSSProperties}
+          />
+          <p className="mt-4 max-w-2xl text-[var(--color-ink-soft)]">
             When the camera goes live, this is the page. Subscribe once and the
             next alert brings you back here, not to a social platform feed.
           </p>
         </header>
         <section className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-          <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6">
+          <div className="panel p-6" data-reveal>
             <h2 className="text-2xl font-black tracking-tight">
               Watch the archive
             </h2>
@@ -50,7 +60,7 @@ export default async function LivePage() {
             </p>
             <Link
               href="/videos"
-              className="mt-5 inline-flex min-h-11 items-center rounded-full bg-[var(--color-accent)] px-5 py-2.5 text-sm font-black text-[var(--color-paper)]"
+              className="btn-accent mt-5 inline-flex min-h-11 items-center rounded-full px-5 py-2.5 text-sm"
             >
               Open videos
             </Link>
@@ -75,14 +85,24 @@ export default async function LivePage() {
         </Link>
       </nav>
       <header className="mb-5">
-        <p className="text-xs uppercase tracking-wider text-red-700 font-black">
+        <p className="text-xs uppercase tracking-wider text-[var(--color-danger)] font-black">
           {liveStatusLabel(stream.status)}
         </p>
-        <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-5xl">
+        <h1
+          className="display mt-2 text-4xl sm:text-6xl"
+          data-reveal
+          style={{ "--d": 1 } as React.CSSProperties}
+        >
           {stream.title}
         </h1>
+        <div
+          className="mt-4 h-[3px] w-[4.5rem] bg-[var(--color-gold)]"
+          aria-hidden
+          data-reveal
+          style={{ "--d": 2 } as React.CSSProperties}
+        />
         {stream.description ? (
-          <p className="mt-3 max-w-3xl text-[var(--color-ink-soft)]">
+          <p className="mt-4 max-w-3xl text-[var(--color-ink-soft)]">
             {stream.description}
           </p>
         ) : null}
@@ -92,14 +112,14 @@ export default async function LivePage() {
           {stream.mux_playback_id ? (
             <LivePlayer playbackId={stream.mux_playback_id} title={stream.title} />
           ) : (
-            <div className="aspect-video rounded-lg bg-black text-white grid place-items-center text-sm">
+            <div className="aspect-video rounded-lg bg-black text-[var(--color-cream)] grid place-items-center text-sm">
               Player is not ready yet.
             </div>
           )}
           <div className="mt-4 flex flex-wrap gap-2">
             <Link
               href={`/live/${stream.slug}`}
-              className="rounded-full bg-red-700 px-4 py-2 text-sm font-black text-white hover:bg-red-800"
+              className="btn-accent rounded-full px-4 py-2 text-sm"
             >
               Permanent live link
             </Link>
@@ -110,7 +130,7 @@ export default async function LivePage() {
             />
             <Link
               href="/support"
-              className="rounded-full border border-[var(--color-line)] px-4 py-2 text-sm font-black hover:border-[var(--color-accent)]"
+              className="btn-ghost rounded-full px-4 py-2 text-sm font-black"
             >
               Support the work
             </Link>
@@ -118,8 +138,8 @@ export default async function LivePage() {
         </div>
         <aside className="space-y-4">
           <SignupForm emailEnabled={emailSignupEnabled} />
-          <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
-            <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">
+          <div className="panel p-5">
+            <p className="eyebrow">
               Site-owned live
             </p>
             <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">

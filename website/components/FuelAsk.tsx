@@ -20,7 +20,7 @@ export async function FuelAsk({ className = "" }: { className?: string }) {
   return (
     <aside
       className={[
-        "relative overflow-hidden rounded-2xl border-2 border-[var(--color-gold-bright)] bg-[#071126] p-5 text-[#fdf8ea] shadow-md sm:p-6",
+        "relative overflow-hidden rounded-2xl border-2 border-[var(--color-gold-bright)] bg-[var(--color-surface)] p-5 text-[var(--color-cream)] shadow-[0_20px_50px_rgba(0,0,0,0.4)] sm:p-6",
         className,
       ].join(" ")}
       aria-labelledby="fuel-ask-title"
@@ -31,23 +31,21 @@ export async function FuelAsk({ className = "" }: { className?: string }) {
         aria-hidden
       />
       <div className="relative">
-        <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-gold-bright)]">
-          Before you go
-        </p>
+        <p className="eyebrow">Before you go</p>
         <h2
           id="fuel-ask-title"
-          className="mt-1 font-display text-2xl font-black leading-tight tracking-tight text-[#fdf8ea] sm:text-3xl"
+          className="mt-1 font-display text-2xl font-black leading-tight tracking-tight text-[var(--color-cream)] sm:text-3xl"
         >
           You just read something built with Claude, ChatGPT, and Grok.{" "}
           <span className="text-[var(--color-gold-bright)]">I pay for every token.</span>
         </h2>
-        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[#cfd9ea] sm:text-base">
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[var(--color-ink-soft)] sm:text-base">
           The subscriptions are on me. They run dry every half a week, and then the machine stops unless there
           are credits on the account. I need help buying that overage so I can do more, teach more, and create
           more. That only works if what I put out is worth your time. If this was, fuel the next one.
         </p>
         {target ? (
-          <p className="mt-2 text-sm font-semibold text-[#fdf8ea]">
+          <p className="mt-2 text-sm font-semibold text-[var(--color-cream)]">
             {subs ? `${subs} a month in subscriptions, paid by me. ` : ""}
             {target} a month in overage credits is the ask
             {output.posts30 !== null && output.posts30 > 0 ? (
@@ -63,19 +61,19 @@ export async function FuelAsk({ className = "" }: { className?: string }) {
             <Link
               key={t.slug}
               href={`/fuel?tier=${t.slug}#fuel`}
-              className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-gold-bright)] px-5 py-3 font-display text-lg font-black tabular-nums text-[#071126] transition hover:brightness-105"
+              className="btn-accent inline-flex min-h-12 items-center justify-center rounded-lg px-5 py-3 font-display text-lg font-black tabular-nums"
             >
               {usdWhole(t.amountCents)}
             </Link>
           ))}
           <Link
             href="/fuel"
-            className="inline-flex min-h-12 items-center justify-center rounded-lg border border-white/25 px-5 py-3 text-sm font-bold text-[#fdf8ea] transition hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)]"
+            className="btn-ghost inline-flex min-h-12 items-center justify-center rounded-lg px-5 py-3 text-sm font-bold"
           >
             See what it buys →
           </Link>
         </div>
-        <p className="mt-3 text-xs leading-relaxed text-[#a9b7d0]">
+        <p className="mt-3 text-xs leading-relaxed text-[var(--color-muted)]">
           Under {usdWhole(FUEL_TIME_FLOOR_CENTS)} fuels the machine and puts your name on the wall.{" "}
           {usdWhole(FUEL_TIME_FLOOR_CENTS)} and up buys my time: a question answered in public, a letter, an
           article on the topic you pick.

@@ -43,7 +43,7 @@ type Search = { filter?: string; route?: string };
 const statusCopy: Record<IntakeItem["public_status"], { label: string; cls: string }> = {
   received: {
     label: "Received",
-    cls: "border-[var(--color-blue)] bg-[var(--color-blue-soft)] text-[var(--color-blue)]",
+    cls: "border-[var(--color-blue)] bg-[var(--color-blue-soft)] text-[var(--color-blue-ink)]",
   },
   triage: {
     label: "Triage",
@@ -51,7 +51,7 @@ const statusCopy: Record<IntakeItem["public_status"], { label: string; cls: stri
   },
   needs_verification: {
     label: "Needs verification",
-    cls: "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent)]",
+    cls: "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent-ink)]",
   },
   verified: {
     label: "Verified",
@@ -259,9 +259,7 @@ export default async function IntakeLedgerPage({
       <section className="border-b border-[var(--color-line)] bg-[var(--color-paper)]">
         <div className="rrn-section grid gap-6 lg:grid-cols-[1fr_0.85fr] lg:items-end">
           <div>
-            <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-success)]">
-              Public intake ledger
-            </p>
+            <p className="eyebrow">Public intake ledger</p>
             <h1 className="rrn-section-title mt-2">
               Every tip should move the record.
             </h1>
@@ -276,7 +274,7 @@ export default async function IntakeLedgerPage({
               carry the most weight. Voice recordings are accepted too —{" "}
               <Link
                 href="/tell-your-story"
-                className="font-bold text-[var(--color-navy)] hover:underline"
+                className="font-bold text-[var(--color-ink)] hover:underline"
               >
                 record yours here
               </Link>
@@ -285,13 +283,13 @@ export default async function IntakeLedgerPage({
             <div className="rrn-tap-row mt-5">
               <Link
                 href="/submit"
-                className="rrn-tap rounded-lg bg-[var(--color-accent)] px-4 py-3 text-sm font-bold text-white transition hover:bg-[var(--color-accent-strong)]"
+                className="rrn-tap btn-accent inline-flex items-center px-4 py-3 text-sm"
               >
                 Submit another lead
               </Link>
               <Link
                 href="/case/nexus"
-                className="rrn-tap rounded-lg border border-[var(--color-line)] px-4 py-3 text-sm font-bold text-[var(--color-ink)] transition hover:border-[var(--color-accent)]"
+                className="rrn-tap btn-ghost inline-flex items-center px-4 py-3 text-sm"
               >
                 Open case nexus
               </Link>
@@ -310,16 +308,14 @@ export default async function IntakeLedgerPage({
       </section>
 
       <section className="rrn-section">
-        <section className="mb-5 border border-[#203a64] bg-[#071126] p-4 text-[#fdf8ea] shadow-sm">
+        <section className="mb-5 border border-[var(--color-line-soft)] bg-[var(--color-surface)] p-4 text-[var(--color-cream)] shadow-sm">
           <div className="grid gap-4 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
-                Public action lanes
-              </p>
-              <h2 className="mt-1 font-sans text-2xl font-black text-[#fdf8ea]">
+              <p className="eyebrow">Public action lanes</p>
+              <h2 className="mt-1 font-display text-2xl font-black text-[var(--color-cream)]">
                 A receipt is not enough. It has to move.
               </h2>
-              <p className="mt-2 text-sm font-semibold leading-6 text-[#cfd9ea]">
+              <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
                 Each public-safe item gets a lane so people can see what kind of
                 help is needed next without exposing private details.
               </p>
@@ -358,8 +354,8 @@ export default async function IntakeLedgerPage({
             </div>
           </div>
           {routeFilter ? (
-            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border border-white/10 bg-white/[0.055] p-3">
-              <p className="text-sm font-bold leading-6 text-[#cfd9ea]">
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border border-[var(--color-cream)]/10 bg-[var(--color-cream)]/[0.055] p-3">
+              <p className="text-sm font-bold leading-6 text-[var(--color-ink-soft)]">
                 Showing the {publicRouteCopy[routeFilter].label.toLowerCase()} lane.
               </p>
               <Link
@@ -380,8 +376,8 @@ export default async function IntakeLedgerPage({
               className={[
                 "rrn-tap whitespace-nowrap rounded-full border px-4 py-2 text-sm font-bold transition",
                 filter === option.value || (filter === "all" && option.value === "all")
-                  ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-white"
-                  : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink)] hover:border-[var(--color-accent)]",
+                  ? "border-[var(--color-gold)] bg-[var(--color-gold)] text-[var(--color-navy)]"
+                  : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink)] hover:border-[var(--color-gold)]",
               ].join(" ")}
             >
               {option.label}
@@ -390,7 +386,7 @@ export default async function IntakeLedgerPage({
         </nav>
 
         {error ? (
-          <p className="mt-5 rounded-lg border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-3 text-sm font-bold text-[var(--color-accent)]">
+          <p className="mt-5 rounded-lg border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-3 text-sm font-bold text-[var(--color-accent-ink)]">
             {error}
           </p>
         ) : null}
@@ -420,9 +416,7 @@ export default async function IntakeLedgerPage({
 
           <aside className="space-y-3 lg:sticky lg:top-24 lg:self-start">
             <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
-              <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-success)]">
-                How this works
-              </p>
+              <p className="eyebrow">How this works</p>
               <ol className="mt-3 space-y-3 text-sm leading-relaxed text-[var(--color-ink-soft)]">
                 <li>
                   <strong className="text-[var(--color-ink)]">1. Received:</strong>{" "}
@@ -439,8 +433,8 @@ export default async function IntakeLedgerPage({
                 </li>
               </ol>
             </div>
-            <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-4">
-              <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-accent)]">
+            <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+              <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-accent-ink)]">
                 Privacy line
               </p>
               <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
@@ -482,7 +476,7 @@ function IntakeCard({
               {status.label}
             </span>
           </div>
-          <h2 className="mt-3 font-display text-2xl font-bold leading-tight tracking-normal">
+          <h2 className="mt-3 font-display text-2xl font-bold leading-tight tracking-normal text-[var(--color-ink)]">
             {item.subject || humanize(item.category)}
           </h2>
           <p className="mt-1 text-xs font-bold uppercase tracking-normal text-[var(--color-muted)]">
@@ -507,7 +501,7 @@ function IntakeCard({
             <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-muted)]">
               Moving toward
             </p>
-            <h3 className="mt-1 font-sans text-lg font-black">
+            <h3 className="mt-1 font-display text-lg font-black text-[var(--color-ink)]">
               {route.label}
             </h3>
           </div>
@@ -576,13 +570,13 @@ function LaneStat({
         "border p-3 transition",
         active
           ? "border-[var(--color-gold-bright)] bg-[var(--color-gold-bright)]/15"
-          : "border-white/10 bg-white/[0.055] hover:border-[var(--color-gold-bright)]/50 hover:bg-[var(--color-gold-bright)]/10",
+          : "border-[var(--color-cream)]/10 bg-[var(--color-cream)]/[0.055] hover:border-[var(--color-gold-bright)]/50 hover:bg-[var(--color-gold-bright)]/10",
       ].join(" ")}
     >
-      <p className="font-sans text-2xl font-black text-[#fdf8ea]">
+      <p className="display text-2xl tabular-nums text-[var(--color-cream)]">
         {value}
       </p>
-      <p className="mt-1 text-[10px] font-black uppercase tracking-[0.14em] text-[#cfd9ea]">
+      <p className="mt-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--color-ink-soft)]">
         {label}
       </p>
     </Link>
@@ -591,8 +585,8 @@ function LaneStat({
 
 function routeBadgeClass(urgency: IntakeRoutePlan["urgency"]) {
   const base = "px-2 py-1 text-[10px] font-black uppercase tracking-normal";
-  if (urgency === "hot") return `${base} bg-[var(--color-accent)] text-white`;
-  if (urgency === "next") return `${base} bg-[var(--color-support)] text-[#1a1410]`;
+  if (urgency === "hot") return `${base} bg-[var(--color-accent)] text-[var(--color-cream)]`;
+  if (urgency === "next") return `${base} bg-[var(--color-support)] text-[var(--color-navy)]`;
   return `${base} bg-[var(--color-surface-2)] text-[var(--color-ink-soft)]`;
 }
 
@@ -614,7 +608,15 @@ function Stat({
           : "border-[var(--color-line)] bg-[var(--color-surface)]",
       ].join(" ")}
     >
-      <p className="font-mono text-3xl font-black leading-none">{value.toLocaleString()}</p>
+      <p
+        className={[
+          "display text-3xl leading-none tabular-nums",
+          tone === "red" ? "text-[var(--color-accent-ink)]" : "text-[var(--color-gold)]",
+        ].join(" ")}
+        data-count={value > 0 ? value : undefined}
+      >
+        {value.toLocaleString()}
+      </p>
       <p className="mt-1 text-[11px] font-bold uppercase tracking-normal text-[var(--color-muted)]">
         {label}
       </p>

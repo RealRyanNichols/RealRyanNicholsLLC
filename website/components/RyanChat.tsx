@@ -223,7 +223,7 @@ function Thread({
         ) : (
           <div key={i} className="flex flex-col items-start">
             {m.live ? (
-              <span className="mb-1 ml-1 text-[10px] font-black uppercase tracking-wider text-emerald-600">
+              <span className="mb-1 ml-1 text-[10px] font-black uppercase tracking-wider text-[var(--color-success)]">
                 Ryan · live
               </span>
             ) : null}
@@ -368,8 +368,8 @@ function Composer({
           className={[
             "grid h-11 w-11 shrink-0 place-items-center rounded-xl border transition",
             talking
-              ? "border-[var(--color-navy)] bg-[var(--color-navy)] text-[#fdf8ea] animate-pulse"
-              : "border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink-soft)] hover:border-[var(--color-navy)] hover:text-[var(--color-navy)]",
+              ? "border-[var(--color-gold)] bg-[var(--color-gold)] text-[var(--color-navy)] animate-pulse"
+              : "border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink-soft)] hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]",
           ].join(" ")}
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
@@ -405,7 +405,7 @@ function ContactRow({
   const [email, setEmail] = useState("");
   if (sent) {
     return (
-      <p className="mt-2 text-[11px] font-semibold text-emerald-600">
+      <p className="mt-2 text-[11px] font-semibold text-[var(--color-success)]">
         Got it — Ryan will reach out to you personally.
       </p>
     );
@@ -428,7 +428,7 @@ function ContactRow({
       />
       <button
         type="submit"
-        className="rounded-lg bg-[var(--color-ink)] px-3 py-1.5 text-xs font-bold text-[var(--color-paper)]"
+        className="rounded-lg bg-[var(--color-ink)] px-3 py-1.5 text-xs font-bold text-[var(--color-cream)]"
       >
         Send to Ryan
       </button>
@@ -437,7 +437,7 @@ function ContactRow({
     <button
       type="button"
       onClick={() => setOpen(true)}
-      className="mt-2 text-[11px] font-semibold text-[var(--color-accent)] hover:underline"
+      className="mt-2 text-[11px] font-semibold text-[var(--color-accent-ink)] hover:underline"
     >
       Want a personal reply? Leave your email →
     </button>
@@ -446,8 +446,8 @@ function ContactRow({
 
 function LiveBanner() {
   return (
-    <div className="mb-2 flex items-center gap-2 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-3 py-2 text-xs font-bold text-emerald-700">
-      <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-500" />
+    <div className="mb-2 flex items-center gap-2 rounded-lg border border-[var(--color-success)]/40 bg-[var(--color-success-soft)] px-3 py-2 text-xs font-bold text-[var(--color-success)]">
+      <span className="h-2 w-2 animate-pulse rounded-full bg-[var(--color-success)]" />
       You&apos;re talking to Ryan live.
     </div>
   );
@@ -466,7 +466,7 @@ function OfferRow() {
           key={o.href}
           href={o.href}
           onClick={() => trackEvent("chat_offer_click", { offer: o.href })}
-          className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1.5 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1.5 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)]"
         >
           {o.label}
         </a>
@@ -565,7 +565,7 @@ export function RyanChat({
           <div className="flex items-center gap-3">
             <Avatar />
             <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-navy)]">
+              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-ink)]">
                 Talk to me — a direct line
               </p>
               <h2 className="font-display text-xl font-bold tracking-tight text-[var(--color-ink)]">
@@ -588,7 +588,7 @@ export function RyanChat({
                   key={s}
                   type="button"
                   onClick={() => send(s)}
-                  className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1.5 text-xs font-semibold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                  className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1.5 text-xs font-semibold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)]"
                 >
                   {s}
                 </button>
@@ -623,15 +623,15 @@ export function RyanChat({
           aria-label="Talk to Ryan"
           className="fixed inset-x-2 bottom-2 z-50 flex h-[82dvh] flex-col overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-paper)] shadow-2xl lg:inset-x-auto lg:bottom-5 lg:right-5 lg:h-[564px] lg:w-[384px]"
         >
-          <div className="flex items-center justify-between gap-3 border-b border-[var(--color-line)] bg-[var(--color-ink)] px-4 py-3 text-[var(--color-paper)]">
+          <div className="flex items-center justify-between gap-3 border-b border-[var(--color-line)] bg-[var(--color-ink)] px-4 py-3 text-[var(--color-cream)]">
             <div className="flex items-center gap-2.5">
               <span className="relative">
                 <Avatar size="h-9 w-9" />
-                <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-[var(--color-ink)] bg-emerald-400" />
+                <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-[var(--color-ink)] bg-[var(--color-success)]" />
               </span>
               <div>
                 <p className="text-sm font-bold leading-tight">Talk to Ryan</p>
-                <p className="text-[11px] leading-tight text-[var(--color-paper)]/70">
+                <p className="text-[11px] leading-tight text-[var(--color-cream)]/70">
                   A direct line · he reads every one
                 </p>
               </div>
@@ -640,7 +640,7 @@ export function RyanChat({
               type="button"
               onClick={() => setOpen(false)}
               aria-label="Close chat"
-              className="rounded-full p-1 text-[var(--color-paper)]/80 transition hover:bg-white/10 hover:text-[var(--color-paper)]"
+              className="rounded-full p-1 text-[var(--color-cream)]/80 transition hover:bg-[var(--color-cream)]/10 hover:text-[var(--color-cream)]"
             >
               <CloseGlyph />
             </button>
@@ -656,7 +656,7 @@ export function RyanChat({
                     key={s}
                     type="button"
                     onClick={() => send(s)}
-                    className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-left text-xs font-semibold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                    className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-left text-xs font-semibold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)]"
                   >
                     {s}
                   </button>
@@ -678,7 +678,7 @@ export function RyanChat({
           {/* The teaser bubble is desktop-only: on a phone it stacked on top of
               the launcher and the support bar and covered the first post. */}
           {teaser ? (
-            <div className="relative hidden max-w-[280px] rounded-2xl rounded-br-sm border border-[var(--color-gold-bright)]/50 bg-[#0b1b34] px-4 py-3 shadow-2xl lg:block">
+            <div className="relative hidden max-w-[280px] rounded-2xl rounded-br-sm border border-[var(--color-gold-bright)]/50 bg-[var(--color-surface)] px-4 py-3 shadow-2xl lg:block">
               <button
                 type="button"
                 onClick={() => {
@@ -686,15 +686,15 @@ export function RyanChat({
                   markTeaserSeen();
                 }}
                 aria-label="Dismiss"
-                className="absolute -right-2 -top-2 grid h-6 w-6 place-items-center rounded-full border border-[var(--color-gold-bright)]/50 bg-[#0b1b34] text-sm text-[#cfd9ea] shadow"
+                className="absolute -right-2 -top-2 grid h-6 w-6 place-items-center rounded-full border border-[var(--color-gold-bright)]/50 bg-[var(--color-surface)] text-sm text-[var(--color-ink-soft)] shadow"
               >
                 ×
               </button>
               <button type="button" onClick={openChat} className="block text-left">
-                <p className="text-sm font-bold text-[#fdf8ea]">
+                <p className="text-sm font-bold text-[var(--color-cream)]">
                   Ask me anything. Out loud, if you want.
                 </p>
-                <p className="mt-0.5 text-xs text-[#cfd9ea]">
+                <p className="mt-0.5 text-xs text-[var(--color-ink-soft)]">
                   The case, the comeback, building your own platform — tap the
                   mic and just talk. I read every single one.
                 </p>
@@ -706,14 +706,14 @@ export function RyanChat({
             type="button"
             onClick={openChat}
             aria-label="Talk to Ryan"
-            className="flex items-center gap-2.5 rounded-full border border-[var(--color-gold-bright)]/50 bg-[#0b1b34] py-1.5 pl-1.5 pr-4 shadow-2xl transition hover:border-[var(--color-gold-bright)] lg:gap-3 lg:py-3 lg:pl-3 lg:pr-6"
+            className="flex items-center gap-2.5 rounded-full border border-[var(--color-gold-bright)]/50 bg-[var(--color-surface)] py-1.5 pl-1.5 pr-4 shadow-2xl transition hover:border-[var(--color-gold-bright)] lg:gap-3 lg:py-3 lg:pl-3 lg:pr-6"
           >
             <span className="relative">
               <Avatar size="h-10 w-10 lg:h-14 lg:w-14" />
-              <span className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full border-2 border-[#0b1b34] bg-emerald-400" />
+              <span className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full border-2 border-[var(--color-line-soft)] bg-[var(--color-success)]" />
             </span>
             <span className="text-left leading-tight">
-              <span className="block text-sm font-black text-[#fdf8ea] lg:text-lg">
+              <span className="block text-sm font-black text-[var(--color-cream)] lg:text-lg">
                 Talk to Ryan
               </span>
               {/* One line on phones; the second line is desktop-only. */}

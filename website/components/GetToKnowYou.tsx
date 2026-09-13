@@ -76,7 +76,7 @@ const STEPS: Step[] = [
 export function GetToKnowYou({
   // Default keeps the historical look everywhere; the homepage passes a
   // quieter shell so the sidebar's money surfaces stand out instead.
-  className = "rounded-2xl border border-[var(--color-accent)]/40 bg-[var(--color-paper)] p-5 shadow-sm",
+  className = "rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.4)]",
   // Rotates daily from lib/modules.ts so the same reader is not greeted
   // with the identical line every visit.
   kicker = "Let me get to know you",
@@ -150,7 +150,7 @@ export function GetToKnowYou({
   return (
     <section className={className}>
       <div className="flex items-start justify-between gap-3">
-        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-accent)]">
+        <p className="eyebrow">
           {done ? "Thanks for that" : kicker}
         </p>
         {!done ? (
@@ -185,7 +185,7 @@ export function GetToKnowYou({
                   key={o}
                   type="button"
                   onClick={() => advance(step.key, o)}
-                  className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1.5 text-xs font-semibold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                  className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-1.5 text-xs font-semibold text-[var(--color-ink-soft)] transition hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
                 >
                   {o}
                 </button>
@@ -204,11 +204,11 @@ export function GetToKnowYou({
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 placeholder={step.input === "email" ? "you@email.com" : "First name"}
-                className="min-h-10 flex-1 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm text-[var(--color-ink)] outline-none focus:border-[var(--color-accent)]"
+                className="min-h-10 flex-1 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm text-[var(--color-ink)] outline-none focus:border-[var(--color-accent)]"
               />
               <button
                 type="submit"
-                className="rounded-lg bg-[var(--color-accent)] px-3.5 py-2 text-sm font-bold text-[var(--color-ink)] transition hover:brightness-105"
+                className="btn-accent rounded-lg px-3.5 py-2 text-sm"
               >
                 →
               </button>

@@ -51,10 +51,8 @@ export function J6DefendantsView({
       <div className="mb-5 overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)]">
         <div className="grid gap-px bg-[var(--color-line)] md:grid-cols-[1fr_0.8fr]">
           <div className="bg-[var(--color-surface)] p-5">
-            <p className="text-xs uppercase tracking-wider text-[var(--color-navy)] font-bold">
-              Anti-Weaponization Case Builder
-            </p>
-            <h2 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight">
+            <p className="eyebrow">Anti-Weaponization Case Builder</p>
+            <h2 className="mt-1 font-display text-xl sm:text-2xl font-bold tracking-tight">
               {heading}
             </h2>
             <p className="mt-2 text-sm text-[var(--color-ink-soft)] leading-relaxed max-w-2xl">
@@ -94,8 +92,8 @@ export function J6DefendantsView({
               className={[
                 "inline-flex min-h-11 items-center rounded-full px-3 py-1.5 text-xs font-bold border-2 transition sm:min-h-0",
                 active
-                  ? "border-[var(--color-navy)] bg-[var(--color-navy)] text-[var(--color-paper)]"
-                  : "border-[var(--color-line)] hover:border-[var(--color-navy)]",
+                  ? "border-[var(--color-gold)] bg-[var(--color-gold)] text-[var(--color-navy)]"
+                  : "border-[var(--color-line)] hover:border-[var(--color-gold)]",
               ].join(" ")}
             >
               {label}
@@ -134,12 +132,24 @@ export function J6DefendantsView({
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {people.map((p) => {
+            // Each badge carries its own ink: gold and green take navy type,
+            // blue takes cream. A cream label on a gold or green chip is
+            // unreadable.
             const badge =
               p.claim_status === "verified"
-                ? { label: "Verified", bg: "var(--color-success)" }
+                ? {
+                    label: "Verified",
+                    cls: "bg-[var(--color-success)] text-[var(--color-navy)]",
+                  }
                 : p.claim_status === "pending"
-                  ? { label: "Claim pending", bg: "var(--color-blue)" }
-                  : { label: "Ready to claim", bg: "var(--color-support)" };
+                  ? {
+                      label: "Claim pending",
+                      cls: "bg-[var(--color-blue)] text-[var(--color-cream)]",
+                    }
+                  : {
+                      label: "Ready to claim",
+                      cls: "bg-[var(--color-gold)] text-[var(--color-navy)]",
+                    };
             return (
               <Link
                 key={p.id}
@@ -150,12 +160,11 @@ export function J6DefendantsView({
                 <J6ProfileImage person={p} variant="card" />
                 <div className="flex flex-1 flex-col p-4">
                   <div className="flex items-start justify-between gap-2">
-                    <h3 className="text-lg font-black leading-tight tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-blue)]">
+                    <h3 className="text-lg font-black leading-tight tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-blue-ink)]">
                       <Highlight text={p.name} q={needle} />
                     </h3>
                     <span
-                      className="whitespace-nowrap rounded-md px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--color-paper)]"
-                      style={{ background: badge.bg }}
+                      className={`whitespace-nowrap rounded-md px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${badge.cls}`}
                     >
                       {badge.label}
                     </span>
@@ -173,7 +182,7 @@ export function J6DefendantsView({
                       {p.views_count.toLocaleString()} views
                     </span>
                   </div>
-                  <span className="mt-auto pt-4 text-sm font-black text-[var(--color-blue)]">
+                  <span className="mt-auto pt-4 text-sm font-black text-[var(--color-blue-ink)]">
                     View free public profile →
                   </span>
                 </div>

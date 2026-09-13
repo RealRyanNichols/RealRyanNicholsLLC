@@ -20,7 +20,7 @@ export function VerseSidebar({
 
   return (
     <aside className={className}>
-      <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] mb-2">
+      <p className="eyebrow mb-2">
         {kicker}
       </p>
       <blockquote className="text-lg leading-relaxed text-[var(--color-ink)] font-medium">

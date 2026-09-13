@@ -28,13 +28,11 @@ export function BookShare({
   };
 
   const btn =
-    "inline-flex min-h-10 items-center justify-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-xs font-black uppercase tracking-wide text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]";
+    "inline-flex min-h-10 items-center justify-center gap-1.5 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-xs font-black uppercase tracking-wide text-[var(--color-ink-soft)] transition hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]";
 
   return (
     <div className={["flex flex-wrap items-center gap-2", className].join(" ")}>
-      <span className="text-xs font-black uppercase tracking-wider text-[var(--color-muted)]">
-        Spread it
-      </span>
+      <span className="eyebrow">Spread it</span>
       <a href={xUrl} target="_blank" rel="noopener noreferrer" className={btn}>
         Share on X
       </a>

@@ -57,7 +57,7 @@ export default async function UserProfilePage({
         </Link>
       </nav>
 
-      <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 sm:p-8">
+      <div className="panel p-6 sm:p-8" data-reveal>
         <div className="flex flex-col sm:flex-row items-start gap-5">
           {profile.avatar_url ? (
             <Image
@@ -65,7 +65,7 @@ export default async function UserProfilePage({
               alt={profile.display_name ?? `@${profile.username}`}
               width={120}
               height={120}
-              className="h-24 w-24 rounded-full object-cover flex-shrink-0 ring-2 ring-[var(--color-line)]"
+              className="h-24 w-24 rounded-full object-cover flex-shrink-0 ring-2 ring-[var(--color-gold)]"
               unoptimized={profile.avatar_url.startsWith("http")}
             />
           ) : (
@@ -84,14 +84,14 @@ export default async function UserProfilePage({
               {verified ? (
                 <span
                   title="Verified"
-                  className="inline-flex items-center gap-1 rounded-full bg-emerald-900/40 border border-emerald-700 px-2 py-0.5 text-xs font-bold text-emerald-300"
+                  className="inline-flex items-center gap-1 rounded-full bg-[var(--color-success-soft)] border border-[var(--color-success)]/40 px-2 py-0.5 text-xs font-bold text-[var(--color-success)]"
                 >
                   ✓ Verified
                 </span>
               ) : isPending ? (
                 <span
                   title="Pending admin review"
-                  className="inline-flex items-center gap-1 rounded-full bg-amber-900/30 border border-amber-700 px-2 py-0.5 text-xs font-semibold text-amber-300"
+                  className="inline-flex items-center gap-1 rounded-full bg-[var(--color-support-soft)] border border-[var(--color-tag-procedural)]/50 px-2 py-0.5 text-xs font-semibold text-[var(--color-tag-procedural)]"
                 >
                   Pending review
                 </span>

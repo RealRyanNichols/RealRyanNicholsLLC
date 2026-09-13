@@ -94,7 +94,7 @@ export function FloatingShareBar({
             onClick={() => onShare(p.name)}
             aria-label={`Share on ${p.name}`}
             title={`Share on ${p.name}`}
-            className={`inline-flex ${cls} items-center justify-center rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] font-bold text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] hover:scale-110 transition`}
+            className={`inline-flex ${cls} items-center justify-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface-2)] font-bold text-[var(--color-ink)] hover:border-[var(--color-gold)] hover:text-[var(--color-gold)] hover:scale-110 transition`}
           >
             <span aria-hidden>{p.icon}</span>
           </a>
@@ -106,8 +106,8 @@ export function FloatingShareBar({
           title="Copy link"
           className={`inline-flex ${cls} items-center justify-center rounded-full border transition hover:scale-110 ${
             copied
-              ? "border-[var(--color-success)] bg-[var(--color-success)] text-[var(--color-paper)]"
-              : "border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+              ? "border-[var(--color-success)] bg-[var(--color-success)] text-[var(--color-navy)]"
+              : "border-[var(--color-line)] bg-[var(--color-surface-2)] text-[var(--color-ink)] hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
           }`}
         >
           <span aria-hidden>{copied ? "✓" : "🔗"}</span>
@@ -118,7 +118,7 @@ export function FloatingShareBar({
 
   const countPill = (
     <span
-      className={`inline-flex items-center gap-1 rounded-full bg-[var(--color-accent)] px-2 py-0.5 text-[11px] font-extrabold tabular-nums text-[var(--color-paper)] ${
+      className={`inline-flex items-center gap-1 rounded-full bg-[var(--color-accent)] px-2 py-0.5 text-[11px] font-extrabold tabular-nums text-[var(--color-cream)] ${
         popped ? "animate-share-pop" : ""
       }`}
     >

@@ -67,11 +67,12 @@ export function BookDashboard() {
   return (
     <div className="grid gap-4 lg:grid-cols-2 lg:items-stretch">
       {/* Sign-up form */}
-      <div className="rounded-xl border border-white/10 bg-white/[0.06] p-5 sm:p-6">
-        <p className="text-sm font-black uppercase tracking-[0.16em] text-[var(--color-gold-bright)]">
-          Reserve your spot
-        </p>
-        <p className="mb-3 mt-1 font-display text-lg font-black leading-tight text-[#fdf8ea]">
+      <div
+        className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.4)] sm:p-6"
+        data-reveal
+      >
+        <p className="eyebrow">Reserve your spot</p>
+        <p className="mb-3 mt-1 font-display text-lg font-black leading-tight text-[var(--color-cream)]">
           Join free — the opening chapter lands in your inbox first.
         </p>
         <BookWaitlist
@@ -85,7 +86,11 @@ export function BookDashboard() {
       </div>
 
       {/* Live counter dashboard */}
-      <div className="rounded-xl border border-white/10 bg-white/[0.06] p-5 sm:p-6">
+      <div
+        className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.4)] sm:p-6"
+        data-reveal
+        style={{ "--d": 1 } as React.CSSProperties}
+      >
         <div className="flex items-center gap-2">
           <span className="relative flex h-2.5 w-2.5">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-live)] opacity-75" />
@@ -95,42 +100,42 @@ export function BookDashboard() {
             On the list right now
           </p>
         </div>
-        <p className="mt-2 font-display text-6xl font-black leading-none tracking-tight tabular-nums text-[#fdf8ea] sm:text-7xl">
+        <p className="display mt-2 text-6xl tabular-nums text-[var(--color-gold)] sm:text-7xl">
           {count === null ? "—" : display.toLocaleString()}
         </p>
-        <p className="mt-1 text-sm font-semibold text-[#cfd9ea]">
+        <p className="mt-1 text-sm font-semibold text-[var(--color-ink-soft)]">
           {total === 0 ? "Be the very first to join." : "readers and counting."}
         </p>
 
         <div className="mt-5">
-          <div className="flex items-baseline justify-between text-xs font-bold text-[#cfd9ea]">
+          <div className="flex items-baseline justify-between text-xs font-bold text-[var(--color-ink-soft)]">
             <span>Founding readers</span>
             <span className="tabular-nums">
               {total.toLocaleString()} / {GOAL.toLocaleString()}
             </span>
           </div>
-          <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-white/10">
+          <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-[var(--color-line-soft)]">
             <div
-              className="h-full rounded-full bg-[var(--color-live)] transition-all duration-700"
+              className="h-full rounded-full bg-[var(--color-gold)] transition-all duration-700"
               style={{ width: `${Math.max(total > 0 ? 2 : 0, pct)}%` }}
             />
           </div>
         </div>
 
         <div className="mt-5 grid grid-cols-2 gap-2">
-          <div className="rounded-md border border-white/10 bg-white/[0.05] p-3">
-            <p className="font-display text-2xl font-black tabular-nums text-[#fdf8ea]">
+          <div className="rounded-md border border-[var(--color-line-soft)] bg-[var(--color-surface-2)] p-3">
+            <p className="display text-2xl tabular-nums text-[var(--color-gold)]">
               {today.toLocaleString()}
             </p>
-            <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#d8c89e]">
+            <p className="mt-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--color-muted)]">
               Joined today
             </p>
           </div>
-          <div className="rounded-md border border-white/10 bg-white/[0.05] p-3">
-            <p className="font-display text-2xl font-black tabular-nums text-[#fdf8ea]">
+          <div className="rounded-md border border-[var(--color-line-soft)] bg-[var(--color-surface-2)] p-3">
+            <p className="display text-2xl tabular-nums text-[var(--color-gold)]">
               {spotsLeft.toLocaleString()}
             </p>
-            <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#d8c89e]">
+            <p className="mt-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--color-muted)]">
               Founding spots left
             </p>
           </div>

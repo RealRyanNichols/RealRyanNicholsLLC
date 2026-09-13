@@ -20,7 +20,7 @@ export function PostMain({ post }: { post: Post }) {
         ) : directVideoUrl ? (
           <TrackedVideo src={directVideoUrl} title={post.title ?? undefined} />
         ) : (
-          <div className="aspect-video w-full rounded-lg bg-black/90 flex items-center justify-center text-white text-sm">
+          <div className="aspect-video w-full rounded-lg bg-black/90 flex items-center justify-center text-[var(--color-cream)] text-sm">
             {post.mux_status === "errored"
               ? "Video failed to process."
               : "Video is still processing. Check back in a minute."}
@@ -39,14 +39,16 @@ export function PostMain({ post }: { post: Post }) {
     const media = post.media ?? [];
     return (
       <>
-        <div className="space-y-3">
+        {/* The art, framed: a navy panel with a gold hairline and a soft
+            black shadow, the way the theater hangs a photo. */}
+        <div className="panel space-y-3 p-2 sm:p-3">
           {media.map((m) => (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               key={m.url}
               src={m.url}
               alt={m.alt ?? ""}
-              className="w-full rounded-lg border border-[var(--color-line)]"
+              className="w-full rounded-xl"
               width={m.width}
               height={m.height}
             />

@@ -264,7 +264,7 @@ export default async function AdminHomePage() {
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-7">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+      <p className="text-xs uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
         Admin
       </p>
       <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">
@@ -291,7 +291,7 @@ export default async function AdminHomePage() {
                 href={row.href}
                 className="group flex items-center gap-4 rounded-md border border-[var(--color-accent)]/60 bg-[var(--color-accent)]/[0.07] px-4 py-3.5 transition hover:border-[var(--color-accent)] hover:bg-[var(--color-accent)]/15"
               >
-                <span className="min-w-[3.25rem] shrink-0 text-right text-2xl font-bold tabular-nums tracking-tight text-[var(--color-accent)]">
+                <span className="min-w-[3.25rem] shrink-0 text-right text-2xl font-bold tabular-nums tracking-tight text-[var(--color-accent-ink)]">
                   {row.count}
                 </span>
                 <span className="min-w-0 flex-1">
@@ -304,7 +304,7 @@ export default async function AdminHomePage() {
                 </span>
                 <span
                   aria-hidden
-                  className="shrink-0 text-[var(--color-muted)] transition group-hover:translate-x-0.5 group-hover:text-[var(--color-accent)]"
+                  className="shrink-0 text-[var(--color-muted)] transition group-hover:translate-x-0.5 group-hover:text-[var(--color-accent-ink)]"
                 >
                   →
                 </span>
@@ -347,7 +347,7 @@ export default async function AdminHomePage() {
             <h2 className="mt-0.5 font-display text-xl font-bold tracking-tight">
               Pending verification
               {(pendingProfiles ?? 0) > 0 ? (
-                <span className="ml-2 inline-block rounded-full bg-[var(--color-navy)] px-2 py-0.5 align-middle text-xs font-bold text-[#fdf8ea]">
+                <span className="ml-2 inline-block rounded-full bg-[var(--color-support-soft)] px-2 py-0.5 align-middle text-xs font-bold text-[var(--color-gold)]">
                   {pendingProfiles}
                 </span>
               ) : null}
@@ -355,7 +355,7 @@ export default async function AdminHomePage() {
           </div>
           <Link
             href="/admin/users?filter=pending"
-            className="text-xs font-semibold text-[var(--color-navy)] hover:underline"
+            className="text-xs font-semibold text-[var(--color-blue-ink)] hover:underline"
           >
             Open queue →
           </Link>
@@ -384,7 +384,7 @@ export default async function AdminHomePage() {
                       "grid h-10 w-10 shrink-0 place-items-center rounded-full text-sm font-bold",
                       ghost
                         ? "border border-dashed border-[var(--color-muted)] text-[var(--color-muted)]"
-                        : "bg-[var(--color-blue-soft)] text-[var(--color-navy)]",
+                        : "bg-[var(--color-blue-soft)] text-[var(--color-blue-ink)]",
                     ].join(" ")}
                     aria-hidden
                   >
@@ -441,12 +441,12 @@ export default async function AdminHomePage() {
           <h2 className="text-lg font-bold tracking-tight">
             On the site right now
             {(activeNow ?? 0) > 0 ? (
-              <span className="ml-2 inline-block h-2.5 w-2.5 rounded-full bg-green-500 animate-pulse" />
+              <span className="ml-2 inline-block h-2.5 w-2.5 rounded-full bg-[var(--color-success)] animate-pulse" />
             ) : null}
           </h2>
           <Link
             href="/admin/analytics"
-            className="text-xs font-semibold text-[var(--color-accent)] hover:underline"
+            className="text-xs font-semibold text-[var(--color-accent-ink)] hover:underline"
           >
             Full analytics →
           </Link>
@@ -484,7 +484,7 @@ export default async function AdminHomePage() {
                   </p>
                 </div>
                 {v.user_id ? (
-                  <span className="shrink-0 rounded-full bg-[var(--color-navy)] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#fdf8ea]">
+                  <span className="shrink-0 rounded-full bg-[var(--color-blue-soft)] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[var(--color-blue-ink)]">
                     Signed in
                   </span>
                 ) : (
@@ -516,15 +516,15 @@ function Pulse({
   return (
     <Link
       href={href}
-      className="group inline-flex items-baseline gap-1.5 rounded-sm px-1 py-0.5 transition hover:bg-[var(--color-paper)]"
+      className="group inline-flex items-baseline gap-1.5 rounded-sm px-1 py-0.5 transition hover:bg-[var(--color-surface-2)]"
     >
       {live ? (
-        <span className="inline-block h-2 w-2 self-center rounded-full bg-green-500 animate-pulse" aria-hidden />
+        <span className="inline-block h-2 w-2 self-center rounded-full bg-[var(--color-success)] animate-pulse" aria-hidden />
       ) : null}
       <span className="text-lg font-bold tabular-nums tracking-tight text-[var(--color-ink)]">
         {n.toLocaleString()}
       </span>
-      <span className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)] transition group-hover:text-[var(--color-accent)]">
+      <span className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)] transition group-hover:text-[var(--color-accent-ink)]">
         {label}
       </span>
     </Link>
@@ -571,7 +571,7 @@ function humanizePath(path: string): string {
 // Flat palette dot per visitor — deterministic from the session id, so the
 // same person keeps the same color while you watch.
 const DOT_COLORS = [
-  "var(--color-navy)",
+  "var(--color-cream)",
   "var(--color-gold)",
   "var(--color-success)",
   "var(--color-tag-procedural)",

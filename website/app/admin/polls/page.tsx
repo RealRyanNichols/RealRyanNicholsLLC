@@ -167,7 +167,7 @@ export default async function AdminPollsPage() {
       </header>
 
       <section className="mb-8 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
-        <h2 className="text-sm font-bold uppercase tracking-wider text-[var(--color-accent)]">
+        <h2 className="text-sm font-bold uppercase tracking-wider text-[var(--color-accent-ink)]">
           New poll
         </h2>
         <form action={createPoll} className="mt-3 space-y-3">
@@ -176,20 +176,20 @@ export default async function AdminPollsPage() {
             required
             maxLength={200}
             placeholder="The question. Make it one they have to answer."
-            className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm"
+            className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm"
           />
           <textarea
             name="options"
             required
             rows={4}
             placeholder={"One option per line. 2 to 6 options."}
-            className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm"
+            className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm"
           />
           <div className="flex items-center justify-between gap-3">
             <label className="flex items-center gap-2 text-sm text-[var(--color-ink-soft)]">
               <select
                 name="placement"
-                className="rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-2 py-1.5 text-sm"
+                className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-2 py-1.5 text-sm"
                 defaultValue="feed"
               >
                 <option value="feed">Homepage feed (replaces current)</option>
@@ -198,7 +198,7 @@ export default async function AdminPollsPage() {
             </label>
             <button
               type="submit"
-              className="rounded-lg bg-[var(--color-accent)] px-4 py-2 text-sm font-bold text-[var(--color-paper)]"
+              className="rounded-lg bg-[var(--color-accent)] px-4 py-2 text-sm font-bold text-[var(--color-cream)]"
             >
               Launch poll
             </button>
@@ -236,7 +236,7 @@ export default async function AdminPollsPage() {
                       {" · "}
                       {formatDistanceToNowStrict(new Date(p.created_at))} ago
                       {" · "}
-                      <span className={p.status === "open" ? "font-bold text-green-700" : "font-bold"}>
+                      <span className={p.status === "open" ? "font-bold text-[var(--color-success)]" : "font-bold"}>
                         {p.status}
                       </span>
                     </p>
@@ -254,7 +254,7 @@ export default async function AdminPollsPage() {
                       />
                       <button
                         type="submit"
-                        className="rounded-lg border border-[var(--color-line)] px-3 py-1.5 text-xs font-bold text-[var(--color-ink-soft)] hover:border-[var(--color-accent)]"
+                        className="rounded-lg border border-[var(--color-line)] px-3 py-1.5 text-xs font-bold text-[var(--color-ink)] hover:border-[var(--color-gold)]"
                       >
                         {p.status === "open" ? "Close" : "Reopen"}
                       </button>
@@ -296,7 +296,7 @@ export default async function AdminPollsPage() {
 
       {unlockRows.length > 0 ? (
         <section className="mt-8 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-[var(--color-accent)]">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-[var(--color-accent-ink)]">
             Latest unlock emails
           </h2>
           <ul className="mt-3 space-y-1.5">

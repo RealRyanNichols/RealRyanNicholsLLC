@@ -60,10 +60,8 @@ export default async function WitnessesPage() {
           ← J6 Case
         </Link>
       </nav>
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
-        Wall of Corroborators
-      </p>
-      <h1 className="mt-2 text-3xl sm:text-5xl font-bold tracking-tight leading-[1.05]">
+      <p className="eyebrow">Wall of Corroborators</p>
+      <h1 className="mt-2 font-display text-3xl sm:text-5xl font-bold tracking-tight leading-[1.05]">
         He is not alone.
       </h1>
       <p className="mt-4 text-base sm:text-lg text-[var(--color-ink-soft)] max-w-3xl leading-relaxed">
@@ -79,12 +77,14 @@ export default async function WitnessesPage() {
           n={corroborators.length + federalAcknowledgments.length}
           label="On the record"
           sub="Total corroborators"
+          d={0}
         />
-        <WitnessStat n={corroborators.length} label="Fellow detainees" sub="Signed statements" />
+        <WitnessStat n={corroborators.length} label="Fellow detainees" sub="Signed statements" d={1} />
         <WitnessStat
           n={federalAcknowledgments.length}
           label="Federal acknowledgments"
           sub="Officers & DC DOC"
+          d={2}
         />
       </section>
 
@@ -105,10 +105,10 @@ export default async function WitnessesPage() {
       {federalAcknowledgments.length > 0 ? (
         <section className="mt-12">
           <div className="border-l-2 border-[var(--color-accent)] pl-4 mb-5">
-            <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent)] font-bold">
+            <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
               Federal acknowledgment
             </p>
-            <h2 className="text-xl font-bold tracking-tight">
+            <h2 className="font-display text-xl font-bold tracking-tight">
               The IGP is broken — on the record
             </h2>
             <p className="text-sm text-[var(--color-ink-soft)] mt-1 max-w-2xl">
@@ -123,8 +123,8 @@ export default async function WitnessesPage() {
                 href={`/case/people/${p.slug}`}
                 className="block rounded-xl border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-5 hover:border-[var(--color-accent)] transition"
               >
-                <h3 className="text-lg font-bold tracking-tight">{p.name}</h3>
-                <p className="text-sm text-[var(--color-accent)] font-medium mt-0.5">
+                <h3 className="font-display text-lg font-bold tracking-tight">{p.name}</h3>
+                <p className="text-sm text-[var(--color-ink-soft)] font-medium mt-0.5">
                   {p.role}
                   {p.agency ? ` · ${p.agency}` : ""}
                 </p>
@@ -140,11 +140,11 @@ export default async function WitnessesPage() {
       ) : null}
 
       <section className="mt-12">
-        <div className="border-l-2 border-[var(--color-accent)] pl-4 mb-5">
-          <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent)] font-bold">
+        <div data-reveal className="border-l-2 border-[var(--color-gold)] pl-4 mb-5">
+          <p className="eyebrow">
             {corroborators.length} fellow January 6 detainees
           </p>
-          <h2 className="text-xl font-bold tracking-tight">
+          <h2 className="font-display text-xl font-bold tracking-tight">
             Co-defendants and pod-mates who went on the record
           </h2>
           <p className="text-sm text-[var(--color-ink-soft)] mt-1 max-w-2xl">
@@ -157,10 +157,10 @@ export default async function WitnessesPage() {
             <Link
               key={p.id}
               href={`/case/people/${p.slug}`}
-              className="block rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 hover:border-[var(--color-accent)] transition"
+              className="block rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 hover:border-[var(--color-gold)] transition"
             >
-              <h3 className="text-base font-bold tracking-tight">{p.name}</h3>
-              <p className="text-xs text-[var(--color-accent)] font-medium mt-0.5">
+              <h3 className="font-display text-base font-bold tracking-tight">{p.name}</h3>
+              <p className="text-xs text-[var(--color-muted)] font-medium mt-0.5">
                 {p.role}
               </p>
               {p.description ? (
@@ -174,7 +174,7 @@ export default async function WitnessesPage() {
       </section>
 
       <div className="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-ink-soft)]">
-        <Link href="/support" className="text-[var(--color-accent)] underline font-semibold">
+        <Link href="/support" className="text-[var(--color-gold)] underline font-semibold">
           Support Ryan&apos;s rebuild
         </Link>{" "}
         — every dollar funds keeping this record public.
@@ -183,11 +183,18 @@ export default async function WitnessesPage() {
   );
 }
 
-function WitnessStat({ n, label, sub }: { n: number; label: string; sub: string }) {
+function WitnessStat({ n, label, sub, d }: { n: number; label: string; sub: string; d: number }) {
   return (
-    <div className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4">
-      <div className="text-3xl sm:text-4xl font-bold tracking-tight leading-none text-[var(--color-accent)] font-display tabular-nums">
-        {n}
+    <div
+      data-reveal
+      style={{ "--d": d } as React.CSSProperties}
+      className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
+    >
+      <div
+        className="display text-3xl sm:text-4xl leading-none tabular-nums text-[var(--color-gold)]"
+        data-count={n > 0 ? n : undefined}
+      >
+        {n.toLocaleString("en-US")}
       </div>
       <div className="mt-2 text-sm font-bold text-[var(--color-ink)] leading-tight">{label}</div>
       <div className="text-[11px] uppercase tracking-wider text-[var(--color-muted)] mt-0.5">

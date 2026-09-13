@@ -147,13 +147,23 @@ export default async function SearchPage({
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 sm:py-10">
-      <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
+      <p className="eyebrow" data-reveal>
         Search
       </p>
-      <h1 className="mt-2 font-display text-3xl font-black tracking-tight sm:text-4xl">
+      <h1
+        className="mt-2 font-display text-3xl font-black tracking-tight sm:text-4xl"
+        data-reveal
+        style={{ "--d": 1 } as React.CSSProperties}
+      >
         Find anything in the record.
       </h1>
-      <p className="mt-2 max-w-2xl text-[var(--color-ink-soft)]">
+      <div
+        className="mt-4 h-[3px] w-[4.5rem] bg-[var(--color-gold)]"
+        aria-hidden
+        data-reveal
+        style={{ "--d": 2 } as React.CSSProperties}
+      />
+      <p className="mt-3 max-w-2xl text-[var(--color-ink-soft)]">
         Every article, post, and video, and the case files — searchable by
         keyword, person, court term, or topic. Type a name, a charge, an
         agency, a date.
@@ -169,7 +179,7 @@ export default async function SearchPage({
           <Link
             key={t}
             href={`/search?q=${encodeURIComponent(t)}`}
-            className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1.5 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="inline-flex min-h-11 items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1.5 text-xs sm:min-h-0 font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
           >
             {t}
           </Link>
@@ -205,7 +215,7 @@ export default async function SearchPage({
                         </>
                       ) : null}
                     </div>
-                    <h2 className="mt-1 font-display text-xl font-black leading-snug text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">
+                    <h2 className="mt-1 font-display text-xl font-black leading-snug text-[var(--color-ink)] group-hover:text-[var(--color-gold)]">
                       {r.title ?? r.slug}
                     </h2>
                     {r.excerpt ? (
@@ -220,7 +230,7 @@ export default async function SearchPage({
                         <Link
                           key={tag}
                           href={`/search?q=${encodeURIComponent(tag)}`}
-                          className="rounded-full bg-[var(--color-surface-2)] px-2 py-0.5 text-[11px] font-bold text-[var(--color-ink-soft)] transition hover:text-[var(--color-accent)]"
+                          className="rounded-full bg-[var(--color-surface-2)] px-2 py-0.5 text-[11px] font-bold text-[var(--color-ink-soft)] transition hover:text-[var(--color-gold)]"
                         >
                           #{tag}
                         </Link>
@@ -231,16 +241,16 @@ export default async function SearchPage({
               ))}
             </ul>
           ) : (
-            <div className="mt-6 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 text-center">
+            <div className="panel mt-6 p-6 text-center">
               <p className="font-bold text-[var(--color-ink)]">No articles or videos match “{q}.”</p>
               <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
                 Try a person&apos;s name, a charge, an agency, or a single
                 keyword. Or browse{" "}
-                <Link href="/" className="font-bold text-[var(--color-accent)] hover:underline">
+                <Link href="/" className="font-bold text-[var(--color-gold)] hover:underline">
                   the feed
                 </Link>{" "}
                 and{" "}
-                <Link href="/case" className="font-bold text-[var(--color-accent)] hover:underline">
+                <Link href="/case" className="font-bold text-[var(--color-gold)] hover:underline">
                   the case
                 </Link>
                 .
@@ -370,7 +380,7 @@ function CaseFilesHits({ hits, q }: { hits: CaseHits; q: string }) {
 
   return (
     <section className="mt-10" aria-labelledby="case-files-hits">
-      <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-navy)]">
+      <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-ink)]">
         In the case files
       </p>
       <h2
@@ -384,7 +394,7 @@ function CaseFilesHits({ hits, q }: { hits: CaseHits; q: string }) {
       {hits.total === 0 ? (
         <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
           Nothing in the grievances, timeline, people, or documents matches that.{" "}
-          <Link href="/case" className="font-bold text-[var(--color-navy)] hover:underline">
+          <Link href="/case" className="font-bold text-[var(--color-ink)] hover:underline">
             Browse the case
           </Link>
           .
@@ -405,7 +415,7 @@ function CaseFilesHits({ hits, q }: { hits: CaseHits; q: string }) {
                   {s.count > CASE_SAMPLE ? (
                     <Link
                       href={s.href}
-                      className="inline-flex min-h-11 items-center gap-1 text-xs font-bold text-[var(--color-navy)] hover:underline sm:min-h-0"
+                      className="inline-flex min-h-11 items-center gap-1 text-xs font-bold text-[var(--color-ink)] hover:underline sm:min-h-0"
                     >
                       All {s.count.toLocaleString("en-US")}
                       <span aria-hidden>→</span>
@@ -416,7 +426,7 @@ function CaseFilesHits({ hits, q }: { hits: CaseHits; q: string }) {
                   {s.items.slice(0, CASE_SAMPLE).map((item) => (
                     <li key={item.slug}>
                       <Link href={item.href} className="group block py-3">
-                        <p className="font-bold leading-snug text-[var(--color-ink)] group-hover:text-[var(--color-navy)]">
+                        <p className="font-bold leading-snug text-[var(--color-ink)] group-hover:text-[var(--color-gold)]">
                           <Highlight text={item.title} q={s.needle} />
                         </p>
                         {item.sub ? (
@@ -432,7 +442,7 @@ function CaseFilesHits({ hits, q }: { hits: CaseHits; q: string }) {
             ))}
           <Link
             href={`/case?q=${encoded}`}
-            className="mt-6 inline-flex min-h-11 items-center gap-1.5 rounded-full border-2 border-[var(--color-navy)] bg-[var(--color-blue-soft)]/60 px-5 text-sm font-bold text-[var(--color-navy)] transition hover:bg-[var(--color-navy)] hover:text-[var(--color-paper)]"
+            className="mt-6 inline-flex min-h-11 items-center gap-1.5 rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)]/60 px-5 text-sm font-bold text-[var(--color-blue-ink)] transition hover:bg-[var(--color-gold)] hover:text-[var(--color-gold)]"
           >
             Open all {hits.total.toLocaleString("en-US")} in the case files
             <span aria-hidden>→</span>

@@ -296,8 +296,8 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
 
   if (status.kind === "success") {
     return (
-      <section className="rounded-lg border-2 border-[var(--color-accent)] bg-[var(--color-surface)] p-5 sm:p-6">
-        <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+      <section className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6">
+        <p className="eyebrow">
           Story received
         </p>
         <h2 className="mt-2 font-display text-3xl font-black tracking-normal">
@@ -336,13 +336,13 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
               setAckRight(false);
               setAckRedact(false);
             }}
-            className="min-h-11 rounded-lg bg-[var(--color-accent)] px-4 py-2 text-sm font-black text-white"
+            className="btn-accent min-h-11 px-4 py-2 text-sm"
           >
             Send another story
           </button>
           <a
             href={receipt?.ledgerUrl ?? "/case/intake"}
-            className="min-h-11 rounded-lg border border-[var(--color-line)] px-4 py-2 text-center text-sm font-black text-[var(--color-accent)]"
+            className="min-h-11 rounded-lg border border-[var(--color-line)] px-4 py-2 text-center text-sm font-black text-[var(--color-accent-ink)]"
           >
             See the ledger
           </a>
@@ -359,8 +359,8 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
 
   return (
     <section className="grid gap-5 lg:grid-cols-[1.08fr_0.92fr]">
-      <form onSubmit={submit} className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-xl sm:p-5">
-        <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+      <form onSubmit={submit} className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-xl sm:p-5">
+        <p className="eyebrow">
           Tell the story
         </p>
         <h2 className="mt-2 font-display text-3xl font-black tracking-normal">
@@ -395,12 +395,12 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
         </label>
 
         <div className="mt-5 grid gap-4">
-          <label className="grid gap-1 text-sm font-bold">
+          <label className="grid gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
             What kind of story is this?
             <select
               value={storyType}
               onChange={(event) => setStoryType(event.target.value as typeof storyType)}
-              className="min-h-11 rounded-lg border border-[var(--color-line)] bg-white px-3 text-sm font-normal"
+              className="min-h-11 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-sm font-normal"
             >
               {STORY_TYPES.map((item) => (
                 <option key={item}>{item}</option>
@@ -452,10 +452,10 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
             maxLength={1500}
           />
 
-          <div className="rounded-lg border-2 border-[var(--color-accent)] bg-[var(--color-paper)] p-3 sm:p-4">
+          <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] p-3 sm:p-4">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+                <p className="eyebrow">
                   Talk it out
                 </p>
                 <h3 className="font-display text-2xl font-black tracking-normal">
@@ -475,8 +475,8 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
               <VoiceStoryRecorder onAppendText={appendStoryText} />
             </div>
 
-            <div className="mt-3 rounded-lg border border-[var(--color-line)] bg-white p-3">
-              <label className="grid gap-1 text-sm font-bold">
+            <div className="mt-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-3">
+              <label className="grid gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
                 Transcribe an audio file
                 <input
                   type="file"
@@ -485,7 +485,7 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
                     setAudioFile(event.target.files?.[0] ?? null);
                     setAudioStatus({ kind: "idle" });
                   }}
-                  className="min-h-11 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm font-normal"
+                  className="min-h-11 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm font-normal"
                 />
               </label>
               <div className="mt-3 flex flex-wrap items-center gap-2">
@@ -493,7 +493,7 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
                   type="button"
                   onClick={transcribeAudio}
                   disabled={!audioFile || audioStatus.kind === "submitting"}
-                  className="min-h-10 rounded-lg border-2 border-[var(--color-blue)] bg-[var(--color-blue)] px-4 py-2 text-sm font-black text-white transition hover:bg-[var(--color-blue-strong)] disabled:opacity-50"
+                  className="min-h-10 rounded-lg border-2 border-[var(--color-blue)] bg-[var(--color-blue)] px-4 py-2 text-sm font-black text-[var(--color-cream)] transition hover:bg-[var(--color-blue-strong)] disabled:opacity-50"
                 >
                   {audioStatus.kind === "submitting"
                     ? "Transcribing..."
@@ -506,11 +506,11 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
                 ) : null}
               </div>
               {audioStatus.kind === "success" ? (
-                <p className="mt-2 text-xs font-bold text-[var(--color-blue)]">
+                <p className="mt-2 text-xs font-bold text-[var(--color-blue-ink)]">
                   Transcript added. Read it once, fix names and dates, then send.
                 </p>
               ) : audioStatus.kind === "error" ? (
-                <p className="mt-2 text-xs font-bold text-[var(--color-accent)]">
+                <p className="mt-2 text-xs font-bold text-[var(--color-accent-ink)]">
                   {audioStatus.message}
                 </p>
               ) : (
@@ -562,8 +562,8 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
                     className={[
                       "min-h-11 rounded-lg border px-3 py-2 text-left text-xs font-black transition",
                       active
-                        ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
-                        : "border-[var(--color-line)] bg-white text-[var(--color-ink-soft)] hover:border-[var(--color-accent)]",
+                        ? "border-[var(--color-gold)] bg-[var(--color-gold-soft)] text-[var(--color-gold)]"
+                        : "border-[var(--color-line)] bg-transparent text-[var(--color-ink-soft)] hover:border-[var(--color-gold)]",
                     ].join(" ")}
                   >
                     {tag}
@@ -586,24 +586,24 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
           />
 
           <div className="grid gap-3 sm:grid-cols-2">
-            <label className="grid gap-1 text-sm font-bold">
+            <label className="grid gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
               Source protection
               <select
                 value={privacy}
                 onChange={(event) => setPrivacy(event.target.value as typeof privacy)}
-                className="min-h-11 rounded-lg border border-[var(--color-line)] bg-white px-3 text-sm font-normal"
+                className="min-h-11 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-sm font-normal"
               >
                 {PRIVACY_OPTIONS.map((item) => (
                   <option key={item}>{item}</option>
                 ))}
               </select>
             </label>
-            <label className="grid gap-1 text-sm font-bold">
+            <label className="grid gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
               Follow-up
               <select
                 value={followUp}
                 onChange={(event) => setFollowUp(event.target.value as typeof followUp)}
-                className="min-h-11 rounded-lg border border-[var(--color-line)] bg-white px-3 text-sm font-normal"
+                className="min-h-11 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-sm font-normal"
               >
                 {FOLLOW_UP_OPTIONS.map((item) => (
                   <option key={item}>{item}</option>
@@ -639,7 +639,7 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
           )}
 
           <div className="rounded-lg border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-3">
-            <p className="text-xs font-black uppercase tracking-wider text-[var(--color-accent)]">
+            <p className="text-xs font-black uppercase tracking-wider text-[var(--color-accent-ink)]">
               Before you send
             </p>
             <p className="mt-1 text-xs leading-relaxed text-[var(--color-ink-soft)]">
@@ -658,7 +658,7 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
           </div>
 
           {status.kind === "error" ? (
-            <p className="rounded-lg border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-3 py-2 text-sm font-bold text-[var(--color-accent)]">
+            <p className="rounded-lg border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-3 py-2 text-sm font-bold text-[var(--color-accent-ink)]">
               {status.message}
             </p>
           ) : null}
@@ -666,7 +666,7 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
           <button
             type="submit"
             disabled={status.kind === "submitting"}
-            className="min-h-12 rounded-lg bg-[var(--color-accent)] px-5 py-3 text-base font-black text-white transition hover:bg-[var(--color-accent-strong)] disabled:opacity-60"
+            className="btn-accent min-h-12 px-5 py-3 text-base disabled:opacity-60"
           >
             {status.kind === "submitting" ? "Sending..." : "Send my story"}
           </button>
@@ -674,42 +674,42 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
       </form>
 
       <aside className="grid content-start gap-4">
-        <section className="rounded-lg border border-[var(--color-blue)] bg-[var(--color-blue-strong)] p-4 text-[var(--color-paper)] shadow-xl sm:p-5">
+        <section className="rounded-lg border border-[var(--color-blue)] bg-[var(--color-blue-strong)] p-4 text-[var(--color-cream)] shadow-xl sm:p-5">
           <p className="text-xs font-black uppercase tracking-normal text-[var(--color-gold-bright)]">
             Live preview
           </p>
-          <h2 className="mt-2 font-display text-2xl font-black tracking-normal text-[var(--color-paper)]">
+          <h2 className="mt-2 font-display text-2xl font-black tracking-normal text-[var(--color-cream)]">
             {preview.title}
           </h2>
-          <div className="mt-4 grid gap-2 text-sm text-white/80">
+          <div className="mt-4 grid gap-2 text-sm text-[var(--color-cream)]/80">
             <p>
-              <strong className="text-white">Place:</strong> {preview.place}
+              <strong className="text-[var(--color-cream)]">Place:</strong> {preview.place}
             </p>
             <p>
-              <strong className="text-white">Time:</strong> {preview.time}
+              <strong className="text-[var(--color-cream)]">Time:</strong> {preview.time}
             </p>
             <p>
-              <strong className="text-white">Tags:</strong> {preview.selectedTags}
+              <strong className="text-[var(--color-cream)]">Tags:</strong> {preview.selectedTags}
             </p>
             <p>
-              <strong className="text-white">First proof:</strong> {preview.proofLine}
+              <strong className="text-[var(--color-cream)]">First proof:</strong> {preview.proofLine}
             </p>
             <p>
-              <strong className="text-white">Connected story:</strong> {preview.witnessLine}
+              <strong className="text-[var(--color-cream)]">Connected story:</strong> {preview.witnessLine}
             </p>
           </div>
-          <div className="mt-4 rounded-lg border border-white/15 bg-white/[0.08] p-3">
-            <p className="text-xs font-black uppercase tracking-normal text-white/60">
+          <div className="mt-4 rounded-lg border border-[var(--color-cream)]/15 bg-[var(--color-cream)]/[0.08] p-3">
+            <p className="text-xs font-black uppercase tracking-normal text-[var(--color-cream)]/60">
               Safer public angle
             </p>
-            <p className="mt-2 text-sm leading-relaxed text-white/85">
+            <p className="mt-2 text-sm leading-relaxed text-[var(--color-cream)]/85">
               {preview.publicAngle}
             </p>
           </div>
         </section>
 
         <section className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-5">
-          <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+          <p className="eyebrow">
             Connection strength
           </p>
           <div className="mt-3 flex items-end gap-2">
@@ -738,8 +738,8 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
           </p>
         </section>
 
-        <section className="rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-4 sm:p-5">
-          <p className="text-xs font-black uppercase tracking-normal text-[var(--color-blue)]">
+        <section className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-5">
+          <p className="eyebrow">
             What Ryan sees
           </p>
           <ul className="mt-3 grid gap-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
@@ -770,14 +770,14 @@ function Field({
   autoComplete?: string;
 }) {
   return (
-    <label className="grid gap-1 text-sm font-bold">
+    <label className="grid gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
       {label}
       <input
         value={value}
         onChange={(event) => onChange(event.target.value.slice(0, maxLength))}
         placeholder={placeholder}
         autoComplete={autoComplete}
-        className="min-h-11 rounded-lg border border-[var(--color-line)] bg-white px-3 text-sm font-normal"
+        className="min-h-11 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-sm font-normal"
       />
     </label>
   );
@@ -801,7 +801,7 @@ function TextField({
   required?: boolean;
 }) {
   return (
-    <label className="grid gap-1 text-sm font-bold">
+    <label className="grid gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
       {label}
       <textarea
         required={required}
@@ -809,7 +809,7 @@ function TextField({
         onChange={(event) => onChange(event.target.value.slice(0, maxLength))}
         rows={rows}
         placeholder={placeholder}
-        className="rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-normal"
+        className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm font-normal"
       />
     </label>
   );

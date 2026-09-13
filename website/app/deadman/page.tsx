@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function DeadmanPage() {
   return (
     <article className="mx-auto max-w-2xl px-4 py-10">
-      <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+      <p className="eyebrow">
         Protected release protocol
       </p>
       <h1 className="mt-2 font-display text-4xl font-black tracking-normal">

@@ -19,14 +19,15 @@ export function ClaimMeHero({
     : `/login?next=/case/people/${slug}/claim`;
 
   return (
-    <div className="rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-6 sm:p-10">
+    <div
+      data-reveal
+      className="rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-6 shadow-[0_24px_60px_rgba(0,0,0,0.45)] sm:p-10"
+    >
       <div className="flex items-center justify-between gap-3 mb-3">
-        <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
-          Anti-Weaponization Case Builder · Unclaimed
-        </p>
+        <p className="eyebrow">Anti-Weaponization Case Builder · Unclaimed</p>
         {views > 0 || shares > 0 ? (
           <p
-            className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[var(--color-blue)] whitespace-nowrap"
+            className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[var(--color-blue-ink)] whitespace-nowrap"
             aria-label={`${views} people have viewed this profile, ${shares} shares`}
           >
             <span className="tabular-nums">{views.toLocaleString()}</span> watching
@@ -39,7 +40,7 @@ export function ClaimMeHero({
           </p>
         ) : null}
       </div>
-      <h1 className="mt-3 text-3xl sm:text-5xl font-bold tracking-tight font-display leading-[1.05]">
+      <h1 className="display mt-3 text-4xl sm:text-6xl">
         Hey {firstName} — your J6 Anti-Weaponization Case Builder profile is
         ready to be claimed.
       </h1>
@@ -69,13 +70,13 @@ export function ClaimMeHero({
       <div className="mt-7 grid grid-cols-1 sm:grid-cols-2 gap-3">
         <Link
           href={claimHref}
-          className="block rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-4 text-center font-bold text-base sm:text-lg hover:bg-[var(--color-accent-strong)] transition"
+          className="btn-accent block rounded-xl px-5 py-4 text-center text-base sm:text-lg"
         >
           I am {firstName} — claim this profile →
         </Link>
         <Link
           href={`/submit?type=j6&about=${encodeURIComponent(name)}`}
-          className="block rounded-xl border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-4 text-center font-bold text-base sm:text-lg hover:bg-[var(--color-blue-strong)] transition"
+          className="btn-blue block rounded-xl px-5 py-4 text-center text-base sm:text-lg"
         >
           Not me — send a tip →
         </Link>
@@ -94,7 +95,7 @@ export function ClaimMeHero({
 export function ClaimMeFooter({ name }: { name: string }) {
   return (
     <section className="mt-12 border-t border-[var(--color-line)] pt-8">
-      <h2 className="text-2xl font-bold tracking-tight font-display">
+      <h2 className="font-display text-2xl font-bold tracking-tight">
         How verification works
       </h2>
       <ol className="mt-5 space-y-4">
@@ -139,7 +140,7 @@ export function ClaimMeFooter({ name }: { name: string }) {
 function Step({ n, title, body }: { n: number; title: string; body: string }) {
   return (
     <li className="flex gap-4">
-      <div className="flex-shrink-0 w-9 h-9 rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] flex items-center justify-center font-bold">
+      <div className="display flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-[var(--color-gold)] text-lg text-[var(--color-navy)]">
         {n}
       </div>
       <div className="flex-1 pt-0.5">

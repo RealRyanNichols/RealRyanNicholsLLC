@@ -110,7 +110,7 @@ export default async function AdminBookPage() {
     <article className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
       <header className="flex flex-wrap items-end justify-between gap-3 border-b border-[var(--color-line)] pb-4">
         <div>
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent-ink)]">
             Fighting Shadows
           </p>
           <h1 className="mt-1 font-display text-3xl font-black tracking-tight">
@@ -119,7 +119,7 @@ export default async function AdminBookPage() {
         </div>
         <Link
           href="/admin"
-          className="text-sm font-bold text-[var(--color-accent)] hover:underline"
+          className="text-sm font-bold text-[var(--color-accent-ink)] hover:underline"
         >
           ← Admin
         </Link>
@@ -202,7 +202,7 @@ export default async function AdminBookPage() {
                           o.payment_status === "paid"
                             ? "bg-[var(--color-success-soft)] text-[var(--color-success)]"
                             : o.payment_status === "refunded"
-                              ? "bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
+                              ? "bg-[var(--color-accent-soft)] text-[var(--color-accent-ink)]"
                               : "bg-[var(--color-surface-2)] text-[var(--color-muted)]",
                         ].join(" ")}
                       >

@@ -97,12 +97,22 @@ export default async function TheMapRoomPage() {
       </div>
 
       <header className="mt-10 max-w-3xl">
-        <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+        <p className="eyebrow" data-reveal>
           The Map Room · realryannichols.com
         </p>
-        <h1 className="mt-2 text-3xl sm:text-5xl font-bold tracking-tight leading-[1.05] font-display">
+        <h1
+          className="display mt-3 text-4xl sm:text-6xl"
+          data-reveal
+          style={{ "--d": 1 } as React.CSSProperties}
+        >
           The live record of the J6 case.
         </h1>
+        <div
+          className="mt-5 h-[3px] w-[4.5rem] bg-[var(--color-gold)]"
+          aria-hidden
+          data-reveal
+          style={{ "--d": 2 } as React.CSSProperties}
+        />
         <p className="mt-4 text-base sm:text-lg text-[var(--color-ink-soft)] leading-relaxed">
           <em>United States v. Nichols.</em> <strong>Pardoned</strong> by
           President Trump on January 20, 2025. Charges{" "}
@@ -119,7 +129,8 @@ export default async function TheMapRoomPage() {
           sees it first. */}
       <Link
         href="/case/nexus"
-        className="mt-10 block rounded-2xl border-2 border-[var(--color-blue)] bg-gradient-to-br from-[#0a1429] via-[#0e1a36] to-[#1c2a4a] p-5 sm:p-7 relative overflow-hidden group hover:from-[#0e1a36] hover:via-[#1c2a4a] hover:to-[#1c2a4a] transition"
+        className="mt-10 block rounded-2xl border-2 border-[var(--color-blue)] bg-gradient-to-br from-[var(--color-surface)] via-[var(--color-surface)] to-[var(--color-surface-2)] p-5 sm:p-7 relative overflow-hidden group shadow-[0_20px_50px_rgba(0,0,0,0.4)] hover:from-[var(--color-surface)] hover:via-[var(--color-surface-2)] hover:to-[var(--color-surface-2)] transition"
+        data-reveal
       >
         <div
           className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full blur-3xl"
@@ -132,17 +143,17 @@ export default async function TheMapRoomPage() {
               <span className="inline-block w-2 h-2 rounded-full bg-[var(--color-gold-bright)] animate-pulse" />
               New · The Case Nexus
             </p>
-            <h2 className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight font-display text-[var(--color-paper)]">
+            <h2 className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight font-display text-[var(--color-ink)]">
               The whole J6 case, on one interactive map.
             </h2>
-            <p className="mt-2 text-sm sm:text-base text-[#cfd9ea] leading-relaxed">
+            <p className="mt-2 text-sm sm:text-base text-[var(--color-ink-soft)] leading-relaxed">
               Every co-defendant cluster, every defendant, every archived
               document — laid out as a force-directed graph you can drag,
               zoom, and walk. Search a name, click a node, expand the
               network.
             </p>
           </div>
-          <span className="text-[var(--color-paper)] font-bold text-sm flex-shrink-0 group-hover:translate-x-1 transition-transform">
+          <span className="text-[var(--color-gold)] font-bold text-sm flex-shrink-0 group-hover:translate-x-1 transition-transform">
             Walk the graph →
           </span>
         </div>
@@ -154,7 +165,7 @@ export default async function TheMapRoomPage() {
       <section className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         <ActionCard
           href="/case"
-          accent="accent"
+          accent="gold"
           label="The full archive"
           title="Read the case file"
           sub="Every grievance, every named official, every event, every document. 600+ scans."
@@ -168,7 +179,7 @@ export default async function TheMapRoomPage() {
         />
         <ActionCard
           href="/submit"
-          accent="accent"
+          accent="gold"
           label="Tip line"
           title="Send a receipt"
           sub="Anonymous. Free. Photos, docs, names, stories. Ryan reads every one."
@@ -182,8 +193,8 @@ export default async function TheMapRoomPage() {
         />
       </section>
 
-      <section className="mt-10 rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-paper)] p-5 sm:p-6">
-        <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">
+      <section className="panel mt-10 p-5 sm:p-6" data-reveal>
+        <p className="eyebrow">
           What you&apos;re looking at
         </p>
         <h2 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight font-display">
@@ -213,19 +224,19 @@ export default async function TheMapRoomPage() {
         <div className="mt-5 flex flex-wrap gap-3">
           <Link
             href="/j6"
-            className="rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
+            className="btn-accent rounded-full px-5 py-2.5 text-sm"
           >
             Ryan&apos;s Jan 6 story →
           </Link>
           <Link
             href="/about"
-            className="rounded-full border-2 border-[var(--color-line)] bg-[var(--color-surface)] px-5 py-2.5 text-sm font-bold text-[var(--color-ink)] hover:border-[var(--color-accent)]"
+            className="btn-ghost rounded-full px-5 py-2.5 text-sm"
           >
             About Ryan
           </Link>
           <Link
             href="/book/preorder"
-            className="rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
+            className="btn-blue rounded-full px-5 py-2.5 text-sm font-bold"
           >
             Get the Book
           </Link>
@@ -254,19 +265,23 @@ function ActionCard({
   sub,
 }: {
   href: string;
-  accent: "accent" | "blue";
+  accent: "gold" | "blue";
   label: string;
   title: string;
   sub: string;
 }) {
-  const ring =
-    accent === "accent"
-      ? "border-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-paper)]"
-      : "border-[var(--color-blue)] hover:bg-[var(--color-blue)] hover:text-[var(--color-paper)]";
-  const labelColor =
-    accent === "accent"
-      ? "text-[var(--color-accent)] group-hover:text-[var(--color-paper)]"
-      : "text-[var(--color-blue)] group-hover:text-[var(--color-paper)]";
+  // Gold fills take navy ink; blue fills take cream. Naming the hover ink per
+  // variant is what keeps the filled state from going cream-on-gold.
+  const gold = accent === "gold";
+  const ring = gold
+    ? "border-[var(--color-gold)] hover:bg-[var(--color-gold)]"
+    : "border-[var(--color-blue)] hover:bg-[var(--color-blue)]";
+  const hoverInk = gold
+    ? "group-hover:text-[var(--color-gold)]"
+    : "group-hover:text-[var(--color-cream)]";
+  const labelColor = gold
+    ? "text-[var(--color-gold)]"
+    : "text-[var(--color-blue-ink)]";
 
   return (
     <Link
@@ -274,14 +289,14 @@ function ActionCard({
       className={`group block rounded-2xl border-2 bg-[var(--color-surface)] p-5 transition ${ring}`}
     >
       <p
-        className={`text-[10px] uppercase tracking-wider font-bold ${labelColor}`}
+        className={`text-[10px] uppercase tracking-wider font-bold ${labelColor} ${hoverInk}`}
       >
         {label}
       </p>
-      <p className="mt-1 text-lg font-bold tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-paper)] leading-tight">
+      <p className={`mt-1 text-lg font-bold tracking-tight text-[var(--color-ink)] ${hoverInk} leading-tight`}>
         {title}
       </p>
-      <p className="mt-2 text-xs leading-snug text-[var(--color-ink-soft)] group-hover:text-[var(--color-paper)]">
+      <p className={`mt-2 text-xs leading-snug text-[var(--color-ink-soft)] ${hoverInk}`}>
         {sub}
       </p>
     </Link>

@@ -25,7 +25,7 @@ export function FuelLadder({ tiers }: { tiers: ResolvedFuelTier[] }) {
   const perOutput = costPerOutputTokenUsd();
 
   return (
-    <div className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-6" data-fuel-ladder>
+    <div className="panel p-4 sm:p-6" data-fuel-ladder>
       <ol className="space-y-3">
         {rows.map((r) => {
           // Square-root scale so a $5 bar is visible next to the month bar.
@@ -33,12 +33,14 @@ export function FuelLadder({ tiers }: { tiers: ResolvedFuelTier[] }) {
           const buy = tokensFor(r.amountCents);
           const words = `${roundWords(buy.words)} words`;
           const time = machineTimeLabel(r.amountCents)?.replace(" of the machine", "");
+          // Blue for the month, red for the featured pick, gold for the rest;
+          // cream type on blue and red, navy type on gold.
           const barBg = r.monthly
-            ? "bg-[var(--color-navy)]"
+            ? "bg-[var(--color-blue)]"
             : r.featured
               ? "bg-[var(--color-accent)]"
               : "bg-[var(--color-gold-bright)]";
-          const barInk = r.monthly || r.featured ? "text-[var(--color-paper)]" : "text-[#071126]";
+          const barInk = r.monthly || r.featured ? "text-[var(--color-cream)]" : "text-[var(--color-navy)]";
           // A wide bar carries its label inside, painted in the bar's own color
           // so a label longer than the bar still reads as part of it. A narrow
           // bar puts the label just past its end in ink.
@@ -49,7 +51,7 @@ export function FuelLadder({ tiers }: { tiers: ResolvedFuelTier[] }) {
               className="grid grid-cols-[5.5rem_1fr] items-center gap-3 sm:grid-cols-[7rem_1fr_14rem]"
             >
               <div>
-                <p className="font-display text-xl font-black tabular-nums tracking-tight text-[var(--color-ink)] sm:text-2xl">
+                <p className="font-display text-xl font-black tabular-nums tracking-tight text-[var(--color-gold)] sm:text-2xl">
                   {usdWhole(r.amountCents)}
                   {r.monthly ? <span className="text-xs font-bold text-[var(--color-muted)]">/mo</span> : null}
                 </p>

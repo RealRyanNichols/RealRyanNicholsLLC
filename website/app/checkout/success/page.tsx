@@ -39,7 +39,7 @@ export default async function SuccessPage({
         </p>
         <Link
           href="/"
-          className="inline-block mt-8 text-[var(--color-accent)] font-semibold underline underline-offset-4"
+          className="inline-block mt-8 text-[var(--color-accent-ink)] font-semibold underline underline-offset-4"
         >
           ← Back to the feed
         </Link>
@@ -92,7 +92,7 @@ export default async function SuccessPage({
           : "A receipt is on its way to your email."}
       </p>
       {lineItems.length > 0 ? (
-        <div className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 text-left">
+        <div className="panel mt-6 p-4 text-left" data-reveal>
           {lineItems.map((li, i) => (
             <div key={i} className="flex justify-between text-sm py-1">
               <span className="text-[var(--color-ink-soft)]">
@@ -104,7 +104,7 @@ export default async function SuccessPage({
           ))}
           <div className="mt-2 border-t border-[var(--color-line)] pt-2 flex justify-between font-bold">
             <span>Total</span>
-            <span className="font-mono text-[var(--color-accent)]">
+            <span className="font-mono text-[var(--color-gold)]">
               {usd(amount)}
             </span>
           </div>
@@ -121,8 +121,8 @@ export default async function SuccessPage({
       </div>
 
       {boughtBook ? (
-        <div className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 text-left">
-          <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--color-accent)]">
+        <div className="panel mt-6 p-5 text-left" data-reveal>
+          <p className="eyebrow">
             While you wait for the book
           </p>
           <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
@@ -131,14 +131,14 @@ export default async function SuccessPage({
           </p>
           <Link
             href="/case"
-            className="mt-3 inline-block font-semibold text-[var(--color-accent)] underline underline-offset-4"
+            className="mt-3 inline-block font-semibold text-[var(--color-accent-ink)] underline underline-offset-4"
           >
             Open the case archive →
           </Link>
         </div>
       ) : (
-        <div className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 text-left">
-          <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--color-accent)]">
+        <div className="panel mt-6 p-5 text-left" data-reveal>
+          <p className="eyebrow">
             One more thing
           </p>
           <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
@@ -147,7 +147,7 @@ export default async function SuccessPage({
           </p>
           <Link
             href="/book/preorder"
-            className="mt-3 inline-block font-semibold text-[var(--color-accent)] underline underline-offset-4"
+            className="mt-3 inline-block font-semibold text-[var(--color-accent-ink)] underline underline-offset-4"
           >
             Get the book →
           </Link>
@@ -156,7 +156,7 @@ export default async function SuccessPage({
 
       <Link
         href="/"
-        className="inline-block mt-8 text-[var(--color-accent)] font-semibold underline underline-offset-4"
+        className="inline-block mt-8 text-[var(--color-accent-ink)] font-semibold underline underline-offset-4"
       >
         ← Back to the feed
       </Link>

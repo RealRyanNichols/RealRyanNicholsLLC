@@ -116,28 +116,31 @@ function nodeRadius(n: RawNode): number {
   if (n.type === "defendant") return 5.5;
   return 3;
 }
+// Every color below is a theme token: the graph is SVG in the DOM, so
+// var(--color-...) resolves. The mirrored brand values live in
+// styles/tokens.css and lib/palette.ts.
 function nodeFill(n: RawNode): string {
   if (n.type === "connector") {
     if (n.connector_kind === "source") return "var(--color-gold-bright)";
-    if (n.connector_kind === "court") return "#7fa9e3";
-    if (n.connector_kind === "facility") return "#ffd166";
-    if (n.connector_kind === "charge") return "#f08a8a";
-    return "#d8c89e";
+    if (n.connector_kind === "court") return "var(--color-blue-ink)";
+    if (n.connector_kind === "facility") return "var(--color-gold-light)";
+    if (n.connector_kind === "charge") return "var(--color-tag-severe)";
+    return "var(--color-parchment-line)";
   }
-  if (n.type === "case") return "#1f2f55";
+  if (n.type === "case") return "var(--color-surface-2)";
   if (n.type === "defendant") {
     if (n.claim_status === "verified") return "var(--color-gold-bright)";
-    if (n.claim_status === "pending") return "#ffd166";
-    return "#e08658";
+    if (n.claim_status === "pending") return "var(--color-gold-light)";
+    return "var(--color-clay)";
   }
-  return "#7c8aa6";
+  return "var(--color-muted)";
 }
 function nodeStroke(n: RawNode, selected: boolean): string {
-  if (selected) return "#ffffff";
-  if (n.type === "connector") return "#d8e4f7";
-  if (n.type === "case") return "#3a557c";
-  if (n.type === "defendant" && n.claim_status === "verified") return "#3aa672";
-  return "#0e1a36";
+  if (selected) return "var(--color-cream)";
+  if (n.type === "connector") return "var(--color-ink-soft)";
+  if (n.type === "case") return "var(--color-blue)";
+  if (n.type === "defendant" && n.claim_status === "verified") return "var(--color-success)";
+  return "var(--color-paper)";
 }
 
 function connectorRank(kind: RawConnectorKind): number {
@@ -155,13 +158,13 @@ function connectorRank(kind: RawConnectorKind): number {
 }
 
 function linkStroke(kind: RawEdge["kind"]): string {
-  if (kind === "has_document") return "#3a557c";
-  if (kind === "member_of") return "#6389bd";
+  if (kind === "has_document") return "var(--color-line-soft)";
+  if (kind === "member_of") return "var(--color-blue)";
   if (kind === "sourced_by") return "var(--color-gold-bright)";
-  if (kind === "filed_in") return "#7fa9e3";
-  if (kind === "shared_facility") return "#ffd166";
-  if (kind === "shared_charge") return "#f08a8a";
-  return "#d8c89e";
+  if (kind === "filed_in") return "var(--color-blue-ink)";
+  if (kind === "shared_facility") return "var(--color-gold-light)";
+  if (kind === "shared_charge") return "var(--color-tag-severe)";
+  return "var(--color-parchment-line)";
 }
 
 function linkWidth(kind: RawEdge["kind"]): number {
@@ -968,7 +971,7 @@ export function CaseNexus({
   return (
     <div className="relative">
       <div className="grid gap-3 xl:grid-cols-[minmax(0,1fr)_20rem] 2xl:grid-cols-[minmax(0,1fr)_21rem]">
-        <div className="relative min-w-0 overflow-hidden rounded-xl border-2 border-[var(--color-blue)] bg-[#071126]">
+        <div className="relative min-w-0 overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
           <div className="min-w-0 overflow-hidden">
             <svg
               ref={svgRef}
@@ -1003,7 +1006,7 @@ export function CaseNexus({
                       y1={(l.source as SimNode).y ?? 0}
                       x2={(l.target as SimNode).x ?? 0}
                       y2={(l.target as SimNode).y ?? 0}
-                      stroke={onTrace ? "#9df0c0" : linkStroke(l.kind)}
+                      stroke={onTrace ? "var(--color-live)" : linkStroke(l.kind)}
                       strokeWidth={onTrace ? linkWidth(l.kind) + 1.6 : linkWidth(l.kind)}
                       strokeOpacity={
                         linkHidden
@@ -1058,7 +1061,7 @@ export function CaseNexus({
                         cy={sn.y ?? sn.targetY ?? 0}
                         r={nodeRadius(sn.node) + (emphasize ? 3 : 0)}
                         fill={nodeFill(sn.node)}
-                        stroke={isTraceEnd ? "#9df0c0" : nodeStroke(sn.node, isSelected)}
+                        stroke={isTraceEnd ? "var(--color-live)" : nodeStroke(sn.node, isSelected)}
                         strokeWidth={emphasize ? 3 : 1.2}
                         style={{ cursor: "pointer" }}
                         onClick={(e) => {
@@ -1078,9 +1081,9 @@ export function CaseNexus({
                           fontSize={sn.node.type === "connector" ? "9" : sn.node.type === "case" ? "10" : "8"}
                           fontFamily="ui-monospace, monospace"
                           fontWeight={sn.node.type === "connector" || sn.node.type === "case" ? "800" : "600"}
-                          fill={emphasize ? "#ffffff" : "#d8e4f7"}
+                          fill={emphasize ? "var(--color-cream)" : "var(--color-muted)"}
                           paintOrder="stroke"
-                          stroke="#071126"
+                          stroke="var(--color-paper)"
                           strokeWidth="3"
                         >
                           {labelForMap(sn.node)}
@@ -1093,12 +1096,12 @@ export function CaseNexus({
             </svg>
           </div>
 
-          <div className="absolute left-3 top-3 z-10 max-w-[15rem] rounded-md border border-[#203a64]/80 bg-[#071126]/88 px-3 py-2 backdrop-blur">
+          <div className="absolute left-3 top-3 z-10 max-w-[15rem] rounded-md border border-[var(--color-line-soft)]/80 bg-[var(--color-surface)]/88 px-3 py-2 backdrop-blur">
             <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-gold-bright)]">
               <span className="inline-block h-2 w-2 rounded-full bg-[var(--color-gold-bright)]" />
               Evidence Nexus
             </div>
-            <div className="mt-1 text-[11px] font-mono leading-tight text-[#a9b7d0]">
+            <div className="mt-1 text-[11px] font-mono leading-tight text-[var(--color-muted)]">
               {totalCases} cases · {totalDefendants} defendants
               {totalConnectors > 0 ? ` · ${totalConnectors} hubs` : null}
               {totalDocs > 0 ? ` · ${totalDocs} docs` : null}
@@ -1129,8 +1132,8 @@ export function CaseNexus({
               aria-pressed={traceMode}
               className={`pointer-events-auto min-h-11 rounded-full border px-3 text-[10px] font-black uppercase tracking-wider backdrop-blur transition ${
                 traceMode
-                  ? "border-[#9df0c0] bg-[#9df0c0]/15 text-[#9df0c0]"
-                  : "border-[#203a64] bg-[#071126]/80 text-[#7c8aa6] hover:border-[#3a557c] hover:text-[#cfd9ea]"
+                  ? "border-[var(--color-success)] bg-[var(--color-success)]/15 text-[var(--color-success)]"
+                  : "border-[var(--color-line-soft)] bg-[var(--color-surface)]/80 text-[var(--color-muted)] hover:border-[var(--color-gold)] hover:text-[var(--color-ink-soft)]"
               }`}
             >
               {traceMode ? "◆ Trace" : "◇ Trace"}
@@ -1173,12 +1176,12 @@ export function CaseNexus({
           </div>
 
           {!hasGraphData ? (
-            <div className="absolute inset-0 z-10 flex items-center justify-center bg-[#0a1429]/90 px-6 text-center">
+            <div className="absolute inset-0 z-10 flex items-center justify-center bg-[var(--color-surface)]/90 px-6 text-center">
               <div className="max-w-md">
-                <p className="text-sm font-bold text-[var(--color-paper)]">
+                <p className="text-sm font-bold text-[var(--color-cream)]">
                   Case Nexus data is temporarily unavailable.
                 </p>
-                <p className="mt-2 text-xs text-[#a9b7d0]">
+                <p className="mt-2 text-xs text-[var(--color-muted)]">
                   The public case archive is still online while this graph feed
                   recovers.
                 </p>
@@ -1193,11 +1196,11 @@ export function CaseNexus({
           ) : null}
         </div>
 
-        <aside className="rounded-xl border-2 border-[#203a64] bg-[#0e1a36] p-3 text-[#cfd9ea] sm:p-4 xl:max-h-[min(44vh,480px)] xl:overflow-auto 2xl:max-h-[min(48vh,520px)]">
+        <aside className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-3 text-[var(--color-ink-soft)] shadow-[0_20px_50px_rgba(0,0,0,0.4)] sm:p-4 xl:max-h-[min(44vh,480px)] xl:overflow-auto 2xl:max-h-[min(48vh,520px)]">
           {traceMode ? (
-            <div className="mb-3 rounded-md border border-[#9df0c0]/50 bg-[#9df0c0]/10 p-3">
+            <div className="mb-3 rounded-md border border-[var(--color-success)]/50 bg-[var(--color-success)]/10 p-3">
               <div className="flex items-center justify-between">
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#9df0c0]">
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-success)]">
                   Trace the connection
                 </p>
                 <button
@@ -1207,27 +1210,27 @@ export function CaseNexus({
                     setTraceB(null);
                     setTraceMode(false);
                   }}
-                  className="text-[10px] font-bold uppercase tracking-wider text-[#7c8aa6] hover:text-white"
+                  className="text-[10px] font-bold uppercase tracking-wider text-[var(--color-muted)] hover:text-[var(--color-cream)]"
                 >
                   Done
                 </button>
               </div>
               {!traceA ? (
-                <p className="mt-2 text-[11px] font-mono leading-relaxed text-[#cfe9d8]">
+                <p className="mt-2 text-[11px] font-mono leading-relaxed text-[var(--color-success)]">
                   Click the first entity on the board.
                 </p>
               ) : !traceB ? (
-                <p className="mt-2 text-[11px] font-mono leading-relaxed text-[#cfe9d8]">
+                <p className="mt-2 text-[11px] font-mono leading-relaxed text-[var(--color-success)]">
                   Now click the second. I&apos;ll light up the path between them.
                 </p>
               ) : tracePath && tracePath.broken ? (
-                <p className="mt-2 text-[11px] font-mono leading-relaxed text-[#ffd166]">
+                <p className="mt-2 text-[11px] font-mono leading-relaxed text-[var(--color-gold)]">
                   No visible path between those two yet. Expand a node or add a
                   clue to bridge them.
                 </p>
               ) : tracePath ? (
                 <div className="mt-2">
-                  <p className="text-[11px] font-mono text-[#cfe9d8]">
+                  <p className="text-[11px] font-mono text-[var(--color-success)]">
                     {tracePath.chain.length - 1} step
                     {tracePath.chain.length - 1 === 1 ? "" : "s"} between them:
                   </p>
@@ -1236,7 +1239,7 @@ export function CaseNexus({
                       const n = nodesRef.current.find((nn) => nn.node.id === id)?.node;
                       return (
                         <li key={id} className="flex items-start gap-2 text-[11px]">
-                          <span className="mt-0.5 font-mono text-[#7c8aa6]">{idx + 1}.</span>
+                          <span className="mt-0.5 font-mono text-[var(--color-muted)]">{idx + 1}.</span>
                           <button
                             type="button"
                             onClick={() => {
@@ -1245,7 +1248,7 @@ export function CaseNexus({
                               setTraceB(null);
                               selectNode(id, "graph");
                             }}
-                            className="text-left font-bold text-white hover:text-[#9df0c0]"
+                            className="text-left font-bold text-[var(--color-cream)] hover:text-[var(--color-success)]"
                           >
                             {n ? nodeHeadline(n) : id}
                           </button>
@@ -1256,7 +1259,7 @@ export function CaseNexus({
                   <button
                     type="button"
                     onClick={() => fitMap(tracePath.nodes)}
-                    className="mt-2 rounded-full border border-[#9df0c0]/50 bg-[#071126] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#9df0c0] hover:bg-[#9df0c0]/10"
+                    className="mt-2 rounded-full border border-[var(--color-success)]/50 bg-[var(--color-surface)] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[var(--color-success)] hover:bg-[var(--color-success)]/10"
                   >
                     Fit the path
                   </button>
@@ -1281,16 +1284,16 @@ export function CaseNexus({
               }}
               onFocus={() => setSearchOpen(true)}
               placeholder="Search name or case number"
-              className="mt-2 w-full rounded-md border border-[#3a557c] bg-[#071126] px-3 py-2 text-xs font-mono text-[var(--color-paper)] placeholder:text-[#7c8aa6] focus:border-[var(--color-gold-bright)] focus:outline-none"
+              className="mt-2 w-full rounded-md border border-[var(--color-line-soft)] bg-[var(--color-surface)] px-3 py-2 text-xs font-mono text-[var(--color-cream)] placeholder:text-[var(--color-muted)] focus:border-[var(--color-gold-bright)] focus:outline-none"
             />
             {searchOpen && query.trim().length > 0 ? (
-              <div className="mt-2 max-h-72 overflow-auto rounded-md border border-[#3a557c] bg-[#071126]">
+              <div className="mt-2 max-h-72 overflow-auto rounded-md border border-[var(--color-line-soft)] bg-[var(--color-surface)]">
                 {searchLoading ? (
-                  <p className="px-3 py-2 text-[12px] font-mono text-[#a9b7d0]">
+                  <p className="px-3 py-2 text-[12px] font-mono text-[var(--color-muted)]">
                     Searching...
                   </p>
                 ) : searchError ? (
-                  <p className="px-3 py-2 text-[12px] font-mono text-[#ffd166]">
+                  <p className="px-3 py-2 text-[12px] font-mono text-[var(--color-gold)]">
                     {searchError}
                   </p>
                 ) : hits.length > 0 ? (
@@ -1301,21 +1304,21 @@ export function CaseNexus({
                           type="button"
                           onMouseDown={(e) => e.preventDefault()}
                           onClick={() => pickHit(h)}
-                          className="flex w-full items-baseline justify-between gap-3 px-3 py-2 text-left hover:bg-[#1c2a4a]"
+                          className="flex w-full items-baseline justify-between gap-3 px-3 py-2 text-left hover:bg-[var(--color-surface-2)]"
                         >
-                          <span className="truncate text-[12px] text-[var(--color-paper)]">
+                          <span className="truncate text-[12px] text-[var(--color-cream)]">
                             <span
                               className={
                                 h.type === "case"
-                                  ? "text-[#7fa9e3]"
-                                  : "text-[#e08658]"
+                                  ? "text-[var(--color-blue-ink)]"
+                                  : "text-[var(--color-tag-procedural)]"
                               }
                             >
                               {h.type === "case" ? "case" : "def."}
                             </span>{" "}
                             {h.label}
                           </span>
-                          <span className="whitespace-nowrap text-[10px] font-mono text-[#7c8aa6]">
+                          <span className="whitespace-nowrap text-[10px] font-mono text-[var(--color-muted)]">
                             {h.sub}
                           </span>
                         </button>
@@ -1323,11 +1326,11 @@ export function CaseNexus({
                     ))}
                   </ul>
                 ) : query.trim().length < 2 ? (
-                  <p className="px-3 py-2 text-[12px] font-mono text-[#7c8aa6]">
+                  <p className="px-3 py-2 text-[12px] font-mono text-[var(--color-muted)]">
                     Type at least two characters.
                   </p>
                 ) : (
-                  <p className="px-3 py-2 text-[12px] font-mono text-[#7c8aa6]">
+                  <p className="px-3 py-2 text-[12px] font-mono text-[var(--color-muted)]">
                     No matching case or defendant.
                   </p>
                 )}
@@ -1335,11 +1338,11 @@ export function CaseNexus({
             ) : null}
           </div>
 
-          <div className="mt-3 border-t border-[#203a64] pt-3">
+          <div className="mt-3 border-t border-[var(--color-line-soft)] pt-3">
             {selectedNode ? (
               <div>
                 <div className="flex items-start justify-between gap-3">
-                  <h3 className="text-base font-bold tracking-tight text-[var(--color-paper)]">
+                  <h3 className="text-base font-bold tracking-tight text-[var(--color-cream)]">
                     {nodeHeadline(selectedNode)}
                   </h3>
                   <button
@@ -1348,7 +1351,7 @@ export function CaseNexus({
                       setSelectedId(null);
                       window.setTimeout(() => fitMap(), 30);
                     }}
-                    className="text-[10px] font-bold uppercase tracking-wider text-[#7c8aa6] hover:text-[var(--color-paper)]"
+                    className="text-[10px] font-bold uppercase tracking-wider text-[var(--color-muted)] hover:text-[var(--color-cream)]"
                   >
                     Clear
                   </button>
@@ -1370,14 +1373,14 @@ export function CaseNexus({
                   <button
                     type="button"
                     onClick={() => fitMap(selectedNeighborhood)}
-                    className="rounded-full border border-[#3a557c] bg-[#071126] px-4 py-1.5 text-xs font-bold text-[#cfd9ea] transition hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)]"
+                    className="rounded-full border border-[var(--color-line-soft)] bg-[var(--color-surface)] px-4 py-1.5 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)]"
                   >
                     Fit focus
                   </button>
                   {selectedNode.type === "defendant" ? (
                     <Link
                       href={`/case/people/${selectedNode.slug}`}
-                      className="rounded-full border border-[#3a557c] bg-[#071126] px-4 py-1.5 text-xs font-bold text-[#cfd9ea] transition hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)]"
+                      className="rounded-full border border-[var(--color-line-soft)] bg-[var(--color-surface)] px-4 py-1.5 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)]"
                     >
                       Profile
                     </Link>
@@ -1391,7 +1394,7 @@ export function CaseNexus({
                       }
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="rounded-full border border-[#3a557c] bg-[#071126] px-4 py-1.5 text-xs font-bold text-[#cfd9ea] transition hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)]"
+                      className="rounded-full border border-[var(--color-line-soft)] bg-[var(--color-surface)] px-4 py-1.5 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)]"
                     >
                       Document
                     </a>
@@ -1403,7 +1406,7 @@ export function CaseNexus({
                 <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-gold-bright)]">
                   Connect the record
                 </p>
-                <p className="mt-2 text-xs font-mono leading-relaxed text-[#a9b7d0]">
+                <p className="mt-2 text-xs font-mono leading-relaxed text-[var(--color-muted)]">
                   {totalCases} case clusters orbit shared public-record hubs.
                   Pick a case, source hub, name, or document to see what it touches. Missing clue? Send
                   the document, statement, video, photo, date, URL, or witness
@@ -1418,7 +1421,7 @@ export function CaseNexus({
                   </Link>
                   <Link
                     href="/tell-your-story"
-                    className="inline-flex min-h-11 items-center justify-center rounded-md border border-[#3a557c] bg-[#071126] px-3 py-2 text-center text-[10px] font-bold uppercase tracking-wider text-[#cfd9ea] transition hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)]"
+                    className="inline-flex min-h-11 items-center justify-center rounded-md border border-[var(--color-line-soft)] bg-[var(--color-surface)] px-3 py-2 text-center text-[10px] font-bold uppercase tracking-wider text-[var(--color-ink-soft)] transition hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)]"
                   >
                     Tell story
                   </Link>
@@ -1428,7 +1431,7 @@ export function CaseNexus({
           </div>
 
           {visibleConnectors.length > 0 ? (
-            <div className="mt-4 border-t border-[#203a64] pt-4">
+            <div className="mt-4 border-t border-[var(--color-line-soft)] pt-4">
               <div className="mb-2 flex items-baseline justify-between gap-3">
                 <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-gold-bright)]">
                   Shared hubs
@@ -1436,7 +1439,7 @@ export function CaseNexus({
                 <button
                   type="button"
                   onClick={() => fitMap(new Set(visibleConnectors.map((n) => n.node.id)))}
-                  className="inline-flex min-h-11 items-center px-1 text-[10px] font-bold uppercase tracking-wider text-[#7c8aa6] hover:text-[var(--color-paper)] sm:min-h-0"
+                  className="inline-flex min-h-11 items-center px-1 text-[10px] font-bold uppercase tracking-wider text-[var(--color-muted)] hover:text-[var(--color-cream)] sm:min-h-0"
                 >
                   Fit hubs
                 </button>
@@ -1452,13 +1455,13 @@ export function CaseNexus({
                       className={`flex min-h-11 w-full items-center justify-between gap-3 rounded-md border px-3 py-2 text-left transition ${
                         active
                           ? "border-[var(--color-gold-bright)] bg-[var(--color-gold-bright)]/10"
-                          : "border-[#203a64] bg-[#071126] hover:border-[#3a557c]"
+                          : "border-[var(--color-line-soft)] bg-[var(--color-surface)] hover:border-[var(--color-gold)]"
                       }`}
                     >
-                      <span className="truncate text-[12px] font-bold text-[var(--color-paper)]">
+                      <span className="truncate text-[12px] font-bold text-[var(--color-cream)]">
                         {connector.node.label}
                       </span>
-                      <span className="whitespace-nowrap text-[10px] font-mono uppercase text-[#7c8aa6]">
+                      <span className="whitespace-nowrap text-[10px] font-mono uppercase text-[var(--color-muted)]">
                         {connector.node.connector_kind.replace("_", " ")}
                       </span>
                     </button>
@@ -1468,7 +1471,7 @@ export function CaseNexus({
             </div>
           ) : null}
 
-          <div className="mt-3 border-t border-[#203a64] pt-3">
+          <div className="mt-3 border-t border-[var(--color-line-soft)] pt-3">
             <div className="mb-2 flex items-baseline justify-between gap-3">
               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-gold-bright)]">
                 Case clusters
@@ -1476,7 +1479,7 @@ export function CaseNexus({
               <button
                 type="button"
                 onClick={() => fitMap()}
-                className="inline-flex min-h-11 items-center px-1 text-[10px] font-bold uppercase tracking-wider text-[#7c8aa6] hover:text-[var(--color-paper)] sm:min-h-0"
+                className="inline-flex min-h-11 items-center px-1 text-[10px] font-bold uppercase tracking-wider text-[var(--color-muted)] hover:text-[var(--color-cream)] sm:min-h-0"
               >
                 Fit all
               </button>
@@ -1492,13 +1495,13 @@ export function CaseNexus({
                     className={`flex min-h-11 w-full items-center justify-between gap-3 rounded-md border px-3 py-2 text-left transition ${
                       active
                         ? "border-[var(--color-gold-bright)] bg-[var(--color-gold-bright)]/10"
-                        : "border-[#203a64] bg-[#071126] hover:border-[#3a557c]"
+                        : "border-[var(--color-line-soft)] bg-[var(--color-surface)] hover:border-[var(--color-gold)]"
                     }`}
                   >
-                    <span className="truncate text-[12px] font-bold text-[var(--color-paper)]">
+                    <span className="truncate text-[12px] font-bold text-[var(--color-cream)]">
                       {caseNode.node.label}
                     </span>
-                    <span className="whitespace-nowrap text-[10px] font-mono text-[#7c8aa6]">
+                    <span className="whitespace-nowrap text-[10px] font-mono text-[var(--color-muted)]">
                       {caseNode.node.defendant_count}
                     </span>
                   </button>
@@ -1507,31 +1510,31 @@ export function CaseNexus({
             </div>
           </div>
 
-          <div className="mt-3 border-t border-[#203a64] pt-3 text-[10px] font-mono text-[#7c8aa6]">
+          <div className="mt-3 border-t border-[var(--color-line-soft)] pt-3 text-[10px] font-mono text-[var(--color-muted)]">
             <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-gold-bright)]">
               What the lines mean
             </p>
-            <p className="mb-3 text-[10px] leading-relaxed text-[#a9b7d0]">
+            <p className="mb-3 text-[10px] leading-relaxed text-[var(--color-muted)]">
               Blue lines are people tied to a case. Green/gold lines connect
               cases to shared public-record hubs like DOJ, D.D.C. court, filing
               year, and docket type. Reviewed tips can add jail, witness, photo,
               video, statement, and facility links.
             </p>
             <div className="grid grid-cols-2 gap-x-3 gap-y-1">
-              <LegendDot color="var(--color-gold-bright)" stroke="#d8e4f7">source hub</LegendDot>
-              <LegendDot color="#7fa9e3" stroke="#d8e4f7">court hub</LegendDot>
-              <LegendDot color="#1f2f55" stroke="#3a557c">case</LegendDot>
-              <LegendDot color="var(--color-gold-bright)" stroke="#3aa672">verified</LegendDot>
-              <LegendDot color="#ffd166" stroke="#0e1a36">pending</LegendDot>
-              <LegendDot color="#e08658" stroke="#0e1a36">unclaimed</LegendDot>
-              <LegendDot color="#7c8aa6" stroke="#0e1a36">document</LegendDot>
+              <LegendDot color="var(--color-gold-bright)" stroke="var(--color-ink-soft)">source hub</LegendDot>
+              <LegendDot color="var(--color-blue-ink)" stroke="var(--color-ink-soft)">court hub</LegendDot>
+              <LegendDot color="var(--color-surface-2)" stroke="var(--color-blue)">case</LegendDot>
+              <LegendDot color="var(--color-gold-bright)" stroke="var(--color-success)">verified</LegendDot>
+              <LegendDot color="var(--color-gold-light)" stroke="var(--color-paper)">pending</LegendDot>
+              <LegendDot color="var(--color-clay)" stroke="var(--color-paper)">unclaimed</LegendDot>
+              <LegendDot color="var(--color-muted)" stroke="var(--color-paper)">document</LegendDot>
             </div>
           </div>
         </aside>
       </div>
 
       {graphError && hasGraphData ? (
-        <p className="mt-3 rounded-md border border-[#ffd166]/50 bg-[#ffd166]/10 px-3 py-2 text-xs font-mono text-[#ffd166]">
+        <p className="mt-3 rounded-md border border-[var(--color-gold)]/50 bg-[var(--color-gold)]/10 px-3 py-2 text-xs font-mono text-[var(--color-gold)]">
           {graphError}
         </p>
       ) : null}
@@ -1556,7 +1559,7 @@ function FilterChip({
       className={`pointer-events-auto min-h-11 rounded-full border px-3 text-[10px] font-black uppercase tracking-wider backdrop-blur transition ${
         on
           ? "border-[var(--color-gold-bright)] bg-[var(--color-gold-bright)]/15 text-[var(--color-gold-bright)]"
-          : "border-[#203a64] bg-[#071126]/80 text-[#7c8aa6] hover:border-[#3a557c] hover:text-[#cfd9ea]"
+          : "border-[var(--color-line-soft)] bg-[var(--color-surface)]/80 text-[var(--color-muted)] hover:border-[var(--color-gold)] hover:text-[var(--color-ink-soft)]"
       }`}
     >
       {on ? "● " : "○ "}
@@ -1601,10 +1604,10 @@ function labelForMap(n: RawNode): string {
 function NodeDetail({ node }: { node: RawNode }) {
   if (node.type === "connector") {
     return (
-      <div className="space-y-2 text-xs text-[#a9b7d0] font-mono">
+      <div className="space-y-2 text-xs text-[var(--color-muted)] font-mono">
         <p>
           Shared hub:{" "}
-          <span className="text-[var(--color-paper)]">
+          <span className="text-[var(--color-cream)]">
             {node.connector_kind.replace("_", " ")}
           </span>
         </p>
@@ -1614,7 +1617,7 @@ function NodeDetail({ node }: { node: RawNode }) {
           {node.count === 1 ? "" : "s"}. It is the layer that keeps the graph
           from pretending every J6 case is isolated.
         </p>
-        <p className="text-[#7c8aa6]">
+        <p className="text-[var(--color-muted)]">
           Facility, witness, photo, video, statement, and jail-interaction hubs
           should be added only when a reviewed submission or public record
           supports the link.
@@ -1624,7 +1627,7 @@ function NodeDetail({ node }: { node: RawNode }) {
   }
   if (node.type === "case") {
     return (
-      <p className="text-xs text-[#a9b7d0] font-mono">
+      <p className="text-xs text-[var(--color-muted)] font-mono">
         Co-defendant cluster · {node.defendant_count} defendants on this case
         number. Click expand links to pull the visible neighborhood into the
         graph: defendants, archived documents, and any reviewed connectors the
@@ -1634,10 +1637,10 @@ function NodeDetail({ node }: { node: RawNode }) {
   }
   if (node.type === "defendant") {
     return (
-      <div className="space-y-1.5 text-xs text-[#a9b7d0] font-mono">
+      <div className="space-y-1.5 text-xs text-[var(--color-muted)] font-mono">
         <p>
           Status:{" "}
-          <span className="text-[var(--color-paper)]">
+          <span className="text-[var(--color-cream)]">
             {node.claim_status === "verified"
               ? "verified by defendant"
               : node.claim_status === "pending"
@@ -1647,10 +1650,10 @@ function NodeDetail({ node }: { node: RawNode }) {
         </p>
         {node.case_number ? (
           <p>
-            Case: <span className="text-[var(--color-paper)]">{node.case_number}</span>
+            Case: <span className="text-[var(--color-cream)]">{node.case_number}</span>
           </p>
         ) : null}
-        <p className="text-[#7c8aa6]">
+        <p className="text-[var(--color-muted)]">
           {node.has_charges ? "Charges on file. " : "No charges parsed yet. "}
           {node.has_sentence ? "Sentence on file." : "No sentence on file."}
           {" "}Witness statements, videos, photos, and clue links can be
@@ -1660,9 +1663,9 @@ function NodeDetail({ node }: { node: RawNode }) {
     );
   }
   return (
-    <div className="space-y-2 text-xs text-[#a9b7d0] font-mono">
+    <div className="space-y-2 text-xs text-[var(--color-muted)] font-mono">
       <p className="break-all">{node.doc_url}</p>
-      <p className="text-[#7c8aa6]">
+      <p className="text-[var(--color-muted)]">
         Document link. A document can connect cases through names, dates,
         prosecutors, agencies, charges, locations, and repeated facts.
       </p>
@@ -1705,7 +1708,7 @@ function ZoomButton({
       type="button"
       aria-label={label}
       onClick={onClick}
-      className="pointer-events-auto h-11 w-11 rounded-full border border-[#3a557c] bg-[#0e1a36]/90 text-[#cfd9ea] text-lg font-bold leading-none flex items-center justify-center hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)] transition"
+      className="pointer-events-auto h-11 w-11 rounded-full border border-[var(--color-line-soft)] bg-[var(--color-surface)]/90 text-[var(--color-ink-soft)] text-lg font-bold leading-none flex items-center justify-center hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)] transition"
     >
       {children}
     </button>
@@ -1729,7 +1732,7 @@ function MapActionButton({
       aria-label={label}
       onClick={onClick}
       disabled={disabled}
-      className="pointer-events-auto h-11 min-w-11 rounded-full border border-[#3a557c] bg-[#0e1a36]/90 px-4 text-[11px] font-bold uppercase tracking-wider text-[#cfd9ea] transition hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)] disabled:cursor-not-allowed disabled:opacity-45"
+      className="pointer-events-auto h-11 min-w-11 rounded-full border border-[var(--color-line-soft)] bg-[var(--color-surface)]/90 px-4 text-[11px] font-bold uppercase tracking-wider text-[var(--color-ink-soft)] transition hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)] disabled:cursor-not-allowed disabled:opacity-45"
     >
       {children}
     </button>

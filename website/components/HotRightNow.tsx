@@ -35,7 +35,7 @@ export function HotRightNow({ initial }: { initial: Row[] }) {
   return (
     <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-2.5 py-1.5 sm:rounded-xl sm:px-3 sm:py-2">
       <div className="flex min-w-0 items-center gap-2 overflow-hidden">
-        <span className="inline-flex shrink-0 items-center gap-1.5 text-[9px] uppercase tracking-wider font-black text-[var(--color-accent)] sm:text-[10px]">
+        <span className="inline-flex shrink-0 items-center gap-1.5 text-[9px] uppercase tracking-wider font-black text-[var(--color-accent-ink)] sm:text-[10px]">
           <span className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--color-accent)] animate-pulse" />
           Hot now
         </span>
@@ -45,12 +45,12 @@ export function HotRightNow({ initial }: { initial: Row[] }) {
               key={r.path}
               className="flex max-w-[12rem] shrink-0 snap-start items-center gap-1.5 rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-2 py-0.5 sm:max-w-[16rem] sm:px-2.5 sm:py-1"
             >
-              <span className="text-[10px] font-black tabular-nums text-[var(--color-accent)]">
+              <span className="text-[10px] font-black tabular-nums text-[var(--color-accent-ink)]">
                 {Number(r.viewers)}
               </span>
               <Link
                 href={r.path}
-                className="min-w-0 truncate text-[11px] font-mono text-[var(--color-ink)] hover:text-[var(--color-accent)] sm:text-xs"
+                className="min-w-0 truncate text-[11px] font-mono text-[var(--color-ink)] hover:text-[var(--color-accent-ink)] sm:text-xs"
                 title={r.path}
               >
                 {r.path}

@@ -224,22 +224,22 @@ export function RecordsRequestTool() {
 
   const field =
     "mt-1 w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm text-[var(--color-ink)] focus:border-[var(--color-accent)] focus:outline-none";
-  const lbl = "text-[11px] font-black uppercase tracking-[0.12em] text-[var(--color-muted)]";
+  const lbl = "text-[11px] font-black uppercase tracking-[0.12em] text-[var(--color-ink-soft)]";
 
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
       {/* Form */}
-      <div className="space-y-5">
+      <div className="space-y-5 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-5">
         <div>
           <p className={lbl}>Who are you requesting from?</p>
           <div className="mt-2 flex gap-2">
             <button
               type="button"
               onClick={() => setJur("tx")}
-              className={`rounded-full border-2 px-4 py-1.5 text-sm font-bold transition ${
+              className={`rounded-full border px-4 py-1.5 text-sm font-bold transition ${
                 jur === "tx"
-                  ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
-                  : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)]"
+                  ? "border-[var(--color-gold)] bg-[var(--color-gold-soft)] text-[var(--color-gold)]"
+                  : "border-[var(--color-line)] bg-transparent text-[var(--color-ink-soft)]"
               }`}
             >
               Texas / local agency
@@ -247,10 +247,10 @@ export function RecordsRequestTool() {
             <button
               type="button"
               onClick={() => setJur("federal")}
-              className={`rounded-full border-2 px-4 py-1.5 text-sm font-bold transition ${
+              className={`rounded-full border px-4 py-1.5 text-sm font-bold transition ${
                 jur === "federal"
-                  ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
-                  : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)]"
+                  ? "border-[var(--color-gold)] bg-[var(--color-gold-soft)] text-[var(--color-gold)]"
+                  : "border-[var(--color-line)] bg-transparent text-[var(--color-ink-soft)]"
               }`}
             >
               Federal (BOP / USMS / DOJ)
@@ -284,14 +284,14 @@ export function RecordsRequestTool() {
                 onClick={() => toggle(r.key)}
                 className={`flex min-h-11 items-center gap-2 rounded-lg border px-3 py-2 text-left text-sm transition ${
                   picked.has(r.key)
-                    ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-ink)]"
-                    : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)]"
+                    ? "border-[var(--color-gold)] bg-[var(--color-gold-soft)] text-[var(--color-ink)]"
+                    : "border-[var(--color-line)] bg-transparent text-[var(--color-ink-soft)] hover:border-[var(--color-gold)]"
                 }`}
               >
                 <span
                   aria-hidden
                   className={`flex h-4 w-4 flex-shrink-0 items-center justify-center rounded border text-[10px] font-black ${
-                    picked.has(r.key) ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-white" : "border-[var(--color-line)]"
+                    picked.has(r.key) ? "border-[var(--color-gold)] bg-[var(--color-gold)] text-[var(--color-navy)]" : "border-[var(--color-line)]"
                   }`}
                 >
                   {picked.has(r.key) ? "✓" : ""}
@@ -345,20 +345,20 @@ export function RecordsRequestTool() {
             <button
               type="button"
               onClick={copy}
-              className="min-h-11 rounded-full bg-[var(--color-accent)] px-4 py-1.5 text-xs font-bold text-white transition hover:brightness-105 sm:min-h-0"
+              className="btn-accent min-h-11 rounded-full px-4 py-1.5 text-xs sm:min-h-0"
             >
               {copied ? "Copied ✓" : "Copy"}
             </button>
             <button
               type="button"
               onClick={download}
-              className="min-h-11 rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-1.5 text-xs font-bold text-[var(--color-ink)] transition hover:border-[var(--color-accent)] sm:min-h-0"
+              className="min-h-11 rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-1.5 text-xs font-bold text-[var(--color-ink)] transition hover:border-[var(--color-gold)] sm:min-h-0"
             >
               Download
             </button>
           </div>
         </div>
-        <pre className="max-h-[560px] overflow-auto whitespace-pre-wrap rounded-xl border-2 border-[var(--color-line)] bg-[var(--color-paper)] p-5 font-mono text-[12.5px] leading-relaxed text-[var(--color-ink)]">
+        <pre className="max-h-[560px] overflow-auto whitespace-pre-wrap rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 font-mono text-[12.5px] leading-relaxed text-[var(--color-ink)]">
 {letter}
         </pre>
         <p className="mt-2 text-xs leading-relaxed text-[var(--color-muted)]">

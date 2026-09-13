@@ -56,7 +56,7 @@ export function BlueprintBuyButton({
         {busy ? "Starting checkout..." : label}
       </button>
       {error ? (
-        <p className="mt-2 text-center text-xs font-bold text-[var(--color-accent)]">
+        <p className="mt-2 text-center text-xs font-bold text-[var(--color-accent-ink)]">
           {error}
         </p>
       ) : null}

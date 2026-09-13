@@ -4,7 +4,7 @@ import { useState } from "react";
 import { trackEvent } from "@/lib/analytics";
 
 const inputClass =
-  "w-full rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] px-3.5 py-3 text-base text-[var(--color-ink)] outline-none transition focus:border-[var(--color-accent)]";
+  "w-full rounded-md border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3.5 py-3 text-base text-[var(--color-ink)] outline-none transition focus:border-[var(--color-accent)]";
 
 export function BookWaitlist({
   source = "book_page",
@@ -77,7 +77,7 @@ export function BookWaitlist({
 
   const labelClass =
     tone === "dark"
-      ? "text-xs font-black uppercase tracking-[0.14em] text-[#d8c89e]"
+      ? "text-xs font-black uppercase tracking-[0.14em] text-[var(--color-gold)]"
       : "text-xs font-black uppercase tracking-[0.14em] text-[var(--color-muted)]";
 
   return (
@@ -121,21 +121,21 @@ export function BookWaitlist({
         </label>
       </div>
       {error ? (
-        <p className="rounded-md border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-3 text-sm font-bold text-[var(--color-accent)]">
+        <p className="rounded-md border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-3 text-sm font-bold text-[var(--color-accent-ink)]">
           {error}
         </p>
       ) : null}
       <button
         type="submit"
         disabled={busy}
-        className="min-h-12 rounded-md border-2 border-[var(--color-accent)] bg-[var(--color-accent)] px-4 py-3 text-base font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)] disabled:opacity-60"
+        className="btn-accent min-h-12 rounded-md px-4 py-3 text-base font-black disabled:opacity-60"
       >
         {busy ? "Saving your spot..." : "Reserve my spot + free chapter"}
       </button>
       <p
         className={
           tone === "dark"
-            ? "text-center text-[11px] font-semibold text-[#cfd9ea]"
+            ? "text-center text-[11px] font-semibold text-[var(--color-ink-soft)]"
             : "text-center text-[11px] font-semibold text-[var(--color-muted)]"
         }
       >

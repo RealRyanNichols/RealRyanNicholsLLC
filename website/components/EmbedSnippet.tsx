@@ -56,7 +56,7 @@ export function EmbedSnippet({
         <button
           type="button"
           onClick={copy}
-          className="mt-2 min-h-11 rounded-md bg-[var(--color-navy)] px-4 py-2 text-sm font-black text-[#fdf8ea] transition hover:bg-[var(--color-blue-strong)]"
+          className="btn-accent mt-2 min-h-11 px-4 py-2 text-sm"
           aria-live="polite"
         >
           {copied ? "Copied ✓" : "Copy embed code"}

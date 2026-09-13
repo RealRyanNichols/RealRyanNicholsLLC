@@ -8,10 +8,8 @@ export function SupportersWall({ supporters }: { supporters: PublicSupporter[] }
   const named = supporters.filter((s) => s.display_name);
 
   return (
-    <section className="mt-10 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 sm:p-8">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
-        The wall
-      </p>
+    <section className="mt-10 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-6 shadow-[0_20px_50px_rgba(0,0,0,0.35)] sm:p-8">
+      <p className="eyebrow">The wall</p>
       <h2 className="font-display text-2xl sm:text-3xl mt-2 text-[var(--color-ink)]">
         People keeping this alive
       </h2>
@@ -27,14 +25,14 @@ export function SupportersWall({ supporters }: { supporters: PublicSupporter[] }
         {supporters.map((s) => (
           <li
             key={s.id}
-            className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4"
+            className="rounded-xl border border-[var(--color-line-soft)] bg-[var(--color-surface-2)] p-4"
           >
             <div className="flex items-start justify-between gap-3">
               <span className="text-sm font-bold text-[var(--color-ink)]">
                 {s.display_name || "Anonymous supporter"}
               </span>
               {s.amount ? (
-                <span className="shrink-0 rounded-full bg-[var(--color-accent-soft)] px-2.5 py-0.5 text-xs font-bold text-[var(--color-accent)] tabular-nums">
+                <span className="shrink-0 rounded-full bg-[var(--color-support-soft)] px-2.5 py-0.5 text-xs font-bold text-[var(--color-gold)] tabular-nums">
                   ${s.amount}
                 </span>
               ) : null}

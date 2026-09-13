@@ -39,7 +39,7 @@ export async function WhatLinksHere({ postId }: { postId: string }) {
 
   return (
     <aside className="mt-8 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-5">
-      <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[var(--color-navy)]">
+      <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[var(--color-gold)]">
         What links here
       </p>
       <p className="mt-1 text-xs text-[var(--color-muted)]">
@@ -52,9 +52,9 @@ export async function WhatLinksHere({ postId }: { postId: string }) {
           <li key={r.from_post_id}>
             <Link
               href={`/posts/${r.posts!.slug}`}
-              className="group flex items-center justify-between gap-3 rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] px-3.5 py-2.5 transition hover:border-[var(--color-navy)]"
+              className="group flex items-center justify-between gap-3 rounded-md border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3.5 py-2.5 transition hover:border-[var(--color-gold)]"
             >
-              <span className="min-w-0 truncate text-sm font-bold text-[var(--color-ink)] group-hover:text-[var(--color-navy)]">
+              <span className="min-w-0 truncate text-sm font-bold text-[var(--color-ink)] group-hover:text-[var(--color-gold)]">
                 {r.posts!.title ?? r.posts!.slug}
               </span>
               <span className="shrink-0 text-xs text-[var(--color-muted)]">

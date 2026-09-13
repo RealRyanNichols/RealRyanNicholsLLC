@@ -32,10 +32,8 @@ export function CaseInfoCard({ person }: { person: CasePerson }) {
 
   return (
     <section className="mt-10 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-navy)] font-bold">
-        The case file
-      </p>
-      <h2 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight">
+      <p className="eyebrow">The case file</p>
+      <h2 className="mt-1 font-display text-xl sm:text-2xl font-bold tracking-tight">
         On the record
       </h2>
 
@@ -83,7 +81,7 @@ export function CaseInfoCard({ person }: { person: CasePerson }) {
             {(person.charges ?? []).map((c) => (
               <li
                 key={c}
-                className="text-sm font-mono text-[var(--color-ink)] before:content-['§'] before:mr-2 before:text-[var(--color-navy)]"
+                className="text-sm font-mono text-[var(--color-ink)] before:content-['§'] before:mr-2 before:text-[var(--color-gold)]"
               >
                 {c}
               </li>
@@ -115,7 +113,7 @@ export function CaseInfoCard({ person }: { person: CasePerson }) {
                   href={url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[var(--color-navy)] hover:underline break-all"
+                  className="text-[var(--color-ink)] hover:underline break-all"
                 >
                   {url} →
                 </a>
@@ -130,7 +128,7 @@ export function CaseInfoCard({ person }: { person: CasePerson }) {
           href={person.support_url ?? "#"}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-6 inline-flex items-center gap-2 rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
+          className="mt-6 inline-flex items-center gap-2 rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-cream)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
         >
           Support {person.name.split(/\s+/)[0]} →
         </a>

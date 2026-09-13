@@ -11,27 +11,27 @@ import type { ClaimLabel } from "@/lib/officials";
 // Each label gets its own ink so a fact card and a statement card still
 // read differently at the rule, not just at the chip.
 export const CLAIM_INK: Record<ClaimLabel, string> = {
-  FACT: "var(--color-navy)",
+  FACT: "var(--color-gold)",
   RECORD: "var(--color-blue)",
-  DOCUMENTED: "var(--color-navy)",
-  "RYAN STATEMENT": "var(--color-ink-soft)",
-  "DOCUMENTED INFERENCE": "var(--color-support-strong)",
+  DOCUMENTED: "var(--color-blue-ink)",
+  "RYAN STATEMENT": "var(--color-line-soft)",
+  "DOCUMENTED INFERENCE": "var(--color-tag-procedural)",
   "NEEDS AUTHENTICATION": "var(--color-muted)",
 };
 
-// Filled navy = verifiable fact; navy on blue-soft = preserved in a named
-// exhibit; outlined navy = his own account; blue = stated on the court
-// record; gold = inference from disclosed facts; muted = real and
-// load-bearing, not yet verified. The gold and muted chips keep their border
-// and fill for identity but set their text in ink-soft: at 10–11px the
-// lighter inks fall under 4.5:1 on their own tints.
+// One solid chip in the room: FACT, gold with navy type. Everything else is a
+// hairline chip in its own tint on the dark floor, so the eye reads "proven"
+// in one glance and everything else as a qualified claim: blue for what was
+// said on the court record or preserved in a named exhibit, cream for his own
+// account, procedural amber for an inference drawn from disclosed facts, muted
+// for real and load-bearing but not yet verified.
 const CHIP: Record<ClaimLabel, string> = {
-  FACT: "border-[var(--color-navy)] bg-[var(--color-navy)] text-[var(--color-paper)]",
-  RECORD: "border-[var(--color-blue)] bg-[var(--color-blue-soft)] text-[var(--color-blue)]",
-  DOCUMENTED: "border-[var(--color-navy)] bg-[var(--color-blue-soft)] text-[var(--color-navy)]",
-  "RYAN STATEMENT": "border-[var(--color-navy)] bg-transparent text-[var(--color-navy)]",
+  FACT: "border-[var(--color-gold)] bg-[var(--color-gold)] text-[var(--color-navy)]",
+  RECORD: "border-[var(--color-blue)] bg-[var(--color-blue-soft)] text-[var(--color-blue-ink)]",
+  DOCUMENTED: "border-[var(--color-blue)] bg-[var(--color-blue-soft)] text-[var(--color-blue-ink)]",
+  "RYAN STATEMENT": "border-[var(--color-line-soft)] bg-transparent text-[var(--color-ink)]",
   "DOCUMENTED INFERENCE":
-    "border-[var(--color-support-strong)] bg-[var(--color-support-soft)] text-[var(--color-ink-soft)]",
+    "border-[var(--color-tag-procedural)] bg-[var(--color-support-soft)] text-[var(--color-tag-procedural)]",
   "NEEDS AUTHENTICATION":
     "border-[var(--color-muted)] bg-[var(--color-surface-2)] text-[var(--color-ink-soft)]",
 };

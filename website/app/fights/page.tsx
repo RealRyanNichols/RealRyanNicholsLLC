@@ -57,13 +57,23 @@ export default function FightsPage() {
   return (
     <main className="mx-auto max-w-5xl px-4 py-8 sm:py-12">
       {/* ---- Hero ---- */}
-      <div className="rounded-3xl border-2 border-[var(--color-accent)] bg-gradient-to-br from-[var(--color-accent-soft)] to-[var(--color-surface)] p-6 sm:p-10">
-        <p className="text-[11px] uppercase tracking-[0.25em] text-[var(--color-accent)] font-bold">
+      <div className="rounded-3xl border border-[var(--color-line)] bg-gradient-to-br from-[var(--color-surface-2)] to-[var(--color-navy)] p-6 sm:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
+        <p className="eyebrow" data-reveal>
           The Fights · the war room
         </p>
-        <h1 className="mt-2 text-4xl sm:text-6xl font-bold tracking-tight leading-[1.02] font-display">
+        <h1
+          className="display mt-3 text-5xl sm:text-7xl"
+          data-reveal
+          style={{ "--d": 1 } as React.CSSProperties}
+        >
           Power back to the people.
         </h1>
+        <div
+          className="mt-5 h-[3px] w-[4.5rem] bg-[var(--color-gold)]"
+          aria-hidden
+          data-reveal
+          style={{ "--d": 2 } as React.CSSProperties}
+        />
         <p className="mt-4 text-base sm:text-xl text-[var(--color-ink-soft)] leading-relaxed max-w-2xl">
           The system ran me over and called it justice. I came out the other
           side knowing exactly how it treats regular people who don&apos;t have
@@ -100,10 +110,11 @@ export default function FightsPage() {
           <Link
             key={f.slug}
             href={`/fights/${f.slug}`}
-            className="group flex flex-col rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6 hover:border-[var(--color-accent)] transition"
+            className="group flex flex-col rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.4)] transition hover:border-[var(--color-gold)] sm:p-6"
+            data-reveal
           >
             <div className="flex items-center justify-between gap-2">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+              <p className="eyebrow">
                 {f.tag}
               </p>
               <span className="rounded-full border border-[var(--color-line)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--color-muted)]">
@@ -112,21 +123,21 @@ export default function FightsPage() {
                   : "Position stated"}
               </span>
             </div>
-            <h2 className="mt-1 text-2xl font-bold tracking-tight font-display group-hover:text-[var(--color-accent)] transition">
+            <h2 className="mt-1 text-2xl font-bold tracking-tight font-display group-hover:text-[var(--color-gold)] transition">
               {f.title}
             </h2>
-            <p className="mt-2 border-l-2 border-[var(--color-accent)] pl-3 text-sm text-[var(--color-ink-soft)] italic leading-snug">
+            <p className="mt-2 border-l-2 border-[var(--color-gold)] pl-3 text-sm text-[var(--color-ink-soft)] italic leading-snug">
               {f.stakes}
             </p>
             <ul className="mt-4 space-y-1.5 flex-1">
               {f.planks.map((p) => (
                 <li key={p} className="flex gap-2 text-sm text-[var(--color-ink)] leading-snug">
-                  <span className="text-[var(--color-accent)] font-bold flex-shrink-0">✓</span>
+                  <span className="text-[var(--color-gold)] font-bold flex-shrink-0">✓</span>
                   <span>{p}</span>
                 </li>
               ))}
             </ul>
-            <span className="mt-4 inline-block text-sm font-bold text-[var(--color-accent)] group-hover:underline">
+            <span className="mt-4 inline-block text-sm font-bold text-[var(--color-gold)] group-hover:underline">
               Read the fight →
             </span>
           </Link>
@@ -134,7 +145,7 @@ export default function FightsPage() {
       </div>
 
       {/* ---- Submit ---- */}
-      <section className="mt-10 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-6 sm:p-8">
+      <section className="mt-10 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-6 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.4)]" data-reveal>
         <h2 className="text-xl sm:text-2xl font-bold tracking-tight font-display">
           Got a fight that belongs here?
         </h2>
@@ -146,13 +157,13 @@ export default function FightsPage() {
         <div className="mt-5 flex flex-wrap gap-3">
           <Link
             href="/submit"
-            className="rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
+            className="btn-blue rounded-full px-5 py-2.5 text-sm font-bold"
           >
             Send a tip →
           </Link>
           <Link
             href="/support"
-            className="rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
+            className="btn-accent rounded-full px-5 py-2.5 text-sm"
           >
             Fuel the fight →
           </Link>
@@ -164,8 +175,8 @@ export default function FightsPage() {
 
 function HeroStat({ n, label }: { n: number; label: string }) {
   return (
-    <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)]/60 px-3 py-2.5">
-      <div className="text-2xl sm:text-3xl font-bold tracking-tight leading-none text-[var(--color-accent)] font-display tabular-nums">
+    <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2.5">
+      <div className="display text-3xl sm:text-4xl leading-none text-[var(--color-gold)] tabular-nums">
         {n}
       </div>
       <div className="mt-1 text-[11px] uppercase tracking-wider text-[var(--color-muted)] font-bold leading-tight">

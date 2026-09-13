@@ -12,6 +12,7 @@ import type {
   FeatureCollection,
 } from "geojson";
 import { getSupabaseBrowserClient } from "@/lib/supabase/browser";
+import { PALETTE } from "@/lib/palette";
 
 // ─── Wire types from case_geo_aggregate / case_geo_state ─────────────
 type StateRow = {
@@ -61,17 +62,25 @@ const statesFC = feature(topo, topo.objects.states) as FeatureCollection<
 const PATH_GEN = geoPath(geoIdentity());
 
 // ─── Choropleth color ramp (terminal-greens to keep it on-brand) ─────
+// The ramp is mixed numerically, so it cannot read a CSS variable: both
+// endpoints come from PALETTE, which mirrors styles/tokens.css. A state
+// with nobody on the record keeps the panel's own navy.
+const RAMP_LOW = rgbOf(PALETTE.greenDeep);
+const RAMP_HIGH = rgbOf(PALETTE.live);
+
+function rgbOf(hex: string): [number, number, number] {
+  const n = parseInt(hex.slice(1), 16);
+  return [(n >> 16) & 0xff, (n >> 8) & 0xff, n & 0xff];
+}
+
 function colorFor(count: number, maxCount: number): string {
-  if (count === 0) return "#1c2a4a";
+  if (count === 0) return "var(--color-surface-2)";
   // Map 1..maxCount to t in [0,1] using a sqrt so the smaller states
   // still get visible color, otherwise the FL/TX dominate.
   const t = Math.sqrt(count / Math.max(1, maxCount));
-  // Interpolate from navy → green
-  const r1 = 0x28, g1 = 0x3d, b1 = 0x6e; // #283d6e
-  const r2 = 0x7f, g2 = 0xe3, b2 = 0xa9; // PALETTE.live — the live green, mixed numerically
-  const r = Math.round(r1 + (r2 - r1) * t);
-  const g = Math.round(g1 + (g2 - g1) * t);
-  const b = Math.round(b1 + (b2 - b1) * t);
+  const r = Math.round(RAMP_LOW[0] + (RAMP_HIGH[0] - RAMP_LOW[0]) * t);
+  const g = Math.round(RAMP_LOW[1] + (RAMP_HIGH[1] - RAMP_LOW[1]) * t);
+  const b = Math.round(RAMP_LOW[2] + (RAMP_HIGH[2] - RAMP_LOW[2]) * t);
   return `rgb(${r},${g},${b})`;
 }
 
@@ -120,7 +129,7 @@ export function CaseGeographyMap({ data }: { data: GeoPayload }) {
 
   return (
     <div className="space-y-4">
-      <div className="relative rounded-2xl overflow-hidden border-2 border-[var(--color-blue)] bg-[#0a1429]">
+      <div className="relative rounded-2xl overflow-hidden border border-[var(--color-line)] bg-[var(--color-surface)] shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
         <svg
           ref={svgRef}
           data-geo-map
@@ -142,7 +151,7 @@ export function CaseGeographyMap({ data }: { data: GeoPayload }) {
                 key={nm}
                 d={d}
                 fill={fill}
-                stroke={isSelected ? "#ffffff" : "#0a1429"}
+                stroke={isSelected ? "var(--color-cream)" : "var(--color-paper)"}
                 strokeWidth={isSelected ? 1.5 : 0.5}
                 onMouseEnter={(e) => {
                   const rect = svgRef.current?.getBoundingClientRect();
@@ -181,25 +190,28 @@ export function CaseGeographyMap({ data }: { data: GeoPayload }) {
 
         {/* Top-left header */}
         <div className="absolute top-3 left-3 z-10 max-w-[16rem]">
-          <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[var(--color-gold-bright)] flex items-center gap-1.5">
+          <p className="eyebrow flex items-center gap-1.5">
             <span className="inline-block w-2 h-2 rounded-full bg-[var(--color-gold-bright)] animate-pulse" />
             Geography · J6 defendants
           </p>
-          <p className="mt-1 text-3xl sm:text-4xl font-bold tabular-nums tracking-tight font-display text-[var(--color-paper)] leading-none drop-shadow">
+          <p
+            data-count={data.totals.with_location > 0 ? data.totals.with_location : undefined}
+            className="display mt-1 text-4xl sm:text-5xl tabular-nums text-[var(--color-gold)] drop-shadow"
+          >
             {data.totals.with_location.toLocaleString()}
           </p>
-          <p className="text-[11px] text-[#a9b7d0] mt-0.5">
+          <p className="text-[11px] text-[var(--color-muted)] mt-0.5">
             defendants with a known home state
           </p>
         </div>
 
         {/* Color ramp legend */}
-        <div className="absolute bottom-3 right-3 z-10 bg-[#0a1429]/95 border border-[#3a557c] rounded-md px-3 py-2 text-[10px] font-mono text-[#a9b7d0]">
-          <p className="mb-1 uppercase tracking-wider font-bold text-[#7c8aa6]">
+        <div className="absolute bottom-3 right-3 z-10 bg-[var(--color-surface)]/95 border border-[var(--color-line-soft)] rounded-md px-3 py-2 text-[10px] font-mono text-[var(--color-muted)]">
+          <p className="mb-1 uppercase tracking-wider font-bold text-[var(--color-muted)]">
             defendants per state
           </p>
           <div className="flex items-center gap-1.5">
-            <span className="text-[#7c8aa6]">0</span>
+            <span className="text-[var(--color-muted)]">0</span>
             <div className="flex h-2 w-32">
               {Array.from({ length: 12 }, (_, i) => (
                 <div
@@ -218,16 +230,16 @@ export function CaseGeographyMap({ data }: { data: GeoPayload }) {
         {/* Hover chip */}
         {hover ? (
           <div
-            className="absolute z-10 pointer-events-none bg-[#0e1a36] border border-[var(--color-gold-bright)] rounded-md px-3 py-2 text-[11px] font-mono shadow-lg"
+            className="absolute z-10 pointer-events-none bg-[var(--color-surface-2)] text-[var(--color-cream)] border border-[var(--color-line)] rounded-md px-3 py-2 text-[11px] font-mono shadow-[0_20px_50px_rgba(0,0,0,0.4)]"
             style={{
               left: Math.min(hover.x + 10, W - 200),
               top: Math.max(hover.y - 60, 10),
             }}
           >
-            <p className="text-[var(--color-paper)] font-bold tracking-tight">
+            <p className="text-[var(--color-cream)] font-bold tracking-tight">
               {hover.name}
             </p>
-            <p className="text-[#a9b7d0] mt-0.5">
+            <p className="text-[var(--color-muted)] mt-0.5">
               {hover.row?.defendants ?? 0} defendant
               {(hover.row?.defendants ?? 0) === 1 ? "" : "s"}
             </p>
@@ -239,20 +251,18 @@ export function CaseGeographyMap({ data }: { data: GeoPayload }) {
           </div>
         ) : null}
 
-        <p className="absolute bottom-2 left-3 text-[9px] text-[#7c8aa6] font-mono uppercase tracking-wider z-10 select-none pointer-events-none">
+        <p className="absolute bottom-2 left-3 text-[9px] text-[var(--color-muted)] font-mono uppercase tracking-wider z-10 select-none pointer-events-none">
           click a state to see its defendants
         </p>
       </div>
 
       {/* Top-15 states ranked list */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        <div className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-paper)] p-5">
-          <p className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold">
-            Top states by defendants
-          </p>
+        <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
+          <p className="eyebrow">Top states by defendants</p>
           <table className="mt-3 w-full text-sm">
             <thead>
-              <tr className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] border-b border-[var(--color-line)]">
+              <tr className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] border-b border-[var(--color-line-soft)]">
                 <th className="text-left py-1.5 font-bold">State</th>
                 <th className="text-right py-1.5 font-bold">Defendants</th>
                 <th className="text-right py-1.5 font-bold">Sentenced</th>
@@ -262,7 +272,7 @@ export function CaseGeographyMap({ data }: { data: GeoPayload }) {
               {data.states.slice(0, 15).map((s) => (
                 <tr
                   key={s.name}
-                  className="border-b border-[var(--color-line)] last:border-0 cursor-pointer hover:bg-[var(--color-surface)]"
+                  className="border-b border-[var(--color-line-soft)] last:border-0 cursor-pointer hover:bg-[var(--color-surface-2)]"
                   onClick={() => void openState(s.name)}
                 >
                   <td className="py-2 font-bold text-[var(--color-ink)]">
@@ -282,12 +292,12 @@ export function CaseGeographyMap({ data }: { data: GeoPayload }) {
 
         {/* Selected state drawer */}
         {selected ? (
-          <div className="rounded-2xl border-2 border-[var(--color-gold-bright)] bg-[#0e1a36] text-[#cfd9ea] p-5">
+          <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
             <div className="flex items-baseline justify-between gap-3 flex-wrap mb-3">
-              <h3 className="text-lg font-bold tracking-tight text-[var(--color-paper)]">
+              <h3 className="text-lg font-bold tracking-tight text-[var(--color-cream)]">
                 {selected}
                 {drawer ? (
-                  <span className="ml-2 text-sm font-mono text-[#a9b7d0]">
+                  <span className="ml-2 text-sm font-mono text-[var(--color-muted)]">
                     · {drawer.count} defendant
                     {drawer.count === 1 ? "" : "s"}
                   </span>
@@ -300,15 +310,15 @@ export function CaseGeographyMap({ data }: { data: GeoPayload }) {
                   setSelected(null);
                   setDrawer(null);
                 }}
-                className="-mr-3 -mt-2 grid min-h-11 min-w-11 place-items-center rounded-full px-3 text-[10px] uppercase tracking-wider text-[#7c8aa6] hover:text-[var(--color-paper)] font-bold"
+                className="-mr-3 -mt-2 grid min-h-11 min-w-11 place-items-center rounded-full px-3 text-[10px] uppercase tracking-wider text-[var(--color-muted)] hover:text-[var(--color-cream)] font-bold"
               >
                 Close ×
               </button>
             </div>
             {loadingDrawer ? (
-              <p className="text-sm text-[#7c8aa6] italic">Loading defendants…</p>
+              <p className="text-sm text-[var(--color-muted)] italic">Loading defendants…</p>
             ) : !drawer || drawer.rows.length === 0 ? (
-              <p className="text-sm text-[#7c8aa6] italic">
+              <p className="text-sm text-[var(--color-muted)] italic">
                 No matched defendants from this state.
               </p>
             ) : (
@@ -316,22 +326,22 @@ export function CaseGeographyMap({ data }: { data: GeoPayload }) {
                 {drawer.rows.map((r) => (
                   <li
                     key={r.id}
-                    className="flex items-baseline justify-between gap-2 text-xs font-mono border-b border-[#1c2a4a] pb-1.5 last:border-0"
+                    className="flex items-baseline justify-between gap-2 text-xs font-mono border-b border-[var(--color-line-soft)] pb-1.5 last:border-0"
                   >
                     <Link
                       href={`/case/people/${r.slug}`}
-                      className="text-[var(--color-paper)] hover:text-[var(--color-gold-bright)] truncate flex-1"
+                      className="text-[var(--color-cream)] hover:text-[var(--color-gold-bright)] truncate flex-1"
                     >
                       {r.claim_status === "verified" ? "★ " : ""}
                       {r.name}
                     </Link>
                     {r.city ? (
-                      <span className="text-[#7c8aa6] tabular-nums whitespace-nowrap">
+                      <span className="text-[var(--color-muted)] tabular-nums whitespace-nowrap">
                         {toTitleCase(r.city)}
                       </span>
                     ) : null}
                     {r.case_number ? (
-                      <span className="text-[#7fa9e3] tabular-nums whitespace-nowrap">
+                      <span className="text-[var(--color-blue-ink)] tabular-nums whitespace-nowrap">
                         {r.case_number}
                       </span>
                     ) : null}
@@ -341,7 +351,7 @@ export function CaseGeographyMap({ data }: { data: GeoPayload }) {
             )}
           </div>
         ) : (
-          <div className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-5 text-sm text-[var(--color-ink-soft)] flex items-center justify-center min-h-[8rem]">
+          <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 text-sm text-[var(--color-ink-soft)] shadow-[0_20px_50px_rgba(0,0,0,0.4)] flex items-center justify-center min-h-[8rem]">
             <p className="italic">
               Click a state on the map (or in the table) to see every
               defendant from there.

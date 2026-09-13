@@ -101,7 +101,7 @@ export function TipActions({
             type="button"
             disabled={isPending}
             onClick={() => update(o.value)}
-            className="text-xs font-semibold rounded-md border border-[var(--color-line)] px-2.5 py-1 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] disabled:opacity-50"
+            className="text-xs font-semibold rounded-md border border-[var(--color-line)] px-2.5 py-1 hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)] disabled:opacity-50"
           >
             Mark {o.label}
           </button>
@@ -109,7 +109,7 @@ export function TipActions({
         <button
           type="button"
           onClick={() => setShowNotes((v) => !v)}
-          className="text-xs font-semibold rounded-md border border-[var(--color-line)] px-2.5 py-1 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] ml-auto"
+          className="text-xs font-semibold rounded-md border border-[var(--color-line)] px-2.5 py-1 hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)] ml-auto"
         >
           {showNotes ? "Hide notes" : "Edit notes"}
         </button>
@@ -128,14 +128,14 @@ export function TipActions({
             type="button"
             disabled={isPending}
             onClick={() => update(currentStatus as Status, notes)}
-            className="mt-2 text-xs font-semibold rounded-md border border-[var(--color-accent)] bg-[var(--color-accent)] text-white px-3 py-1 hover:bg-[var(--color-accent-strong)] disabled:opacity-50"
+            className="mt-2 text-xs font-semibold rounded-md border border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-3 py-1 hover:bg-[var(--color-accent-strong)] disabled:opacity-50"
           >
             Save notes
           </button>
         </div>
       ) : null}
 
-      <section className="mt-3 border border-[var(--color-line)] bg-[var(--color-paper)] p-3">
+      <section className="mt-3 border border-[var(--color-line)] bg-[var(--color-surface-2)] p-3">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-muted)]">
@@ -150,7 +150,7 @@ export function TipActions({
               href={currentOutcomeUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="border border-[var(--color-line)] px-2.5 py-1 text-xs font-black uppercase tracking-normal hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+              className="border border-[var(--color-line)] px-2.5 py-1 text-xs font-black uppercase tracking-normal hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)]"
             >
               Open result
             </a>
@@ -220,14 +220,14 @@ export function TipActions({
                 outcome_notes: outcomeNotes.trim() || null,
               })
             }
-            className="border border-[var(--color-accent)] bg-[var(--color-accent)] px-3 py-2 text-xs font-black uppercase tracking-normal text-white hover:bg-[var(--color-accent-strong)] disabled:opacity-50"
+            className="border border-[var(--color-accent)] bg-[var(--color-accent)] px-3 py-2 text-xs font-black uppercase tracking-normal text-[var(--color-cream)] hover:bg-[var(--color-accent-strong)] disabled:opacity-50"
           >
             Save outcome
           </button>
         </div>
       </section>
 
-      {error ? <p className="mt-2 text-xs text-[var(--color-accent)]">{error}</p> : null}
+      {error ? <p className="mt-2 text-xs text-[var(--color-accent-ink)]">{error}</p> : null}
     </div>
   );
 }

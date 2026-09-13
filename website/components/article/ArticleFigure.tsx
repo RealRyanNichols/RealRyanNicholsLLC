@@ -31,7 +31,7 @@ export function ArticleFigure({ value }: { value: Record<string, unknown> }) {
   if (!alt) {
     if (process.env.NODE_ENV !== "production") {
       return (
-        <div className="not-prose my-7 rounded-md border-2 border-dashed border-[#8a6d1f] bg-[#f4efe4] p-4 text-sm font-bold text-[#8a6d1f]">
+        <div className="not-prose my-7 rounded-md border-2 border-dashed border-[var(--color-gold)] bg-[var(--color-surface-2)] p-4 text-sm font-bold text-[var(--color-gold)]">
           Figure blocked: alt text is required. Describe what the image shows.
         </div>
       );
@@ -41,7 +41,7 @@ export function ArticleFigure({ value }: { value: Record<string, unknown> }) {
 
   return (
     <figure className={`not-prose my-8 ${WIDTHS[width] ?? WIDTHS.full}`}>
-      <div className="overflow-hidden rounded-lg border border-[#0b1b34]/20 bg-[#061020]">
+      <div className="panel overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={resolveSrc(src)}
@@ -61,7 +61,7 @@ export function ArticleFigure({ value }: { value: Record<string, unknown> }) {
             </span>
           ) : null}
           {credit ? (
-            <span className="text-xs font-bold uppercase tracking-wider text-[#8a6d1f]">
+            <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-gold)]">
               {credit}
             </span>
           ) : null}

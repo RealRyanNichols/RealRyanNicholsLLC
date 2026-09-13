@@ -28,10 +28,8 @@ export function CaseCommentForm({ type, slug, signedIn }: Props) {
   if (!signedIn) {
     return (
       <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 text-sm">
-        <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--color-accent)]">
-          Add to the record
-        </p>
-        <h3 className="mt-2 text-xl font-bold tracking-tight text-[var(--color-ink)]">
+        <p className="eyebrow">Add to the record</p>
+        <h3 className="mt-2 font-display text-xl font-bold tracking-tight text-[var(--color-ink)]">
           Create an account to comment on this case.
         </h3>
         <p className="mt-2 leading-relaxed text-[var(--color-ink-soft)]">
@@ -114,12 +112,12 @@ export function CaseCommentForm({ type, slug, signedIn }: Props) {
         </button>
       </div>
       {state.kind === "success" && (
-        <p className="mt-3 text-sm text-emerald-400">
+        <p className="mt-3 text-sm text-[var(--color-success)]">
           Comment submitted. It will appear once approved.
         </p>
       )}
       {state.kind === "error" && (
-        <p className="mt-3 text-sm text-[var(--color-accent)]">{state.message}</p>
+        <p className="mt-3 text-sm text-[var(--color-accent-ink)]">{state.message}</p>
       )}
     </form>
   );

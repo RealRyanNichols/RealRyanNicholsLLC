@@ -48,10 +48,8 @@ export function OfferDecisionTool({
         : "Start by giving Ryan the facts. The right offer may become obvious after the first pass.";
 
   return (
-    <div className="rounded-lg border-2 border-[var(--color-blue)] bg-[#f7fbff] p-4 shadow-[0_14px_36px_rgba(29,58,107,0.12)] sm:p-5">
-      <p className="text-xs font-black uppercase tracking-normal text-[var(--color-blue)]">
-        Quick fit check
-      </p>
+    <div className="rounded-lg border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-4 shadow-[0_14px_36px_rgba(0,0,0,0.4)] sm:p-5">
+      <p className="eyebrow">Quick fit check</p>
       <h2 className="mt-2 font-display text-2xl font-black tracking-normal">
         Is {name} the right next move?
       </h2>
@@ -68,8 +66,8 @@ export function OfferDecisionTool({
                 className={[
                   "rrn-tap rounded-full border px-3 py-2 text-xs font-black transition",
                   goal === item
-                    ? "border-[var(--color-blue)] bg-[var(--color-blue)] text-white"
-                    : "border-[var(--color-line)] bg-white text-[var(--color-ink)] hover:border-[var(--color-blue)]",
+                    ? "border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-cream)]"
+                    : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink)] hover:border-[var(--color-blue)]",
                 ].join(" ")}
               >
                 {item}
@@ -90,7 +88,7 @@ export function OfferDecisionTool({
                   "rrn-tap min-h-11 rounded-lg border px-2 text-xs font-black transition",
                   timeline === item
                     ? "border-[var(--color-support)] bg-[var(--color-support-soft)] text-[var(--color-ink)]"
-                    : "border-[var(--color-line)] bg-white text-[var(--color-ink)] hover:border-[var(--color-support)]",
+                    : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink)] hover:border-[var(--color-support)]",
                 ].join(" ")}
               >
                 {item}
@@ -100,7 +98,7 @@ export function OfferDecisionTool({
         </div>
 
         <div className="grid gap-2 sm:grid-cols-2">
-          <label className="flex min-h-12 items-center gap-3 rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-bold">
+          <label className="flex min-h-12 items-center gap-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm font-bold text-[var(--color-ink)]">
             <input
               type="checkbox"
               checked={hasProof}
@@ -109,7 +107,7 @@ export function OfferDecisionTool({
             />
             I have links, facts, screenshots, files, or examples.
           </label>
-          <label className="flex min-h-12 items-center gap-3 rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-bold">
+          <label className="flex min-h-12 items-center gap-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm font-bold text-[var(--color-ink)]">
             <input
               type="checkbox"
               checked={needsBuild}
@@ -121,16 +119,16 @@ export function OfferDecisionTool({
         </div>
       </div>
 
-      <div className="mt-5 rounded-lg border border-[#b8c9e6] bg-white p-4">
+      <div className="mt-5 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
         <div className="flex items-end justify-between gap-3">
           <p className="text-sm font-black uppercase tracking-normal text-[var(--color-muted)]">
             Action score
           </p>
-          <p className="font-mono text-4xl font-black text-[var(--color-blue)]">
+          <p className="font-mono text-4xl font-black text-[var(--color-blue-ink)]">
             {score}
           </p>
         </div>
-        <div className="mt-2 h-3 overflow-hidden rounded-full bg-[#d9e2f2]">
+        <div className="mt-2 h-3 overflow-hidden rounded-full bg-[var(--color-line-soft)]">
           <div
             className="h-full rounded-full bg-[var(--color-blue)] transition-all"
             style={{ width: `${score}%` }}
@@ -145,11 +143,11 @@ export function OfferDecisionTool({
         <BuyButton
           slug={slug}
           label={`Pay ${price}`}
-          className="w-full rounded-lg bg-[var(--color-support)] px-5 py-3 text-sm font-black text-[#1a1410] shadow-[0_10px_24px_rgba(200,155,47,0.24)] transition hover:bg-[#e1b94e] disabled:opacity-60"
+          className="btn-accent w-full px-5 py-3 text-sm font-black disabled:opacity-60"
         />
         <Link
           href={briefHref}
-          className="rrn-tap inline-flex items-center justify-center rounded-lg border-2 border-[var(--color-blue)] bg-white px-5 py-3 text-sm font-black text-[var(--color-blue)] transition hover:bg-[var(--color-blue-soft)]"
+          className="rrn-tap btn-blue inline-flex items-center justify-center rounded-lg px-5 py-3 text-sm font-black"
         >
           Send the brief first
         </Link>

@@ -114,11 +114,9 @@ export async function MapRoomDocket() {
 
   return (
     <section className="mt-10">
-      <div className="flex items-baseline justify-between gap-3 flex-wrap">
+      <div data-reveal className="flex items-baseline justify-between gap-3 flex-wrap">
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
-            Today&apos;s docket
-          </p>
+          <p className="eyebrow">Today&apos;s docket</p>
           <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
             What hit the record{" "}
             {windowLabel === "24h" ? "in the last 24 hours" : "this week"}.
@@ -141,11 +139,11 @@ export async function MapRoomDocket() {
             <li key={`${it.kind}-${it.slug}`}>
               <Link
                 href={it.href}
-                className="block rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-accent)] px-4 py-3 transition group"
+                className="block rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-gold)] px-4 py-3 transition group"
               >
                 <div className="flex items-center gap-3 flex-wrap">
                   <KindBadge kind={it.kind} />
-                  <span className="flex-1 text-sm sm:text-base font-bold tracking-tight group-hover:text-[var(--color-accent)]">
+                  <span className="flex-1 font-display text-sm sm:text-base font-bold tracking-tight group-hover:text-[var(--color-gold)]">
                     {it.title}
                   </span>
                   <span className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold tabular-nums whitespace-nowrap">
@@ -174,19 +172,19 @@ function KindBadge({
   const styles: Record<typeof kind, { label: string; cls: string }> = {
     document: {
       label: "Evidence",
-      cls: "bg-[var(--color-accent-soft)] text-[var(--color-accent)]",
+      cls: "bg-[var(--color-support-soft)] text-[var(--color-gold)]",
     },
     event: {
       label: "Timeline",
-      cls: "bg-[var(--color-blue-soft)] text-[var(--color-blue)]",
+      cls: "bg-[var(--color-blue-soft)] text-[var(--color-blue-ink)]",
     },
     grievance: {
       label: "Grievance",
-      cls: "bg-[var(--color-accent)] text-[var(--color-paper)]",
+      cls: "bg-[var(--color-accent)] text-[var(--color-cream)]",
     },
     post: {
       label: "From Ryan",
-      cls: "bg-[var(--color-success)] text-[var(--color-paper)]",
+      cls: "bg-[var(--color-success)] text-[var(--color-navy)]",
     },
   };
   const s = styles[kind];

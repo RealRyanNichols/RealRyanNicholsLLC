@@ -3,8 +3,13 @@ import Image from "next/image";
 import { SITE } from "@/lib/site";
 import { getSiteSettings } from "@/lib/site-settings";
 
-// Orientation merged into the hero — one block, no competing CTAs. Four doors
-// for the four audiences.
+// The home page title card, in the theater treatment: Ryan's real photo (the
+// site avatar) on the left, navy falling off toward the copy so type never
+// crosses his face, a gold eyebrow, the condensed headline, a gold rule, one
+// support line, and the two doors. The headline and the support line are
+// the words from his own cover art; nothing here is invented. The four
+// audience doors stay folded under the card. Orientation merged into the
+// hero: one block, no competing CTAs.
 const AUDIENCES = [
   { href: "/support", label: "Supporter", desc: "Own a piece of the work — book, builds, store." },
   { href: "/case", label: "Journalist / Researcher", desc: "The documented record — filings, video." },
@@ -14,158 +19,114 @@ const AUDIENCES = [
 
 export async function ProfileHero() {
   const settings = await getSiteSettings();
-  const coverUrl = settings.cover_url;
   const avatarUrl = settings.avatar_url;
-  const hasCover = !!coverUrl;
   const hasAvatar = !!avatarUrl;
 
   return (
-    <section className="relative overflow-hidden rounded-3xl border border-[var(--color-line)] bg-gradient-to-br from-[var(--color-surface-2)] to-[var(--color-surface)]">
-      <div
-        className={
-          hasCover
-            ? "relative aspect-[3/1] w-full overflow-hidden bg-[#0b1428]"
-            : "relative h-14 w-full overflow-hidden sm:h-20"
-        }
-      >
-        {hasCover ? (
-          <Image
-            src={coverUrl!}
-            alt=""
-            fill
-            sizes="(min-width: 1024px) 768px, 100vw"
-            className="object-contain"
-            priority
-            unoptimized={coverUrl!.startsWith("http")}
-          />
-        ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-surface-2)] to-black" />
-        )}
-        <div
-          className="pointer-events-none absolute -top-32 -right-32 h-72 w-72 rounded-full blur-3xl"
-          style={{ background: "var(--color-accent-glow)" }}
-          aria-hidden
-        />
-        {!hasCover ? (
-          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[var(--color-surface)]/95 to-transparent" />
-        ) : null}
-      </div>
-
-      <div className="relative px-5 sm:px-6 pb-5 -mt-7 sm:-mt-9">
-        <div className="flex flex-row items-end gap-3 sm:gap-4">
+    <section
+      className="relative overflow-hidden rounded-3xl border border-[var(--color-line)] bg-[var(--color-navy)] shadow-[0_24px_60px_rgba(0,0,0,0.45)]"
+      data-reveal
+    >
+      <div className="grid sm:grid-cols-[1fr_1.1fr]">
+        {/* The photo. Real, uncropped face, never under the type. */}
+        <div className="relative aspect-[4/3] sm:aspect-auto sm:min-h-[24rem]">
           {hasAvatar ? (
             <Image
               src={avatarUrl!}
               alt={SITE.name}
-              width={96}
-              height={96}
-              className="h-16 w-16 sm:h-20 sm:w-20 rounded-full object-cover flex-shrink-0 ring-4 ring-[var(--color-paper)] bg-[var(--color-surface)]"
+              fill
+              sizes="(min-width: 1024px) 480px, 100vw"
+              className="object-cover object-[24%_42%]"
               priority
               unoptimized={avatarUrl!.startsWith("http")}
             />
           ) : (
-            <div
-              className="h-16 w-16 sm:h-20 sm:w-20 rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] flex items-center justify-center text-xl font-bold flex-shrink-0 ring-4 ring-[var(--color-paper)]"
-              style={{ boxShadow: "0 0 40px var(--color-accent-glow)" }}
-              aria-hidden
-            >
-              RN
+            <div className="absolute inset-0 flex items-center justify-center bg-[var(--color-surface-2)]">
+              <span
+                className="display text-7xl text-[var(--color-gold)]"
+                aria-hidden
+              >
+                RN
+              </span>
             </div>
           )}
-          <div className={hasCover ? "flex-1 min-w-0" : "flex-1 min-w-0 pb-0.5"}>
-            <h1
-              className={
-                hasCover
-                  ? "sr-only"
-                  : "font-display text-2xl font-black leading-none tracking-tight sm:text-3xl"
-              }
-            >
-              {SITE.name}
-            </h1>
-            <p
-              className={
-                hasCover
-                  ? "sr-only"
-                  : "mt-1 text-[11px] font-black uppercase tracking-[0.04em] text-[var(--color-accent)] sm:text-xs"
-              }
-            >
-              {SITE.tagline}
-            </p>
-          </div>
-          <div className="hidden sm:flex shrink-0 items-center gap-2 pb-1">
+          <div className="home-hero-shade" aria-hidden />
+          <span className="absolute bottom-3 left-3 rounded-full border border-[var(--color-cream)]/25 bg-black/45 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--color-cream)] backdrop-blur-sm sm:bottom-4 sm:left-4">
+            Real photo · Ryan, East Texas
+          </span>
+        </div>
+
+        {/* The copy, on navy. */}
+        <div className="relative flex flex-col justify-center px-5 pb-5 pt-2 sm:px-8 sm:py-8 lg:px-10">
+          <p className="eyebrow">
+            {SITE.name} · {SITE.tagline}
+          </p>
+          <h1 className="display mt-3 text-[2.75rem] text-[var(--color-cream)] sm:text-6xl lg:text-7xl">
+            <span className="sr-only">{SITE.name}: </span>
+            The record they can&rsquo;t bury.
+          </h1>
+          <div className="mt-4 h-1 w-16 rounded bg-[var(--color-gold)]" aria-hidden />
+          <p className="mt-4 max-w-md font-display text-lg leading-snug text-[var(--color-ink-soft)] sm:text-xl">
+            No algorithm. No throttling. Just the record.
+          </p>
+          <div className="mt-6 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
             <Link
               href="/start-here"
-              className="btn-accent inline-flex items-center rounded-full px-4 py-1.5 text-xs transition"
+              className="btn-accent inline-flex min-h-12 items-center justify-center px-5 py-2.5 text-sm sm:min-h-11"
             >
               Start Here
             </Link>
             <Link
               href="/book/preorder"
-              className="btn-support inline-flex items-center rounded-full px-4 py-1.5 text-xs font-semibold transition"
+              className="btn-ghost inline-flex min-h-12 items-center justify-center px-5 py-2.5 text-sm sm:min-h-11"
             >
               Get the Book
             </Link>
           </div>
         </div>
-
-        {/* Phones: two full-width thumbs, no wrapping row. */}
-        <div className="mt-4 grid grid-cols-2 gap-2 sm:hidden">
-          <Link
-            href="/start-here"
-            className="btn-accent inline-flex min-h-12 items-center justify-center rounded-lg px-4 py-2 text-sm transition"
-          >
-            Start Here
-          </Link>
-          <Link
-            href="/book/preorder"
-            className="inline-flex min-h-12 items-center justify-center rounded-lg border-2 border-[var(--color-gold-bright)] px-4 py-2 text-sm font-bold text-[var(--color-ink)] transition hover:bg-[var(--color-support-soft)]"
-          >
-            Get the Book
-          </Link>
-        </div>
-
-        {/* Orientation — collapsed by default into a dropdown so the feed is
-            front and center. Most people come to read; the "four doors" are one
-            tap away for those who want them. Native <details>, no client JS. */}
-        <details className="group/doors mt-4 border-t border-[var(--color-line)] pt-3.5">
-          <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden sm:min-h-0">
-            <span className="text-[11px] font-black uppercase tracking-[0.16em] text-[var(--color-muted)]">
-              What brings you here?
-            </span>
-            <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-[var(--color-muted)] transition group-hover/doors:text-[var(--color-accent)]">
-              Pick your path
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-3.5 w-3.5 transition-transform group-open/doors:rotate-180"
-                aria-hidden
-              >
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
-            </span>
-          </summary>
-          <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-            {AUDIENCES.map((a) => (
-              <Link
-                key={a.href}
-                href={a.href}
-                className="group rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-3.5 transition hover:border-[var(--color-accent)]"
-              >
-                <p className="text-sm font-bold text-[var(--color-ink)] transition group-hover:text-[var(--color-accent)]">
-                  {a.label} →
-                </p>
-                <p className="mt-1 text-xs leading-snug text-[var(--color-muted)]">
-                  {a.desc}
-                </p>
-              </Link>
-            ))}
-          </div>
-        </details>
       </div>
+
+      {/* Orientation — collapsed by default into a dropdown so the feed is
+          front and center. Most people come to read; the "four doors" are one
+          tap away for those who want them. Native <details>, no client JS. */}
+      <details className="group/doors border-t border-[var(--color-line)] px-5 pb-4 pt-3.5 sm:px-8 lg:px-10">
+        <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden sm:min-h-0">
+          <span className="text-[11px] font-black uppercase tracking-[0.16em] text-[var(--color-muted)]">
+            What brings you here?
+          </span>
+          <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-[var(--color-muted)] transition group-hover/doors:text-[var(--color-gold)]">
+            Pick your path
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-3.5 w-3.5 transition-transform group-open/doors:rotate-180"
+              aria-hidden
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </span>
+        </summary>
+        <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+          {AUDIENCES.map((a) => (
+            <Link
+              key={a.href}
+              href={a.href}
+              className="group rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-3.5 transition hover:border-[var(--color-gold)]"
+            >
+              <p className="text-sm font-bold text-[var(--color-ink)] transition group-hover:text-[var(--color-gold)]">
+                {a.label} →
+              </p>
+              <p className="mt-1 text-xs leading-snug text-[var(--color-muted)]">
+                {a.desc}
+              </p>
+            </Link>
+          ))}
+        </div>
+      </details>
     </section>
   );
 }

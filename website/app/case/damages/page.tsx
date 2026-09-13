@@ -102,10 +102,10 @@ export default async function DamagesPage() {
           ← J6 Case
         </Link>
       </nav>
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+      <p className="text-xs uppercase tracking-wider text-[var(--color-gold)] font-bold">
         Damages — United States v. Nichols
       </p>
-      <h1 className="mt-2 text-3xl sm:text-5xl font-bold tracking-tight leading-[1.05]">
+      <h1 className="mt-2 font-display text-3xl sm:text-5xl font-bold tracking-tight leading-[1.05]">
         What it cost him.
       </h1>
       <p className="mt-4 text-base sm:text-lg text-[var(--color-ink-soft)] max-w-3xl leading-relaxed">
@@ -115,10 +115,10 @@ export default async function DamagesPage() {
       </p>
 
       <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 print:grid-cols-4">
-        <Stat label="Days, arrest to pardon" value={totals.daysArrestToPardon.toLocaleString()} />
+        <Stat label="Days, arrest to pardon" value={totals.daysArrestToPardon.toLocaleString()} count={totals.daysArrestToPardon} />
         <Stat label="Years of liberty lost" value={String(years)} />
-        <Stat label="Facilities cycled" value={String(totals.facilities)} />
-        <Stat label="Grievances filed" value={String(totals.grievances)} />
+        <Stat label="Facilities cycled" value={String(totals.facilities)} count={totals.facilities} />
+        <Stat label="Grievances filed" value={String(totals.grievances)} count={totals.grievances} />
       </div>
 
       <section className="mt-10 space-y-6">
@@ -127,10 +127,10 @@ export default async function DamagesPage() {
             key={d.label}
             className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6 print:break-inside-avoid"
           >
-            <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent)] font-bold">
+            <p className="text-[10px] uppercase tracking-wider text-[var(--color-gold)] font-bold">
               Harm #{i + 1}
             </p>
-            <h2 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight">{d.label}</h2>
+            <h2 className="mt-1 font-display text-xl sm:text-2xl font-bold tracking-tight">{d.label}</h2>
             <p className="mt-2 text-sm sm:text-base font-semibold text-[var(--color-ink)]">
               {d.oneLine}
             </p>
@@ -145,7 +145,7 @@ export default async function DamagesPage() {
               <div className="mt-3 print:hidden">
                 <Link
                   href={`/case/grievances/${d.sourceSlug}`}
-                  className="inline-flex min-h-11 items-center text-xs font-semibold text-[var(--color-accent)] hover:underline"
+                  className="inline-flex min-h-11 items-center text-xs font-semibold text-[var(--color-gold)] hover:underline"
                 >
                   See the evidence →
                 </Link>
@@ -156,10 +156,10 @@ export default async function DamagesPage() {
       </section>
 
       <section className="mt-12 rounded-2xl border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-5 sm:p-6 print:break-before-page">
-        <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent)] font-bold">
+        <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
           Relief Sought
         </p>
-        <h2 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight">
+        <h2 className="mt-1 font-display text-xl sm:text-2xl font-bold tracking-tight">
           What this case is asking for.
         </h2>
 
@@ -168,7 +168,7 @@ export default async function DamagesPage() {
             <p className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
               Starting claim
             </p>
-            <div className="mt-1 text-3xl sm:text-4xl font-bold leading-none text-[var(--color-accent)]">
+            <div className="display mt-1 text-3xl sm:text-4xl leading-none tabular-nums text-[var(--color-accent-ink)]">
               $35,000,000
             </div>
           </div>
@@ -176,7 +176,7 @@ export default async function DamagesPage() {
             <p className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
               Supported range
             </p>
-            <div className="mt-1 text-3xl sm:text-4xl font-bold leading-none text-[var(--color-accent)]">
+            <div className="display mt-1 text-3xl sm:text-4xl leading-none tabular-nums text-[var(--color-accent-ink)]">
               $45–50M
             </div>
           </div>
@@ -184,7 +184,7 @@ export default async function DamagesPage() {
             <p className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
               Years of liberty lost
             </p>
-            <div className="mt-1 text-3xl sm:text-4xl font-bold leading-none text-[var(--color-ink)]">
+            <div className="display mt-1 text-3xl sm:text-4xl leading-none tabular-nums text-[var(--color-ink)]">
               {years}
             </div>
           </div>
@@ -222,7 +222,7 @@ export default async function DamagesPage() {
       </section>
 
       <div className="mt-10 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-ink-soft)] print:hidden">
-        <Link href="/case/brief" className="text-[var(--color-accent)] underline font-semibold">
+        <Link href="/case/brief" className="text-[var(--color-gold)] underline font-semibold">
           Read the full Compensation Brief →
         </Link>
       </div>
@@ -230,10 +230,18 @@ export default async function DamagesPage() {
   );
 }
 
-function Stat({ label, value }: { label: string; value: string }) {
+// `count` is passed only for a whole number that is safe to animate; the
+// server-rendered, formatted value always sits inside, so the figure reads
+// with JavaScript off.
+function Stat({ label, value, count }: { label: string; value: string; count?: number }) {
   return (
     <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 print:border-black">
-      <div className="text-2xl sm:text-3xl font-bold leading-none">{value}</div>
+      <div
+        className="display text-3xl sm:text-4xl leading-none tabular-nums text-[var(--color-gold)]"
+        data-count={count && count > 0 ? count : undefined}
+      >
+        {value}
+      </div>
       <div className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold mt-1.5">
         {label}
       </div>

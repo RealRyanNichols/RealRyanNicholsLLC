@@ -314,7 +314,7 @@ export default async function FuelPage({
               </p>
             </div>
             {sp.canceled ? (
-              <p className="mt-4 max-w-xl rounded-lg border border-white/15 bg-white/[0.06] px-4 py-3 text-sm text-[var(--ft-mist)]">
+              <p className="mt-4 max-w-xl rounded-lg border border-[var(--color-cream)]/15 bg-[var(--color-cream)]/[0.06] px-4 py-3 text-sm text-[var(--ft-mist)]">
                 No charge was made. Pick up where you left off whenever you want.
               </p>
             ) : null}
@@ -664,7 +664,7 @@ export default async function FuelPage({
                 <p className="mt-2 text-sm text-[var(--color-muted)]">The overage line is not in the ledger right now. NEEDS AUTHENTICATION.</p>
               )}
             </div>
-            <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4">
+            <div className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
               <p className="text-[11px] font-black uppercase tracking-wider text-[var(--color-muted)]">
                 What the tools cost at the sticker · checked {PRICES_CHECKED}
               </p>
@@ -757,7 +757,7 @@ export default async function FuelPage({
                     t.featured
                       ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)]/40"
                       : t.monthly
-                        ? "border-[var(--color-navy)] bg-[var(--color-blue-soft)]/50"
+                        ? "border-[var(--color-blue)] bg-[var(--color-blue-soft)]/50"
                         : "border-[var(--color-line)] bg-[var(--color-surface)]"
                   }`}
                 >

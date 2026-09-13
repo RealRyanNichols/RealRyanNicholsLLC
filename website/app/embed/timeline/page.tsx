@@ -23,45 +23,47 @@ export default async function TimelineEmbedPage() {
     events = [];
   }
 
+  // This widget is framed by other sites, so it paints the theater floor
+  // itself instead of inheriting a host page's background.
   return (
-    <div className="overflow-hidden rounded-lg border border-[#1f2f55] bg-[#071126]">
-      <div className="flex items-center justify-between gap-3 border-b border-[var(--color-gold-bright)]/20 px-4 py-2">
-        <span className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-gold-bright)]">
-          United States v. Nichols · timeline
-        </span>
-        <a
-          href="https://realryannichols.com/case/timeline"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-[10px] font-bold text-[#a9b7d0] no-underline hover:text-[var(--color-gold-bright)]"
-        >
-          Full timeline →
-        </a>
+    <div className="bg-[var(--color-paper)]">
+      <div className="overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
+        <div className="flex items-center justify-between gap-3 border-b border-[var(--color-line)] px-4 py-2">
+          <span className="eyebrow">United States v. Nichols · timeline</span>
+          <a
+            href="https://realryannichols.com/case/timeline"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[10px] font-bold text-[var(--color-muted)] no-underline hover:text-[var(--color-gold-bright)]"
+          >
+            Full timeline →
+          </a>
+        </div>
+        <ol className="max-h-72 overflow-y-auto px-4 py-2">
+          {events.map((e) => (
+            <li key={e.slug} className="border-b border-[var(--color-line-soft)] py-2 last:border-0">
+              <a
+                href={`https://realryannichols.com/case/events/${e.slug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group block no-underline"
+              >
+                <span className="block font-mono text-[10px] font-bold text-[var(--color-blue-ink)]">
+                  {e.event_date}
+                </span>
+                <span className="mt-0.5 block text-sm font-bold leading-snug text-[var(--color-cream)] group-hover:text-[var(--color-gold-bright)]">
+                  {e.title}
+                </span>
+              </a>
+            </li>
+          ))}
+          {events.length === 0 ? (
+            <li className="py-3 text-sm text-[var(--color-muted)]">
+              Timeline is loading. See the full record at realryannichols.com/case.
+            </li>
+          ) : null}
+        </ol>
       </div>
-      <ol className="max-h-72 overflow-y-auto px-4 py-2">
-        {events.map((e) => (
-          <li key={e.slug} className="border-b border-[#f4efe4]/8 py-2 last:border-0">
-            <a
-              href={`https://realryannichols.com/case/events/${e.slug}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group block no-underline"
-            >
-              <span className="block font-mono text-[10px] font-bold text-[#7fa9e3]">
-                {e.event_date}
-              </span>
-              <span className="mt-0.5 block text-sm font-bold leading-snug text-[#f4efe4] group-hover:text-[var(--color-gold-bright)]">
-                {e.title}
-              </span>
-            </a>
-          </li>
-        ))}
-        {events.length === 0 ? (
-          <li className="py-3 text-sm text-[#a9b7d0]">
-            Timeline is loading. See the full record at realryannichols.com/case.
-          </li>
-        ) : null}
-      </ol>
     </div>
   );
 }

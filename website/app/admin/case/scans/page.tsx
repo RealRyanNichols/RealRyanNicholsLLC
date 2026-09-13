@@ -69,7 +69,7 @@ export default async function AdminCaseScansPage({
         <article className="mx-auto max-w-md px-4 py-16 text-center">
           <h1 className="text-2xl font-semibold">Not found</h1>
           <p className="mt-3">
-            <Link href="/admin/case/scans" className="text-[var(--color-accent)] underline">
+            <Link href="/admin/case/scans" className="text-[var(--color-accent-ink)] underline">
               ← Back to list
             </Link>
           </p>
@@ -80,12 +80,12 @@ export default async function AdminCaseScansPage({
     const next = idx < list.length - 1 ? list[idx + 1].slug : null;
     return (
       <article className="mx-auto max-w-6xl px-4 py-8">
-        <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+        <p className="text-xs uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
           Curator
         </p>
         <div className="flex items-baseline justify-between gap-4 flex-wrap">
           <h1 className="mt-1 text-2xl font-bold tracking-tight">{doc.slug}</h1>
-          <Link href="/admin/case/scans" className="text-sm underline text-[var(--color-accent)]">
+          <Link href="/admin/case/scans" className="text-sm underline text-[var(--color-accent-ink)]">
             ← All scans
           </Link>
         </div>
@@ -113,7 +113,7 @@ export default async function AdminCaseScansPage({
 
   return (
     <article className="mx-auto max-w-5xl px-4 py-8">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+      <p className="text-xs uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
         Curator
       </p>
       <h1 className="mt-1 text-3xl font-bold tracking-tight">Case scans</h1>

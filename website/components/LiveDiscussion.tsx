@@ -6,7 +6,7 @@ export function LiveDiscussion({ liveStreamId }: { liveStreamId: string }) {
     <section id="live-comments" className="mt-8">
       <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+          <p className="text-xs uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
             Public room
           </p>
           <h2 className="mt-1 text-2xl font-black tracking-tight">
@@ -15,7 +15,7 @@ export function LiveDiscussion({ liveStreamId }: { liveStreamId: string }) {
         </div>
         <a
           href="#private-message"
-          className="text-xs font-bold text-[var(--color-accent)] hover:underline"
+          className="text-xs font-bold text-[var(--color-accent-ink)] hover:underline"
         >
           Send something private
         </a>

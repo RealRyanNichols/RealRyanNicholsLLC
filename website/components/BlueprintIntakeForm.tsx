@@ -84,7 +84,7 @@ export function BlueprintIntakeForm() {
       </div>
 
       <div className="mt-8 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-5 sm:p-6">
-        <p className="text-sm font-bold leading-relaxed text-[var(--color-blue-strong)]">
+        <p className="text-sm font-bold leading-relaxed text-[var(--color-ink)]">
           The more you share, the more I can build your prompt stack around your
           real needs. You get a series of prompts plus 7 days of support to help
           you build the first version. You can leave anything blank.
@@ -92,16 +92,16 @@ export function BlueprintIntakeForm() {
         <button
           type="submit"
           disabled={busy}
-          className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--color-accent)] px-6 py-3.5 text-base font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)] disabled:opacity-60 sm:w-auto"
+          className="btn-accent mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-lg px-6 py-3.5 text-base font-black disabled:opacity-60 sm:w-auto"
         >
           {busy
             ? "Starting checkout..."
             : `Continue to secure checkout, ${formatUsd(DIY?.priceUsd ?? 2500)}`}
         </button>
         {error ? (
-          <p className="mt-2 text-sm font-bold text-[var(--color-accent)]">{error}</p>
+          <p className="mt-2 text-sm font-bold text-[var(--color-accent-ink)]">{error}</p>
         ) : null}
-        <p className="mt-3 text-xs font-semibold text-[var(--color-blue-strong)]/80">
+        <p className="mt-3 text-xs font-semibold text-[var(--color-ink-soft)]">
           Secure payment by Stripe. Your answers are saved privately so I can
           build your prompts.
         </p>
@@ -126,8 +126,8 @@ function Field({
         className={[
           "flex cursor-pointer items-start gap-3 rounded-lg border p-3 text-sm font-semibold transition",
           checked
-            ? "border-[var(--color-blue)] bg-[var(--color-blue-soft)] text-[var(--color-blue-strong)]"
-            : "border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink-soft)] hover:border-[var(--color-blue)]",
+            ? "border-[var(--color-blue)] bg-[var(--color-blue-soft)] text-[var(--color-ink)]"
+            : "border-[var(--color-line)] bg-[var(--color-surface-2)] text-[var(--color-ink-soft)] hover:border-[var(--color-blue)]",
         ].join(" ")}
       >
         <input
@@ -162,14 +162,14 @@ function Field({
           value={strValue}
           placeholder={field.placeholder}
           onChange={(e) => onChange(e.target.value)}
-          className="mt-1.5 w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm text-[var(--color-ink)]"
+          className="mt-1.5 w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm text-[var(--color-ink)]"
         />
       ) : field.type === "select" ? (
         <select
           id={id}
           value={strValue}
           onChange={(e) => onChange(e.target.value)}
-          className="mt-1.5 w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm text-[var(--color-ink)]"
+          className="mt-1.5 w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm text-[var(--color-ink)]"
         >
           <option value="">Choose one</option>
           {(field.options ?? []).map((opt) => (
@@ -185,7 +185,7 @@ function Field({
           value={strValue}
           placeholder={field.placeholder}
           onChange={(e) => onChange(e.target.value)}
-          className="mt-1.5 w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm text-[var(--color-ink)]"
+          className="mt-1.5 w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm text-[var(--color-ink)]"
         />
       )}
     </div>

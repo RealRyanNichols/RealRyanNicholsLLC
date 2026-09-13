@@ -73,17 +73,17 @@ const SALES_OFFERS: Record<string, SalesOffer> = {
       {
         title: "Plain-English diagnosis",
         body: "What is confusing, weak, too slow, too hidden, or not believable enough.",
-        tone: "bg-[#e9f2ff]",
+        tone: "bg-[var(--color-blue-soft)]",
       },
       {
         title: "Priority fix list",
         body: "The few changes that should be made first instead of a giant generic redesign.",
-        tone: "bg-[#fff5d6]",
+        tone: "bg-[var(--color-support-soft)]",
       },
       {
         title: "Offer and CTA cleanup",
         body: "Where the page should ask for attention, information, payment, or support.",
-        tone: "bg-[#e8f7ed]",
+        tone: "bg-[var(--color-success-soft)]",
       },
     ],
     bars: [
@@ -137,17 +137,17 @@ const SALES_OFFERS: Record<string, SalesOffer> = {
       {
         title: "A real owned homepage",
         body: "A first screen that explains who you are, what you offer, and what the visitor should do.",
-        tone: "bg-[#fff5d6]",
+        tone: "bg-[var(--color-support-soft)]",
       },
       {
         title: "Lead and contact paths",
         body: "Forms, private contact, service buttons, and routes that collect the right information.",
-        tone: "bg-[#e8f7ed]",
+        tone: "bg-[var(--color-success-soft)]",
       },
       {
         title: "Checkout-ready structure",
         body: "A site that can support payments, offers, support, invoices, and service pages.",
-        tone: "bg-[#e9f2ff]",
+        tone: "bg-[var(--color-blue-soft)]",
       },
     ],
     bars: [
@@ -201,17 +201,17 @@ const SALES_OFFERS: Record<string, SalesOffer> = {
       {
         title: "Codebase foundation",
         body: "A maintainable starting point for the public site, service pages, data, and future tools.",
-        tone: "bg-[#e9f2ff]",
+        tone: "bg-[var(--color-blue-soft)]",
       },
       {
         title: "Domain and launch path",
         body: "A practical route for the domain, public pages, SEO basics, and launch messaging.",
-        tone: "bg-[#fff5d6]",
+        tone: "bg-[var(--color-support-soft)]",
       },
       {
         title: "Business stack map",
         body: "Where Stripe, Supabase, Vercel, email, analytics, and automations fit into the system.",
-        tone: "bg-[#e8f7ed]",
+        tone: "bg-[var(--color-success-soft)]",
       },
     ],
     bars: [
@@ -360,17 +360,17 @@ function getSalesOffer(product: Product): SalesOffer {
       {
         title: "Clear direction",
         body: "A practical next step based on what you actually have.",
-        tone: "bg-[#e9f2ff]",
+        tone: "bg-[var(--color-blue-soft)]",
       },
       {
         title: "Better structure",
         body: "Facts, offer, proof, audience, and action path organized into plain English.",
-        tone: "bg-[#fff5d6]",
+        tone: "bg-[var(--color-support-soft)]",
       },
       {
         title: "Action path",
         body: "A route toward payment, support, information capture, or the next build.",
-        tone: "bg-[#e8f7ed]",
+        tone: "bg-[var(--color-success-soft)]",
       },
     ],
     bars: [
@@ -447,18 +447,18 @@ function OfferSalesPage({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={image.src} alt="" className="h-full w-full object-cover" />
         </div>
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(246,239,223,0.92)_0%,rgba(246,239,223,0.98)_62%,var(--color-paper)_100%)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-paper)]/85 via-[var(--color-paper)]/95 to-[var(--color-paper)]" />
         <div className="relative mx-auto grid max-w-6xl gap-5 px-4 py-7 sm:px-6 sm:py-9 lg:min-h-[70vh] lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-center">
           <div>
-            <nav className="mb-4 text-sm font-bold text-[var(--color-blue)]">
+            <nav className="mb-4 text-sm font-bold text-[var(--color-blue-ink)]">
               <Link href="/store" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
                 &lt;- Store
               </Link>
             </nav>
-            <p className="inline-flex rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1 text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+            <p className="eyebrow inline-flex rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1.5">
               {offer.eyebrow}
             </p>
-            <h1 className="mt-4 max-w-4xl font-display text-4xl font-black leading-[1.03] tracking-normal sm:text-5xl lg:text-7xl">
+            <h1 className="display mt-4 max-w-4xl text-4xl sm:text-5xl lg:text-7xl">
               {offer.headline}
             </h1>
             <p className="mt-5 max-w-3xl text-base leading-relaxed text-[var(--color-ink-soft)] sm:text-xl">
@@ -467,28 +467,30 @@ function OfferSalesPage({
             <div className="rrn-tap-row mt-6">
               <a
                 href="#buy"
-                className="rrn-tap inline-flex rounded-lg bg-[var(--color-support)] px-5 py-3 text-sm font-black text-[#1a1410] shadow-[0_10px_24px_rgba(200,155,47,0.28)] transition hover:bg-[#e1b94e]"
+                className="rrn-tap btn-accent inline-flex px-5 py-3 text-sm"
               >
                 Buy now - {price}
               </a>
               <Link
                 href={offer.briefHref}
-                className="rrn-tap inline-flex rounded-lg border-2 border-[var(--color-blue)] bg-[var(--color-surface)] px-5 py-3 text-sm font-black text-[var(--color-blue)] transition hover:bg-[var(--color-blue-soft)]"
+                className="rrn-tap inline-flex rounded-lg border-2 border-[var(--color-blue)] bg-[var(--color-surface)] px-5 py-3 text-sm font-black text-[var(--color-blue-ink)] transition hover:bg-[var(--color-blue-soft)]"
               >
                 Send Ryan the brief
               </Link>
               <a
                 href="#fit-check"
-                className="rrn-tap inline-flex rounded-lg border-2 border-[var(--color-line)] bg-white/70 px-5 py-3 text-sm font-black text-[var(--color-ink)] transition hover:border-[var(--color-accent)]"
+                className="rrn-tap inline-flex rounded-lg border-2 border-[var(--color-line)] bg-[var(--color-surface-2)] px-5 py-3 text-sm font-black text-[var(--color-ink)] transition hover:border-[var(--color-accent)]"
               >
                 Check fit
               </a>
             </div>
             <div className="mt-6 grid gap-3 sm:grid-cols-3">
-              {offer.stakes.map((item) => (
+              {offer.stakes.map((item, i) => (
                 <div
                   key={item}
-                  className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm"
+                  className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-[0_14px_32px_rgba(0,0,0,0.3)]"
+                  data-reveal
+                  style={{ "--d": i } as React.CSSProperties}
                 >
                   <p className="text-sm font-bold leading-relaxed text-[var(--color-ink-soft)]">
                     {item}
@@ -500,19 +502,19 @@ function OfferSalesPage({
 
           <aside
             id="buy"
-            className="rounded-lg border-2 border-[var(--color-support)] bg-[var(--color-surface)] p-4 shadow-[0_18px_50px_rgba(74,62,48,0.16)] lg:sticky lg:top-28"
+            className="rounded-lg border-2 border-[var(--color-support)] bg-[var(--color-surface)] p-4 shadow-[0_18px_50px_rgba(0,0,0,0.5)] lg:sticky lg:top-28"
           >
             <div className="relative aspect-[16/10] overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)]" data-ratio-frame>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={image.src} alt={image.alt} className="h-full w-full object-cover" />
             </div>
-            <p className="mt-4 text-xs font-black uppercase tracking-normal text-[var(--color-support-strong)]">
+            <p className="eyebrow mt-4">
               {product.type}
             </p>
             <h2 className="mt-1 font-display text-2xl font-black tracking-normal">
               {product.name}
             </h2>
-            <p className="mt-2 text-4xl font-black text-[var(--color-support-strong)]">
+            <p className="display mt-2 text-5xl text-[var(--color-gold)]">
               {price}
             </p>
             <p className="mt-3 text-sm leading-relaxed text-[var(--color-ink-soft)]">
@@ -522,14 +524,14 @@ function OfferSalesPage({
               <BuyButton
                 slug={product.slug}
                 label={`Buy - ${price}`}
-                className="w-full rounded-lg bg-[var(--color-support)] px-6 py-4 text-base font-black text-[#1a1410] shadow-[0_12px_28px_rgba(200,155,47,0.32)] transition hover:bg-[#e1b94e] disabled:opacity-60"
+                className="btn-accent w-full px-6 py-4 text-base disabled:opacity-60"
               />
               {j6Eligible ? (
                 <J6ClaimButton slug={product.slug} />
               ) : (
                 <p className="mt-3 text-xs leading-relaxed text-[var(--color-muted)]">
                   J6 defendant?{" "}
-                  <Link href="/case" className="font-bold text-[var(--color-accent)] underline">
+                  <Link href="/case" className="font-bold text-[var(--color-accent-ink)] underline">
                     Sign in and link your verified case profile
                   </Link>{" "}
                   to claim eligible services free.
@@ -543,7 +545,7 @@ function OfferSalesPage({
       <section className="rrn-section">
         <div className="grid gap-5 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
           <div>
-            <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+            <p className="eyebrow" data-reveal>
               Why this matters
             </p>
             <h2 className="mt-2 font-display text-3xl font-black tracking-normal sm:text-4xl">
@@ -574,9 +576,9 @@ function OfferSalesPage({
       </section>
 
       <section className="mx-auto max-w-6xl px-4 pb-8 sm:px-6">
-        <div className="grid gap-5 rounded-lg border-2 border-[var(--color-blue)] bg-[#f7fbff] p-5 shadow-[0_18px_45px_rgba(29,58,107,0.12)] sm:p-6 lg:grid-cols-[0.75fr_1.25fr] lg:items-center">
+        <div className="grid gap-5 rounded-lg border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-5 shadow-[0_18px_45px_rgba(0,0,0,0.4)] sm:p-6 lg:grid-cols-[0.75fr_1.25fr] lg:items-center">
           <div>
-            <p className="text-xs font-black uppercase tracking-normal text-[var(--color-blue)]">
+            <p className="eyebrow">
               Visual decision board
             </p>
             <h2 className="mt-2 font-display text-3xl font-black tracking-normal">
@@ -590,7 +592,7 @@ function OfferSalesPage({
           </div>
           <div className="grid gap-3">
             {offer.bars.map((bar) => (
-              <div key={bar.label} className="rounded-lg border border-[#b8c9e6] bg-white p-4">
+              <div key={bar.label} className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
                 <div className="flex items-center justify-between gap-3">
                   <div>
                     <p className="text-sm font-black text-[var(--color-ink)]">
@@ -600,11 +602,11 @@ function OfferSalesPage({
                       {bar.caption}
                     </p>
                   </div>
-                  <p className="font-mono text-2xl font-black text-[var(--color-ink)]">
+                  <p className="display text-3xl tabular-nums text-[var(--color-gold)]">
                     {bar.value}
                   </p>
                 </div>
-                <div className="mt-3 h-3 overflow-hidden rounded-full bg-[#d9e2f2]">
+                <div className="mt-3 h-3 overflow-hidden rounded-full bg-[var(--color-blue-soft)]">
                   <div className={`h-full rounded-full ${bar.tone}`} style={{ width: `${bar.value}%` }} />
                 </div>
               </div>
@@ -624,7 +626,7 @@ function OfferSalesPage({
 
       <section className="rrn-section pt-2">
         <div className="mb-4">
-          <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+          <p className="eyebrow" data-reveal>
             What you get
           </p>
           <h2 className="mt-2 font-display text-3xl font-black tracking-normal sm:text-4xl">
@@ -632,8 +634,13 @@ function OfferSalesPage({
           </h2>
         </div>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {offer.deliverables.map((item) => (
-            <div key={item.title} className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm">
+          {offer.deliverables.map((item, i) => (
+            <div
+              key={item.title}
+              className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-[0_14px_32px_rgba(0,0,0,0.3)]"
+              data-reveal
+              style={{ "--d": i % 3 } as React.CSSProperties}
+            >
               <h3 className="font-display text-xl font-black tracking-normal">
                 {item.title}
               </h3>
@@ -647,17 +654,17 @@ function OfferSalesPage({
 
       <section className="mx-auto max-w-6xl px-4 pb-8 sm:px-6">
         <div className="overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)]">
-          <div className="border-b border-[var(--color-line)] bg-[var(--color-ink)] p-5 text-white sm:p-6">
-            <p className="text-xs font-black uppercase tracking-normal text-[var(--color-support)]">
+          <div className="border-b border-[var(--color-line)] bg-[var(--color-surface-2)] p-5 text-[var(--color-cream)] sm:p-6">
+            <p className="eyebrow">
               Before / after
             </p>
-            <h2 className="mt-2 font-display text-3xl font-black tracking-normal text-white">
+            <h2 className="mt-2 font-display text-3xl font-black tracking-normal text-[var(--color-cream)]">
               The point is movement.
             </h2>
           </div>
           <div className="grid gap-0 lg:grid-cols-2">
             <div className="border-b border-[var(--color-line)] p-5 lg:border-b-0 lg:border-r sm:p-6">
-              <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent-ink)]">
                 Before
               </p>
               <div className="mt-4 grid gap-3">
@@ -669,7 +676,7 @@ function OfferSalesPage({
               </div>
             </div>
             <div className="p-5 sm:p-6">
-              <p className="text-xs font-black uppercase tracking-normal text-[var(--color-success)]">
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-success)]">
                 After
               </p>
               <div className="mt-4 grid gap-3">
@@ -687,8 +694,13 @@ function OfferSalesPage({
       <section className="rrn-section pt-2">
         <div className="grid gap-4 lg:grid-cols-3">
           {offer.process.map((step, index) => (
-            <div key={step.title} className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-sm">
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-blue)] font-black text-white">
+            <div
+              key={step.title}
+              className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-[0_14px_32px_rgba(0,0,0,0.3)]"
+              data-reveal
+              style={{ "--d": index } as React.CSSProperties}
+            >
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-blue)] font-black text-[var(--color-cream)]">
                 {index + 1}
               </span>
               <h2 className="mt-4 font-display text-2xl font-black tracking-normal">
@@ -705,7 +717,7 @@ function OfferSalesPage({
       <section className="mx-auto max-w-6xl px-4 pb-8 sm:px-6">
         <div className="grid gap-4 rounded-lg border-2 border-[var(--color-support)] bg-[var(--color-support-soft)] p-5 sm:p-6 lg:grid-cols-[1fr_0.78fr] lg:items-center">
           <div>
-            <p className="text-xs font-black uppercase tracking-normal text-[var(--color-support-strong)]">
+            <p className="eyebrow">
               Answer the real question
             </p>
             <h2 className="mt-2 font-display text-3xl font-black tracking-normal">
@@ -717,11 +729,11 @@ function OfferSalesPage({
             <BuyButton
               slug={product.slug}
               label={`Buy ${product.name} - ${price}`}
-              className="w-full rounded-lg bg-[var(--color-support)] px-6 py-4 text-base font-black text-[#1a1410] shadow-[0_12px_28px_rgba(200,155,47,0.3)] transition hover:bg-[#e1b94e] disabled:opacity-60"
+              className="btn-accent w-full px-6 py-4 text-base disabled:opacity-60"
             />
             <Link
               href={offer.briefHref}
-              className="rrn-tap inline-flex items-center justify-center rounded-lg border-2 border-[var(--color-blue)] bg-white px-5 py-3 text-sm font-black text-[var(--color-blue)] transition hover:bg-[var(--color-blue-soft)]"
+              className="rrn-tap inline-flex items-center justify-center rounded-lg border-2 border-[var(--color-blue)] bg-[var(--color-surface)] px-5 py-3 text-sm font-black text-[var(--color-blue-ink)] transition hover:bg-[var(--color-blue-soft)]"
             >
               Send Ryan the facts first
             </Link>
@@ -731,7 +743,7 @@ function OfferSalesPage({
 
       <section className="mx-auto max-w-6xl px-4 pb-12 sm:px-6">
         <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-6">
-          <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+          <p className="eyebrow">
             Questions
           </p>
           <div className="mt-4 grid gap-3 lg:grid-cols-3">
@@ -785,22 +797,22 @@ function StrategyCallPage({
     {
       title: "I need people to pay me",
       body: "Offer, checkout, invoice, client portal, follow-up, and the page that makes the price make sense.",
-      color: "bg-[#fff5d6] border-[#d8ad43]",
+      color: "bg-[var(--color-support-soft)] border-[var(--color-gold)]",
     },
     {
       title: "I need a dashboard",
       body: "Admin view, client view, analytics board, intake queue, project tracker, or operator command center.",
-      color: "bg-[#e9f2ff] border-[#8eabd7]",
+      color: "bg-[var(--color-blue-soft)] border-[var(--color-blue)]/50",
     },
     {
       title: "I need automation",
       body: "Forms, emails, APIs, Supabase, Stripe, OpenAI, webhooks, reminders, and repeatable workflows.",
-      color: "bg-[#e8f7ed] border-[#7cc997]",
+      color: "bg-[var(--color-success-soft)] border-[var(--color-success)]/50",
     },
     {
       title: "I need attention",
       body: "Landing page, funnel, ad angle, story hook, content system, lead magnet, or proof-first sales page.",
-      color: "bg-[#ffe8df] border-[#e28b71]",
+      color: "bg-[var(--color-accent-soft)] border-[var(--color-accent)]/50",
     },
   ];
 
@@ -823,12 +835,12 @@ function StrategyCallPage({
   ];
 
   const buildOptions = [
-    ["Dashboards", "Client portals, admin views, analytics rooms, lead boards, intake queues, and operator control rooms.", "bg-[#e9f2ff]"],
-    ["Tools and software", "Internal tools, public tools, calculators, forms, workflow apps, AI helpers, and custom business software.", "bg-[#f7eafd]"],
-    ["Payments and clients", "Checkout paths, service offers, subscriptions, invoices, paid calls, client onboarding, and fulfillment workflows.", "bg-[#fff5d6]"],
-    ["APIs and automations", "Supabase, Stripe, Vercel, OpenAI, email, CRM, webhooks, scheduled jobs, and business process automation.", "bg-[#e8f7ed]"],
-    ["Ads and funnels", "Landing pages, lead magnets, ad angles, email capture, retargeting paths, offer copy, and conversion tracking.", "bg-[#ffe8df]"],
-    ["Content and attention", "Owned-feed strategy, article structure, story hooks, social clips, proof pages, and shareable public receipts.", "bg-[#f0eee4]"],
+    ["Dashboards", "Client portals, admin views, analytics rooms, lead boards, intake queues, and operator control rooms.", "bg-[var(--color-blue-soft)]"],
+    ["Tools and software", "Internal tools, public tools, calculators, forms, workflow apps, AI helpers, and custom business software.", "bg-[var(--color-surface-2)]"],
+    ["Payments and clients", "Checkout paths, service offers, subscriptions, invoices, paid calls, client onboarding, and fulfillment workflows.", "bg-[var(--color-support-soft)]"],
+    ["APIs and automations", "Supabase, Stripe, Vercel, OpenAI, email, CRM, webhooks, scheduled jobs, and business process automation.", "bg-[var(--color-success-soft)]"],
+    ["Ads and funnels", "Landing pages, lead magnets, ad angles, email capture, retargeting paths, offer copy, and conversion tracking.", "bg-[var(--color-accent-soft)]"],
+    ["Content and attention", "Owned-feed strategy, article structure, story hooks, social clips, proof pages, and shareable public receipts.", "bg-[var(--color-surface-2)]"],
   ];
 
   const callFlow = [
@@ -853,13 +865,13 @@ function StrategyCallPage({
   ];
 
   return (
-    <article className="rrn-page bg-[#f8f0df]">
+    <article className="rrn-page">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productLd) }}
       />
 
-      <section className="relative overflow-hidden border-b border-[#d8c89e] bg-[linear-gradient(135deg,#fff9e8_0%,#f5ead2_48%,#e8f3ff_100%)]">
+      <section className="relative overflow-hidden border-b border-[var(--color-gold)] bg-gradient-to-br from-[var(--color-surface-2)] via-[var(--color-surface)] to-[var(--color-paper)]">
         <div className="absolute inset-y-0 right-0 hidden w-[44%] opacity-20 lg:block" aria-hidden="true">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -867,19 +879,19 @@ function StrategyCallPage({
             alt=""
             className="h-full w-full object-cover"
           />
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,#f8f0df_0%,rgba(248,240,223,0.2)_70%)]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-paper)] via-[var(--color-paper)]/70 to-transparent" />
         </div>
         <div className="relative mx-auto grid max-w-6xl gap-5 px-4 py-7 sm:px-6 sm:py-9 lg:min-h-[72vh] lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.48fr)] lg:items-center">
           <div className="max-w-4xl">
-            <nav className="mb-4 text-sm font-bold text-[var(--color-blue)]">
+            <nav className="mb-4 text-sm font-bold text-[var(--color-blue-ink)]">
               <Link href="/store" className="inline-flex min-h-11 items-center hover:underline sm:min-h-0">
                 &lt;- Store
               </Link>
             </nav>
-            <p className="inline-flex rounded-full border border-[#d8ad43] bg-[#fff4c7] px-3 py-1 text-xs font-black uppercase tracking-normal text-[#7a5100]">
+            <p className="eyebrow inline-flex rounded-full border border-[var(--color-gold)] bg-[var(--color-support-soft)] px-3 py-1.5">
               Recorded strategy call / quick build map / real next step
             </p>
-            <h1 className="mt-4 max-w-4xl font-display text-4xl font-black leading-[1.02] tracking-normal text-[var(--color-ink)] sm:text-5xl lg:text-7xl">
+            <h1 className="display mt-4 max-w-4xl text-4xl text-[var(--color-ink)] sm:text-5xl lg:text-7xl">
               Bring one messy business problem. Leave with the build plan.
             </h1>
             <p className="mt-5 max-w-3xl text-base leading-relaxed text-[var(--color-ink-soft)] sm:text-xl">
@@ -891,20 +903,25 @@ function StrategyCallPage({
             <div className="rrn-tap-row mt-6">
               <a
                 href="#book"
-                className="rrn-tap inline-flex rounded-lg bg-[var(--color-support)] px-5 py-3 text-sm font-black text-[#1a1410] shadow-[0_10px_24px_rgba(200,155,47,0.3)] transition hover:bg-[#e1b94e]"
+                className="rrn-tap btn-accent inline-flex px-5 py-3 text-sm"
               >
                 Book the call - {price}
               </a>
               <a
                 href="#quick-board"
-                className="rrn-tap inline-flex rounded-lg border-2 border-[var(--color-blue)] bg-white/70 px-5 py-3 text-sm font-black text-[var(--color-blue)] transition hover:bg-[var(--color-blue-soft)]"
+                className="rrn-tap btn-blue inline-flex px-5 py-3 text-sm"
               >
                 See what gets built
               </a>
             </div>
             <div id="pick-problem" className="mt-6 grid gap-3 sm:grid-cols-2">
-              {fastMoves.map((move) => (
-                <div key={move.title} className={`rounded-lg border-2 ${move.color} p-4`}>
+              {fastMoves.map((move, i) => (
+                <div
+                  key={move.title}
+                  className={`rounded-lg border-2 ${move.color} p-4`}
+                  data-reveal
+                  style={{ "--d": i } as React.CSSProperties}
+                >
                   <p className="font-display text-xl font-black tracking-normal text-[var(--color-ink)]">
                     {move.title}
                   </p>
@@ -918,9 +935,9 @@ function StrategyCallPage({
 
           <aside
             id="book"
-            className="rounded-lg border-2 border-[#d8ad43] bg-[#fffdf4] p-5 text-[var(--color-ink)] shadow-[0_22px_60px_rgba(74,62,48,0.16)] lg:sticky lg:top-28"
+            className="rounded-lg border-2 border-[var(--color-gold)] bg-[var(--color-surface)] p-5 text-[var(--color-ink)] shadow-[0_22px_60px_rgba(0,0,0,0.5)] lg:sticky lg:top-28"
           >
-            <div className="relative aspect-[16/9] overflow-hidden rounded-lg border border-[#e1c775] bg-[#fff5d6]" data-ratio-frame>
+            <div className="relative aspect-[16/9] overflow-hidden rounded-lg border border-[var(--color-gold)] bg-[var(--color-support-soft)]" data-ratio-frame>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={STRATEGY_CALL_IMAGE}
@@ -928,14 +945,14 @@ function StrategyCallPage({
                 className="h-full w-full object-cover"
               />
             </div>
-            <p className="mt-4 text-xs font-black uppercase tracking-normal text-[var(--color-support-strong)]">
+            <p className="eyebrow mt-4">
               Book the call
             </p>
             <div className="mt-2 flex items-end justify-between gap-4">
               <h2 className="font-display text-2xl font-black leading-tight tracking-normal sm:text-3xl">
                 30-Minute Strategy Call
               </h2>
-              <p className="shrink-0 text-4xl font-black text-[var(--color-support-strong)]">
+              <p className="display shrink-0 text-5xl text-[var(--color-gold)]">
                 {price}
               </p>
             </div>
@@ -948,27 +965,27 @@ function StrategyCallPage({
               <BuyButton
                 slug={product.slug}
                 label={`Book the call - ${price}`}
-                className="w-full rounded-lg bg-[var(--color-support)] px-6 py-4 text-base font-black text-[#1a1410] shadow-[0_12px_28px_rgba(200,155,47,0.35)] transition hover:bg-[#e1b94e] disabled:opacity-60"
+                className="btn-accent w-full px-6 py-4 text-base disabled:opacity-60"
               />
               {j6Eligible ? (
                 <J6ClaimButton slug={product.slug} />
               ) : (
                 <p className="mt-3 text-xs leading-relaxed text-[var(--color-muted)]">
                   J6 defendant?{" "}
-                  <Link href="/case" className="font-bold text-[var(--color-accent)] underline">
+                  <Link href="/case" className="font-bold text-[var(--color-accent-ink)] underline">
                     Sign in and link your verified case profile
                   </Link>{" "}
                   to claim eligible services free.
                 </p>
               )}
             </div>
-            <div className="mt-5 grid grid-cols-3 gap-2 border-t border-[#e1c775] pt-4 text-center text-xs">
+            <div className="mt-5 grid grid-cols-3 gap-2 border-t border-[var(--color-gold)] pt-4 text-center text-xs">
               {[
                 ["30 min", "focused"],
                 ["Recorded", "replayable"],
                 ["Stripe", "secure"],
               ].map(([top, bottom]) => (
-                <div key={top} className="rounded-lg bg-white p-2">
+                <div key={top} className="rounded-lg border border-[var(--color-line-soft)] bg-[var(--color-surface-2)] p-2">
                   <p className="font-black text-[var(--color-ink)]">{top}</p>
                   <p className="mt-0.5 text-[var(--color-muted)]">{bottom}</p>
                 </div>
@@ -981,7 +998,7 @@ function StrategyCallPage({
       <section className="rrn-section">
         <div className="grid gap-5 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
           <div>
-            <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+            <p className="eyebrow" data-reveal>
               What this call does
             </p>
             <h2 className="mt-2 font-display text-3xl font-black tracking-normal sm:text-4xl">
@@ -995,9 +1012,14 @@ function StrategyCallPage({
             </p>
           </div>
           <div className="grid gap-3 sm:grid-cols-3">
-            {outcomes.map((item) => (
-              <div key={item.label} className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm">
-                <p className="text-xs font-black uppercase tracking-normal text-[var(--color-support-strong)]">
+            {outcomes.map((item, i) => (
+              <div
+                key={item.label}
+                className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-[0_14px_32px_rgba(0,0,0,0.3)]"
+                data-reveal
+                style={{ "--d": i } as React.CSSProperties}
+              >
+                <p className="eyebrow">
                   {item.label}
                 </p>
                 <h3 className="mt-2 font-display text-xl font-black tracking-normal">
@@ -1013,10 +1035,10 @@ function StrategyCallPage({
       </section>
 
       <section id="quick-board" className="mx-auto max-w-6xl px-4 pb-8 sm:px-6">
-        <div className="overflow-hidden rounded-lg border-2 border-[var(--color-blue)] bg-[#f7fbff] shadow-[0_18px_45px_rgba(29,58,107,0.12)]">
+        <div className="overflow-hidden rounded-lg border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] shadow-[0_18px_45px_rgba(0,0,0,0.4)]">
           <div className="grid gap-0 lg:grid-cols-[0.9fr_1.1fr]">
-            <div className="border-b border-[#b8c9e6] bg-[#e9f2ff] p-5 sm:p-6 lg:border-b-0 lg:border-r">
-              <p className="text-xs font-black uppercase tracking-normal text-[var(--color-blue)]">
+            <div className="border-b border-[var(--color-line)] bg-[var(--color-blue-soft)] p-5 sm:p-6 lg:border-b-0 lg:border-r">
+              <p className="eyebrow">
                 Sample strategy board
               </p>
               <h2 className="mt-2 font-display text-3xl font-black tracking-normal sm:text-4xl">
@@ -1029,8 +1051,8 @@ function StrategyCallPage({
             </div>
             <div className="grid gap-3 p-5 sm:p-6">
               {samplePlan.map(([label, body], index) => (
-                <div key={label} className="grid gap-3 rounded-lg border border-[#b8c9e6] bg-white p-4 sm:grid-cols-[2.5rem_1fr]">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-blue)] text-sm font-black text-white">
+                <div key={label} className="grid gap-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:grid-cols-[2.5rem_1fr]">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-blue)] text-sm font-black text-[var(--color-cream)]">
                     {index + 1}
                   </span>
                   <span>
@@ -1050,7 +1072,7 @@ function StrategyCallPage({
 
       <section className="mx-auto max-w-6xl px-4 pb-8 sm:px-6">
         <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-5 sm:p-7">
-          <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+          <p className="eyebrow">
             What Ryan can help you build
           </p>
           <h2 className="mt-2 max-w-4xl font-display text-3xl font-black tracking-normal sm:text-4xl">
@@ -1088,9 +1110,9 @@ function StrategyCallPage({
       </section>
 
       <section className="mx-auto max-w-6xl px-4 pb-10 sm:px-6">
-        <div className="grid gap-4 rounded-lg border-2 border-[#d8ad43] bg-[#fff8e1] p-5 sm:p-6 lg:grid-cols-[1fr_0.78fr] lg:items-center">
+        <div className="grid gap-4 rounded-lg border-2 border-[var(--color-gold)] bg-[var(--color-support-soft)] p-5 sm:p-6 lg:grid-cols-[1fr_0.78fr] lg:items-center">
           <div>
-            <p className="text-xs font-black uppercase tracking-normal text-[var(--color-support-strong)]">
+            <p className="eyebrow">
               Good fit if
             </p>
             <h2 className="mt-2 font-display text-3xl font-black tracking-normal">
@@ -1112,8 +1134,8 @@ function StrategyCallPage({
               ))}
             </ul>
           </div>
-          <div className="rounded-lg border border-[#d8ad43] bg-white p-5 shadow-sm">
-            <p className="text-5xl font-black tracking-tight text-[var(--color-support-strong)]">
+          <div className="rounded-lg border border-[var(--color-gold)] bg-[var(--color-surface)] p-5 shadow-[0_18px_40px_rgba(0,0,0,0.4)]">
+            <p className="display text-6xl text-[var(--color-gold)]">
               30
             </p>
             <p className="mt-1 text-sm font-black uppercase tracking-normal text-[var(--color-muted)]">
@@ -1129,7 +1151,7 @@ function StrategyCallPage({
               <BuyButton
                 slug={product.slug}
                 label={`Book the strategy call - ${price}`}
-                className="w-full rounded-lg bg-[var(--color-support)] px-6 py-4 text-base font-black text-[#1a1410] shadow-[0_12px_28px_rgba(200,155,47,0.3)] transition hover:bg-[#e1b94e] disabled:opacity-60"
+                className="btn-accent w-full px-6 py-4 text-base disabled:opacity-60"
               />
             </div>
           </div>

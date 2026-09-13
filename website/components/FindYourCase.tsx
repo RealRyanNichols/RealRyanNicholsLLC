@@ -99,10 +99,10 @@ export function FindYourCase({
   const target = embed ? "_blank" : undefined;
 
   return (
-    <div className="rounded-2xl border-2 border-[var(--color-navy)]/25 bg-[var(--color-surface)] p-4 sm:p-5">
+    <div className="panel p-4 sm:p-5">
       <label
         htmlFor="fyc-q"
-        className="block text-[11px] font-black uppercase tracking-[0.18em] text-[var(--color-navy)]"
+        className="eyebrow block"
       >
         Find your case —{" "}
         {defendants > 0 ? `${defendants.toLocaleString("en-US")} ` : ""}J6
@@ -115,7 +115,7 @@ export function FindYourCase({
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Name, case number, or role… (e.g. Nichols, 1:21-cr-00117)"
-          className="min-w-0 flex-1 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-4 py-3 text-base text-[var(--color-ink)] outline-none transition focus:border-[var(--color-navy)]"
+          className="min-w-0 flex-1 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-4 py-3 text-base text-[var(--color-ink)] outline-none transition focus:border-[var(--color-gold)]"
           autoComplete="off"
         />
       </div>
@@ -127,14 +127,14 @@ export function FindYourCase({
       ) : null}
 
       {!busy && touched && q.trim().length >= 2 && results.length === 0 ? (
-        <div className="mt-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-4 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+        <div className="mt-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] p-4 text-sm leading-relaxed text-[var(--color-ink-soft)]">
           No match on that spelling. Try last name only — and if you or your
           family member still isn&apos;t here,{" "}
           <a
             href="https://realryannichols.com/j6"
             target={target}
             rel={embed ? "noopener noreferrer" : undefined}
-            className="font-bold text-[var(--color-navy)] underline underline-offset-2"
+            className="font-bold text-[var(--color-ink)] underline underline-offset-2"
           >
             tell us and we&apos;ll add the profile free
           </a>
@@ -147,14 +147,14 @@ export function FindYourCase({
           {results.map((r) => (
             <li
               key={r.slug}
-              className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-3.5"
+              className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface-2)] p-3.5"
             >
               <div className="flex gap-3">
                 <a
                   href={`https://realryannichols.com/case/people/${r.slug}`}
                   target={target}
                   rel={embed ? "noopener noreferrer" : undefined}
-                  className="relative h-24 w-20 shrink-0 overflow-hidden rounded-lg border border-[var(--color-line)] bg-[#071123]"
+                  className="relative h-24 w-20 shrink-0 overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)]"
                   aria-label={`Open ${r.name}'s free public profile`}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -171,12 +171,12 @@ export function FindYourCase({
                   />
                   <span
                     className={[
-                      "absolute inset-x-1 bottom-1 rounded px-1 py-0.5 text-center text-[7px] font-black uppercase tracking-wide shadow",
+                      "absolute inset-x-1 bottom-1 truncate rounded px-1 py-0.5 text-center text-[8px] font-black uppercase tracking-wide shadow",
                       r.image_kind === "portrait"
-                        ? "bg-emerald-800 text-white"
+                        ? "bg-[var(--color-success)] text-[var(--color-navy)]"
                         : r.image_kind === "editorial-portrait"
-                          ? "bg-amber-700 text-white"
-                          : "bg-[#071123]/95 text-[var(--color-gold-bright)]",
+                          ? "bg-[var(--color-tag-procedural)] text-[var(--color-navy)]"
+                          : "bg-[var(--color-navy)]/95 text-[var(--color-gold)]",
                     ].join(" ")}
                   >
                     {r.image_label}
@@ -204,7 +204,7 @@ export function FindYourCase({
                           href={`https://realryannichols.com/case/people/${r.slug}/claim`}
                           target={target}
                           rel={embed ? "noopener noreferrer" : undefined}
-                          className="rounded-md bg-[var(--color-navy)] px-3 py-1.5 text-xs font-black text-[#fdf8ea] transition hover:bg-[var(--color-blue-strong)]"
+                          className="rounded-md bg-[var(--color-gold)] px-3 py-1.5 text-xs font-black text-[var(--color-navy)] transition hover:bg-[var(--color-support-strong)]"
                         >
                           This you? Claim it free
                         </a>
@@ -212,7 +212,7 @@ export function FindYourCase({
                       <button
                         type="button"
                         onClick={() => share(r)}
-                        className="rounded-md border border-[var(--color-navy)]/40 px-3 py-1.5 text-xs font-bold text-[var(--color-navy)] transition hover:border-[var(--color-navy)]"
+                        className="rounded-md border border-[var(--color-line)] px-3 py-1.5 text-xs font-bold text-[var(--color-ink)] transition hover:border-[var(--color-gold)]"
                         aria-live="polite"
                       >
                         {copiedSlug === r.slug ? "Link copied ✓" : "Share"}
@@ -244,7 +244,7 @@ export function FindYourCase({
             href="https://realryannichols.com/case"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-black text-[var(--color-navy)]"
+            className="font-black text-[var(--color-ink)]"
           >
             The J6 Case Archive · realryannichols.com
           </a>

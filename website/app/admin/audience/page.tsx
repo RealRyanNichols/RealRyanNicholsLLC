@@ -429,7 +429,7 @@ export default async function AdminAudiencePage() {
 
   return (
     <article className="mx-auto max-w-6xl px-4 py-10">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+      <p className="text-xs uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
         Admin · audience intelligence
       </p>
       <h1 className="mt-2 text-3xl sm:text-4xl font-black tracking-tight">
@@ -488,7 +488,7 @@ export default async function AdminAudiencePage() {
                 </p>
               </div>
               <div className="text-right">
-                <div className="text-4xl font-black tabular-nums text-[var(--color-accent)]">
+                <div className="text-4xl font-black tabular-nums text-[var(--color-accent-ink)]">
                   {dossier.score}
                 </div>
                 <p className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
@@ -522,7 +522,7 @@ export default async function AdminAudiencePage() {
             </div>
 
             <div className="mt-5 grid gap-4 lg:grid-cols-[minmax(0,1fr)_360px]">
-              <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4">
+              <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface-2)] p-4">
                 <h3 className="text-sm font-black uppercase tracking-wider text-[var(--color-muted)]">
                   Prediction and money move
                 </h3>
@@ -535,7 +535,7 @@ export default async function AdminAudiencePage() {
                   {dossier.intent}; strongest page signal is{" "}
                   <Link
                     href={topPath(dossier.views)}
-                    className="text-[var(--color-accent)] underline"
+                    className="text-[var(--color-accent-ink)] underline"
                   >
                     {topPath(dossier.views)}
                   </Link>
@@ -571,7 +571,7 @@ export default async function AdminAudiencePage() {
                       <li key={`${view.session_id}-${view.path}-${view.started_at}`} className="text-xs">
                         <Link
                           href={view.path ?? "/"}
-                          className="font-mono text-[var(--color-accent)] hover:underline"
+                          className="font-mono text-[var(--color-accent-ink)] hover:underline"
                         >
                           {view.path ?? "/"}
                         </Link>{" "}
@@ -670,7 +670,7 @@ function Stat({
   sub?: string;
 }) {
   return (
-    <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] px-4 py-3">
+    <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface-2)] px-4 py-3">
       <div className="text-2xl font-black tracking-tight">{value}</div>
       <div className="mt-1 text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
         {label}
@@ -700,7 +700,7 @@ function Mini({
       {sub ? <p className="mt-1 text-xs text-[var(--color-muted)]">{sub}</p> : null}
     </>
   );
-  const classes = "rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-3";
+  const classes = "rounded-xl border border-[var(--color-line)] bg-[var(--color-surface-2)] p-3";
   return href ? (
     <Link href={href} className={`${classes} block hover:border-[var(--color-accent)]`}>
       {body}
@@ -712,7 +712,7 @@ function Mini({
 
 function Tag({ children }: { children: React.ReactNode }) {
   return (
-    <span className="rounded-full bg-[var(--color-accent-soft)] px-3 py-1 text-xs font-bold text-[var(--color-accent)]">
+    <span className="rounded-full bg-[var(--color-accent-soft)] px-3 py-1 text-xs font-bold text-[var(--color-accent-ink)]">
       {children}
     </span>
   );

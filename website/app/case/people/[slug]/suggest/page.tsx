@@ -38,10 +38,8 @@ export default async function SuggestProfileUpdatePage({
         </Link>
       </nav>
 
-      <p className="mt-8 text-xs font-black uppercase tracking-[0.18em] text-[var(--color-accent)]">
-        Signed-in profile contribution
-      </p>
-      <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">
+      <p className="eyebrow mt-8">Signed-in profile contribution</p>
+      <h1 className="mt-2 font-display text-3xl font-black tracking-tight sm:text-4xl">
         Suggest an update to {person.name}
       </h1>
       <p className="mt-3 text-base leading-relaxed text-[var(--color-ink-soft)]">

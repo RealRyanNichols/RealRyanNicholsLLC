@@ -22,7 +22,7 @@ function TabLink({
       className={[
         "inline-flex min-h-11 items-center px-4 py-2.5 -mb-px border-b-2 text-sm font-semibold transition sm:min-h-0",
         active
-          ? "border-[var(--color-navy)] text-[var(--color-ink)]"
+          ? "border-[var(--color-gold)] text-[var(--color-gold)]"
           : "border-transparent text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]",
       ].join(" ")}
     >
@@ -39,7 +39,7 @@ function GraphLink() {
   return (
     <Link
       href="/case/nexus"
-      className="inline-flex min-h-11 items-center gap-1.5 rounded-full border-2 border-[#1f2f55] bg-[#0a1429] px-3.5 py-1.5 text-xs font-bold text-[#cfd9ea] transition hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)] sm:min-h-0"
+      className="inline-flex min-h-11 items-center gap-1.5 rounded-full border-2 border-[var(--color-line-soft)] bg-[var(--color-surface)] px-3.5 py-1.5 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)] sm:min-h-0"
     >
       <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--color-gold-bright)]" aria-hidden />
       View as graph
@@ -111,14 +111,14 @@ export function ArchiveTabs({
       <div className="mb-1 flex items-center gap-2">
         <Link
           href="/case/officials"
-          className="inline-flex min-h-11 items-center gap-1.5 rounded-full border-2 border-[var(--color-navy)] bg-[var(--color-blue-soft)]/60 px-3.5 py-1.5 text-xs font-bold text-[var(--color-navy)] hover:bg-[var(--color-navy)] hover:text-[var(--color-paper)] transition sm:min-h-0"
+          className="inline-flex min-h-11 items-center gap-1.5 rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)]/60 px-3.5 py-1.5 text-xs font-bold text-[var(--color-blue-ink)] hover:border-[var(--color-gold)] hover:bg-[var(--color-gold)] hover:text-[var(--color-navy)] transition sm:min-h-0"
         >
           Who&apos;s named
           <span aria-hidden>→</span>
         </Link>
         <Link
           href="/case/nexus"
-          className="inline-flex min-h-11 items-center gap-1.5 rounded-full border-2 border-[#1f2f55] bg-[#0a1429] px-3.5 py-1.5 text-xs font-bold text-[#cfd9ea] hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)] transition sm:min-h-0"
+          className="inline-flex min-h-11 items-center gap-1.5 rounded-full border-2 border-[var(--color-line-soft)] bg-[var(--color-surface)] px-3.5 py-1.5 text-xs font-bold text-[var(--color-ink-soft)] hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)] transition sm:min-h-0"
         >
           <span className="inline-block w-1.5 h-1.5 rounded-full bg-[var(--color-gold-bright)] animate-pulse" aria-hidden />
           View as graph

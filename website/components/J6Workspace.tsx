@@ -56,8 +56,8 @@ export function J6Workspace({
   const [tab, setTab] = useState<Tab>("overview");
 
   return (
-    <section className="rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-5 sm:p-6">
-      <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+    <section className="panel p-5 sm:p-6">
+      <p className="eyebrow">
         Your J6 Anti-Weaponization Case Builder
       </p>
       <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
@@ -70,7 +70,7 @@ export function J6Workspace({
         <Link
           href={`/case/people/${j6Profile.slug}`}
           target="_blank"
-          className="text-[var(--color-accent)] font-bold hover:underline"
+          className="text-[var(--color-gold)] font-bold hover:underline"
         >
           your profile page →
         </Link>
@@ -258,7 +258,7 @@ function CaseDetailsForm({ profile }: { profile: J6Profile }) {
           rows={3}
           maxLength={5000}
           placeholder="e.g. 41 months federal prison, 3 years supervised release, $2,000 restitution"
-          className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-accent)] resize-y"
+          className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-accent)] resize-y"
         />
       </div>
 
@@ -274,7 +274,7 @@ function CaseDetailsForm({ profile }: { profile: J6Profile }) {
           placeholder={
             "18 U.S.C. § 1512(c)(2) — Obstruction of an official proceeding\n18 U.S.C. § 231(a)(3) — Civil disorder"
           }
-          className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm font-mono focus:outline-none focus:border-[var(--color-accent)] resize-y"
+          className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm font-mono focus:outline-none focus:border-[var(--color-accent)] resize-y"
         />
       </div>
 
@@ -290,7 +290,7 @@ function CaseDetailsForm({ profile }: { profile: J6Profile }) {
           placeholder={
             "https://example.com/news-story\nhttps://example.com/another-piece"
           }
-          className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm font-mono focus:outline-none focus:border-[var(--color-accent)] resize-y"
+          className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm font-mono focus:outline-none focus:border-[var(--color-accent)] resize-y"
         />
       </div>
 
@@ -304,17 +304,17 @@ function CaseDetailsForm({ profile }: { profile: J6Profile }) {
           onChange={(e) => setSupportUrl(e.target.value)}
           maxLength={500}
           placeholder="https://givesendgo.com/your-page"
-          className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2.5 text-sm font-mono focus:outline-none focus:border-[var(--color-accent)]"
+          className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2.5 text-sm font-mono focus:outline-none focus:border-[var(--color-accent)]"
         />
       </div>
 
-      {msg ? <p className="text-sm text-[var(--color-accent)]">{msg}</p> : null}
+      {msg ? <p className="text-sm text-[var(--color-gold)]">{msg}</p> : null}
 
       <button
         type="button"
         disabled={busy}
         onClick={save}
-        className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 font-bold hover:bg-[var(--color-accent-strong)] disabled:opacity-50"
+        className="btn-accent rounded-xl px-5 py-2.5 disabled:opacity-50"
       >
         {busy ? "Saving…" : "Save case details →"}
       </button>
@@ -342,7 +342,7 @@ function CaseField({
         onChange={(e) => onChange(e.target.value)}
         maxLength={500}
         placeholder={placeholder}
-        className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2.5 text-sm focus:outline-none focus:border-[var(--color-accent)]"
+        className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2.5 text-sm focus:outline-none focus:border-[var(--color-accent)]"
       />
     </div>
   );
@@ -364,7 +364,7 @@ function CaseDate({
         type="date"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2.5 text-sm focus:outline-none focus:border-[var(--color-accent)]"
+        className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2.5 text-sm focus:outline-none focus:border-[var(--color-accent)]"
       />
     </div>
   );
@@ -372,8 +372,11 @@ function CaseDate({
 
 function Stat({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-lg border border-[var(--color-line-soft)] bg-[var(--color-paper)] p-2.5">
-      <div className="text-xl sm:text-2xl font-bold tabular-nums tracking-tight text-[var(--color-accent)]">
+    <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] p-2.5">
+      <div
+        className="display text-2xl sm:text-3xl tabular-nums text-[var(--color-gold)]"
+        data-count={value > 0 ? value : undefined}
+      >
         {value.toLocaleString()}
       </div>
       <div className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-semibold">
@@ -399,7 +402,7 @@ function TabBtn({
       className={[
         "px-3 py-2 -mb-px border-b-2 text-xs sm:text-sm font-bold tracking-tight transition",
         active
-          ? "border-[var(--color-accent)] text-[var(--color-accent)]"
+          ? "border-[var(--color-gold)] text-[var(--color-gold)]"
           : "border-transparent text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]",
       ].join(" ")}
     >
@@ -417,7 +420,7 @@ function OverviewView({
 }) {
   if (submissions.length === 0) {
     return (
-      <div className="rounded-lg bg-[var(--color-paper)] border border-[var(--color-line-soft)] p-5 text-center">
+      <div className="rounded-lg bg-[var(--color-surface-2)] border border-[var(--color-line)] p-5 text-center">
         <p className="text-base font-bold">Nothing posted yet.</p>
         <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
           Start with{" "}
@@ -436,7 +439,7 @@ function OverviewView({
       {submissions.map((s) => (
         <div
           key={s.id}
-          className="flex items-center justify-between gap-3 rounded-lg bg-[var(--color-paper)] border border-[var(--color-line-soft)] p-3"
+          className="flex items-center justify-between gap-3 rounded-lg bg-[var(--color-surface-2)] border border-[var(--color-line)] p-3"
         >
           <div className="min-w-0">
             <p className="text-sm font-bold truncate">{s.title}</p>
@@ -453,7 +456,7 @@ function OverviewView({
       <Link
         href={`/case/people/${j6Slug}`}
         target="_blank"
-        className="block mt-3 text-xs text-[var(--color-accent)] font-bold hover:underline text-center"
+        className="block mt-3 text-xs text-[var(--color-gold)] font-bold hover:underline text-center"
       >
         View your public profile →
       </Link>
@@ -462,16 +465,16 @@ function OverviewView({
 }
 
 function SubmissionStatusBadge({ status }: { status: string }) {
-  const styles: Record<string, { bg: string; label: string }> = {
-    approved: { bg: "var(--color-success)", label: "PUBLIC" },
-    pending: { bg: "var(--color-tag-procedural)", label: "PENDING" },
-    rejected: { bg: "var(--color-accent)", label: "REJECTED" },
+  const styles: Record<string, { bg: string; fg: string; label: string }> = {
+    approved: { bg: "var(--color-success)", fg: "var(--color-navy)", label: "PUBLIC" },
+    pending: { bg: "var(--color-tag-procedural)", fg: "var(--color-navy)", label: "PENDING" },
+    rejected: { bg: "var(--color-accent)", fg: "var(--color-cream)", label: "REJECTED" },
   };
   const s = styles[status] ?? styles.pending;
   return (
     <span
-      className="flex-shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--color-paper)]"
-      style={{ background: s.bg }}
+      className="flex-shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider"
+      style={{ background: s.bg, color: s.fg }}
     >
       {s.label}
     </span>
@@ -535,20 +538,20 @@ function TestimonyForm({
         onChange={(e) => setBody(e.target.value)}
         rows={14}
         placeholder="Start typing — or tap the mic above and just talk."
-        className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-3 text-base leading-relaxed focus:outline-none focus:border-[var(--color-accent)] font-sans resize-y"
+        className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-3 text-base leading-relaxed focus:outline-none focus:border-[var(--color-accent)] font-sans resize-y"
       />
       <p className="text-xs text-[var(--color-muted)]">
         {body.length.toLocaleString()} characters. Saves directly — no review
         needed for your own story.
       </p>
       {msg ? (
-        <p className="text-sm text-[var(--color-accent)]">{msg}</p>
+        <p className="text-sm text-[var(--color-gold)]">{msg}</p>
       ) : null}
       <button
         type="button"
         disabled={busy || body.trim().length === 0}
         onClick={save}
-        className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 font-bold hover:bg-[var(--color-accent-strong)] disabled:opacity-50"
+        className="btn-accent rounded-xl px-5 py-2.5 disabled:opacity-50"
       >
         {busy ? "Saving…" : "Save my story →"}
       </button>
@@ -616,7 +619,7 @@ function PhotoUploadForm({ personId }: { personId: string }) {
       </p>
       <div>
         <label htmlFor="j6-photo-title" className="text-xs font-bold block mb-1.5">
-          Title <span className="text-[var(--color-accent)]">*</span>
+          Title <span className="text-[var(--color-gold)]">*</span>
         </label>
         <input
           id="j6-photo-title"
@@ -626,7 +629,7 @@ function PhotoUploadForm({ personId }: { personId: string }) {
           required
           maxLength={200}
           placeholder="e.g. 'Day I was released from CTF' or 'Hospital photo, Jan 18 2021'"
-          className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2.5 text-base focus:outline-none focus:border-[var(--color-accent)]"
+          className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2.5 text-base focus:outline-none focus:border-[var(--color-accent)]"
         />
       </div>
       <div>
@@ -640,26 +643,26 @@ function PhotoUploadForm({ personId }: { personId: string }) {
           rows={2}
           maxLength={1000}
           placeholder="Anything you want people to know about this photo."
-          className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-accent)] resize-y"
+          className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-accent)] resize-y"
         />
       </div>
       <div>
         <label htmlFor="j6-photo-file" className="text-xs font-bold block mb-1.5">
-          Photo <span className="text-[var(--color-accent)]">*</span>
+          Photo <span className="text-[var(--color-gold)]">*</span>
         </label>
         <input
           id="j6-photo-file"
           type="file"
           accept="image/png,image/jpeg,image/webp"
           onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-          className="w-full text-sm file:mr-3 file:rounded-md file:border-0 file:bg-[var(--color-accent)] file:text-[var(--color-paper)] file:font-bold file:px-3 file:py-1.5 file:hover:bg-[var(--color-accent-strong)]"
+          className="w-full text-sm file:mr-3 file:rounded-md file:border file:border-[var(--color-line)] file:bg-[var(--color-surface-2)] file:text-[var(--color-ink)] file:font-bold file:px-3 file:py-1.5 file:hover:border-[var(--color-gold)]"
         />
       </div>
-      {msg ? <p className="text-sm text-[var(--color-accent)]">{msg}</p> : null}
+      {msg ? <p className="text-sm text-[var(--color-gold)]">{msg}</p> : null}
       <button
         type="submit"
         disabled={busy}
-        className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 font-bold hover:bg-[var(--color-accent-strong)] disabled:opacity-50"
+        className="btn-accent rounded-xl px-5 py-2.5 disabled:opacity-50"
       >
         {busy ? "Uploading…" : "Submit photo →"}
       </button>
@@ -724,7 +727,7 @@ function EmbedForm({ personId }: { personId: string }) {
       </p>
       <div>
         <label className="text-xs font-bold block mb-1.5">
-          Video URL <span className="text-[var(--color-accent)]">*</span>
+          Video URL <span className="text-[var(--color-gold)]">*</span>
         </label>
         <input
           type="url"
@@ -732,12 +735,12 @@ function EmbedForm({ personId }: { personId: string }) {
           onChange={(e) => setUrl(e.target.value)}
           required
           placeholder="https://www.youtube.com/watch?v=…"
-          className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2.5 text-sm font-mono focus:outline-none focus:border-[var(--color-accent)]"
+          className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2.5 text-sm font-mono focus:outline-none focus:border-[var(--color-accent)]"
         />
       </div>
       <div>
         <label className="text-xs font-bold block mb-1.5">
-          Title <span className="text-[var(--color-accent)]">*</span>
+          Title <span className="text-[var(--color-gold)]">*</span>
         </label>
         <input
           type="text"
@@ -746,7 +749,7 @@ function EmbedForm({ personId }: { personId: string }) {
           required
           maxLength={200}
           placeholder="What's in the video"
-          className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2.5 text-base focus:outline-none focus:border-[var(--color-accent)]"
+          className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2.5 text-base focus:outline-none focus:border-[var(--color-accent)]"
         />
       </div>
       <div>
@@ -758,14 +761,14 @@ function EmbedForm({ personId }: { personId: string }) {
           onChange={(e) => setCaption(e.target.value)}
           rows={2}
           maxLength={1000}
-          className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-accent)] resize-y"
+          className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-accent)] resize-y"
         />
       </div>
-      {msg ? <p className="text-sm text-[var(--color-accent)]">{msg}</p> : null}
+      {msg ? <p className="text-sm text-[var(--color-gold)]">{msg}</p> : null}
       <button
         type="submit"
         disabled={busy}
-        className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 font-bold hover:bg-[var(--color-accent-strong)] disabled:opacity-50"
+        className="btn-accent rounded-xl px-5 py-2.5 disabled:opacity-50"
       >
         {busy ? "Submitting…" : "Submit video →"}
       </button>
@@ -845,7 +848,7 @@ function AvatarUploadForm({
         type="file"
         accept="image/png,image/jpeg,image/webp"
         onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-        className="w-full text-sm file:mr-3 file:rounded-md file:border-0 file:bg-[var(--color-accent)] file:text-[var(--color-paper)] file:font-bold file:px-3 file:py-1.5 file:hover:bg-[var(--color-accent-strong)]"
+        className="w-full text-sm file:mr-3 file:rounded-md file:border file:border-[var(--color-line)] file:bg-[var(--color-surface-2)] file:text-[var(--color-ink)] file:font-bold file:px-3 file:py-1.5 file:hover:border-[var(--color-gold)]"
       />
       <label className="flex items-start gap-2 text-xs leading-relaxed text-[var(--color-muted)]">
         <input
@@ -862,11 +865,11 @@ function AvatarUploadForm({
           profile.
         </span>
       </label>
-      {msg ? <p className="text-sm text-[var(--color-accent)]">{msg}</p> : null}
+      {msg ? <p className="text-sm text-[var(--color-gold)]">{msg}</p> : null}
       <button
         type="submit"
         disabled={busy}
-        className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 font-bold hover:bg-[var(--color-accent-strong)] disabled:opacity-50"
+        className="btn-accent rounded-xl px-5 py-2.5 disabled:opacity-50"
       >
         {busy ? "Uploading…" : "Set profile photo →"}
       </button>

@@ -58,7 +58,7 @@ export default async function AdminLinksPage() {
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-7">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+      <p className="text-xs uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
         Admin · link graph
       </p>
       <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">
@@ -123,12 +123,12 @@ export default async function AdminLinksPage() {
               <li key={p.id}>
                 <Link
                   href={`/posts/${p.slug}`}
-                  className="flex items-center justify-between gap-3 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] px-3.5 py-2.5 transition hover:border-[var(--color-navy)]"
+                  className="flex items-center justify-between gap-3 rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] px-3.5 py-2.5 transition hover:border-[var(--color-gold)]"
                 >
                   <span className="min-w-0 truncate text-sm font-semibold text-[var(--color-ink)]">
                     {p.title ?? p.slug}
                   </span>
-                  <span className="shrink-0 text-sm font-bold tabular-nums text-[var(--color-navy)]">
+                  <span className="shrink-0 text-sm font-bold tabular-nums text-[var(--color-gold)]">
                     {inbound.get(p.id) ?? 0} in
                   </span>
                 </Link>
@@ -145,7 +145,7 @@ function Pulse({ n, label, hot }: { n: number; label: string; hot?: boolean }) {
   return (
     <span className="inline-flex items-baseline gap-1.5">
       <span
-        className={`text-lg font-bold tabular-nums tracking-tight ${hot ? "text-[var(--color-accent)]" : "text-[var(--color-ink)]"}`}
+        className={`text-lg font-bold tabular-nums tracking-tight ${hot ? "text-[var(--color-accent-ink)]" : "text-[var(--color-ink)]"}`}
       >
         {n.toLocaleString()}
       </span>

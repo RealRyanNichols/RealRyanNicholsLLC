@@ -20,7 +20,7 @@ const LiveVisitorRadar = dynamic(
     loading: () => (
       <p
         data-radar-loading
-        className="pointer-events-none absolute bottom-2 left-3 z-10 text-[9px] font-mono uppercase tracking-wider text-[#8194b4]"
+        className="pointer-events-none absolute bottom-2 left-3 z-10 text-[9px] font-mono uppercase tracking-wider text-[var(--color-muted)]"
       >
         Loading live map…
       </p>
@@ -83,7 +83,7 @@ function StatTile({
   value,
   label,
   prefix = "",
-  accent = "#fdf8ea",
+  accent = "var(--color-cream)",
   live = false,
 }: {
   value: number;
@@ -93,7 +93,7 @@ function StatTile({
   live?: boolean;
 }) {
   return (
-    <div className="relative overflow-hidden rounded-lg border border-white/10 bg-white/[0.03] p-3 sm:p-4">
+    <div className="relative overflow-hidden rounded-lg border border-[var(--color-cream)]/10 bg-[var(--color-cream)]/[0.03] p-3 sm:p-4">
       {live ? (
         <span className="absolute right-3 top-3 flex h-2 w-2" aria-hidden>
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-live)] opacity-70" />
@@ -101,13 +101,13 @@ function StatTile({
         </span>
       ) : null}
       <div
-        className="font-display text-2xl font-black tabular-nums tracking-tight sm:text-3xl"
+        className="display text-3xl tabular-nums sm:text-4xl"
         style={{ color: accent }}
       >
         {prefix}
         <CountUp value={value} />
       </div>
-      <div className="mt-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[#8194b4]">
+      <div className="mt-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--color-muted)]">
         {label}
       </div>
     </div>
@@ -126,15 +126,13 @@ function MilestoneRoadmap({ total, milestones }: { total: number; milestones: Mi
   if (milestones.length === 0) return null;
   const next = milestones.find((m) => total < m.points);
   return (
-    <section className="mt-4 rounded-xl border border-white/10 bg-white/[0.03] p-4">
+    <section className="mt-4 rounded-xl border border-[var(--color-cream)]/10 bg-[var(--color-cream)]/[0.03] p-4">
       <div className="flex items-center justify-between gap-3">
-        <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
-          Milestones — what we unlock together
-        </p>
+        <p className="eyebrow">Milestones — what we unlock together</p>
         {next ? (
-          <p className="text-xs font-bold text-[#fdf8ea]">
+          <p className="text-xs font-bold text-[var(--color-cream)]">
             <span className="text-[var(--color-gold-bright)]">{(next.points - total).toLocaleString()}</span> pts to{" "}
-            <span className="text-[#cfd9ea]">{next.title}</span>
+            <span className="text-[var(--color-ink-soft)]">{next.title}</span>
           </p>
         ) : (
           <p className="text-xs font-bold text-[var(--color-live)]">All milestones unlocked 🎉</p>
@@ -153,24 +151,24 @@ function MilestoneRoadmap({ total, milestones }: { total: number; milestones: Mi
                   ? "border-[var(--color-live)]/50 bg-[var(--color-live)]/[0.08]"
                   : isNext
                     ? "border-[var(--color-gold-bright)]/60 bg-[var(--color-gold-bright)]/[0.08]"
-                    : "border-white/10 bg-white/[0.02]",
+                    : "border-[var(--color-cream)]/10 bg-[var(--color-cream)]/[0.02]",
               ].join(" ")}
             >
               <div className="flex items-center justify-between gap-2">
-                <span className="font-display text-lg font-black tabular-nums text-[#fdf8ea]">
+                <span className="display text-xl tabular-nums text-[var(--color-cream)]">
                   {m.points.toLocaleString()}
                 </span>
                 <span
                   className={[
                     "rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-wider",
-                    reached ? "bg-[var(--color-live)] text-[#0a1326]" : isNext ? "bg-[var(--color-gold-bright)] text-[#0a1326]" : "bg-white/10 text-[#8194b4]",
+                    reached ? "bg-[var(--color-live)] text-[var(--color-navy)]" : isNext ? "bg-[var(--color-gold-bright)] text-[var(--color-navy)]" : "bg-[var(--color-cream)]/10 text-[var(--color-muted)]",
                   ].join(" ")}
                 >
                   {reached ? "Unlocked" : isNext ? "Next" : "Locked"}
                 </span>
               </div>
-              <p className="mt-1 text-sm font-bold text-[#fdf8ea]">{m.title}</p>
-              <p className="mt-0.5 text-[11px] leading-snug text-[#9fb0ca]">{m.reward}</p>
+              <p className="mt-1 text-sm font-bold text-[var(--color-cream)]">{m.title}</p>
+              <p className="mt-0.5 text-[11px] leading-snug text-[var(--color-muted)]">{m.reward}</p>
             </div>
           );
         })}
@@ -185,25 +183,23 @@ function ActivityFeed({ recent: recentRaw }: { recent: Recent[] }) {
   const recent = recentRaw.filter((r) => r.kind !== "pledge");
   const icon = (k: string) => (k === "signup" ? "✉️" : "🔁");
   return (
-    <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+    <div className="rounded-xl border border-[var(--color-cream)]/10 bg-[var(--color-cream)]/[0.03] p-4">
       <div className="flex items-center gap-2">
         <span className="relative flex h-2 w-2" aria-hidden>
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-live)] opacity-70" />
           <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--color-live)]" />
         </span>
-        <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
-          Live activity
-        </p>
+        <p className="eyebrow">Live activity</p>
       </div>
       {recent.length === 0 ? (
-        <p className="mt-3 text-xs text-[#8194b4]">Quiet for a moment…</p>
+        <p className="mt-3 text-xs text-[var(--color-muted)]">Quiet for a moment…</p>
       ) : (
         <ul className="mt-3 space-y-2">
           {recent.slice(0, 10).map((r, i) => (
             <li key={`${r.at}-${i}`} className="flex items-center gap-2 text-xs">
               <span aria-hidden>{icon(r.kind)}</span>
-              <span className="min-w-0 flex-1 truncate text-[#cfd9ea]">{r.label}</span>
-              <span className="shrink-0 text-[10px] text-[#5f7197]">{ago(r.at)}</span>
+              <span className="min-w-0 flex-1 truncate text-[var(--color-ink-soft)]">{r.label}</span>
+              <span className="shrink-0 text-[10px] text-[var(--color-muted)]">{ago(r.at)}</span>
             </li>
           ))}
         </ul>
@@ -346,7 +342,7 @@ export function SituationRoom({
 
   return (
     <div
-      className="fixed inset-0 z-[60] overflow-y-auto bg-[#05080f]/95 backdrop-blur-sm"
+      className="fixed inset-0 z-[60] overflow-y-auto bg-[var(--color-paper)]/95 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
       aria-label="Situation Room"
@@ -366,10 +362,8 @@ export function SituationRoom({
               <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[var(--color-live)] shadow-[0_0_10px_rgba(127,227,169,0.8)]" />
             </span>
             <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.28em] text-[var(--color-gold-bright)]">
-                Situation Room
-              </p>
-              <p className="text-sm font-bold text-[#fdf8ea]">
+              <p className="eyebrow">Situation Room</p>
+              <p className="text-sm font-bold text-[var(--color-cream)]">
                 Live data &amp; the record, in one place
               </p>
             </div>
@@ -382,7 +376,7 @@ export function SituationRoom({
           <button
             type="button"
             onClick={onClose}
-            className="grid h-10 w-10 place-items-center rounded-full border border-white/15 bg-white/5 text-lg text-[#cfd9ea] transition hover:border-[var(--color-gold-bright)]/60 hover:text-[var(--color-gold-bright)]"
+            className="grid h-10 w-10 place-items-center rounded-full border border-[var(--color-cream)]/15 bg-[var(--color-cream)]/5 text-lg text-[var(--color-ink-soft)] transition hover:border-[var(--color-gold-bright)]/60 hover:text-[var(--color-gold-bright)]"
             aria-label="Close"
           >
             ✕
@@ -393,16 +387,14 @@ export function SituationRoom({
         <section className="mt-5 rounded-xl border border-[var(--color-gold-bright)]/25 bg-[var(--color-gold-bright)]/[0.06] p-4 sm:p-5">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[var(--color-gold-bright)]">
-                The Rally
-              </p>
-              <p className="mt-1 text-sm text-[#cfd9ea]">
+              <p className="eyebrow">The Rally</p>
+              <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
                 Every share and signup moves this meter.
               </p>
             </div>
-            <p className="relative font-display text-2xl font-black tabular-nums text-[#fdf8ea] sm:text-3xl">
+            <p className="display relative text-3xl tabular-nums text-[var(--color-gold)] sm:text-4xl">
               <CountUp value={total} />
-              <span className="text-base font-bold text-[#8194b4]">
+              <span className="text-base font-bold text-[var(--color-muted)]">
                 {" "}
                 / {goal.toLocaleString()} pts
               </span>
@@ -417,22 +409,22 @@ export function SituationRoom({
             </p>
           </div>
           <div
-            className={`mt-3 h-3 w-full overflow-hidden rounded-full bg-white/10 transition ${pop ? "ring-2 ring-[var(--color-live)]/60" : ""}`}
+            className={`mt-3 h-3 w-full overflow-hidden rounded-full bg-[var(--color-cream)]/10 transition ${pop ? "ring-2 ring-[var(--color-live)]/60" : ""}`}
           >
             <div
-              className="h-full rounded-full bg-[linear-gradient(90deg,var(--color-gold-bright),#f0d27a)] transition-[width] duration-700"
+              className="h-full rounded-full bg-[linear-gradient(90deg,var(--color-gold-bright),var(--color-support-strong))] transition-[width] duration-700"
               style={{ width: `${pct}%` }}
             />
           </div>
-          <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-[11px] text-[#9fb0ca]">
+          <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-[11px] text-[var(--color-muted)]">
             <span>
-              <b className="text-[#fdf8ea]">{(r?.share_points ?? 0).toLocaleString()}</b> from shares
+              <b className="text-[var(--color-cream)]">{(r?.share_points ?? 0).toLocaleString()}</b> from shares
             </span>
             <span>
-              <b className="text-[#fdf8ea]">{(r?.signup_points ?? 0).toLocaleString()}</b> from signups
+              <b className="text-[var(--color-cream)]">{(r?.signup_points ?? 0).toLocaleString()}</b> from signups
             </span>
           </div>
-          <p className="mt-3 text-xs font-semibold text-[#9fb0ca]">
+          <p className="mt-3 text-xs font-semibold text-[var(--color-muted)]">
             🔥 {lastHour.toLocaleString()} action{lastHour === 1 ? "" : "s"} in the last hour
             {inRoom > 1 ? (
               <>
@@ -449,7 +441,7 @@ export function SituationRoom({
                 for the AI tokens building all of this. */}
             <a
               href="/book/preorder"
-              className="inline-flex min-h-11 items-center rounded-full border border-[var(--color-gold-bright)]/60 bg-[var(--color-gold-bright)] px-4 py-2.5 text-sm font-black tracking-tight text-[#0a1326] transition hover:bg-[#f0d27a]"
+              className="btn-accent inline-flex min-h-11 items-center px-4 py-2.5 text-sm tracking-tight"
             >
               Get the Book →
             </a>
@@ -462,13 +454,13 @@ export function SituationRoom({
             <button
               type="button"
               onClick={share}
-              className="rounded-full border border-white/20 bg-white/5 px-4 py-2.5 text-sm font-bold text-[#fdf8ea] transition hover:border-[#7fa9e3]/60 hover:text-[#7fa9e3]"
+              className="rounded-full border border-[var(--color-cream)]/20 bg-[var(--color-cream)]/5 px-4 py-2.5 text-sm font-bold text-[var(--color-cream)] transition hover:border-[var(--color-blue)]/60 hover:text-[var(--color-blue-ink)]"
             >
               Share the mission
             </button>
           </div>
           <div className="mt-3 flex flex-wrap items-center gap-2">
-            <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#5f7197]">
+            <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--color-muted)]">
               React
             </span>
             <RallyReactions />
@@ -482,7 +474,7 @@ export function SituationRoom({
         <section className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           <StatTile value={t?.live_now ?? 0} label="reading now" accent="var(--color-live)" live />
           <StatTile value={t?.total_views ?? 0} label="total reach" />
-          <StatTile value={r?.share_arrivals ?? 0} label="share arrivals" accent="#7fa9e3" />
+          <StatTile value={r?.share_arrivals ?? 0} label="share arrivals" accent="var(--color-blue-ink)" />
           <StatTile value={t?.documents ?? 0} label="evidence documents" accent="var(--color-gold-bright)" />
           <StatTile value={t?.defendants ?? 0} label="J6 defendants tracked" accent="var(--color-gold-bright)" />
           <StatTile value={t?.days_since_pardon ?? 0} label="days since the pardon" />
@@ -495,12 +487,12 @@ export function SituationRoom({
 
         {/* Live map + supporters */}
         <section className="mt-5 grid gap-4 lg:grid-cols-[1.4fr_1fr]">
-          <div className="overflow-hidden rounded-xl border border-white/10 bg-white/[0.03] p-2">
+          <div className="overflow-hidden rounded-xl border border-[var(--color-cream)]/10 bg-[var(--color-cream)]/[0.03] p-2">
             <RadarFrame liveNow={t?.live_now ?? 0} countriesNow={t?.countries_now ?? 0}>
               <LiveVisitorRadar initial={[]} />
             </RadarFrame>
-            <p className="px-2 pb-1 pt-2 text-[11px] text-[#8194b4]">
-              Reached in <b className="text-[#cfd9ea]">{(r?.countries_reached ?? 0).toLocaleString()}</b>{" "}
+            <p className="px-2 pb-1 pt-2 text-[11px] text-[var(--color-muted)]">
+              Reached in <b className="text-[var(--color-ink-soft)]">{(r?.countries_reached ?? 0).toLocaleString()}</b>{" "}
               countries · {(t?.total_views ?? 0).toLocaleString()} total reach
             </p>
           </div>
@@ -509,7 +501,7 @@ export function SituationRoom({
           </div>
         </section>
 
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-4 text-xs text-[#8194b4]">
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--color-cream)]/10 pt-4 text-xs text-[var(--color-muted)]">
           <span>Live numbers refresh every few seconds. Press Esc to close.</span>
           <a href="/the-map-room" className="font-bold text-[var(--color-gold-bright)] hover:underline">
             Open the full Map Room →

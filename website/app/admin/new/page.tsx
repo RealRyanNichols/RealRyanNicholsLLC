@@ -119,7 +119,7 @@ export default async function NewPostPage({
             Editing an existing post. Changes save in place.{" "}
             <Link
               href="/admin/posts"
-              className="text-[var(--color-accent)] hover:underline"
+              className="text-[var(--color-accent-ink)] hover:underline"
             >
               ← Back to posts
             </Link>
@@ -130,7 +130,7 @@ export default async function NewPostPage({
             draft by default; verify and redact before publishing.{" "}
             <Link
               href="/admin/tips"
-              className="text-[var(--color-accent)] hover:underline"
+              className="text-[var(--color-accent-ink)] hover:underline"
             >
               Back to tips
             </Link>

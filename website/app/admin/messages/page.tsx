@@ -91,7 +91,7 @@ export default async function AdminMessagesPage({
 
   return (
     <article className="mx-auto max-w-5xl px-4 py-10">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+      <p className="text-xs uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
         Admin · inbox
       </p>
       <h1 className="mt-2 text-3xl font-black tracking-tight">Private messages</h1>
@@ -120,7 +120,7 @@ export default async function AdminMessagesPage({
       </nav>
 
       {error ? (
-        <section className="mt-6 rounded-xl border border-red-200 bg-red-50 p-5 text-sm text-red-900">
+        <section className="mt-6 rounded-xl border border-[var(--color-accent)]/40 bg-[var(--color-accent-soft)] p-5 text-sm text-[var(--color-ink)]">
           Private message storage is connected, but the inbox query failed:
           <span className="ml-1 font-mono">{error.message}</span>
         </section>

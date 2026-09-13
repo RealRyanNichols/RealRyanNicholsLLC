@@ -105,7 +105,7 @@ export default async function AdminImportsPage({
 
   return (
     <article className="mx-auto max-w-5xl px-4 py-10">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+      <p className="text-xs uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
         Admin · evidence imports
       </p>
       <div className="flex flex-wrap items-baseline justify-between gap-3 mt-2">
@@ -174,7 +174,7 @@ export default async function AdminImportsPage({
             className={[
               "rounded-full border px-3 py-1 text-xs font-bold transition",
               theme === t.value
-                ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)]"
+                ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)]"
                 : "border-[var(--color-line)] text-[var(--color-ink)] hover:border-[var(--color-accent)]",
             ].join(" ")}
           >

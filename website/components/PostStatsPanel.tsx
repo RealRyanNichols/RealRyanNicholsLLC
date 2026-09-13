@@ -48,8 +48,8 @@ export function PostStatsPanel({
           {pulse.reading_now >= 1 ? (
             <span className="inline-flex items-center gap-1.5">
               <span className="relative flex h-2 w-2" aria-hidden>
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--color-accent)] opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--color-accent)]" />
               </span>
               <strong className="text-[var(--color-ink)] tabular-nums">{fmt(pulse.reading_now)}</strong>
               <span className="text-[var(--color-ink-soft)]">reading now</span>
@@ -118,13 +118,13 @@ function InfoTip({ text }: { text: string }) {
         aria-label={text}
         className="group/tip -m-3.5 inline-flex h-11 w-11 min-w-11 shrink-0 items-center justify-center focus:outline-none cursor-help sm:m-0 sm:h-4 sm:w-4 sm:min-w-0"
       >
-        <span className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-[var(--color-line)] text-[10px] font-bold leading-none text-[var(--color-muted)] group-hover/tip:border-[var(--color-accent)] group-hover/tip:text-[var(--color-accent)] group-focus/tip:border-[var(--color-accent)]">
+        <span className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-[var(--color-line)] text-[10px] font-bold leading-none text-[var(--color-muted)] group-hover/tip:border-[var(--color-accent)] group-hover/tip:text-[var(--color-accent-ink)] group-focus/tip:border-[var(--color-accent)]">
           i
         </span>
       </button>
       <span
         role="tooltip"
-        className="pointer-events-none absolute left-1/2 top-full z-30 mt-1.5 hidden w-64 -translate-x-1/2 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-2.5 text-[11px] leading-snug text-[var(--color-ink-soft)] shadow-xl group-hover:block group-focus-within:block"
+        className="pointer-events-none absolute left-1/2 top-full z-30 mt-1.5 hidden w-64 -translate-x-1/2 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] p-2.5 text-[11px] leading-snug text-[var(--color-ink-soft)] shadow-xl group-hover:block group-focus-within:block"
       >
         {text}
       </span>

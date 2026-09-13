@@ -109,7 +109,7 @@ export default async function AdminSubmissionsPage({
 
   return (
     <article className="mx-auto max-w-4xl px-4 py-10">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+      <p className="text-xs uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
         Admin · claimant submissions
       </p>
       <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">
@@ -146,7 +146,7 @@ export default async function AdminSubmissionsPage({
       </nav>
 
       {error ? (
-        <p className="mt-6 text-sm text-[var(--color-accent)]">{error.message}</p>
+        <p className="mt-6 text-sm text-[var(--color-accent-ink)]">{error.message}</p>
       ) : null}
 
       <div className="mt-6 space-y-3">
@@ -217,7 +217,7 @@ export default async function AdminSubmissionsPage({
                           href={s.embed_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="rounded-full bg-[var(--color-blue-soft)] text-[var(--color-blue)] px-2 py-0.5 hover:underline"
+                          className="rounded-full bg-[var(--color-blue-soft)] text-[var(--color-blue-ink)] px-2 py-0.5 hover:underline"
                         >
                           embed url ↗
                         </a>
@@ -244,7 +244,7 @@ export default async function AdminSubmissionsPage({
                               {" · "}
                               <a
                                 href={`mailto:${claimant.email}`}
-                                className="text-[var(--color-accent)] hover:underline"
+                                className="text-[var(--color-accent-ink)] hover:underline"
                               >
                                 {claimant.email}
                               </a>
@@ -261,7 +261,7 @@ export default async function AdminSubmissionsPage({
                             <Link
                               href={`/case/people/${j6Person.slug}`}
                               target="_blank"
-                              className="text-[var(--color-accent)] hover:underline"
+                              className="text-[var(--color-accent-ink)] hover:underline"
                             >
                               {j6Person.name}
                             </Link>
@@ -339,16 +339,24 @@ function TabLink({
 }
 
 function StatusBadge({ status }: { status: string }) {
-  const styles: Record<string, { bg: string; label: string }> = {
-    approved: { bg: "var(--color-success)", label: "PUBLIC" },
-    pending: { bg: "var(--color-tag-procedural)", label: "PENDING" },
-    rejected: { bg: "var(--color-accent)", label: "REJECTED" },
+  const styles: Record<string, { cls: string; label: string }> = {
+    approved: {
+      cls: "bg-[var(--color-success-soft)] text-[var(--color-success)]",
+      label: "PUBLIC",
+    },
+    pending: {
+      cls: "bg-[var(--color-support-soft)] text-[var(--color-tag-procedural)]",
+      label: "PENDING",
+    },
+    rejected: {
+      cls: "bg-[var(--color-accent-soft)] text-[var(--color-accent-ink)]",
+      label: "REJECTED",
+    },
   };
   const s = styles[status] ?? styles.pending;
   return (
     <span
-      className="rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--color-paper)]"
-      style={{ background: s.bg }}
+      className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${s.cls}`}
     >
       {s.label}
     </span>

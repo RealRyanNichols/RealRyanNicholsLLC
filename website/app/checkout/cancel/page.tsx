@@ -25,7 +25,7 @@ export default function CancelPage() {
         </Link>
         <Link
           href="/"
-          className="rounded-full border-2 border-[var(--color-line)] px-6 py-3 font-bold hover:border-[var(--color-accent)]"
+          className="rounded-full border-2 border-[var(--color-line)] px-6 py-3 font-bold text-[var(--color-ink)] transition hover:border-[var(--color-gold)] hover:bg-[var(--color-gold-soft)]"
         >
           Back to the feed
         </Link>

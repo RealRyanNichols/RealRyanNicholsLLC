@@ -55,7 +55,7 @@ export default async function FuelThanksPage({
   return (
     <article className="mx-auto max-w-xl px-4 py-16">
       {amountCents > 0 ? <PurchaseTracker amount={amountCents / 100} kind="fuel" /> : null}
-      <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
+      <p className="eyebrow">
         The Token Fund
       </p>
       <h1 className="mt-2 font-display text-4xl font-black tracking-tight">
@@ -72,14 +72,14 @@ export default async function FuelThanksPage({
       </p>
 
       {earned.length > 0 ? (
-        <section className="mt-8 rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-5">
-          <p className="text-xs font-black uppercase tracking-wider text-[var(--color-accent)]">
+        <section className="mt-8 rounded-2xl border-2 border-[var(--color-gold)] bg-[var(--color-support-soft)] p-5" data-reveal>
+          <p className="eyebrow">
             What you get{tier ? ` · ${tier.title}` : ""}
           </p>
           <ul className="mt-3 space-y-2 text-sm text-[var(--color-ink)]">
             {earned.map((g) => (
               <li key={g} className="flex gap-2">
-                <span className="text-[var(--color-accent)]" aria-hidden>
+                <span className="text-[var(--color-gold)]" aria-hidden>
                   ✓
                 </span>
                 <span>{g}</span>
@@ -112,13 +112,13 @@ export default async function FuelThanksPage({
       </div>
 
       <div className="mt-8 flex flex-wrap gap-4 text-sm font-semibold">
-        <Link href="/fuel#fuel-wall" className="inline-flex min-h-11 items-center text-[var(--color-accent)] underline underline-offset-4 sm:min-h-0">
+        <Link href="/fuel#fuel-wall" className="inline-flex min-h-11 items-center text-[var(--color-accent-ink)] underline underline-offset-4 sm:min-h-0">
           See the Fuel wall →
         </Link>
-        <Link href="/the-map-room" className="inline-flex min-h-11 items-center text-[var(--color-accent)] underline underline-offset-4 sm:min-h-0">
+        <Link href="/the-map-room" className="inline-flex min-h-11 items-center text-[var(--color-accent-ink)] underline underline-offset-4 sm:min-h-0">
           Watch the machine run: the Map Room →
         </Link>
-        <Link href="/" className="inline-flex min-h-11 items-center text-[var(--color-accent)] underline underline-offset-4 sm:min-h-0">
+        <Link href="/" className="inline-flex min-h-11 items-center text-[var(--color-accent-ink)] underline underline-offset-4 sm:min-h-0">
           ← Back to the feed
         </Link>
       </div>

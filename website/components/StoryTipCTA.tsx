@@ -7,7 +7,7 @@ import { TipForm } from "@/components/TipForm";
 export function StoryTipCTA({ subject }: { subject?: string }) {
   return (
     <section className="mt-12 rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-5 sm:p-7">
-      <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+      <p className="eyebrow">
         The newsroom · Tip line
       </p>
       <h2 className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight font-display">

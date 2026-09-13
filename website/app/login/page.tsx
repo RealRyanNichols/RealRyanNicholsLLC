@@ -142,7 +142,7 @@ function LoginPageInner() {
   return (
     <div className="mx-auto grid max-w-5xl gap-7 px-4 py-8 sm:py-12 lg:grid-cols-[minmax(0,1fr)_360px]">
       <section>
-        <p className="text-xs font-black uppercase tracking-[0.18em] text-[var(--color-accent)]">
+        <p className="eyebrow">
           Join the record
         </p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
@@ -188,7 +188,7 @@ function LoginPageInner() {
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               placeholder="First Middle Last"
-              className="w-full rounded-lg border border-[var(--color-line)] px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm"
             />
             <p className="mt-1.5 text-xs text-[var(--color-muted)]">
               Required. Only admins see this — used to verify you&apos;re a real person, not a sockpuppet.
@@ -202,7 +202,7 @@ function LoginPageInner() {
               required
               value={audienceRole}
               onChange={(e) => setAudienceRole(e.target.value)}
-              className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm"
             >
               <option value="">Choose one…</option>
               <option value="defendant">January 6 defendant</option>
@@ -229,7 +229,7 @@ function LoginPageInner() {
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
               placeholder="How you want to appear publicly"
-              className="w-full rounded-lg border border-[var(--color-line)] px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm"
             />
 
             <label htmlFor="login-username" className="mt-4 text-xs uppercase tracking-wider text-[var(--color-muted)] block mb-2">
@@ -245,7 +245,7 @@ function LoginPageInner() {
               value={username}
               onChange={(e) => setUsername(e.target.value.replace(/[^a-zA-Z0-9_-]/g, ""))}
               placeholder="e.g. johnsmith"
-              className="w-full rounded-lg border border-[var(--color-line)] px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm"
             />
             <p className="mt-1.5 text-xs text-[var(--color-muted)]">
               Lowercase letters, numbers, dash, underscore. Becomes your URL: /u/{username || "yourname"}
@@ -266,7 +266,7 @@ function LoginPageInner() {
           autoComplete="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full rounded-lg border border-[var(--color-line)] px-3 py-2 text-sm"
+          className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm"
         />
 
         {mode !== "magic" ? (
@@ -285,7 +285,7 @@ function LoginPageInner() {
               autoComplete={mode === "signin" ? "current-password" : "new-password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-lg border border-[var(--color-line)] px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm"
             />
             {mode === "signup" ? (
               <p className="mt-1.5 text-xs text-[var(--color-muted)]">
@@ -310,10 +310,10 @@ function LoginPageInner() {
         </button>
 
         {state.kind === "sent" ? (
-          <p className="mt-3 text-sm text-emerald-400">{state.message}</p>
+          <p className="mt-3 text-sm text-[var(--color-success)]">{state.message}</p>
         ) : null}
         {state.kind === "error" ? (
-          <p className="mt-3 text-sm text-[var(--color-accent)]">{state.message}</p>
+          <p className="mt-3 text-sm text-[var(--color-accent-ink)]">{state.message}</p>
         ) : null}
         </form>
 
@@ -323,7 +323,7 @@ function LoginPageInner() {
             <button
               type="button"
               onClick={() => setMode("magic")}
-              className="text-[var(--color-accent)] underline underline-offset-4"
+              className="inline-flex min-h-11 items-center text-[var(--color-gold)] underline underline-offset-4 sm:min-h-0"
             >
               Use an email link instead
             </button>
@@ -333,7 +333,7 @@ function LoginPageInner() {
       </section>
 
       <aside className="rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
-        <p className="text-xs font-black uppercase tracking-[0.18em] text-[var(--color-muted)]">
+        <p className="eyebrow">
           Why make one?
         </p>
         <ul className="mt-4 space-y-3 text-sm leading-relaxed text-[var(--color-ink-soft)]">
@@ -380,9 +380,9 @@ function Tab({
       aria-selected={active}
       onClick={onClick}
       className={[
-        "px-3 py-1.5 rounded-full font-semibold transition",
+        "min-h-11 px-3 py-1.5 rounded-full font-semibold transition sm:min-h-0",
         active
-          ? "bg-[var(--color-accent)] text-[var(--color-paper)]"
+          ? "bg-[var(--color-accent)] text-[var(--color-cream)]"
           : "text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]",
       ].join(" ")}
     >

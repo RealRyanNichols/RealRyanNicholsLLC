@@ -88,7 +88,7 @@ export default async function AdminQueuePage() {
         Drafts written by the daily engine. Nothing reaches the public feed
         until you approve it and press Publish — that click is the manual
         review. Publishing creates the post and pings the search engines.{" "}
-        <Link href="/admin/new" className="text-[var(--color-navy)] font-bold hover:underline">
+        <Link href="/admin/new" className="text-[var(--color-blue-ink)] font-bold hover:underline">
           Write fresh instead →
         </Link>
       </p>
@@ -105,7 +105,7 @@ export default async function AdminQueuePage() {
               className={[
                 "rounded-2xl border-2 p-5",
                 row.status === "approved"
-                  ? "border-[var(--color-navy)] bg-[var(--color-surface)]"
+                  ? "border-[var(--color-gold)] bg-[var(--color-surface)]"
                   : "border-[var(--color-line)] bg-[var(--color-surface)]",
               ].join(" ")}
             >
@@ -116,7 +116,7 @@ export default async function AdminQueuePage() {
                 <span
                   className={
                     row.status === "approved"
-                      ? "text-[var(--color-navy)]"
+                      ? "text-[var(--color-gold)]"
                       : undefined
                   }
                 >

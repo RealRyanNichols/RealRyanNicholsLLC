@@ -40,15 +40,15 @@ export default function BookPressPage() {
   return (
     <article className="rrn-page">
       {/* Hero */}
-      <section className="border-b border-[#203a64] bg-[#071126] text-[#fdf8ea]">
+      <section className="border-b border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-cream)]">
         <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:py-14">
-          <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
+          <p className="eyebrow">
             {BOOK.title} · Press &amp; media
           </p>
-          <h1 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-[#fdf8ea] sm:text-6xl">
+          <h1 className="mt-3 font-display text-4xl font-black leading-[1.02] tracking-tight text-[var(--color-cream)] sm:text-6xl">
             For press, podcasts, and media.
           </h1>
-          <p className="mt-4 max-w-2xl text-base font-semibold leading-7 text-[#cfd9ea] sm:text-lg">
+          <p className="mt-4 max-w-2xl text-base font-semibold leading-7 text-[var(--color-ink-soft)] sm:text-lg">
             Everything you need to cover the book or book an interview. For
             anything else, reach out through the contact page.
           </p>
@@ -59,21 +59,21 @@ export default function BookPressPage() {
       <section className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:py-14">
         <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+            <p className="eyebrow">
               About the book
             </p>
             <h2 className="mt-2 font-display text-3xl font-black leading-tight tracking-normal sm:text-4xl">
               {BOOK.title}
             </h2>
-            <p className="mt-1 font-display text-lg font-black uppercase tracking-[0.03em] text-[var(--color-accent)]">
+            <p className="mt-1 font-display text-lg font-black uppercase tracking-[0.03em] text-[var(--color-gold)]">
               {BOOK.subtitle}
             </p>
             <p className="mt-4 text-base font-semibold leading-8 text-[var(--color-ink-soft)]">
               {BOOK.positioning}
             </p>
           </div>
-          <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-sm sm:p-6">
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+          <div className="panel p-5 sm:p-6">
+            <p className="eyebrow">
               About the author
             </p>
             <h3 className="mt-2 font-display text-2xl font-black tracking-normal text-[var(--color-ink)]">
@@ -89,17 +89,19 @@ export default function BookPressPage() {
       {/* Topics */}
       <section className="border-y border-[var(--color-line)] bg-[var(--color-paper)]">
         <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:py-14">
-          <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+          <p className="eyebrow">
             Topics I can discuss
           </p>
           <h2 className="mt-2 font-display text-3xl font-black leading-tight tracking-normal sm:text-4xl">
             On the record, in detail.
           </h2>
           <ul className="mt-6 grid gap-3 sm:grid-cols-2">
-            {topics.map((t) => (
+            {topics.map((t, i) => (
               <li
                 key={t}
-                className="flex gap-3 rounded-lg border-l-4 border-[var(--color-accent)] bg-[var(--color-surface)] p-4 text-sm font-semibold leading-relaxed text-[var(--color-ink)] shadow-sm"
+                className="flex gap-3 rounded-lg border-l-4 border-[var(--color-gold)] bg-[var(--color-surface)] p-4 text-sm font-semibold leading-relaxed text-[var(--color-ink)] shadow-[0_14px_32px_rgba(0,0,0,0.3)]"
+                data-reveal
+                style={{ "--d": i % 2 } as React.CSSProperties}
               >
                 {t}
               </li>
@@ -110,7 +112,7 @@ export default function BookPressPage() {
 
       {/* Interview CTA + links */}
       <section className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:py-14">
-        <div className="rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-6 sm:p-8">
+        <div className="rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-6 sm:p-8" data-reveal>
           <h2 className="font-display text-3xl font-black leading-tight tracking-normal text-[var(--color-ink)] sm:text-4xl">
             Request an interview.
           </h2>
@@ -121,13 +123,13 @@ export default function BookPressPage() {
           <div className="mt-5 flex flex-col gap-3 sm:flex-row">
             <Link
               href="/contact"
-              className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)]"
+              className="btn-accent inline-flex min-h-12 items-center justify-center px-6 py-3 text-base"
             >
               Request an interview
             </Link>
             <Link
               href="/book"
-              className="inline-flex min-h-12 items-center justify-center rounded-lg border-2 border-[var(--color-accent)] px-6 py-3 text-base font-black text-[var(--color-accent)] transition hover:bg-[var(--color-accent)] hover:text-[var(--color-paper)]"
+              className="btn-blue inline-flex min-h-12 items-center justify-center px-6 py-3 text-base"
             >
               View the book
             </Link>
@@ -137,9 +139,9 @@ export default function BookPressPage() {
         <div className="mt-6 grid gap-3 sm:grid-cols-2">
           <Link
             href="/case"
-            className="group rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 transition hover:border-[var(--color-accent)]"
+            className="group panel p-5 transition hover:border-[var(--color-gold)]"
           >
-            <h3 className="font-display text-xl font-black tracking-normal text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">
+            <h3 className="font-display text-xl font-black tracking-normal text-[var(--color-ink)] group-hover:text-[var(--color-gold)]">
               The case archive
             </h3>
             <p className="mt-1.5 text-sm font-semibold text-[var(--color-ink-soft)]">
@@ -149,9 +151,9 @@ export default function BookPressPage() {
           </Link>
           <Link
             href="/the-map-room"
-            className="group rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 transition hover:border-[var(--color-accent)]"
+            className="group panel p-5 transition hover:border-[var(--color-gold)]"
           >
-            <h3 className="font-display text-xl font-black tracking-normal text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">
+            <h3 className="font-display text-xl font-black tracking-normal text-[var(--color-ink)] group-hover:text-[var(--color-gold)]">
               The Map Room
             </h3>
             <p className="mt-1.5 text-sm font-semibold text-[var(--color-ink-soft)]">
@@ -162,21 +164,21 @@ export default function BookPressPage() {
       </section>
 
       {/* Email signup */}
-      <section className="border-t border-[var(--color-line)] bg-[#071126] text-[#fdf8ea]">
+      <section className="border-t border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-cream)]">
         <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6 lg:py-16">
           <div className="text-center">
-            <h2 className="font-display text-3xl font-black leading-tight tracking-normal text-[#fdf8ea] sm:text-4xl">
+            <h2 className="font-display text-3xl font-black leading-tight tracking-normal text-[var(--color-cream)] sm:text-4xl">
               Stay on the press list.
             </h2>
-            <p className="mt-3 text-base font-semibold leading-7 text-[#cfd9ea]">
+            <p className="mt-3 text-base font-semibold leading-7 text-[var(--color-ink-soft)]">
               Get the release date, review copies when available, and book news
               first.
             </p>
           </div>
-          <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.06] p-4 sm:p-6">
+          <div className="mt-6 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface-2)] p-4 sm:p-6">
             <BookEmailSignup source="book_press" tone="dark" />
           </div>
-          <p className="mt-6 text-center text-sm text-[#cfd9ea]">
+          <p className="mt-6 text-center text-sm text-[var(--color-ink-soft)]">
             <Link href="/book" className="font-semibold underline hover:text-[var(--color-gold-bright)]">
               ← Back to the book
             </Link>

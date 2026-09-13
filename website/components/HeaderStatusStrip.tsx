@@ -28,10 +28,10 @@ type Totals = {
 function Stat({ value, label }: { value: number; label: string }) {
   return (
     <span className="inline-flex items-baseline gap-1.5">
-      <span className="font-black tabular-nums text-[#fdf8ea]">
+      <span className="font-black tabular-nums text-[var(--color-cream)]">
         {value.toLocaleString()}
       </span>
-      <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#8194b4]">
+      <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--color-muted)]">
         {label}
       </span>
     </span>
@@ -104,12 +104,12 @@ export function HeaderStatusStrip() {
 
   return (
     <>
-      <div className="border-b border-white/5 bg-[linear-gradient(90deg,#0a1326_0%,#0d1830_50%,#0a1326_100%)] text-[#cfd9ea]">
+      <div className="border-b border-[var(--color-cream)]/5 bg-[linear-gradient(90deg,var(--color-paper)_0%,var(--color-surface)_50%,var(--color-paper)_100%)] text-[var(--color-ink-soft)]">
         <div className="mx-auto flex min-h-11 max-w-5xl items-center justify-between gap-3 px-3 text-[11px] sm:h-8 sm:min-h-0 sm:px-4">
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="group -mx-1 flex min-h-11 shrink-0 items-center gap-3 rounded-md px-1 transition hover:bg-white/5 sm:min-h-0"
+            className="group -mx-1 flex min-h-11 shrink-0 items-center gap-3 rounded-md px-1 transition hover:bg-[var(--color-cream)]/5 sm:min-h-0"
             title="Open the Situation Room"
             aria-haspopup="dialog"
           >
@@ -122,7 +122,7 @@ export function HeaderStatusStrip() {
                   crawlers, link previews, and slow connections were seeing
                   "0 live now · 0 countries · 0 views" baked into the HTML. */}
               {t === null ? (
-                <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#8194b4]">
+                <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--color-muted)]">
                   Situation Room
                 </span>
               ) : (
@@ -131,18 +131,18 @@ export function HeaderStatusStrip() {
             </span>
             {t !== null ? (
               <>
-                <span className="hidden h-3 w-px bg-white/10 sm:block" aria-hidden />
+                <span className="hidden h-3 w-px bg-[var(--color-cream)]/10 sm:block" aria-hidden />
                 <span className="hidden sm:inline-flex">
                   <Stat value={countries} label={countries === 1 ? "country" : "countries"} />
                 </span>
-                <span className="hidden h-3 w-px bg-white/10 md:block" aria-hidden />
+                <span className="hidden h-3 w-px bg-[var(--color-cream)]/10 md:block" aria-hidden />
                 <span className="hidden md:inline-flex">
                   <Stat value={views} label="reach" />
                 </span>
               </>
             ) : null}
             <span
-              className="ml-0.5 text-[#5f7197] transition group-hover:text-[var(--color-gold-bright)]"
+              className="ml-0.5 text-[var(--color-muted)] transition group-hover:text-[var(--color-gold-bright)]"
               aria-hidden
             >
               ⤢
@@ -154,7 +154,7 @@ export function HeaderStatusStrip() {
               <span className="flex min-w-0 items-center gap-0.5">
                 <Link
                   href="/book/preorder"
-                  className="flex min-h-11 min-w-0 items-center rounded-md px-1 py-0.5 font-black text-[var(--color-gold-bright)] transition hover:bg-white/5 hover:text-[#f0d48a] sm:min-h-0"
+                  className="flex min-h-11 min-w-0 items-center rounded-md px-1 py-0.5 font-black text-[var(--color-gold-bright)] transition hover:bg-[var(--color-cream)]/5 hover:text-[var(--color-support-strong)] sm:min-h-0"
                 >
                   <span className="min-w-0 truncate sm:hidden">
                     Fighting Shadows {priceLabel} →
@@ -168,7 +168,7 @@ export function HeaderStatusStrip() {
                   type="button"
                   onClick={dismissBook}
                   aria-label="Hide the book offer"
-                  className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-base leading-none text-[#5f7197] transition hover:bg-white/10 hover:text-[#fdf8ea] sm:h-5 sm:w-5 sm:text-sm"
+                  className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-base leading-none text-[var(--color-muted)] transition hover:bg-[var(--color-cream)]/10 hover:text-[var(--color-cream)] sm:h-5 sm:w-5 sm:text-sm"
                 >
                   ×
                 </button>
@@ -178,7 +178,7 @@ export function HeaderStatusStrip() {
             <Link
               href="/the-map-room"
               className={[
-                "group min-h-11 shrink-0 items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[#fdf8ea] transition hover:border-[var(--color-gold-bright)]/60 hover:text-[var(--color-gold-bright)] sm:min-h-0",
+                "group min-h-11 shrink-0 items-center gap-1.5 rounded-full border border-[var(--color-cream)]/10 bg-[var(--color-cream)]/5 px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--color-cream)] transition hover:border-[var(--color-gold-bright)]/60 hover:text-[var(--color-gold-bright)] sm:min-h-0",
                 // On phones the money link wins the space contest; the pill
                 // returns the moment the pitch is dismissed (or on sm+).
                 showBook ? "hidden sm:inline-flex" : "inline-flex",

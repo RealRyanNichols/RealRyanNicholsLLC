@@ -88,15 +88,13 @@ export default function CaseBuilderPage() {
         </Link>
       </nav>
 
-      <p className="text-[11px] uppercase tracking-[0.25em] font-bold text-[var(--color-navy)]">
-        Case Builder · by Ryan Nichols
-      </p>
+      <p className="eyebrow">Case Builder · by Ryan Nichols</p>
       <h1 className="mt-2 font-display text-4xl sm:text-6xl font-bold tracking-tight leading-[1.02]">
         Your case, documented so the world can check it.
       </h1>
       <p className="mt-4 max-w-2xl text-base sm:text-lg leading-relaxed text-[var(--color-ink-soft)]">
         Ryan built the archive for his own federal case —{" "}
-        <Link href="/case" className="font-semibold text-[var(--color-navy)] underline underline-offset-4">
+        <Link href="/case" className="font-semibold text-[var(--color-ink)] underline underline-offset-4">
           United States v. Nichols
         </Link>{" "}
         — from inside a jail cell: over a thousand public documents, a dated
@@ -111,12 +109,14 @@ export default function CaseBuilderPage() {
           What a case build includes
         </h2>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          {DELIVERABLES.map((d) => (
+          {DELIVERABLES.map((d, i) => (
             <div
               key={d.title}
-              className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4"
+              data-reveal
+              style={{ "--d": i } as React.CSSProperties}
+              className="rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-[0_16px_40px_rgba(0,0,0,0.3)]"
             >
-              <p className="text-sm font-bold text-[var(--color-ink)]">{d.title}</p>
+              <p className="font-display text-sm font-bold text-[var(--color-ink)]">{d.title}</p>
               <p className="mt-1 text-sm leading-snug text-[var(--color-ink-soft)]">
                 {d.detail}
               </p>
@@ -128,7 +128,7 @@ export default function CaseBuilderPage() {
           replies to every request personally.{" "}
           <strong className="text-[var(--color-ink)]">
             January 6 defendants: your case profile is free, forever —{" "}
-            <Link href="/j6" className="text-[var(--color-navy)] underline underline-offset-2">
+            <Link href="/j6" className="text-[var(--color-ink)] underline underline-offset-2">
               claim it here
             </Link>
             .
@@ -136,7 +136,7 @@ export default function CaseBuilderPage() {
         </p>
       </section>
 
-      <section className="mt-10 rounded-2xl border-2 border-[var(--color-navy)]/30 bg-[var(--color-surface)] p-6 sm:p-8">
+      <section className="mt-10 rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-6 sm:p-8">
         <h2 className="text-xl sm:text-2xl font-bold tracking-tight font-display">
           Request a case build
         </h2>

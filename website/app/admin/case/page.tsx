@@ -38,7 +38,7 @@ export default async function AdminCasePage() {
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-10">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+      <p className="text-xs uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
         Case archive · admin
       </p>
       <h1 className="mt-2 text-4xl font-bold tracking-tight leading-[1.05]">
@@ -62,7 +62,7 @@ export default async function AdminCasePage() {
           </h2>
           <Link
             href="/case?view=documents"
-            className="text-sm font-semibold text-[var(--color-accent)] hover:underline underline-offset-4"
+            className="text-sm font-semibold text-[var(--color-accent-ink)] hover:underline underline-offset-4"
           >
             View public list →
           </Link>

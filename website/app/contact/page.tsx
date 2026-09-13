@@ -89,15 +89,20 @@ export default function ContactPage() {
           sizes="100vw"
           className="object-cover opacity-[0.16]"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--color-paper)_0%,rgba(246,239,223,0.96)_44%,rgba(246,239,223,0.78)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--color-paper)_0%,var(--color-paper)_46%,transparent_100%)]" />
         <div className="rrn-hero-inner grid gap-6 lg:grid-cols-[0.88fr_1.12fr] lg:gap-8">
           <div className="flex flex-col justify-center">
-            <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-accent)]">
+            <p className="eyebrow" data-reveal>
               Real Ryan Nichols LLC / Private contact
             </p>
-            <h1 className="rrn-hero-title mt-3 max-w-3xl">
+            <h1
+              className="display mt-3 max-w-3xl text-4xl sm:text-5xl lg:text-6xl"
+              data-reveal
+              style={{ "--d": 1 } as React.CSSProperties}
+            >
               Tell Ryan what happened without putting it in public.
             </h1>
+            <div className="mt-4 h-[3px] w-[4.5rem] bg-[var(--color-gold)]" aria-hidden />
             <p className="rrn-lead mt-4 max-w-2xl">
               Use this page when the facts matter, but the details should not be
               posted in a comment thread. Send the private version here so Ryan
@@ -134,7 +139,7 @@ export default function ContactPage() {
       <section className="rrn-section">
         <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:gap-8">
           <div>
-            <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-accent)]">
+            <p className="eyebrow">
               When to use this page
             </p>
             <h2 className="rrn-section-title mt-2">
@@ -167,7 +172,7 @@ export default function ContactPage() {
       <section className="border-y border-[var(--color-line)] bg-[var(--color-surface)]">
         <div className="rrn-section grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8">
           <div>
-            <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-accent)]">
+            <p className="eyebrow">
               What makes a useful private message
             </p>
             <h2 className="rrn-section-title mt-2">
@@ -177,7 +182,7 @@ export default function ContactPage() {
               {whatToSend.map((item) => (
                 <div
                   key={item}
-                  className="rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-3 text-sm font-medium leading-relaxed text-[var(--color-ink-soft)] sm:p-4"
+                  className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] p-3 text-sm font-medium leading-relaxed text-[var(--color-ink-soft)] sm:p-4"
                 >
                   {item}
                 </div>
@@ -185,8 +190,8 @@ export default function ContactPage() {
             </div>
           </div>
 
-          <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-5">
-            <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-blue)]">
+          <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] p-5">
+            <p className="eyebrow">
               Example
             </p>
             <h3 className="mt-2 font-display text-2xl font-bold tracking-normal">
@@ -243,13 +248,13 @@ export default function ContactPage() {
               href={item.href}
               className="rrn-card group block min-h-28 p-4 transition hover:border-[var(--color-accent)] sm:p-5"
             >
-              <h2 className="font-display text-xl font-bold tracking-normal group-hover:text-[var(--color-accent)]">
+              <h2 className="font-display text-xl font-bold tracking-normal group-hover:text-[var(--color-accent-ink)]">
                 {item.title}
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
                 {item.body}
               </p>
-              <p className="mt-4 text-sm font-black text-[var(--color-accent)]">
+              <p className="mt-4 text-sm font-black text-[var(--color-accent-ink)]">
                 {item.cta} -&gt;
               </p>
             </Link>
@@ -257,7 +262,7 @@ export default function ContactPage() {
         </div>
 
         <div className="mt-8 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
-          <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-accent)]">
+          <p className="eyebrow">
             Before you send
           </p>
           <ul className="mt-3 space-y-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
@@ -271,16 +276,16 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="border-t border-[var(--color-line)] bg-[var(--color-ink)] text-[var(--color-paper)]">
+      <section className="border-t border-[var(--color-line)] bg-[var(--color-navy)] text-[var(--color-cream)]">
         <div className="rrn-section grid gap-5 lg:grid-cols-[1fr_auto] lg:items-center">
           <div>
-            <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-line)]">
+            <p className="eyebrow">
               Direct contact
             </p>
-            <h2 className="mt-2 font-display text-3xl font-bold tracking-normal text-[var(--color-paper)]">
+            <h2 className="mt-2 font-display text-3xl font-bold tracking-normal text-[var(--color-cream)]">
               Prefer email or text?
             </h2>
-            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--color-line-soft)]">
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--color-ink-soft)]">
               The form is the cleanest private lane on the site. If you need a
               direct contact path, use Ryan&apos;s public business contact.
             </p>
@@ -288,13 +293,13 @@ export default function ContactPage() {
           <div className="rrn-tap-row">
             <a
               href="mailto:Ryan@RealRyanNichols.com"
-              className="rrn-tap inline-flex rounded-lg border border-[var(--color-paper)] px-4 py-2 text-sm font-bold text-[var(--color-paper)] transition hover:bg-[var(--color-paper)] hover:text-[var(--color-ink)]"
+              className="rrn-tap inline-flex rounded-lg border border-[var(--color-line)] px-4 py-2 text-sm font-bold text-[var(--color-cream)] transition hover:border-[var(--color-gold)] hover:bg-[var(--color-gold-soft)]"
             >
               Ryan@RealRyanNichols.com
             </a>
             <a
               href="tel:+19033458990"
-              className="rrn-tap inline-flex rounded-lg border border-[var(--color-paper)] px-4 py-2 text-sm font-bold text-[var(--color-paper)] transition hover:bg-[var(--color-paper)] hover:text-[var(--color-ink)]"
+              className="rrn-tap inline-flex rounded-lg border border-[var(--color-line)] px-4 py-2 text-sm font-bold text-[var(--color-cream)] transition hover:border-[var(--color-gold)] hover:bg-[var(--color-gold-soft)]"
             >
               Call/Text (903) 345-8990
             </a>

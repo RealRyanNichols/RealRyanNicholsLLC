@@ -66,7 +66,7 @@ export function OgImageForm({ suggestedPaths }: { suggestedPaths: Suggestion[] }
     <form onSubmit={onSubmit} className="space-y-4">
       <div>
         <label htmlFor="og-path" className="block text-sm font-semibold mb-1.5">
-          Page path <span className="text-[var(--color-accent)]">*</span>
+          Page path <span className="text-[var(--color-accent-ink)]">*</span>
         </label>
         <input
           id="og-path"
@@ -87,7 +87,7 @@ export function OgImageForm({ suggestedPaths }: { suggestedPaths: Suggestion[] }
               key={s.path}
               type="button"
               onClick={() => setPath(s.path)}
-              className="text-[10px] font-semibold rounded-full border border-[var(--color-line)] px-2.5 py-1 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition"
+              className="text-[10px] font-semibold rounded-full border border-[var(--color-line)] px-2.5 py-1 hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)] transition"
               title={s.path}
             >
               {s.label}
@@ -98,7 +98,7 @@ export function OgImageForm({ suggestedPaths }: { suggestedPaths: Suggestion[] }
 
       <div>
         <label htmlFor="og-file" className="block text-sm font-semibold mb-1.5">
-          Image <span className="text-[var(--color-accent)]">*</span>
+          Image <span className="text-[var(--color-accent-ink)]">*</span>
         </label>
         <input
           id="og-file"
@@ -106,7 +106,7 @@ export function OgImageForm({ suggestedPaths }: { suggestedPaths: Suggestion[] }
           accept="image/png,image/jpeg,image/webp,image/gif"
           onChange={(e) => setFile(e.target.files?.[0] ?? null)}
           required
-          className="w-full text-sm file:mr-3 file:rounded-md file:border-0 file:bg-[var(--color-accent)] file:text-[var(--color-paper)] file:font-bold file:px-3 file:py-1.5 file:hover:bg-[var(--color-accent-strong)]"
+          className="w-full text-sm file:mr-3 file:rounded-md file:border-0 file:bg-[var(--color-accent)] file:text-[var(--color-cream)] file:font-bold file:px-3 file:py-1.5 file:hover:bg-[var(--color-accent-strong)]"
         />
         <p className="mt-1 text-xs text-[var(--color-muted)]">
           PNG, JPEG, WEBP, or GIF. Recommended 1200×630. Max 8MB.
@@ -145,7 +145,7 @@ export function OgImageForm({ suggestedPaths }: { suggestedPaths: Suggestion[] }
         <p
           className={`text-sm rounded-lg px-3 py-2 border ${
             status === "error"
-              ? "text-[var(--color-accent)] bg-[var(--color-accent-soft)] border-[var(--color-accent)]"
+              ? "text-[var(--color-accent-ink)] bg-[var(--color-accent-soft)] border-[var(--color-accent)]"
               : "text-[var(--color-ink)] bg-[var(--color-paper)] border-[var(--color-line)]"
           }`}
         >
@@ -156,7 +156,7 @@ export function OgImageForm({ suggestedPaths }: { suggestedPaths: Suggestion[] }
       <button
         type="submit"
         disabled={status === "uploading"}
-        className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 font-bold hover:bg-[var(--color-accent-strong)] disabled:opacity-50 disabled:cursor-not-allowed"
+        className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-2.5 font-bold hover:bg-[var(--color-accent-strong)] disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {status === "uploading" ? "Uploading…" : "Upload & save"}
       </button>

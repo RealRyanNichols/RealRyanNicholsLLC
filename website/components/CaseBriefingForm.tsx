@@ -81,10 +81,10 @@ export function CaseBriefingForm() {
               setQuery(e.target.value);
             }}
             placeholder="Defendant name or case number"
-            className="w-full rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm font-mono focus:border-[var(--color-blue)] focus:outline-none"
+            className="w-full rounded-md border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm font-mono focus:border-[var(--color-blue)] focus:outline-none"
           />
           {hits.length > 0 && !picked ? (
-            <ul className="absolute top-full mt-1 left-0 right-0 bg-[var(--color-paper)] border border-[var(--color-line)] rounded-md shadow-lg max-h-72 overflow-auto z-20">
+            <ul className="absolute top-full mt-1 left-0 right-0 bg-[var(--color-surface-2)] border border-[var(--color-line)] rounded-md shadow-[0_20px_50px_rgba(0,0,0,0.5)] max-h-72 overflow-auto z-20">
               {hits.map((h) => (
                 <li key={h.id}>
                   <button
@@ -94,14 +94,14 @@ export function CaseBriefingForm() {
                       setQuery("");
                       setHits([]);
                     }}
-                    className="w-full text-left px-3 py-2 hover:bg-[var(--color-surface)] flex items-baseline justify-between gap-3"
+                    className="w-full text-left px-3 py-2 hover:bg-[var(--color-surface)] hover:text-[var(--color-gold)] flex items-baseline justify-between gap-3"
                   >
                     <span className="text-sm">
                       <span
                         className={
                           h.type === "case"
-                            ? "text-[var(--color-blue)]"
-                            : "text-[var(--color-accent)]"
+                            ? "text-[var(--color-blue-ink)]"
+                            : "text-[var(--color-accent-ink)]"
                         }
                       >
                         {h.type === "case" ? "case" : "def."}
@@ -119,7 +119,7 @@ export function CaseBriefingForm() {
         </div>
         {picked ? (
           <div className="mt-3 flex items-center gap-2 text-xs">
-            <span className="rounded-full border border-[var(--color-blue)] bg-[var(--color-blue-soft)] text-[var(--color-blue)] px-2.5 py-0.5 font-bold">
+            <span className="rounded-full border border-[var(--color-blue)] bg-[var(--color-blue-soft)] text-[var(--color-blue-ink)] px-2.5 py-0.5 font-bold">
               {picked.type}
             </span>
             <span className="font-mono text-[var(--color-ink)]">{picked.label}</span>
@@ -143,7 +143,7 @@ export function CaseBriefingForm() {
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           placeholder="e.g. Was a plea agreement reached? What's the sentence pattern across this case?"
-          className="w-full rounded-md border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm focus:border-[var(--color-blue)] focus:outline-none"
+          className="w-full rounded-md border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm focus:border-[var(--color-blue)] focus:outline-none"
         />
         <p className="mt-1.5 text-[11px] text-[var(--color-muted)]">
           Leave blank for a default briefing (status, key facts, open
@@ -155,35 +155,35 @@ export function CaseBriefingForm() {
         type="button"
         onClick={generate}
         disabled={!picked || loading}
-        className="w-full rounded-full bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-3 text-sm font-bold hover:bg-[var(--color-blue-strong)] disabled:opacity-50 transition"
+        className="btn-accent w-full rounded-full px-5 py-3 text-sm disabled:opacity-50"
       >
         {loading ? "Generating briefing…" : "Generate briefing →"}
       </button>
 
       {briefing ? (
-        <div className="rounded-2xl border-2 border-[var(--color-gold-bright)] bg-[#0e1a36] text-[#cfd9ea] p-5">
+        <div className="rounded-2xl border-2 border-[var(--color-gold-bright)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] p-5">
           {briefing.ok ? (
             <>
               <div className="flex items-baseline justify-between mb-3">
-                <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[var(--color-gold-bright)]">
+                <p className="eyebrow">
                   Briefing {briefing.cached ? "· cached" : "· fresh"}
                 </p>
               </div>
               <div
-                className="prose-body prose-invert text-sm leading-relaxed [&_h2]:font-display [&_h2]:text-[var(--color-paper)] [&_h2]:mt-4 [&_h2]:mb-2 [&_h2]:text-base [&_h2]:font-bold [&_h2]:uppercase [&_h2]:tracking-wider [&_h2]:text-[var(--color-gold-bright)] [&_ul]:list-disc [&_ul]:pl-5 [&_li]:my-0.5"
+                className="prose-body prose-invert text-sm leading-relaxed [&_h2]:font-display [&_h2]:text-[var(--color-cream)] [&_h2]:mt-4 [&_h2]:mb-2 [&_h2]:text-base [&_h2]:font-bold [&_h2]:uppercase [&_h2]:tracking-wider [&_h2]:text-[var(--color-gold-bright)] [&_ul]:list-disc [&_ul]:pl-5 [&_li]:my-0.5"
                 dangerouslySetInnerHTML={{ __html: briefingHtml ?? "" }}
               />
             </>
           ) : (
             <div>
-              <p className="text-sm font-bold text-[#ff7f7f]">
+              <p className="text-sm font-bold text-[var(--color-danger)]">
                 {briefing.error ?? "Briefing failed"}
               </p>
               {briefing.message ? (
-                <p className="mt-1 text-xs text-[#a9b7d0]">{briefing.message}</p>
+                <p className="mt-1 text-xs text-[var(--color-muted)]">{briefing.message}</p>
               ) : null}
               {briefing.retry_in_ms ? (
-                <p className="mt-1 text-xs text-[#a9b7d0]">
+                <p className="mt-1 text-xs text-[var(--color-muted)]">
                   Retry in {Math.ceil(briefing.retry_in_ms / 1000)}s.
                 </p>
               ) : null}

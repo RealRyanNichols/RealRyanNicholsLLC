@@ -140,7 +140,7 @@ export default async function AdminClaimsPage({
 
   return (
     <article className="mx-auto max-w-4xl px-4 py-10">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+      <p className="text-xs uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
         Admin · profile claims
       </p>
       <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">
@@ -168,7 +168,7 @@ export default async function AdminClaimsPage({
       </nav>
 
       {error ? (
-        <p className="mt-6 text-sm text-red-500">{error.message}</p>
+        <p className="mt-6 text-sm text-[var(--color-danger)]">{error.message}</p>
       ) : null}
 
       <div className="mt-6 space-y-4">
@@ -204,7 +204,7 @@ export default async function AdminClaimsPage({
                         <Link
                           href={`/case/people/${person.slug}`}
                           target="_blank"
-                          className="text-[var(--color-accent)] hover:underline"
+                          className="text-[var(--color-accent-ink)] hover:underline"
                         >
                           {person.name}
                         </Link>
@@ -227,7 +227,7 @@ export default async function AdminClaimsPage({
                 </header>
 
                 {/* Identity panel — every field we have on this claimant */}
-                <div className="mt-3 rounded-xl border border-[var(--color-line-soft)] bg-[var(--color-paper)] p-3">
+                <div className="mt-3 rounded-xl border border-[var(--color-line-soft)] bg-[var(--color-surface-2)] p-3">
                   <p className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-muted)] mb-2">
                     Claimant identity (what you can verify)
                   </p>
@@ -239,7 +239,7 @@ export default async function AdminClaimsPage({
                           href={`mailto:${claimantEmail}?subject=${encodeURIComponent(
                             `Verifying your claim on ${person?.name ?? "your J6 profile"} (realryannichols.com)`,
                           )}`}
-                          className="font-mono text-[var(--color-accent)] hover:underline"
+                          className="font-mono text-[var(--color-accent-ink)] hover:underline"
                         >
                           {claimantEmail}
                         </a>
@@ -255,13 +255,13 @@ export default async function AdminClaimsPage({
                             )}%22+January+6`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="font-mono text-[var(--color-accent)] hover:underline"
+                            className="font-mono text-[var(--color-accent-ink)] hover:underline"
                             title="Search the public docket"
                           >
                             {c.doj_case_number} ↗
                           </a>
                         ) : (
-                          <em className="text-[var(--color-accent)]">not provided</em>
+                          <em className="text-[var(--color-accent-ink)]">not provided</em>
                         )
                       }
                     />
@@ -273,7 +273,7 @@ export default async function AdminClaimsPage({
                             {meta.profile_full_name}
                           </span>
                         ) : (
-                          <em className="text-[var(--color-accent)]">missing</em>
+                          <em className="text-[var(--color-accent-ink)]">missing</em>
                         )
                       }
                     />
@@ -288,7 +288,7 @@ export default async function AdminClaimsPage({
                           <Link
                             href={`/u/${meta.profile_username}`}
                             target="_blank"
-                            className="font-mono text-[var(--color-accent)] hover:underline"
+                            className="font-mono text-[var(--color-accent-ink)] hover:underline"
                           >
                             @{meta.profile_username}
                           </Link>
@@ -314,7 +314,7 @@ export default async function AdminClaimsPage({
                           <span
                             className={
                               accountIsBrandNew
-                                ? "font-bold text-[var(--color-accent)]"
+                                ? "font-bold text-[var(--color-accent-ink)]"
                                 : "text-[var(--color-ink-soft)]"
                             }
                             title={format(
@@ -366,7 +366,7 @@ export default async function AdminClaimsPage({
                                 ? "text-[var(--color-success)]"
                                 : nameMatchPct >= 50
                                   ? "text-[var(--color-tag-procedural)]"
-                                  : "text-[var(--color-accent)]"
+                                  : "text-[var(--color-accent-ink)]"
                             }`}
                           >
                             {nameMatchPct}% to {person?.name}
@@ -386,7 +386,7 @@ export default async function AdminClaimsPage({
                   <p className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-muted)] mb-1">
                     What they wrote as proof
                   </p>
-                  <p className="whitespace-pre-wrap text-sm leading-relaxed text-[var(--color-ink-soft)] bg-[var(--color-paper)] border border-[var(--color-line-soft)] rounded-md p-3">
+                  <p className="whitespace-pre-wrap text-sm leading-relaxed text-[var(--color-ink-soft)] bg-[var(--color-surface-2)] border border-[var(--color-line-soft)] rounded-md p-3">
                     {c.proof}
                   </p>
                 </div>
@@ -394,7 +394,7 @@ export default async function AdminClaimsPage({
                 {/* Verification questions Ryan can ask */}
                 {c.status === "pending" ? (
                   <details className="mt-3">
-                    <summary className="text-xs font-bold text-[var(--color-blue)] cursor-pointer hover:underline">
+                    <summary className="text-xs font-bold text-[var(--color-blue-ink)] cursor-pointer hover:underline">
                       Verification questions to ask before approving →
                     </summary>
                     <div className="mt-2 rounded-md border border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-3 text-xs space-y-2">
@@ -420,7 +420,7 @@ export default async function AdminClaimsPage({
                         )}&body=${encodeURIComponent(
                           `Hi${meta?.profile_display_name ? ` ${meta.profile_display_name.split(/\s+/)[0]}` : ""},\n\nThank you for claiming the profile for ${person?.name ?? "the J6 defendant"} at realryannichols.com. Before I verify your claim and hand over edit access to your profile, I need to confirm you're the right person.\n\nCould you please reply with:\n  - Your sentencing date and the federal judge's name\n  - The name of the AUSA (federal prosecutor) on your case\n  - Your defense counsel's name\n  - A photo of yourself holding a piece of paper with today's date written on it\n\nThis is the same gate I apply to every claim. Once I confirm, you'll have full control of your profile to upload your evidence and tell your story.\n\nThank you,\nRyan Nichols`,
                         )}`}
-                        className="inline-block rounded-md bg-[var(--color-blue)] hover:bg-[var(--color-blue-strong)] px-3 py-1.5 text-xs font-bold text-[var(--color-paper)]"
+                        className="inline-block rounded-md bg-[var(--color-blue)] hover:bg-[var(--color-blue-strong)] px-3 py-1.5 text-xs font-bold text-[var(--color-cream)]"
                       >
                         ✉ Open prefilled email →
                       </a>
@@ -495,8 +495,8 @@ function TabLink({
 
 function StatusBadge({ status }: { status: string }) {
   const styles: Record<string, string> = {
-    pending: "bg-[var(--color-accent)] text-white",
-    approved: "bg-[var(--color-success)] text-white",
+    pending: "bg-[var(--color-accent)] text-[var(--color-cream)]",
+    approved: "bg-[var(--color-success-soft)] text-[var(--color-success)]",
     rejected: "bg-[var(--color-surface-2)] text-[var(--color-ink-soft)]",
   };
   return (

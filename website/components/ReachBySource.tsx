@@ -26,13 +26,15 @@ type Overview = {
 // the "Total reach" tile all say the same number of days.
 const REACH_WINDOW_DAYS = 90;
 
+// Tokens, not hex: these become inline backgrounds in the DOM. Same six
+// colors ReachLineChart draws its strands with, so legend and chart agree.
 const CLASS_META: { key: string; label: string; color: string }[] = [
   { key: "human", label: "Humans", color: "var(--color-accent)" },
-  { key: "search-bot", label: "Search bots", color: "#3b82f6" },
-  { key: "ai-bot", label: "AI agents", color: "#a855f7" },
-  { key: "social-bot", label: "Social previews", color: "#22c55e" },
-  { key: "uptime-bot", label: "Uptime/tools", color: "#9ca3af" },
-  { key: "unknown", label: "Unclassified", color: "#6b7280" },
+  { key: "search-bot", label: "Search bots", color: "var(--color-sky)" },
+  { key: "ai-bot", label: "AI agents", color: "var(--color-violet)" },
+  { key: "social-bot", label: "Social previews", color: "var(--color-success)" },
+  { key: "uptime-bot", label: "Uptime/tools", color: "var(--color-ink-soft)" },
+  { key: "unknown", label: "Unclassified", color: "var(--color-muted)" },
 ];
 
 function fmt(n: number | null | undefined): string {
@@ -78,13 +80,13 @@ export async function ReachBySource({ excludeSelf }: { excludeSelf: boolean }) {
         <div className="flex items-center gap-1 rounded-full border border-[var(--color-line)] p-1 text-xs">
           <Link
             href="/admin/analytics?reach=all#reach-by-source"
-            className={`rounded-full px-3 py-1 font-bold ${!excludeSelf ? "bg-[var(--color-accent)] text-[var(--color-paper)]" : "text-[var(--color-ink-soft)]"}`}
+            className={`rounded-full px-3 py-1 font-bold ${!excludeSelf ? "bg-[var(--color-accent)] text-[var(--color-cream)]" : "text-[var(--color-ink-soft)]"}`}
           >
             Everyone
           </Link>
           <Link
             href="/admin/analytics?reach=strict#reach-by-source"
-            className={`rounded-full px-3 py-1 font-bold ${excludeSelf ? "bg-[var(--color-accent)] text-[var(--color-paper)]" : "text-[var(--color-ink-soft)]"}`}
+            className={`rounded-full px-3 py-1 font-bold ${excludeSelf ? "bg-[var(--color-accent)] text-[var(--color-cream)]" : "text-[var(--color-ink-soft)]"}`}
           >
             Exclude my activity
           </Link>
@@ -134,10 +136,10 @@ export async function ReachBySource({ excludeSelf }: { excludeSelf: boolean }) {
                 {(o.top_posts ?? []).map((p) => (
                   <tr key={p.path} className="border-t border-[var(--color-line)]">
                     <td className="py-1.5 font-mono truncate max-w-[200px]">
-                      <Link href={p.path} className="hover:text-[var(--color-accent)]">{p.path.replace("/posts/", "")}</Link>
+                      <Link href={p.path} className="hover:text-[var(--color-accent-ink)]">{p.path.replace("/posts/", "")}</Link>
                     </td>
                     <td className="py-1.5 text-right tabular-nums font-bold">{fmt(p.total)}</td>
-                    <td className="py-1.5 text-right tabular-nums text-[var(--color-accent)]">{fmt(p.human)}</td>
+                    <td className="py-1.5 text-right tabular-nums text-[var(--color-accent-ink)]">{fmt(p.human)}</td>
                     <td className="py-1.5 text-right tabular-nums text-[var(--color-muted)]">{fmt(p.bots)}</td>
                   </tr>
                 ))}
@@ -194,7 +196,7 @@ export async function ReachBySource({ excludeSelf }: { excludeSelf: boolean }) {
                 <span className="font-mono truncate flex-1">{r.path}</span>
                 <span className="text-[var(--color-muted)] shrink-0">{r.ua_class}</span>
                 {r.country ? <span className="text-[var(--color-muted)] shrink-0">{r.country}</span> : null}
-                {r.is_self ? <span className="text-[var(--color-accent)] shrink-0">you</span> : null}
+                {r.is_self ? <span className="text-[var(--color-accent-ink)] shrink-0">you</span> : null}
                 <span className="text-[var(--color-muted)] shrink-0 whitespace-nowrap">
                   {formatDistanceToNowStrict(new Date(r.at), { addSuffix: true })}
                 </span>
@@ -218,7 +220,7 @@ function pct(part: number, whole: number): string {
 }
 
 function classColor(key: string): string {
-  return CLASS_META.find((c) => c.key === key)?.color ?? "#6b7280";
+  return CLASS_META.find((c) => c.key === key)?.color ?? "var(--color-muted)";
 }
 
 function MiniStat({ label, value, sub }: { label: string; value: string; sub?: string }) {

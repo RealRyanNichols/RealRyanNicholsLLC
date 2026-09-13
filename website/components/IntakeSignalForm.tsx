@@ -90,8 +90,8 @@ export function IntakeSignalForm({
             className={[
               "rrn-tap min-h-11 rounded-lg border px-2 text-sm font-bold transition",
               selected === action
-                ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
-                : "border-[var(--color-line)] bg-[var(--color-paper)] text-[var(--color-ink)] hover:border-[var(--color-accent)]",
+                ? "border-[var(--color-gold)] bg-[var(--color-gold-soft)] text-[var(--color-gold)]"
+                : "border-[var(--color-line)] bg-transparent text-[var(--color-ink)] hover:border-[var(--color-gold)]",
             ].join(" ")}
           >
             {COPY[action].label}
@@ -100,7 +100,7 @@ export function IntakeSignalForm({
       </div>
 
       {selected ? (
-        <div className="mt-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] p-3">
+        <div className="mt-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] p-3">
           <p className="text-sm font-bold text-[var(--color-ink)]">
             {COPY[selected].title}
           </p>
@@ -133,7 +133,7 @@ export function IntakeSignalForm({
             type="button"
             disabled={isPending}
             onClick={() => submit(selected)}
-            className="rrn-tap mt-3 w-full rounded-lg bg-[var(--color-ink)] px-4 py-2 text-sm font-bold text-white transition hover:bg-[var(--color-accent)] disabled:opacity-50"
+            className="btn-accent rrn-tap mt-3 w-full px-4 py-2 text-sm disabled:opacity-50"
           >
             {isPending ? "Saving..." : "Send signal"}
           </button>
@@ -146,7 +146,7 @@ export function IntakeSignalForm({
         </p>
       ) : null}
       {error ? (
-        <p className="mt-2 text-xs font-bold text-[var(--color-accent)]">
+        <p className="mt-2 text-xs font-bold text-[var(--color-danger)]">
           {error}
         </p>
       ) : null}

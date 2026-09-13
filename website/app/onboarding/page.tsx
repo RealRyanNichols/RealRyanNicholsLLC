@@ -38,12 +38,22 @@ export default async function OnboardingPage({
 
   return (
     <article className="mx-auto max-w-2xl px-4 py-10">
-      <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+      <p className="eyebrow" data-reveal>
         One more step
       </p>
-      <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight font-display">
+      <h1
+        className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight font-display"
+        data-reveal
+        style={{ "--d": 1 } as React.CSSProperties}
+      >
         Finish your profile
       </h1>
+      <div
+        className="mt-4 h-[3px] w-[4.5rem] bg-[var(--color-gold)]"
+        aria-hidden
+        data-reveal
+        style={{ "--d": 2 } as React.CSSProperties}
+      />
       <p className="mt-3 text-base text-[var(--color-ink-soft)] leading-relaxed">
         Real names only. Ryan personally verifies every account before unlocking
         comments and J6 profile claims. This catches sockpuppets and keeps the

@@ -73,7 +73,7 @@ export function ShareRail({
             recordShare({ action: "share_platform", platform: l.name, title, slug, caseKind });
             fireReward();
           }}
-          className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] px-3 py-1.5 text-xs font-bold transition sm:min-h-0"
+          className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-[var(--color-line)] bg-[var(--color-surface-2)] hover:border-[var(--color-gold)] hover:text-[var(--color-gold)] px-3 py-1.5 text-xs font-bold transition sm:min-h-0"
         >
           <span aria-hidden className="text-base leading-none">
             {l.icon}
@@ -87,8 +87,8 @@ export function ShareRail({
         className={[
           "inline-flex min-h-11 items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-bold transition sm:min-h-0",
           copied
-            ? "border-[var(--color-success)] bg-[var(--color-success)] text-[var(--color-paper)]"
-            : "border-[var(--color-line)] bg-[var(--color-paper)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]",
+            ? "border-[var(--color-success)] bg-[var(--color-success)] text-[var(--color-navy)]"
+            : "border-[var(--color-line)] bg-[var(--color-surface-2)] hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]",
         ].join(" ")}
       >
         {copied ? "✓ Copied" : "🔗 Copy link"}

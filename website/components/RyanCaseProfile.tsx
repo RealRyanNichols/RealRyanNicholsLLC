@@ -242,7 +242,7 @@ export function RyanCaseProfile({
 
       {/* ---- The record in a paragraph ---- */}
       <div className="mt-8">
-        <p className="max-w-2xl border-l-2 border-[var(--color-navy)] pl-4 text-sm font-semibold leading-relaxed text-[var(--color-ink)]">
+        <p className="max-w-2xl border-l-2 border-[var(--color-gold)] pl-4 text-sm font-semibold leading-relaxed text-[var(--color-ink)]">
           Sentenced May 2, 2024. Pardoned in full on January 20, 2025 — and the
           case was dismissed with prejudice. It can never be brought again.
         </p>
@@ -282,7 +282,7 @@ export function RyanCaseProfile({
       </div>
 
       {/* ---- The line that should stop you ---- */}
-      <aside className="mt-6 rounded-2xl border-2 border-[var(--color-navy)]/30 bg-[var(--color-blue-soft)]/40 p-6 sm:p-8">
+      <aside className="mt-6 rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-blue-soft)]/40 p-6 sm:p-8">
         <Eyebrow>On the record</Eyebrow>
         <p className="mt-2 text-xl sm:text-2xl font-bold tracking-tight font-display leading-snug text-[var(--color-ink)]">
           A federal judge acknowledged — out loud, on the record — that his
@@ -290,22 +290,22 @@ export function RyanCaseProfile({
         </p>
         <Link
           href="/fights/equal-justice"
-          className="mt-4 inline-flex min-h-11 items-center text-sm font-bold text-[var(--color-navy)] hover:underline sm:min-h-0"
+          className="mt-4 inline-flex min-h-11 items-center text-sm font-bold text-[var(--color-ink)] hover:underline sm:min-h-0"
         >
           Equal justice under the law — the fight that came out of it →
         </Link>
       </aside>
 
       {/* The archive this case anchors — the growth loop. */}
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border-2 border-[var(--color-navy)]/30 bg-[var(--color-blue-soft)]/40 px-5 py-4">
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-blue-soft)]/40 px-5 py-4">
         <p className="text-sm font-bold text-[var(--color-ink)]">
           This case anchors the{" "}
-          <span className="text-[var(--color-navy)]">January 6 Case Archive</span>{" "}
+          <span className="text-[var(--color-gold)]">January 6 Case Archive</span>{" "}
           — every defendant who joins stacks their record into it.
         </p>
         <Link
           href="/j6"
-          className="inline-flex min-h-11 shrink-0 items-center text-sm font-bold text-[var(--color-navy)] hover:underline sm:min-h-0"
+          className="inline-flex min-h-11 shrink-0 items-center text-sm font-bold text-[var(--color-ink)] hover:underline sm:min-h-0"
         >
           Enter the archive →
         </Link>
@@ -383,7 +383,7 @@ export function RyanCaseProfile({
                 </div>
               ))}
             </div>
-            <span className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-[var(--color-navy)] group-hover:underline">
+            <span className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-[var(--color-ink)] group-hover:underline">
               The rescue record, in pictures — see all 54 →
             </span>
           </Link>
@@ -391,24 +391,24 @@ export function RyanCaseProfile({
           <ol className="mt-6 relative border-l-2 border-[var(--color-line)] ml-3 space-y-5">
             {OPERATIONS.map((op) => (
               <li key={op.title} className="relative pl-6">
-                <span className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full bg-[var(--color-navy)] ring-4 ring-[var(--color-paper)]" />
+                <span className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full bg-[var(--color-gold)] ring-4 ring-[var(--color-paper)]" />
                 <Link href={`/story/${storySlugFor(op)}`} className="group block">
                   <div className="flex flex-wrap items-baseline gap-2">
-                    <span className="rounded bg-[var(--color-ink)] text-[var(--color-paper)] px-1.5 py-0.5 text-[10px] font-bold tabular-nums">
+                    <span className="rounded bg-[var(--color-gold)] text-[var(--color-navy)] px-1.5 py-0.5 text-[10px] font-bold tabular-nums">
                       {op.year}
                     </span>
-                    <h4 className="text-base sm:text-lg font-bold tracking-tight font-display transition group-hover:text-[var(--color-navy)]">
+                    <h4 className="text-base sm:text-lg font-bold tracking-tight font-display transition group-hover:text-[var(--color-gold)]">
                       {op.title}
                     </h4>
                     <span
                       aria-hidden
-                      className="text-xs font-bold text-[var(--color-muted)] transition group-hover:translate-x-0.5 group-hover:text-[var(--color-navy)]"
+                      className="text-xs font-bold text-[var(--color-muted)] transition group-hover:translate-x-0.5 group-hover:text-[var(--color-gold)]"
                     >
                       →
                     </span>
                   </div>
                   <p className="mt-1 text-sm text-[var(--color-ink-soft)] leading-snug">{op.detail}</p>
-                  <span className="mt-0.5 inline-block text-xs font-bold text-[var(--color-navy)] opacity-0 transition group-hover:opacity-100">
+                  <span className="mt-0.5 inline-block text-xs font-bold text-[var(--color-ink)] opacity-0 transition group-hover:opacity-100">
                     Open this chapter — the full story, pictures, and record
                   </span>
                 </Link>
@@ -429,7 +429,7 @@ export function RyanCaseProfile({
                     ? "/story/hurricane-florence-2018"
                     : "/about"
                 }
-                className="rounded-full border border-[var(--color-blue)]/30 bg-[var(--color-paper)] px-3 py-1 text-xs font-bold text-[var(--color-blue)] transition hover:border-[var(--color-blue)] hover:bg-[var(--color-blue-soft)]"
+                className="rounded-full border border-[var(--color-blue)]/30 bg-[var(--color-surface)] px-3 py-1 text-xs font-bold text-[var(--color-blue-ink)] transition hover:border-[var(--color-blue)] hover:bg-[var(--color-blue-soft)]"
               >
                 {r} →
               </Link>
@@ -445,7 +445,7 @@ export function RyanCaseProfile({
 
         <Link
           href="/about"
-          className="mt-6 inline-block text-sm font-bold text-[var(--color-navy)] hover:underline"
+          className="mt-6 inline-block text-sm font-bold text-[var(--color-ink)] hover:underline"
         >
           Read the full biography, filed as Exhibit 288 →
         </Link>
@@ -513,9 +513,9 @@ export function RyanCaseProfile({
             },
           ].map((e) => (
             <li key={e.date} className="relative pl-6">
-              <span className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full bg-[var(--color-navy)] ring-4 ring-[var(--color-paper)]" />
+              <span className="absolute -left-[7px] top-1.5 h-3 w-3 rounded-full bg-[var(--color-gold)] ring-4 ring-[var(--color-paper)]" />
               <div className="flex flex-wrap items-baseline gap-2">
-                <span className="rounded bg-[var(--color-ink)] text-[var(--color-paper)] px-1.5 py-0.5 text-[10px] font-bold tabular-nums">
+                <span className="rounded bg-[var(--color-gold)] text-[var(--color-navy)] px-1.5 py-0.5 text-[10px] font-bold tabular-nums">
                   {e.date}
                 </span>
                 <h3 className="text-base sm:text-lg font-bold tracking-tight font-display">{e.title}</h3>
@@ -524,7 +524,7 @@ export function RyanCaseProfile({
               {"doc" in e && e.doc ? (
                 <Link
                   href={e.doc}
-                  className="mt-1 inline-flex min-h-11 items-center gap-1 text-xs font-bold text-[var(--color-navy)] hover:underline sm:min-h-0"
+                  className="mt-1 inline-flex min-h-11 items-center gap-1 text-xs font-bold text-[var(--color-ink)] hover:underline sm:min-h-0"
                 >
                   Read <span aria-hidden>→</span>
                 </Link>
@@ -553,7 +553,7 @@ export function RyanCaseProfile({
         <p className="mt-3 text-sm text-[var(--color-ink-soft)] max-w-2xl leading-relaxed">
           Every entry below
           carries an exhibit number from the master archive or lives in the{" "}
-          <Link href="/case?view=documents" className="text-[var(--color-navy)] font-semibold hover:underline">
+          <Link href="/case?view=documents" className="text-[var(--color-ink)] font-semibold hover:underline">
             public document record
           </Link>
           . Items marked <ClaimChip label="DOCUMENTED" /> are documented, with
@@ -674,7 +674,7 @@ export function RyanCaseProfile({
               {"paper" in item && item.paper ? (
                 <Link
                   href={item.paper.href}
-                  className="mt-2 inline-flex min-h-11 items-center gap-1 text-xs font-bold text-[var(--color-navy)] hover:underline sm:min-h-0"
+                  className="mt-2 inline-flex min-h-11 items-center gap-1 text-xs font-bold text-[var(--color-ink)] hover:underline sm:min-h-0"
                 >
                   {item.paper.label} <span aria-hidden>→</span>
                 </Link>
@@ -683,7 +683,7 @@ export function RyanCaseProfile({
           ))}
         </div>
 
-        <div className="mt-6 rounded-2xl bg-[var(--color-surface-2)] p-4 sm:p-5">
+        <div className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface-2)] p-4 sm:p-5">
           <Eyebrow>The {totals.facilities} facilities, as he lists them</Eyebrow>
           <div className="mt-2 flex flex-wrap gap-1.5">
             {[
@@ -701,7 +701,7 @@ export function RyanCaseProfile({
               <Link
                 key={f}
                 href="/case/geography"
-                className="rounded-full border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-1 text-xs font-semibold text-[var(--color-ink-soft)] transition hover:border-[var(--color-navy)] hover:text-[var(--color-navy)]"
+                className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1 text-xs font-semibold text-[var(--color-ink-soft)] transition hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
               >
                 {f} →
               </Link>
@@ -715,12 +715,12 @@ export function RyanCaseProfile({
         </div>
 
         {/* Statement intake — the archive grows one account at a time. */}
-        <div className="mt-8 rounded-2xl bg-[var(--color-navy)] p-6 sm:p-8 text-[#fdf8ea]">
+        <div className="mt-8 rounded-2xl border border-[var(--color-line)] bg-[var(--color-navy)] p-6 text-[var(--color-cream)] shadow-[0_20px_50px_rgba(0,0,0,0.4)] sm:p-8">
           <Eyebrow tone="cream">Statement intake</Eyebrow>
-          <h3 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display text-[#fdf8ea]">
+          <h3 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display text-[var(--color-cream)]">
             Were you there? The archive has room for your statement.
           </h3>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[#cfd9ea]">
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--color-ink-soft)]">
             Detainees, witnesses, family — the record grows one account at a
             time. Sworn or notarized statements carry the most weight; voice
             recordings are accepted too. Every submission lands in the public
@@ -729,13 +729,13 @@ export function RyanCaseProfile({
           <div className="mt-5 flex flex-wrap items-center gap-4">
             <Link
               href="/case/intake"
-              className="inline-flex items-center rounded-lg bg-[#fdf8ea] px-5 py-2.5 text-sm font-bold text-[var(--color-navy)] transition hover:bg-white"
+              className="btn-blue inline-flex items-center px-5 py-2.5 text-sm"
             >
               Add your statement →
             </Link>
             <Link
               href="/tell-your-story"
-              className="text-sm font-bold text-[#cfd9ea] transition hover:text-[#fdf8ea] hover:underline"
+              className="text-sm font-bold text-[var(--color-ink-soft)] transition hover:text-[var(--color-cream)] hover:underline"
             >
               Record it in your own voice →
             </Link>
@@ -778,7 +778,7 @@ export function RyanCaseProfile({
               <Link
                 key={p.slug}
                 href={`/posts/${p.slug}`}
-                className="group overflow-hidden rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-navy)] transition"
+                className="group overflow-hidden rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-gold)] transition"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -788,7 +788,7 @@ export function RyanCaseProfile({
                   className="h-28 w-full border-b border-[var(--color-line)] object-cover"
                 />
                 <div className="p-4">
-                  <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] font-bold text-[var(--color-navy)]">
+                  <div className="eyebrow flex items-center gap-2">
                     {p.category ? <span>{p.category}</span> : null}
                     {p.published_at ? (
                       <span className="text-[var(--color-muted)]">
@@ -799,14 +799,14 @@ export function RyanCaseProfile({
                       </span>
                     ) : null}
                   </div>
-                  <p className="mt-1 text-base font-bold tracking-tight font-display leading-snug group-hover:text-[var(--color-navy)] transition">
+                  <p className="mt-1 text-base font-bold tracking-tight font-display leading-snug group-hover:text-[var(--color-gold)] transition">
                     {p.title}
                   </p>
                 </div>
               </Link>
             ))}
           </div>
-          <Link href="/" className="mt-5 inline-block text-sm font-bold text-[var(--color-navy)] hover:underline">
+          <Link href="/" className="mt-5 inline-block text-sm font-bold text-[var(--color-ink)] hover:underline">
             See everything in the feed →
           </Link>
         </section>
@@ -831,7 +831,7 @@ export function RyanCaseProfile({
                 {totals.documents.toLocaleString()} documents,{" "}
                 {totals.ryanFiledGrievances.toLocaleString()} grievance forms in his own hand,{" "}
                 {totals.grievances} documented grievance patterns, {totals.facilities} facilities.{" "}
-                <Link href="/case?view=documents" className="text-[var(--color-navy)] font-semibold hover:underline">
+                <Link href="/case?view=documents" className="text-[var(--color-ink)] font-semibold hover:underline">
                   Walk the full record →
                 </Link>
               </>
@@ -839,7 +839,7 @@ export function RyanCaseProfile({
           />
           <Link
             href="/case?view=documents"
-            className="btn-accent mt-4 inline-flex items-center px-5 py-2.5 text-sm"
+            className="btn-blue mt-4 inline-flex items-center px-5 py-2.5 text-sm"
           >
             Open all {totals.documents.toLocaleString()} documents →
           </Link>
@@ -877,7 +877,7 @@ export function RyanCaseProfile({
       {/* ---- Rung 2 · Case Builder — this page is the product demo ---- */}
       <section
         id="case-builder"
-        className="mt-12 rounded-2xl border-2 border-[var(--color-navy)] bg-[var(--color-surface)] p-6 sm:p-8"
+        className="mt-12 rounded-2xl border-2 border-[var(--color-gold)] bg-[var(--color-surface)] p-6 sm:p-8"
       >
         <Eyebrow>Case Builder</Eyebrow>
         <h2 className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight font-display">
@@ -899,7 +899,7 @@ export function RyanCaseProfile({
           </Link>
           <Link
             href="/j6"
-            className="inline-flex min-h-11 items-center gap-1 text-sm font-bold text-[var(--color-navy)] hover:underline sm:min-h-0"
+            className="inline-flex min-h-11 items-center gap-1 text-sm font-bold text-[var(--color-ink)] hover:underline sm:min-h-0"
           >
             J6 defendant? Yours is free <span aria-hidden>→</span>
           </Link>
@@ -909,14 +909,14 @@ export function RyanCaseProfile({
       {/* ---- Rung 3 · Share — the archive's rule of engagement, one button ---- */}
       <section
         id="share"
-        className="mt-12 rounded-3xl border-2 border-[var(--color-navy)] bg-[var(--color-blue-soft)]/40 p-6 text-center sm:p-10"
+        className="mt-12 rounded-3xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)]/40 p-6 text-center sm:p-10"
       >
         <Eyebrow>Share the record</Eyebrow>
         <h2 className="mx-auto mt-2 max-w-2xl font-display text-2xl font-bold leading-[1.1] tracking-tight sm:text-3xl">
           Do not threaten anyone. Do not harass anyone. Do not contact anyone
           in my name.
         </h2>
-        <p className="mx-auto mt-4 max-w-xl font-display text-xl font-bold leading-snug text-[var(--color-navy)] sm:text-2xl">
+        <p className="mx-auto mt-4 max-w-xl font-display text-xl font-bold leading-snug text-[var(--color-ink)] sm:text-2xl">
           Read it. Share it. Send receipts.
         </p>
         <div className="mt-6 flex justify-center">
@@ -979,15 +979,15 @@ function AttorneyBriefing() {
   return (
     <section className="rounded-3xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] text-[var(--color-ink)] p-6 sm:p-9">
       <div className="flex flex-wrap items-center gap-2">
-        <span className="rounded-full bg-[var(--color-blue)] text-[var(--color-paper)] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em]">
+        <span className="rounded-full bg-[var(--color-blue)] text-[var(--color-cream)] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em]">
           Attorney briefing
         </span>
-        <span className="rounded-full border border-[var(--color-blue)]/40 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-blue)]">
+        <span className="rounded-full border border-[var(--color-blue)]/40 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-blue-ink)]">
           Seeking counsel
         </span>
       </div>
 
-      <h2 className="mt-4 text-2xl sm:text-4xl font-bold tracking-tight font-display leading-[1.08] text-[var(--color-blue-strong)]">
+      <h2 className="mt-4 text-2xl sm:text-4xl font-bold tracking-tight font-display leading-[1.08] text-[var(--color-blue-ink)]">
         Counsel evaluating my case — start here.
       </h2>
       <p className="mt-3 text-sm sm:text-base text-[var(--color-ink-soft)] leading-relaxed max-w-2xl">
@@ -1008,7 +1008,7 @@ function AttorneyBriefing() {
           ["Prior matter", "Pardoned · dismissed w/ prejudice"],
           ["Motions filed", "11 + recusal, public"],
         ].map(([k, v]) => (
-          <div key={k} className="rounded-2xl border border-[var(--color-blue)]/20 bg-[var(--color-paper)] p-3">
+          <div key={k} className="rounded-2xl border border-[var(--color-blue)]/20 bg-[var(--color-surface)] p-3">
             <dt className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">{k}</dt>
             <dd className="mt-1 text-sm font-bold text-[var(--color-ink)] leading-snug">{v}</dd>
           </div>
@@ -1023,9 +1023,9 @@ function AttorneyBriefing() {
             <Link
               key={it.href}
               href={it.href}
-              className="group rounded-2xl border border-[var(--color-blue)]/20 bg-[var(--color-paper)] p-4 hover:border-[var(--color-blue)] transition"
+              className="group rounded-2xl border border-[var(--color-blue)]/20 bg-[var(--color-surface)] p-4 hover:border-[var(--color-blue)] transition"
             >
-              <p className="text-sm font-bold text-[var(--color-ink)] group-hover:text-[var(--color-blue)] transition leading-snug">
+              <p className="text-sm font-bold text-[var(--color-ink)] group-hover:text-[var(--color-blue-ink)] transition leading-snug">
                 {it.label}
               </p>
               <p className="mt-1 text-xs text-[var(--color-ink-soft)] leading-snug">{it.sub}</p>
@@ -1034,14 +1034,14 @@ function AttorneyBriefing() {
         </div>
         <Link
           href="/posts/the-transparency-motions-what-i-filed-and-why"
-          className="mt-3 inline-block text-sm font-bold text-[var(--color-blue)] hover:underline"
+          className="mt-3 inline-block text-sm font-bold text-[var(--color-blue-ink)] hover:underline"
         >
           Read all eleven motions, why I filed each, and the exhibit index →
         </Link>
       </div>
 
       {/* Contact — attorneys */}
-      <div className="mt-7 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-paper)] p-5">
+      <div className="mt-7 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-surface)] p-5">
         <Eyebrow tone="blue">Attorneys — reach me directly</Eyebrow>
         <p className="mt-2 text-sm text-[var(--color-ink-soft)] leading-relaxed max-w-2xl">
           If you practice criminal defense, First Amendment, or civil-rights litigation
@@ -1054,13 +1054,13 @@ function AttorneyBriefing() {
         <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2">
           <a
             href="mailto:ryan@realryannichols.com?subject=Attorney%20inquiry%20%E2%80%94%20Harrison%20County%20matter&body=Hi%20Ryan%2C%0A%0AI%27m%20an%20attorney%20licensed%20in%20%5Bstate%5D.%20My%20practice%20areas%3A%20%5Bareas%5D.%0A%0AI%27d%20like%20the%20full%20private%20briefing%20on%20your%20current%20matter.%0A%0A%5BName%2C%20firm%2C%20bar%20number%2C%20phone%5D"
-            className="inline-flex min-h-11 items-center rounded-full bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)] transition"
+            className="inline-flex min-h-11 items-center rounded-full bg-[var(--color-blue)] text-[var(--color-cream)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)] transition"
           >
             ✉ Email me about representation
           </a>
           <Link
             href="/submit"
-            className="inline-flex min-h-11 items-center gap-1 text-sm font-bold text-[var(--color-blue)] hover:underline sm:min-h-0"
+            className="inline-flex min-h-11 items-center gap-1 text-sm font-bold text-[var(--color-blue-ink)] hover:underline sm:min-h-0"
           >
             Send a secure note <span aria-hidden>→</span>
           </Link>

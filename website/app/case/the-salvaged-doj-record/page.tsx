@@ -111,10 +111,10 @@ export default async function SalvagedDojRecordPage({
 
   return (
     <article className="mx-auto max-w-5xl px-4 py-8 sm:py-10">
-      <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold">
+      <p className="eyebrow" data-reveal>
         Public record · preserved
       </p>
-      <h1 className="mt-2 text-3xl sm:text-5xl font-bold tracking-tight leading-[1.05] font-display">
+      <h1 data-reveal className="mt-2 text-3xl sm:text-5xl font-bold tracking-tight leading-[1.05] font-display">
         The Salvaged DOJ Record
       </h1>
       <p className="mt-4 text-base sm:text-lg text-[var(--color-ink-soft)] max-w-3xl leading-relaxed">
@@ -133,10 +133,10 @@ export default async function SalvagedDojRecordPage({
       </p>
 
       <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <BigStat label="Defendants preserved" value={total ?? 0} />
-        <BigStat label="Matched to J6 archive" value={matched ?? 0} />
-        <BigStat label="Document links preserved" value={totalDocLinks} />
-        <BigStat label="With sentencing data" value={sentenced ?? 0} />
+        <BigStat label="Defendants preserved" value={total ?? 0} d={0} />
+        <BigStat label="Matched to J6 archive" value={matched ?? 0} d={1} />
+        <BigStat label="Document links preserved" value={totalDocLinks} d={2} />
+        <BigStat label="With sentencing data" value={sentenced ?? 0} d={3} />
       </div>
 
       <div className="mt-6">
@@ -152,7 +152,7 @@ export default async function SalvagedDojRecordPage({
           reachable home. */}
 
       <section className="mt-8 rounded-2xl border-2 border-[var(--color-blue)] bg-[var(--color-blue-soft)] p-5 sm:p-6">
-        <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-blue)]">
+        <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-blue-ink)]">
           Provenance
         </p>
         <h2 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight font-display">
@@ -179,7 +179,7 @@ export default async function SalvagedDojRecordPage({
             href="https://web.archive.org/web/20231201000000/https://www.justice.gov/usao-dc/capitol-breach-cases"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[var(--color-accent)] underline break-all"
+            className="text-[var(--color-blue-ink)] underline break-all"
           >
             web.archive.org/web/20231201000000/...capitol-breach-cases
           </a>
@@ -212,14 +212,14 @@ export default async function SalvagedDojRecordPage({
           />
           <button
             type="submit"
-            className="rounded-lg border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-3 font-bold hover:bg-[var(--color-accent-strong)]"
+            className="btn-accent px-5 py-3 text-sm"
           >
             Search
           </button>
           {q ? (
             <Link
               href="/case/the-salvaged-doj-record"
-              className="rounded-lg border-2 border-[var(--color-line)] bg-[var(--color-surface)] px-5 py-3 text-center font-bold text-[var(--color-ink)] hover:border-[var(--color-accent)]"
+              className="btn-ghost inline-flex items-center justify-center px-5 py-3 text-center"
             >
               Clear
             </Link>
@@ -242,11 +242,11 @@ export default async function SalvagedDojRecordPage({
                   className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 sm:p-5"
                 >
                   <div className="flex items-baseline gap-3 flex-wrap">
-                    <h3 className="text-base sm:text-lg font-bold tracking-tight">
+                    <h3 className="font-display text-base sm:text-lg font-bold tracking-tight">
                       {matchedSlug ? (
                         <Link
                           href={`/case/people/${matchedSlug}`}
-                          className="hover:text-[var(--color-accent)]"
+                          className="hover:text-[var(--color-gold)]"
                         >
                           {r.name}
                         </Link>
@@ -260,7 +260,7 @@ export default async function SalvagedDojRecordPage({
                       </span>
                     ) : null}
                     {matchedSlug ? (
-                      <span className="rounded-full bg-[var(--color-success)] text-[var(--color-paper)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
+                      <span className="rounded-full bg-[var(--color-success)] text-[var(--color-navy)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
                         ✓ archived
                       </span>
                     ) : null}
@@ -286,7 +286,7 @@ export default async function SalvagedDojRecordPage({
                           href={`https://web.archive.org/web/2023/https://www.justice.gov${u.startsWith("/") ? u : "/" + u}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex min-h-11 items-center rounded-full border border-[var(--color-line)] hover:border-[var(--color-accent)] px-2.5 py-1 text-[11px] font-bold text-[var(--color-ink)] hover:text-[var(--color-accent)] sm:min-h-0"
+                          className="inline-flex min-h-11 items-center rounded-full border border-[var(--color-line)] hover:border-[var(--color-gold)] px-2.5 py-1 text-[11px] font-bold text-[var(--color-ink)] hover:text-[var(--color-gold)] sm:min-h-0"
                         >
                           📄 {r.doc_titles?.[i]?.slice(0, 50) ?? "Document"}
                         </a>
@@ -320,10 +320,10 @@ export default async function SalvagedDojRecordPage({
       </section>
 
       <section className="mt-12 rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-surface)] p-5 sm:p-6">
-        <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-accent)]">
+        <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-accent-ink)]">
           Why this matters
         </p>
-        <h2 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight font-display">
+        <h2 className="mt-1 font-display text-xl sm:text-2xl font-bold tracking-tight">
           A federal government scrubbed the record. A pardoned veteran preserved it.
         </h2>
         <div className="mt-3 prose-body text-sm sm:text-base">
@@ -349,19 +349,19 @@ export default async function SalvagedDojRecordPage({
         <div className="mt-5 flex flex-wrap gap-3">
           <Link
             href="/case"
-            className="rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)]"
+            className="btn-blue inline-flex items-center rounded-full px-5 py-2.5 text-sm"
           >
             The full case archive →
           </Link>
           <Link
             href="/the-map-room"
-            className="rounded-full border-2 border-[var(--color-line)] bg-[var(--color-surface)] px-5 py-2.5 text-sm font-bold text-[var(--color-ink)] hover:border-[var(--color-accent)]"
+            className="btn-ghost inline-flex items-center rounded-full px-5 py-2.5 text-sm"
           >
             The Map Room: who&apos;s reading the case right now
           </Link>
           <Link
             href="/submit"
-            className="rounded-full border-2 border-[var(--color-blue)] bg-[var(--color-blue)] text-[var(--color-paper)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-blue-strong)]"
+            className="btn-ghost inline-flex items-center rounded-full px-5 py-2.5 text-sm"
           >
             Send a tip / receipt
           </Link>
@@ -371,10 +371,17 @@ export default async function SalvagedDojRecordPage({
   );
 }
 
-function BigStat({ label, value }: { label: string; value: number }) {
+function BigStat({ label, value, d }: { label: string; value: number; d: number }) {
   return (
-    <div className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-paper)] p-4">
-      <div className="text-3xl sm:text-4xl font-bold tabular-nums tracking-tight leading-none text-[var(--color-accent)]">
+    <div
+      data-reveal
+      style={{ "--d": d } as React.CSSProperties}
+      className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
+    >
+      <div
+        className="display text-3xl sm:text-4xl tabular-nums leading-none text-[var(--color-gold)]"
+        data-count={value > 0 ? value : undefined}
+      >
         {value.toLocaleString()}
       </div>
       <div className="mt-2 text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">

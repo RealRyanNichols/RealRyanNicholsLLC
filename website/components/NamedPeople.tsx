@@ -27,7 +27,7 @@ export function NamedPeople({ people }: { people: CasePerson[] }) {
               <li key={p.id}>
                 <Link
                   href={`/case/people/${p.slug}`}
-                  className="inline-flex items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1 text-xs font-semibold text-[var(--color-ink)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition"
+                  className="inline-flex items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1 text-xs font-semibold text-[var(--color-ink)] transition hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
                 >
                   {p.name}
                   {p.role ? <span className="ml-1.5 text-[var(--color-muted)] font-normal">· {p.role}</span> : null}

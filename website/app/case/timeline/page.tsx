@@ -78,10 +78,8 @@ export default async function CaseTimelinePage() {
 
   return (
     <article className="mx-auto max-w-5xl px-4 py-6 sm:py-8">
-      <header className="max-w-3xl mb-5">
-        <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-gold-bright)] font-bold">
-          The Timeline · realryannichols.com
-        </p>
+      <header className="max-w-3xl mb-5" data-reveal>
+        <p className="eyebrow">The Timeline · realryannichols.com</p>
         <h1 className="mt-2 text-3xl sm:text-5xl font-bold tracking-tight leading-[1.05] font-display">
           The prosecution wave, month by month.
         </h1>
@@ -98,7 +96,7 @@ export default async function CaseTimelinePage() {
           file) and enriched per defendant on{" "}
           <Link
             href="/case/the-salvaged-doj-record"
-            className="underline underline-offset-4 hover:text-[var(--color-accent)]"
+            className="underline underline-offset-4 hover:text-[var(--color-accent-ink)]"
           >
             the salvaged record
           </Link>
@@ -162,9 +160,9 @@ function CrossLink({
   return (
     <Link
       href={href}
-      className="block rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-surface)] p-4 hover:border-[var(--color-accent)] transition group"
+      className="block rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-[0_20px_50px_rgba(0,0,0,0.4)] hover:border-[var(--color-gold)] transition group"
     >
-      <p className="text-sm font-bold tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">
+      <p className="text-sm font-bold tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-gold)]">
         {title}
       </p>
       <p className="mt-1 text-xs leading-snug text-[var(--color-ink-soft)]">

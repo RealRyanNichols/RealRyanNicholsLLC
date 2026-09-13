@@ -48,7 +48,7 @@ export default async function AdminOgImagesPage() {
 
   return (
     <article className="mx-auto max-w-4xl px-4 py-10">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+      <p className="text-xs uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
         Admin · social share images
       </p>
       <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">
@@ -122,7 +122,7 @@ export default async function AdminOgImagesPage() {
                     <Link
                       href={row.path}
                       target="_blank"
-                      className="text-xs font-semibold text-[var(--color-accent)] hover:underline"
+                      className="text-xs font-semibold text-[var(--color-accent-ink)] hover:underline"
                     >
                       Preview page →
                     </Link>

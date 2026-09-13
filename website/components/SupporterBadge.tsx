@@ -12,7 +12,7 @@ export function SupporterBadge({
   return (
     <span
       title="Supporter"
-      className={`inline-flex items-center gap-1 rounded-full bg-amber-950/40 border border-amber-600 text-amber-300 font-bold uppercase tracking-wider ${cls}`}
+      className={`inline-flex items-center gap-1 rounded-full bg-[var(--color-support-soft)] border border-[var(--color-line)] text-[var(--color-gold)] font-bold uppercase tracking-wider ${cls}`}
     >
       <span aria-hidden>★</span>
       Supporter

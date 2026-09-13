@@ -27,7 +27,7 @@ export function Callout({ args }: { args: string[] }) {
     const link = linkMatch?.[0] ?? null;
     const display = link ? text.replace(link, "").replace(/\s{2,}/g, " ").trim() : text;
     return (
-      <aside className="not-prose my-8 rounded-lg border-l-4 border-[var(--color-gold-bright)] bg-[#0b1b34] p-5 text-[#f4efe4] sm:p-6">
+      <aside className="not-prose my-8 rounded-lg border-l-4 border-[var(--color-gold-bright)] bg-[var(--color-surface)] p-5 text-[var(--color-cream)] sm:p-6">
         <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[var(--color-gold-bright)]">
           What I need from you
         </p>
@@ -35,7 +35,7 @@ export function Callout({ args }: { args: string[] }) {
         {link ? (
           <a
             href={link}
-            className="mt-4 inline-flex min-h-11 items-center rounded-md bg-[var(--color-gold-bright)] px-5 text-sm font-black text-[#061020] no-underline transition hover:bg-[#f0d48a]"
+            className="mt-4 inline-flex min-h-11 items-center rounded-md bg-[var(--color-gold-bright)] px-5 text-sm font-black text-[var(--color-navy)] no-underline transition hover:bg-[var(--color-support-strong)]"
           >
             Do it now
           </a>
@@ -46,7 +46,7 @@ export function Callout({ args }: { args: string[] }) {
 
   // Default: key point.
   return (
-    <aside className="not-prose my-8 rounded-lg border-l-4 border-[var(--color-gold-bright)] bg-[#0b1b34] p-5 text-[#f4efe4] sm:p-6">
+    <aside className="not-prose my-8 rounded-lg border-l-4 border-[var(--color-gold-bright)] bg-[var(--color-surface)] p-5 text-[var(--color-cream)] sm:p-6">
       <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[var(--color-gold-bright)]">
         Key point
       </p>

@@ -1,4 +1,5 @@
 import { jsonString } from "@/lib/shortcodes";
+import { PALETTE } from "@/lib/palette";
 
 // {{chart: {...}}} — real numbers only. Hand-rolled SVG, server-rendered,
 // zero client JS and zero new dependencies. Navy plot area, gold series,
@@ -8,7 +9,9 @@ import { jsonString } from "@/lib/shortcodes";
 
 type Datum = { label: string; value?: number; series?: Record<string, number> };
 
-const SERIES_COLORS = ["var(--color-gold-bright)", "#7fa9e3", "#9df0c0", "#cfd9ea"];
+// Series colors come from lib/palette.ts: four hues that stay apart from each
+// other on the navy plot. Everything else in the chart is a token.
+const SERIES_COLORS = [PALETTE.goldBright, PALETTE.sky, PALETTE.live, PALETTE.clay];
 
 function parseData(value: Record<string, unknown>): Datum[] {
   const raw = value.data;
@@ -48,7 +51,7 @@ export function ArticleChart({ value }: { value: Record<string, unknown> }) {
     // No source, no chart. Loud in dev so the writer sees it; silent in prod.
     if (process.env.NODE_ENV !== "production") {
       return (
-        <div className="not-prose my-7 rounded-md border-2 border-dashed border-[#8a6d1f] bg-[#f4efe4] p-4 text-sm font-bold text-[#8a6d1f]">
+        <div className="not-prose my-7 rounded-md border-2 border-dashed border-[var(--color-gold)] bg-[var(--color-surface-2)] p-4 text-sm font-bold text-[var(--color-gold)]">
           Chart blocked: {!source ? "missing source. " : ""}
           {data.length === 0 ? "missing or invalid data." : ""} Charts are
           proof; an unsourced chart does not ship.
@@ -86,9 +89,9 @@ export function ArticleChart({ value }: { value: Record<string, unknown> }) {
 
   return (
     <figure className="not-prose my-8">
-      <div className="overflow-hidden rounded-lg border border-[#0b1b34]/20 bg-[#0b1b34]">
+      <div className="panel overflow-hidden">
         {title ? (
-          <p className="border-b border-[#f4efe4]/10 px-4 py-3 text-sm font-black uppercase tracking-wider text-[var(--color-gold-bright)]">
+          <p className="border-b border-[var(--color-line-soft)] px-4 py-3 text-sm font-black uppercase tracking-wider text-[var(--color-gold-bright)]">
             {title}
           </p>
         ) : null}
@@ -109,21 +112,20 @@ export function ArticleChart({ value }: { value: Record<string, unknown> }) {
                   x2={width - 8}
                   y1={y(max * g)}
                   y2={y(max * g)}
-                  stroke="#f4efe4"
-                  strokeOpacity={0.12}
+                  stroke="var(--color-line-soft)"
                 />
                 <text
                   x={padL - 8}
                   y={y(max * g) + 4}
                   textAnchor="end"
                   fontSize={11}
-                  fill="#a9b7d0"
+                  fill="var(--color-muted)"
                 >
                   {fmt(Math.round(max * g))}
                 </text>
               </g>
             ))}
-            <line x1={padL} x2={width - 8} y1={y(0)} y2={y(0)} stroke="#f4efe4" strokeOpacity={0.35} />
+            <line x1={padL} x2={width - 8} y1={y(0)} y2={y(0)} stroke="var(--color-line)" />
 
             {/* series */}
             {type === "line" && !isMulti ? (
@@ -216,7 +218,7 @@ export function ArticleChart({ value }: { value: Record<string, unknown> }) {
                 textAnchor="middle"
                 fontSize={11}
                 fontWeight={700}
-                fill="#cfd9ea"
+                fill="var(--color-muted)"
               >
                 {d.label.length > 12 ? `${d.label.slice(0, 11)}…` : d.label}
               </text>
@@ -227,7 +229,7 @@ export function ArticleChart({ value }: { value: Record<string, unknown> }) {
         {isMulti ? (
           <div className="flex flex-wrap gap-x-4 gap-y-1 px-4 pb-2">
             {seriesKeys.map((k, si) => (
-              <span key={k} className="inline-flex items-center gap-1.5 text-xs font-bold text-[#cfd9ea]">
+              <span key={k} className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--color-ink-soft)]">
                 <span
                   className="inline-block h-2.5 w-2.5 rounded-sm"
                   style={{ background: SERIES_COLORS[si % SERIES_COLORS.length] }}
@@ -239,7 +241,7 @@ export function ArticleChart({ value }: { value: Record<string, unknown> }) {
           </div>
         ) : null}
 
-        <p className="border-t border-[#f4efe4]/10 px-4 py-2.5 text-xs text-[#a9b7d0]">
+        <p className="border-t border-[var(--color-line-soft)] px-4 py-2.5 text-xs text-[var(--color-muted)]">
           <span className="font-bold uppercase tracking-wider text-[10px] text-[var(--color-gold-bright)]">
             Source:
           </span>{" "}

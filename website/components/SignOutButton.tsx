@@ -14,7 +14,7 @@ export function SignOutButton() {
   return (
     <button
       onClick={onClick}
-      className="text-sm underline text-[var(--color-accent)] hover:opacity-80"
+      className="text-sm underline text-[var(--color-accent-ink)] hover:opacity-80"
     >
       Sign out
     </button>

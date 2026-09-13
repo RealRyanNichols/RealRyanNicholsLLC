@@ -246,7 +246,7 @@ export default async function PersonPage({
         </Link>
       </nav>
 
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+      <p className="eyebrow" data-reveal>
         {p.is_j6_defendant
           ? p.claim_status === "verified"
             ? "Public January 6 profile · verified owner"
@@ -255,7 +255,7 @@ export default async function PersonPage({
               : "Public January 6 profile · ready to claim"
           : "Person of record"}
       </p>
-      <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">
+      <h1 data-reveal className="mt-2 font-display text-3xl sm:text-4xl font-bold tracking-tight">
         {p.name}
       </h1>
       {editorialByline ? (
@@ -264,7 +264,7 @@ export default async function PersonPage({
         </p>
       ) : null}
       {p.role ? (
-        <p className="mt-1 text-base font-medium text-[var(--color-accent)]">
+        <p className="mt-1 text-base font-medium text-[var(--color-ink-soft)]">
           {p.role}
           {p.agency ? ` · ${p.agency}` : ""}
         </p>
@@ -273,7 +273,7 @@ export default async function PersonPage({
       {p.is_j6_defendant ? (
         <J6ProfileImage person={p} />
       ) : p.photo_url ? (
-        <div className="mt-5 overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-paper)]">
+        <div className="mt-5 overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={p.photo_url}
@@ -307,8 +307,8 @@ export default async function PersonPage({
       {/* The nexus: how this person connects to the anchor case. Detainees,
           co-defendants, and witnesses joined by shared documents. */}
       {p.is_j6_defendant || /detainee|co-?defendant|witness/i.test(p.role ?? "") ? (
-        <section className="mt-10 rounded-2xl border-2 border-[var(--color-navy)]/25 bg-[var(--color-blue-soft)]/40 p-5">
-          <p className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-navy)]">
+        <section className="mt-10 rounded-2xl border-2 border-[var(--color-line)] bg-[var(--color-blue-soft)]/40 p-5">
+          <p className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-blue-ink)]">
             Connection to United States v. Nichols
           </p>
           <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
@@ -320,7 +320,7 @@ export default async function PersonPage({
           </p>
           <Link
             href="/case"
-            className="mt-3 inline-block text-sm font-bold text-[var(--color-navy)] hover:underline"
+            className="mt-3 inline-block text-sm font-bold text-[var(--color-ink)] hover:underline"
           >
             Walk the whole case →
           </Link>
@@ -328,11 +328,9 @@ export default async function PersonPage({
       ) : null}
 
       <section className="mt-12 border-t border-[var(--color-line)] pt-8">
-        <div className="border-l-2 border-[var(--color-accent)] pl-4 mb-5">
-          <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent)] font-bold">
-            Evidence on file
-          </p>
-          <h2 className="text-lg sm:text-xl font-bold tracking-tight">
+        <div className="border-l-2 border-[var(--color-gold)] pl-4 mb-5">
+          <p className="eyebrow">Evidence on file</p>
+          <h2 className="font-display text-lg sm:text-xl font-bold tracking-tight">
             {evidence.length === 0
               ? "No scans linked yet"
               : `${evidence.length} ${evidence.length === 1 ? "document" : "documents"} on file`}
@@ -354,7 +352,7 @@ function J6ProfileAccess({ person }: { person: CasePerson }) {
       <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--color-success)]">
         Public knowledge · no paywall
       </p>
-      <h2 className="mt-1 text-xl font-black tracking-tight">
+      <h2 className="mt-1 font-display text-xl font-black tracking-tight">
         This profile is free for anyone to read.
       </h2>
       <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
@@ -366,25 +364,25 @@ function J6ProfileAccess({ person }: { person: CasePerson }) {
         {claimable ? (
           <Link
             href={`/case/people/${person.slug}/claim`}
-            className="rounded-lg bg-[var(--color-blue)] px-4 py-2.5 text-sm font-black text-[var(--color-paper)] transition hover:bg-[var(--color-blue-strong)]"
+            className="btn-accent inline-flex items-center px-4 py-2.5 text-sm font-black"
           >
             Claim this profile
           </Link>
         ) : pending ? (
-          <span className="rounded-lg border border-[var(--color-blue)] bg-[var(--color-blue-soft)] px-4 py-2.5 text-sm font-black text-[var(--color-blue)]">
+          <span className="rounded-lg border border-[var(--color-blue)] bg-[var(--color-blue-soft)] px-4 py-2.5 text-sm font-black text-[var(--color-blue-ink)]">
             Ownership claim under review
           </span>
         ) : (
           <Link
             href="/account"
-            className="rounded-lg bg-[var(--color-success)] px-4 py-2.5 text-sm font-black text-[var(--color-paper)] transition hover:opacity-90"
+            className="rounded-lg bg-[var(--color-success)] px-4 py-2.5 text-sm font-black text-[var(--color-navy)] transition hover:opacity-90"
           >
             Manage claimed profile
           </Link>
         )}
         <Link
           href={`/case/people/${person.slug}/suggest`}
-          className="rounded-lg border border-[var(--color-line)] px-4 py-2.5 text-sm font-black text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          className="btn-ghost inline-flex items-center px-4 py-2.5 text-sm font-black"
         >
           Suggest a correction
         </Link>

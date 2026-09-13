@@ -83,7 +83,7 @@ export function ImportReviewRow({
         <div className="flex-1 min-w-0">
           <div className="flex items-center flex-wrap gap-2 text-xs">
             {importanceScore > 0 ? (
-              <span className="rounded-full bg-[var(--color-accent)] text-[var(--color-paper)] px-2 py-0.5 font-bold uppercase tracking-wider">
+              <span className="rounded-full bg-[var(--color-accent)] text-[var(--color-cream)] px-2 py-0.5 font-bold uppercase tracking-wider">
                 ★ {importanceScore}
               </span>
             ) : null}
@@ -97,8 +97,8 @@ export function ImportReviewRow({
                 className={[
                   "rounded-full px-2 py-0.5 font-bold uppercase tracking-wider",
                   reviewStatus === "approved"
-                    ? "bg-[var(--color-success)] text-[var(--color-paper)]"
-                    : "bg-[var(--color-accent-soft)] text-[var(--color-accent)] border border-[var(--color-accent)]",
+                    ? "bg-[var(--color-success)] text-[var(--color-navy)]"
+                    : "bg-[var(--color-accent-soft)] text-[var(--color-accent-ink)] border border-[var(--color-accent)]",
                 ].join(" ")}
               >
                 {reviewStatus}
@@ -121,7 +121,7 @@ export function ImportReviewRow({
               {evidenceThemes.map((t) => (
                 <span
                   key={t}
-                  className="text-[11px] rounded-full border border-[var(--color-accent)] text-[var(--color-accent)] px-2 py-0.5 font-bold"
+                  className="text-[11px] rounded-full border border-[var(--color-accent)] text-[var(--color-accent-ink)] px-2 py-0.5 font-bold"
                 >
                   {THEME_LABEL[t] ?? t}
                 </span>
@@ -140,7 +140,7 @@ export function ImportReviewRow({
               <Link
                 href={`/case/people/${person.slug}`}
                 target="_blank"
-                className="text-[var(--color-accent)] hover:underline font-semibold"
+                className="text-[var(--color-accent-ink)] hover:underline font-semibold"
               >
                 {person.name}
                 {matchConfidence != null
@@ -157,7 +157,7 @@ export function ImportReviewRow({
                 href={externalUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[var(--color-accent)] hover:underline"
+                className="text-[var(--color-accent-ink)] hover:underline"
               >
                 Open source →
               </a>
@@ -171,7 +171,7 @@ export function ImportReviewRow({
               type="button"
               disabled={busy}
               onClick={() => act("approve")}
-              className="rounded-md bg-[var(--color-success)] text-[var(--color-paper)] hover:opacity-90 px-3 py-1.5 text-xs font-bold disabled:opacity-50"
+              className="rounded-md bg-[var(--color-success)] text-[var(--color-navy)] hover:opacity-90 px-3 py-1.5 text-xs font-bold disabled:opacity-50"
             >
               ✓ Approve
             </button>
@@ -179,7 +179,7 @@ export function ImportReviewRow({
               type="button"
               disabled={busy}
               onClick={onReject}
-              className="rounded-md border border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-paper)] px-3 py-1.5 text-xs font-semibold disabled:opacity-50"
+              className="rounded-md border border-[var(--color-accent)] text-[var(--color-accent-ink)] hover:bg-[var(--color-accent)] hover:text-[var(--color-cream)] px-3 py-1.5 text-xs font-semibold disabled:opacity-50"
             >
               ✗ Reject
             </button>
@@ -187,7 +187,7 @@ export function ImportReviewRow({
         ) : null}
       </div>
       {err ? (
-        <p className="mt-2 text-xs text-[var(--color-accent)]">{err}</p>
+        <p className="mt-2 text-xs text-[var(--color-accent-ink)]">{err}</p>
       ) : null}
     </article>
   );

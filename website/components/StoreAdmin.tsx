@@ -91,7 +91,7 @@ function NewProduct({ onDone }: { onDone: () => void }) {
   }
 
   const input =
-    "w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-accent)]";
+    "w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-accent)]";
   return (
     <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 space-y-2">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -105,7 +105,7 @@ function NewProduct({ onDone }: { onDone: () => void }) {
         </select>
       </div>
       <textarea className={input} rows={2} placeholder="Description (optional)" value={description} onChange={(e) => setDescription(e.target.value)} />
-      {msg ? <p className="text-xs text-[var(--color-accent)]">{msg}</p> : null}
+      {msg ? <p className="text-xs text-[var(--color-ink-soft)]">{msg}</p> : null}
       <div className="flex gap-2">
         <button type="button" disabled={busy} onClick={create} className="btn-accent rounded-lg px-4 py-2 text-sm font-bold disabled:opacity-60">
           {busy ? "Creating…" : "Create draft"}
@@ -157,12 +157,11 @@ function ProductRow({ product, onDone }: { product: Product; onDone: () => void 
         </p>
       </div>
       <span
-        className="rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--color-paper)]"
-        style={{
-          background: product.active
-            ? "var(--color-success)"
-            : "var(--color-muted)",
-        }}
+        className={`rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
+          product.active
+            ? "border-[var(--color-success)]/40 bg-[var(--color-success-soft)] text-[var(--color-success)]"
+            : "border-[var(--color-line-soft)] bg-[var(--color-surface-2)] text-[var(--color-muted)]"
+        }`}
       >
         {product.active ? "Live" : "Draft"}
       </span>
@@ -172,13 +171,13 @@ function ProductRow({ product, onDone }: { product: Product; onDone: () => void 
           value={price}
           onChange={(e) => setPrice(e.target.value)}
           inputMode="decimal"
-          className="w-20 rounded border border-[var(--color-line)] bg-[var(--color-paper)] px-2 py-1 text-sm"
+          className="w-20 rounded border border-[var(--color-line)] bg-[var(--color-surface-2)] px-2 py-1 text-sm"
         />
         <button
           type="button"
           disabled={busy}
           onClick={() => patch({ price_cents: Math.round(Number(price) * 100) })}
-          className="text-xs font-bold text-[var(--color-accent)] disabled:opacity-60"
+          className="text-xs font-bold text-[var(--color-gold)] disabled:opacity-60"
         >
           Save
         </button>
@@ -187,11 +186,11 @@ function ProductRow({ product, onDone }: { product: Product; onDone: () => void 
         type="button"
         disabled={busy}
         onClick={() => patch({ active: !product.active })}
-        className="rounded-lg border-2 border-[var(--color-accent)] px-3 py-1 text-xs font-bold text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-paper)] transition disabled:opacity-60"
+        className="btn-ghost rounded-lg px-3 py-1 text-xs font-bold disabled:opacity-60"
       >
         {product.active ? "Unpublish" : "Publish"}
       </button>
-      {msg ? <span className="w-full text-xs text-red-700">{msg}</span> : null}
+      {msg ? <span className="w-full text-xs text-[var(--color-danger)]">{msg}</span> : null}
     </div>
   );
 }

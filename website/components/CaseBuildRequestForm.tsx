@@ -65,7 +65,7 @@ export function CaseBuildRequestForm() {
         </p>
         <a
           href="/case"
-          className="mt-4 inline-flex items-center rounded-lg bg-[var(--color-navy)] px-5 py-2.5 text-sm font-bold text-[#fdf8ea] transition hover:bg-[var(--color-blue)]"
+          className="btn-accent mt-4 inline-flex items-center px-5 py-2.5 text-sm"
         >
           See the live example →
         </a>
@@ -85,7 +85,7 @@ export function CaseBuildRequestForm() {
             onChange={(e) => setName(e.target.value)}
             required
             maxLength={200}
-            className="mt-1 w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2.5 text-sm"
+            className="mt-1 w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2.5 text-sm"
             placeholder="First and last"
           />
         </label>
@@ -98,7 +98,7 @@ export function CaseBuildRequestForm() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="mt-1 w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2.5 text-sm"
+            className="mt-1 w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2.5 text-sm"
             placeholder="you@email.com"
           />
         </label>
@@ -112,7 +112,7 @@ export function CaseBuildRequestForm() {
           onChange={(e) => setCaseName(e.target.value)}
           required
           maxLength={180}
-          className="mt-1 w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2.5 text-sm"
+          className="mt-1 w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2.5 text-sm"
           placeholder="Smith v. Anytown ISD — or just describe it in a few words"
         />
       </label>
@@ -127,7 +127,7 @@ export function CaseBuildRequestForm() {
           minLength={20}
           maxLength={20000}
           rows={6}
-          className="mt-1 w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2.5 text-sm leading-relaxed"
+          className="mt-1 w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface-2)] px-3 py-2.5 text-sm leading-relaxed"
           placeholder="A few honest paragraphs. What happened, who was involved, what paper exists (filings, photos, recordings, messages), and what you want the public to be able to check."
         />
       </label>

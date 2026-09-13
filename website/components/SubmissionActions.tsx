@@ -42,11 +42,11 @@ export function SubmissionActions({
           type="button"
           disabled={isPending}
           onClick={() => call("reset_pending")}
-          className="text-xs font-semibold rounded-md border border-[var(--color-line)] px-2.5 py-1 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] disabled:opacity-50"
+          className="text-xs font-semibold rounded-md border border-[var(--color-line)] px-2.5 py-1 hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)] disabled:opacity-50"
         >
           ↺ Reset to pending
         </button>
-        {err ? <span className="text-xs text-[var(--color-accent)]">{err}</span> : null}
+        {err ? <span className="text-xs text-[var(--color-accent-ink)]">{err}</span> : null}
       </div>
     );
   }
@@ -59,7 +59,7 @@ export function SubmissionActions({
             type="button"
             disabled={isPending}
             onClick={() => call("approve")}
-            className="rounded-md bg-[var(--color-success)] hover:opacity-90 px-3 py-1.5 text-xs font-bold text-[var(--color-paper)] disabled:opacity-50"
+            className="rounded-md bg-[var(--color-success)] hover:opacity-90 px-3 py-1.5 text-xs font-bold text-[var(--color-navy)] disabled:opacity-50"
             title="Publish on the J6 profile"
           >
             ✓ Approve & publish
@@ -87,7 +87,7 @@ export function SubmissionActions({
               type="button"
               disabled={isPending}
               onClick={() => call("reject", rejectNotes)}
-              className="rounded-md bg-[var(--color-accent)] hover:bg-[var(--color-accent-strong)] px-3 py-1.5 text-xs font-bold text-[var(--color-paper)] disabled:opacity-50"
+              className="rounded-md bg-[var(--color-accent)] hover:bg-[var(--color-accent-strong)] px-3 py-1.5 text-xs font-bold text-[var(--color-cream)] disabled:opacity-50"
             >
               Confirm reject
             </button>
@@ -104,7 +104,7 @@ export function SubmissionActions({
           </div>
         </div>
       )}
-      {err ? <p className="mt-2 text-xs text-[var(--color-accent)]">{err}</p> : null}
+      {err ? <p className="mt-2 text-xs text-[var(--color-accent-ink)]">{err}</p> : null}
     </div>
   );
 }

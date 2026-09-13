@@ -56,17 +56,17 @@ export default function BookStartPage() {
         cta="Choose an edition"
       />
 
-      <section className="border-b border-[#203a64] bg-[#071126] text-[#fdf8ea]">
+      <section className="border-b border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-cream)]">
         <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-14 lg:py-20">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.24em] text-[var(--color-gold-bright)]">
+            <p className="eyebrow">
               Independent memoir · Built in public
             </p>
-            <h1 className="mt-4 max-w-3xl font-display text-4xl font-black leading-[1.02] tracking-tight text-[#fdf8ea] sm:text-6xl">
+            <h1 className="display mt-4 max-w-3xl text-4xl text-[var(--color-cream)] sm:text-6xl">
               Freedom can open the door. Walking forward is another fight.
             </h1>
-            <p className="mt-5 max-w-2xl text-base font-semibold leading-7 text-[#cfd9ea] sm:text-lg">
-              <strong className="text-[#fdf8ea]">{BOOK.title}</strong> is my
+            <p className="mt-5 max-w-2xl text-base font-semibold leading-7 text-[var(--color-ink-soft)] sm:text-lg">
+              <strong className="text-[var(--color-cream)]">{BOOK.title}</strong> is my
               first-person memoir about pressure, confinement, separation,
               faith, family and what it takes to rebuild when the whole country
               has an opinion about your life.
@@ -74,13 +74,13 @@ export default function BookStartPage() {
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="#editions"
-                className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-gold-bright)] px-6 py-3 text-base font-black text-[#071126] transition hover:bg-[#a7efc4]"
+                className="btn-accent inline-flex min-h-12 items-center justify-center px-6 py-3 text-base"
               >
                 Read it first · from {startingPrice}
               </Link>
               <Link
                 href="/book/updates"
-                className="inline-flex min-h-12 items-center justify-center rounded-lg border border-white/25 bg-white/[0.06] px-6 py-3 text-base font-black text-[#fdf8ea] transition hover:bg-white/10"
+                className="btn-blue inline-flex min-h-12 items-center justify-center px-6 py-3 text-base"
               >
                 See production updates
               </Link>
@@ -91,14 +91,16 @@ export default function BookStartPage() {
           </div>
 
           <div className="mx-auto w-full max-w-[270px] lg:max-w-none">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={BOOK.cover}
-              alt="Fighting Shadows, a memoir by Ryan Nichols"
-              width={1000}
-              height={1333}
-              className="w-full rounded-lg border border-white/15 shadow-2xl shadow-black/50 ring-1 ring-black/20"
-            />
+            <div className="panel p-2.5" data-reveal>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={BOOK.cover}
+                alt="Fighting Shadows, a memoir by Ryan Nichols"
+                width={1000}
+                height={1333}
+                className="w-full rounded-lg"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -108,9 +110,11 @@ export default function BookStartPage() {
           {readerPromises.map((item, index) => (
             <div
               key={item.title}
-              className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5 shadow-sm"
+              className="panel p-5"
+              data-reveal
+              style={{ "--d": index } as React.CSSProperties}
             >
-              <p className="font-mono text-xs font-black text-[var(--color-accent)]">
+              <p className="font-mono text-xs font-black text-[var(--color-gold)]">
                 {String(index + 1).padStart(2, "0")}
               </p>
               <h2 className="mt-2 font-display text-2xl font-black tracking-normal text-[var(--color-ink)]">
@@ -129,7 +133,7 @@ export default function BookStartPage() {
         className="border-y border-[var(--color-line)] bg-[var(--color-paper)]"
       >
         <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:py-16">
-          <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+          <p className="eyebrow" data-reveal>
             Choose how you want to read it
           </p>
           <h2 className="mt-2 font-display text-3xl font-black tracking-normal text-[var(--color-ink)] sm:text-4xl">
@@ -154,7 +158,7 @@ export default function BookStartPage() {
       </section>
 
       <section className="mx-auto max-w-4xl px-4 py-10 text-center sm:px-6 lg:py-14">
-        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+        <p className="eyebrow" data-reveal>
           Why buy direct
         </p>
         <h2 className="mt-2 font-display text-3xl font-black tracking-normal text-[var(--color-ink)] sm:text-4xl">
@@ -168,7 +172,7 @@ export default function BookStartPage() {
         </p>
         <Link
           href="#editions"
-          className="mt-6 inline-flex min-h-12 items-center justify-center rounded-lg bg-[var(--color-accent)] px-7 py-3 text-base font-black text-[var(--color-paper)] transition hover:bg-[var(--color-accent-strong)]"
+          className="btn-accent mt-6 inline-flex min-h-12 items-center justify-center px-7 py-3 text-base"
         >
           Choose your edition
         </Link>

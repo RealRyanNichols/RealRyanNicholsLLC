@@ -24,8 +24,8 @@ export function DemandAction({ slug }: { slug?: string }) {
   }
 
   return (
-    <div className="not-prose rounded-2xl border-2 border-[var(--color-ink)] bg-[var(--color-ink)] text-[var(--color-paper)] p-6">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+    <div className="not-prose rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-cream)] p-6">
+      <p className="text-xs uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
         Demand an investigation
       </p>
       <h3 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight font-display">
@@ -40,14 +40,14 @@ export function DemandAction({ slug }: { slug?: string }) {
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => trackEvent("demand_share_x", {})}
-          className="rounded-full bg-[var(--color-accent)] text-white px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)] transition"
+          className="rounded-full bg-[var(--color-accent)] text-[var(--color-cream)] px-5 py-2.5 text-sm font-bold hover:bg-[var(--color-accent-strong)] transition"
         >
           Post the demand on X →
         </a>
         <button
           type="button"
           onClick={copy}
-          className="rounded-full border-2 border-white/40 px-5 py-2.5 text-sm font-bold text-[var(--color-paper)] hover:border-[var(--color-accent)] transition"
+          className="rounded-full border border-[var(--color-line)] px-5 py-2.5 text-sm font-bold text-[var(--color-cream)] transition hover:border-[var(--color-gold)] hover:bg-[var(--color-gold-soft)]"
         >
           {copied ? "Copied ✓" : "Copy the text"}
         </button>

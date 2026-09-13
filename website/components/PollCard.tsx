@@ -141,7 +141,7 @@ export function PollCard({
   return (
     <div className="rounded-2xl border border-[var(--color-line)] border-l-4 border-l-[var(--color-gold)] bg-[var(--color-surface)] p-4 sm:p-5">
       <div className="mb-2 flex items-center justify-between gap-3">
-        <p className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-navy)]">
+        <p className="eyebrow">
           {kicker}
           {closed ? " · closed" : ""}
         </p>
@@ -165,13 +165,13 @@ export function PollCard({
               key={idx}
               type="button"
               onClick={() => vote(idx)}
-              className="group flex w-full items-center gap-3 rounded-xl border-2 border-[var(--color-line)] bg-[var(--color-paper)] px-4 py-3 text-left text-sm font-bold text-[var(--color-ink)] shadow-sm transition hover:border-[var(--color-gold)] hover:bg-[var(--color-gold-soft)] active:scale-[0.99]"
+              className="group flex w-full items-center gap-3 rounded-xl border border-[var(--color-line)] bg-transparent px-4 py-3 text-left text-sm font-bold text-[var(--color-ink)] transition hover:border-[var(--color-gold)] hover:bg-[var(--color-gold-soft)] active:scale-[0.99]"
             >
               <span
                 aria-hidden
                 className="grid h-5 w-5 shrink-0 place-items-center rounded-full border-2 border-[var(--color-gold)] transition group-hover:bg-[var(--color-gold)]"
               >
-                <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-gold)] transition group-hover:bg-[var(--color-paper)]" />
+                <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-gold)] transition group-hover:bg-[var(--color-navy)]" />
               </span>
               <span className="min-w-0 flex-1">{label}</span>
               <span
@@ -195,7 +195,7 @@ export function PollCard({
             const pct = total > 0 ? Math.round((n / total) * 100) : 0;
             const mine = st.mine === idx;
             return (
-              <div key={idx} className="relative overflow-hidden rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)]">
+              <div key={idx} className="relative overflow-hidden rounded-xl border border-[var(--color-line)] bg-[var(--color-surface-2)]">
                 <div
                   aria-hidden
                   className="absolute inset-y-0 left-0 bg-[var(--color-gold-soft)] transition-[width] duration-700"
@@ -225,7 +225,7 @@ export function PollCard({
             {opts.map((label, idx) => (
               <div
                 key={idx}
-                className="relative overflow-hidden rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)]"
+                className="relative overflow-hidden rounded-xl border border-[var(--color-line)] bg-[var(--color-surface-2)]"
               >
                 <div
                   className="absolute inset-y-0 left-0 bg-[var(--color-gold-soft)] blur-[6px]"
@@ -258,7 +258,7 @@ export function PollCard({
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@email.com"
-                className="min-w-0 flex-1 rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2 text-sm text-[var(--color-ink)] outline-none focus:border-[var(--color-accent)]"
+                className="min-w-0 flex-1 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm text-[var(--color-ink)] outline-none focus:border-[var(--color-accent)]"
               />
               <button
                 type="submit"
@@ -269,7 +269,7 @@ export function PollCard({
               </button>
             </div>
             {err ? (
-              <p className="mt-1.5 text-xs font-semibold text-red-600">{err}</p>
+              <p className="mt-1.5 text-xs font-semibold text-[var(--color-danger)]">{err}</p>
             ) : null}
           </form>
         </div>

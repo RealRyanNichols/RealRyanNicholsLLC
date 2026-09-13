@@ -17,7 +17,7 @@ export function RadarFrame({
   return (
     <div
       data-radar-frame
-      className="relative min-h-[240px] overflow-hidden rounded-2xl border-2 border-[var(--color-blue)] bg-[#0e1a36] aspect-[4/3] sm:min-h-0 sm:aspect-[16/9] lg:aspect-[2/1]"
+      className="relative min-h-[240px] overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] shadow-[0_20px_50px_rgba(0,0,0,0.4)] aspect-[4/3] sm:min-h-0 sm:aspect-[16/9] lg:aspect-[2/1]"
     >
       {children}
 
@@ -30,11 +30,11 @@ export function RadarFrame({
         </div>
         <div
           data-live-now
-          className="mt-1 text-3xl sm:text-5xl font-bold tabular-nums tracking-tight font-display text-[var(--color-paper)] leading-none drop-shadow"
+          className="display mt-1 text-4xl sm:text-6xl tabular-nums text-[var(--color-gold)] drop-shadow"
         >
           {liveNow.toLocaleString()}
         </div>
-        <div className="text-[11px] text-[#a9b7d0] leading-snug">
+        <div className="text-[11px] text-[var(--color-muted)] leading-snug">
           {liveNow === 1 ? "visitor" : "visitors"} right now · {countriesNow.toLocaleString()}{" "}
           {countriesNow === 1 ? "country" : "countries"}
         </div>
@@ -44,7 +44,7 @@ export function RadarFrame({
         {/* next/dynamic still server-renders its loading fallback; hide it
             when scripts are off so it cannot overlap this note. */}
         <style>{`[data-radar-loading]{display:none}`}</style>
-        <p className="absolute bottom-3 left-3 right-3 z-10 text-[11px] text-[#a9b7d0]">
+        <p className="absolute bottom-3 left-3 right-3 z-10 text-[11px] text-[var(--color-muted)]">
           The count above is live. Turn on JavaScript to see where each visitor
           is reading from.
         </p>

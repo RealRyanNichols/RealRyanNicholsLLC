@@ -56,7 +56,7 @@ export default async function CaseBuilderWorkspacePage() {
           claimed and verified under your account.
         </p>
         <div className="mt-5 flex flex-wrap items-center justify-center gap-4 text-sm font-bold">
-          <Link href="/j6" className="text-[var(--color-navy)] hover:underline">
+          <Link href="/j6" className="text-[var(--color-ink)] hover:underline">
             Claim your free J6 profile →
           </Link>
           <Link href="/account" className="text-[var(--color-muted)] hover:underline">

@@ -13,10 +13,16 @@ const EFFECTIVE_DATE = "May 24, 2026";
 export default function PrivacyPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-12">
-      <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight">
+      <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight" data-reveal>
         Privacy Policy
       </h1>
-      <p className="mt-2 text-sm text-[var(--color-muted)]">
+      <div
+        className="mt-4 h-[3px] w-[4.5rem] bg-[var(--color-gold)]"
+        aria-hidden
+        data-reveal
+        style={{ "--d": 1 } as React.CSSProperties}
+      />
+      <p className="mt-3 text-sm text-[var(--color-muted)]">
         Effective {EFFECTIVE_DATE}
       </p>
 

@@ -237,15 +237,15 @@ export default function OwnYourFeedPage() {
           className="object-cover"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-[#081426]/75" aria-hidden="true" />
-        <div className="relative mx-auto flex min-h-[68vh] max-w-5xl flex-col justify-end px-4 py-10 text-[#fdf8ea]">
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#d8c89e]">
+        <div className="absolute inset-0 bg-[var(--color-paper)]/75" aria-hidden="true" />
+        <div className="relative mx-auto flex min-h-[68vh] max-w-5xl flex-col justify-end px-4 py-10 text-[var(--color-cream)]">
+          <p className="eyebrow">
             Real Ryan Nichols platform builds
           </p>
-          <h1 className="mt-3 max-w-3xl text-5xl font-bold leading-[0.98] tracking-normal sm:text-7xl">
+          <h1 className="display mt-3 max-w-3xl text-5xl sm:text-7xl">
             Own Your Feed
           </h1>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-[#f6efdf] sm:text-lg">
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-[var(--color-cream)] sm:text-lg">
             I built my own platform because I got tired of renting attention
             from companies that can throttle, lock, or erase it. I can build
             yours too.
@@ -259,7 +259,7 @@ export default function OwnYourFeedPage() {
             </Link>
             <Link
               href="/store/site-audit"
-              className="inline-flex items-center justify-center rounded-lg border border-[#d8c89e] bg-[#fdf8ea] px-5 py-3 text-sm font-bold text-[#142a52] transition hover:border-[#fdf8ea]"
+              className="btn-blue inline-flex items-center justify-center px-5 py-3 text-sm"
             >
               Get the audit first
             </Link>
@@ -273,8 +273,13 @@ export default function OwnYourFeedPage() {
           ["No algorithm", "Social platforms point back to the domain."],
           ["No lock-in", "The home base belongs to you."],
           ["No hype coin", "Crypto starts as payments and credits."],
-        ].map(([k, v]) => (
-          <div key={k} className="border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
+        ].map(([k, v], i) => (
+          <div
+            key={k}
+            className="border border-[var(--color-line)] bg-[var(--color-surface)] p-4"
+            data-reveal
+            style={{ "--d": i } as React.CSSProperties}
+          >
             <p className="text-sm font-bold text-[var(--color-ink)]">{k}</p>
             <p className="mt-1 text-xs leading-relaxed text-[var(--color-muted)]">{v}</p>
           </div>
@@ -284,7 +289,7 @@ export default function OwnYourFeedPage() {
       <section className="border-y border-[var(--color-line)] bg-[var(--color-surface)]">
         <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 px-4 py-10 lg:grid-cols-[1fr_1.1fr]">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-accent)]">
+            <p className="eyebrow">
               The offer
             </p>
             <h2 className="mt-2 text-3xl font-bold leading-tight tracking-normal sm:text-4xl">
@@ -312,7 +317,7 @@ export default function OwnYourFeedPage() {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {layers.map((item) => (
             <div key={item.label} className="border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
-              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--color-blue)]">
+              <p className="eyebrow">
                 {item.label}
               </p>
               <h3 className="mt-2 text-2xl font-bold tracking-normal">{item.title}</h3>
@@ -326,7 +331,7 @@ export default function OwnYourFeedPage() {
 
       <section className="border-y border-[var(--color-line)] bg-[var(--color-surface)]">
         <div className="mx-auto max-w-5xl px-4 py-10">
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-accent)]">
+          <p className="eyebrow">
             Rented land vs. your own home
           </p>
           <h2 className="mt-2 max-w-2xl text-3xl font-bold leading-tight tracking-normal sm:text-4xl">
@@ -338,7 +343,7 @@ export default function OwnYourFeedPage() {
               <div className="border-t border-[var(--color-line)] px-4 py-3 sm:border-l sm:border-t-0">
                 On rented land
               </div>
-              <div className="border-t border-[var(--color-line)] px-4 py-3 text-[var(--color-blue)] sm:border-l sm:border-t-0">
+              <div className="border-t border-[var(--color-line)] px-4 py-3 text-[var(--color-blue-ink)] sm:border-l sm:border-t-0">
                 On your own domain
               </div>
             </div>
@@ -361,19 +366,21 @@ export default function OwnYourFeedPage() {
       </section>
 
       <section className="mx-auto max-w-5xl px-4 py-10">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-accent)]">
+        <p className="eyebrow">
           How the build works
         </p>
         <h2 className="mt-2 text-3xl font-bold leading-tight tracking-normal sm:text-4xl">
           Three steps from rented to owned.
         </h2>
         <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
-          {buildSteps.map((step) => (
+          {buildSteps.map((step, i) => (
             <div
               key={step.n}
               className="border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
+              data-reveal
+              style={{ "--d": i } as React.CSSProperties}
             >
-              <p className="text-3xl font-bold text-[var(--color-line)]">{step.n}</p>
+              <p className="display text-4xl text-[var(--color-gold)]">{step.n}</p>
               <h3 className="mt-2 text-xl font-bold tracking-normal">{step.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
                 {step.body}
@@ -383,22 +390,24 @@ export default function OwnYourFeedPage() {
         </div>
       </section>
 
-      <section className="bg-[var(--color-blue)] text-[#fdf8ea]">
+      <section className="band text-[var(--color-cream)]">
         <div className="mx-auto max-w-5xl px-4 py-10">
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#d8c89e]">
+          <p className="eyebrow">
             Pick the lane
           </p>
-          <h2 className="mt-2 text-3xl font-bold tracking-normal text-[#fdf8ea] sm:text-4xl">
+          <h2 className="mt-2 text-3xl font-bold tracking-normal text-[var(--color-cream)] sm:text-4xl">
             Start small, or build the whole platform.
           </h2>
           <div className="mt-6 grid grid-cols-1 gap-3 lg:grid-cols-4">
-            {offers.map((offer) => (
+            {offers.map((offer, i) => (
               <Link
                 key={offer.href}
                 href={offer.href}
-                className="flex min-h-[21rem] flex-col border border-[#d8c89e]/50 bg-[#fdf8ea] p-4 text-[var(--color-ink)] transition hover:border-[#fdf8ea]"
+                className="flex min-h-[21rem] flex-col border border-[var(--color-gold)]/50 bg-[var(--color-surface-2)] p-4 text-[var(--color-ink)] transition hover:border-[var(--color-gold)]"
+                data-reveal
+                style={{ "--d": i } as React.CSSProperties}
               >
-                <p className="text-2xl font-bold text-[var(--color-accent)]">{offer.price}</p>
+                <p className="display text-3xl text-[var(--color-gold)]">{offer.price}</p>
                 <h3 className="mt-2 text-xl font-bold tracking-normal">{offer.name}</h3>
                 <p className="mt-2 text-sm font-semibold text-[var(--color-ink-soft)]">
                   {offer.summary}
@@ -410,7 +419,7 @@ export default function OwnYourFeedPage() {
                     </li>
                   ))}
                 </ul>
-                <span className="mt-auto pt-5 text-sm font-bold text-[var(--color-blue)]">
+                <span className="mt-auto pt-5 text-sm font-bold text-[var(--color-blue-ink)]">
                   Open checkout -&gt;
                 </span>
               </Link>
@@ -421,7 +430,7 @@ export default function OwnYourFeedPage() {
 
       <section className="border-t border-[var(--color-line)]">
         <div className="mx-auto max-w-5xl px-4 py-10">
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-accent)]">
+          <p className="eyebrow">
             Proof — you&apos;re reading it on one
           </p>
           <h2 className="mt-2 max-w-2xl text-3xl font-bold leading-tight tracking-normal sm:text-4xl">
@@ -439,7 +448,7 @@ export default function OwnYourFeedPage() {
                 href={item.href}
                 className="group border border-[var(--color-line)] bg-[var(--color-surface)] p-4 transition hover:border-[var(--color-accent)]"
               >
-                <p className="text-sm font-bold text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">
+                <p className="text-sm font-bold text-[var(--color-ink)] group-hover:text-[var(--color-accent-ink)]">
                   {item.label}
                 </p>
                 <p className="mt-1 text-xs leading-relaxed text-[var(--color-muted)]">
@@ -453,7 +462,7 @@ export default function OwnYourFeedPage() {
 
       <section className="mx-auto grid max-w-5xl grid-cols-1 gap-8 px-4 py-10 lg:grid-cols-[0.9fr_1.1fr]">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-accent)]">
+          <p className="eyebrow">
             Crypto and credits
           </p>
           <h2 className="mt-2 text-3xl font-bold leading-tight tracking-normal sm:text-4xl">
@@ -469,7 +478,7 @@ export default function OwnYourFeedPage() {
         <div className="space-y-3">
           {roadmap.map((step, index) => (
             <div key={step} className="flex gap-3 border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
-              <span className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-[var(--color-accent)] text-sm font-bold text-[#fdf8ea]">
+              <span className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-[var(--color-accent)] text-sm font-bold text-[var(--color-cream)]">
                 {index + 1}
               </span>
               <p className="pt-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">
@@ -482,7 +491,7 @@ export default function OwnYourFeedPage() {
 
       <section className="border-t border-[var(--color-line)] bg-[var(--color-surface)]">
         <div className="mx-auto max-w-5xl px-4 py-10">
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-accent)]">
+          <p className="eyebrow">
             Questions
           </p>
           <h2 className="mt-2 text-3xl font-bold leading-tight tracking-normal sm:text-4xl">
@@ -494,7 +503,7 @@ export default function OwnYourFeedPage() {
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-bold text-[var(--color-ink)]">
                   {f.q}
                   <span
-                    className="flex-none text-xl leading-none text-[var(--color-accent)] transition group-open:rotate-45"
+                    className="flex-none text-xl leading-none text-[var(--color-accent-ink)] transition group-open:rotate-45"
                     aria-hidden="true"
                   >
                     +
