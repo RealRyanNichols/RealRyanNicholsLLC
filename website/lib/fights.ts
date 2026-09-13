@@ -147,7 +147,7 @@ export const FIGHTS: Fight[] = [
     ],
     caseLinks: [
       { href: "/case", label: "The full case file" },
-      { href: "/evidence-the-doj-tried-to-erase", label: "Evidence the DOJ tried to erase" },
+      { href: "/case/the-salvaged-doj-record", label: "Evidence the DOJ tried to erase" },
     ],
     statements: [
       { kind: "tweet", url: "https://x.com/RealRyanNichols/status/1882093055303446999" },

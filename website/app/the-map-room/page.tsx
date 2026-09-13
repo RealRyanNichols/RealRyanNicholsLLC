@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { getOgImage } from "@/lib/og-images";
+import { getJ6DefendantCount } from "@/lib/case";
 import { SITE } from "@/lib/site";
 import { MapRoomLive } from "@/components/MapRoomLive";
 import { MapRoomPatterns } from "@/components/MapRoomPatterns";
@@ -19,11 +20,24 @@ export const dynamic = "force-dynamic";
 
 const TITLE =
   "The Map Room — the live record of United States v. Nichols and every January 6 defendant who joins";
-const DESCRIPTION =
-  "Live world map of who's reading the case file right now. Permanent counters: 1,500+ J6 defendants archived, every document, every grievance, every day since the pardon. The full case, in public, free.";
+// The share description carries the defendant count from lib/case.ts, the
+// same number every "N defendants indexed" line uses; with no count (0 is
+// that helper's "unavailable") it names the archive without one, and
+// claims nothing about how complete it is, rather than guess.
+function describe(defendants: number): string {
+  const counted =
+    defendants > 0
+      ? `${defendants.toLocaleString("en-US")} J6 defendants archived`
+      : "the J6 defendant archive";
+  return `Live world map of who's reading the case file right now. Permanent counters: ${counted}, every document, every grievance, every day since the pardon. The full case, in public, free.`;
+}
 
 export async function generateMetadata(): Promise<Metadata> {
-  const override = await getOgImage("/the-map-room");
+  const [override, defendants] = await Promise.all([
+    getOgImage("/the-map-room"),
+    getJ6DefendantCount(),
+  ]);
+  const DESCRIPTION = describe(defendants);
   const url = `${SITE.url}/the-map-room`;
   // Custom upload wins; otherwise we fall back to the dynamic OG card
   // at /og/map-room so every share embeds the live counters at unfurl
@@ -209,7 +223,7 @@ export default async function TheMapRoomPage() {
         </div>
         <div className="mt-5 flex flex-wrap gap-3">
           <Link
-            href="/jan-6"
+            href="/j6"
             className="btn-accent rounded-full px-5 py-2.5 text-sm"
           >
             Ryan&apos;s Jan 6 story →
@@ -263,7 +277,7 @@ function ActionCard({
     ? "border-[var(--color-gold)] hover:bg-[var(--color-gold)]"
     : "border-[var(--color-blue)] hover:bg-[var(--color-blue)]";
   const hoverInk = gold
-    ? "group-hover:text-[var(--color-navy)]"
+    ? "group-hover:text-[var(--color-gold)]"
     : "group-hover:text-[var(--color-cream)]";
   const labelColor = gold
     ? "text-[var(--color-gold)]"

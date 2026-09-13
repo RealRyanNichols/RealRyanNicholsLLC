@@ -33,6 +33,18 @@ export function FuelLadder({ tiers }: { tiers: ResolvedFuelTier[] }) {
           const buy = tokensFor(r.amountCents);
           const words = `${roundWords(buy.words)} words`;
           const time = machineTimeLabel(r.amountCents)?.replace(" of the machine", "");
+          // Blue for the month, red for the featured pick, gold for the rest;
+          // cream type on blue and red, navy type on gold.
+          const barBg = r.monthly
+            ? "bg-[var(--color-blue)]"
+            : r.featured
+              ? "bg-[var(--color-accent)]"
+              : "bg-[var(--color-gold-bright)]";
+          const barInk = r.monthly || r.featured ? "text-[var(--color-cream)]" : "text-[var(--color-navy)]";
+          // A wide bar carries its label inside, painted in the bar's own color
+          // so a label longer than the bar still reads as part of it. A narrow
+          // bar puts the label just past its end in ink.
+          const inside = w >= 45;
           return (
             <li
               key={`${r.slug}-${r.monthly ? "m" : "o"}`}
@@ -46,22 +58,15 @@ export function FuelLadder({ tiers }: { tiers: ResolvedFuelTier[] }) {
                 <p className="text-[11px] font-black uppercase tracking-wider text-[var(--color-muted)]">{r.title}</p>
               </div>
               <div className="min-w-0">
-                <div className="relative h-8 w-full overflow-hidden rounded-md bg-[var(--color-line-soft)]">
-                  <div
-                    className={`absolute inset-y-0 left-0 rounded-md ${
-                      r.monthly || r.featured
-                        ? "bg-[var(--color-support-strong)]"
-                        : "bg-[var(--color-gold)]"
-                    }`}
-                    style={{ width: `${w}%` }}
-                  />
-                  {/* The label rides inside a wide bar and just past a narrow
-                      one. Inside the bar it sits on gold, so it reads navy. */}
+                <div className="relative h-8 w-full overflow-hidden rounded-md bg-[var(--color-surface-2)]">
+                  <div className={`absolute inset-y-0 left-0 rounded-md ${barBg}`} style={{ width: `${w}%` }} />
                   <span
-                    className={`absolute top-1/2 -translate-y-1/2 whitespace-nowrap text-[11px] font-black uppercase tracking-wider ${
-                      w >= 45 ? "text-[var(--color-navy)]" : "text-[var(--color-ink)]"
+                    className={`absolute whitespace-nowrap text-[11px] font-black uppercase tracking-wider ${
+                      inside
+                        ? `inset-y-0 left-0 flex items-center rounded-md px-2 ${barBg} ${barInk}`
+                        : "top-1/2 -translate-y-1/2 text-[var(--color-ink)]"
                     }`}
-                    style={w >= 45 ? { left: 8 } : { left: `calc(${w}% + 8px)` }}
+                    style={inside ? undefined : { left: `calc(${w}% + 8px)` }}
                   >
                     {words}
                   </span>

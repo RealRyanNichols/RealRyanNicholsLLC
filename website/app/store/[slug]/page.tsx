@@ -1,3 +1,4 @@
+import { withMainPageOg } from "@/lib/page-metadata";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -261,7 +262,7 @@ export async function generateMetadata({
   if (!p) return { title: "Not found" };
   if (slug === STRATEGY_CALL_SLUG) {
     const image = `${SITE.url}${STRATEGY_CALL_IMAGE}`;
-    return {
+    return withMainPageOg("/store/" + slug, {
       title: `${STRATEGY_CALL_TITLE} — Store`,
       description: STRATEGY_CALL_DESCRIPTION,
       alternates: { canonical: `${SITE.url}/store/${slug}` },
@@ -285,9 +286,9 @@ export async function generateMetadata({
         description: STRATEGY_CALL_DESCRIPTION,
         images: [image],
       },
-    };
+    });
   }
-  return {
+  return withMainPageOg("/store/" + slug, {
     title: `${p.name} — Store`,
     description: p.description ?? undefined,
     alternates: { canonical: `${SITE.url}/store/${slug}` },
@@ -296,7 +297,7 @@ export async function generateMetadata({
       description: p.description ?? undefined,
       images: p.image_url ? [p.image_url] : undefined,
     },
-  };
+  });
 }
 
 export default async function ProductPage({

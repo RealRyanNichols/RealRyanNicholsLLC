@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import {
   getGrievances,
-  getPeople,
   getPersonBySlug,
   getEvents,
   getDocuments,
@@ -169,7 +168,9 @@ export default async function CasePage({
   if (shouldRenderJ6Directory(tab)) {
     const [j6Page, j6Counts] = await Promise.all([
       getJ6PeoplePage({ claimStatus: j6Filter, q, page, pageSize: 48 }),
-      getJ6ClaimCounts(),
+      // The hero and its four counts stay out while searching, so a search
+      // does not wait on the five count queries behind them.
+      q ? null : getJ6ClaimCounts(),
     ]);
     const { pageCount } = pageDirectory({
       total: j6Page.total,
@@ -185,8 +186,11 @@ export default async function CasePage({
     return (
       <div className="mx-auto max-w-5xl px-4 py-10">
         {/* Door 2 is never one-way: the split sits above the directory so
-            the way back to the anchor case is the first thing on the page. */}
-        <J6PathSplit active="everyone" className="mb-10" />
+            the way back to the anchor case is the first thing on the page.
+            The hero carries the page's h1 while browsing; while searching
+            the hero stays out, so the split carries it, as it does on the
+            archive views. */}
+        <J6PathSplit active="everyone" className="mb-10" headline={q ? "h1" : undefined} />
         <J6DirectoryHeader
           counts={j6Counts}
           j6Filter={j6Filter}
@@ -207,43 +211,49 @@ export default async function CasePage({
   }
 
   // `tab === "people"` never reaches here (shouldRenderJ6Directory returns
-  // above); the getPeople() branch is for a search query, which needs every
-  // person to count hits. The trailing getJ6DefendantCount() warms the
-  // per-request cache the path split reads from.
-  const [grievances, people, events, documents, totals, siteSettings] = await Promise.all([
-    getGrievances(),
-    q ? getPeople() : getPersonBySlug("ryan-nichols").then((p) => (p ? [p] : [])),
-    getEvents(),
-    getDocuments(),
-    getCaseTotals(),
-    getSiteSettings(),
-    getJ6DefendantCount(),
-    // J6Banner's own number. Warmed here so the banner, an async server
-    // component in the middle of the header, never suspends during SSR: a
-    // banner that suspended got its own late boundary, and hydrating that
-    // boundary was the intermittent React #418 on the archive views.
-    getJ6DefendantCount("unclaimed"),
-  ]);
-  const ryan = people.find((p) => p.slug === "ryan-nichols") ?? null;
+  // above). The People tab is the J6 directory, so the people count a
+  // search shows is the directory's own count for the query (one head-only
+  // request with the directory's predicate): the number that tab opens
+  // on, not a count over every person on the record. The trailing
+  // getJ6DefendantCount() warms the per-request cache the path split
+  // reads from.
+  const [grievances, ryan, events, documents, totals, siteSettings, peopleHits] =
+    await Promise.all([
+      getGrievances(),
+      getPersonBySlug("ryan-nichols"),
+      getEvents(),
+      getDocuments(),
+      getCaseTotals(),
+      getSiteSettings(),
+      q ? getJ6DefendantCount(undefined, q) : Promise.resolve(0),
+      getJ6DefendantCount(),
+      // J6Banner's own number. Warmed here so the banner, an async server
+      // component in the middle of the header, never suspends during SSR: a
+      // banner that suspended got its own late boundary, and hydrating that
+      // boundary was the intermittent React #418 on the archive views.
+      getJ6DefendantCount("unclaimed"),
+    ]);
   const ryanPhoto = siteSettings.avatar_url ?? null;
 
   const {
     filteredGrievances,
-    filteredPeople,
     filteredEvents,
     filteredDocuments,
-    totalHits,
+    totalHits: archiveHits,
     eventsShown,
-    peopleShown,
+    peopleShown: peopleNamed,
   } = filterArchive({
     q,
     j6Filter,
     grievances,
-    people,
+    // People are counted by the directory query above, not filtered here.
+    people: [],
     events,
     documents,
     peopleNamed: totals.people,
   });
+  const totalHits = q ? archiveHits + peopleHits : 0;
+  const peopleShown = q ? peopleHits : peopleNamed;
   const { archivePageCount, pageEvents, pageDocuments, archiveShowing } = pageArchive({
     tab,
     page,
@@ -257,6 +267,15 @@ export default async function CasePage({
     redirect(pageHref({ view: tab, page: archivePageCount, q }));
   }
 
+  // Hits per section while searching: the header's summary line and the
+  // tab strip both read from this one object.
+  const counts = {
+    grievances: filteredGrievances.length,
+    timeline: filteredEvents.length,
+    people: peopleHits,
+    documents: filteredDocuments.length,
+  };
+
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
       <ArchiveHeader
@@ -268,24 +287,16 @@ export default async function CasePage({
         tab={tab}
         q={q}
         totalHits={totalHits}
+        counts={counts}
       />
 
-      <ArchiveTabs
-        tab={tab}
-        q={q}
-        counts={{
-          grievances: filteredGrievances.length,
-          timeline: filteredEvents.length,
-          people: filteredPeople.length,
-          documents: filteredDocuments.length,
-        }}
-      />
+      <ArchiveTabs tab={tab} q={q} counts={counts} />
 
       {/* The pager's links land here, not at the top of the header. */}
       <div id={ARCHIVE_LIST_ID} className="scroll-mt-24">
-        {tab === "grievances" && <GrievancesView grievances={filteredGrievances} />}
-        {tab === "timeline" && <TimelineView events={pageEvents} />}
-        {tab === "documents" && <DocumentsView documents={pageDocuments} />}
+        {tab === "grievances" && <GrievancesView grievances={filteredGrievances} q={q} />}
+        {tab === "timeline" && <TimelineView events={pageEvents} q={q} />}
+        {tab === "documents" && <DocumentsView documents={pageDocuments} q={q} />}
       </div>
       <ArchivePager
         tab={tab}

@@ -1,3 +1,4 @@
+import { withMainPageOg } from "@/lib/page-metadata";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { format } from "date-fns";
@@ -14,7 +15,7 @@ import { SITE } from "@/lib/site";
 
 export const revalidate = 300;
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withMainPageOg("/case/brief", {
   title: "Compensation Brief · United States v. Nichols",
   description:
     "Curated overview of Ryan Nichols' January 6 case — grievances, named officials, key events, and supporting documents. Prepared for compensation review.",
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
     title: "Compensation Brief — United States v. Nichols",
   },
   alternates: { canonical: `${SITE.url}/case/brief` },
-};
+});
 
 export default async function BriefPage() {
   const [grievances, people, events, documents, totals] = await Promise.all([

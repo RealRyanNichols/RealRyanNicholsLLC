@@ -257,3 +257,21 @@ In `~/Desktop/usage-receipts-2026-09/`:
 - **Whether a supporter can gift credits directly into Ryan's Anthropic account.** No such product appears in Settings > Usage, which offers only "Buy usage credits" to the account holder. ChatGPT does show a **"Redeem gift card"** button on its billing page, which is a real gifting path on the OpenAI side and worth testing before it is described on /fuel. Looked in: both billing pages.
 
 **One more, unasked but relevant:** the local checkout at `/Users/ryannichols/Documents/repos/RealRyanNicholsLLC` is on commit `790e68f` dated **2026-08-28**. It is ten days behind. Pull before building anything from it.
+
+---
+
+## Addendum, September 8, 2026: the price of an OpenAI credit
+
+From Ryan's own ChatGPT desktop app, Settings then Usage & billing, the Auto-reload dialog (screenshot supplied by Ryan on 2026-09-08). This is the figure item 10b could not find on any public page.
+
+| Item | Value | Grade |
+|---|---|---|
+| Plan shown | Pro, $200 a month | FACT |
+| Minimum balance | $5.00 = 125 credits, so **$0.04 a credit** | FACT |
+| Auto-reload packs | $100 = 2,500 credits (badge: 20% off) · $200 = 5,000 (30% off) · $1,000 = 25,000 (40% off) · Other, custom amount | FACT, as displayed |
+| What the badges do to the price | Not stated on the screen. All three packs sit exactly at the $0.04 base rate, so the badges are not a discount off that rate. | NEEDS AUTHENTICATION |
+| Limited-time offer shown | "Turn on auto-reload and save an additional 10% on all future auto-reload purchases" | FACT, as displayed |
+| Current balance | $0.00, auto-reload off, maximum monthly spend not set | FACT |
+| Usage limit resets | "No resets available" | FACT |
+
+Combined with the Codex rate card (learn.chatgpt.com, 2026-09-07): GPT-6 Astra is 250 credits per million input tokens, 25 cached, 1,250 output. At $0.04 a credit that is **$10 in, $1 cached, $50 out per million**, the same input and output sticker as Claude Fable 5.1. Both faucets price the overage the same way, so the unit math on /fuel covers both. Encoded in `website/lib/fuel.ts` as `OPENAI_CREDITS`, `CODEX_RATES`, and `codexUsdPerMTok()`.

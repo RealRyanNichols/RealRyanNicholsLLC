@@ -1,3 +1,4 @@
+import { withMainPageOg } from "@/lib/page-metadata";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BookEmailSignup } from "@/components/BookEmailSignup";
@@ -8,7 +9,7 @@ const title = "Book Updates — Fighting Shadows | Ryan Nichols";
 const description =
   "Writing, editing, and printing milestones for Fighting Shadows by Ryan Nichols. Follow the record as the book comes together.";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withMainPageOg("/book/updates", {
   title,
   description,
   alternates: { canonical: `${SITE.url}/book/updates` },
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
     images: [{ url: BOOK.ogImage, width: 1200, height: 800, alt: title }],
   },
   twitter: { card: "summary_large_image", title, description, images: [BOOK.ogImage] },
-};
+});
 
 function statusClass(status: BookUpdateStatus): string {
   switch (status) {

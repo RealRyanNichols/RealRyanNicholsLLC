@@ -96,7 +96,7 @@ export default function AboutPage() {
           The J6 Case →
         </Link>
         <Link
-          href="/jan-6"
+          href="/j6"
           className="btn-ghost rounded-full px-5 py-2.5 text-sm"
         >
           My Jan 6 story
@@ -503,7 +503,7 @@ export default function AboutPage() {
             into this one.
           </li>
           <li>
-            <Link href="/jan-6" className="text-[var(--color-accent-ink)] underline font-bold">
+            <Link href="/j6" className="text-[var(--color-accent-ink)] underline font-bold">
               My Jan 6 story →
             </Link>{" "}
             — what happened, what I learned, where I am now.

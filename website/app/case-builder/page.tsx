@@ -1,3 +1,4 @@
+import { withMainPageOg } from "@/lib/page-metadata";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CaseBuildRequestForm } from "@/components/CaseBuildRequestForm";
@@ -9,7 +10,7 @@ const TITLE = "Case Builder — get your case documented like United States v. N
 const DESCRIPTION =
   "Ryan Nichols turns a lived case into a public, checkable archive: classified evidence, a dated timeline, people pages, document scans, and search-engine visibility. Request a build — J6 defendants free, forever.";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withMainPageOg("/case-builder", {
   title: "Case Builder",
   description: DESCRIPTION,
   alternates: { canonical: `${SITE.url}/case-builder` },
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
     url: `${SITE.url}/case-builder`,
   },
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
-};
+});
 
 const DELIVERABLES = [
   {

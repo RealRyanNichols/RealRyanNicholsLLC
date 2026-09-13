@@ -1,3 +1,4 @@
+import { withMainPageOg } from "@/lib/page-metadata";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
@@ -12,7 +13,7 @@ const TITLE =
 const DESCRIPTION =
   "Every official, attorney, witness, and decision-maker named in the documented January 6 case of Ryan Nichols — the detention chain, the prosecutors, the judges, the informants — organized by where they sat. Sourced. Public. Read the record and judge for yourself.";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = withMainPageOg("/case/officials", {
   title: "The Accountability Index",
   description: DESCRIPTION,
   alternates: { canonical: `${SITE.url}/case/officials` },
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
     images: [`${SITE.url}/og/site`],
   },
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION, images: [`${SITE.url}/og/site`] },
-};
+});
 
 type Official = {
   name: string;
