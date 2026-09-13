@@ -111,7 +111,7 @@ export default async function SearchPage({
           <Link
             key={t}
             href={`/search?q=${encodeURIComponent(t)}`}
-            className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1.5 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
+            className="inline-flex min-h-11 items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1.5 text-xs sm:min-h-0 font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
           >
             {t}
           </Link>

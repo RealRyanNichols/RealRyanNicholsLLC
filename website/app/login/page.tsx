@@ -323,7 +323,7 @@ function LoginPageInner() {
             <button
               type="button"
               onClick={() => setMode("magic")}
-              className="text-[var(--color-accent)] underline underline-offset-4"
+              className="inline-flex min-h-11 items-center text-[var(--color-gold)] underline underline-offset-4 sm:min-h-0"
             >
               Use an email link instead
             </button>
@@ -380,7 +380,7 @@ function Tab({
       aria-selected={active}
       onClick={onClick}
       className={[
-        "px-3 py-1.5 rounded-full font-semibold transition",
+        "min-h-11 px-3 py-1.5 rounded-full font-semibold transition sm:min-h-0",
         active
           ? "bg-[var(--color-accent)] text-[var(--color-cream)]"
           : "text-[var(--color-ink-soft)] hover:text-[var(--color-ink)]",
