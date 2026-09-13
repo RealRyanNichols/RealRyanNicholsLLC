@@ -130,7 +130,7 @@ export default async function AdminDeadmanPage() {
 
   return (
     <article className="mx-auto max-w-5xl px-4 py-8">
-      <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+      <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent-ink)]">
         Admin · deadman protocol
       </p>
       <div className="mt-2 grid gap-5 lg:grid-cols-[1fr_0.72fr]">

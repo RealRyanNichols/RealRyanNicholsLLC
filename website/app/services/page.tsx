@@ -49,7 +49,7 @@ export default function ServicesPage() {
                 The story in my own words — prison, the pardon, faith, and the
                 rebuild. Get on the list and claim your copy.
               </p>
-              <span className="mt-4 inline-flex text-sm font-bold text-[var(--color-accent)]">
+              <span className="mt-4 inline-flex text-sm font-bold text-[var(--color-accent-ink)]">
                 Reserve the book →
               </span>
             </Link>
@@ -71,7 +71,7 @@ export default function ServicesPage() {
                 and check out clean. No subscriptions you can&apos;t cancel, no
                 trapped customers.
               </p>
-              <span className="mt-4 inline-flex text-sm font-bold text-[var(--color-accent)]">
+              <span className="mt-4 inline-flex text-sm font-bold text-[var(--color-accent-ink)]">
                 Browse the store →
               </span>
             </Link>

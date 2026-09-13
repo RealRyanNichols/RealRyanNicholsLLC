@@ -164,7 +164,7 @@ export default async function PalettePreviewPage({
         style={active.vars as React.CSSProperties}
       >
         <div className="bg-[var(--color-paper)] text-[var(--color-ink)] p-6 sm:p-10">
-          <div className="text-xs uppercase tracking-wider font-bold text-[var(--color-accent)]">
+          <div className="text-xs uppercase tracking-wider font-bold text-[var(--color-accent-ink)]">
             {active.name}
           </div>
           <p className="mt-1 text-sm text-[var(--color-ink-soft)] max-w-2xl">
@@ -173,7 +173,7 @@ export default async function PalettePreviewPage({
 
           {/* Mock hero */}
           <section className="mt-8">
-            <p className="text-xs uppercase tracking-[0.2em] font-bold text-[var(--color-accent)]">
+            <p className="text-xs uppercase tracking-[0.2em] font-bold text-[var(--color-accent-ink)]">
               Ryan Nichols · A Promise
             </p>
             <h2 className="mt-3 text-4xl sm:text-5xl font-bold tracking-tight font-display leading-[1.05]">
@@ -281,7 +281,7 @@ export default async function PalettePreviewPage({
               the{" "}
               <a
                 href="#"
-                className="text-[var(--color-accent)] font-semibold hover:underline"
+                className="text-[var(--color-accent-ink)] font-semibold hover:underline"
               >
                 water shut off
               </a>

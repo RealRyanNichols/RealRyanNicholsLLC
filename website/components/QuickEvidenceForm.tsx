@@ -152,7 +152,7 @@ export function QuickEvidenceForm() {
             href={done.public_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[var(--color-accent)] underline font-semibold"
+            className="text-[var(--color-accent-ink)] underline font-semibold"
           >
             {done.public_url}
           </a>
@@ -405,7 +405,7 @@ function Field({
     <div>
       <label className="mb-1.5 block text-xs font-bold text-[var(--color-ink-soft)]">
         {label}
-        {required ? <span className="text-[var(--color-accent)] ml-1">*</span> : null}
+        {required ? <span className="text-[var(--color-accent-ink)] ml-1">*</span> : null}
       </label>
       {children}
       {hint ? (

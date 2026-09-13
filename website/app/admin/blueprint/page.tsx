@@ -157,7 +157,7 @@ export default async function AdminBlueprintPage() {
             Sales &amp; leads
           </h1>
         </div>
-        <Link href="/admin" className="text-sm font-bold text-[var(--color-accent)] hover:underline">
+        <Link href="/admin" className="text-sm font-bold text-[var(--color-accent-ink)] hover:underline">
           ← Admin
         </Link>
       </header>
@@ -242,7 +242,7 @@ export default async function AdminBlueprintPage() {
                             o.payment_status === "paid"
                               ? "bg-[var(--color-success-soft)] text-[var(--color-success)]"
                               : o.payment_status === "refunded"
-                                ? "bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
+                                ? "bg-[var(--color-accent-soft)] text-[var(--color-accent-ink)]"
                                 : "bg-[var(--color-surface-2)] text-[var(--color-muted)]",
                           ].join(" ")}
                         >

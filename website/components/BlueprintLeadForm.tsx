@@ -80,7 +80,7 @@ export function BlueprintLeadForm() {
         className="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-2.5 text-sm text-[var(--color-ink)]"
       />
       {error ? (
-        <p className="text-sm font-bold text-[var(--color-accent)]">{error}</p>
+        <p className="text-sm font-bold text-[var(--color-accent-ink)]">{error}</p>
       ) : null}
       <p className="text-xs font-semibold text-[var(--color-muted)]">
         No spam. Just the breakdown and an answer to your question.

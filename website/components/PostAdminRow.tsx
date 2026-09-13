@@ -123,7 +123,7 @@ export function PostAdminRow({
             <Link
               href={inspectHref}
               target="_blank"
-              className="hover:text-[var(--color-accent)]"
+              className="hover:text-[var(--color-accent-ink)]"
             >
               {title || bodyExcerpt?.slice(0, 80) || "(no title)"}
             </Link>
@@ -197,7 +197,7 @@ export function PostAdminRow({
             type="button"
             disabled={busy}
             onClick={destroy}
-            className="rounded-md border border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-cream)] px-3 py-1.5 text-xs font-semibold disabled:opacity-50"
+            className="rounded-md border border-[var(--color-accent)] text-[var(--color-accent-ink)] hover:bg-[var(--color-accent)] hover:text-[var(--color-cream)] px-3 py-1.5 text-xs font-semibold disabled:opacity-50"
             title="Delete permanently"
           >
             🗑️ Delete
@@ -205,7 +205,7 @@ export function PostAdminRow({
         </div>
       </div>
       {err ? (
-        <p className="mt-2 text-xs text-[var(--color-accent)]">{err}</p>
+        <p className="mt-2 text-xs text-[var(--color-accent-ink)]">{err}</p>
       ) : null}
     </article>
   );

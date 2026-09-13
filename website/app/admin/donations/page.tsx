@@ -186,7 +186,7 @@ export default async function AdminDonationsPage() {
       <section className="mt-6 rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-surface)] p-4 sm:p-5">
         <div className="flex flex-wrap items-baseline justify-between gap-3">
           <div>
-            <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--color-accent)]">
+            <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[var(--color-accent-ink)]">
               Token Fund · /fuel
             </p>
             <h2 className="mt-1 text-lg font-bold tracking-tight">
@@ -195,7 +195,7 @@ export default async function AdminDonationsPage() {
                 : "Money totals need SUPABASE_SERVICE_ROLE_KEY"}
             </h2>
           </div>
-          <a href="/fuel" className="text-xs font-bold text-[var(--color-accent)] underline underline-offset-4">
+          <a href="/fuel" className="text-xs font-bold text-[var(--color-accent-ink)] underline underline-offset-4">
             Open the public page →
           </a>
         </div>
@@ -466,7 +466,7 @@ function Stat({
       <div
         className={[
           "text-3xl font-bold tabular-nums tracking-tight leading-none",
-          accent ? "text-[var(--color-accent)]" : "text-[var(--color-ink)]",
+          accent ? "text-[var(--color-accent-ink)]" : "text-[var(--color-ink)]",
         ].join(" ")}
       >
         {value}

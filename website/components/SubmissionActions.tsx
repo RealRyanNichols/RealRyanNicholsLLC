@@ -42,11 +42,11 @@ export function SubmissionActions({
           type="button"
           disabled={isPending}
           onClick={() => call("reset_pending")}
-          className="text-xs font-semibold rounded-md border border-[var(--color-line)] px-2.5 py-1 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] disabled:opacity-50"
+          className="text-xs font-semibold rounded-md border border-[var(--color-line)] px-2.5 py-1 hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)] disabled:opacity-50"
         >
           ↺ Reset to pending
         </button>
-        {err ? <span className="text-xs text-[var(--color-accent)]">{err}</span> : null}
+        {err ? <span className="text-xs text-[var(--color-accent-ink)]">{err}</span> : null}
       </div>
     );
   }
@@ -104,7 +104,7 @@ export function SubmissionActions({
           </div>
         </div>
       )}
-      {err ? <p className="mt-2 text-xs text-[var(--color-accent)]">{err}</p> : null}
+      {err ? <p className="mt-2 text-xs text-[var(--color-accent-ink)]">{err}</p> : null}
     </div>
   );
 }

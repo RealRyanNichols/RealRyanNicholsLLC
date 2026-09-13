@@ -110,7 +110,7 @@ export function ProfileUploadForm({
             type="button"
             onClick={() => clearOne("avatar_url")}
             disabled={busy}
-            className="mt-2 text-xs text-[var(--color-muted)] hover:text-[var(--color-accent)] underline underline-offset-4"
+            className="mt-2 text-xs text-[var(--color-muted)] hover:text-[var(--color-accent-ink)] underline underline-offset-4"
           >
             Remove current avatar
           </button>
@@ -130,7 +130,7 @@ export function ProfileUploadForm({
             type="button"
             onClick={() => clearOne("cover_url")}
             disabled={busy}
-            className="mt-2 text-xs text-[var(--color-muted)] hover:text-[var(--color-accent)] underline underline-offset-4"
+            className="mt-2 text-xs text-[var(--color-muted)] hover:text-[var(--color-accent-ink)] underline underline-offset-4"
           >
             Remove current cover
           </button>

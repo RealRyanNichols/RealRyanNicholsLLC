@@ -140,7 +140,7 @@ export default async function AdminClaimsPage({
 
   return (
     <article className="mx-auto max-w-4xl px-4 py-10">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+      <p className="text-xs uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
         Admin · profile claims
       </p>
       <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">
@@ -204,7 +204,7 @@ export default async function AdminClaimsPage({
                         <Link
                           href={`/case/people/${person.slug}`}
                           target="_blank"
-                          className="text-[var(--color-accent)] hover:underline"
+                          className="text-[var(--color-accent-ink)] hover:underline"
                         >
                           {person.name}
                         </Link>
@@ -239,7 +239,7 @@ export default async function AdminClaimsPage({
                           href={`mailto:${claimantEmail}?subject=${encodeURIComponent(
                             `Verifying your claim on ${person?.name ?? "your J6 profile"} (realryannichols.com)`,
                           )}`}
-                          className="font-mono text-[var(--color-accent)] hover:underline"
+                          className="font-mono text-[var(--color-accent-ink)] hover:underline"
                         >
                           {claimantEmail}
                         </a>
@@ -255,13 +255,13 @@ export default async function AdminClaimsPage({
                             )}%22+January+6`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="font-mono text-[var(--color-accent)] hover:underline"
+                            className="font-mono text-[var(--color-accent-ink)] hover:underline"
                             title="Search the public docket"
                           >
                             {c.doj_case_number} ↗
                           </a>
                         ) : (
-                          <em className="text-[var(--color-accent)]">not provided</em>
+                          <em className="text-[var(--color-accent-ink)]">not provided</em>
                         )
                       }
                     />
@@ -273,7 +273,7 @@ export default async function AdminClaimsPage({
                             {meta.profile_full_name}
                           </span>
                         ) : (
-                          <em className="text-[var(--color-accent)]">missing</em>
+                          <em className="text-[var(--color-accent-ink)]">missing</em>
                         )
                       }
                     />
@@ -288,7 +288,7 @@ export default async function AdminClaimsPage({
                           <Link
                             href={`/u/${meta.profile_username}`}
                             target="_blank"
-                            className="font-mono text-[var(--color-accent)] hover:underline"
+                            className="font-mono text-[var(--color-accent-ink)] hover:underline"
                           >
                             @{meta.profile_username}
                           </Link>
@@ -314,7 +314,7 @@ export default async function AdminClaimsPage({
                           <span
                             className={
                               accountIsBrandNew
-                                ? "font-bold text-[var(--color-accent)]"
+                                ? "font-bold text-[var(--color-accent-ink)]"
                                 : "text-[var(--color-ink-soft)]"
                             }
                             title={format(
@@ -366,7 +366,7 @@ export default async function AdminClaimsPage({
                                 ? "text-[var(--color-success)]"
                                 : nameMatchPct >= 50
                                   ? "text-[var(--color-tag-procedural)]"
-                                  : "text-[var(--color-accent)]"
+                                  : "text-[var(--color-accent-ink)]"
                             }`}
                           >
                             {nameMatchPct}% to {person?.name}

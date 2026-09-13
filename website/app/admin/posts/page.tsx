@@ -80,7 +80,7 @@ export default async function AdminPostsPage({
 
   return (
     <article className="mx-auto max-w-5xl px-4 py-10">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+      <p className="text-xs uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
         Admin · posts
       </p>
       <div className="flex flex-wrap items-baseline justify-between gap-3 mt-2">
@@ -115,7 +115,7 @@ export default async function AdminPostsPage({
       </nav>
 
       {error ? (
-        <p className="mt-6 text-sm text-[var(--color-accent)]">{error.message}</p>
+        <p className="mt-6 text-sm text-[var(--color-accent-ink)]">{error.message}</p>
       ) : null}
 
       <div className="mt-6 space-y-3">

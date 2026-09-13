@@ -100,7 +100,7 @@ export default async function AdminSocialPage() {
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-7">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+      <p className="text-xs uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
         Admin · Social Studio
       </p>
       <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">

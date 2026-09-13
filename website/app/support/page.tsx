@@ -104,13 +104,13 @@ export default function SupportPage() {
             <p className="eyebrow">
               {w.kicker}
             </p>
-            <h2 className="mt-1 text-lg font-bold tracking-tight text-[var(--color-ink)] transition group-hover:text-[var(--color-accent)]">
+            <h2 className="mt-1 text-lg font-bold tracking-tight text-[var(--color-ink)] transition group-hover:text-[var(--color-accent-ink)]">
               {w.title}
             </h2>
             <p className="mt-1.5 flex-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">
               {w.body}
             </p>
-            <span className="mt-3 text-sm font-bold text-[var(--color-accent)]">
+            <span className="mt-3 text-sm font-bold text-[var(--color-accent-ink)]">
               {w.cta}
             </span>
           </Link>
@@ -124,15 +124,15 @@ export default function SupportPage() {
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
           The free help counts too: put{" "}
-          <Link href="/case" className="font-bold text-[var(--color-accent)] underline underline-offset-4">
+          <Link href="/case" className="font-bold text-[var(--color-accent-ink)] underline underline-offset-4">
             the record
           </Link>{" "}
           in front of one more person,{" "}
-          <Link href="/submit" className="font-bold text-[var(--color-accent)] underline underline-offset-4">
+          <Link href="/submit" className="font-bold text-[var(--color-accent-ink)] underline underline-offset-4">
             send a tip
           </Link>{" "}
           if you know something, or{" "}
-          <Link href="/#join" className="font-bold text-[var(--color-accent)] underline underline-offset-4">
+          <Link href="/#join" className="font-bold text-[var(--color-accent-ink)] underline underline-offset-4">
             join the email list
           </Link>{" "}
           so nothing here depends on an algorithm to reach you.

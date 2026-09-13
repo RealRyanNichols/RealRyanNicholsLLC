@@ -357,7 +357,7 @@ export function FuelCheckout({
         <StepLabel n={3}>
           {selected?.askLabel ?? "Anything you want me to know"}
           {askRequired ? (
-            <span className="text-[var(--color-accent)]"> · required</span>
+            <span className="text-[var(--color-accent-ink)]"> · required</span>
           ) : (
             <span className="font-normal normal-case tracking-normal text-[var(--color-muted)]"> (optional)</span>
           )}

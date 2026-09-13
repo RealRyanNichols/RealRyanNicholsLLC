@@ -248,13 +248,13 @@ export default function ContactPage() {
               href={item.href}
               className="rrn-card group block min-h-28 p-4 transition hover:border-[var(--color-accent)] sm:p-5"
             >
-              <h2 className="font-display text-xl font-bold tracking-normal group-hover:text-[var(--color-accent)]">
+              <h2 className="font-display text-xl font-bold tracking-normal group-hover:text-[var(--color-accent-ink)]">
                 {item.title}
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
                 {item.body}
               </p>
-              <p className="mt-4 text-sm font-black text-[var(--color-accent)]">
+              <p className="mt-4 text-sm font-black text-[var(--color-accent-ink)]">
                 {item.cta} -&gt;
               </p>
             </Link>

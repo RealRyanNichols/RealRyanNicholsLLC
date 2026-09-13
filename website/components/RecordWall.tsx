@@ -157,7 +157,7 @@ export function RecordWall({
             className="w-full rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-5 py-2.5 text-sm text-[var(--color-ink)] outline-none transition focus:border-[var(--color-accent)] sm:max-w-xs"
           />
           {error ? (
-            <p className="text-sm font-semibold text-[var(--color-accent)]">{error}</p>
+            <p className="text-sm font-semibold text-[var(--color-accent-ink)]">{error}</p>
           ) : null}
         </form>
 

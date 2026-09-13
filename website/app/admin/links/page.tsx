@@ -58,7 +58,7 @@ export default async function AdminLinksPage() {
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-7">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+      <p className="text-xs uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
         Admin · link graph
       </p>
       <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">
@@ -145,7 +145,7 @@ function Pulse({ n, label, hot }: { n: number; label: string; hot?: boolean }) {
   return (
     <span className="inline-flex items-baseline gap-1.5">
       <span
-        className={`text-lg font-bold tabular-nums tracking-tight ${hot ? "text-[var(--color-accent)]" : "text-[var(--color-ink)]"}`}
+        className={`text-lg font-bold tabular-nums tracking-tight ${hot ? "text-[var(--color-accent-ink)]" : "text-[var(--color-ink)]"}`}
       >
         {n.toLocaleString()}
       </span>

@@ -112,13 +112,13 @@ export default async function FuelThanksPage({
       </div>
 
       <div className="mt-8 flex flex-wrap gap-4 text-sm font-semibold">
-        <Link href="/fuel#fuel-wall" className="inline-flex min-h-11 items-center text-[var(--color-accent)] underline underline-offset-4 sm:min-h-0">
+        <Link href="/fuel#fuel-wall" className="inline-flex min-h-11 items-center text-[var(--color-accent-ink)] underline underline-offset-4 sm:min-h-0">
           See the Fuel wall →
         </Link>
-        <Link href="/the-map-room" className="inline-flex min-h-11 items-center text-[var(--color-accent)] underline underline-offset-4 sm:min-h-0">
+        <Link href="/the-map-room" className="inline-flex min-h-11 items-center text-[var(--color-accent-ink)] underline underline-offset-4 sm:min-h-0">
           Watch the machine run: the Map Room →
         </Link>
-        <Link href="/" className="inline-flex min-h-11 items-center text-[var(--color-accent)] underline underline-offset-4 sm:min-h-0">
+        <Link href="/" className="inline-flex min-h-11 items-center text-[var(--color-accent-ink)] underline underline-offset-4 sm:min-h-0">
           ← Back to the feed
         </Link>
       </div>

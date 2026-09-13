@@ -1318,14 +1318,14 @@ export function AttorneyBriefBody({
         {mode === "counsel" ? (
           <a
             href="/counsel/logout"
-            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)]"
           >
             Log out
           </a>
         ) : (
           <Link
             href="/admin"
-            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)]"
           >
             Back
           </Link>
@@ -1333,19 +1333,19 @@ export function AttorneyBriefBody({
         <div className="flex flex-wrap gap-2">
           <a
             href="#first-look"
-            className="inline-flex min-h-10 items-center border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-accent)]"
+            className="inline-flex min-h-10 items-center border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-accent-ink)]"
           >
             Top
           </a>
           <a
             href="#exec-summary"
-            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)]"
           >
             Summary
           </a>
           <a
             href="#matters"
-            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)]"
           >
             By matter
           </a>
@@ -1357,31 +1357,31 @@ export function AttorneyBriefBody({
           </a>
           <a
             href="#civil-throughline"
-            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)]"
           >
             Throughline
           </a>
           <a
             href="#records-to-demand"
-            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)]"
           >
             Records
           </a>
           <a
             href="#source-doors"
-            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)]"
           >
             Open first
           </a>
           <a
             href="#visuals"
-            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)]"
           >
             Charts
           </a>
           <a
             href="#packet-drawers"
-            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="inline-flex min-h-10 items-center border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-xs font-black uppercase tracking-normal text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)]"
           >
             Deep file
           </a>
@@ -1507,7 +1507,7 @@ export function AttorneyBriefBody({
         id="exec-summary"
         className="mt-4 border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-4 shadow-sm sm:p-5"
       >
-        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent-ink)]">
           Executive summary
         </p>
         <h2 className="mt-1 font-display text-2xl font-black leading-tight text-[var(--color-ink)] sm:text-3xl">
@@ -1548,7 +1548,7 @@ export function AttorneyBriefBody({
       >
         <div className="grid gap-3 lg:grid-cols-[0.36fr_1fr] lg:items-end">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent-ink)]">
               Open first
             </p>
             <h2 className="mt-1 font-display text-2xl font-black leading-tight sm:text-3xl">
@@ -1573,7 +1573,7 @@ export function AttorneyBriefBody({
       >
         <div className="grid gap-3 lg:grid-cols-[0.36fr_1fr] lg:items-end">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent-ink)]">
               Filed drawers
             </p>
             <h2 className="mt-1 font-display text-2xl font-black leading-tight sm:text-3xl">
@@ -1599,7 +1599,7 @@ export function AttorneyBriefBody({
       >
         <div className="grid gap-3 lg:grid-cols-[0.4fr_1fr] lg:items-end">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent-ink)]">
               Sorted by matter
             </p>
             <h2 className="mt-1 font-display text-2xl font-black leading-tight text-[var(--color-ink)] sm:text-3xl">
@@ -1770,7 +1770,7 @@ export function AttorneyBriefBody({
       >
         <div className="grid gap-3 lg:grid-cols-[0.4fr_1fr] lg:items-end">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent-ink)]">
               Go get it
             </p>
             <h2 className="mt-1 font-display text-2xl font-black leading-tight text-[var(--color-ink)] sm:text-3xl">
@@ -1882,7 +1882,7 @@ export function AttorneyBriefBody({
       >
         <div className="grid gap-3 lg:grid-cols-[0.4fr_1fr] lg:items-end">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent-ink)]">
               At a glance
             </p>
             <h2 className="mt-1 font-display text-2xl font-black leading-tight sm:text-3xl">
@@ -1976,7 +1976,7 @@ export function AttorneyBriefBody({
       <section id="charges" className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5">
         <div className="grid gap-3 lg:grid-cols-[0.34fr_1fr] lg:items-end">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent-ink)]">
               Criminal lane first
             </p>
             <h2 className="mt-1 font-display text-3xl font-black leading-tight">
@@ -1999,7 +1999,7 @@ export function AttorneyBriefBody({
       <details id="receipts" className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] shadow-sm">
         <summary className="flex cursor-pointer items-center justify-between gap-3 p-4 text-sm font-black uppercase tracking-normal marker:content-['']">
           <span>Open source doors and proof legend</span>
-          <span className="border border-[var(--color-line)] px-2 py-1 text-[10px] text-[var(--color-accent)]">
+          <span className="border border-[var(--color-line)] px-2 py-1 text-[10px] text-[var(--color-accent-ink)]">
             Sources
           </span>
         </summary>
@@ -2034,7 +2034,7 @@ export function AttorneyBriefBody({
         </section>
 
         <section className="border border-[var(--color-line)] bg-[var(--color-surface)] p-4 shadow-sm sm:p-5">
-          <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+          <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent-ink)]">
             What the page is saying
           </p>
           <h2 className="mt-1 font-display text-2xl font-black">
@@ -2064,7 +2064,7 @@ export function AttorneyBriefBody({
                 <p className="display mt-1 text-2xl text-[var(--color-gold)]">
                   {item.value}
                 </p>
-                <p className="mt-1 text-xs font-bold leading-5 text-[var(--color-accent)]">
+                <p className="mt-1 text-xs font-bold leading-5 text-[var(--color-accent-ink)]">
                   {item.status}
                 </p>
               </div>
@@ -2123,7 +2123,7 @@ export function AttorneyBriefBody({
       <details id="claim-map" className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] shadow-sm">
         <summary className="flex cursor-pointer items-center justify-between gap-3 p-4 text-sm font-black uppercase tracking-normal text-[var(--color-ink)] marker:content-['']">
           <span>Open claim map and law shelf</span>
-          <span className="border border-[var(--color-line)] px-2 py-1 text-[10px] text-[var(--color-accent)]">
+          <span className="border border-[var(--color-line)] px-2 py-1 text-[10px] text-[var(--color-accent-ink)]">
             Detail
           </span>
         </summary>
@@ -2227,7 +2227,7 @@ export function AttorneyBriefBody({
 
           <section className="mt-4 grid gap-4 xl:grid-cols-[0.82fr_1.18fr]">
             <section className="border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
-              <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+              <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent-ink)]">
                 Working theory
               </p>
               <h2 className="mt-2 font-display text-2xl font-black">
@@ -2244,7 +2244,7 @@ export function AttorneyBriefBody({
             </section>
 
             <section className="border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
-              <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+              <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent-ink)]">
                 Chronology
               </p>
               <h2 className="mt-2 font-display text-2xl font-black">
@@ -2342,7 +2342,7 @@ export function AttorneyBriefBody({
             </div>
 
             <div className="border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
-              <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+              <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent-ink)]">
                 People map
               </p>
               <h2 className="mt-2 font-display text-2xl font-black">
@@ -2407,7 +2407,7 @@ export function AttorneyBriefBody({
             ))}
           </section>
           <section className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent-ink)]">
               Political / public-pressure context
             </p>
             <h2 className="mt-2 font-display text-2xl font-black">
@@ -2422,7 +2422,7 @@ export function AttorneyBriefBody({
                   <p className="mt-2 text-sm font-semibold leading-6 text-[var(--color-ink-soft)]">
                     {lane.body}
                   </p>
-                  <p className="mt-3 border-t border-[var(--color-line)] pt-3 text-xs font-bold leading-5 text-[var(--color-accent)]">
+                  <p className="mt-3 border-t border-[var(--color-line)] pt-3 text-xs font-bold leading-5 text-[var(--color-accent-ink)]">
                     Needs: {lane.needs}
                   </p>
                 </section>
@@ -2435,12 +2435,12 @@ export function AttorneyBriefBody({
       <details id="open-questions" className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] shadow-sm">
         <summary className="flex cursor-pointer items-center justify-between gap-3 p-4 text-sm font-black uppercase tracking-normal marker:content-['']">
           <span>Open unanswered questions</span>
-          <span className="border border-[var(--color-line)] px-2 py-1 text-[10px] text-[var(--color-accent)]">
+          <span className="border border-[var(--color-line)] px-2 py-1 text-[10px] text-[var(--color-accent-ink)]">
             Fill before meeting
           </span>
         </summary>
         <div className="border-t border-[var(--color-line)] p-4">
-          <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+          <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent-ink)]">
             Open items
           </p>
           <h2 className="mt-2 font-display text-2xl font-black">
@@ -2459,7 +2459,7 @@ export function AttorneyBriefBody({
       <details id="file-audit" className="mt-4 border border-[var(--color-line)] bg-[var(--color-surface)] shadow-sm">
         <summary className="flex cursor-pointer items-center justify-between gap-3 p-4 text-sm font-black uppercase tracking-normal text-[var(--color-ink)] marker:content-['']">
           <span>Open local file audit and remaining record signals</span>
-          <span className="border border-[var(--color-line)] px-2 py-1 text-[10px] text-[var(--color-accent)]">
+          <span className="border border-[var(--color-line)] px-2 py-1 text-[10px] text-[var(--color-accent-ink)]">
             Audit
           </span>
         </summary>
@@ -2480,7 +2480,7 @@ export function AttorneyBriefBody({
           <ol className="mt-4 grid gap-2 sm:grid-cols-2">
             {urgentAsks.map((ask, index) => (
               <li key={ask} className="border border-[var(--color-accent)]/30 bg-[var(--color-accent-soft)] p-3 text-sm font-semibold leading-6">
-                <span className="mr-2 font-black text-[var(--color-accent)]">
+                <span className="mr-2 font-black text-[var(--color-accent-ink)]">
                   {index + 1}.
                 </span>
                 {ask}
@@ -2586,7 +2586,7 @@ function FirstOpenCard({
         <span className="inline-flex h-9 w-9 items-center justify-center border border-[var(--color-line)] bg-[var(--color-paper)] font-sans text-xl font-black text-[var(--color-ink)]">
           {step}
         </span>
-        <span className="text-[10px] font-black uppercase tracking-normal text-[var(--color-accent)] transition group-hover:translate-x-0.5">
+        <span className="text-[10px] font-black uppercase tracking-normal text-[var(--color-accent-ink)] transition group-hover:translate-x-0.5">
           Open
         </span>
       </div>
@@ -2635,7 +2635,7 @@ function PacketJump({
         >
           {label}
         </p>
-        <span className="text-[10px] font-black uppercase tracking-normal text-[var(--color-accent)] transition group-hover:translate-x-0.5">
+        <span className="text-[10px] font-black uppercase tracking-normal text-[var(--color-accent-ink)] transition group-hover:translate-x-0.5">
           Open
         </span>
       </div>
@@ -2762,7 +2762,7 @@ function ClaimSupportRow({
       <div className="p-3">
         <a
           href={href}
-          className="inline-flex min-h-8 items-center border border-[var(--color-line)] bg-[var(--color-paper)] px-2 text-[10px] font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          className="inline-flex min-h-8 items-center border border-[var(--color-line)] bg-[var(--color-paper)] px-2 text-[10px] font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)]"
         >
           Open
         </a>

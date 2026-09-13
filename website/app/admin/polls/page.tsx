@@ -167,7 +167,7 @@ export default async function AdminPollsPage() {
       </header>
 
       <section className="mb-8 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
-        <h2 className="text-sm font-bold uppercase tracking-wider text-[var(--color-accent)]">
+        <h2 className="text-sm font-bold uppercase tracking-wider text-[var(--color-accent-ink)]">
           New poll
         </h2>
         <form action={createPoll} className="mt-3 space-y-3">
@@ -296,7 +296,7 @@ export default async function AdminPollsPage() {
 
       {unlockRows.length > 0 ? (
         <section className="mt-8 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-[var(--color-accent)]">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-[var(--color-accent-ink)]">
             Latest unlock emails
           </h2>
           <ul className="mt-3 space-y-1.5">

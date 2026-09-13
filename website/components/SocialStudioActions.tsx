@@ -147,7 +147,7 @@ export function RegenerateButton({ postId }: { postId: string }) {
         {busy ? "Writing…" : "Generate drafts"}
       </button>
       {error ? (
-        <span className="text-xs font-semibold text-[var(--color-accent)]">{error}</span>
+        <span className="text-xs font-semibold text-[var(--color-accent-ink)]">{error}</span>
       ) : null}
     </span>
   );

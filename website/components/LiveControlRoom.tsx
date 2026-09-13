@@ -197,7 +197,7 @@ export function LiveControlRoom({
     <div className="space-y-8">
       {!muxConfigured ? (
         <section className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-5 text-[var(--color-ink)]">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent-ink)]">
             Mux not connected
           </p>
           <p className="mt-2 text-sm leading-relaxed">
@@ -211,7 +211,7 @@ export function LiveControlRoom({
         onSubmit={createLiveRoom}
         className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
       >
-        <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-accent)]">
+        <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-accent-ink)]">
           Start here
         </p>
         <h2 className="mt-1 text-2xl font-black tracking-tight">
@@ -258,7 +258,7 @@ export function LiveControlRoom({
 
       {credentials ? (
         <section className="rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-5 text-[var(--color-ink)]">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent-ink)]">
             Stream credentials
           </p>
           <div className="mt-4 grid gap-3">
@@ -273,7 +273,7 @@ export function LiveControlRoom({
         <div className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-accent)]">
+              <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-accent-ink)]">
                 Rooms
               </p>
               <h2 className="mt-1 text-2xl font-black tracking-tight">
@@ -349,7 +349,7 @@ export function LiveControlRoom({
                           type="button"
                           onClick={() => endStream(stream.id)}
                           disabled={busy === `end:${stream.id}`}
-                          className="rounded-full border border-[var(--color-accent)] px-3 py-1.5 text-xs font-black text-[var(--color-accent)] disabled:opacity-50"
+                          className="rounded-full border border-[var(--color-accent)] px-3 py-1.5 text-xs font-black text-[var(--color-accent-ink)] disabled:opacity-50"
                         >
                           End
                         </button>
@@ -384,7 +384,7 @@ export function LiveControlRoom({
             onSubmit={addSimulcastTarget}
             className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5"
           >
-            <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-accent)]">
+            <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-accent-ink)]">
               Social destinations
             </p>
             <h2 className="mt-1 text-xl font-black tracking-tight">
@@ -453,7 +453,7 @@ export function LiveControlRoom({
 
           {socialShare ? (
             <section className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
-              <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-accent)]">
+              <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-accent-ink)]">
                 Social alert
               </p>
               <textarea
@@ -513,7 +513,7 @@ function CredentialRow({
 }) {
   return (
     <div className="grid gap-2 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-3 sm:grid-cols-[120px_minmax(0,1fr)_auto] sm:items-center">
-      <span className="text-xs font-black uppercase tracking-wider text-[var(--color-accent)]">
+      <span className="text-xs font-black uppercase tracking-wider text-[var(--color-accent-ink)]">
         {label}
       </span>
       <code className="min-w-0 overflow-x-auto whitespace-nowrap rounded bg-[var(--color-surface-2)] px-2 py-1 text-xs">
@@ -522,7 +522,7 @@ function CredentialRow({
       <button
         type="button"
         onClick={() => onCopy(value)}
-        className="rounded-full border border-[var(--color-accent)] px-3 py-1.5 text-xs font-black text-[var(--color-accent)]"
+        className="rounded-full border border-[var(--color-accent)] px-3 py-1.5 text-xs font-black text-[var(--color-accent-ink)]"
       >
         Copy
       </button>
@@ -538,7 +538,7 @@ function StatusBadge({ status }: { status: LiveStream["status"] }) {
         "rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-wider",
         live
           ? "bg-[var(--color-accent)] text-[var(--color-cream)]"
-          : "bg-[var(--color-accent-soft)] text-[var(--color-accent)]",
+          : "bg-[var(--color-accent-soft)] text-[var(--color-accent-ink)]",
       ].join(" ")}
     >
       {status}

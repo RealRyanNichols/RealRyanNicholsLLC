@@ -437,7 +437,7 @@ function ContactRow({
     <button
       type="button"
       onClick={() => setOpen(true)}
-      className="mt-2 text-[11px] font-semibold text-[var(--color-accent)] hover:underline"
+      className="mt-2 text-[11px] font-semibold text-[var(--color-accent-ink)] hover:underline"
     >
       Want a personal reply? Leave your email →
     </button>
@@ -466,7 +466,7 @@ function OfferRow() {
           key={o.href}
           href={o.href}
           onClick={() => trackEvent("chat_offer_click", { offer: o.href })}
-          className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1.5 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1.5 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)]"
         >
           {o.label}
         </a>
@@ -588,7 +588,7 @@ export function RyanChat({
                   key={s}
                   type="button"
                   onClick={() => send(s)}
-                  className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1.5 text-xs font-semibold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                  className="rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1.5 text-xs font-semibold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)]"
                 >
                   {s}
                 </button>
@@ -656,7 +656,7 @@ export function RyanChat({
                     key={s}
                     type="button"
                     onClick={() => send(s)}
-                    className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-left text-xs font-semibold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                    className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-left text-xs font-semibold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)]"
                   >
                     {s}
                   </button>

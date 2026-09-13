@@ -281,14 +281,14 @@ export default async function J6MissionPage() {
             See what a profile looks like:{" "}
             <Link
               href="/case/people/ryan-nichols"
-              className="text-[var(--color-accent)] font-semibold hover:underline"
+              className="text-[var(--color-accent-ink)] font-semibold hover:underline"
             >
               Ryan Nichols
             </Link>
             {" · "}
             <Link
               href="/case"
-              className="text-[var(--color-accent)] font-semibold hover:underline"
+              className="text-[var(--color-accent-ink)] font-semibold hover:underline"
             >
               The full case archive
             </Link>

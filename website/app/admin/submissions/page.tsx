@@ -109,7 +109,7 @@ export default async function AdminSubmissionsPage({
 
   return (
     <article className="mx-auto max-w-4xl px-4 py-10">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+      <p className="text-xs uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
         Admin · claimant submissions
       </p>
       <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">
@@ -146,7 +146,7 @@ export default async function AdminSubmissionsPage({
       </nav>
 
       {error ? (
-        <p className="mt-6 text-sm text-[var(--color-accent)]">{error.message}</p>
+        <p className="mt-6 text-sm text-[var(--color-accent-ink)]">{error.message}</p>
       ) : null}
 
       <div className="mt-6 space-y-3">
@@ -244,7 +244,7 @@ export default async function AdminSubmissionsPage({
                               {" · "}
                               <a
                                 href={`mailto:${claimant.email}`}
-                                className="text-[var(--color-accent)] hover:underline"
+                                className="text-[var(--color-accent-ink)] hover:underline"
                               >
                                 {claimant.email}
                               </a>
@@ -261,7 +261,7 @@ export default async function AdminSubmissionsPage({
                             <Link
                               href={`/case/people/${j6Person.slug}`}
                               target="_blank"
-                              className="text-[var(--color-accent)] hover:underline"
+                              className="text-[var(--color-accent-ink)] hover:underline"
                             >
                               {j6Person.name}
                             </Link>
@@ -349,7 +349,7 @@ function StatusBadge({ status }: { status: string }) {
       label: "PENDING",
     },
     rejected: {
-      cls: "bg-[var(--color-accent-soft)] text-[var(--color-accent)]",
+      cls: "bg-[var(--color-accent-soft)] text-[var(--color-accent-ink)]",
       label: "REJECTED",
     },
   };

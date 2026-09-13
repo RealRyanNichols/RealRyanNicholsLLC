@@ -41,7 +41,7 @@ export function PostCard({
       <header className="flex items-center justify-between gap-3 mb-3">
         <div className="flex items-center gap-2 text-xs text-[var(--color-muted)]">
           {post.pinned && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-accent-soft)] text-[var(--color-accent)] px-2 py-0.5 font-semibold uppercase tracking-wider text-[10px]">
+            <span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-accent-soft)] text-[var(--color-accent-ink)] px-2 py-0.5 font-semibold uppercase tracking-wider text-[10px]">
               Pinned
             </span>
           )}
@@ -72,7 +72,7 @@ export function PostCard({
         <div className="flex items-center gap-2">
           <Link
             href={`/posts/${post.slug}`}
-            className="inline-flex min-h-11 items-center px-1 text-[var(--color-accent)] hover:underline underline-offset-4 font-semibold whitespace-nowrap sm:min-h-0"
+            className="inline-flex min-h-11 items-center px-1 text-[var(--color-accent-ink)] hover:underline underline-offset-4 font-semibold whitespace-nowrap sm:min-h-0"
           >
             {post.type === "video" ? "Watch →" : "Read →"}
           </Link>
@@ -294,7 +294,7 @@ function TypeBadge({ type }: { type: Post["type"] }) {
   if (type === "text") return null;
   const label = type === "note" ? "Note" : type === "photo" ? "Photo" : "Video";
   return (
-    <span className="rounded-full bg-[var(--color-accent-soft)] text-[var(--color-accent)] px-2 py-0.5 text-[10px] uppercase tracking-wider font-bold">
+    <span className="rounded-full bg-[var(--color-accent-soft)] text-[var(--color-accent-ink)] px-2 py-0.5 text-[10px] uppercase tracking-wider font-bold">
       {label}
     </span>
   );

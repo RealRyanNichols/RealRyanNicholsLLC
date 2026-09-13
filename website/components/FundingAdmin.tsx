@@ -333,7 +333,7 @@ function ItemRow({ item }: { item?: Item }) {
             Delete
           </button>
         ) : null}
-        {msg ? <span className="text-[11px] font-semibold text-[var(--color-accent)]">{msg}</span> : null}
+        {msg ? <span className="text-[11px] font-semibold text-[var(--color-accent-ink)]">{msg}</span> : null}
       </div>
     </div>
   );

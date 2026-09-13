@@ -67,7 +67,7 @@ export async function CommentList({ postId }: { postId: string }) {
         return (
           <li key={c.id} className="flex gap-3">
             <div
-              className="h-9 w-9 rounded-full bg-[var(--color-accent-soft)] text-[var(--color-accent)] flex items-center justify-center text-sm font-semibold flex-shrink-0"
+              className="h-9 w-9 rounded-full bg-[var(--color-accent-soft)] text-[var(--color-accent-ink)] flex items-center justify-center text-sm font-semibold flex-shrink-0"
               aria-hidden
             >
               {initial}
@@ -77,7 +77,7 @@ export async function CommentList({ postId }: { postId: string }) {
                 {profile?.username ? (
                   <Link
                     href={`/u/${profile.username}`}
-                    className="font-semibold text-[var(--color-ink)] hover:text-[var(--color-accent)] hover:underline"
+                    className="font-semibold text-[var(--color-ink)] hover:text-[var(--color-accent-ink)] hover:underline"
                   >
                     {name}
                   </Link>

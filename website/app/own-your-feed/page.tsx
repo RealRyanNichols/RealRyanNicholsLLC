@@ -447,7 +447,7 @@ export default function OwnYourFeedPage() {
                 href={item.href}
                 className="group border border-[var(--color-line)] bg-[var(--color-surface)] p-4 transition hover:border-[var(--color-accent)]"
               >
-                <p className="text-sm font-bold text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">
+                <p className="text-sm font-bold text-[var(--color-ink)] group-hover:text-[var(--color-accent-ink)]">
                   {item.label}
                 </p>
                 <p className="mt-1 text-xs leading-relaxed text-[var(--color-muted)]">
@@ -502,7 +502,7 @@ export default function OwnYourFeedPage() {
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-bold text-[var(--color-ink)]">
                   {f.q}
                   <span
-                    className="flex-none text-xl leading-none text-[var(--color-accent)] transition group-open:rotate-45"
+                    className="flex-none text-xl leading-none text-[var(--color-accent-ink)] transition group-open:rotate-45"
                     aria-hidden="true"
                   >
                     +

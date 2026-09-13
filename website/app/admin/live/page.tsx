@@ -38,7 +38,7 @@ export default async function AdminLivePage() {
 
   return (
     <article className="mx-auto max-w-6xl px-4 py-10">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+      <p className="text-xs uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
         Admin · live
       </p>
       <div className="mt-2 flex flex-wrap items-end justify-between gap-3">
@@ -53,7 +53,7 @@ export default async function AdminLivePage() {
         </div>
         <Link
           href="/live"
-          className="rounded-full border-2 border-[var(--color-accent)] px-4 py-2 text-sm font-black text-[var(--color-accent)] hover:bg-[var(--color-accent-soft)]"
+          className="rounded-full border-2 border-[var(--color-accent)] px-4 py-2 text-sm font-black text-[var(--color-accent-ink)] hover:bg-[var(--color-accent-soft)]"
         >
           Public live page
         </Link>

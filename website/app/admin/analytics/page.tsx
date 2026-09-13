@@ -238,7 +238,7 @@ export default async function AdminAnalyticsPage({
 
   return (
     <article className="mx-auto max-w-5xl px-4 py-8 sm:py-10">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+      <p className="text-xs uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
         Admin · analytics
       </p>
       <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">
@@ -500,7 +500,7 @@ export default async function AdminAnalyticsPage({
                       <p className="line-clamp-2 text-[var(--color-ink-soft)]">{c.body}</p>
                       <p className="text-xs text-[var(--color-muted)] mt-1">
                         on{" "}
-                        <Link href={`/posts/${post?.slug ?? ""}`} className="text-[var(--color-accent)] hover:underline">
+                        <Link href={`/posts/${post?.slug ?? ""}`} className="text-[var(--color-accent-ink)] hover:underline">
                           {post?.title ?? "post"}
                         </Link>{" "}
                         · {formatDistanceToNowStrict(new Date(c.created_at), { addSuffix: true })}
@@ -1450,7 +1450,7 @@ async function TrafficIntelligence() {
               : "."}
           </p>
         </div>
-        <span className="rounded-full bg-[var(--color-accent-soft)] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[var(--color-accent)]">
+        <span className="rounded-full bg-[var(--color-accent-soft)] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[var(--color-accent-ink)]">
           Live data
         </span>
       </div>
@@ -1528,7 +1528,7 @@ async function TrendBars() {
             .
           </p>
         </div>
-        <span className="rounded-full bg-[var(--color-accent-soft)] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[var(--color-accent)]">
+        <span className="rounded-full bg-[var(--color-accent-soft)] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[var(--color-accent-ink)]">
           Page views
         </span>
       </div>
@@ -1589,7 +1589,7 @@ function FunnelRow({
       <div className="flex-1 min-w-0">
         <Link href={step.href} className="block group">
           <div className="flex items-center justify-between gap-2">
-            <span className="text-sm font-semibold truncate group-hover:text-[var(--color-accent)]">
+            <span className="text-sm font-semibold truncate group-hover:text-[var(--color-accent-ink)]">
               {step.label}
             </span>
             <span className="text-sm font-bold tabular-nums">{step.value.toLocaleString()}</span>
@@ -1682,7 +1682,7 @@ async function ConversionFunnel() {
             obvious leak.
           </p>
         </div>
-        <span className="rounded-full bg-[var(--color-accent-soft)] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[var(--color-accent)]">
+        <span className="rounded-full bg-[var(--color-accent-soft)] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[var(--color-accent-ink)]">
           Last 30 days
         </span>
       </div>
@@ -2224,7 +2224,7 @@ async function AttentionFunnel() {
             >
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <p className="text-[10px] font-black uppercase tracking-wider text-[var(--color-accent)]">
+                  <p className="text-[10px] font-black uppercase tracking-wider text-[var(--color-accent-ink)]">
                     {index + 1}. {card.priority}
                   </p>
                   <h4 className="mt-1 text-lg font-black tracking-tight">{card.label}</h4>
@@ -2269,7 +2269,7 @@ async function AttentionFunnel() {
             >
               <div className="flex items-center justify-between gap-3">
                 <span className="text-sm font-bold">{item.label}</span>
-                <span className="text-sm font-mono font-bold text-[var(--color-accent)]">
+                <span className="text-sm font-mono font-bold text-[var(--color-accent-ink)]">
                   {item.value}
                 </span>
               </div>
@@ -2339,7 +2339,7 @@ async function NexusAttention() {
         </p>
         <Link
           href="/case/nexus"
-          className="text-xs font-semibold text-[var(--color-accent)] hover:underline"
+          className="text-xs font-semibold text-[var(--color-accent-ink)] hover:underline"
         >
           Open Nexus →
         </Link>
@@ -2912,7 +2912,7 @@ async function TopDefendantProfiles() {
         </span>
         <Link
           href={`/case/people/${r.slug}`}
-          className="flex-1 truncate hover:text-[var(--color-accent)] font-medium"
+          className="flex-1 truncate hover:text-[var(--color-accent-ink)] font-medium"
         >
           {r.name}
           {r.claim_status === "verified" ? (
@@ -2974,7 +2974,7 @@ function RankedList({
             <li key={r.href} className="flex items-center gap-3 text-sm">
               <span className="w-5 text-xs font-bold text-[var(--color-muted)]">{i + 1}</span>
               <div className="flex-1 min-w-0">
-                <Link href={r.href} className="font-medium hover:text-[var(--color-accent)] line-clamp-1">
+                <Link href={r.href} className="font-medium hover:text-[var(--color-accent-ink)] line-clamp-1">
                   {r.label || "Untitled"}
                 </Link>
                 {r.sub ? <p className="text-xs text-[var(--color-muted)]">{r.sub}</p> : null}

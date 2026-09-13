@@ -32,9 +32,9 @@ export function ShareButton({
   const hoverCls =
     tone === "navy"
       ? "hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
-      : "hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]";
+      : "hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)]";
   const itemHoverCls =
-    tone === "navy" ? "hover:text-[var(--color-gold)]" : "hover:text-[var(--color-accent)]";
+    tone === "navy" ? "hover:text-[var(--color-gold)]" : "hover:text-[var(--color-accent-ink)]";
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [supportsNative, setSupportsNative] = useState(false);
@@ -130,7 +130,7 @@ export function ShareButton({
         Share
         {shownCount > 0 ? (
           <span
-            className={`tabular-nums font-bold ${tone === "navy" ? "text-[var(--color-gold)]" : "text-[var(--color-accent)]"}`}
+            className={`tabular-nums font-bold ${tone === "navy" ? "text-[var(--color-gold)]" : "text-[var(--color-accent-ink)]"}`}
           >
             {formatShareCount(shownCount)}
           </span>

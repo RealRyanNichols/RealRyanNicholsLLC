@@ -342,7 +342,7 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
           </button>
           <a
             href={receipt?.ledgerUrl ?? "/case/intake"}
-            className="min-h-11 rounded-lg border border-[var(--color-line)] px-4 py-2 text-center text-sm font-black text-[var(--color-accent)]"
+            className="min-h-11 rounded-lg border border-[var(--color-line)] px-4 py-2 text-center text-sm font-black text-[var(--color-accent-ink)]"
           >
             See the ledger
           </a>
@@ -510,7 +510,7 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
                   Transcript added. Read it once, fix names and dates, then send.
                 </p>
               ) : audioStatus.kind === "error" ? (
-                <p className="mt-2 text-xs font-bold text-[var(--color-accent)]">
+                <p className="mt-2 text-xs font-bold text-[var(--color-accent-ink)]">
                   {audioStatus.message}
                 </p>
               ) : (
@@ -639,7 +639,7 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
           )}
 
           <div className="rounded-lg border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-3">
-            <p className="text-xs font-black uppercase tracking-wider text-[var(--color-accent)]">
+            <p className="text-xs font-black uppercase tracking-wider text-[var(--color-accent-ink)]">
               Before you send
             </p>
             <p className="mt-1 text-xs leading-relaxed text-[var(--color-ink-soft)]">
@@ -658,7 +658,7 @@ export function StoryIntakeForm({ source = "tell-your-story" }: { source?: strin
           </div>
 
           {status.kind === "error" ? (
-            <p className="rounded-lg border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-3 py-2 text-sm font-bold text-[var(--color-accent)]">
+            <p className="rounded-lg border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-3 py-2 text-sm font-bold text-[var(--color-accent-ink)]">
               {status.message}
             </p>
           ) : null}

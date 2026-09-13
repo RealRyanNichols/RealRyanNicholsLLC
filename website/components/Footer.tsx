@@ -67,7 +67,7 @@ export function Footer() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="inline-flex min-h-11 items-center font-semibold text-[var(--color-ink-soft)] transition hover:text-[var(--color-accent)] sm:min-h-0"
+                      className="inline-flex min-h-11 items-center font-semibold text-[var(--color-ink-soft)] transition hover:text-[var(--color-accent-ink)] sm:min-h-0"
                     >
                       {link.label}
                     </Link>
@@ -79,16 +79,16 @@ export function Footer() {
         </div>
 
         <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-[var(--color-line)] pt-5 text-xs">
-          <Link className="inline-flex min-h-11 min-w-11 items-center justify-center hover:text-[var(--color-accent)] sm:min-h-0 sm:min-w-0" href="/privacy">
+          <Link className="inline-flex min-h-11 min-w-11 items-center justify-center hover:text-[var(--color-accent-ink)] sm:min-h-0 sm:min-w-0" href="/privacy">
             Privacy
           </Link>
-          <Link className="inline-flex min-h-11 min-w-11 items-center justify-center hover:text-[var(--color-accent)] sm:min-h-0 sm:min-w-0" href="/community-rules">
+          <Link className="inline-flex min-h-11 min-w-11 items-center justify-center hover:text-[var(--color-accent-ink)] sm:min-h-0 sm:min-w-0" href="/community-rules">
             Community rules
           </Link>
-          <Link className="inline-flex min-h-11 min-w-11 items-center justify-center hover:text-[var(--color-accent)] sm:min-h-0 sm:min-w-0" href="/editorial-standards">
+          <Link className="inline-flex min-h-11 min-w-11 items-center justify-center hover:text-[var(--color-accent-ink)] sm:min-h-0 sm:min-w-0" href="/editorial-standards">
             Editorial standards
           </Link>
-          <Link className="inline-flex min-h-11 min-w-11 items-center justify-center hover:text-[var(--color-accent)] sm:min-h-0 sm:min-w-0" href="/rss.xml">
+          <Link className="inline-flex min-h-11 min-w-11 items-center justify-center hover:text-[var(--color-accent-ink)] sm:min-h-0 sm:min-w-0" href="/rss.xml">
             RSS
           </Link>
           <span className="ml-auto">

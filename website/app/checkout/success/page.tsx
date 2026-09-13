@@ -39,7 +39,7 @@ export default async function SuccessPage({
         </p>
         <Link
           href="/"
-          className="inline-block mt-8 text-[var(--color-accent)] font-semibold underline underline-offset-4"
+          className="inline-block mt-8 text-[var(--color-accent-ink)] font-semibold underline underline-offset-4"
         >
           ← Back to the feed
         </Link>
@@ -131,7 +131,7 @@ export default async function SuccessPage({
           </p>
           <Link
             href="/case"
-            className="mt-3 inline-block font-semibold text-[var(--color-accent)] underline underline-offset-4"
+            className="mt-3 inline-block font-semibold text-[var(--color-accent-ink)] underline underline-offset-4"
           >
             Open the case archive →
           </Link>
@@ -147,7 +147,7 @@ export default async function SuccessPage({
           </p>
           <Link
             href="/book/preorder"
-            className="mt-3 inline-block font-semibold text-[var(--color-accent)] underline underline-offset-4"
+            className="mt-3 inline-block font-semibold text-[var(--color-accent-ink)] underline underline-offset-4"
           >
             Get the book →
           </Link>
@@ -156,7 +156,7 @@ export default async function SuccessPage({
 
       <Link
         href="/"
-        className="inline-block mt-8 text-[var(--color-accent)] font-semibold underline underline-offset-4"
+        className="inline-block mt-8 text-[var(--color-accent-ink)] font-semibold underline underline-offset-4"
       >
         ← Back to the feed
       </Link>

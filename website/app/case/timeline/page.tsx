@@ -96,7 +96,7 @@ export default async function CaseTimelinePage() {
           file) and enriched per defendant on{" "}
           <Link
             href="/case/the-salvaged-doj-record"
-            className="underline underline-offset-4 hover:text-[var(--color-accent)]"
+            className="underline underline-offset-4 hover:text-[var(--color-accent-ink)]"
           >
             the salvaged record
           </Link>

@@ -104,7 +104,7 @@ export default async function WitnessesPage() {
       {federalAcknowledgments.length > 0 ? (
         <section className="mt-12">
           <div className="border-l-2 border-[var(--color-accent)] pl-4 mb-5">
-            <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent)] font-bold">
+            <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
               Federal acknowledgment
             </p>
             <h2 className="font-display text-xl font-bold tracking-tight">

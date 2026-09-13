@@ -97,7 +97,7 @@ export default async function AdminUsersPage({
 
   return (
     <article className="mx-auto max-w-4xl px-4 py-10">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+      <p className="text-xs uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
         Admin · user moderation
       </p>
       <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">
@@ -124,7 +124,7 @@ export default async function AdminUsersPage({
       </nav>
 
       {error ? (
-        <p className="mt-6 text-sm text-[var(--color-accent)]">{error.message}</p>
+        <p className="mt-6 text-sm text-[var(--color-accent-ink)]">{error.message}</p>
       ) : null}
 
       <div className="mt-6 space-y-3">

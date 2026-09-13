@@ -101,7 +101,7 @@ export function CaseBriefingForm() {
                         className={
                           h.type === "case"
                             ? "text-[var(--color-blue-ink)]"
-                            : "text-[var(--color-accent)]"
+                            : "text-[var(--color-accent-ink)]"
                         }
                       >
                         {h.type === "case" ? "case" : "def."}

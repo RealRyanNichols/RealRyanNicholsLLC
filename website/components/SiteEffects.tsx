@@ -56,9 +56,19 @@ export function SiteEffects() {
     scan();
 
     // Client-rendered lists (feeds, search results) arrive after mount;
-    // rescan once per frame at most when the tree changes.
+    // rescan once per frame at most when an element is added. The counters'
+    // own text writes (a text node per frame) never trigger a rescan.
     let raf = 0;
-    const mo = new MutationObserver(() => {
+    const mo = new MutationObserver((records) => {
+      let added = false;
+      for (const rec of records) {
+        if ((rec.target as HTMLElement).dataset?.count !== undefined) continue;
+        for (const n of rec.addedNodes) {
+          if (n.nodeType === Node.ELEMENT_NODE) { added = true; break; }
+        }
+        if (added) break;
+      }
+      if (!added) return;
       if (!raf) raf = window.requestAnimationFrame(() => { raf = 0; scan(); });
     });
     mo.observe(document.body, { childList: true, subtree: true });

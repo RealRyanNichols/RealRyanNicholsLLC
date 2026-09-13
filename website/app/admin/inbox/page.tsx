@@ -47,7 +47,7 @@ const KIND_META: Record<
   message: {
     label: "Message",
     sub: "someone writing you directly",
-    chip: "bg-[var(--color-accent-soft)] text-[var(--color-accent)]",
+    chip: "bg-[var(--color-accent-soft)] text-[var(--color-accent-ink)]",
   },
   evidence: {
     label: "Evidence",

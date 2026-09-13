@@ -222,7 +222,7 @@ export default async function HomePage({
           <p className="mt-3">
             <Link
               href="/about"
-              className="text-[var(--color-accent)] underline underline-offset-4"
+              className="text-[var(--color-accent-ink)] underline underline-offset-4"
             >
               Read the full About
             </Link>

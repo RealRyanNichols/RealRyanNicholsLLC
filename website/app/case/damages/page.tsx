@@ -155,7 +155,7 @@ export default async function DamagesPage() {
       </section>
 
       <section className="mt-12 rounded-2xl border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-5 sm:p-6 print:break-before-page">
-        <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent)] font-bold">
+        <p className="text-[10px] uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
           Relief Sought
         </p>
         <h2 className="mt-1 font-display text-xl sm:text-2xl font-bold tracking-tight">
@@ -167,7 +167,7 @@ export default async function DamagesPage() {
             <p className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
               Starting claim
             </p>
-            <div className="display mt-1 text-3xl sm:text-4xl leading-none tabular-nums text-[var(--color-accent)]">
+            <div className="display mt-1 text-3xl sm:text-4xl leading-none tabular-nums text-[var(--color-accent-ink)]">
               $35,000,000
             </div>
           </div>
@@ -175,7 +175,7 @@ export default async function DamagesPage() {
             <p className="text-[10px] uppercase tracking-wider text-[var(--color-muted)] font-bold">
               Supported range
             </p>
-            <div className="display mt-1 text-3xl sm:text-4xl leading-none tabular-nums text-[var(--color-accent)]">
+            <div className="display mt-1 text-3xl sm:text-4xl leading-none tabular-nums text-[var(--color-accent-ink)]">
               $45–50M
             </div>
           </div>

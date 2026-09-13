@@ -193,7 +193,7 @@ export function PostFollowCapture({
       />
       {proof ? (
         <p
-          className="relative inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[var(--color-accent)] mb-2"
+          className="relative inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[var(--color-accent-ink)] mb-2"
           aria-live="polite"
         >
           {pulse.reading_now >= 2 ? (

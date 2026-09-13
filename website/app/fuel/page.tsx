@@ -398,7 +398,7 @@ export default async function FuelPage({
               <p>
                 Give me your information and I do the same thing for you. Researched. Written the right way.
                 Published on a domain that already ranks. Wired with the forms and buttons that make it pay.{" "}
-                <a href="#fuel-time" className="font-bold text-[var(--color-accent)] underline underline-offset-4">
+                <a href="#fuel-time" className="font-bold text-[var(--color-accent-ink)] underline underline-offset-4">
                   That starts at {floor}.
                 </a>
               </p>
@@ -432,7 +432,7 @@ export default async function FuelPage({
                 <Link href={m.href} className="qa-tile group flex h-full flex-col p-4">
                   <span className="text-sm font-black text-[var(--color-ink)]">{m.title}</span>
                   <span className="mt-1 flex-1 text-sm leading-relaxed text-[var(--color-ink-soft)]">{m.body}</span>
-                  <span className="mt-3 text-xs font-black uppercase tracking-wider text-[var(--color-accent)] transition group-hover:underline">
+                  <span className="mt-3 text-xs font-black uppercase tracking-wider text-[var(--color-accent-ink)] transition group-hover:underline">
                     {m.cta} →
                   </span>
                 </Link>
@@ -468,7 +468,7 @@ export default async function FuelPage({
                     </p>
                     <p className="mt-1 text-sm font-bold leading-snug text-[var(--color-ink-soft)]">{a.label}</p>
                   </div>
-                  <span className="shrink-0 text-xs font-black uppercase tracking-wider text-[var(--color-accent)] transition group-hover:underline">
+                  <span className="shrink-0 text-xs font-black uppercase tracking-wider text-[var(--color-accent-ink)] transition group-hover:underline">
                     {a.cta} →
                   </span>
                 </Link>
@@ -502,7 +502,7 @@ export default async function FuelPage({
               <p className="mt-3 text-xs leading-relaxed text-[var(--color-muted)]">
                 The same system that publishes this site builds sites, tools, and archives for businesses and
                 people who want to own their platform.{" "}
-                <Link href="/services" className="font-bold text-[var(--color-accent)] underline underline-offset-4">
+                <Link href="/services" className="font-bold text-[var(--color-accent-ink)] underline underline-offset-4">
                   That is the paid side.
                 </Link>{" "}
                 The fuel keeps the free side alive.
@@ -626,19 +626,19 @@ export default async function FuelPage({
             </p>
             <ul className="mt-3 space-y-3 text-sm text-[var(--color-ink)]">
               <li>
-                <Link href="/j6" className="font-bold underline underline-offset-4 hover:text-[var(--color-accent)]">
+                <Link href="/j6" className="font-bold underline underline-offset-4 hover:text-[var(--color-accent-ink)]">
                   Every J6 defendant on the record
                 </Link>
                 <span className="block text-[var(--color-ink-soft)]">A free profile for every one who wants it. No family pays for that here.</span>
               </li>
               <li>
-                <Link href="/book/preorder" className="font-bold underline underline-offset-4 hover:text-[var(--color-accent)]">
+                <Link href="/book/preorder" className="font-bold underline underline-offset-4 hover:text-[var(--color-accent-ink)]">
                   Fighting Shadows, the book
                 </Link>
                 <span className="block text-[var(--color-ink-soft)]">The whole story, with receipts, on the way out the door.</span>
               </li>
               <li>
-                <a href="#fuel" className="font-bold underline underline-offset-4 hover:text-[var(--color-accent)]">
+                <a href="#fuel" className="font-bold underline underline-offset-4 hover:text-[var(--color-accent-ink)]">
                   The next commissioned article
                 </a>
                 <span className="block text-[var(--color-ink-soft)]">Could be yours. Pick the topic at the {usdWhole(50000)} tier.</span>
@@ -681,7 +681,7 @@ export default async function FuelPage({
                 <ul className="mt-2 space-y-1.5 text-sm leading-relaxed text-[var(--color-ink-soft)]">
                   {t.gets.map((g) => (
                     <li key={g} className="flex gap-2">
-                      <span className="text-[var(--color-accent)]" aria-hidden>
+                      <span className="text-[var(--color-accent-ink)]" aria-hidden>
                         ✓
                       </span>
                       <span>{g}</span>
@@ -690,7 +690,7 @@ export default async function FuelPage({
                 </ul>
                 <Link
                   href={`/fuel?tier=${t.slug}#fuel`}
-                  className="mt-3 inline-flex min-h-11 items-center text-sm font-bold text-[var(--color-accent)] underline underline-offset-4 sm:min-h-0"
+                  className="mt-3 inline-flex min-h-11 items-center text-sm font-bold text-[var(--color-accent-ink)] underline underline-offset-4 sm:min-h-0"
                 >
                   {t.monthly ? `Start ${usdWhole(t.amountCents)} a month` : `Fuel ${usdWhole(t.amountCents)}`} →
                 </Link>
@@ -803,7 +803,7 @@ export default async function FuelPage({
                   <p className="text-sm font-bold text-[var(--color-ink)]">
                     {s.display_name ?? "Anonymous"}
                     {s.amount ? (
-                      <span className="ml-2 font-mono text-xs font-bold text-[var(--color-accent)]">${s.amount}</span>
+                      <span className="ml-2 font-mono text-xs font-bold text-[var(--color-accent-ink)]">${s.amount}</span>
                     ) : null}
                     {/founding/i.test(s.fuel?.tier ?? "") ? (
                       <span className="ml-2 rounded-full bg-[var(--color-gold-bright)] px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-[var(--color-navy)]">
@@ -825,7 +825,7 @@ export default async function FuelPage({
             <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[var(--color-ink-soft)]">
               Nobody has fueled this tank yet. The first name on this wall is the one people will remember,
               and I will remember it in writing.{" "}
-              <a href="#fuel" className="font-bold text-[var(--color-accent)] underline underline-offset-4">
+              <a href="#fuel" className="font-bold text-[var(--color-accent-ink)] underline underline-offset-4">
                 Be first.
               </a>
             </p>
@@ -844,15 +844,15 @@ export default async function FuelPage({
           </div>
           <p className="mt-4 text-sm leading-relaxed text-[var(--color-ink-soft)]">
             Or{" "}
-            <Link href="/submit" className="font-bold text-[var(--color-accent)] underline underline-offset-4">
+            <Link href="/submit" className="font-bold text-[var(--color-accent-ink)] underline underline-offset-4">
               send a tip
             </Link>
             ,{" "}
-            <Link href="/book/preorder" className="font-bold text-[var(--color-accent)] underline underline-offset-4">
+            <Link href="/book/preorder" className="font-bold text-[var(--color-accent-ink)] underline underline-offset-4">
               get the book
             </Link>
             , or{" "}
-            <Link href="/case" className="font-bold text-[var(--color-accent)] underline underline-offset-4">
+            <Link href="/case" className="font-bold text-[var(--color-accent-ink)] underline underline-offset-4">
               read the record
             </Link>
             . All of it keeps the machine moving.
@@ -868,7 +868,7 @@ function Faq({ q, children }: { q: string; children: React.ReactNode }) {
     <details className="group py-2">
       <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 text-sm font-bold text-[var(--color-ink)] [&::-webkit-details-marker]:hidden">
         {q}
-        <span className="text-[var(--color-accent)] transition group-open:rotate-45" aria-hidden>
+        <span className="text-[var(--color-accent-ink)] transition group-open:rotate-45" aria-hidden>
           +
         </span>
       </summary>

@@ -46,7 +46,7 @@ export function OgImageDeleteButton({ path }: { path: string }) {
         >
           Cancel
         </button>
-        {err ? <span className="text-xs text-[var(--color-accent)]">{err}</span> : null}
+        {err ? <span className="text-xs text-[var(--color-accent-ink)]">{err}</span> : null}
       </span>
     );
   }
@@ -54,7 +54,7 @@ export function OgImageDeleteButton({ path }: { path: string }) {
     <button
       type="button"
       onClick={() => setConfirming(true)}
-      className="text-xs font-semibold text-[var(--color-muted)] hover:text-[var(--color-accent)] underline"
+      className="text-xs font-semibold text-[var(--color-muted)] hover:text-[var(--color-accent-ink)] underline"
     >
       Delete
     </button>

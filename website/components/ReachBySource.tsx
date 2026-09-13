@@ -136,10 +136,10 @@ export async function ReachBySource({ excludeSelf }: { excludeSelf: boolean }) {
                 {(o.top_posts ?? []).map((p) => (
                   <tr key={p.path} className="border-t border-[var(--color-line)]">
                     <td className="py-1.5 font-mono truncate max-w-[200px]">
-                      <Link href={p.path} className="hover:text-[var(--color-accent)]">{p.path.replace("/posts/", "")}</Link>
+                      <Link href={p.path} className="hover:text-[var(--color-accent-ink)]">{p.path.replace("/posts/", "")}</Link>
                     </td>
                     <td className="py-1.5 text-right tabular-nums font-bold">{fmt(p.total)}</td>
-                    <td className="py-1.5 text-right tabular-nums text-[var(--color-accent)]">{fmt(p.human)}</td>
+                    <td className="py-1.5 text-right tabular-nums text-[var(--color-accent-ink)]">{fmt(p.human)}</td>
                     <td className="py-1.5 text-right tabular-nums text-[var(--color-muted)]">{fmt(p.bots)}</td>
                   </tr>
                 ))}
@@ -196,7 +196,7 @@ export async function ReachBySource({ excludeSelf }: { excludeSelf: boolean }) {
                 <span className="font-mono truncate flex-1">{r.path}</span>
                 <span className="text-[var(--color-muted)] shrink-0">{r.ua_class}</span>
                 {r.country ? <span className="text-[var(--color-muted)] shrink-0">{r.country}</span> : null}
-                {r.is_self ? <span className="text-[var(--color-accent)] shrink-0">you</span> : null}
+                {r.is_self ? <span className="text-[var(--color-accent-ink)] shrink-0">you</span> : null}
                 <span className="text-[var(--color-muted)] shrink-0 whitespace-nowrap">
                   {formatDistanceToNowStrict(new Date(r.at), { addSuffix: true })}
                 </span>

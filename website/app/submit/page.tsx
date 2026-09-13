@@ -189,7 +189,7 @@ export default async function SubmitPage({
             </p>
             <Link
               href="/case/intake"
-              className="rrn-tap mt-5 inline-flex rounded-lg border-2 border-[var(--color-accent)] px-4 py-2 text-sm font-bold text-[var(--color-accent)] transition hover:bg-[var(--color-accent-soft)]"
+              className="rrn-tap mt-5 inline-flex rounded-lg border-2 border-[var(--color-accent)] px-4 py-2 text-sm font-bold text-[var(--color-accent-ink)] transition hover:bg-[var(--color-accent-soft)]"
             >
               See what has come in
             </Link>

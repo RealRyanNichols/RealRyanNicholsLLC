@@ -99,7 +99,7 @@ export function BlueprintIntakeForm() {
             : `Continue to secure checkout, ${formatUsd(DIY?.priceUsd ?? 2500)}`}
         </button>
         {error ? (
-          <p className="mt-2 text-sm font-bold text-[var(--color-accent)]">{error}</p>
+          <p className="mt-2 text-sm font-bold text-[var(--color-accent-ink)]">{error}</p>
         ) : null}
         <p className="mt-3 text-xs font-semibold text-[var(--color-ink-soft)]">
           Secure payment by Stripe. Your answers are saved privately so I can

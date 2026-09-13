@@ -251,7 +251,7 @@ function DocumentRow({ doc }: { doc: Doc }) {
             type="button"
             onClick={() => setEditing(false)}
             disabled={busy}
-            className="rounded-full border border-[var(--color-line)] px-3 py-1.5 text-xs font-semibold text-[var(--color-ink-soft)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="rounded-full border border-[var(--color-line)] px-3 py-1.5 text-xs font-semibold text-[var(--color-ink-soft)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)]"
           >
             Cancel
           </button>
@@ -265,7 +265,7 @@ function DocumentRow({ doc }: { doc: Doc }) {
             Delete
           </button>
         </div>
-        {err ? <p className="text-xs text-[var(--color-accent)]">{err}</p> : null}
+        {err ? <p className="text-xs text-[var(--color-accent-ink)]">{err}</p> : null}
       </li>
     );
   }
@@ -274,7 +274,7 @@ function DocumentRow({ doc }: { doc: Doc }) {
     <li className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2.5 flex items-center justify-between gap-3">
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-accent)]">
+          <span className="text-[10px] uppercase tracking-wider font-bold text-[var(--color-accent-ink)]">
             {doc.doc_type}
           </span>
           {doc.document_date ? (
@@ -299,7 +299,7 @@ function DocumentRow({ doc }: { doc: Doc }) {
         <button
           type="button"
           onClick={() => setEditing(true)}
-          className="text-xs font-semibold text-[var(--color-accent)] hover:underline whitespace-nowrap"
+          className="text-xs font-semibold text-[var(--color-accent-ink)] hover:underline whitespace-nowrap"
         >
           Edit
         </button>
@@ -307,7 +307,7 @@ function DocumentRow({ doc }: { doc: Doc }) {
           href={doc.file_url ?? doc.external_url ?? "#"}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-xs font-semibold text-[var(--color-ink-soft)] hover:text-[var(--color-accent)] whitespace-nowrap"
+          className="text-xs font-semibold text-[var(--color-ink-soft)] hover:text-[var(--color-accent-ink)] whitespace-nowrap"
         >
           Open
         </a>

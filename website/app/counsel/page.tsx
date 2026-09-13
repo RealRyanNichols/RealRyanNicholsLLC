@@ -31,7 +31,7 @@ function CounselGate({ error }: { error: boolean }) {
   return (
     <main className="mx-auto flex min-h-[80vh] w-full max-w-md flex-col justify-center px-4 py-16">
       <div className="border border-[var(--color-line)] bg-[var(--color-surface)] p-6 shadow-[0_20px_50px_rgba(0,0,0,0.4)]">
-        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent)]">
+        <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--color-accent-ink)]">
           Confidential
         </p>
         <h1 className="mt-2 font-sans text-2xl font-black leading-tight text-[var(--color-ink)]">
@@ -66,7 +66,7 @@ function CounselGate({ error }: { error: boolean }) {
             />
           </label>
           {error ? (
-            <p className="text-xs font-bold text-[var(--color-accent)]">
+            <p className="text-xs font-bold text-[var(--color-accent-ink)]">
               That username and password did not match. Try again.
             </p>
           ) : null}

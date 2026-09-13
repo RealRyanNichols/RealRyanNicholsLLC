@@ -230,13 +230,13 @@ export default function TellYourStoryPage() {
               href={lane.href}
               className="rrn-card group block p-4 transition hover:border-[var(--color-accent)] sm:p-5"
             >
-              <h2 className="font-display text-2xl font-black tracking-normal group-hover:text-[var(--color-accent)]">
+              <h2 className="font-display text-2xl font-black tracking-normal group-hover:text-[var(--color-accent-ink)]">
                 {lane.title}
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
                 {lane.body}
               </p>
-              <p className="mt-4 text-sm font-black text-[var(--color-accent)]">
+              <p className="mt-4 text-sm font-black text-[var(--color-accent-ink)]">
                 {lane.cta} -&gt;
               </p>
             </Link>
@@ -260,7 +260,7 @@ export default function TellYourStoryPage() {
           <p className="mt-4 text-sm">
             <Link
               href="/editorial-standards"
-              className="font-bold text-[var(--color-accent)] hover:underline"
+              className="font-bold text-[var(--color-accent-ink)] hover:underline"
             >
               Read the full editorial standards →
             </Link>

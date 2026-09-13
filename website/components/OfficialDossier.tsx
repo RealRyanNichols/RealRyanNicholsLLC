@@ -103,7 +103,7 @@ export function OfficialDossier({
 
       {/* Why this page exists */}
       <div className="mt-6 rounded-2xl border-l-4 border-[var(--color-accent)] bg-[var(--color-surface)] px-5 py-4">
-        <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--color-accent)]">
+        <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--color-accent-ink)]">
           Why this profile exists
         </p>
         <p className="mt-1.5 font-display text-lg font-bold leading-snug text-[var(--color-ink)]">
@@ -259,7 +259,7 @@ export function OfficialDossier({
 
       {/* What I need next */}
       <section className="mt-6 rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
-        <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--color-accent)]">
+        <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--color-accent-ink)]">
           What I need next
         </p>
         <ul className="mt-3 space-y-2">
@@ -268,7 +268,7 @@ export function OfficialDossier({
               key={i}
               className="flex gap-2 text-sm leading-relaxed text-[var(--color-ink)]"
             >
-              <span aria-hidden className="text-[var(--color-accent)]">
+              <span aria-hidden className="text-[var(--color-accent-ink)]">
                 →
               </span>
               <span>{n}</span>

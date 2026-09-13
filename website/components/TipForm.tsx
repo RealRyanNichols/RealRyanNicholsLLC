@@ -258,7 +258,7 @@ export function TipForm({
           </button>
           <a
             href={receipt?.ledgerUrl ?? "/case/intake"}
-            className="rounded-lg border border-[var(--color-line)] px-4 py-2 text-sm font-bold text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="rounded-lg border border-[var(--color-line)] px-4 py-2 text-sm font-bold text-[var(--color-ink)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)]"
           >
             See my receipt
           </a>
@@ -272,7 +272,7 @@ export function TipForm({
           <button
             type="button"
             onClick={shareTipLine}
-            className="rounded-lg border border-[var(--color-line)] px-4 py-2 text-sm font-bold text-[var(--color-accent)] transition hover:bg-[var(--color-accent-soft)]"
+            className="rounded-lg border border-[var(--color-line)] px-4 py-2 text-sm font-bold text-[var(--color-accent-ink)] transition hover:bg-[var(--color-accent-soft)]"
           >
             {shareStatus === "copied" ? "Link copied" : "Share the tip line"}
           </button>
@@ -307,7 +307,7 @@ export function TipForm({
         <div>
           <label className="mb-1.5 block text-sm font-semibold text-[var(--color-ink-soft)]">
             What kind of tip is this?
-            <span className="text-[var(--color-accent)] ml-1">*</span>
+            <span className="text-[var(--color-accent-ink)] ml-1">*</span>
           </label>
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
             {CATEGORIES.map((c) => (
@@ -473,7 +473,7 @@ function Field({
     <div>
       <label htmlFor={id} className="mb-1.5 block text-sm font-semibold text-[var(--color-ink-soft)]">
         {label}
-        {required ? <span className="text-[var(--color-accent)] ml-1">*</span> : null}
+        {required ? <span className="text-[var(--color-accent-ink)] ml-1">*</span> : null}
       </label>
       {textarea ? (
         <textarea

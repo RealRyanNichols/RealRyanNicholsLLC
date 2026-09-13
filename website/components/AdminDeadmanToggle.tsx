@@ -94,7 +94,7 @@ export function AdminDeadmanToggle({ active }: { active: boolean }) {
       <div className="mt-3 flex items-center justify-between gap-4">
         <div>
           <p className="text-sm font-black text-[var(--color-ink)]">Current state</p>
-          <p className={active ? "text-2xl font-black text-[var(--color-accent)]" : "text-2xl font-black text-[var(--color-success)]"}>
+          <p className={active ? "text-2xl font-black text-[var(--color-accent-ink)]" : "text-2xl font-black text-[var(--color-success)]"}>
             {active ? "ON" : "OFF"}
           </p>
         </div>

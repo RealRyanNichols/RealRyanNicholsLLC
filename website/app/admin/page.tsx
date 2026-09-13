@@ -264,7 +264,7 @@ export default async function AdminHomePage() {
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-7">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+      <p className="text-xs uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
         Admin
       </p>
       <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">
@@ -291,7 +291,7 @@ export default async function AdminHomePage() {
                 href={row.href}
                 className="group flex items-center gap-4 rounded-md border border-[var(--color-accent)]/60 bg-[var(--color-accent)]/[0.07] px-4 py-3.5 transition hover:border-[var(--color-accent)] hover:bg-[var(--color-accent)]/15"
               >
-                <span className="min-w-[3.25rem] shrink-0 text-right text-2xl font-bold tabular-nums tracking-tight text-[var(--color-accent)]">
+                <span className="min-w-[3.25rem] shrink-0 text-right text-2xl font-bold tabular-nums tracking-tight text-[var(--color-accent-ink)]">
                   {row.count}
                 </span>
                 <span className="min-w-0 flex-1">
@@ -304,7 +304,7 @@ export default async function AdminHomePage() {
                 </span>
                 <span
                   aria-hidden
-                  className="shrink-0 text-[var(--color-muted)] transition group-hover:translate-x-0.5 group-hover:text-[var(--color-accent)]"
+                  className="shrink-0 text-[var(--color-muted)] transition group-hover:translate-x-0.5 group-hover:text-[var(--color-accent-ink)]"
                 >
                   →
                 </span>
@@ -446,7 +446,7 @@ export default async function AdminHomePage() {
           </h2>
           <Link
             href="/admin/analytics"
-            className="text-xs font-semibold text-[var(--color-accent)] hover:underline"
+            className="text-xs font-semibold text-[var(--color-accent-ink)] hover:underline"
           >
             Full analytics →
           </Link>
@@ -524,7 +524,7 @@ function Pulse({
       <span className="text-lg font-bold tabular-nums tracking-tight text-[var(--color-ink)]">
         {n.toLocaleString()}
       </span>
-      <span className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)] transition group-hover:text-[var(--color-accent)]">
+      <span className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)] transition group-hover:text-[var(--color-accent-ink)]">
         {label}
       </span>
     </Link>

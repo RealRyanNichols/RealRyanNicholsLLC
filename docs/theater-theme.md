@@ -44,6 +44,7 @@ literals; they render outside the DOM.
 | `--color-blue-strong` | `#2b56aa` | blue button hover |
 | `--color-blue-soft` | blue at 18% | institutional or procedural tint behind text |
 | `--color-accent` | flag red `#d9382b` | the one primary action on a view, severe marks, danger |
+| `--color-accent-ink` | `#f25b4d` | small red type on the floor: labels, links, kickers, error text (flag red fails 4.5:1 on navy); `--color-danger` and `--color-tag-severe` carry the same value |
 | `--color-accent-strong` | `#b32419` | red hover |
 | `--color-accent-soft` | red at 16% | red tint behind text |
 | `--color-support`, `--color-gold` | gold `#e1bd5b` | money and support actions, emphasis, kickers, numerals |

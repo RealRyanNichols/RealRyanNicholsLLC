@@ -53,7 +53,7 @@ export function LiveActivityRotator({ items }: { items: LiveActivityItem[] }) {
           {current.href ? (
             <a
               href={current.href}
-              className="font-bold text-[var(--color-ink)] hover:text-[var(--color-accent)] truncate"
+              className="font-bold text-[var(--color-ink)] hover:text-[var(--color-accent-ink)] truncate"
             >
               {current.text}
             </a>

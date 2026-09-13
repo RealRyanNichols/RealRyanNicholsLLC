@@ -189,12 +189,12 @@ export function UserModerationRow({
               <Link
                 href={`/u/${profile.username}`}
                 target="_blank"
-                className="text-xs font-mono text-[var(--color-muted)] hover:text-[var(--color-accent)]"
+                className="text-xs font-mono text-[var(--color-muted)] hover:text-[var(--color-accent-ink)]"
               >
                 @{profile.username}
               </Link>
             ) : (
-              <span className="text-xs text-[var(--color-accent)]">(no username)</span>
+              <span className="text-xs text-[var(--color-accent-ink)]">(no username)</span>
             )}
             <StatusBadge status={profile.status} verified={verified} />
             {profile.is_supporter ? <SupporterBadge size="xs" /> : null}
@@ -203,14 +203,14 @@ export function UserModerationRow({
             <div>
               <span className="text-[var(--color-ink-soft)]">Real name:</span>{" "}
               <span className="font-mono">
-                {profile.full_name ?? <em className="text-[var(--color-accent)]">missing</em>}
+                {profile.full_name ?? <em className="text-[var(--color-accent-ink)]">missing</em>}
               </span>
             </div>
             <div>
               <span className="text-[var(--color-ink-soft)]">Email:</span>{" "}
               <a
                 href={`mailto:${profile.email}`}
-                className="font-mono text-[var(--color-accent)] hover:underline"
+                className="font-mono text-[var(--color-accent-ink)] hover:underline"
               >
                 {profile.email || "—"}
               </a>
@@ -254,7 +254,7 @@ export function UserModerationRow({
                         <Link
                           href={`/case/people/${m.slug}`}
                           target="_blank"
-                          className="font-bold hover:text-[var(--color-accent)]"
+                          className="font-bold hover:text-[var(--color-accent-ink)]"
                         >
                           {m.name}
                         </Link>
@@ -301,7 +301,7 @@ export function UserModerationRow({
           ) : null}
           {profile.admin_notes ? (
             <details className="mt-2">
-              <summary className="text-xs font-bold text-[var(--color-muted)] cursor-pointer hover:text-[var(--color-accent)]">
+              <summary className="text-xs font-bold text-[var(--color-muted)] cursor-pointer hover:text-[var(--color-accent-ink)]">
                 Admin notes ({profile.admin_notes.split("\n").filter((l) => l.trim()).length} lines)
               </summary>
               <pre className="mt-2 whitespace-pre-wrap text-xs text-[var(--color-ink-soft)] bg-[var(--color-surface-2)] border border-[var(--color-line-soft)] rounded-md p-2 font-mono">
@@ -340,7 +340,7 @@ export function UserModerationRow({
               type="button"
               disabled={busy}
               onClick={() => runAction("deny")}
-              className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface-2)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] px-3 py-1.5 text-xs font-bold disabled:opacity-60"
+              className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface-2)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)] px-3 py-1.5 text-xs font-bold disabled:opacity-60"
               title="Soft rejection — they keep their account but can't act"
             >
               ✗ Deny
@@ -497,7 +497,7 @@ export function UserModerationRow({
       ) : null}
 
       {error ? (
-        <p className="mt-2 text-xs text-[var(--color-accent)]">{error}</p>
+        <p className="mt-2 text-xs text-[var(--color-accent-ink)]">{error}</p>
       ) : null}
     </div>
   );

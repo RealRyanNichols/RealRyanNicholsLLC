@@ -129,7 +129,7 @@ export function BookEmailSignup({
       </label>
 
       {error ? (
-        <p className="rounded-md border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-3 text-sm font-bold text-[var(--color-accent)]">
+        <p className="rounded-md border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-3 text-sm font-bold text-[var(--color-accent-ink)]">
           {error}
         </p>
       ) : null}

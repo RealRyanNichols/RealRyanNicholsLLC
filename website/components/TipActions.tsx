@@ -101,7 +101,7 @@ export function TipActions({
             type="button"
             disabled={isPending}
             onClick={() => update(o.value)}
-            className="text-xs font-semibold rounded-md border border-[var(--color-line)] px-2.5 py-1 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] disabled:opacity-50"
+            className="text-xs font-semibold rounded-md border border-[var(--color-line)] px-2.5 py-1 hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)] disabled:opacity-50"
           >
             Mark {o.label}
           </button>
@@ -109,7 +109,7 @@ export function TipActions({
         <button
           type="button"
           onClick={() => setShowNotes((v) => !v)}
-          className="text-xs font-semibold rounded-md border border-[var(--color-line)] px-2.5 py-1 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] ml-auto"
+          className="text-xs font-semibold rounded-md border border-[var(--color-line)] px-2.5 py-1 hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)] ml-auto"
         >
           {showNotes ? "Hide notes" : "Edit notes"}
         </button>
@@ -150,7 +150,7 @@ export function TipActions({
               href={currentOutcomeUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="border border-[var(--color-line)] px-2.5 py-1 text-xs font-black uppercase tracking-normal hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+              className="border border-[var(--color-line)] px-2.5 py-1 text-xs font-black uppercase tracking-normal hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)]"
             >
               Open result
             </a>
@@ -227,7 +227,7 @@ export function TipActions({
         </div>
       </section>
 
-      {error ? <p className="mt-2 text-xs text-[var(--color-accent)]">{error}</p> : null}
+      {error ? <p className="mt-2 text-xs text-[var(--color-accent-ink)]">{error}</p> : null}
     </div>
   );
 }

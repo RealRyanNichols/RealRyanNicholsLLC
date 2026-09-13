@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { DECORATIONS, OPERATIONS, RECOGNITION } from "@/lib/bio";
 import { pageMetadata } from "@/lib/page-metadata";
 
@@ -34,12 +35,12 @@ export default function AboutPage() {
           className="panel w-28 shrink-0 overflow-hidden p-2 sm:w-36"
           data-reveal
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src="/avatar.jpg"
             alt="Ryan Nichols"
             width={320}
             height={320}
+            sizes="(min-width: 640px) 144px, 112px"
             className="block aspect-square w-full rounded-xl object-cover"
           />
         </figure>
@@ -488,33 +489,33 @@ export default function AboutPage() {
         </h2>
         <ul className="mt-4 space-y-2 text-base">
           <li>
-            <Link href="/case" className="text-[var(--color-accent)] underline font-bold">
+            <Link href="/case" className="text-[var(--color-accent-ink)] underline font-bold">
               The J6 Case →
             </Link>{" "}
             — every grievance, every official, every event, every document.
             The record I built.
           </li>
           <li>
-            <Link href="/j6" className="text-[var(--color-accent)] underline font-bold">
+            <Link href="/j6" className="text-[var(--color-accent-ink)] underline font-bold">
               J6 Anti-Weaponization Case Builder →
             </Link>{" "}
             — free profiles for every January 6 defendant. Their cases stack
             into this one.
           </li>
           <li>
-            <Link href="/jan-6" className="text-[var(--color-accent)] underline font-bold">
+            <Link href="/jan-6" className="text-[var(--color-accent-ink)] underline font-bold">
               My Jan 6 story →
             </Link>{" "}
             — what happened, what I learned, where I am now.
           </li>
           <li>
-            <Link href="/support" className="text-[var(--color-accent)] underline font-bold">
+            <Link href="/support" className="text-[var(--color-accent-ink)] underline font-bold">
               How to support →
             </Link>{" "}
             — the book, the builds, and the store. Own a piece of the work.
           </li>
           <li>
-            <Link href="/community-rules" className="text-[var(--color-accent)] underline font-bold">
+            <Link href="/community-rules" className="text-[var(--color-accent-ink)] underline font-bold">
               Community rules →
             </Link>{" "}
             — how comments work here.

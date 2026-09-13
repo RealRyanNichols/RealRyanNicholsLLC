@@ -53,13 +53,13 @@ export function MessageActions({
             type="button"
             disabled={isPending}
             onClick={() => update(option.value)}
-            className="rounded-md border border-[var(--color-line)] px-2.5 py-1 text-xs font-semibold hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] disabled:opacity-50"
+            className="rounded-md border border-[var(--color-line)] px-2.5 py-1 text-xs font-semibold hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)] disabled:opacity-50"
           >
             Mark {option.label}
           </button>
         ))}
       </div>
-      {error ? <p className="mt-2 text-xs text-[var(--color-accent)]">{error}</p> : null}
+      {error ? <p className="mt-2 text-xs text-[var(--color-accent-ink)]">{error}</p> : null}
     </div>
   );
 }

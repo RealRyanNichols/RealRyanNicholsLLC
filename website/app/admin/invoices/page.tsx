@@ -97,7 +97,7 @@ export default async function AdminInvoicesPage() {
     <article className="mx-auto max-w-6xl px-4 py-8">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-accent)]">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-accent-ink)]">
             Money control
           </p>
           <h1 className="mt-1 text-3xl font-bold tracking-tight font-display">
@@ -110,7 +110,7 @@ export default async function AdminInvoicesPage() {
         </div>
         <a
           href="/admin/donations"
-          className="rounded-full border border-[var(--color-line)] px-4 py-2 text-sm font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          className="rounded-full border border-[var(--color-line)] px-4 py-2 text-sm font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)]"
         >
           Donations
         </a>

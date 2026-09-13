@@ -319,7 +319,7 @@ export default async function SalvagedDojRecordPage({
       </section>
 
       <section className="mt-12 rounded-2xl border-2 border-[var(--color-accent)] bg-[var(--color-surface)] p-5 sm:p-6">
-        <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-accent)]">
+        <p className="text-xs uppercase tracking-wider font-bold text-[var(--color-accent-ink)]">
           Why this matters
         </p>
         <h2 className="mt-1 font-display text-xl sm:text-2xl font-bold tracking-tight">

@@ -50,7 +50,7 @@ const statusCopy: Record<IntakeItem["public_status"], { label: string; cls: stri
   },
   needs_verification: {
     label: "Needs verification",
-    cls: "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent)]",
+    cls: "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent-ink)]",
   },
   verified: {
     label: "Verified",
@@ -385,7 +385,7 @@ export default async function IntakeLedgerPage({
         </nav>
 
         {error ? (
-          <p className="mt-5 rounded-lg border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-3 text-sm font-bold text-[var(--color-accent)]">
+          <p className="mt-5 rounded-lg border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-3 text-sm font-bold text-[var(--color-accent-ink)]">
             {error}
           </p>
         ) : null}
@@ -433,7 +433,7 @@ export default async function IntakeLedgerPage({
               </ol>
             </div>
             <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
-              <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-accent)]">
+              <p className="text-xs font-bold uppercase tracking-normal text-[var(--color-accent-ink)]">
                 Privacy line
               </p>
               <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
@@ -610,7 +610,7 @@ function Stat({
       <p
         className={[
           "display text-3xl leading-none tabular-nums",
-          tone === "red" ? "text-[var(--color-accent)]" : "text-[var(--color-gold)]",
+          tone === "red" ? "text-[var(--color-accent-ink)]" : "text-[var(--color-gold)]",
         ].join(" ")}
         data-count={value > 0 ? value : undefined}
       >

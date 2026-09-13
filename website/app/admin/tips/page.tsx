@@ -144,7 +144,7 @@ export default async function AdminTipsPage({
 
   return (
     <article className="mx-auto max-w-5xl px-4 py-8 sm:py-10">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+      <p className="text-xs uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
         Admin · tip line
       </p>
       <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">
@@ -254,7 +254,7 @@ export default async function AdminTipsPage({
       </nav>
 
       {error ? (
-        <p className="mt-6 text-sm text-[var(--color-accent)]">{error.message}</p>
+        <p className="mt-6 text-sm text-[var(--color-accent-ink)]">{error.message}</p>
       ) : null}
 
       <div className="mt-6 space-y-4">
@@ -364,7 +364,7 @@ export default async function AdminTipsPage({
                           href={u}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="font-mono text-[var(--color-accent)] hover:underline break-all"
+                          className="font-mono text-[var(--color-accent-ink)] hover:underline break-all"
                         >
                           {u}
                         </a>
@@ -488,7 +488,7 @@ function TipRoutePanel({
             key={action}
             className="border border-[var(--color-line-soft)] bg-[var(--color-surface-2)] p-2 text-xs font-semibold leading-5 text-[var(--color-ink-soft)]"
           >
-            <span className="mr-1 font-black text-[var(--color-accent)]">
+            <span className="mr-1 font-black text-[var(--color-accent-ink)]">
               {index + 1}.
             </span>
             {action}
@@ -681,7 +681,7 @@ function OutcomeBadge({ status }: { status: string }) {
         "rounded-full px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider",
         worked
           ? "bg-[var(--color-success-soft)] text-[var(--color-success)]"
-          : "bg-[var(--color-accent-soft)] text-[var(--color-accent)]",
+          : "bg-[var(--color-accent-soft)] text-[var(--color-accent-ink)]",
       ].join(" ")}
     >
       {outcomeLabel(status)}

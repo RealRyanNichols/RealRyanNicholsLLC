@@ -182,7 +182,7 @@ export function AdminChatConsole({ sessions }: { sessions: SessionSummary[] }) {
               </div>
               <p className="mt-1 flex flex-wrap items-center gap-x-2 text-[11px] text-[var(--color-muted)]">
                 {dir ? (
-                  <span className="font-semibold text-[var(--color-accent)]">{dir}</span>
+                  <span className="font-semibold text-[var(--color-accent-ink)]">{dir}</span>
                 ) : null}
                 {src ? <span>via {src}</span> : null}
                 <span>{s.message_count ?? 0} msgs</span>

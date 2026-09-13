@@ -161,7 +161,7 @@ function Field({
 function ErrorBanner({ state }: { state: State }) {
   if (state.kind !== "error") return null;
   return (
-    <p className="mt-3 rounded-md bg-[var(--color-accent-soft)] border border-[var(--color-accent)] px-3 py-2 text-sm text-[var(--color-accent)]">
+    <p className="mt-3 rounded-md bg-[var(--color-accent-soft)] border border-[var(--color-accent)] px-3 py-2 text-sm text-[var(--color-accent-ink)]">
       {state.message}
     </p>
   );
@@ -816,7 +816,7 @@ function VideoForm({ videoConfig }: { videoConfig: VideoConfigStatus }) {
             muxHealth.kind === "ok"
               ? "border-[var(--color-success)] bg-[var(--color-success-soft)] text-[var(--color-success)]"
               : muxHealth.kind === "error"
-                ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent)]"
+                ? "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent-ink)]"
                 : "border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)]",
           ].join(" ")}
         >
@@ -839,7 +839,7 @@ function VideoForm({ videoConfig }: { videoConfig: VideoConfigStatus }) {
           <button
             type="button"
             onClick={cancelUpload}
-            className="rounded-md border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-4 py-2.5 text-sm font-bold text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-cream)]"
+            className="rounded-md border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-4 py-2.5 text-sm font-bold text-[var(--color-accent-ink)] hover:bg-[var(--color-accent)] hover:text-[var(--color-cream)]"
           >
             Cancel upload
           </button>

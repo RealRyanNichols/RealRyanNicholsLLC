@@ -41,7 +41,7 @@ export function AdminEmailTestButton() {
         type="button"
         onClick={sendTest}
         disabled={state.kind === "sending"}
-        className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-xs font-black uppercase tracking-[0.14em] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] disabled:opacity-60"
+        className="rounded-md border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-xs font-black uppercase tracking-[0.14em] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)] disabled:opacity-60"
       >
         {state.kind === "sending" ? "Testing..." : "Send test email"}
       </button>
@@ -49,7 +49,7 @@ export function AdminEmailTestButton() {
         <p className="max-w-xs text-xs text-[var(--color-success)]">{state.message}</p>
       ) : null}
       {state.kind === "error" ? (
-        <p className="max-w-xs text-xs text-[var(--color-accent)]">
+        <p className="max-w-xs text-xs text-[var(--color-accent-ink)]">
           {state.message}
         </p>
       ) : null}

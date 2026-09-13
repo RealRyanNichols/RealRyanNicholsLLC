@@ -25,7 +25,7 @@ export function DemandAction({ slug }: { slug?: string }) {
 
   return (
     <div className="not-prose rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-cream)] p-6">
-      <p className="text-xs uppercase tracking-wider text-[var(--color-accent)] font-bold">
+      <p className="text-xs uppercase tracking-wider text-[var(--color-accent-ink)] font-bold">
         Demand an investigation
       </p>
       <h3 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight font-display">

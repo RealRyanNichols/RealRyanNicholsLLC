@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 function statusClass(status: BookUpdateStatus): string {
   switch (status) {
     case "Announcement":
-      return "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent)]";
+      return "border-[var(--color-accent)] bg-[var(--color-accent-soft)] text-[var(--color-accent-ink)]";
     case "Writing":
       return "border-[var(--color-gold)] bg-[var(--color-gold-soft)] text-[var(--color-support-strong)]";
     case "Editing":

@@ -131,7 +131,7 @@ export function VoiceStoryRecorder({
             "inline-flex items-center gap-2 rounded-full px-5 py-3 font-bold text-base transition",
             recording
               ? "bg-[var(--color-accent)] text-[var(--color-cream)] animate-pulse"
-              : "border-2 border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent-soft)]",
+              : "border-2 border-[var(--color-accent)] text-[var(--color-accent-ink)] hover:bg-[var(--color-accent-soft)]",
           ].join(" ")}
         >
           {recording ? "■ Stop & keep text" : "🎤 Tap to talk"}
@@ -149,7 +149,7 @@ export function VoiceStoryRecorder({
         </p>
       ) : null}
       {error ? (
-        <p className="mt-3 text-sm font-semibold text-[var(--color-accent)]">
+        <p className="mt-3 text-sm font-semibold text-[var(--color-accent-ink)]">
           {error}
         </p>
       ) : null}

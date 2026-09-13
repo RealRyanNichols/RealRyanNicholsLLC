@@ -130,7 +130,7 @@ function renderLinkedText(text: string) {
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className="font-semibold text-[var(--color-accent)] underline underline-offset-2"
+        className="font-semibold text-[var(--color-accent-ink)] underline underline-offset-2"
       >
         source
       </a>,

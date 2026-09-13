@@ -117,7 +117,7 @@ export function CaseCommentForm({ type, slug, signedIn }: Props) {
         </p>
       )}
       {state.kind === "error" && (
-        <p className="mt-3 text-sm text-[var(--color-accent)]">{state.message}</p>
+        <p className="mt-3 text-sm text-[var(--color-accent-ink)]">{state.message}</p>
       )}
     </form>
   );

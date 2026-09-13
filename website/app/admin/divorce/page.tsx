@@ -57,7 +57,7 @@ export default async function FamilyCaseDashboard() {
 
   return (
     <article className="mx-auto max-w-5xl px-4 py-8">
-      <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
+      <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[var(--color-accent-ink)]">
         Private · never published · initials only
       </p>
       <h1 className="mt-1 font-display text-3xl font-black tracking-tight">
@@ -81,7 +81,7 @@ export default async function FamilyCaseDashboard() {
       {/* The one blocking problem */}
       {rejectedOrders.length > 0 ? (
         <div className="mt-6 rounded-2xl border-l-4 border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-5">
-          <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--color-accent)]">
+          <p className="text-[11px] font-black uppercase tracking-[0.18em] text-[var(--color-accent-ink)]">
             The bottleneck
           </p>
           <p className="mt-1 font-display text-lg font-bold leading-snug">
@@ -169,7 +169,7 @@ function Stat({
           : "border-[var(--color-line)] bg-[var(--color-surface)]",
       ].join(" ")}
     >
-      <p className={["font-display text-3xl font-black", alert ? "text-[var(--color-accent)]" : ""].join(" ")}>
+      <p className={["font-display text-3xl font-black", alert ? "text-[var(--color-accent-ink)]" : ""].join(" ")}>
         {value}
       </p>
       <p className="mt-0.5 text-[11px] font-bold uppercase tracking-wider text-[var(--color-muted)]">

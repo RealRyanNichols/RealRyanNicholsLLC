@@ -118,7 +118,7 @@ function InfoTip({ text }: { text: string }) {
         aria-label={text}
         className="group/tip -m-3.5 inline-flex h-11 w-11 min-w-11 shrink-0 items-center justify-center focus:outline-none cursor-help sm:m-0 sm:h-4 sm:w-4 sm:min-w-0"
       >
-        <span className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-[var(--color-line)] text-[10px] font-bold leading-none text-[var(--color-muted)] group-hover/tip:border-[var(--color-accent)] group-hover/tip:text-[var(--color-accent)] group-focus/tip:border-[var(--color-accent)]">
+        <span className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-[var(--color-line)] text-[10px] font-bold leading-none text-[var(--color-muted)] group-hover/tip:border-[var(--color-accent)] group-hover/tip:text-[var(--color-accent-ink)] group-focus/tip:border-[var(--color-accent)]">
           i
         </span>
       </button>

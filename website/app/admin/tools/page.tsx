@@ -100,7 +100,7 @@ export default async function AdminToolsPage() {
     <article className="mx-auto max-w-6xl px-4 py-8">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent)]">
+          <p className="text-xs font-black uppercase tracking-normal text-[var(--color-accent-ink)]">
             Admin / free tools
           </p>
           <h1 className="mt-2 font-display text-4xl font-bold tracking-normal">
@@ -148,12 +148,12 @@ export default async function AdminToolsPage() {
       </section>
 
       {error ? (
-        <p className="mt-6 rounded-lg border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-4 text-sm font-bold text-[var(--color-accent)]">
+        <p className="mt-6 rounded-lg border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-4 text-sm font-bold text-[var(--color-accent-ink)]">
           Could not read free tool runs: {error.message}
         </p>
       ) : null}
       {wishError ? (
-        <p className="mt-6 rounded-lg border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-4 text-sm font-bold text-[var(--color-accent)]">
+        <p className="mt-6 rounded-lg border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-4 text-sm font-bold text-[var(--color-accent-ink)]">
           Could not read tool wishes: {wishError.message}
         </p>
       ) : null}

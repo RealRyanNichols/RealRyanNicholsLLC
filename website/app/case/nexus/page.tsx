@@ -124,7 +124,7 @@ export default async function CaseNexusPage() {
             </Link>
             <Link
               href="/tell-your-story"
-              className="inline-flex min-h-11 items-center justify-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3.5 py-1.5 text-center text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-gold-bright)] hover:text-[var(--color-accent)] sm:min-h-0"
+              className="inline-flex min-h-11 items-center justify-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-3.5 py-1.5 text-center text-xs font-black uppercase tracking-normal text-[var(--color-ink)] transition hover:border-[var(--color-gold-bright)] hover:text-[var(--color-accent-ink)] sm:min-h-0"
             >
               Tell story
             </Link>

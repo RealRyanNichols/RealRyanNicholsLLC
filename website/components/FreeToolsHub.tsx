@@ -650,7 +650,7 @@ export function FreeToolsHub() {
         </form>
 
         {error ? (
-          <p className="mx-4 mb-4 rounded-md border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-3 text-sm font-bold text-[var(--color-accent)] sm:mx-5">
+          <p className="mx-4 mb-4 rounded-md border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-3 text-sm font-bold text-[var(--color-accent-ink)] sm:mx-5">
             {error}
           </p>
         ) : null}
@@ -738,7 +738,7 @@ export function FreeToolsHub() {
                 </button>
               </div>
               {payError ? (
-                <p className="mt-2 text-xs font-bold text-[var(--color-accent)]">
+                <p className="mt-2 text-xs font-bold text-[var(--color-accent-ink)]">
                   {payError}
                 </p>
               ) : null}
@@ -861,7 +861,7 @@ export function FreeToolsHub() {
               {wishBusy ? "Saving wish..." : "Submit tool wish"}
             </button>
             {wishError ? (
-              <p className="rounded-md border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-3 text-sm font-bold text-[var(--color-accent)]">
+              <p className="rounded-md border border-[var(--color-accent)] bg-[var(--color-accent-soft)] p-3 text-sm font-bold text-[var(--color-accent-ink)]">
                 {wishError}{" "}
                 {wishError.toLowerCase().includes("sign in") ? (
                   <Link href="/login?next=/tools" className="underline">
@@ -1250,7 +1250,7 @@ function Field({
     <label className="grid gap-1 text-sm font-bold text-[var(--color-ink-soft)]">
       <span>
         {label}
-        {required ? <span className="text-[var(--color-accent)]"> *</span> : null}
+        {required ? <span className="text-[var(--color-accent-ink)]"> *</span> : null}
       </span>
       {children}
     </label>

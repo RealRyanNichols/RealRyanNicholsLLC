@@ -68,7 +68,7 @@ export default async function LiveStreamPage({
         <p
           className={[
             "text-xs uppercase tracking-wider font-black",
-            stream.status === "live" ? "text-[var(--color-danger)]" : "text-[var(--color-accent)]",
+            stream.status === "live" ? "text-[var(--color-danger)]" : "text-[var(--color-accent-ink)]",
           ].join(" ")}
         >
           {liveStatusLabel(stream.status)}

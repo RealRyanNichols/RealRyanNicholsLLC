@@ -530,7 +530,7 @@ function OfferSalesPage({
               ) : (
                 <p className="mt-3 text-xs leading-relaxed text-[var(--color-muted)]">
                   J6 defendant?{" "}
-                  <Link href="/case" className="font-bold text-[var(--color-accent)] underline">
+                  <Link href="/case" className="font-bold text-[var(--color-accent-ink)] underline">
                     Sign in and link your verified case profile
                   </Link>{" "}
                   to claim eligible services free.
@@ -663,7 +663,7 @@ function OfferSalesPage({
           </div>
           <div className="grid gap-0 lg:grid-cols-2">
             <div className="border-b border-[var(--color-line)] p-5 lg:border-b-0 lg:border-r sm:p-6">
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent)]">
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--color-accent-ink)]">
                 Before
               </p>
               <div className="mt-4 grid gap-3">
@@ -971,7 +971,7 @@ function StrategyCallPage({
               ) : (
                 <p className="mt-3 text-xs leading-relaxed text-[var(--color-muted)]">
                   J6 defendant?{" "}
-                  <Link href="/case" className="font-bold text-[var(--color-accent)] underline">
+                  <Link href="/case" className="font-bold text-[var(--color-accent-ink)] underline">
                     Sign in and link your verified case profile
                   </Link>{" "}
                   to claim eligible services free.

@@ -256,7 +256,7 @@ export function CaseUploadForm() {
       </button>
 
       {state.kind === "error" ? (
-        <p className="text-sm text-[var(--color-accent)]">{state.message}</p>
+        <p className="text-sm text-[var(--color-accent-ink)]">{state.message}</p>
       ) : null}
       {state.kind === "success" ? (
         <p className="text-sm text-[var(--color-success)]">{state.message}</p>

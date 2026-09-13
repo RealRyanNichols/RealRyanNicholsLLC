@@ -50,7 +50,7 @@ export function ClaimActions({ claimId }: { claimId: string }) {
             type="button"
             disabled={isPending}
             onClick={() => setShowReject(true)}
-            className="text-sm font-semibold rounded-md border border-[var(--color-line)] px-3 py-1.5 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] disabled:opacity-50"
+            className="text-sm font-semibold rounded-md border border-[var(--color-line)] px-3 py-1.5 hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)] disabled:opacity-50"
           >
             Reject…
           </button>

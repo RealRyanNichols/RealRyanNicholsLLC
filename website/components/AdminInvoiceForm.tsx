@@ -119,7 +119,7 @@ export function AdminInvoiceForm() {
     >
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-accent)]">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-accent-ink)]">
             Create invoice
           </p>
           <h2 className="mt-1 text-xl font-bold tracking-tight">
@@ -134,7 +134,7 @@ export function AdminInvoiceForm() {
         <button
           type="button"
           onClick={loadChaseDraft}
-          className="rounded-full border border-[var(--color-line)] px-4 py-2 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          className="rounded-full border border-[var(--color-line)] px-4 py-2 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)]"
         >
           Load Chase $1,100 draft
         </button>
@@ -252,7 +252,7 @@ export function AdminInvoiceForm() {
                 )}
               </p>
               {planHasRoundingIssue ? (
-                <p className="mt-2 text-xs font-semibold text-[var(--color-accent)]">
+                <p className="mt-2 text-xs font-semibold text-[var(--color-accent-ink)]">
                   The remaining balance has to divide cleanly by the number of
                   payments. Change the down payment or payment count.
                 </p>
@@ -345,7 +345,7 @@ export function AdminInvoiceForm() {
       </fieldset>
 
       {error ? (
-        <p className="mt-4 rounded-xl border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-3 py-2 text-sm font-semibold text-[var(--color-accent)]">
+        <p className="mt-4 rounded-xl border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-3 py-2 text-sm font-semibold text-[var(--color-accent-ink)]">
           {error}
         </p>
       ) : null}
@@ -358,7 +358,7 @@ export function AdminInvoiceForm() {
               href={result.stripe_hosted_invoice_url}
               target="_blank"
               rel="noreferrer"
-              className="mt-2 inline-block font-bold text-[var(--color-accent)] underline"
+              className="mt-2 inline-block font-bold text-[var(--color-accent-ink)] underline"
             >
               Open Stripe payment page
             </a>

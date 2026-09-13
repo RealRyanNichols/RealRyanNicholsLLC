@@ -75,21 +75,21 @@ export default function CaseBriefingPage() {
               Until then, the same data is browsable on{" "}
               <Link
                 href="/case/nexus"
-                className="text-[var(--color-accent)] underline underline-offset-4"
+                className="text-[var(--color-accent-ink)] underline underline-offset-4"
               >
                 the Case Nexus
               </Link>
               ,{" "}
               <Link
                 href="/case/timeline"
-                className="text-[var(--color-accent)] underline underline-offset-4"
+                className="text-[var(--color-accent-ink)] underline underline-offset-4"
               >
                 the Timeline
               </Link>
               , and{" "}
               <Link
                 href="/case/geography"
-                className="text-[var(--color-accent)] underline underline-offset-4"
+                className="text-[var(--color-accent-ink)] underline underline-offset-4"
               >
                 the Geography
               </Link>

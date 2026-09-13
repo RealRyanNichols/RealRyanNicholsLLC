@@ -150,7 +150,7 @@ export default async function AccountPage() {
       ) : null}
 
       {isBanned ? (
-        <div className="mt-6 rounded-xl border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-4 py-3 text-sm text-[var(--color-accent)]">
+        <div className="mt-6 rounded-xl border border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-4 py-3 text-sm text-[var(--color-accent-ink)]">
           This account is banned. Contact the site admin if you think this is in error.
         </div>
       ) : isPending ? (
@@ -169,7 +169,7 @@ export default async function AccountPage() {
           Public profile:{" "}
           <Link
             href={`/u/${profile.username}`}
-            className="text-[var(--color-accent)] underline"
+            className="text-[var(--color-accent-ink)] underline"
           >
             /u/{profile.username}
           </Link>
@@ -220,7 +220,7 @@ export default async function AccountPage() {
                       on{" "}
                       <Link
                         href={`/posts/${post?.slug ?? ""}`}
-                        className="text-[var(--color-accent)] hover:underline"
+                        className="text-[var(--color-accent-ink)] hover:underline"
                       >
                         {post?.title ?? post?.body?.slice(0, 60) ?? "post"}
                       </Link>{" "}
@@ -252,12 +252,12 @@ export default async function AccountPage() {
                   className="flex items-center gap-3 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-2 text-sm"
                 >
                   <span className="text-base" aria-hidden>{REACTION_ICON[r.kind] ?? "•"}</span>
-                  <span className="text-xs uppercase tracking-wider font-semibold text-[var(--color-accent)] w-16">
+                  <span className="text-xs uppercase tracking-wider font-semibold text-[var(--color-accent-ink)] w-16">
                     {r.kind}
                   </span>
                   <Link
                     href={`/posts/${post?.slug ?? ""}`}
-                    className="flex-1 truncate hover:text-[var(--color-accent)] hover:underline"
+                    className="flex-1 truncate hover:text-[var(--color-accent-ink)] hover:underline"
                   >
                     {post?.title ?? post?.body?.slice(0, 60) ?? "post"}
                   </Link>
@@ -355,8 +355,8 @@ function StatusBadge({ status }: { status: string }) {
       label: "pending review",
       cls: "bg-[var(--color-support-soft)] border-[var(--color-tag-procedural)]/50 text-[var(--color-tag-procedural)]",
     },
-    hidden: { label: "hidden", cls: "bg-[var(--color-accent-soft)] border-[var(--color-accent)] text-[var(--color-accent)]" },
-    deleted: { label: "deleted", cls: "bg-[var(--color-accent-soft)] border-[var(--color-accent)] text-[var(--color-accent)]" },
+    hidden: { label: "hidden", cls: "bg-[var(--color-accent-soft)] border-[var(--color-accent)] text-[var(--color-accent-ink)]" },
+    deleted: { label: "deleted", cls: "bg-[var(--color-accent-soft)] border-[var(--color-accent)] text-[var(--color-accent-ink)]" },
   };
   const m = map[status] ?? { label: status, cls: "bg-[var(--color-surface-2)] border-[var(--color-line)] text-[var(--color-muted)]" };
   return (

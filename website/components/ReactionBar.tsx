@@ -138,7 +138,7 @@ export function ReactionBar({
           <span
             className={[
               "text-xs font-mono font-bold tabular-nums whitespace-nowrap",
-              tone === "navy" ? "text-[var(--color-ink)]" : "text-[var(--color-accent)]",
+              tone === "navy" ? "text-[var(--color-ink)]" : "text-[var(--color-accent-ink)]",
             ].join(" ")}
           >
             {total.toLocaleString()} {total === 1 ? "reaction" : "reactions"}

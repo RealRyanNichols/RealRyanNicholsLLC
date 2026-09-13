@@ -129,7 +129,7 @@ export default function NumbersPage() {
           the attribution notes are all kept so the numbers can be audited
           rather than taken on faith. If you’re evaluating this site and want to
           check the methodology against the data,{" "}
-          <Link href="/support" className="text-[var(--color-accent)] underline underline-offset-4">
+          <Link href="/support" className="text-[var(--color-accent-ink)] underline underline-offset-4">
             reach out
           </Link>
           .

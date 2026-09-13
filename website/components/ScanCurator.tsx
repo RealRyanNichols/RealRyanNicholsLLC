@@ -109,7 +109,7 @@ export function ScanCurator({ doc, nextSlug, prevSlug }: { doc: Doc; nextSlug: s
               href={doc.external_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[var(--color-accent)] underline"
+              className="text-[var(--color-accent-ink)] underline"
             >
               Open in Drive →
             </a>

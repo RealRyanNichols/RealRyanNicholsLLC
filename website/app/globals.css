@@ -29,6 +29,10 @@
   --color-parchment-line: #d8c89e;
 
   --color-accent: #d9382b;
+  /* Small red type on the dark floor. Flag red itself sits under 4.5:1 on
+     navy, so labels, links, kickers and error text use this lighter cut;
+     buttons and marks keep --color-accent. */
+  --color-accent-ink: #f25b4d;
   --color-accent-strong: #b32419;
   --color-accent-soft: rgba(217, 56, 43, 0.16);
   --color-accent-glow: rgba(217, 56, 43, 0.3);
@@ -48,7 +52,7 @@
   --color-blue-soft: rgba(61, 111, 209, 0.18);
 
   /* Severity tags. Only red is reserved for SEVERE. */
-  --color-tag-severe: #e0463a;
+  --color-tag-severe: #f25b4d;
   --color-tag-procedural: #e1a44a;
   --color-tag-institutional: #9dbcff;
   --color-tag-resolved: #6fd39a;
@@ -57,7 +61,7 @@
 
   --color-success: #6fd39a;
   --color-success-soft: rgba(111, 211, 154, 0.16);
-  --color-danger: #e0463a;
+  --color-danger: #f25b4d;
 
   --font-display: "Source Serif 4", "Iowan Old Style", "Charter", "Georgia", serif;
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -752,6 +756,34 @@ body[data-mobile-menu-open="true"] .rrn-mobile-support-bar {
 
 /* Print: switch to high-contrast black-on-white for the Compensation Brief */
 @media print {
+  /* The theater is a screen palette. On paper every token goes dark on
+     white so headings, kickers, numerals and chips print legibly; the
+     case brief's own print: classes still apply on top. */
+  :root {
+    --color-paper: #ffffff;
+    --color-surface: #ffffff;
+    --color-surface-2: #f3f3f3;
+    --color-navy: #ffffff;
+    --color-line: rgba(0, 0, 0, 0.3);
+    --color-line-soft: rgba(0, 0, 0, 0.15);
+    --color-ink: #000000;
+    --color-ink-soft: #222222;
+    --color-muted: #444444;
+    --color-cream: #000000;
+    --color-gold: #6b4f00;
+    --color-gold-bright: #6b4f00;
+    --color-support: #6b4f00;
+    --color-support-strong: #6b4f00;
+    --color-blue-ink: #1d3a6b;
+    --color-accent-ink: #9b1c29;
+    --color-danger: #9b1c29;
+    --color-tag-severe: #9b1c29;
+    --color-tag-procedural: #7a4a00;
+    --color-tag-institutional: #1d3a6b;
+    --color-tag-resolved: #1f6f43;
+    --color-success: #1f6f43;
+  }
+  h1, h2, h3 { color: #000000; }
   html, body { background: #ffffff !important; color: #000000 !important; }
   header, footer, nav, .btn-accent { color-adjust: exact; }
   a { color: #000000 !important; text-decoration: underline; }

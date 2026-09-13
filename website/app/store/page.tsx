@@ -218,7 +218,7 @@ function ProductCard({ p, reveal }: { p: Product; reveal?: number }) {
         </div>
       </div>
       <div className="flex flex-1 flex-col p-5">
-        <h3 className="font-display text-2xl font-bold tracking-normal group-hover:text-[var(--color-accent)]">
+        <h3 className="font-display text-2xl font-bold tracking-normal group-hover:text-[var(--color-accent-ink)]">
           {p.name}
         </h3>
         {p.description ? (
@@ -246,7 +246,7 @@ function ProductCard({ p, reveal }: { p: Product; reveal?: number }) {
           </>
         ) : null}
 
-        <p className="mt-5 flex items-center justify-between border-t border-[var(--color-line)] pt-4 text-sm font-bold text-[var(--color-accent)]">
+        <p className="mt-5 flex items-center justify-between border-t border-[var(--color-line)] pt-4 text-sm font-bold text-[var(--color-accent-ink)]">
           <span>{detail?.cta ?? "View details"}</span>
           <span aria-hidden="true">-&gt;</span>
         </p>
@@ -440,13 +440,13 @@ export default async function StorePage() {
               data-reveal
               style={{ "--d": i } as React.CSSProperties}
             >
-              <h2 className="font-display text-xl font-bold tracking-normal group-hover:text-[var(--color-accent)]">
+              <h2 className="font-display text-xl font-bold tracking-normal group-hover:text-[var(--color-accent-ink)]">
                 {card.title}
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
                 {card.body}
               </p>
-              <p className="mt-4 text-sm font-bold text-[var(--color-accent)]">
+              <p className="mt-4 text-sm font-bold text-[var(--color-accent-ink)]">
                 {card.cta} -&gt;
               </p>
             </Link>
@@ -460,14 +460,14 @@ export default async function StorePage() {
             The checkout shelf is being updated. In the meantime,{" "}
             <Link
               href="/case-review"
-              className="font-bold text-[var(--color-accent)] underline underline-offset-4"
+              className="font-bold text-[var(--color-accent-ink)] underline underline-offset-4"
             >
               start a case review
             </Link>{" "}
             or{" "}
             <Link
               href="/support"
-              className="font-bold text-[var(--color-accent)] underline underline-offset-4"
+              className="font-bold text-[var(--color-accent-ink)] underline underline-offset-4"
             >
               support the work here
             </Link>

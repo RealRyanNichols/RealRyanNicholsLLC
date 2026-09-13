@@ -403,7 +403,7 @@ function TimelineCard({
       <div className="flex items-baseline justify-between gap-3">
         <Link
           href={`/case/people/${row.slug}`}
-          className="flex min-h-11 min-w-0 items-center text-base font-bold text-[var(--color-ink)] hover:text-[var(--color-accent)] sm:min-h-0"
+          className="flex min-h-11 min-w-0 items-center text-base font-bold text-[var(--color-ink)] hover:text-[var(--color-accent-ink)] sm:min-h-0"
         >
           <span className="truncate">{row.name}</span>
         </Link>

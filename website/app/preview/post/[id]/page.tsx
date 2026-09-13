@@ -48,7 +48,7 @@ export default async function DraftPreviewPage({
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <div className="mb-6 rounded-xl border-2 border-[var(--color-accent)] bg-[var(--color-accent-soft)] px-4 py-3">
-        <p className="text-[11px] uppercase tracking-[0.18em] font-bold text-[var(--color-accent)]">
+        <p className="text-[11px] uppercase tracking-[0.18em] font-bold text-[var(--color-accent-ink)]">
           Private draft preview · {post.status}
         </p>
         <p className="mt-1 text-sm text-[var(--color-ink-soft)]">

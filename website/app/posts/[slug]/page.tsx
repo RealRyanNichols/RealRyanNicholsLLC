@@ -305,7 +305,7 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
         <header className="mb-5" data-reveal>
           <div className="mb-2 flex flex-wrap items-center gap-2">
             {post.pinned && (
-              <span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-accent-soft)] text-[var(--color-accent)] px-2 py-0.5 text-xs font-medium">
+              <span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-accent-soft)] text-[var(--color-accent-ink)] px-2 py-0.5 text-xs font-medium">
                 Pinned
               </span>
             )}
@@ -345,7 +345,7 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
                 <Link
                   key={tag}
                   href={`/search?q=${encodeURIComponent(tag)}`}
-                  className="inline-flex min-h-11 items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-2.5 py-1 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] sm:min-h-0"
+                  className="inline-flex min-h-11 items-center rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] px-2.5 py-1 text-xs font-bold text-[var(--color-ink-soft)] transition hover:border-[var(--color-accent)] hover:text-[var(--color-accent-ink)] sm:min-h-0"
                 >
                   #{tag}
                 </Link>

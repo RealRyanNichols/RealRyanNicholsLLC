@@ -88,7 +88,7 @@ export function OnboardingForm({
           htmlFor="ob-fullname"
           className="block text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold mb-1.5"
         >
-          Full legal name <span className="text-[var(--color-accent)]">*</span>
+          Full legal name <span className="text-[var(--color-accent-ink)]">*</span>
         </label>
         <input
           id="ob-fullname"
@@ -111,7 +111,7 @@ export function OnboardingForm({
           htmlFor="ob-display"
           className="block text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold mb-1.5"
         >
-          Display name <span className="text-[var(--color-accent)]">*</span>
+          Display name <span className="text-[var(--color-accent-ink)]">*</span>
         </label>
         <input
           id="ob-display"
@@ -133,7 +133,7 @@ export function OnboardingForm({
           htmlFor="ob-username"
           className="block text-xs uppercase tracking-wider text-[var(--color-muted)] font-bold mb-1.5"
         >
-          Username <span className="text-[var(--color-accent)]">*</span>
+          Username <span className="text-[var(--color-accent-ink)]">*</span>
         </label>
         <div className="flex items-stretch rounded-lg border border-[var(--color-line)] overflow-hidden focus-within:border-[var(--color-accent)]">
           <span className="inline-flex items-center px-3 bg-[var(--color-surface-2)] text-sm text-[var(--color-muted)] font-mono">
@@ -162,7 +162,7 @@ export function OnboardingForm({
       </div>
 
       {err ? (
-        <p className="text-sm text-[var(--color-accent)] bg-[var(--color-accent-soft)] border border-[var(--color-accent)] rounded-lg px-3 py-2">
+        <p className="text-sm text-[var(--color-accent-ink)] bg-[var(--color-accent-soft)] border border-[var(--color-accent)] rounded-lg px-3 py-2">
           {err}
         </p>
       ) : null}

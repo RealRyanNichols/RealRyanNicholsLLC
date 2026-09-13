@@ -94,7 +94,7 @@ export function ClaimForm({
       />
 
       {errorMsg ? (
-        <p className="text-sm text-[var(--color-accent)] bg-[var(--color-accent-soft)] border border-[var(--color-accent)] rounded-lg px-3 py-2">
+        <p className="text-sm text-[var(--color-accent-ink)] bg-[var(--color-accent-soft)] border border-[var(--color-accent)] rounded-lg px-3 py-2">
           {errorMsg}
         </p>
       ) : null}
@@ -143,7 +143,7 @@ function Field({
     <div>
       <label htmlFor={id} className="block text-sm font-semibold mb-1.5">
         {label}
-        {required ? <span className="text-[var(--color-accent)] ml-1">*</span> : null}
+        {required ? <span className="text-[var(--color-accent-ink)] ml-1">*</span> : null}
       </label>
       {textarea ? (
         <textarea

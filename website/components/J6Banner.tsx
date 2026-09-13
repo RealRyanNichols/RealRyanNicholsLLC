@@ -31,7 +31,7 @@ export async function J6Banner({
           <p
             className={[
               "text-xs uppercase tracking-wider font-bold group-hover:text-[var(--color-cream)]",
-              tone === "navy" ? "text-[var(--color-ink)]" : "text-[var(--color-accent)]",
+              tone === "navy" ? "text-[var(--color-ink)]" : "text-[var(--color-accent-ink)]",
             ].join(" ")}
           >
             J6 Anti-Weaponization Case Builder
