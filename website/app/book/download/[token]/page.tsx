@@ -5,6 +5,7 @@ import {
   isSupabaseServiceConfigured,
 } from "@/lib/supabase/service";
 import { BOOK } from "@/lib/book";
+import { isBookEditionReady } from "@/lib/book-edition";
 
 export const dynamic = "force-dynamic";
 
@@ -110,7 +111,7 @@ export default async function BookDownloadPage({
     );
   }
 
-  const fileReady = Boolean(process.env.BOOK_DOWNLOAD_URL);
+  const fileReady = isBookEditionReady();
   const firstName = order.customer_name?.trim().split(/\s+/)[0];
 
   return (
