@@ -18,7 +18,7 @@ export function SignupForm({
   // wording anywhere the caller does not pass its own.
   kicker = "Get updates",
   blurb,
-  // Where on the site this form sits ("footer", "case-timeline", …). Rides
+  // Where on the site this form sits ("footer", "case-top", …). Rides
   // along on every subscribe_* event so identical forms on one page can be
   // told apart; the event names themselves never change.
   placement,

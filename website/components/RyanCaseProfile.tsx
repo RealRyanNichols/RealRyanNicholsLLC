@@ -311,6 +311,20 @@ export function RyanCaseProfile({
         </Link>
       </div>
 
+      {/* Capture band one — the first ask, deliberately above the fold-out
+          into the chapters. It used to sit after the case timeline, roughly
+          43% down the page, while the measured median scroll on /case is 18%:
+          half the readers never reached it and the table showed it (zero
+          captures in the 21 days to 2026-09-14). Moved here, ahead of chapter
+          one, so the ask lands inside the range people actually read. The
+          placement id changed with it so old "case-timeline" rows and new
+          "case-top" rows can be compared instead of blended. */}
+      <CaseCaptureBand
+        className="mt-10"
+        placement="case-top"
+        line="The record is still being written. Get the next filing when it lands."
+      />
+
       {/* ---- Who he is, before the government ---- */}
       <section id="chapter-one" className="mt-12 scroll-mt-24 border-t-2 border-[var(--color-line)] pt-10">
         <ChapterHeader
@@ -533,14 +547,6 @@ export function RyanCaseProfile({
           ))}
         </ol>
       </section>
-
-      {/* Capture band one — a pause after the case timeline, before the
-          detention record. */}
-      <CaseCaptureBand
-        className="mt-12"
-        placement="case-timeline"
-        line="The record is still being written. Get the next filing when it lands."
-      />
 
       {/* ---- The detention record — the documented account ---- */}
       <section id="chapter-three" className="mt-12 scroll-mt-24 border-t-2 border-[var(--color-line)] pt-10">

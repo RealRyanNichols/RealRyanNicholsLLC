@@ -6,9 +6,14 @@ import { SITE } from "@/lib/site";
 // line, the sitewide follow form (email or phone, one button, the same
 // /api/subscribe wiring and subscribe_* events the footer uses), and, for
 // the book slot, the book band above the form. Exactly two of these render
-// on the page — after the case timeline and after the evidence — and
-// nothing else above the footer asks for an address. Full-bleed on a phone,
-// a rounded card from `sm` up.
+// on the page — one above chapter one, inside the 18% of the page a median
+// reader actually reaches, and one after the evidence — and nothing else
+// above the footer asks for an address. Full-bleed on a phone, a rounded
+// card from `sm` up.
+//
+// Do not push the first band back down into the story. It sat after the case
+// timeline until 2026-09-14 and captured nothing for 21 straight days,
+// because it rendered at ~43% scroll against a measured 18% median.
 export function CaseCaptureBand({
   line,
   placement,
@@ -18,7 +23,7 @@ export function CaseCaptureBand({
   // The one line the band says. It is the band's heading and names the
   // landmark, so the outline reads the line, not the form's kicker.
   line: string;
-  // Rides on the form's subscribe_* events ("case-timeline", "case-book").
+  // Rides on the form's subscribe_* events ("case-top", "case-book").
   placement: string;
   children?: ReactNode;
   className?: string;
