@@ -20,6 +20,12 @@ const SECURITY_HEADERS = [
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  // The reader edition PDF lives outside /public so the only path to it is a
+  // valid buyer token. Trace it into the routes that read it.
+  outputFileTracingIncludes: {
+    "/book/download/[token]": ["./private/book/**"],
+    "/book/download/[token]/file": ["./private/book/**"],
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "rpchhzncxigczfojfdtc.supabase.co" },
