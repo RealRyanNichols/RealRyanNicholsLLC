@@ -14,6 +14,8 @@ og_image: "https://realryannichols.com/social-cards/2026-09-19/longview-free-can
 tags: "Longview Public Library, Canva class, free computer class, Gregg County, job skills"
 ---
 
+![Longview Residents Can Learn Canva Free This Afternoon](https://realryannichols.com/social-cards/2026-09-19/longview-free-canva-class-today.jpg)
+
 A useful skill does not always need a semester, a subscription, or a long drive.
 
 Sometimes it needs one Saturday afternoon at the public library.
