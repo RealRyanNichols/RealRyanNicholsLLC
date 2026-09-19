@@ -14,6 +14,8 @@ og_image: "https://realryannichols.com/social-cards/2026-09-19/website-change-no
 tags: "website rollback, deployment checklist, small business website, change log, business systems"
 ---
 
+![A Website Change Is Not Finished Until You Can Undo It](https://realryannichols.com/social-cards/2026-09-19/website-change-not-finished-until-you-can-undo-it.jpg)
+
 Most website changes are tested in one direction.
 
 Does the new page load? Does the new button work? Did the new price replace the old one?
@@ -139,4 +141,3 @@ A release is not complete because the new version is live.
 It is complete when you know how to recover the business if the new version is wrong.
 
 Which change on your website would be hardest to undo today?
-
