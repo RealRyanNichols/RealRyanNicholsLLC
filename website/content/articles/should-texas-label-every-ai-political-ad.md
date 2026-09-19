@@ -14,6 +14,8 @@ og_image: "https://realryannichols.com/social-cards/2026-09-19/should-texas-labe
 tags: "Texas politics, AI political ads, deepfakes, election law, disclosure"
 ---
 
+![Should Texas Require a Label on Every AI-Generated Political Ad?](https://realryannichols.com/social-cards/2026-09-19/should-texas-label-every-ai-political-ad.jpg)
+
 Texas already has a deepfake election law.
 
 That fact sounds more complete than the law is.
@@ -111,4 +113,3 @@ It can give people one true fact before they decide what they are looking at.
 Should Texas require every paid political ad that materially generates or alters a real person’s voice, face, or actions with AI to carry a clear disclosure label?
 
 {{related: should-texas-require-the-real-price-everywhere-advertised | should-texas-require-pay-ranges-in-every-job-posting | should-texas-disclose-ai-screening-before-you-apply}}
-
