@@ -14,6 +14,8 @@ og_image: "https://realryannichols.com/social-cards/2026-09-19/do-not-sentence-y
 tags: "resilience, hard week, self-forgiveness, Saturday reset, next step"
 ---
 
+![Do Not Sentence Your Life on a Friday Night](https://realryannichols.com/social-cards/2026-09-19/do-not-sentence-your-life-on-a-friday-night.jpg)
+
 Friday night can make a convincing prosecutor.
 
 It knows every promise you missed. It can name the call you avoided, the work that came back wrong, the money that did not show up, and the conversation that followed you home.
@@ -147,4 +149,3 @@ Then let Saturday be Saturday.
 What permanent judgment can you replace with one precise next step today?
 
 {{related: you-do-not-have-to-punish-yourself-to-start-again | a-bad-start-does-not-own-the-rest-of-your-day | make-repair-before-you-defend-yourself}}
-
