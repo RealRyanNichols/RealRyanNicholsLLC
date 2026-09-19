@@ -14,6 +14,8 @@ og_image: "https://realryannichols.com/social-cards/2026-09-19/three-characters-
 tags: "emoticon history, Scott Fahlman, Carnegie Mellon, internet history, communication"
 ---
 
+![Three Characters Taught the Internet to Smile](https://realryannichols.com/social-cards/2026-09-19/three-characters-taught-the-internet-to-smile.jpg)
+
 The problem was not bandwidth.
 
 The computers were already connected. The messages were moving. Smart people at Carnegie Mellon University were using electronic bulletin boards to trade announcements, arguments, questions, and jokes.
