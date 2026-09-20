@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 /**
  * Compact cross-promo card that funnels site traffic to the /book waitlist.
@@ -13,13 +14,14 @@ export function BookPromo({ className = "" }: { className?: string }) {
       className={`group block rounded-2xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 text-[var(--color-cream)] shadow-[0_20px_50px_rgba(0,0,0,0.4)] transition hover:border-[var(--color-gold-bright)] ${className}`}
     >
       <div className="flex items-center gap-4">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src="/uploads/book-cover.png"
           alt="Fighting Shadows — a memoir by Ryan Nichols"
           width={1000}
           height={1333}
-          className="w-16 shrink-0 rounded border border-[var(--color-line)] shadow-lg shadow-black/40"
+          sizes="64px"
+          loading="lazy"
+          className="h-auto w-16 shrink-0 rounded border border-[var(--color-line)] shadow-lg shadow-black/40"
         />
         <div className="min-w-0">
           <p className="eyebrow">Pre-order · The book</p>

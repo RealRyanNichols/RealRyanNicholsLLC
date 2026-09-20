@@ -51,17 +51,19 @@ export default async function HomePage({
   const shown = Number.isFinite(parsed)
     ? Math.min(Math.max(parsed, PAGE), 3000)
     : PAGE;
-  const [posts, activeLiveStream, ogImages] = await Promise.all([
+  const [posts, activeLiveStream] = await Promise.all([
     getPublishedPosts({ sort: view, limit: shown + 1 }),
     getActiveLiveStream(),
-    getOgImages(),
+  ]);
+  const hasMore = posts.length > shown;
+  const feed = posts.slice(0, shown);
+  const [countMap, ogImages] = await Promise.all([
+    getCommentCounts(feed.map((p) => p.id)),
+    getOgImages(feed.map((p) => `/posts/${p.slug}`)),
   ]);
   // Custom OG thumbnails keyed by post path — used as feed-card art for
   // text-only posts (PostCard ignores it when the body has its own visual).
   const ogMap = new Map(ogImages.map((o) => [o.path, o.image_url]));
-  const hasMore = posts.length > shown;
-  const feed = posts.slice(0, shown);
-  const countMap = await getCommentCounts(feed.map((p) => p.id));
   const emailSignupEnabled = SITE.emailCaptureEnabled;
 
   // Today's front porch. The feed below never rotates — these do: the copy

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { formatDistanceToNowStrict } from "date-fns";
 import type { MediaItem, Post } from "@/lib/types";
 import { PostBody } from "@/components/PostBody";
@@ -7,6 +8,25 @@ import { PostStats } from "@/components/PostStats";
 import { SITE } from "@/lib/site";
 import { muxThumbnailUrl } from "@/lib/mux";
 import { getDirectVideoUrl } from "@/lib/direct-video";
+import { getImageSource } from "@/lib/image-source";
+
+// Lazy images can use their rendered width, including photo-grid cells and
+// the wider /videos feed. The fallback covers browsers without auto sizing.
+const CARD_IMAGE_SIZES = "auto, (min-width: 1024px) 992px, calc(100vw - 32px)";
+
+function CardImage({ src, alt, className }: { src: string; alt: string; className: string }) {
+  return (
+    <Image
+      {...getImageSource(src)}
+      alt={alt}
+      fill
+      sizes={CARD_IMAGE_SIZES}
+      loading="lazy"
+      decoding="async"
+      className={className}
+    />
+  );
+}
 
 export function PostCard({
   post,
@@ -183,8 +203,7 @@ function PostCardBody({
         </h2>
         <Link href={`/posts/${post.slug}`} className="group relative block aspect-video overflow-hidden rounded-xl border border-[var(--color-line)] bg-black shadow-[0_16px_40px_rgba(0,0,0,0.35)]">
           {thumb ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={thumb} alt="" className="absolute inset-0 w-full h-full object-cover" />
+            <CardImage src={thumb} alt="" className="object-cover" />
           ) : directVideoUrl ? (
             <video
               src={directVideoUrl}
@@ -245,12 +264,10 @@ function PostCardBody({
             href={`/posts/${post.slug}`}
             className="relative block aspect-video overflow-hidden rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <CardImage
               src={cardImage}
               alt={post.title ? `${post.title} social preview` : "Article social preview"}
-              loading="lazy"
-              className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover/card:scale-[1.02]"
+              className="object-cover transition duration-300 group-hover/card:scale-[1.02]"
             />
           </Link>
           <h2 className="mt-4 font-display text-2xl font-bold leading-tight tracking-tight sm:text-3xl">
@@ -309,12 +326,10 @@ function PhotoGrid({ media }: { media: MediaItem[] }) {
     // of the feed down the page — the single biggest layout-shift source here.
     return (
       <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] shadow-[0_16px_40px_rgba(0,0,0,0.35)]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <CardImage
           src={m.url}
           alt={m.alt ?? ""}
-          loading="lazy"
-          className="absolute inset-0 h-full w-full object-cover"
+          className="object-cover"
         />
       </div>
     );
@@ -332,8 +347,7 @@ function PhotoGrid({ media }: { media: MediaItem[] }) {
     >
       {media.slice(0, 4).map((m, i) => (
         <div key={m.url} className="relative aspect-square overflow-hidden rounded-lg border border-[var(--color-line)]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={m.url} alt={m.alt ?? ""} className="absolute inset-0 w-full h-full object-cover" />
+          <CardImage src={m.url} alt={m.alt ?? ""} className="object-cover" />
           {i === 3 && media.length > 4 ? (
             <div className="absolute inset-0 flex items-center justify-center bg-black/50 text-[var(--color-cream)] text-xl font-semibold">
               +{media.length - 4}

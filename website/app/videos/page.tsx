@@ -35,13 +35,12 @@ export default async function VideosPage(props: {
   searchParams: Promise<{ channel?: string }>;
 }) {
   const { channel: selectedId } = await props.searchParams;
-  const [publishedPosts, activeLiveStream] = await Promise.all([
-    getPublishedPosts(),
+  const [allVideos, activeLiveStream] = await Promise.all([
+    getPublishedPosts({ type: "video" }),
     getActiveLiveStream(),
   ]);
   // getPublishedPosts already returns feed order: pinned first, then newest
   // first. We keep that order untouched so Watch reads exactly like the Feed.
-  const allVideos = publishedPosts.filter((p) => p.type === "video");
   const j6Videos = allVideos.filter((p) => channelOf(p.category) === "J6");
 
   // Channels that actually have videos, in their canonical order, with counts.

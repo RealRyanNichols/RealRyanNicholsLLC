@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { getMainPageOgImage } from "@/lib/page-og-catalog";
 
@@ -33,7 +34,8 @@ export function canonicalPath(
   return `${pathname}?${qs}`;
 }
 
-export async function getOgImage(path: string): Promise<PageOgImage | null> {
+// Share metadata and article structured data use the same request-local read.
+export const getOgImage = cache(async (path: string): Promise<PageOgImage | null> => {
   const supabase = getSupabaseStaticClient();
   const { data } = await supabase
     .from("page_og_images")
@@ -53,13 +55,25 @@ export async function getOgImage(path: string): Promise<PageOgImage | null> {
     width: image.width,
     height: image.height,
   };
-}
+});
 
-export async function getOgImages(): Promise<PageOgImage[]> {
+export async function getOgImages(paths?: string[]): Promise<PageOgImage[]> {
+  if (paths?.length === 0) return [];
+  const requestedPaths = paths ? new Set(paths) : null;
   const supabase = getSupabaseStaticClient();
-  const { data } = await supabase
+  let query = supabase
     .from("page_og_images")
     .select("path, image_url, title, description, width, height")
     .order("path", { ascending: true });
-  return (data ?? []) as PageOgImage[];
+  // The normal feed needs only a few cards. Deep "Load more" pages can have
+  // hundreds of long slugs; keep their existing full lookup instead of
+  // constructing a filter larger than the upstream request URL limit.
+  if (paths && encodeURIComponent(paths.join(",")).length < 6000) {
+    query = query.in("path", paths);
+  }
+  const { data } = await query;
+  const images = (data ?? []) as PageOgImage[];
+  return requestedPaths
+    ? images.filter((image) => requestedPaths.has(image.path))
+    : images;
 }

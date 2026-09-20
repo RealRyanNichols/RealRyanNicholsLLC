@@ -2,7 +2,12 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { format } from "date-fns";
-import { getPostBySlug, getPublishedPosts, getCommentCount } from "@/lib/posts";
+import {
+  getPostBySlug,
+  getPublishedPostSummaries,
+  getCommentCount,
+  type PublishedPostSummary,
+} from "@/lib/posts";
 import { ShareButton } from "@/components/ShareButton";
 import { FloatingShareBar } from "@/components/FloatingShareBar";
 import { PostStatsPanel } from "@/components/PostStatsPanel";
@@ -31,7 +36,7 @@ import type { Post, MediaItem } from "@/lib/types";
 export const revalidate = 60;
 
 export async function generateStaticParams() {
-  const posts = await getPublishedPosts();
+  const posts = await getPublishedPostSummaries();
   return posts.map((p) => ({ slug: p.slug }));
 }
 
@@ -75,7 +80,7 @@ function firstPostShareImage(post: Post): string | null {
   );
 }
 
-function relatedPostScore(current: Post, candidate: Post): number {
+function relatedPostScore(current: Post, candidate: PublishedPostSummary): number {
   let score = 0;
   if (current.category && candidate.category === current.category) score += 8;
 
@@ -187,7 +192,7 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
 
   const path = `/posts/${post.slug}`;
   const [allPosts, commentCount, pulseRes, ldOg, automaticLinksRes] = await Promise.all([
-    getPublishedPosts(),
+    getPublishedPostSummaries(),
     getCommentCount(post.id),
     supabase.rpc("post_live_pulse", { p_path: path }),
     getOgImage(path),
@@ -202,7 +207,7 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
   const postById = new Map(allPosts.map((candidate) => [candidate.id, candidate]));
   const automaticReadNext = (automaticLinksRes.data ?? [])
     .map((edge) => postById.get(edge.to_post_id as string))
-    .filter((candidate): candidate is Post => Boolean(candidate));
+    .filter((candidate): candidate is PublishedPostSummary => Boolean(candidate));
   const automaticIds = new Set(automaticReadNext.map((candidate) => candidate.id));
   const scoredReadNext = allPosts
     .filter((p) => p.id !== post.id)

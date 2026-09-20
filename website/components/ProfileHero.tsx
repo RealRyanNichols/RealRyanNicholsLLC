@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { SITE } from "@/lib/site";
 import { getSiteSettings } from "@/lib/site-settings";
+import { getImageSource } from "@/lib/image-source";
 
 // The home page title card, in the theater treatment: Ryan's real photo (the
 // site avatar) on the left, navy falling off toward the copy so type never
@@ -20,29 +21,26 @@ const AUDIENCES = [
 export async function ProfileHero() {
   const settings = await getSiteSettings();
   const avatarUrl = settings.avatar_url;
-  const hasAvatar = !!avatarUrl;
+  const avatarImage = avatarUrl ? getImageSource(avatarUrl) : null;
 
   return (
     <section
       className="relative overflow-hidden rounded-3xl border border-[var(--color-line)] bg-[var(--color-navy)] shadow-[0_24px_60px_rgba(0,0,0,0.45)]"
-      data-reveal
     >
       <div className="grid sm:grid-cols-[1fr_1.1fr]">
         {/* The photo. Real, uncropped face, never under the type. */}
         <div className="relative aspect-[4/3] sm:aspect-auto sm:min-h-[24rem]">
-          {hasAvatar ? (
+          {avatarImage ? (
             <Image
-              src={avatarUrl!}
+              {...avatarImage}
+              // A new cache key avoids the stale large variant from the
+              // earlier profile repair. This key was verified in production.
+              src={avatarImage.src === "/avatar.jpg" ? "/avatar.jpg?v=20260920" : avatarImage.src}
               alt={SITE.name}
               fill
-              sizes="(min-width: 1024px) 480px, 100vw"
+              sizes="(min-width: 1024px) 480px, (min-width: 640px) 48vw, calc(100vw - 32px)"
               className="object-cover object-[24%_42%]"
               priority
-              // The large optimizer variant for this photo became stale in
-              // production while the small header avatar kept working. The
-              // direct asset is already a web-ready JPEG, so bypassing the
-              // optimizer makes the hero reliable without changing its crop.
-              unoptimized
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center bg-[var(--color-surface-2)]">
