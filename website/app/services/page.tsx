@@ -1,90 +1,21 @@
 import { withMainPageOg } from "@/lib/page-metadata";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { ServicesHub } from "@/components/ServicesHub";
-import { FuelBand } from "@/components/FuelBand";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = withMainPageOg("/services", {
-  title: "Services — turn attention into action",
+  title: "Business Growth Systems | The LeadFlow Pro",
   description:
-    "Hire Ryan Nichols to audit, sharpen, or build an owned website that turns attention into proof, services, support, and checkout.",
+    "Need more leads and less busywork? See the websites, ads, follow-up, automation, and proof systems Ryan builds through The LeadFlow Pro.",
   alternates: { canonical: `${SITE.url}/services` },
   openGraph: {
-    title: "Services — turn attention into action",
+    title: "Build your business with The LeadFlow Pro",
     description:
-      "Business services for owned websites, attention systems, site audits, service ladders, and domain-first builds.",
-    images: ["/social-cards/map-room.jpg"],
+      "Websites, lead generation, follow-up, and automation built in accounts your business owns.",
+    images: ["/og/pages/2026-09/services.jpg"],
   },
 });
 
 export default function ServicesPage() {
-  return (
-    <>
-      <ServicesHub />
-
-      {/* More from Ryan — the book + the store, so /services is a true offers
-          hub, not only website services. No donations, just offers. */}
-      <section className="border-t border-[var(--color-line)] bg-[var(--color-paper)]">
-        <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-          <p className="eyebrow" data-reveal>
-            More from Ryan
-          </p>
-          <h2 className="mt-2 font-display text-3xl font-black tracking-tight">
-            Not ready for a build? Start here.
-          </h2>
-
-          <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
-            <Link
-              href="/book"
-              className="group panel p-6 transition hover:border-[var(--color-gold)]"
-              data-reveal
-            >
-              <p className="eyebrow">
-                The book
-              </p>
-              <h3 className="mt-2 text-2xl font-black tracking-tight text-[var(--color-ink)]">
-                They tried to bury me. I wrote it down.
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-                The story in my own words — prison, the pardon, faith, and the
-                rebuild. Get on the list and claim your copy.
-              </p>
-              <span className="mt-4 inline-flex text-sm font-bold text-[var(--color-accent-ink)]">
-                Reserve the book →
-              </span>
-            </Link>
-
-            <Link
-              href="/store"
-              className="group panel p-6 transition hover:border-[var(--color-gold)]"
-              data-reveal
-              style={{ "--d": 1 } as React.CSSProperties}
-            >
-              <p className="eyebrow">
-                The store
-              </p>
-              <h3 className="mt-2 text-2xl font-black tracking-tight text-[var(--color-ink)]">
-                Every offer in one place.
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-                Calls, audits, builds, and bundles — pick the smallest smart move
-                and check out clean. No subscriptions you can&apos;t cancel, no
-                trapped customers.
-              </p>
-              <span className="mt-4 inline-flex text-sm font-bold text-[var(--color-accent-ink)]">
-                Browse the store →
-              </span>
-            </Link>
-          </div>
-
-          {/* Not hiring today? The free side of the same machine runs on
-              tokens, and the fuel page trades them for work. */}
-          <div className="mt-8">
-            <FuelBand />
-          </div>
-        </div>
-      </section>
-    </>
-  );
+  return <ServicesHub />;
 }
