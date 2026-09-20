@@ -8,7 +8,7 @@ export function ReadNext({
   posts,
   caseLinks = [],
 }: {
-  posts: Post[];
+  posts: Pick<Post, "id" | "slug" | "title" | "published_at">[];
   // For case-related posts: 1-2 deep links into the evidence archive, so a
   // reader (or a crawler) can step from the story to the record behind it.
   caseLinks?: CaseLink[];

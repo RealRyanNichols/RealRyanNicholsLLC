@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import { SITE } from "@/lib/site";
 
@@ -7,7 +8,8 @@ export type SiteSettings = {
   case_og_url: string | null;
 };
 
-export async function getSiteSettings(): Promise<SiteSettings> {
+// Header and profile hero share a single public settings read per render.
+export const getSiteSettings = cache(async (): Promise<SiteSettings> => {
   const supabase = getSupabaseStaticClient();
   const { data } = await supabase
     .from("site_settings")
@@ -19,4 +21,4 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     cover_url: data?.cover_url ?? (SITE.coverPath || null),
     case_og_url: data?.case_og_url ?? null,
   };
-}
+});
