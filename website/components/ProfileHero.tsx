@@ -38,7 +38,11 @@ export async function ProfileHero() {
               sizes="(min-width: 1024px) 480px, 100vw"
               className="object-cover object-[24%_42%]"
               priority
-              unoptimized={avatarUrl!.startsWith("http")}
+              // The large optimizer variant for this photo became stale in
+              // production while the small header avatar kept working. The
+              // direct asset is already a web-ready JPEG, so bypassing the
+              // optimizer makes the hero reliable without changing its crop.
+              unoptimized
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center bg-[var(--color-surface-2)]">
