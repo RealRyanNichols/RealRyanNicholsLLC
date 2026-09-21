@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { getSupabaseStaticClient } from "@/lib/supabase/static";
 import type { Post } from "@/lib/types";
@@ -5,8 +6,34 @@ import type { Post } from "@/lib/types";
 export const POST_COLUMNS =
   "id, slug, type, title, body, seo_title, seo_description, image_urls, media, mux_asset_id, mux_upload_id, mux_playback_id, mux_status, duration_seconds, thumbnail_url, og_image_url, pinned, status, author_id, byline_override, category, tags, published_at, created_at, updated_at, views_count, shares_count, inbound_shares_count";
 
+export type PublishedPostSummary = Pick<
+  Post,
+  "id" | "slug" | "title" | "category" | "tags" | "published_at"
+>;
+
+// Related links and build-time slug discovery need the same published order
+// as the feed, but not the body and media of every article in the archive.
+export const getPublishedPostSummaries = cache(
+  async (): Promise<PublishedPostSummary[]> => {
+    const supabase = getSupabaseStaticClient();
+    const { data, error } = await supabase
+      .from("posts")
+      .select("id, slug, title, category, tags, published_at")
+      .eq("status", "published")
+      .lte("published_at", new Date().toISOString())
+      .order("pinned", { ascending: false })
+      .order("published_at", { ascending: false });
+
+    if (error) {
+      console.error("getPublishedPostSummaries:", error);
+      return [];
+    }
+    return (data ?? []) as PublishedPostSummary[];
+  },
+);
+
 export async function getPublishedPosts(
-  opts: { sort?: "latest" | "trending"; limit?: number } = {}
+  opts: { sort?: "latest" | "trending"; limit?: number; type?: Post["type"] } = {}
 ): Promise<Post[]> {
   const supabase = getSupabaseStaticClient();
   let query = supabase
@@ -19,6 +46,7 @@ export async function getPublishedPosts(
     opts.sort === "trending"
       ? query.order("views_count", { ascending: false, nullsFirst: false })
       : query.order("published_at", { ascending: false });
+  if (opts.type) query = query.eq("type", opts.type);
   if (opts.limit && opts.limit > 0) query = query.limit(opts.limit);
   const { data, error } = await query;
 
@@ -29,7 +57,9 @@ export async function getPublishedPosts(
   return (data ?? []) as Post[];
 }
 
-export async function getPostBySlug(slug: string): Promise<Post | null> {
+// Metadata and page rendering share this read within one request. React's
+// cache does not retain content across requests or delay editorial updates.
+export const getPostBySlug = cache(async (slug: string): Promise<Post | null> => {
   const supabase = getSupabaseStaticClient();
   const { data, error } = await supabase
     .from("posts")
@@ -43,7 +73,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     return null;
   }
   return (data ?? null) as Post | null;
-}
+});
 
 export async function getAdminPostById(id: string): Promise<Post | null> {
   const supabase = await getSupabaseServerClient();

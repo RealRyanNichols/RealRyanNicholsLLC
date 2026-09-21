@@ -9,6 +9,7 @@ import { BookPromo } from "@/components/BookPromo";
 import { JsonLd } from "@/components/JsonLd";
 import { muxThumbnailUrl } from "@/lib/mux";
 import { SITE } from "@/lib/site";
+import { HandlersSeriesShelf } from "@/components/HandlersSeriesShelf";
 
 export const revalidate = 60;
 
@@ -35,13 +36,12 @@ export default async function VideosPage(props: {
   searchParams: Promise<{ channel?: string }>;
 }) {
   const { channel: selectedId } = await props.searchParams;
-  const [publishedPosts, activeLiveStream] = await Promise.all([
-    getPublishedPosts(),
+  const [allVideos, activeLiveStream] = await Promise.all([
+    getPublishedPosts({ type: "video" }),
     getActiveLiveStream(),
   ]);
   // getPublishedPosts already returns feed order: pinned first, then newest
   // first. We keep that order untouched so Watch reads exactly like the Feed.
-  const allVideos = publishedPosts.filter((p) => p.type === "video");
   const j6Videos = allVideos.filter((p) => channelOf(p.category) === "J6");
 
   // Channels that actually have videos, in their canonical order, with counts.
@@ -137,6 +137,8 @@ export default async function VideosPage(props: {
           </nav>
         ) : null}
       </header>
+
+      {!active ? <HandlersSeriesShelf /> : null}
 
       {!active && j6Videos.length > 0 ? (
         <section

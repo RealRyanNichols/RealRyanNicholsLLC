@@ -37,19 +37,33 @@ export const revalidate = 60;
 export default async function HomePage({
   searchParams,
 }: {
-  searchParams: Promise<{ sort?: string }>;
+  searchParams: Promise<{ sort?: string; show?: string }>;
 }) {
-  const { sort } = await searchParams;
+  const { sort, show } = await searchParams;
   const view: "latest" | "trending" = sort === "trending" ? "trending" : "latest";
-  const [posts, activeLiveStream, ogImages] = await Promise.all([
-    getPublishedPosts({ sort: view }),
+  // The feed used to load every published post on every request. That is the
+  // whole archive over the wire to paint one screen, and on a phone it read as
+  // a dead site. It comes in pages of 30 now, oldest behavior preserved: same
+  // posts, same order, just not all at once. One extra row is fetched to know
+  // whether a "Load more" belongs at the bottom.
+  const PAGE = 30;
+  const parsed = Number.parseInt(show ?? "", 10);
+  const shown = Number.isFinite(parsed)
+    ? Math.min(Math.max(parsed, PAGE), 3000)
+    : PAGE;
+  const [posts, activeLiveStream] = await Promise.all([
+    getPublishedPosts({ sort: view, limit: shown + 1 }),
     getActiveLiveStream(),
-    getOgImages(),
+  ]);
+  const hasMore = posts.length > shown;
+  const feed = posts.slice(0, shown);
+  const [countMap, ogImages] = await Promise.all([
+    getCommentCounts(feed.map((p) => p.id)),
+    getOgImages(feed.map((p) => `/posts/${p.slug}`)),
   ]);
   // Custom OG thumbnails keyed by post path — used as feed-card art for
   // text-only posts (PostCard ignores it when the body has its own visual).
   const ogMap = new Map(ogImages.map((o) => [o.path, o.image_url]));
-  const countMap = await getCommentCounts(posts.map((p) => p.id));
   const emailSignupEnabled = SITE.emailCaptureEnabled;
 
   // Today's front porch. The feed below never rotates — these do: the copy
@@ -67,8 +81,6 @@ export default async function HomePage({
   // Pinned posts float to the top of the feed; everything else follows in
   // chronological order. getPublishedPosts already returns them pinned-first
   // (then newest-first / by views), and PostCard shows a "Pinned" badge.
-  const feed = posts;
-
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
       {/* The title card runs the full width; the feed and the sidebar start
@@ -187,6 +199,17 @@ export default async function HomePage({
               ])}
             </div>
           )}
+          {hasMore ? (
+            <div className="mt-8 flex justify-center">
+              <Link
+                href={`/?${view === "trending" ? "sort=trending&" : ""}show=${shown + PAGE}`}
+                className="btn-accent inline-flex items-center rounded-full px-6 py-3 text-sm font-bold"
+                prefetch={false}
+              >
+                Load more posts
+              </Link>
+            </div>
+          ) : null}
         </section>
 
         {/* Talk to Ryan — below the feed now. People come to read first; the
