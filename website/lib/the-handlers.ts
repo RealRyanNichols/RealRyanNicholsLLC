@@ -20,6 +20,7 @@ export const HANDLERS_SERIES = {
   xUrl: "https://x.com/RealRyanNichols",
   facebookUrl: "https://www.facebook.com/RealRyanNicholsSr/",
   tiktokUrl: "https://www.tiktok.com/@therealryannichols",
+  instagramUrl: "https://www.instagram.com/realryannichols/",
 } as const;
 
 // Add an episode only after its public YouTube URL has been verified. The site

@@ -16,6 +16,7 @@ const platformLinks = [
   ["X", HANDLERS_SERIES.xUrl],
   ["Facebook", HANDLERS_SERIES.facebookUrl],
   ["TikTok", HANDLERS_SERIES.tiktokUrl],
+  ["Instagram", HANDLERS_SERIES.instagramUrl],
 ] as const;
 
 export default function TheHandlersPage() {
