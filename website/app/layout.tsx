@@ -59,6 +59,9 @@ export const metadata: Metadata = {
     types: { "application/rss+xml": "/rss.xml" },
   },
   robots: { index: true, follow: true },
+  other: {
+    "google-adsense-account": "ca-pub-7555907242691304",
+  },
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
