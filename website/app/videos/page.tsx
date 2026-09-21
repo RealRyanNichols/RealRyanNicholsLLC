@@ -9,6 +9,7 @@ import { BookPromo } from "@/components/BookPromo";
 import { JsonLd } from "@/components/JsonLd";
 import { muxThumbnailUrl } from "@/lib/mux";
 import { SITE } from "@/lib/site";
+import { HandlersSeriesShelf } from "@/components/HandlersSeriesShelf";
 
 export const revalidate = 60;
 
@@ -136,6 +137,8 @@ export default async function VideosPage(props: {
           </nav>
         ) : null}
       </header>
+
+      {!active ? <HandlersSeriesShelf /> : null}
 
       {!active && j6Videos.length > 0 ? (
         <section
