@@ -82,12 +82,14 @@ export default async function HomePage({
   // chronological order. getPublishedPosts already returns them pinned-first
   // (then newest-first / by views), and PostCard shows a "Pinned" badge.
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div className="mx-auto max-w-5xl px-4 pt-4 pb-8 sm:pt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
       {/* The title card runs the full width; the feed and the sidebar start
-          under it. */}
+          under it. Its one job (follow the record) has to clear the fold on
+          a phone, so the live banner waits under it there. */}
       <div className="lg:col-span-3">
-        <LiveNowBanner stream={activeLiveStream} />
+        <LiveNowBanner stream={activeLiveStream} className="mb-6 hidden sm:block" />
         <ProfileHero />
+        <LiveNowBanner stream={activeLiveStream} className="mt-6 sm:hidden" />
       </div>
       <div className="lg:col-span-2">
         <PathPicker variant="band" />
