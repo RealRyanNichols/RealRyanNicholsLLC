@@ -3,32 +3,26 @@ import { z } from "zod";
 import { requireStripe } from "@/lib/stripe";
 import { SITE } from "@/lib/site";
 import { BOOK, BOOK_TIERS, tierPriceUsd, type BookTierSlug } from "@/lib/book";
+import {
+  buildBookCheckoutMetadata,
+  checkoutAttributionFields,
+  resolveCheckoutAttribution,
+} from "@/lib/book-checkout-attribution";
 
 export const runtime = "nodejs";
 
 const SLUGS = BOOK_TIERS.map((t) => t.slug) as [BookTierSlug, ...BookTierSlug[]];
-const nullableShort = z.string().trim().max(180).nullable();
-const schema = z.object({
-  slug: z.enum(SLUGS),
-  sessionId: z.string().trim().min(8).max(64).nullable().optional(),
-  visitorId: z.string().trim().min(8).max(80).nullable().optional(),
-  attribution: z
-    .object({
-      source: nullableShort,
-      medium: nullableShort,
-      campaign: nullableShort,
-      content: nullableShort,
-      term: nullableShort,
-      clickId: nullableShort,
-      landingPath: z.string().trim().min(1).max(360),
-      referrerHost: nullableShort,
-    })
-    .nullable()
-    .optional(),
-});
+// Body: { slug, sessionId?, visitorId?, attribution? (pre-v2 shape),
+// firstTouch?, lastTouch? }. Only `slug` is strict; attribution fields are
+// lenient so a bad or missing touch never blocks a sale.
+const schema = checkoutAttributionFields.extend({ slug: z.enum(SLUGS) });
 
-function metadataValue(value: string | null | undefined): string {
-  return value?.slice(0, 480) ?? "";
+function siteHost(): string[] {
+  try {
+    return [new URL(SITE.url).hostname];
+  } catch {
+    return [];
+  }
 }
 
 // Tiers that ship a physical copy need a shipping address + phone.
@@ -66,7 +60,15 @@ export async function POST(request: Request) {
 
   const isPhysical = PHYSICAL.has(tier.slug);
   const stripe = requireStripe();
-  const attribution = parsed.data.attribution;
+  // Client touches first; else the rrn_ft / rrn_lt cookies; else a minimal
+  // touch from the Referer (the page the button was on). Never null.
+  const resolved = resolveCheckoutAttribution(parsed.data, {
+    cookieHeader: request.headers.get("cookie"),
+    refererHeader: request.headers.get("referer"),
+    userAgent: request.headers.get("user-agent"),
+    now: Date.now(),
+    ownHosts: siteHost(),
+  });
 
   try {
     const session = await stripe.checkout.sessions.create({
@@ -109,22 +111,16 @@ export async function POST(request: Request) {
       success_url: `${SITE.url}/book/thank-you?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${SITE.url}/book/preorder`,
       // Phase 4 (webhook) reads this to record the order in book_orders.
-      metadata: {
-        kind: "book_preorder",
-        product_slug: tier.slug,
-        product_name: tier.name,
-        amount_usd: String(tierPriceUsd(tier)),
-        attribution_source: metadataValue(attribution?.source),
-        attribution_medium: metadataValue(attribution?.medium),
-        attribution_campaign: metadataValue(attribution?.campaign),
-        attribution_content: metadataValue(attribution?.content),
-        attribution_term: metadataValue(attribution?.term),
-        attribution_click_id: metadataValue(attribution?.clickId),
-        attribution_landing_path: metadataValue(attribution?.landingPath),
-        attribution_referrer_host: metadataValue(attribution?.referrerHost),
-        analytics_session_id: metadataValue(parsed.data.sessionId),
-        analytics_visitor_id: metadataValue(parsed.data.visitorId),
-      },
+      metadata: buildBookCheckoutMetadata({
+        productSlug: tier.slug,
+        productName: tier.name,
+        amountUsd: String(tierPriceUsd(tier)),
+        firstTouch: resolved.firstTouch,
+        lastTouch: resolved.lastTouch,
+        capture: resolved.capture,
+        sessionId: parsed.data.sessionId,
+        visitorId: parsed.data.visitorId,
+      }),
     });
 
     return NextResponse.json({ url: session.url });
