@@ -21,7 +21,7 @@ Branch note: the realryannichols.com work is on this session's assigned branch, 
 - **Offers:** the four offers are marked retired. They are gone from the Call Closer, pay links, proposals and the credits page.
 - **Stripe:** the webhook still records a late payment from an old session until 2026-10-22.
 - **Leads:** the lead form no longer accepts `free_website_program`, and free-website Meta leads now file as Website Launch.
-- **Nurture:** main's Rent Receipt series now owns new leads. The Free Build series only finishes for leads that already started it, and its links point to `/services`.
+- **Nurture:** main's Rent Receipt series owns every lead created from 2026-09-24 04:00 UTC. Per your #75 decision, leads created before that keep getting the Free Build series until they finish. Those emails still describe the $0 build; this branch only moved their links to `/services`.
 - **Migration** `20260922180000_retire_free_build_links.sql` fixes 8 academy lesson links plus the analytics `inspect_urls`. It is **not applied yet**.
 
 ### 2. Speed to lead (built, switched OFF until you flip it)
@@ -78,7 +78,7 @@ Branch note: the realryannichols.com work is on this session's assigned branch, 
 
    To turn it off, set `SPEED_TO_LEAD_ENABLED` to anything else.
 4. **Ads Manager:** change the Instant Form thank-you URL to `/services` and keep the same utm tags. Pause or rewrite any ad that still promises a $0 website; the 301 only catches the click. Also fix the `free_build` email campaign and the Quo auto-reply or snippets that mention it.
-5. **Nurture decision.** Leads created before 2026-09-24 from 5 non-free-build forms (Services, Scoreboard, Qualified, Rent Receipt, Enrollment Gap) that never started a series now get no drip. Leads from 09-24 on get Rent Receipt. Do you want a short catch-up sequence for them?
+5. **Nurture decision.** Leads created before 2026-09-24 are still getting the old 30-day Free Build emails (your #75 rule: finish what you started). Those emails still pitch the $0 build, though every link now lands on `/services`. Stop them, or let them run out? The last ones finish about 30 days after each lead's start.
 6. **Send the four $500 invoices** (Offerle, Evans, Bates, Juarez). Stripe is live.
 7. **Three published posts still link to LeadFlow's `/free-build`:**
    - `publish-the-ladder-credit-the-first-step`
