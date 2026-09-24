@@ -244,6 +244,15 @@ async function handleBookPreorder(
         referrer_host: session.metadata?.attribution_referrer_host || null,
         session_id: session.metadata?.analytics_session_id || null,
         visitor_id: session.metadata?.analytics_visitor_id || null,
+        entry: session.metadata?.attribution_entry || null,
+        in_app: session.metadata?.attribution_in_app || null,
+        first_seen_at: session.metadata?.attribution_first_seen_at || null,
+        capture: session.metadata?.attribution_capture || null,
+        last_touch_source: session.metadata?.last_touch_source || null,
+        last_touch_medium: session.metadata?.last_touch_medium || null,
+        last_touch_campaign: session.metadata?.last_touch_campaign || null,
+        last_touch_referrer_host:
+          session.metadata?.last_touch_referrer_host || null,
       },
       notes: isPhysical
         ? "Physical edition — shipping address collected at checkout (see the Stripe session)."

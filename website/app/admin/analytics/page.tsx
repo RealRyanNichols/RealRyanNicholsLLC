@@ -777,6 +777,7 @@ async function VisualIntelligenceWall({ excludeSelf }: { excludeSelf: boolean })
     "support_intent_saved",
     "support_checkout_open",
     "donate_click",
+    "article_next_step_click",
   ]);
   const actionsByPath = new Map<string, number>();
   for (const row of (eventPathRows ?? []) as { kind: string | null; path: string | null }[]) {

@@ -29,7 +29,12 @@ export function FloatingShareBar({
   caseKind?: CaseKind;
   shares?: number;
 }) {
-  const [visible, setVisible] = useState(false);
+  const [scrolledPast, setScrolledPast] = useState(false);
+  // Stands down while the article's next step (components/article/
+  // ArticleNextStep.tsx) is on screen: on a phone the rail sits over its
+  // right edge, on top of the book cover and the email field.
+  const [overNextStep, setOverNextStep] = useState(false);
+  const visible = scrolledPast && !overNextStep;
   const [copied, setCopied] = useState(false);
   const [popped, setPopped] = useState(false);
   const [localShares, setLocalShares] = useState(0);
@@ -41,7 +46,7 @@ export function FloatingShareBar({
       if (ticking) return;
       ticking = true;
       window.requestAnimationFrame(() => {
-        setVisible(window.scrollY > SHOW_AFTER_PX);
+        setScrolledPast(window.scrollY > SHOW_AFTER_PX);
         ticking = false;
       });
     }
@@ -51,6 +56,14 @@ export function FloatingShareBar({
       window.removeEventListener("scroll", onScroll);
       if (popTimer.current) clearTimeout(popTimer.current);
     };
+  }, []);
+
+  useEffect(() => {
+    const target = document.querySelector("[data-article-next-step]");
+    if (!target || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(([entry]) => setOverNextStep(entry.isIntersecting));
+    io.observe(target);
+    return () => io.disconnect();
   }, []);
 
   function pop() {

@@ -6,7 +6,6 @@ import {
   getPostBySlug,
   getPublishedPostSummaries,
   getCommentCount,
-  type PublishedPostSummary,
 } from "@/lib/posts";
 import { ShareButton } from "@/components/ShareButton";
 import { FloatingShareBar } from "@/components/FloatingShareBar";
@@ -17,19 +16,18 @@ import { CommentList } from "@/components/CommentList";
 import { CommentForm } from "@/components/CommentForm";
 import { VerseSidebar } from "@/components/VerseSidebar";
 import { SignupForm } from "@/components/SignupForm";
-import { PostFollowCapture } from "@/components/PostLivePulse";
-import { ReadNext, type CaseLink } from "@/components/ReadNext";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbLd, orgRef, personRef, websiteRef } from "@/lib/jsonld";
 import { NotifySubscribersButton } from "@/components/NotifySubscribersButton";
 import { PostMain } from "@/components/PostMain";
 import { StoryTipCTA } from "@/components/StoryTipCTA";
 import { WhatLinksHere } from "@/components/article/WhatLinksHere";
+import { ArticleNextStep } from "@/components/article/ArticleNextStep";
+import { isCaseRelated, pickRelatedPosts, RELATED_LIMIT } from "@/lib/related-posts";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { SITE } from "@/lib/site";
 import { muxThumbnailUrl } from "@/lib/mux";
-import { getOgImage } from "@/lib/og-images";
-import { BookCtaBand } from "@/components/BookCtaBand";
+import { getOgImage, getOgImages } from "@/lib/og-images";
 import { FuelAsk } from "@/components/FuelAsk";
 import type { Post, MediaItem } from "@/lib/types";
 
@@ -62,11 +60,6 @@ function looksLikeVideoUrl(url: string): boolean {
   return /\.(mp4|mov|m4v|webm)(?:\?|#|$)/i.test(url);
 }
 
-// Posts that touch the case get 1-2 deep links into the evidence archive in
-// Read Next — a path from the story to the record behind it.
-const CASE_HINT =
-  /\b(j6|jan(?:uary)?\s*6|nichols|jail|detention|solitary|grievance|pardon|doj|fbi|court|judge|due[- ]?process|prosecut\w*|indict\w*|sentenc\w*|evidence|exhibit)\b/i;
-
 function firstMediaImage(media: MediaItem[] | null): string | null {
   return media?.find((item) => item.url && !looksLikeVideoUrl(item.url))?.url ?? null;
 }
@@ -78,30 +71,6 @@ function firstPostShareImage(post: Post): string | null {
     firstMediaImage(post.media) ||
     firstMarkdownImage(post.body)
   );
-}
-
-function relatedPostScore(current: Post, candidate: PublishedPostSummary): number {
-  let score = 0;
-  if (current.category && candidate.category === current.category) score += 8;
-
-  const currentTags = new Set(
-    (current.tags ?? []).map((tag) => tag.trim().toLowerCase()).filter(Boolean),
-  );
-  for (const tag of candidate.tags ?? []) {
-    if (currentTags.has(tag.trim().toLowerCase())) score += 3;
-  }
-
-  const currentCase = CASE_HINT.test(
-    [current.title, current.category, ...(current.tags ?? [])].filter(Boolean).join(" "),
-  );
-  const candidateCase = CASE_HINT.test(
-    [candidate.title, candidate.category, ...(candidate.tags ?? [])]
-      .filter(Boolean)
-      .join(" "),
-  );
-  if (currentCase === candidateCase) score += 2;
-
-  return score;
 }
 
 export async function generateMetadata(props: {
@@ -202,41 +171,28 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
       .eq("from_post_id", post.id)
       .eq("kind", "auto")
       .order("created_at", { ascending: false })
-      .limit(4),
+      .limit(RELATED_LIMIT),
   ]);
-  const postById = new Map(allPosts.map((candidate) => [candidate.id, candidate]));
-  const automaticReadNext = (automaticLinksRes.data ?? [])
-    .map((edge) => postById.get(edge.to_post_id as string))
-    .filter((candidate): candidate is PublishedPostSummary => Boolean(candidate));
-  const automaticIds = new Set(automaticReadNext.map((candidate) => candidate.id));
-  const scoredReadNext = allPosts
-    .filter((p) => p.id !== post.id)
-    .filter((p) => !automaticIds.has(p.id))
-    .map((candidate, index) => ({
-      candidate,
-      index,
-      score: relatedPostScore(post, candidate),
-    }))
-    .sort((a, b) => b.score - a.score || a.index - b.index)
-    .map(({ candidate }) => candidate);
-  const readNext = [...automaticReadNext, ...scoredReadNext].slice(0, 4);
-  const caseHaystack = [post.title, post.category, ...(post.tags ?? [])]
-    .filter(Boolean)
-    .join(" ");
-  const caseLinks: CaseLink[] = CASE_HINT.test(caseHaystack)
-    ? [
-        {
-          href: "/case",
-          title: "United States v. Nichols — the case",
-          sub: "Timeline, people, documents — the whole file",
-        },
-        {
-          href: "/case?view=documents",
-          title: "The document archive",
-          sub: "Every public scan, sourced and labeled",
-        },
-      ]
-    : [];
+  // Auto edges lead (lib/post-links.ts keeps a new article from being an
+  // orphan, and the edge only counts if this page renders the link), then
+  // same category, then score. See lib/related-posts.ts.
+  const relatedPicks = pickRelatedPosts(post, allPosts, {
+    autoLinkedIds: (automaticLinksRes.data ?? []).map((edge) => edge.to_post_id as string),
+  });
+  // /admin/og-images overrides win, the same order the homepage feed uses.
+  const relatedOg = new Map(
+    (await getOgImages(relatedPicks.map((p) => `/posts/${p.slug}`))).map((o) => [o.path, o.image_url]),
+  );
+  const related = relatedPicks.map((candidate) => ({
+    slug: candidate.slug,
+    title: candidate.title ?? candidate.slug,
+    category: candidate.category,
+    thumb:
+      relatedOg.get(`/posts/${candidate.slug}`)?.trim() ||
+      candidate.thumbnail_url?.trim() ||
+      candidate.og_image_url?.trim() ||
+      null,
+  }));
   const pulseSeed = (pulseRes.data as
     | { reading_now: number; today: number; week: number; site_reading_now: number }
     | null) ?? undefined;
@@ -373,29 +329,26 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
         <ViewTracker slug={post.slug} />
         <PostMain post={post} />
 
+        {/* The one next step: a hook, three numbered choices (book, follow
+            the case with an inline email field, hire Ryan), and three related
+            reads. It replaced Read Next, the book band, and the follow box. */}
+        <ArticleNextStep
+          slug={post.slug}
+          related={related}
+          caseRelated={isCaseRelated(post)}
+          emailEnabled={SITE.emailCaptureEnabled}
+        />
+
         {/* The hard-coded ask, in Ryan's words, on every article. Rendered
             here so no post ships without it; never pasted into a body. */}
-        <FuelAsk className="mt-8" />
+        <FuelAsk className="mt-10" />
 
         {/* Inbound half of the link graph: which articles cite this one. */}
         <WhatLinksHere postId={post.id} />
 
-        {/* Give a reader the strongest relevant next click while the story is
-            still fresh. Sales, signup, reactions, and comments remain below. */}
-        <ReadNext posts={readNext} caseLinks={caseLinks} />
-
         {post.category === "Investigation" ? (
           <StoryTipCTA subject={post.title ?? undefined} />
         ) : null}
-
-        {/* Donations retired — the article-foot ask now sells the book. */}
-        <BookCtaBand className="mt-8" />
-
-        <PostFollowCapture
-          path={path}
-          seed={pulseSeed}
-          emailEnabled={SITE.emailCaptureEnabled}
-        />
 
         <div className="mt-6">
           <ReactionBar targetType="post" targetId={post.id} />
@@ -424,6 +377,7 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
         <VerseSidebar />
         <SignupForm
           emailEnabled={SITE.emailCaptureEnabled}
+          placement="post-sidebar"
         />
       </aside>
     </div>
