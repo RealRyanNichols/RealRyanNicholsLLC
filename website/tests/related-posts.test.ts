@@ -111,3 +111,9 @@ test("pickRelatedPosts ignores duplicate candidates", () => {
   const dup = post("1", "Reflection");
   assert.deepEqual(ids(pickRelatedPosts(current, [dup, dup, post("2", "News")])), ["1", "2"]);
 });
+
+test("the author's surname alone does not make a post a case story", () => {
+  assert.equal(isCaseRelated({ title: "Ryan Nichols and the Discipline of Reading the Sky", category: "Outdoors", tags: ["nichols"] }), false);
+  assert.equal(isCaseRelated({ title: "The grievance log starts in November", category: null, tags: [] }), true);
+  assert.equal(isCaseRelated({ title: "January 6 footage and discovery", category: null, tags: [] }), true);
+});

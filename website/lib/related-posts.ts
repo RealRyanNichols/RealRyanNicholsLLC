@@ -20,9 +20,10 @@ import type { Post } from "./types";
 export const RELATED_LIMIT = 3;
 
 // Posts that touch the case. Used for scoring here and, on the page, to add
-// the document-archive link for case stories.
+// the document-archive link for case stories. Case terms only: the surname
+// is on half the site (outdoor and rebuilding posts too), so it is not a hint.
 export const CASE_HINT =
-  /\b(j6|jan(?:uary)?\s*6|nichols|jail|detention|solitary|grievance|pardon|doj|fbi|court|judge|due[- ]?process|prosecut\w*|indict\w*|sentenc\w*|evidence|exhibit)\b/i;
+  /\b(j6|jan(?:uary)?\s*6|jail|detention|solitary|grievance|pardon|doj|fbi|court|judge|due[- ]?process|prosecut\w*|indict\w*|sentenc\w*|evidence|exhibit)\b/i;
 
 export type RelatedSubject = Pick<Post, "id" | "title" | "category" | "tags">;
 
