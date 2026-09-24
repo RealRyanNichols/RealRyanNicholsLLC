@@ -108,6 +108,15 @@ export default function TheHandlersPage() {
                 <span aria-hidden>·</span>
                 <time dateTime={episode.publishedAt}>{episode.publishedAt}</time>
               </div>
+              <div className="mt-5 flex flex-wrap gap-3 text-sm font-bold">
+                <a href={`https://www.youtube.com/shorts/${episode.youtubeId}`} target="_blank" rel="noreferrer" className="text-[var(--color-gold)] hover:underline">
+                  Watch on YouTube
+                </a>
+                {episode.xUrl && <a href={episode.xUrl} target="_blank" rel="noreferrer" className="text-[var(--color-gold)] hover:underline">X</a>}
+                {episode.facebookUrl && <a href={episode.facebookUrl} target="_blank" rel="noreferrer" className="text-[var(--color-gold)] hover:underline">Facebook</a>}
+                {episode.tiktokUrl && <a href={episode.tiktokUrl} target="_blank" rel="noreferrer" className="text-[var(--color-gold)] hover:underline">TikTok</a>}
+                {episode.instagramUrl && <a href={episode.instagramUrl} target="_blank" rel="noreferrer" className="text-[var(--color-gold)] hover:underline">Instagram</a>}
+              </div>
             </article>
           ))}
         </section>
