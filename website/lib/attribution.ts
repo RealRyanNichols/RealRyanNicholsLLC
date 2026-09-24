@@ -104,14 +104,19 @@ function normalizeHost(host: string): string {
   return host.trim().toLowerCase().replace(/\.$/, "").replace(/^www\./, "");
 }
 
-/** Our own hosts: apex + subdomains, localhost, and Vercel previews. */
+/**
+ * Our own hosts: apex + subdomains, localhost, and this project's own Vercel
+ * previews. Any other *.vercel.app site is somebody else's and is a real
+ * referrer. The Vercel project is "realryanichols-personal" (one n), so both
+ * spellings are matched as a prefix.
+ */
 export function isOwnHost(host: string, extra: readonly string[] = []): boolean {
   const h = normalizeHost(host);
   if (!h) return false;
   if (h === "localhost" || h === "127.0.0.1" || h === "[::1]" || h === "0.0.0.0")
     return true;
   if (h === "realryannichols.com" || h.endsWith(".realryannichols.com")) return true;
-  if (h === "vercel.app" || h.endsWith(".vercel.app")) return true;
+  if (h.endsWith(".vercel.app") && /^realryann?ichols/.test(h)) return true;
   return extra.some((e) => {
     const x = normalizeHost(e);
     return Boolean(x) && (h === x || h.endsWith(`.${x}`));

@@ -192,6 +192,14 @@ test("self-referrals are ignored", () => {
   assert.equal(custom.entry, "direct");
 });
 
+test("another site's vercel.app host is a real referrer", () => {
+  const t = landing("/book", "https://jane-blog.vercel.app/post");
+  assert.equal(t.entry, "referral");
+  assert.equal(t.referrerHost, "jane-blog.vercel.app");
+  const preview = landing("/book", "https://realryanichols-personal-git-main-realryannichols.vercel.app/");
+  assert.equal(preview.entry, "direct");
+});
+
 test("a Stripe cancel/success return is never a referrer", () => {
   for (const ref of ["https://checkout.stripe.com/c/pay/cs_live_x", "https://stripe.com/"]) {
     const t = landing("/book/preorder", ref, UAS.instagramIos);

@@ -27,7 +27,7 @@ import { isCaseRelated, pickRelatedPosts, RELATED_LIMIT } from "@/lib/related-po
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { SITE } from "@/lib/site";
 import { muxThumbnailUrl } from "@/lib/mux";
-import { getOgImage } from "@/lib/og-images";
+import { getOgImage, getOgImages } from "@/lib/og-images";
 import { FuelAsk } from "@/components/FuelAsk";
 import type { Post, MediaItem } from "@/lib/types";
 
@@ -176,13 +176,22 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
   // Auto edges lead (lib/post-links.ts keeps a new article from being an
   // orphan, and the edge only counts if this page renders the link), then
   // same category, then score. See lib/related-posts.ts.
-  const related = pickRelatedPosts(post, allPosts, {
+  const relatedPicks = pickRelatedPosts(post, allPosts, {
     autoLinkedIds: (automaticLinksRes.data ?? []).map((edge) => edge.to_post_id as string),
-  }).map((candidate) => ({
+  });
+  // /admin/og-images overrides win, the same order the homepage feed uses.
+  const relatedOg = new Map(
+    (await getOgImages(relatedPicks.map((p) => `/posts/${p.slug}`))).map((o) => [o.path, o.image_url]),
+  );
+  const related = relatedPicks.map((candidate) => ({
     slug: candidate.slug,
     title: candidate.title ?? candidate.slug,
     category: candidate.category,
-    thumb: candidate.thumbnail_url?.trim() || candidate.og_image_url?.trim() || null,
+    thumb:
+      relatedOg.get(`/posts/${candidate.slug}`)?.trim() ||
+      candidate.thumbnail_url?.trim() ||
+      candidate.og_image_url?.trim() ||
+      null,
   }));
   const pulseSeed = (pulseRes.data as
     | { reading_now: number; today: number; week: number; site_reading_now: number }
