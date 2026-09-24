@@ -58,9 +58,11 @@ function Stat({
 }
 
 /**
- * Live social proof: headline "founding launch" count with a live pulse, a 24h
- * line that leads with purchases, a buyers/list/spots breakdown, and the
- * Founding scarcity bar. `tone="dark"` styles it to sit inside a dark hero.
+ * Live social proof: headline count of PAID pre-orders with a live pulse, a
+ * 24h line that leads with purchases, a list/spots breakdown, and the Founding
+ * scarcity bar. The headline counts buyers only. Email signups are shown
+ * separately as "on the list" so nobody reads a signup as a sale.
+ * `tone="dark"` styles it to sit inside a dark hero.
  */
 export async function BookSocialProof({
   className = "",
@@ -112,13 +114,13 @@ export async function BookSocialProof({
             />
           </span>
           <span
-            data-count={community}
+            data-count={s.buyers}
             className={[
               "display text-4xl tabular-nums sm:text-5xl",
               p.headline,
             ].join(" ")}
           >
-            {community.toLocaleString()}
+            {s.buyers.toLocaleString()}
           </span>
         </div>
         <p
@@ -127,7 +129,7 @@ export async function BookSocialProof({
             p.sub,
           ].join(" ")}
         >
-          joined the founding launch
+          paid pre-orders
         </p>
         {s.last24hBuyers > 0 ? (
           <p className={["mt-1 text-xs font-bold", p.recency].join(" ")}>
@@ -135,7 +137,7 @@ export async function BookSocialProof({
           </p>
         ) : recent > 0 ? (
           <p className={["mt-1 text-xs font-bold", p.recency].join(" ")}>
-            🔥 {recent} joined in the last 24 hours
+            🔥 {recent} joined the list in the last 24 hours
           </p>
         ) : community === 0 ? (
           <p className={["mt-1 text-xs font-bold", p.sub].join(" ")}>
@@ -150,8 +152,6 @@ export async function BookSocialProof({
           p.borderTop,
         ].join(" ")}
       >
-        <Stat value={s.buyers} label="pre-ordered" accent p={p} />
-        <span className={["hidden h-8 w-px sm:block", p.divider].join(" ")} />
         <Stat value={s.onList + s.waitlist} label="on the list" p={p} />
         <span className={["hidden h-8 w-px sm:block", p.divider].join(" ")} />
         <Stat value={remaining} label="Founding spots left" p={p} />
