@@ -56,8 +56,9 @@ const SYSTEMS = [
     kicker: "Websites and funnels",
     title: "Give every visitor one obvious next step.",
     body: "Mobile-first pages that explain the offer, show the proof, capture the lead, and connect the handoff behind the form.",
-    href: "/free-build",
-    cta: "See the website program",
+    // /free-build is retired (301 to /services on theleadflowpro.com).
+    href: "/services",
+    cta: "See the website services",
   },
   {
     number: "04",

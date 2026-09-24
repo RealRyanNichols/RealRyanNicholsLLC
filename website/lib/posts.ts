@@ -8,17 +8,26 @@ export const POST_COLUMNS =
 
 export type PublishedPostSummary = Pick<
   Post,
-  "id" | "slug" | "title" | "category" | "tags" | "published_at"
+  | "id"
+  | "slug"
+  | "title"
+  | "category"
+  | "tags"
+  | "published_at"
+  | "thumbnail_url"
+  | "og_image_url"
 >;
 
 // Related links and build-time slug discovery need the same published order
 // as the feed, but not the body and media of every article in the archive.
+// The two image URLs are the small thumbnails in an article's "Keep reading"
+// rows (components/article/ArticleNextStep.tsx).
 export const getPublishedPostSummaries = cache(
   async (): Promise<PublishedPostSummary[]> => {
     const supabase = getSupabaseStaticClient();
     const { data, error } = await supabase
       .from("posts")
-      .select("id, slug, title, category, tags, published_at")
+      .select("id, slug, title, category, tags, published_at, thumbnail_url, og_image_url")
       .eq("status", "published")
       .lte("published_at", new Date().toISOString())
       .order("pinned", { ascending: false })

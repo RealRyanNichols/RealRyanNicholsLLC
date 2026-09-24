@@ -3,6 +3,7 @@ import {
   isSupabaseServiceConfigured,
 } from "@/lib/supabase/service";
 import { extractInternalPostSlugs } from "@/lib/entity-links";
+import { RELATED_LIMIT } from "@/lib/related-posts";
 
 // Publish-time recorder for the internal link graph. Every time a post is
 // published (or re-published), its body is scanned for internal /posts/
@@ -69,9 +70,10 @@ async function ensureInboundPostLink(
   const available = (candidates ?? []) as LinkablePost[];
   if (available.length === 0) return;
 
-  // An automatic edge is rendered in the source article's Read Next rail.
-  // Keep each source below that rail's four-card display limit so every
-  // graph edge remains a real, crawlable link rather than hidden bookkeeping.
+  // An automatic edge is rendered in the source article's "Keep reading"
+  // rows (ArticleNextStep, ordered by lib/related-posts.ts). Keep each source
+  // below that list's three-row limit so every graph edge remains a real,
+  // crawlable link rather than hidden bookkeeping.
   const candidateIds = available.map((post) => post.id);
   const { data: automaticEdges } = await svc
     .from("post_links")
@@ -85,7 +87,7 @@ async function ensureInboundPostLink(
   }
 
   const ranked = available
-    .filter((post) => (automaticCount.get(post.id) ?? 0) < 4)
+    .filter((post) => (automaticCount.get(post.id) ?? 0) < RELATED_LIMIT)
     .sort(
       (a, b) =>
         automaticLinkScore(current, b) - automaticLinkScore(current, a) ||
