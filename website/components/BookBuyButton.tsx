@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { trackEvent } from "@/lib/analytics";
-import { getFirstTouchAttribution } from "@/lib/acquisition";
+import { getCheckoutAttribution } from "@/lib/acquisition";
+import { toLegacyAttribution } from "@/lib/attribution";
 import { getSessionId, getVisitorId } from "@/lib/client-ids";
 
 /**
@@ -25,13 +26,16 @@ export function BookBuyButton({
     if (busy) return;
     setBusy(true);
     setError(null);
-    const attribution = getFirstTouchAttribution();
+    // First touch (persisted 90 days) + last campaign/referral touch. The
+    // route falls back to the rrn_ft / rrn_lt cookies if these are missing.
+    const { firstTouch, lastTouch } = getCheckoutAttribution();
     trackEvent("book_checkout_start", {
       slug,
-      source: attribution?.source ?? null,
-      medium: attribution?.medium ?? null,
-      campaign: attribution?.campaign ?? null,
-      content: attribution?.content ?? null,
+      source: firstTouch?.source ?? null,
+      medium: firstTouch?.medium ?? null,
+      campaign: firstTouch?.campaign ?? null,
+      content: firstTouch?.content ?? null,
+      entry: firstTouch?.entry ?? null,
     });
     try {
       const res = await fetch("/api/checkout/book", {
@@ -39,9 +43,13 @@ export function BookBuyButton({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           slug,
-          attribution,
-          sessionId: getSessionId(),
-          visitorId: getVisitorId(),
+          // Pre-v2 field, kept so an older server build still accepts it.
+          attribution: toLegacyAttribution(firstTouch),
+          firstTouch,
+          lastTouch,
+          // Storage can fail in webviews; send null rather than "".
+          sessionId: getSessionId() || null,
+          visitorId: getVisitorId() || null,
         }),
       });
       const json = (await res.json().catch(() => ({}))) as {
