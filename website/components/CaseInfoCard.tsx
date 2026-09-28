@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { formatCaseDate } from "@/lib/case-date";
 import type { CasePerson } from "@/lib/case";
 
 // Renders the structured case data a verified J6 claimant has filled in
@@ -166,7 +166,7 @@ function Row({
 
 function fmtDate(d: string): string {
   try {
-    return format(new Date(d), "MMMM d, yyyy");
+    return formatCaseDate(d, "MMMM d, yyyy");
   } catch {
     return d;
   }

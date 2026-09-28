@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { format } from "date-fns";
+import { formatCaseDate } from "@/lib/case-date";
 import { getDocumentBySlug, getDocumentSeries } from "@/lib/case";
 import { ShareButton } from "@/components/ShareButton";
 import { CaseStats } from "@/components/CaseStats";
@@ -102,7 +102,7 @@ export default async function DocumentPage({
         <EvidenceBadge kind={d.doc_type} />
         {d.document_date ? (
           <span className="text-xs text-[var(--color-muted)] font-semibold">
-            {format(new Date(d.document_date), "MMMM d, yyyy")}
+            {formatCaseDate(d.document_date, "MMMM d, yyyy")}
           </span>
         ) : null}
       </div>

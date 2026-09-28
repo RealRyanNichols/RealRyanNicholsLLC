@@ -2,6 +2,21 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { getDocumentPreview } from "../lib/case-document-preview";
 import { filterArchive } from "../components/case/archive";
+import { formatCaseDate } from "../lib/case-date";
+
+test("case dates keep their recorded calendar day in different server timezones", () => {
+  const previous = process.env.TZ;
+  try {
+    for (const zone of ["America/Chicago", "America/Los_Angeles", "UTC", "Pacific/Kiritimati"]) {
+      process.env.TZ = zone;
+      assert.equal(formatCaseDate("2021-10-26"), "October 26, 2021");
+      assert.equal(formatCaseDate("2023-07-28", "MMM d, yyyy"), "Jul 28, 2023");
+    }
+  } finally {
+    if (previous === undefined) delete process.env.TZ;
+    else process.env.TZ = previous;
+  }
+});
 
 test("Sibick DOJ pages and the WKBW interview remain webpages, not court PDFs", () => {
   for (const external_url of [

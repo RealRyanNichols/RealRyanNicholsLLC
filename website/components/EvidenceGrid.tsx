@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { format } from "date-fns";
+import { formatCaseDate } from "@/lib/case-date";
 import type { CaseAuthorRole, CaseDocument } from "@/lib/case";
 import { detectVideo, type VideoEmbed } from "@/lib/video";
 import { getDocumentPreview } from "@/lib/case-document-preview";
@@ -149,7 +149,7 @@ function SeriesCard({ series }: { series: DocSeries }) {
             <p className="text-[10px] uppercase tracking-wider text-[var(--color-ink)] font-bold">
               {video.platformLabel} · video
               {lead.document_date ? (
-                <> · {format(new Date(lead.document_date), "MMM d, yyyy")}</>
+                <> · {formatCaseDate(lead.document_date, "MMM d, yyyy")}</>
               ) : null}
             </p>
             <p className="mt-1 text-sm font-semibold leading-snug text-[var(--color-ink)]">
@@ -216,7 +216,7 @@ function SeriesCard({ series }: { series: DocSeries }) {
         <p className="text-[10px] uppercase tracking-wider text-[var(--color-ink)] font-bold">
           {lead.doc_type}
           {lead.document_date ? (
-            <> · {format(new Date(lead.document_date), "MMM d, yyyy")}</>
+            <> · {formatCaseDate(lead.document_date, "MMM d, yyyy")}</>
           ) : null}
           {multi ? (
             <span className="ml-2 text-[var(--color-muted)]">

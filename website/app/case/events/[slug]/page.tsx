@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { format } from "date-fns";
+import { formatCaseDate } from "@/lib/case-date";
 import { getEventBySlug, getEvents, getCaseCommentsCount, getDocumentsForEvent } from "@/lib/case";
 import { ShareButton } from "@/components/ShareButton";
 import { CaseStats } from "@/components/CaseStats";
@@ -31,7 +31,7 @@ export async function generateMetadata({
   const e = await getEventBySlug(slug);
   if (!e) return { title: "Not found" };
   const url = `${SITE.url}/case/events/${e.slug}`;
-  const description = e.description ?? (e.event_date ? `${e.title} — ${format(new Date(e.event_date), "MMMM d, yyyy")}` : e.title);
+  const description = e.description ?? (e.event_date ? `${e.title} — ${formatCaseDate(e.event_date, "MMMM d, yyyy")}` : e.title);
   // Page-level upload wins; otherwise we fall back to the auto-generated
   // event share card so every event has a branded preview.
   const override = await getOgImage(`/case/events/${e.slug}`);
@@ -107,7 +107,7 @@ export default async function EventPage({
           Event
         </span>
         <span className="text-xs text-[var(--color-muted)] font-semibold">
-          {e.event_date ? format(new Date(e.event_date), "MMMM d, yyyy") : "Date pending verification"}
+          {e.event_date ? formatCaseDate(e.event_date, "MMMM d, yyyy") : "Date pending verification"}
         </span>
         {e.location ? (
           <span className="text-xs text-[var(--color-muted)]">
