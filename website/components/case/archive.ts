@@ -127,7 +127,7 @@ export function filterArchive<P extends SearchablePerson, D extends SearchableDo
         );
   const filteredEvents = q
     ? events.filter((e) =>
-        matchesQuery(q, e.title, e.description, e.location)
+        matchesQuery(q, e.title, e.description, e.location, e.slug, e.slug.replaceAll("-", " "))
       )
     : events;
   const filteredDocuments = q

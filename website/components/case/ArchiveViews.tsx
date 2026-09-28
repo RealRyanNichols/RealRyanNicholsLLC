@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { format } from "date-fns";
+import { formatCaseDate } from "@/lib/case-date";
 import type { getGrievances, getEvents, getDocuments } from "@/lib/case";
 import { Highlight, excerptAround, matchesText } from "@/components/case/Highlight";
 
@@ -179,7 +179,7 @@ export function TimelineView({
           />
           <Link href={`/case/events/${e.slug}`} className="group block">
             <time className="eyebrow block">
-              {e.event_date ? format(new Date(e.event_date), "MMMM d, yyyy") : "Date pending verification"}
+              {e.event_date ? formatCaseDate(e.event_date, "MMMM d, yyyy") : "Date pending verification"}
             </time>
             <h2 className="mt-1 font-display text-lg font-bold tracking-tight group-hover:text-[var(--color-gold)] transition">
               <Highlight text={e.title} q={q} />
@@ -259,7 +259,7 @@ export function DocumentsView({
           <div className="flex flex-1 flex-col p-3.5">
             {d.document_date ? (
               <p className="eyebrow">
-                {format(new Date(d.document_date), "MMM d, yyyy")}
+                {formatCaseDate(d.document_date, "MMM d, yyyy")}
               </p>
             ) : null}
             {/* Two clamped lines while browsing; while searching the whole

@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { format } from "date-fns";
+import { formatCaseDate } from "@/lib/case-date";
 import type { CaseAuthorRole, CaseDocument } from "@/lib/case";
 import { detectVideo, type VideoEmbed } from "@/lib/video";
+import { getDocumentPreview } from "@/lib/case-document-preview";
 
 const ROLE_LABEL: Record<CaseAuthorRole, string> = {
   ryan: "Ryan",
@@ -29,7 +30,7 @@ const ROLE_CLASS: Record<CaseAuthorRole, string> = {
 
 const SECTION_LEAD: Record<CaseAuthorRole, string> = {
   ryan: "Ryan Nichols' own paperwork — grievances, motions, letters, cell notes.",
-  co_detainee: "Corroborating witness statements and letters from fellow January 6 detainees.",
+  co_detainee: "Witness statements and letters from fellow January 6 detainees. These are attributed accounts, not court findings.",
   attorney: "Defense counsel correspondence (Joseph McBride, Jonathan Gross).",
   court: "Court orders, rulings, transcripts, and docket entries.",
   government: "Responses from DC DOC, the U.S. Marshals, and federal agencies.",
@@ -135,7 +136,8 @@ function SeriesCard({ series }: { series: DocSeries }) {
   const multi = series.pages.length > 1;
   const title = multi ? lead.series_title ?? lead.title : lead.title;
   const video = !multi ? detectVideo(lead.external_url) : null;
-  const officialOnly = !lead.file_url && !!lead.external_url && !video;
+  const sourceOnly = !lead.file_url && !!lead.external_url && !video;
+  const preview = getDocumentPreview(lead);
 
   if (video) {
     // The embed is the card; the one affordance is the link to the record.
@@ -147,7 +149,7 @@ function SeriesCard({ series }: { series: DocSeries }) {
             <p className="text-[10px] uppercase tracking-wider text-[var(--color-ink)] font-bold">
               {video.platformLabel} · video
               {lead.document_date ? (
-                <> · {format(new Date(lead.document_date), "MMM d, yyyy")}</>
+                <> · {formatCaseDate(lead.document_date, "MMM d, yyyy")}</>
               ) : null}
             </p>
             <p className="mt-1 text-sm font-semibold leading-snug text-[var(--color-ink)]">
@@ -167,7 +169,7 @@ function SeriesCard({ series }: { series: DocSeries }) {
   }
 
   // Article-style row: the document's face on the left (first page, or an
-  // official-record seal for court filings we serve from the source), the
+  // source-file icon for records hosted elsewhere), the
   // story of it on the right. The whole card is the link, with one visible
   // "Read" affordance — same pattern as PostCard. "Open at the source" lives
   // on the document page itself.
@@ -177,7 +179,7 @@ function SeriesCard({ series }: { series: DocSeries }) {
       className="group block overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] transition hover:border-[var(--color-gold)] hover:shadow-md sm:flex sm:items-stretch"
     >
       <div className="shrink-0 sm:w-44">
-        {officialOnly ? (
+        {sourceOnly ? (
           <span className="flex h-40 w-full flex-col items-center justify-center gap-1.5 border-r border-[var(--color-line-soft)] bg-[var(--color-surface-2)] p-4 text-center sm:h-full">
             <svg
               viewBox="0 0 24 24"
@@ -194,10 +196,10 @@ function SeriesCard({ series }: { series: DocSeries }) {
               <path d="m9 15 2 2 4-4" />
             </svg>
             <span className="text-[10px] font-black uppercase tracking-wider text-[var(--color-cream)]">
-              Official record
+              {preview.kind === "pdf" ? "Source PDF" : "External source"}
             </span>
             <span className="text-[10px] leading-snug text-[var(--color-muted)]">
-              served from the court docket
+              verify at the original source
             </span>
           </span>
         ) : (
@@ -214,7 +216,7 @@ function SeriesCard({ series }: { series: DocSeries }) {
         <p className="text-[10px] uppercase tracking-wider text-[var(--color-ink)] font-bold">
           {lead.doc_type}
           {lead.document_date ? (
-            <> · {format(new Date(lead.document_date), "MMM d, yyyy")}</>
+            <> · {formatCaseDate(lead.document_date, "MMM d, yyyy")}</>
           ) : null}
           {multi ? (
             <span className="ml-2 text-[var(--color-muted)]">
