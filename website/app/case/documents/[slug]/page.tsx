@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { format } from "date-fns";
-import { getDocumentBySlug } from "@/lib/case";
+import { getDocumentBySlug, getDocumentSeries } from "@/lib/case";
 import { ShareButton } from "@/components/ShareButton";
 import { CaseStats } from "@/components/CaseStats";
 import { CaseViewTracker } from "@/components/CaseViewTracker";
@@ -13,6 +13,7 @@ import { detectVideo } from "@/lib/video";
 import { EvidenceBadge } from "@/components/EvidenceBadge";
 import { getGateState } from "@/lib/gate";
 import { RecordWall } from "@/components/RecordWall";
+import { getDocumentPreview } from "@/lib/case-document-preview";
 
 // Rendered per request: crawlers get the full record, logged-out humans get
 // the summary + the wall. That branch cannot be baked at build time.
@@ -27,7 +28,7 @@ export async function generateMetadata({
   const d = await getDocumentBySlug(slug);
   if (!d) return { title: "Not found" };
   const url = `${SITE.url}/case/documents/${d.slug}`;
-  const description = d.description ?? `Document in United States v. Nichols`;
+  const description = d.description ?? `Source document in the January 6 archive`;
   const ogUrl = `${SITE.url}/og/document/${d.slug}`;
   const ogImages = [
     { url: ogUrl, width: 1200, height: 630, alt: d.title },
@@ -63,6 +64,8 @@ export default async function DocumentPage({
   const url = `${SITE.url}/case/documents/${d.slug}`;
   const proxiedImage = `/api/case-doc/${d.slug}/image`;
   const video = detectVideo(d.external_url);
+  const preview = getDocumentPreview(d);
+  const series = d.series_lead_slug ? await getDocumentSeries(d.series_lead_slug) : [];
   const gate = await getGateState();
   // "Open at the source" used to sit on every evidence card; it lives here
   // now, above the record wall, so a logged-out reader can still verify a
@@ -133,6 +136,26 @@ export default async function DocumentPage({
         </p>
       ) : null}
 
+      {series.length > 1 ? (
+        <nav aria-label="Pages in this document series" className="mt-6 rounded-lg border border-[var(--color-line)] p-4">
+          <p className="text-sm font-semibold text-[var(--color-ink)]">{d.series_title ?? "Pages in this document"}</p>
+          <ol className="mt-2 flex flex-wrap gap-2">
+            {series.map((page, index) => (
+              <li key={page.id}>
+                <Link
+                  href={`/case/documents/${page.slug}`}
+                  aria-current={page.slug === d.slug ? "page" : undefined}
+                  title={page.title}
+                  className={`inline-flex min-h-11 items-center rounded-md border px-3 text-sm font-semibold ${page.slug === d.slug ? "border-[var(--color-gold)] text-[var(--color-gold)]" : "border-[var(--color-line)] text-[var(--color-ink)] hover:underline"}`}
+                >
+                  Page {index + 1}
+                </Link>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      ) : null}
+
       <div className="mt-6 flex items-center gap-3 flex-wrap">
         <ShareButton url={url} title={d.title} slug={d.slug} caseKind="document" />
       </div>
@@ -160,23 +183,21 @@ export default async function DocumentPage({
               Source: {video.platformLabel}
             </figcaption>
           </>
-        ) : !d.file_url && d.external_url ? (
-          // Official records we deliberately do NOT re-host (court filings on
-          // CourtListener/RECAP): embed the PDF straight from the source, with
-          // a graceful hand-off if the browser won't inline it.
+        ) : preview.kind === "pdf" && preview.url ? (
           <>
             <object
-              data={d.external_url}
+              data={preview.url}
               type="application/pdf"
+              aria-label={d.title}
               className="block h-[75vh] w-full bg-white"
             >
               <div className="flex h-[40vh] flex-col items-center justify-center gap-4 p-8 text-center">
                 <p className="max-w-md text-sm leading-relaxed text-[var(--color-cream)]/85">
-                  This is an official court record, served directly from the
-                  public docket so you can verify it at the source.
+                  Open the source PDF to read the document. The source and
+                  description above identify what kind of record it is.
                 </p>
                 <a
-                  href={d.external_url}
+                  href={preview.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-accent inline-flex items-center px-5 py-2.5 text-sm"
@@ -186,10 +207,10 @@ export default async function DocumentPage({
               </div>
             </object>
             <figcaption className="px-4 py-3 text-xs text-[var(--color-muted)]">
-              Official record · not re-hosted — verify at the source
+              Source PDF · verify the document and its attribution
             </figcaption>
           </>
-        ) : (
+        ) : preview.kind === "image" ? (
           <>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -211,6 +232,26 @@ export default async function DocumentPage({
               </figcaption>
             ) : null}
           </>
+        ) : (
+          <div className="flex flex-col items-center gap-4 px-6 py-10 text-center">
+            <p className="max-w-md text-sm leading-relaxed text-[var(--color-cream)]/85">
+              {preview.url
+                ? d.doc_type === "video"
+                  ? "Watch the interview or video on the publisher's website."
+                  : "Open the source webpage or file to read this record."
+                : "No source file or external link is available for this entry yet."}
+            </p>
+            {preview.url ? (
+              <a
+                href={preview.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-accent inline-flex min-h-11 items-center px-5 py-2.5 text-sm"
+              >
+                {d.doc_type === "video" ? "Watch at the source" : "Read at the source"} →
+              </a>
+            ) : null}
+          </div>
         )}
       </figure>
       ) : (
