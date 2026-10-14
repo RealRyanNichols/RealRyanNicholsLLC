@@ -151,8 +151,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Suspense fallback={null}>
           <PageViewTracker />
         </Suspense>
-        <Analytics />
-        <SpeedInsights />
+        {/* Vercel's own beacons only exist on Vercel. Since the move to
+            DigitalOcean (2026-09-29) their scripts 404 on every page view,
+            so they render only when the site is built on Vercel. */}
+        {process.env.VERCEL ? (
+          <>
+            <Analytics />
+            <SpeedInsights />
+          </>
+        ) : null}
         <ThirdPartyAnalytics />
         <ServiceWorkerRegister />
         <Link

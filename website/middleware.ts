@@ -1,5 +1,6 @@
 import type { NextFetchEvent, NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
+import { readRequestGeo } from "@/lib/request-geo";
 
 // Content paths whose arrivals we record (page_arrivals → single source of
 // posts.views_count). Everything else still flows through updateSession for
@@ -57,12 +58,14 @@ function recordArrival(req: NextRequest): Promise<unknown> | null {
     }
   }
 
+  // Our proxy's, Cloudflare's or Vercel's geo headers (lib/request-geo.ts).
+  const geo = readRequestGeo(req.headers);
   const body = {
     p_path: req.nextUrl.pathname,
     p_ua_class: classifyUa(ua),
-    p_country: req.headers.get("x-vercel-ip-country"),
-    p_region: req.headers.get("x-vercel-ip-country-region"),
-    p_city: req.headers.get("x-vercel-ip-city"),
+    p_country: geo.country,
+    p_region: geo.region,
+    p_city: geo.city,
     p_referrer_host: referrerHost,
     p_ua: ua.slice(0, 400),
     p_viewer_id: readViewerId(req, projectRef),
