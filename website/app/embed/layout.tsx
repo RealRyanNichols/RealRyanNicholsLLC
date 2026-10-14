@@ -1,5 +1,5 @@
 // Layout for /embed/* — widgets that live inside OTHER people's sites via
-// iframe. The client chrome (HeaderClient, PathPicker, RyanChat, mobile bar)
+// iframe. The client chrome (HeaderClient, RyanChat, mobile bar)
 // gates itself off /embed by pathname; the server-rendered Footer can't, so
 // this layout hides it with a route-scoped style. Keep embeds lean: no bands,
 // no funnels — the widget IS the page.

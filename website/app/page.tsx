@@ -4,7 +4,8 @@ import { getPublishedPosts, getCommentCounts } from "@/lib/posts";
 import { getOgImages } from "@/lib/og-images";
 import { PostCard } from "@/components/PostCard";
 import { ProfileHero } from "@/components/ProfileHero";
-import { PathPicker } from "@/components/PathPicker";
+import { VideoShelf } from "@/components/VideoShelf";
+import { pickShelf } from "@/lib/video-shelf";
 import { RyanChat } from "@/components/RyanChat";
 import { GetToKnowYou } from "@/components/GetToKnowYou";
 import { VerseSidebar } from "@/components/VerseSidebar";
@@ -51,10 +52,12 @@ export default async function HomePage({
   const shown = Number.isFinite(parsed)
     ? Math.min(Math.max(parsed, PAGE), 3000)
     : PAGE;
-  const [posts, activeLiveStream] = await Promise.all([
+  const [posts, activeLiveStream, videoPosts] = await Promise.all([
     getPublishedPosts({ sort: view, limit: shown + 1 }),
     getActiveLiveStream(),
+    getPublishedPosts({ type: "video", limit: 40 }),
   ]);
+  const shelf = pickShelf(videoPosts);
   const hasMore = posts.length > shown;
   const feed = posts.slice(0, shown);
   const [countMap, ogImages] = await Promise.all([
@@ -83,18 +86,26 @@ export default async function HomePage({
   // (then newest-first / by views), and PostCard shows a "Pinned" badge.
   return (
     <div className="mx-auto max-w-5xl px-4 pt-4 pb-8 sm:pt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-      {/* The title card runs the full width; the feed and the sidebar start
-          under it. Its one job (follow the record) has to clear the fold on
-          a phone, so the live banner waits under it there. */}
+      {/* The video shelf and the title card run the full width; the feed and
+          the sidebar start under them. On a phone the live banner waits
+          under the title card. */}
       <div className="lg:col-span-3">
         <LiveNowBanner stream={activeLiveStream} className="mb-6 hidden sm:block" />
+        {/* Ryan's own videos lead the page. They are the best-performing thing
+            on the site (posts.views_count, October 2026: the 12 video posts
+            averaged ~2,600 views each, text posts ~300; ~1,700 sessions
+            played one), and the median visitor scrolls ~1.5% of this page,
+            so whatever is not on the first screen is not seen. The title
+            card and its follow form come right after. The slot under the
+            hero used to hold the "What brings you by today?" picker, which
+            visitors closed about four times for every answer (page_events
+            intent_dismiss vs intent_select); it is gone. */}
+        <VideoShelf featured={shelf.featured} rail={shelf.rail} className="mb-8" />
         <ProfileHero />
         <LiveNowBanner stream={activeLiveStream} className="mt-6 sm:hidden" />
       </div>
       <div className="lg:col-span-2">
-        <PathPicker variant="band" />
-
-        {/* Feed sits directly under the hero — people come to read first.
+        {/* Feed sits directly under the title card — watch, then read.
             The take-action blocks are woven into the feed below at spaced
             breaks (not stacked above it), so each lands where it belongs
             without burying the posts. */}

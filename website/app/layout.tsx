@@ -19,8 +19,9 @@ const condensed = localFont({
   variable: "--font-story-display",
 });
 import { MobileSupportBar } from "@/components/MobileSupportBar";
-import { PathPicker } from "@/components/PathPicker";
 import { RyanChat } from "@/components/RyanChat";
+import { ShadeExposure } from "@/components/ShadeExposure";
+import { SHADE_BOOT_SCRIPT } from "@/lib/shade";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import { PageViewTracker } from "@/components/PageViewTracker";
 import { ThirdPartyAnalytics } from "@/components/ThirdPartyAnalytics";
@@ -119,7 +120,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   };
 
   return (
-    <html lang="en" className={condensed.variable}>
+    // suppressHydrationWarning: the shade script below sets data-shade on
+    // <html> before React hydrates, so the server and client attributes
+    // differ on purpose. It covers only this element's own attributes.
+    <html lang="en" className={condensed.variable} suppressHydrationWarning>
+      <head>
+        {/* The color-shade test: picks or restores this visitor's shade and
+            sets it before first paint, so nobody sees the page flash from
+            one shade to another. The server never reads the cookie, so the
+            test adds no server work. lib/shade.ts has the arms and rules. */}
+        <script dangerouslySetInnerHTML={{ __html: SHADE_BOOT_SCRIPT }} />
+      </head>
       <body className="min-h-screen flex flex-col pb-[calc(5rem+env(safe-area-inset-bottom))] lg:pb-0">
         <script
           type="application/ld+json"
@@ -135,8 +146,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="flex-1 w-full">{children}</main>
         <Footer />
         <MobileSupportBar />
-        <PathPicker variant="overlay" />
         <RyanChat variant="launcher" surface="site" />
+        <ShadeExposure />
         <Suspense fallback={null}>
           <PageViewTracker />
         </Suspense>
