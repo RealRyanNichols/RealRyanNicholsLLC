@@ -17,10 +17,14 @@ export function VideoPlayer({
   playbackId,
   poster,
   title,
+  autoPlay = false,
 }: {
   playbackId: string;
   poster?: string;
   title?: string;
+  // Only after the visitor tapped a poster (components/FeaturedVideo.tsx);
+  // never on page load.
+  autoPlay?: boolean;
 }) {
   const milestones = useRef(new Set<number>());
 
@@ -56,6 +60,7 @@ export function VideoPlayer({
         poster={poster}
         metadata={{ video_title: title ?? "Untitled" }}
         streamType="on-demand"
+        autoPlay={autoPlay}
         accentColor="var(--color-gold)"
         onPlay={() => trackEvent("video_play", props())}
         onPause={() => trackEvent("video_pause", props())}

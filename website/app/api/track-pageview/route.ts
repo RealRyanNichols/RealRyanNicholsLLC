@@ -7,14 +7,14 @@ import {
   isSupabaseServiceConfigured,
 } from "@/lib/supabase/service";
 import { visitorHash } from "@/lib/visitor-hash";
+import { readRequestGeo } from "@/lib/request-geo";
 
 // Beacon that records a page view with everything the client doesn't
-// see — Vercel's geo headers (country / region / city), the canonical
+// see — the edge's geo headers (country / region / city), the canonical
 // referrer host, a one-way first-party visitor hash for repeat-visitor
 // counts without storing IPs, and a coarse device classifier.
 // PageViewTracker sends dwell, scroll, and clicks through /api/track-event.
 
-// Vercel populates x-vercel-ip-country/region/city on both runtimes.
 // node lets us use node:crypto for the visitor hash without pulling in
 // Web Crypto's async API for a tiny one-shot HMAC.
 export const runtime = "nodejs";
@@ -26,17 +26,6 @@ const schema = z.object({
   ref: z.string().max(500).nullable().optional(),
   ua: z.string().max(300).nullable().optional(),
 });
-
-// Vercel's x-vercel-ip-latitude / x-vercel-ip-longitude, rounded to a tenth
-// of a degree (about 11 km) before they touch the database. That rounding is
-// the privacy floor for the public Map Room: a dot near a town, never a
-// street. Anything unparsable or out of range is dropped, not guessed.
-function coarseCoord(raw: string | null, max: number): number | null {
-  if (!raw) return null;
-  const n = Number.parseFloat(raw);
-  if (!Number.isFinite(n) || Math.abs(n) > max) return null;
-  return Math.round(n * 10) / 10;
-}
 
 function parseHost(ref: string | null | undefined): string | null {
   if (!ref) return null;
@@ -95,16 +84,10 @@ export async function POST(request: Request) {
     return new NextResponse(null, { status: 204 });
   }
 
-  // Vercel populates these on the edge runtime. Locally / non-Vercel
-  // they're missing; we just skip geo in that case.
+  // Geo comes from whatever edge is in front of the app (our own proxy,
+  // Cloudflare or Vercel; lib/request-geo.ts). Without one, geo is skipped.
   const h = request.headers;
-  const country = h.get("x-vercel-ip-country") ?? null;
-  const region = h.get("x-vercel-ip-country-region") ?? null;
-  const city = h.get("x-vercel-ip-city")
-    ? decodeURIComponent(h.get("x-vercel-ip-city")!)
-    : null;
-  const latitude = coarseCoord(h.get("x-vercel-ip-latitude"), 90);
-  const longitude = coarseCoord(h.get("x-vercel-ip-longitude"), 180);
+  const { country, region, city, latitude, longitude } = readRequestGeo(h);
   const hasFix = latitude !== null && longitude !== null;
   // Forwarded-for is comma-separated; first entry is the original client.
   const ip =

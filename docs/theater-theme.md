@@ -166,3 +166,15 @@ Apply these in order. Change classes, never copy, facts, or behavior.
   unreadable chart.
 - Every public route still serves 200 and every link that worked before works
   after.
+
+## Shades (October 2026)
+
+The theater palette above is the control in a live color test. `lib/shade.ts`
+splits visitors 50/50 between `theater` and `dusk` (a lifted navy floor with
+brighter secondary type) and sets `html[data-shade]` before first paint. Each
+arm is only a set of token overrides in the `@media screen` block near the top
+of `website/app/globals.css`, which is why components must read colors from
+tokens: a hardcoded navy or cream will not follow the shade. Read the results
+at `/admin/shade-test` and promote the winner by moving its values into the
+`@theme` block. A light (paper) arm is not in the draw yet: the homepage title
+card, the chat launcher and the top strip paint navy text on navy there.
