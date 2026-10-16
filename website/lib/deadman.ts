@@ -506,7 +506,7 @@ export function buildInitialCustodyBulletin(input: {
     "",
     "## How to help lawfully",
     "",
-    "Share this page with local and national journalists, civil-liberties groups, veteran communities, and elected representatives. Preserve original public records and submit source material through the site's evidence form. Ask specific, factual questions. Do not threaten, harass, dox, contact children, target witnesses, or publish private addresses or sealed information.",
+    "Share this page with local and national journalists, civil-liberties groups, veteran communities, and elected representatives. Preserve original public records and submit source material through the site's evidence form. Ask specific, factual questions through public offices. Keep outreach peaceful and respectful. Protect minors, witnesses, personal details, and court-restricted material; share only records cleared for public release.",
     "",
     "{{report: Ryan Nichols custody response}}",
     "",

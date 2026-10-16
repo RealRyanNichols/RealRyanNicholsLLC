@@ -1,0 +1,11 @@
+[Unit]
+Description=Release an approved custody response update each hour
+
+[Timer]
+OnCalendar=*-*-* *:00:00 UTC
+AccuracySec=1s
+Persistent=true
+Unit=rrn-deadman@release.service
+
+[Install]
+WantedBy=timers.target

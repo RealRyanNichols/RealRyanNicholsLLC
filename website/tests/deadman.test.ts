@@ -6,6 +6,53 @@ import {
   parseDeadmanActivators,
   releaseNextDeadmanUpdate,
 } from "../lib/deadman";
+import { DEADMAN_CONFIRMATION_TYPES } from "../lib/deadman-constants";
+import { validateDeadmanAccountabilityDraft } from "../lib/deadman-editorial";
+
+for (const confirmationType of DEADMAN_CONFIRMATION_TYPES) {
+  test(`initial ${confirmationType} bulletin passes the release validator`, () => {
+    const bulletin = buildInitialCustodyBulletin({
+      confirmedAt: "2026-10-16T18:00:00.000Z",
+      confirmationType,
+      publicSummary: "An authorized operator confirmed the custody report.",
+    });
+    const draft = {
+      title: bulletin.title,
+      body: bulletin.body,
+      evidenceStrength: "direct_confirmation" as const,
+      sources: [{
+        id: "activation-confirmation",
+        type: confirmationType,
+        note: "Confirmation preserved in the private incident record.",
+      }],
+      claimLabels: {
+        verified_facts: [{
+          id: "fact-activation",
+          claim: "An authorized operator double-confirmed protocol activation.",
+          source_ids: ["activation-confirmation"],
+        }],
+        attributed_allegations: [],
+        editorial_inferences: [],
+        advocacy_positions: [],
+        unresolved_questions: [],
+      },
+      accountabilityTargets: ["Harrison County public agencies"],
+    };
+    assert.deepEqual(validateDeadmanAccountabilityDraft(draft), {
+      ok: true,
+      errors: [],
+    });
+    assert.match(bulletin.body, /Keep outreach peaceful and respectful/);
+    assert.match(bulletin.body, /Protect minors, witnesses, personal details, and court-restricted material/);
+
+    const unsafe = validateDeadmanAccountabilityDraft({
+      ...draft,
+      body: `${bulletin.body}\nContact their children and publish the home address.`,
+    });
+    assert.equal(unsafe.ok, false);
+    assert.match(unsafe.errors.join(" "), /prohibited private-person targeting/);
+  });
+}
 
 test("parseDeadmanActivators accepts valid unique hashed contacts and fails closed", () => {
   const hash = "a".repeat(64);

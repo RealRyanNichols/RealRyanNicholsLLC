@@ -1,0 +1,15 @@
+[Unit]
+Description=RealRyanNichols custody response %i worker
+After=network.target site@realryannichols.service
+
+[Service]
+Type=oneshot
+DynamicUser=yes
+EnvironmentFile=/srv/site-env/realryannichols.env
+ExecStart=/usr/bin/python3 /usr/local/libexec/rrn-deadman-cron.py %i
+TimeoutStartSec=120
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+RestrictAddressFamilies=AF_INET AF_INET6
