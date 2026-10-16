@@ -1,0 +1,14 @@
+[Unit]
+Description=Deliver approved RealRyanNichols emergency updates to X
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /usr/local/libexec/rrn-deadman-x.py
+TimeoutStartSec=150
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/rrn-deadman-social /etc/rrn-main-posting
+ReadWritePaths=/var/lib/rrn-x-poster

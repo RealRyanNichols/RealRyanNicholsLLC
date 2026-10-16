@@ -7,3 +7,11 @@ The worker uses the existing `DEADMAN_CRON_SECRET` or `CRON_SECRET` from `/srv/s
 Check `systemctl list-timers rrn-deadman-release.timer` and `journalctl -u rrn-deadman@release.service`. A successful request while dormant reports `active: false` and `released: 0`. After activation, a same-hour request must not create a second bulletin. The database records every actual release.
 
 The runner also accepts `social` for the existing social worker. This repair enables the hourly release timer only; platform publication still requires the site's existing credentials and dispatch configuration. A prepared caption is not a posted social update.
+
+## Personal X delivery
+
+`dispatch-deadman-x.py` connects the emergency dispatch queue to the existing root-only OAuth 2.0 connection used by `/opt/rrn-x-poster/poster.py`. Install it at `/usr/local/libexec/rrn-deadman-x.py`, then install `rrn-deadman-social.service` and `rrn-deadman-social.timer`. Enable the timer after verifying the connected account is `@RealRyanNichols` (1827897370945761281).
+
+The five-minute worker atomically claims one approved caption, verifies the live account and current incident/update authorization, posts once, saves a durable receipt, acknowledges the database row, and reads the post back. No new credential or environment variable is introduced. An ambiguous delivery, identity failure, rejected request, or failed acknowledgement writes `/var/lib/rrn-deadman-social/hold.json` and stops further automatic sends. Reconcile the external post and dispatch before removing that hold. Never reset a `posting` dispatch to `ready` without proving no post exists.
+
+The X worker does not publish on Facebook. Facebook native publication and Page API credentials must be verified separately.
