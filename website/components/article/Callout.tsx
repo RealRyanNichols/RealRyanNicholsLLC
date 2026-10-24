@@ -1,3 +1,5 @@
+import { isPausedArticleBookLink } from "@/lib/article-book-links";
+
 // {{callout: kind | text}} — the read-that-again block. Three kinds:
 //   pull  big pull quote, gold rule above, display serif
 //   key   key point, navy card with gold left rule
@@ -25,6 +27,7 @@ export function Callout({ args }: { args: string[] }) {
   if (kind === "ask") {
     const linkMatch = text.match(URL_RE);
     const link = linkMatch?.[0] ?? null;
+    if (isPausedArticleBookLink(link)) return null;
     const display = link ? text.replace(link, "").replace(/\s{2,}/g, " ").trim() : text;
     return (
       <aside className="not-prose my-8 rounded-lg border-l-4 border-[var(--color-gold-bright)] bg-[var(--color-surface)] p-5 text-[var(--color-cream)] sm:p-6">

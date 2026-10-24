@@ -211,9 +211,11 @@ function ActivityFeed({ recent: recentRaw }: { recent: Recent[] }) {
 export function SituationRoom({
   onClose,
   seed,
+  bookPromotionEnabled = true,
 }: {
   onClose: () => void;
   seed?: SiteTotals | null;
+  bookPromotionEnabled?: boolean;
 }) {
   const [t, setT] = useState<SiteTotals | null>(seed ?? null);
   const [r, setR] = useState<Rally | null>(null);
@@ -439,12 +441,14 @@ export function SituationRoom({
           <div className="mt-4 flex flex-wrap items-center gap-3">
             {/* The room's money doors: the book, and the Token Fund that pays
                 for the AI tokens building all of this. */}
-            <a
-              href="/book/preorder"
-              className="btn-accent inline-flex min-h-11 items-center px-4 py-2.5 text-sm tracking-tight"
-            >
-              Get the Book →
-            </a>
+            {bookPromotionEnabled ? (
+              <a
+                href="/book/preorder"
+                className="btn-accent inline-flex min-h-11 items-center px-4 py-2.5 text-sm tracking-tight"
+              >
+                Get the Book →
+              </a>
+            ) : null}
             <a
               href="/fuel"
               className="inline-flex min-h-11 items-center rounded-full border border-[var(--color-live)]/60 bg-[var(--color-live)]/10 px-4 py-2.5 text-sm font-black tracking-tight text-[var(--color-live)] transition hover:bg-[var(--color-live)]/20"
