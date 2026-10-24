@@ -91,10 +91,11 @@ export function HeaderStatusStrip() {
   const countries = t?.countries_now ?? 0;
   const views = t?.total_views ?? 0;
 
-  // Book pitch hides on the book pages themselves and on admin (the whole
-  // bar is already admin-hidden in HeaderClient — belt and braces).
+  // Article purchase promotion is paused; ordinary site navigation remains.
+  // Also hide the pitch on book pages and admin as before.
   const showBook =
     !bookDismissed &&
+    !pathname.startsWith("/posts/") &&
     !pathname.startsWith("/book") &&
     !pathname.startsWith("/admin");
 
@@ -193,7 +194,13 @@ export function HeaderStatusStrip() {
         </div>
       </div>
 
-      {open ? <SituationRoom seed={t} onClose={() => setOpen(false)} /> : null}
+      {open ? (
+        <SituationRoom
+          seed={t}
+          onClose={() => setOpen(false)}
+          bookPromotionEnabled={!pathname.startsWith("/posts/")}
+        />
+      ) : null}
     </>
   );
 }

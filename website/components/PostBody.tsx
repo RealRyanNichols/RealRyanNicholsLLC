@@ -3,7 +3,6 @@ import remarkGfm from "remark-gfm";
 import type { ReactNode } from "react";
 import { TweetEmbed } from "./TweetEmbed";
 import { FacebookEmbed } from "./FacebookEmbed";
-import { BookCtaBand } from "./BookCtaBand";
 import { ReactionBar } from "./ReactionBar";
 import { PollCard } from "./PollCard";
 import { InlineReportForm } from "./InlineReportForm";
@@ -17,6 +16,7 @@ import { Callout } from "./article/Callout";
 import { RelatedPosts } from "./article/RelatedPosts";
 import { parseBodySegments, type ShortcodeBlock } from "@/lib/shortcodes";
 import { linkFirstMentions } from "@/lib/entity-links";
+import { isPausedArticleBookLink, withoutPausedArticleBookLink } from "@/lib/article-book-links";
 
 const TWEET_RE = /^https?:\/\/(x\.com|twitter\.com)\/[^/]+\/status\/\d+/i;
 const FB_POST_RE =
@@ -124,7 +124,7 @@ function renderLinkedText(text: string) {
     }
 
     if (matchIndex > lastIndex) parts.push(text.slice(lastIndex, matchIndex));
-    parts.push(
+    if (!isPausedArticleBookLink(url)) parts.push(
       <a
         key={`${url}-${index}`}
         href={url}
@@ -257,13 +257,13 @@ function Shortcode({
   switch (kind) {
     // ---- The article-richness vocabulary (JSON or pipe payloads). ----
     case "receipt":
-      return json ? <Receipt value={json} /> : null;
+      return json ? <Receipt value={withoutPausedArticleBookLink(json, "url")} /> : null;
     case "chart":
-      return json ? <ArticleChart value={json} /> : null;
+      return json ? <ArticleChart value={withoutPausedArticleBookLink(json, "source_url")} /> : null;
     case "figure":
       return json ? <ArticleFigure value={json} /> : null;
     case "embed":
-      return json ? <ArticleEmbed value={json} /> : null;
+      return json && !isPausedArticleBookLink(json.url) ? <ArticleEmbed value={json} /> : null;
     case "callout": {
       const args = (arg ?? "").split("|").map((s) => s.trim());
       return <Callout args={args} />;
@@ -278,18 +278,14 @@ function Shortcode({
       return <ReceiptGrid arg={arg} />;
     case "receiptstack":
       return <ReceiptStack arg={arg} />;
-    // Donations are retired — legacy {{donate}}, {{fund}}, and {{impact}}
-    // tokens in old articles now sell the book instead of asking for gifts.
+    // These legacy tokens all promoted book purchases. Keep them dormant
+    // while Ryan waits for a replacement purchase link.
     case "donate":
     case "book":
     case "preorder":
     case "fund":
     case "impact":
-      return (
-        <div className="not-prose my-7">
-          <BookCtaBand />
-        </div>
-      );
+      return null;
     case "share":
       return (
         <div className="not-prose my-7">
@@ -491,6 +487,8 @@ export function PostBody({
     },
     a({ href, children }: { href?: string; children?: ReactNode }) {
       const url = typeof href === "string" ? href : "";
+      // Also catches the first-mention link injected by entity-links.
+      if (isPausedArticleBookLink(url)) return <>{children}</>;
       const internal = url.startsWith("/") || url.startsWith("#");
       return (
         <a
