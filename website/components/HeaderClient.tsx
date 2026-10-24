@@ -19,9 +19,10 @@ type Offer = { href: string; label: string };
 // Four clear doors — the whole primary navigation. No mega-menus, no slider.
 const DOORS: Door[] = [
   { href: "/", label: "Latest", desc: "Posts, video, and receipts" },
+  // Second door: Ryan's own videos are the site's best performers.
+  { href: "/videos", label: "Watch", desc: "Ryan on camera, and live" },
   { href: "/the-story", label: "My Story", desc: "One life, told whole — with receipts" },
   { href: "/case", label: "J6 Files", desc: "Ryan's case and the full J6 archive" },
-  { href: "/videos", label: "Videos", desc: "Video drops and live" },
   {
     href: "/tell-your-story",
     label: "Get Your Free Profile",
@@ -43,6 +44,7 @@ const MOBILE_ADMIN_LINKS: { href: string; label: string }[] = [
   { href: "/admin/inbox", label: "Inbox" },
   { href: "/admin/tips", label: "Tips" },
   { href: "/admin/analytics", label: "Analytics" },
+  { href: "/admin/shade-test", label: "Color Test" },
   { href: "/admin/new", label: "New Post" },
   { href: "/admin/queue", label: "Queue" },
   { href: "/admin/live", label: "Live Room" },

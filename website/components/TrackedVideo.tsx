@@ -6,9 +6,12 @@ import { trackEvent } from "@/lib/analytics";
 export function TrackedVideo({
   src,
   title,
+  autoPlay = false,
 }: {
   src: string;
   title?: string;
+  // Only after the visitor tapped a poster (components/FeaturedVideo.tsx).
+  autoPlay?: boolean;
 }) {
   const milestones = useRef(new Set<number>());
   const safeTitle = title ?? "Untitled";
@@ -37,6 +40,7 @@ export function TrackedVideo({
       src={src}
       controls
       playsInline
+      autoPlay={autoPlay}
       preload="metadata"
       onPlay={() => trackEvent("video_play", props())}
       onPause={() => trackEvent("video_pause", props())}

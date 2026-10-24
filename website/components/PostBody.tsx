@@ -17,6 +17,7 @@ import { Callout } from "./article/Callout";
 import { RelatedPosts } from "./article/RelatedPosts";
 import { parseBodySegments, type ShortcodeBlock } from "@/lib/shortcodes";
 import { linkFirstMentions } from "@/lib/entity-links";
+import { resolveVideoSrc } from "@/lib/video-source";
 
 const TWEET_RE = /^https?:\/\/(x\.com|twitter\.com)\/[^/]+\/status\/\d+/i;
 const FB_POST_RE =
@@ -68,8 +69,10 @@ type ReceiptGridItem = {
 };
 
 function parseVideoArg(arg: string | undefined) {
-  const [src, poster, caption] = (arg ?? "").split("|").map((part) => part.trim());
-  if (!src || (!src.startsWith("/") && !src.startsWith("https://"))) return null;
+  const [raw, poster, caption] = (arg ?? "").split("|").map((part) => part.trim());
+  // Site path, https URL, or a DigitalOcean Spaces `do:` key.
+  const src = resolveVideoSrc(raw);
+  if (!src) return null;
   return {
     src,
     poster: poster || undefined,

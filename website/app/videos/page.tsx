@@ -10,6 +10,9 @@ import { JsonLd } from "@/components/JsonLd";
 import { muxThumbnailUrl } from "@/lib/mux";
 import { SITE } from "@/lib/site";
 import { HandlersSeriesShelf } from "@/components/HandlersSeriesShelf";
+import { FeaturedVideo } from "@/components/FeaturedVideo";
+import { VideoTile } from "@/components/VideoShelf";
+import { pickShelf, toShelfVideo, type ShelfVideo } from "@/lib/video-shelf";
 
 export const revalidate = 60;
 
@@ -64,6 +67,12 @@ export default async function VideosPage(props: {
     : allVideos.filter((p) => channelOf(p.category) !== "J6");
 
   const countMap = await getCommentCounts(videos.map((p) => p.id));
+  // The newest playable video leads the page and plays in place; the grid
+  // below is every playable video in feed order (processing uploads wait).
+  const lead = active ? null : pickShelf(allVideos).featured;
+  const gridVideos = feedVideos
+    .map(toShelfVideo)
+    .filter((v): v is ShelfVideo => v !== null && v.id !== lead?.id);
 
   // Machine-readable index of the site-owned videos (top 24) so engines see
   // real VideoObjects with thumbnails and durations, not just links.
@@ -138,6 +147,21 @@ export default async function VideosPage(props: {
         ) : null}
       </header>
 
+      {lead ? (
+        <section className="mt-8" aria-label="Latest video">
+          <p className="eyebrow mb-3">Latest from Ryan</p>
+          <FeaturedVideo video={lead} placement="videos" />
+          <p className="mt-3 font-display text-xl font-bold leading-snug text-[var(--color-ink)]">
+            <Link
+              href={lead.href}
+              className="transition hover:text-[var(--color-gold)] hover:underline underline-offset-4"
+            >
+              {lead.title}
+            </Link>
+          </p>
+        </section>
+      ) : null}
+
       {!active ? <HandlersSeriesShelf /> : null}
 
       {!active && j6Videos.length > 0 ? (
@@ -206,9 +230,13 @@ export default async function VideosPage(props: {
               </Link>
             </p>
           ) : null}
-          {feedVideos.map((p) => (
-            <PostCard key={p.id} post={p} commentCount={countMap.get(p.id) ?? 0} />
-          ))}
+          <ul className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
+            {gridVideos.map((v) => (
+              <li key={v.id}>
+                <VideoTile video={v} />
+              </li>
+            ))}
+          </ul>
         </section>
       )}
     </main>

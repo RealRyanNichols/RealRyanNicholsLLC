@@ -12,12 +12,12 @@ import { SignupForm } from "@/components/SignupForm";
 // are the words from his own cover art; nothing here is invented.
 //
 // The one job is the inline email capture (id="join", the target of every
-// "Join" link on the site), with the book as a text link under it. On a
-// 390x844 phone the whole form sits inside the first ~600px, above the
-// ~660px an in-app browser leaves visible: the photo is a short banner
-// there, the eyebrow is cut to two words, and the audience doors and Start
-// Here wait folded under the card. The measured median scroll on / is 1.5%,
-// so anything below that line is, for most visitors, not on the page.
+// "Join" link on the site), with the book as a text link under it. The photo
+// is a short banner on a phone, the eyebrow is cut to two words, and the
+// audience doors and Start Here wait folded under the card. Since October
+// 2026 the card sits under the homepage video shelf (app/page.tsx): the
+// measured median scroll on / is 1.5%, and Ryan's own videos out-pull the
+// form by a wide margin, so they get the first screen.
 const AUDIENCES = [
   { href: "/support", label: "Supporter", desc: "Own a piece of the work — book, builds, store." },
   { href: "/case", label: "Journalist / Researcher", desc: "The documented record — filings, video." },

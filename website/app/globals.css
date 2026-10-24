@@ -69,6 +69,26 @@
   --font-condensed: var(--font-story-display), "Source Serif 4", "Georgia", serif;
 }
 
+/* ---------- the shade test (lib/shade.ts) ----------
+   The theater above is the control. These arms only re-point tokens, so
+   every page and component follows without per-file edits. Screen only:
+   the print palette at the bottom of this file must keep winning on paper. */
+@media screen {
+  /* Dusk: the same room with the lights up. A lifted navy floor and panels,
+     brighter secondary type and hairlines. Every dark-room assumption
+     (cream type, gold kickers, cream-on-color buttons) still holds. */
+  html[data-shade="dusk"] {
+    --color-paper: #15263f;
+    --color-surface: #1c3150;
+    --color-surface-2: #24395c;
+    --color-navy: #1c3150;
+    --color-line: rgba(225, 189, 91, 0.34);
+    --color-line-soft: rgba(253, 248, 234, 0.16);
+    --color-ink-soft: rgba(253, 248, 234, 0.86);
+    --color-muted: rgba(253, 248, 234, 0.68);
+  }
+}
+
 /* Base resets live in @layer base so Tailwind utility classes — which
    live in @layer utilities — reliably override them. Without the layer
    wrapper, unlayered rules beat layered ones regardless of specificity,
