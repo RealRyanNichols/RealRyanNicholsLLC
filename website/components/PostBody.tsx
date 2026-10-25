@@ -7,6 +7,7 @@ import { BookCtaBand } from "./BookCtaBand";
 import { ReactionBar } from "./ReactionBar";
 import { PollCard } from "./PollCard";
 import { InlineReportForm } from "./InlineReportForm";
+import { WaterIncidentReportForm } from "./WaterIncidentReportForm";
 import { DemandAction } from "./DemandAction";
 import { ShareRow } from "./ShareRow";
 import { Receipt } from "./article/Receipt";
@@ -296,6 +297,8 @@ function Shortcode({
           <ShareRow />
         </div>
       );
+    case "water-report":
+      return <WaterIncidentReportForm sourcePostSlug={ctx.slug} />;
     case "report": {
       // {{report}} → defaults. Optional pipe-delimited overrides:
       // {{report: subject | kicker | heading | blurb | placeholder | button }}
