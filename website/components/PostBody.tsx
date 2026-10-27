@@ -411,6 +411,7 @@ const KNOWN_SHORTCODES = new Set([
   "fund",
   "impact",
   "share",
+  "water-report",
   "report",
   "poll",
   "react",
