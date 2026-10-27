@@ -115,6 +115,7 @@ export const waterIncidentSchema = z
 export type WaterIncidentInput = z.infer<typeof waterIncidentSchema>;
 
 export type WaterIncidentDependencies = {
+  publicOrigin?: string;
   isConfigured: () => boolean;
   rateLimit: (
     request: Request,
@@ -173,7 +174,13 @@ async function boundedJson(request: Request): Promise<unknown> {
 export function createWaterIncidentHandler(deps: WaterIncidentDependencies) {
   return async function POST(request: Request): Promise<Response> {
     const origin = request.headers.get("origin");
-    if (!origin || origin !== new URL(request.url).origin) {
+    let expectedOrigin: string;
+    try {
+      expectedOrigin = new URL(deps.publicOrigin ?? request.url).origin;
+    } catch {
+      return response({ error: "Private report intake is not available." }, 503);
+    }
+    if (!origin || origin !== expectedOrigin) {
       return response({ error: "Submit this form from this website." }, 403);
     }
     if (

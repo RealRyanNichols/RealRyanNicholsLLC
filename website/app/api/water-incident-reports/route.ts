@@ -1,4 +1,5 @@
 import { checkRateLimit } from "@/lib/rate-limit";
+import { SITE } from "@/lib/site";
 import {
   getSupabaseServiceClient,
   isSupabaseServiceConfigured,
@@ -8,6 +9,7 @@ import { createWaterIncidentHandler } from "@/lib/water-incident";
 export const runtime = "nodejs";
 
 export const POST = createWaterIncidentHandler({
+  publicOrigin: SITE.url,
   isConfigured: isSupabaseServiceConfigured,
   rateLimit: (request) =>
     checkRateLimit({

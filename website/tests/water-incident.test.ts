@@ -142,6 +142,33 @@ test("cross-origin submissions stop before private storage", async () => {
   assert.equal(saved.length, 0);
 });
 
+test("trusted public origin accepts the reverse proxy's internal request URL", async () => {
+  const { handler, saved } = fixture({ publicOrigin: "https://realryannichols.com" });
+  const proxied = new Request("http://localhost:3103/api/water-incident-reports", {
+    method: "POST",
+    headers: { origin: "https://realryannichols.com", "content-type": "application/json" },
+    body: JSON.stringify(valid),
+  });
+  assert.equal((await handler(proxied)).status, 201);
+  assert.equal(saved.length, 1);
+});
+
+test("forwarded headers cannot widen the trusted public origin", async () => {
+  const { handler, saved } = fixture({ publicOrigin: "https://realryannichols.com" });
+  assert.equal((await handler(request(valid, {
+    origin: "https://other.example",
+    "x-forwarded-host": "other.example",
+    "x-forwarded-proto": "https",
+  }))).status, 403);
+  assert.equal(saved.length, 0);
+});
+
+test("invalid configured public origin fails closed before storage", async () => {
+  const { handler, saved } = fixture({ publicOrigin: "invalid configuration" });
+  assert.equal((await handler(request())).status, 503);
+  assert.equal(saved.length, 0);
+});
+
 test("missing origin, wrong content type and invalid JSON never reach storage", async () => {
   const { handler, saved } = fixture();
   const missing = request();
